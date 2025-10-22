@@ -1,6 +1,7 @@
 ﻿<script setup lang="ts">
 import { ref, type Ref } from 'vue';
-import type SelectOptionNumberInterface from '../dto/selectOptionNumberDto';
+import type SelectOptionNumberInterface from '../main/dto/select_options/selectOptionNumberDto';
+import SelectOptionNumberDto from '../main/dto/select_options/selectOptionNumberDto';
 import SearchHoujinNo from './common/search_houjin_no/SearchHoujinNo.vue';
 
 // よく使う定数
@@ -12,15 +13,19 @@ import SearchHoujinNo from './common/search_houjin_no/SearchHoujinNo.vue';
 // ラジオボタン入力サンプル
 const radioInputData: Ref<string> = ref("");
 
-//
 const selectedTableLine: Ref<number> = ref(-1);
-
 
 // ページング
 const pageOption: Ref<SelectOptionNumberInterface[]> = ref([]);
+
+// ページングMockデータ
+const options:SelectOptionNumberInterface = new SelectOptionNumberDto();
+options.value = 0;
+options.text = "1-50";
+pageOption.value.push(options);
+
 function onChangePaging() {
     // TODO (ページング情報をコンポーネントから受け取り)検索処理を実行
-
 }
 
 const showContentA: string = "a";
