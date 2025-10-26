@@ -2,7 +2,7 @@ name: '📋 Gemini Scheduled Issue Triage'
 
 on:
   schedule:
-    - cron: '0 * * * *' # Runs every hour
+    - cron: '0 0 * * *' # Runs once a day
   pull_request:
     branches:
       - 'main'
@@ -197,7 +197,8 @@ jobs:
 
             3. Select the set of one or more labels that most accurately describe the issue.
 
-            4. If no available labels are a clear and confident match for an issue, exclude that issue from the final output.
+            # 4. If no available labels are a clear and confident match for an issue, exclude that issue from the final output.
+            4. If there are any potentially relevant labels, assign the one that seems most appropriate, even if the match is not perfect. Your goal is to apply a preliminary classification rather than leaving the issue unlabeled.
 
             ## Step 4: Construct and Write Output
 
