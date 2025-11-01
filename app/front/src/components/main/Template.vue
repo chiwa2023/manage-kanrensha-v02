@@ -1,33 +1,36 @@
-﻿<script setup lang="ts">
+<script setup lang="ts">
 import { ref, type Ref } from 'vue';
-import type SelectOptionNumberInterface from '../main/dto/select_options/selectOptionNumberDto';
-import SelectOptionNumberDto from '../main/dto/select_options/selectOptionNumberDto';
 import SearchHoujinNo from './common/search_houjin_no/SearchHoujinNo.vue';
+import PagingControl from './common/paging/PagingControl.vue';
+import MessageView from './common/message/MessageView.vue';
+import { MessageConstants } from './dto/message/messageConstants';
 
 // よく使う定数
-// const BLANK: string = "";
-// const INIT_NUMBER: number = 0;
+const BLANK: string = "";
+//const INIT_NUMBER: number = 0;
 // const SERVER_STATUS_OK: number = 200;
 // const SERVER_STATUS_ERROR: number = 400;
+// メッセージ表示定数
+const infoLevel: Ref<number> = ref(MessageConstants.LEVEL_NONE);
+const messageType: Ref<number> = ref(MessageConstants.VIEW_NONE);
+const title: Ref<string> = ref(BLANK);
+const message: Ref<string> = ref(BLANK);
+
+// Paging
+const pageNumber: Ref<number> = ref(6); // Mock data
+const allCount: Ref<number> = ref(123); // Mock data
+const limit: Ref<number> = ref(10); // Mock data
+
+
 
 // ラジオボタン入力サンプル
 const radioInputData: Ref<string> = ref("");
 
 const selectedTableLine: Ref<number> = ref(-1);
 
-// ページング
-const pageOption: Ref<SelectOptionNumberInterface[]> = ref([]);
 
-// ページングMockデータ
-const options:SelectOptionNumberInterface = new SelectOptionNumberDto();
-options.value = 0;
-options.text = "1-50";
-pageOption.value.push(options);
 
-function onChangePaging() {
-    // TODO (ページング情報をコンポーネントから受け取り)検索処理を実行
-}
-
+// コンテンツ
 const showContentA: string = "a";
 const showContentB: string = "b";
 const showContentC: string = "c";
@@ -59,199 +62,266 @@ function recieveCorpNoInterface() {
     isCorpSearch.value = false;
 }
 
+function recievePagingNumber(selecteddNumber: number) {
+    pageNumber.value = selecteddNumber;
+    alert("ページ情報受信");
+}
+
+// メッセージ表示
+
+function onInfo() {
+    infoLevel.value = MessageConstants.LEVEL_INFO;
+    title.value = "情報タイトル";
+    message.value = "メッセージ1";
+    // 表示
+    messageType.value = MessageConstants.VIEW_TOAST;
+}
+
+function onWarning() {
+    infoLevel.value = MessageConstants.LEVEL_WARNING;
+    title.value = "警告タイトル";
+    message.value = "メッセージ2";
+    // 表示
+    messageType.value = MessageConstants.VIEW_YES_NO;
+}
+
+function onError() {
+    infoLevel.value = MessageConstants.LEVEL_ERROR;
+    title.value = "エラータイトル";
+    message.value = "メッセージ3";
+    // 表示
+    messageType.value = MessageConstants.VIEW_OK;
+}
+
+function recieveSubmit(button: string) {
+    alert(button);
+    // TODO ボタンタイプ別の挙動はこの中で変える
+
+    // 非表示
+    infoLevel.value = 0;
+    messageType.value = 0;
+}
+
 </script>
 <template>
-    <h1>ページタイトル</h1>
-
-    <!-- ユーザrole別制御コンポーネント -->
-    <div style="background-color: #FF0000;padding-left: 0.7%;">
-        <div style=" background-color: white;z-index: 2;padding-left: 1.3%;opacity: 1;text-align: right;">
-            <div style="float: left;">
-                SE権限
-            </div>
-            <div style="padding-right: 2.5%;">
-                <!-- 必要アイコンはここに追加 -->
-                <div style="float: right;" class="left-space">
-                    <img src="#" style="width: 80px;height: 80px;">
+    <div class="container">
+        <!-- ユーザrole別制御コンポーネント -->
+        <div class="user-role-container">
+            <div class="user-role-content">
+                <div class="user-role-title">
+                    SE権限
                 </div>
-                <div class="left-space">
-                    <br>
-                    ※遷移メニュー
-                    <br>
+                <!-- 遷移メニュー -->
+                <div class="user-role-menu-wrapper">
+                    <div class="left-space">
+                        遷移メニュー
+                    </div>
+                </div>
+                <div class="user-role-menu-wrapper">
+                    <!-- 必要アイコンはここに追加 -->
+                    <div class="left-space user-role-icon-container">
+                        <img src="#" class="user-role-icon">
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <h3>ページ使用のための前説</h3>
-    <div class="one-line">
-        入力に関する説明事項など各種平文
-    </div>
-    <div class="clear-both"></div>
+        <h1>ページタイトル</h1>
 
-    <h3>情報入力</h3>
-    <div class="left-area">
-        団体名
-    </div>
-    <div class="right-area">
-        <input type="text" class="max-input" placeholder="団体名かな"></input><br>
-        <input type="text" class="max-input" placeholder="団体名"></input>
-    </div>
-    <div class="clear-both"></div>
+        <h3>ページ使用のための前説</h3>
+        <div class="one-line">
+            入力に関する説明事項など各種平文
+        </div>
 
-    <div class="left-area">
-        団体名登録情報
-    </div>
-    <div class="right-area">
-        コード：<input type="text" class="code-input" :disabled="true">
-        名：<input type="text" class="name-input left-space" :disabled="true"></input>
-        <button class="left-space" @click="onRaiseCorpNoSearch">検索</button>
-    </div>
-    <div class="clear-both"></div>
+        <h3 class="accent-h3">情報入力</h3>
+        <div class="one-line">
+            <div class="left-area">
+                団体名
+            </div>
+            <div class="right-area">
+                <div class="form-group-vertical">
+                    <textarea class="max-input" placeholder="団体名かな"></textarea>
+                    <input type="text" class="max-input" placeholder="団体名"></input>
+                </div>
+            </div>
+        </div>
 
-    <div class="left-area">
-        団体属性情報A
-    </div>
-    <div class="right-area">
-        <input type="radio" v-model="radioInputData" value="A-1">属性A-1</input>
-        <input type="radio" v-model="radioInputData" value="A-2">属性A-2</input>
-        <input type="radio" v-model="radioInputData" value="A-3">属性A-3</input>
-        <input type="radio" v-model="radioInputData" value="A-4">属性A-4</input>
-    </div>
-    <div class="clear-both"></div>
+        <div class="one-line">
+            <div class="left-area">
+                団体名登録情報
+            </div>
+            <div class="right-area">
+                コード：<input type="text" class="code-input" :disabled="true">
+                名：<input type="text" class="name-input left-space" :disabled="true"></input>
+                <button class="left-space" @click="onRaiseCorpNoSearch">検索</button>
+            </div>
+        </div>
 
-    <div class="left-area">
-        団体属性情報B
-    </div>
-    <div class="right-area">
-        <input type="checkbox">属性A-1</input>
-        <input type="checkbox">属性A-2</input>
-        <input type="checkbox">属性A-3</input>
-        <input type="checkbox">属性A-4</input>
-    </div>
-    <div class="clear-both"></div>
+        <div class="one-line">
+            <div class="left-area">
+                団体属性情報A
+            </div>
+            <div class="right-area">
+                <input type="radio" v-model="radioInputData" value="A-1">属性A-1</input>
+                <input type="radio" v-model="radioInputData" value="A-2">属性A-2</input>
+                <input type="radio" v-model="radioInputData" value="A-3">属性A-3</input>
+                <input type="radio" v-model="radioInputData" value="A-4">属性A-4</input>
+            </div>
+        </div>
 
-    <div class="left-area">
-        有効期間
-    </div>
-    <div class="right-area">
-        <input type="date"></input>から<input type="date"></input>まで
-    </div>
-    <div class="clear-both"></div>
+        <div class="one-line">
+            <div class="left-area">
+                団体属性情報B
+            </div>
+            <div class="right-area">
+                <input type="checkbox">属性A-1</input>
+                <input type="checkbox">属性A-2</input>
+                <input type="checkbox">属性A-3</input>
+                <input type="checkbox">属性A-4</input>
+            </div>
+        </div>
 
-    <div class="left-area">
-        指定日時
-    </div>
-    <div class="right-area">
-        <input type="datetime-local"></input>から<input type="datetime-local"></input>まで
-    </div>
-    <div class="clear-both"></div>
+        <div class="one-line">
+            <div class="left-area">
+                有効期間
+            </div>
+            <div class="right-area">
+                <input type="date"></input>から<input type="date"></input>まで
+            </div>
+        </div>
 
-    <h3>検索結果表示</h3>
-    <div class="one-line" style="overflow: scroll;">
+        <div class="one-line">
+            <div class="left-area">
+                指定日時
+            </div>
+            <div class="right-area">
+                <input type="datetime-local"></input>から<input type="datetime-local"></input>まで
+            </div>
+        </div>
+
+        <h3 class="accent-h3">検索結果表示</h3>
         <!-- ページング -->
-        <select @change="onChangePaging">
-            <option v-for="option in pageOption" :key="option.value" :value="option.value"> {{ option.text
-                }}
-            </option>
-        </select><br>
-        <button>すべての行を選択する</button><br>
-        <table style="width: 3000px;">
-            <tbody>
-                <tr>
-                    <th>行選択</th>
-                    <th>団体名</th>
-                    <th>値2</th>
-                    <th>値3</th>
-                    <th>値4</th>
-                    <th>値5</th>
-                    <th>&nbsp;</th>
-                </tr>
-                <tr>
-                    <td class="table-column-select-row"><input type="radio" v-model="selectedTableLine" value="0"></td>
-                    <td>だんたいめい</td>
-                    <td>(12345A)<br>団体名称</td>
-                    <td><input type="text" class="code-input"><br><input type="text" class="text-input"></input></td>
-                    <td>123,4567</td>
-                    <td>2025-01-03 12:34:56</td>
-                    <td class="table-column-button"><button>この行を削除</button></td>
-                </tr>
-                <tr>
-                    <td class="table-column-select-row"><input type="checkbox"></input> </td>
-                    <td>だんたいめい</td>
-                    <td>(12345A)<br>団体名称</td>
-                    <td><input type="text" class="code-input"><br><input type="text" class="text-input"></input></td>
-                    <td>123,4567</td>
-                    <td>2025-01-03 12:34:56</td>
-                    <td class="table-column-button"><button>この行を削除</button></td>
-                </tr>
-            </tbody>
-        </table>
-
+        <PagingControl :all-count="allCount" :limit="limit" :page-number="pageNumber"
+            @send-paging-number="recievePagingNumber"></PagingControl>
+        <div class="one-line-scroll">
+            <table>
+                <thead>
+                    <tr>
+                        <th>行選択</th>
+                        <th>団体名</th>
+                        <th>値2</th>
+                        <th>値3</th>
+                        <th>値4</th>
+                        <th>値5</th>
+                        <th>&nbsp;</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="table-column-select-row"><input type="radio" v-model="selectedTableLine" value="0">
+                        </td>
+                        <td>だんたいめい</td>
+                        <td>(12345A)<br>団体名称</td>
+                        <td>
+                            <div class="form-group-vertical">
+                                <input type="text" class="code-input"><input type="text" class="text-input"></input>
+                            </div>
+                        </td>
+                        <td>123,4567</td>
+                        <td>2025-01-03 12:34:56</td>
+                        <td class="table-column-button"><button>この行を削除</button></td>
+                    </tr>
+                    <tr>
+                        <td class="table-column-select-row"><input type="checkbox"></input> </td>
+                        <td>だんたいめい</td>
+                        <td>(12345A)<br>団体名称</td>
+                        <td>
+                            <div class="form-group-vertical">
+                                <input type="text" class="code-input"><input type="text" class="text-input"></input>
+                            </div>
+                        </td>
+                        <td>123,4567</td>
+                        <td>2025-01-03 12:34:56</td>
+                        <td class="table-column-button"><button>この行を削除</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
         <!-- ページング -->
-        <select @change="onChangePaging">
-            <option v-for="option in pageOption" :key="option.value" :value="option.value"> {{ option.text
-                }}
-            </option>
-        </select><br>
-    </div>
-    <div class="clear-both"><br></div>
+        <PagingControl :all-count="allCount" :limit="limit" :page-number="pageNumber"
+            @send-paging-number="recievePagingNumber"></PagingControl>
 
-    <h3>コンテンツタブ切り替え(短)</h3>
-
-    <div class="left-area">
-        団体タイプ
-    </div>
-    <div class="right-area">
-        <input type="radio" v-model="viewStatus1" :value=showContentA>団体タイプA</input>
-        <input type="radio" v-model="viewStatus1" :value=showContentB>団体タイプB</input>
-        <input type="radio" v-model="viewStatus1" :value=showContentC>団体タイプC</input>
-    </div>
-    <div class="clear-both"></div>
-    <div class="left-area">
-        &nbsp;
-    </div>
-    <div class="right-area">
-        <div v-if="showContentA === viewStatus1">
-            コンテンツA
+        <h3 class="accent-h3">コンテンツタブ切り替え(短)</h3>
+        <div class="one-line">
+            <div class="left-area">
+                団体タイプ
+            </div>
+            <div class="right-area">
+                <input type="radio" v-model="viewStatus1" :value=showContentA>団体タイプA</input>
+                <input type="radio" v-model="viewStatus1" :value=showContentB>団体タイプB</input>
+                <input type="radio" v-model="viewStatus1" :value=showContentC>団体タイプC</input>
+            </div>
         </div>
-        <div v-if="showContentB === viewStatus1">
-            コンテンツB
+        <div class="one-line">
+            <div class="left-area">
+                &nbsp;
+            </div>
+            <div class="right-area">
+                <div v-if="showContentA === viewStatus1" :class="{ 'active-content-area': showContentA === viewStatus1 }">
+                    コンテンツA
+                </div>
+                <div v-if="showContentB === viewStatus1" :class="{ 'active-content-area': showContentB === viewStatus1 }">
+                    コンテンツB
+                </div>
+                <div v-if="showContentC === viewStatus1" :class="{ 'active-content-area': showContentC === viewStatus1 }">
+                    コンテンツC
+                </div>
+            </div>
         </div>
-        <div v-if="showContentC === viewStatus1">
-            コンテンツC
+
+        <h3 class="accent-h3">コンテンツタブ切り替え(長)</h3>
+
+        <div class="one-line">
+            表示コンテンツ：
+            <input type="radio" v-model="viewStatus2" :value=showContentA>団体タイプA</input>
+            <input type="radio" v-model="viewStatus2" :value=showContentB>団体タイプB</input>
+            <input type="radio" v-model="viewStatus2" :value=showContentC>団体タイプC</input>
+
         </div>
+
+        <div class="one-line">
+            <div v-if="showContentA === viewStatus2">
+                コンテンツA
+            </div>
+            <div v-if="showContentB === viewStatus2">
+                コンテンツB
+            </div>
+            <div v-if="showContentC === viewStatus2">
+                コンテンツC
+            </div>
+        </div>
+
+
+
+        <h3 class="accent-h3">メッセージ</h3>
+        <div class="one-line">
+            <div class="left-area">
+                メッセージ表示
+            </div>
+            <div class="right-area">
+                <button @click="onInfo">情報</button>
+                <button class="left-space" @click="onWarning">警告(YES/NO)</button>
+                <button class="left-space" @click="onError">エラー(OK)</button>
+            </div>
+        </div>
+
+
+        <div class="footer">
+            <button class="footer-button">キャンセル</button>
+            <button class="footer-button left-space">送信</button>
+        </div>
+
     </div>
-    <div class="clear-both"><br></div>
-
-    <h3>コンテンツタブ切り替え(長)</h3>
-
-    <div class="one-line">
-        表示コンテンツ：
-        <input type="radio" v-model="viewStatus2" :value=showContentA>団体タイプA</input>
-        <input type="radio" v-model="viewStatus2" :value=showContentB>団体タイプB</input>
-        <input type="radio" v-model="viewStatus2" :value=showContentC>団体タイプC</input>
-
-        <br>
-        <div v-if="showContentA === viewStatus2">
-            コンテンツA
-        </div>
-        <div v-if="showContentB === viewStatus2">
-            コンテンツB
-        </div>
-        <div v-if="showContentC === viewStatus2">
-            コンテンツC
-        </div>
-    </div>
-    <div class="clear-both"><br></div>
-
-    <hr>
-
-    <div class="footer">
-        <button class="footer-button">キャンセル</button>
-        <button class="footer-button left-space">送信</button>
-    </div>
-
     <!-- 検索コンポーネント -->
     <div v-if="isCorpSearch" class="overBackground"></div>
     <div v-if="isCorpSearch">
@@ -261,20 +331,19 @@ function recieveCorpNoInterface() {
         </div>
     </div>
 
+    <!-- メッセージ表示 -->
+    <!-- ダイアログ用のコンテナ -->
+    <div class="overMessage" v-if="messageType !== MessageConstants.VIEW_NONE">
+        <MessageView :info-level="infoLevel" :message-type="messageType" :title="title" :message="message"
+            @send-submit="recieveSubmit">
+        </MessageView>
+    </div>
+
 </template>
 <style scoped>
 table {
-    border-style: solid;
-    border-width: 1px;
-}
-
-td {
-    border-style: solid;
-    border-width: 1px;
-}
-
-th {
-    border-style: solid;
-    border-width: 1px;
+    border-collapse: collapse;
+    width: 3000px;
+    /* or a specific width */
 }
 </style>
