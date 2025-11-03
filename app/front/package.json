@@ -11,13 +11,17 @@
     "check": "vue-tsc --noEmit && eslint ."
   },
   "dependencies": {
+    "seijishikin-jp-normalize": "file:lib/seijishikin-jp-normalize-0.0.0.tgz",
+    "seijishikin-jp-normalize_common-tool": "file:lib/seijishikin-jp-normalize_common-tool-0.0.0.tgz",
     "vue": "^3.5.22"
   },
   "devDependencies": {
     "@types/node": "^24.6.0",
     "@vitejs/plugin-vue": "^6.0.1",
+    "@vue/test-utils": "^2.4.6",
     "@vue/tsconfig": "^0.8.1",
     "eslint": "^9.38.0",
+    "jsdom": "^27.1.0",
     "typescript": "~5.9.3",
     "vite": "^7.1.7",
     "vitest": "^3.2.4",

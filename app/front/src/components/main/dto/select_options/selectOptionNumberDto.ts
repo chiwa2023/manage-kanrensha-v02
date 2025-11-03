@@ -1,7 +1,20 @@
-export default interface SelectOptionNumberDtoInterface {
+/**
+ * selectbox選択肢項目Interface(値number)
+ */
+interface SelectOptionNumberDtoInterface {
+
+    /** 選択肢値 */
+    value: number;
+
+    /** 選択肢表示テキスト */
+    text: string;
 
 }
-export default class SelectOptionNumberDto implements SelectOptionNumberDtoInterface {
+
+/**
+ * selectbox選択肢項目Dto(値number)
+ */
+class SelectOptionNumberDto implements SelectOptionNumberDtoInterface {
 
     /** 選択肢値 */
     value: number;
@@ -14,3 +27,5 @@ export default class SelectOptionNumberDto implements SelectOptionNumberDtoInter
         this.text = "";
     }
 }
+
+export { SelectOptionNumberDto, type SelectOptionNumberDtoInterface }

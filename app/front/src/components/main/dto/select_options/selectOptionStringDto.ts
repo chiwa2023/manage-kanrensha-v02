@@ -1,7 +1,20 @@
-export default interface SelectOptionStringDtoInterface {
+/**
+ * selectbox選択肢項目Interface(値string)
+ */
+interface SelectOptionStringDtoInterface {
+
+    /** 選択肢値 */
+    value: string;
+
+    /** 選択肢表示テキスト */
+    text: string;
 
 }
-export default class SelectOptionStringDto implements SelectOptionStringDtoInterface {
+
+/**
+ * selectbox選択肢項目Dto(値string)
+ */
+class SelectOptionStringDto implements SelectOptionStringDtoInterface {
 
     /** 選択肢値 */
     value: string;
@@ -15,3 +28,5 @@ export default class SelectOptionStringDto implements SelectOptionStringDtoInter
         this.text = INIT_STRING;
     }
 }
+
+export { SelectOptionStringDto, type SelectOptionStringDtoInterface }
