@@ -1,0 +1,4 @@
+lg_code,machiaza_id,prc_id,city,ward,oaza_cho,chome,koaza,machiaza_dist,prc_num1,prc_num2,prc_num3,rsdt_addr_flg,prc_rec_flg,prc_area_code,efct_date,ablt_date,src_code,remarks,real_prop_num
+011011,0001001,000010000000000,札幌市,中央区,旭ケ丘,一丁目,,,1,,,1,1,,1947-04-17,,1,,
+011011,0001001,000020000100000,札幌市,中央区,旭ケ丘,一丁目,,,2,1,,1,1,,1947-04-17,,1,,
+011011,0001001,000020000200000,札幌市,中央区,旭ケ丘,一丁目,,,2,2,,1,1,,1947-04-17,,1,,

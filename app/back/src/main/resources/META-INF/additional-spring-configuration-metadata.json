@@ -1,0 +1,12 @@
+{"properties": [
+  {
+    "name": "net.seijishikin.jp.normalize.kanrensha.storage_folder",
+    "type": "java.lang.String",
+    "description": "A description for 'net.seijishikin.jp.normalize.kanrensha.storage_folder'"
+  },
+  {
+    "name": "net.seijishikin.jp.normalize.kanrensha.uncompress",
+    "type": "java.lang.String",
+    "description": "A description for 'net.seijishikin.jp.normalize.kanrensha.uncompress'"
+  }
+]}
