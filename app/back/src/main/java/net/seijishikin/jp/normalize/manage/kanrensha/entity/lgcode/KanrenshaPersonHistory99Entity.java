@@ -1,7 +1,6 @@
 package net.seijishikin.jp.normalize.manage.kanrensha.entity.lgcode;
 
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import jakarta.persistence.Entity;
@@ -10,38 +9,24 @@ import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Table;
-import mitei.mitei.political.balancesheet.manage.kanrensha.entity.AllTabeDataHistoryInterface;
+import net.seijishikin.jp.normalize.common_tool.entity.AllTabeDataHistoryInterface;
 
 /**
  * kanrensha_person_history_99接続用Entity
  */
 @Entity
-@Table(name = "kanrensha_person_history_99")
-public class KanrenshaPersonHistory99Entity implements Serializable, AllTabeDataHistoryInterface { // NOPMD DataClass
+@Table(name = KanrenshaPersonTableConstants.KANRENSHA_HISTORY_TABLE_PERSON_99)
+public class KanrenshaPersonHistory99Entity // NOPMD DataClass
+        implements Serializable, AllTabeDataHistoryInterface {
 
     /** Serialize id */
     private static final long serialVersionUID = 1L;
-
-    /** 初期データ(String) */
-    private static final String INIT_String = "";
-
-    /** 初期データ(Integer) */
-    private static final Integer INIT_Integer = 0;
-
-    /** 初期データ(Boolean) */
-    private static final Boolean INIT_Boolean = false;
-
-    /** 初期データ(LocalcDate) */
-    private static final LocalDate INIT_LocalDate = LocalDate.of(1948, 7, 29);
-
-    /** 初期データ(Timestamp) */
-    private static final LocalDateTime INIT_Timestamp = INIT_LocalDate.atTime(0, 0, 0);
 
     /** 関連者個人履歴Id */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "kanrensha_person_history_id")
-    private Integer kanrenshaPersonHistoryId = INIT_Integer;
+    private Integer kanrenshaPersonHistoryId = INIT_INTEGER;
 
     /**
      * 関連者個人履歴Idを取得する
@@ -63,7 +48,7 @@ public class KanrenshaPersonHistory99Entity implements Serializable, AllTabeData
 
     /** 最新該否 */
     @Column(name = "is_latest")
-    private Boolean isLatest = INIT_Boolean;
+    private Boolean isLatest = INIT_BOOLEAN;
 
     /**
      * 最新該否を取得する
@@ -87,7 +72,7 @@ public class KanrenshaPersonHistory99Entity implements Serializable, AllTabeData
 
     /** 個人名 */
     @Column(name = "partner_name")
-    private String partnerName = INIT_String;
+    private String partnerName = INIT_STRING;
 
     /**
      * 個人名を取得する
@@ -109,7 +94,7 @@ public class KanrenshaPersonHistory99Entity implements Serializable, AllTabeData
 
     /** 個人全住所 */
     @Column(name = "all_address")
-    private String allAddress = INIT_String;
+    private String allAddress = INIT_STRING;
 
     /**
      * 個人全住所を取得する
@@ -131,7 +116,7 @@ public class KanrenshaPersonHistory99Entity implements Serializable, AllTabeData
 
     /** 個人職業 */
     @Column(name = "person_shokugyou")
-    private String personShokugyou = INIT_String;
+    private String personShokugyou = INIT_STRING;
 
     /**
      * 個人職業を取得する
@@ -153,7 +138,7 @@ public class KanrenshaPersonHistory99Entity implements Serializable, AllTabeData
 
     /** 個人関連者コード */
     @Column(name = "person_kanrensha_code")
-    private String personKanrenshaCode = INIT_String;
+    private String personKanrenshaCode = INIT_STRING;
 
     /**
      * 個人関連者コードを取得する
@@ -173,9 +158,31 @@ public class KanrenshaPersonHistory99Entity implements Serializable, AllTabeData
         this.personKanrenshaCode = personKanrenshaCode;
     }
 
+    /** 全文検索用カラム */
+    @Column(name = "search_text")
+    private String searchText = INIT_STRING;
+
+    /**
+     * 全文検索用カラムを取得する
+     * 
+     * @return 全文検索用カラム
+     */
+    public String getSearchText() {
+        return searchText;
+    }
+
+    /**
+     * 全文検索用カラムを設定する
+     * 
+     * @param searchText 全文検索用カラム
+     */
+    public void setSearchText(String searchText) {
+        this.searchText = searchText;
+    }
+
     /** 挿入ユーザId */
     @Column(name = "insert_user_id")
-    private Integer insertUserId = INIT_Integer;
+    private Integer insertUserId = INIT_INTEGER;
 
     /**
      * 挿入ユーザIdを取得する
@@ -199,7 +206,7 @@ public class KanrenshaPersonHistory99Entity implements Serializable, AllTabeData
 
     /** 挿入ユーザコード */
     @Column(name = "insert_user_code")
-    private Integer insertUserCode = INIT_Integer;
+    private Integer insertUserCode = INIT_INTEGER;
 
     /**
      * 挿入ユーザコードを取得する
@@ -223,7 +230,7 @@ public class KanrenshaPersonHistory99Entity implements Serializable, AllTabeData
 
     /** 挿入ユーザ名称 */
     @Column(name = "insert_user_name")
-    private String insertUserName = INIT_String;
+    private String insertUserName = INIT_STRING;
 
     /**
      * 挿入ユーザ名称を取得する
@@ -247,7 +254,7 @@ public class KanrenshaPersonHistory99Entity implements Serializable, AllTabeData
 
     /** 挿入日時 */
     @Column(name = "insert_timestamp")
-    private LocalDateTime insertTimestamp = INIT_Timestamp;
+    private LocalDateTime insertTimestamp = INIT_TIMESTAMP;
 
     /**
      * 挿入日時を取得する
@@ -271,7 +278,7 @@ public class KanrenshaPersonHistory99Entity implements Serializable, AllTabeData
 
     /** 無効ユーザId */
     @Column(name = "delete_user_id")
-    private Integer deleteUserId = INIT_Integer;
+    private Integer deleteUserId = INIT_INTEGER;
 
     /**
      * 無効ユーザIdを取得する
@@ -295,7 +302,7 @@ public class KanrenshaPersonHistory99Entity implements Serializable, AllTabeData
 
     /** 無効ユーザコード */
     @Column(name = "delete_user_code")
-    private Integer deleteUserCode = INIT_Integer;
+    private Integer deleteUserCode = INIT_INTEGER;
 
     /**
      * 無効ユーザコードを取得する
@@ -319,7 +326,7 @@ public class KanrenshaPersonHistory99Entity implements Serializable, AllTabeData
 
     /** 無効ユーザ名称 */
     @Column(name = "delete_user_name")
-    private String deleteUserName = INIT_String;
+    private String deleteUserName = INIT_STRING;
 
     /**
      * 無効ユーザ名称を取得する
@@ -343,7 +350,7 @@ public class KanrenshaPersonHistory99Entity implements Serializable, AllTabeData
 
     /** 無効日時 */
     @Column(name = "delete_timestamp")
-    private LocalDateTime deleteTimestamp = INIT_Timestamp;
+    private LocalDateTime deleteTimestamp = INIT_TIMESTAMP;
 
     /**
      * 無効日時を取得する

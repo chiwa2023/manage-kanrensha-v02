@@ -1,7 +1,6 @@
 package net.seijishikin.jp.normalize.manage.kanrensha.entity.lgcode;
 
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import jakarta.persistence.Entity;
@@ -10,38 +9,24 @@ import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Table;
-import mitei.mitei.political.balancesheet.manage.kanrensha.entity.AllTabeDataHistoryInterface;
+import net.seijishikin.jp.normalize.common_tool.entity.AllTabeDataHistoryInterface;
 
 /**
  * kanrensha_kigyou_dt_history_99接続用Entity
  */
 @Entity
-@Table(name = "kanrensha_kigyou_dt_history_99")
-public class KanrenshaKigyouDtHistory99Entity implements Serializable, AllTabeDataHistoryInterface { // NOPMD DataClass
+@Table(name = KanrenshaKigyouDtTableConstants.KANRENSHA_HISTORY_TABLE_KIGYOU_99)
+public class KanrenshaKigyouDtHistory99Entity // NOPMD DataClass
+        implements Serializable, AllTabeDataHistoryInterface {
 
     /** Serialize id */
     private static final long serialVersionUID = 1L;
-
-    /** 初期データ(String) */
-    private static final String INIT_String = "";
-
-    /** 初期データ(Integer) */
-    private static final Integer INIT_Integer = 0;
-
-    /** 初期データ(Boolean) */
-    private static final Boolean INIT_Boolean = false;
-
-    /** 初期データ(LocalcDate) */
-    private static final LocalDate INIT_LocalDate = LocalDate.of(1948, 7, 29);
-
-    /** 初期データ(Timestamp) */
-    private static final LocalDateTime INIT_Timestamp = INIT_LocalDate.atTime(0, 0, 0);
 
     /** 関連者企業・団体履歴Id */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "kanrensha_kigyou_dt_history_id")
-    private Integer kanrenshaKigyouDtHistoryId = INIT_Integer;
+    private Integer kanrenshaKigyouDtHistoryId = INIT_INTEGER;
 
     /**
      * 関連者企業・団体履歴Idを取得する
@@ -63,7 +48,7 @@ public class KanrenshaKigyouDtHistory99Entity implements Serializable, AllTabeDa
 
     /** 最新該否 */
     @Column(name = "is_latest")
-    private Boolean isLatest = INIT_Boolean;
+    private Boolean isLatest = INIT_BOOLEAN;
 
     /**
      * 最新該否を取得する
@@ -87,7 +72,7 @@ public class KanrenshaKigyouDtHistory99Entity implements Serializable, AllTabeDa
 
     /** 企業・団体名 */
     @Column(name = "partner_name")
-    private String partnerName = INIT_String;
+    private String partnerName = INIT_STRING;
 
     /**
      * 企業・団体名を取得する
@@ -109,7 +94,7 @@ public class KanrenshaKigyouDtHistory99Entity implements Serializable, AllTabeDa
 
     /** 企業・団体全住所 */
     @Column(name = "all_address")
-    private String allAddress = INIT_String;
+    private String allAddress = INIT_STRING;
 
     /**
      * 企業・団体全住所を取得する
@@ -131,7 +116,7 @@ public class KanrenshaKigyouDtHistory99Entity implements Serializable, AllTabeDa
 
     /** 企業・団体代表者 */
     @Column(name = "corp_delegate")
-    private String corpDelegate = INIT_String;
+    private String corpDelegate = INIT_STRING;
 
     /**
      * 企業・団体代表者を取得する
@@ -153,7 +138,7 @@ public class KanrenshaKigyouDtHistory99Entity implements Serializable, AllTabeDa
 
     /** 企業・団体関連者コード */
     @Column(name = "corp_kanrensha_code")
-    private String corpKanrenshaCode = INIT_String;
+    private String corpKanrenshaCode = INIT_STRING;
 
     /**
      * 企業・団体関連者コードを取得する
@@ -175,7 +160,7 @@ public class KanrenshaKigyouDtHistory99Entity implements Serializable, AllTabeDa
 
     /** 団体代表者関連者コード */
     @Column(name = "org_delegate_code")
-    private String orgDelegateCode = INIT_String;
+    private String orgDelegateCode = INIT_STRING;
 
     /**
      * 団体代表者関連者コードを取得する
@@ -195,9 +180,31 @@ public class KanrenshaKigyouDtHistory99Entity implements Serializable, AllTabeDa
         this.orgDelegateCode = orgDelegateCode;
     }
 
+    /** 全文検索用カラム */
+    @Column(name = "search_text")
+    private String searchText = INIT_STRING;
+
+    /**
+     * 全文検索用カラムを取得する
+     * 
+     * @return 全文検索用カラム
+     */
+    public String getSearchText() {
+        return searchText;
+    }
+
+    /**
+     * 全文検索用カラムを設定する
+     * 
+     * @param searchText 全文検索用カラム
+     */
+    public void setSearchText(String searchText) {
+        this.searchText = searchText;
+    }
+
     /** 挿入ユーザId */
     @Column(name = "insert_user_id")
-    private Integer insertUserId = INIT_Integer;
+    private Integer insertUserId = INIT_INTEGER;
 
     /**
      * 挿入ユーザIdを取得する
@@ -221,7 +228,7 @@ public class KanrenshaKigyouDtHistory99Entity implements Serializable, AllTabeDa
 
     /** 挿入ユーザコード */
     @Column(name = "insert_user_code")
-    private Integer insertUserCode = INIT_Integer;
+    private Integer insertUserCode = INIT_INTEGER;
 
     /**
      * 挿入ユーザコードを取得する
@@ -245,7 +252,7 @@ public class KanrenshaKigyouDtHistory99Entity implements Serializable, AllTabeDa
 
     /** 挿入ユーザ名称 */
     @Column(name = "insert_user_name")
-    private String insertUserName = INIT_String;
+    private String insertUserName = INIT_STRING;
 
     /**
      * 挿入ユーザ名称を取得する
@@ -269,7 +276,7 @@ public class KanrenshaKigyouDtHistory99Entity implements Serializable, AllTabeDa
 
     /** 挿入日時 */
     @Column(name = "insert_timestamp")
-    private LocalDateTime insertTimestamp = INIT_Timestamp;
+    private LocalDateTime insertTimestamp = INIT_TIMESTAMP;
 
     /**
      * 挿入日時を取得する
@@ -293,7 +300,7 @@ public class KanrenshaKigyouDtHistory99Entity implements Serializable, AllTabeDa
 
     /** 無効ユーザId */
     @Column(name = "delete_user_id")
-    private Integer deleteUserId = INIT_Integer;
+    private Integer deleteUserId = INIT_INTEGER;
 
     /**
      * 無効ユーザIdを取得する
@@ -317,7 +324,7 @@ public class KanrenshaKigyouDtHistory99Entity implements Serializable, AllTabeDa
 
     /** 無効ユーザコード */
     @Column(name = "delete_user_code")
-    private Integer deleteUserCode = INIT_Integer;
+    private Integer deleteUserCode = INIT_INTEGER;
 
     /**
      * 無効ユーザコードを取得する
@@ -341,7 +348,7 @@ public class KanrenshaKigyouDtHistory99Entity implements Serializable, AllTabeDa
 
     /** 無効ユーザ名称 */
     @Column(name = "delete_user_name")
-    private String deleteUserName = INIT_String;
+    private String deleteUserName = INIT_STRING;
 
     /**
      * 無効ユーザ名称を取得する
@@ -365,7 +372,7 @@ public class KanrenshaKigyouDtHistory99Entity implements Serializable, AllTabeDa
 
     /** 無効日時 */
     @Column(name = "delete_timestamp")
-    private LocalDateTime deleteTimestamp = INIT_Timestamp;
+    private LocalDateTime deleteTimestamp = INIT_TIMESTAMP;
 
     /**
      * 無効日時を取得する
