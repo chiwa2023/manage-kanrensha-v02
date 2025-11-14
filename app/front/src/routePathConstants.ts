@@ -1,6 +1,6 @@
 export default class RoutePathConstants {
 
-        /** ドメイン */
+    /** ドメイン */
     static readonly DOMAIN: string = "http://localhost:6180";
 
     /** ベース */
@@ -9,25 +9,31 @@ export default class RoutePathConstants {
     /** ログインページ */
     static readonly PAGE_LOGIN: string = this.BASE_PATH + "/";
 
-
-
-
-    /** 利用者検索 */
-    static readonly PAGE_RIYOUSHA_SEARCH: string = this.BASE_PATH + "/riyousha-search";
-
-
+    /** ログインページ */
+    static readonly PAGE_LOGOUT: string = this.BASE_PATH + "/logout";
 
     // /** 開発台紙 */
     // static readonly PAGE_COMPONENT: string = this.BASE_PATH + "/component";
 
-    // /** SE権限メニュー */
-    // static readonly PAGE_MENU_ADMIN: string = this.BASE_PATH + "/menu-admin";
-    // /** 管理者メニュー */
-    // static readonly PAGE_MENU_MANAGER: string = this.BASE_PATH + "/menu-manager";
-    // /** APIユーザメニュー */
-    // static readonly PAGE_MENU_COMRADE: string = this.BASE_PATH + "/menu-comrade";
-    // /** 関連者メニュー */
-    // static readonly PAGE_MENU_PARTNER: string = this.BASE_PATH + "/menu-partner";
+    /** SE権限メニュー */
+    static readonly PAGE_MENU_ADMIN: string = this.BASE_PATH + "/menu-admin";
+    /** 管理者メニュー */
+    static readonly PAGE_MENU_MANAGER: string = this.BASE_PATH + "/menu-manager";
+    /** APIユーザメニュー */
+    static readonly PAGE_MENU_PARTNER_API: string = this.BASE_PATH + "/menu-partner-api";
+    /** 関連者メニュー */
+    static readonly PAGE_MENU_KANRENSHA: string = this.BASE_PATH + "/menu-kanrensha";
+
+
+
+
+
+
+
+        /** 利用者検索 */
+    static readonly PAGE_RIYOUSHA_SEARCH: string = this.BASE_PATH + "/riyousha-search";
+
+
     // /** 全ユーザ共通メニュー */
     // static readonly PAGE_MENU_ALL_USER: string = this.BASE_PATH + "/menu-user-all";
 

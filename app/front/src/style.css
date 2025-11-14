@@ -251,6 +251,17 @@ div.footer {
   background-color: var(--secondary-color);
 }
 
+/* Footer */
+div.footer_sub {
+  display: flex;
+  justify-content: flex-end;
+  padding: 1.5rem 2rem;
+  border-top: 1px solid var(--border-color);
+  margin-top: 2rem;
+  /*background-color: var(--secondary-color);*/
+}
+
+
 button.footer-button {
   min-width: 120px;
   background-color: var(--primary-color);
@@ -302,6 +313,25 @@ button.footer-button:hover {
   z-index: 20;
 }
 
+.personMenuLayer {
+  position: fixed;
+  top: 12%;
+  left: 76%;
+  /*
+  transform: translate(-50%, -50%);
+  */
+
+  width: 20%;
+  padding: 2rem;
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  overflow: auto;
+  z-index: 10;
+}
+
+
+
 .overMessage {
   position: fixed;
   top: 50%;
@@ -341,10 +371,42 @@ td.table-column-select-row {
 }
 
 /* ユーザrole別制御コンポーネント */
-.user-role-container {
+.user-role-container_admin {
   background-color: var(--role-admin-color);
   padding-left: 0.7%;
+  z-index: 2;
 }
+
+
+/* ユーザrole別制御コンポーネント */
+.user-role-container-admin {
+  background-color: var(--role-admin-color);
+  padding-left: 0.7%;
+  z-index: 2;
+}
+
+/* ユーザrole別制御コンポーネント */
+.user-role-container-manager {
+  background-color: var(--role-manager-color);
+  padding-left: 0.7%;
+  z-index: 2;
+}
+
+/* ユーザrole別制御コンポーネント */
+.user-role-container-partner {
+  background-color: var(--role-apiuser-color);
+  padding-left: 0.7%;
+  z-index: 2;
+}
+
+/* ユーザrole別制御コンポーネント */
+.user-role-container-kanrensha {
+  background-color: var(--role-kanrensha-color);
+  padding-left: 0.7%;
+  z-index: 2;
+}
+
+
 
 .user-role-content {
   background-color: white;

@@ -21,19 +21,24 @@ const messageType: Ref<number> = ref(MessageConstants.VIEW_NONE);
 const title: Ref<string> = ref(BLANK);
 const message: Ref<string> = ref(BLANK);
 
+
 // props,emmits
 const props = defineProps<{ userDto: LeastUserDtoInterface }>();
 
 const listMenuRoleOptions: Ref<SelectOptionStringDtoInterface[]> = ref(createListRoleOptions(props.userDto.listRoles));
 
 // ログインと権限チェック
-if (INIT_NUMBER === props.userDto.userPersonId || !props.userDto.listRoles.includes(UserRoleConstants.ROLE_ADMIN)) {
-    //alert("必要な権限が存在しません");
+if (INIT_NUMBER === props.userDto.userPersonId
+    || !(props.userDto.listRoles.includes(UserRoleConstants.ROLE_KANRENSHA_KIGYOU_DT)
+        || props.userDto.listRoles.includes(UserRoleConstants.ROLE_KANRENSHA_PERSON)
+        || props.userDto.listRoles.includes(UserRoleConstants.ROLE_KANRENSHA_SEIJIDANTAI))) {
+
     infoLevel.value = MessageConstants.LEVEL_ERROR;
     messageType.value = MessageConstants.VIEW_OK;
-    title.value = "ログイン状態またはSE権限が確認できませんでした";
+    title.value = "ログイン状態または関連者権限が確認できませんでした";
     message.value = "ログアウト処理をします。再度ログイン処理をするかシステム担当者にお問い合わせください";
 }
+
 
 const viewMenuRole: Ref<string> = ref(BLANK);
 const isVewAllMenu: Ref<boolean> = ref(false);
@@ -81,10 +86,10 @@ function recieveSubmit(button: string) {
 </script>
 <template>
     <!-- ユーザrole別制御コンポーネント -->
-    <div class="user-role-container-admin">
+    <div class="user-role-container-kanrensha">
         <div class="user-role-content">
             <div class="user-role-title">
-                SE権限
+                関連者
             </div>
             <!-- 遷移メニュー -->
             <div class="user-role-menu-wrapper">

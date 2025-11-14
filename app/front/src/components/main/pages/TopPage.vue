@@ -2,6 +2,9 @@
 import { MessageConstants, MessageView } from 'seijishikin-jp-normalize_common-tool';
 import RoutePathConstants from '../../../routePathConstants';
 import { ref, type Ref } from 'vue';
+import { LeastUserDto, type LeastUserDtoInterface } from '../dto/user/leastUserDto';
+import UserRoleConstants from '../dto/user/userRoleConstants';
+import LoginConstants from '../dto/user/loginConstants';
 // import RoutePathConstants from './routePathConstants';
 // import type UserPersonLeastInterface from './dto/user/userPersonLeastDto';
 // import UserPersonLeastDto from './dto/user/userPersonLeastDto';
@@ -19,7 +22,7 @@ import { ref, type Ref } from 'vue';
 
 // よく使う定数
 const BLANK: string = "";
-// const INIT_NUMBER: number = 0;
+const INIT_NUMBER: number = 0;
 const SERVER_STATUS_OK: number = 200;
 // const SERVER_STATUS_ERROR: number = 400;
 
@@ -29,7 +32,39 @@ const messageType: Ref<number> = ref(MessageConstants.VIEW_NONE);
 const title: Ref<string> = ref(BLANK);
 const message: Ref<string> = ref(BLANK);
 
-// back側疎通確認
+/**
+ *  仮ログイン処理
+ *  */
+const userDto: Ref<LeastUserDtoInterface> = ref(new LeastUserDto());
+
+function tempLogin() {
+    userDto.value.userPersonId = 213;
+    userDto.value.userPersonCode = 190;
+    userDto.value.userPersonName = "管理者　太郎";
+
+    alert("ログイン");
+    sessionStorage.setItem(LoginConstants.SESSION_KEY_USER, JSON.stringify(userDto.value));
+    // sessionStorage.setItem("jwtToken", JSON.stringify(resultDto.jwtTokenDto));
+}
+
+function checkLogin() {
+    const isPage: boolean = userDto.value.userPersonId !== INIT_NUMBER;
+    const isSession: boolean = sessionStorage.getItem(LoginConstants.SESSION_KEY_USER) !== null;
+    alert("ログイン状態チェック:dto--" + isPage + ":session--" + isSession);
+}
+
+function addPrivridge(role: string) {
+    if (!userDto.value.listRoles.includes(role)) {
+        userDto.value.listRoles.push(role);
+    }
+    alert(userDto.value.listRoles.toString());
+    sessionStorage.setItem(LoginConstants.SESSION_KEY_USER, JSON.stringify(userDto.value));
+}
+
+
+/**
+ * back側疎通確認
+ *  */
 const testResult: Ref<string> = ref(BLANK);
 function onBackendTest() {
     const url = RoutePathConstants.DOMAIN + "/trial-access";
@@ -40,7 +75,7 @@ function onBackendTest() {
     };
     fetch(url, { method, headers })
         .then(async (response) => {
-            const status:string = await response.text();
+            const status: string = await response.text();
             if (SERVER_STATUS_OK === response.status && status !== null) {
                 testResult.value = status;
 
@@ -82,23 +117,30 @@ function recieveSubmit(button: string) {
 
         <h1>政治資金関連者標準化サイト</h1>
 
-        <h3>ログイン処理を省略・・・</h3>
-        <!-- 
-    <RouterLink :to=RoutePathConstants.PAGE_MENU_MANAGER>管理者メニュー</RouterLink><br>
-    <RouterLink :to=RoutePathConstants.PAGE_MENU_COMRADE>APIユーザメニュー</RouterLink><br>
-    <RouterLink :to=RoutePathConstants.PAGE_MENU_PARTNER>関連者メニュー</RouterLink><br>
-    <hr>
-    <RouterLink :to=RoutePathConstants.PAGE_MENU_ADMIN>SEメニュー</RouterLink><br>
-    <hr>
-    <RouterLink :to=RoutePathConstants.PAGE_DOWNLOAD_HISTORY>関連者履歴データダウンロード(公開文書記載水準)</RouterLink><br>
-    <RouterLink :to=RoutePathConstants.PAGE_DOWNLOAD_MASTER_MIN>関連者マスタ最小ダウンロード(公開文書記載水準)</RouterLink><br>
-    <RouterLink :to=RoutePathConstants.PAGE_DOWNLOAD_SABUN_HISTORY>関連者履歴データダウンロード差分(公開文書記載水準)</RouterLink><br>
-    <RouterLink :to=RoutePathConstants.PAGE_DOWNLOAD_SABUN_MASTER_MIN>関連者マスタ最小ダウンロード差分(公開文書記載水準)</RouterLink><br>
-    <hr>
-    <RouterLink :to=RoutePathConstants.PAGE_COMPONENT>コンポーネント作成台紙</RouterLink><br>
-    -->
+        <h3>権限付与</h3>
+        <button @click="tempLogin">ログイン</button><button class="left-space" @click="checkLogin">ログイン状態確認</button>
 
-        <RouterLink :to=RoutePathConstants.PAGE_RIYOUSHA_SEARCH>利用者検索</RouterLink><br>
+
+        <h3>権限付与</h3>
+        <button @click="addPrivridge(UserRoleConstants.ROLE_ADMIN)">SE権限</button><button class="left-space"
+            @click="addPrivridge(UserRoleConstants.ROLE_MANAGER)">運営者</button><button class="left-space"
+            @click="addPrivridge(UserRoleConstants.ROLE_PARTNER_API)">APIユーザ</button><button class="left-space"
+            @click="addPrivridge(UserRoleConstants.ROLE_KANRENSHA_PERSON)">関連者</button>
+
+        <h3>ログイン処理を省略・・・</h3>
+        <RouterLink :to=RoutePathConstants.PAGE_MENU_MANAGER>管理者メニュー</RouterLink><br>
+        <RouterLink :to=RoutePathConstants.PAGE_MENU_PARTNER_API>APIユーザメニュー</RouterLink><br>
+        <RouterLink :to=RoutePathConstants.PAGE_MENU_KANRENSHA>関連者メニュー</RouterLink><br>
+        <hr>
+        <RouterLink :to=RoutePathConstants.PAGE_MENU_ADMIN>SEメニュー</RouterLink><br>
+        <!-- 
+        <hr>
+        <RouterLink :to=RoutePathConstants.PAGE_DOWNLOAD_HISTORY>関連者履歴データダウンロード(公開文書記載水準)</RouterLink><br>
+        <RouterLink :to=RoutePathConstants.PAGE_DOWNLOAD_MASTER_MIN>関連者マスタ最小ダウンロード(公開文書記載水準)</RouterLink><br>
+        <RouterLink :to=RoutePathConstants.PAGE_DOWNLOAD_SABUN_HISTORY>関連者履歴データダウンロード差分(公開文書記載水準)</RouterLink><br>
+        <RouterLink :to=RoutePathConstants.PAGE_DOWNLOAD_SABUN_MASTER_MIN>関連者マスタ最小ダウンロード差分(公開文書記載水準)</RouterLink><br>
+        <hr>
+        -->
 
         <hr>
         <h3>開発用</h3>
@@ -108,7 +150,9 @@ function recieveSubmit(button: string) {
 
         <RouterLink :to=RoutePathConstants.PAGE_DEVELOP_TEMPLATE>テンプレートと共通ツールカタログ</RouterLink><br>
 
-        <a href="#">開発用台紙</a><br>
+        <!-- 
+        <RouterLink :to=RoutePathConstants.PAGE_COMPONENT>コンポーネント作成台紙</RouterLink><br>
+        -->
 
         <!-- メッセージ表示 -->
         <div class="overMessage" v-if="messageType !== MessageConstants.VIEW_NONE">

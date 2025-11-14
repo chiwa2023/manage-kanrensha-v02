@@ -116,7 +116,7 @@ const inputShokugyouDto: Ref<InputShokugyouDtoInterface> = ref(new InputShokugyo
 <template>
     <div class="container">
         <!-- ユーザrole別制御コンポーネント -->
-        <div class="user-role-container">
+        <div class="user-role-container-admin">
             <div class="user-role-content">
                 <div class="user-role-title">
                     SE権限
