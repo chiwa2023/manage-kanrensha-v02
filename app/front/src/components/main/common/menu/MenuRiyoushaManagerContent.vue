@@ -16,8 +16,13 @@ import RoutePathConstants from '../../../../routePathConstants';
 </script>
 <template>
 
+    <h4>利用者組織</h4>
+    <RouterLink :to=RoutePathConstants.PAGE_REGIST_RIYOUSHA_ORG>利用者組織編集</RouterLink><br>
+    <a href="#">組織・個人紐づけ</a>
 
-    <a href="#">サンプル運営者</a><br>
+    <h4>本人情報編集</h4>
+
+    <RouterLink :to=RoutePathConstants.PAGE_EDIT_RIYOUSHA_MANAGER>名称・住所・連絡先編集</RouterLink><br>
 
     <!--
     <h3>関連者メニュー</h3>
@@ -59,13 +64,11 @@ import RoutePathConstants from '../../../../routePathConstants';
     <RouterLink :to=RoutePathConstants.PAGE_DOWNLOAD_SABUN_MASTER_STD>差分関連者マスタ標準データダウンロード</RouterLink><br>
 
     <hr>
-    <RouterLink :to=RoutePathConstants.PAGE_EDIT_MANAGER>所属組織編集(登録)</RouterLink><br>
-    <RouterLink :to=RoutePathConstants.PAGE_ACCEPT_MANAGER_PERSON>個人と組織紐づけ承認</RouterLink><br>
 
-    <hr>
-    <RouterLink :to=RoutePathConstants.PAGE_LOGIN>ログインページ</RouterLink><br>
  -->
-
+    <br>
+    <hr> 
+    <br>  
     <RouterLink :to="RoutePathConstants.PAGE_LOGOUT">ログアウト</RouterLink><br>
 
 </template>

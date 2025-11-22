@@ -17,7 +17,7 @@ export default class RoutePathConstants {
 
     /** SE権限メニュー */
     static readonly PAGE_MENU_ADMIN: string = this.BASE_PATH + "/menu-admin";
-    /** 管理者メニュー */
+    /** 運営者メニュー */
     static readonly PAGE_MENU_MANAGER: string = this.BASE_PATH + "/menu-manager";
     /** APIユーザメニュー */
     static readonly PAGE_MENU_PARTNER_API: string = this.BASE_PATH + "/menu-partner-api";
@@ -26,11 +26,17 @@ export default class RoutePathConstants {
 
 
 
+    /** 利用者運営者編集メニュー */
+    static readonly PAGE_EDIT_RIYOUSHA_MANAGER: string = this.BASE_PATH + "/edit-riyousha-manager";
+    /** 利用者APIユーザ編集メニュー */
+    static readonly PAGE_EDIT_RIYOUSHA_PARTNER: string = this.BASE_PATH + "/edit-riyousha-partner";
+
+    /** 利用者組織更新メニュー */
+    static readonly PAGE_REGIST_RIYOUSHA_ORG: string = this.BASE_PATH + "/regist-riyousha-org";
 
 
 
-
-        /** 利用者検索 */
+    /** 利用者検索 */
     static readonly PAGE_RIYOUSHA_SEARCH: string = this.BASE_PATH + "/riyousha-search";
 
 
@@ -100,7 +106,7 @@ export default class RoutePathConstants {
     // /** 関連者個人－企業／団体紐づけ登録 */
     // static readonly PAGE_REGI_COMBINE_POLI_ORG: string = this.BASE_PATH + "/combine-poli-org";
 
-    // /** 管理者による関連者管理 */
+    // /** 運営者による関連者管理 */
     // static readonly PAGE_REGI_PARTNER_MANAGE: string = this.BASE_PATH + "/partner-manage";
 
     // /** 本人による関連者編集 */
@@ -109,7 +115,7 @@ export default class RoutePathConstants {
     // /** 作業内容承認 */
     // static readonly PAGE_WORKS_APPROVAL: string = this.BASE_PATH + "/works-approval";
 
-    // /** 管理者による利用者検索編集 */
+    // /** 運営者による利用者検索編集 */
     // static readonly PAGE_SEARCH_RIYOUSHA: string = this.BASE_PATH + "/search-riyousha";
 
     // /** 新規追加メニュー */
@@ -138,7 +144,7 @@ export default class RoutePathConstants {
     // static readonly PAGE_USER_EDIT: string = this.BASE_PATH + "/user/edit";
     // /** ユーザ権限変更 */
     // static readonly PAGE_CHANGE_ROLE: string = this.BASE_PATH + "/user/change-role";
-    // /** 運営者を管理者に格上げ */
+    // /** 運営者をSE権限に格上げ */
     // static readonly PAGE_PROMOTE_ROLE: string = this.BASE_PATH + "/user/promote-role";
     // /** ユーザパスワード更新 */
     // static readonly PAGE_REFLESH_PASSWORD: string = this.BASE_PATH + "/user/reflesh-password";

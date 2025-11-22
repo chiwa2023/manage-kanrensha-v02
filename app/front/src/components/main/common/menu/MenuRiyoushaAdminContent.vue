@@ -19,7 +19,7 @@ import RoutePathConstants from '../../../../routePathConstants';
     <!--
     <RouterLink :to=RoutePathConstants.PAGE_USER_DELETE>ユーザ削除</RouterLink><br>
     <RouterLink :to=RoutePathConstants.PAGE_USER_CHANGE>ユーザ編集</RouterLink><br>
-    <RouterLink :to=RoutePathConstants.PAGE_PROMOTE_ROLE>管理者からSE権限へ引き上げ</RouterLink><br>
+    <RouterLink :to=RoutePathConstants.PAGE_PROMOTE_ROLE>運営者からSE権限へ引き上げ</RouterLink><br>
     <RouterLink :to=RoutePathConstants.PAGE_REGI_PARTNER_MANAGE>関連者管理</RouterLink><br>
     <RouterLink :to=RoutePathConstants.PAGE_WORKS_APPROVAL>作業内容承認</RouterLink><br>
 
@@ -32,7 +32,6 @@ import RoutePathConstants from '../../../../routePathConstants';
     <RouterLink :to=RoutePathConstants.PAGE_DUMP_SABUN_HISTORY>関連者履歴csv差分ダンプ</RouterLink><br>
     <RouterLink :to=RoutePathConstants.PAGE_DUMP_SABUN_MASTER_STD>関連者マスタ標準csv差分ダンプ</RouterLink><br>
 
-    <hr>
 
     <hr>
  -->

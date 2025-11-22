@@ -117,7 +117,7 @@ function recieveSubmit(button: string) {
 
     <!-- 個人メニュー表示 -->
     <div class="personMenuLayer" v-if="isVewPersonMenu">
-        <PersonMenu :view-role="UserRoleConstants.ROLE_ADMIN" @send-canceel-menu="recieveCanceelPersonMenu">
+        <PersonMenu :view-role="UserRoleConstants.ROLE_MANAGER" @send-canceel-menu="recieveCanceelPersonMenu">
         </PersonMenu>
     </div>
 

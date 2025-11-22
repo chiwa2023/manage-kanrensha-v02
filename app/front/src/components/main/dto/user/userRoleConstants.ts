@@ -3,7 +3,7 @@ export default class UserRoleConstants {
     /** SE権限 */
     static readonly ROLE_ADMIN: string = "ROLE_admin";
 
-    /** 管理者権限 */
+    /** 運営者権限 */
     static readonly ROLE_MANAGER: string = "ROLE_manager";
 
     /** APIユーザ権限 */

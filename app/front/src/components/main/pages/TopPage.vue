@@ -128,7 +128,7 @@ function recieveSubmit(button: string) {
             @click="addPrivridge(UserRoleConstants.ROLE_KANRENSHA_PERSON)">関連者</button>
 
         <h3>ログイン処理を省略・・・</h3>
-        <RouterLink :to=RoutePathConstants.PAGE_MENU_MANAGER>管理者メニュー</RouterLink><br>
+        <RouterLink :to=RoutePathConstants.PAGE_MENU_MANAGER>運営者メニュー</RouterLink><br>
         <RouterLink :to=RoutePathConstants.PAGE_MENU_PARTNER_API>APIユーザメニュー</RouterLink><br>
         <RouterLink :to=RoutePathConstants.PAGE_MENU_KANRENSHA>関連者メニュー</RouterLink><br>
         <hr>

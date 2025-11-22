@@ -15,15 +15,21 @@ import RoutePathConstants from '../../../../routePathConstants';
 
 </script>
 <template>
-    <a href="#">サンプルAPI</a><br>
 
-    <!--
-    <RouterLink :to=RoutePathConstants.PAGE_REGI_PARTNER_EDIT>関連者編集</RouterLink><br>
+    <h4>利用者組織</h4>
+    <RouterLink :to=RoutePathConstants.PAGE_REGIST_RIYOUSHA_ORG>利用者組織編集</RouterLink><br>
+    <a href="#">組織・個人紐づけ</a>
+    <a href="#">Bearer更新</a><br>
 
-    <RouterLink :to=RoutePathConstants.PAGE_LOGIN>ログインページ</RouterLink><br>
- -->
- 
-     <RouterLink :to="RoutePathConstants.PAGE_LOGOUT">ログアウト</RouterLink><br>
+    <h4>本人情報編集</h4>
+
+    <RouterLink :to=RoutePathConstants.PAGE_EDIT_RIYOUSHA_PARTNER>名称・住所・連絡先編集</RouterLink><br>
+
+    <br>
+    <hr>
+    <br>
+
+    <RouterLink :to="RoutePathConstants.PAGE_LOGOUT">ログアウト</RouterLink><br>
 
 </template>
 <style scoped></style>
