@@ -22,24 +22,25 @@ public class SampleTableEntity implements Serializable {
     /** サンプルテーブルId */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "task_info_id")
-    private Integer taskInfoId = 0;
+    @Column(name = "sample_table_id")
+    private Integer sampleTableId = 0;
 
     /**
-     * サンプルテーブルId
-     *
+     * サンプルテーブルIdを取得する
+     * 
      * @return サンプルテーブルId
      */
-    public Integer getTaskInfoId() {
-        return taskInfoId;
+    public Integer getSampleTableId() {
+        return sampleTableId;
     }
 
     /**
-     * サンプルテーブルId
-     *
-     * @param taskInfoId サンプルテーブルId
+     * サンプルテーブルIdを設定する
+     * 
+     * @param sampleTableId サンプルテーブルId
      */
-    public void setTaskInfoId(final Integer taskInfoId) {
-        this.taskInfoId = taskInfoId;
+    public void setSampleTableId(final Integer sampleTableId) {
+        this.sampleTableId = sampleTableId;
     }
+
 }

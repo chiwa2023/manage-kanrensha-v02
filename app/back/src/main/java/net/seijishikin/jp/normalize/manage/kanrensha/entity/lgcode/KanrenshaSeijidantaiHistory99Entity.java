@@ -22,38 +22,60 @@ public class KanrenshaSeijidantaiHistory99Entity // NOPMD DataClass
     /** Serialize id */
     private static final long serialVersionUID = 1L;
 
-    /** 関連者政治団体履歴Id */
+    /** テーブルId */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "kanrensha_seijidantai_history_id")
     private Integer kanrenshaSeijidantaiHistoryId = INIT_INTEGER;
 
     /**
-     * 関連者政治団体履歴Idを取得する
+     * テーブルIdを取得する
      *
-     * @return 関連者政治団体履歴Id
+     * @return テーブルId
      */
     public Integer getKanrenshaSeijidantaiHistoryId() {
         return kanrenshaSeijidantaiHistoryId;
     }
 
     /**
-     * 関連者政治団体履歴Idを設定する
+     * テーブルIdを設定する
      *
-     * @param kanrenshaSeijidantaiHistoryId 関連者政治団体履歴Id
+     * @param kanrenshaSeijidantaiHistoryId テーブルId
      */
     public void setKanrenshaSeijidantaiHistoryId(final Integer kanrenshaSeijidantaiHistoryId) {
         this.kanrenshaSeijidantaiHistoryId = kanrenshaSeijidantaiHistoryId;
     }
 
-    /** 最新該否 */
+    /** 政治団体関連者コード */
+    @Column(name = "seijidantai_kanrensha_code")
+    private String seijidantaiKanrenshaCode = INIT_STRING;
+
+    /**
+     * 政治団体関連者コードを取得する
+     *
+     * @return 政治団体関連者コード
+     */
+    public String getSeijidantaiKanrenshaCode() {
+        return seijidantaiKanrenshaCode;
+    }
+
+    /**
+     * 政治団体関連者コードを設定する
+     *
+     * @param seijidantaiKanrenshaCode 政治団体関連者コード
+     */
+    public void setSeijidantaiKanrenshaCode(final String seijidantaiKanrenshaCode) {
+        this.seijidantaiKanrenshaCode = seijidantaiKanrenshaCode;
+    }
+
+    /** 最新フラグ */
     @Column(name = "is_latest")
     private Boolean isLatest = INIT_BOOLEAN;
 
     /**
-     * 最新該否を取得する
+     * 最新フラグを取得する
      *
-     * @return 最新該否
+     * @return 最新フラグ
      */
     @Override
     public Boolean getIsLatest() {
@@ -61,155 +83,133 @@ public class KanrenshaSeijidantaiHistory99Entity // NOPMD DataClass
     }
 
     /**
-     * 最新該否を設定する
+     * 最新フラグを設定する
      *
-     * @param isLatest 最新該否
+     * @param isLatest 最新フラグ
      */
     @Override
     public void setIsLatest(final Boolean isLatest) {
         this.isLatest = isLatest;
     }
 
-    /** 政治団体名 */
+    /** 関連者政治団体名 */
     @Column(name = "partner_name")
     private String partnerName = INIT_STRING;
 
     /**
-     * 政治団体名を取得する
+     * 関連者政治団体名を取得する
      *
-     * @return 政治団体名
+     * @return 関連者政治団体名
      */
     public String getPartnerName() {
         return partnerName;
     }
 
     /**
-     * 政治団体名を設定する
+     * 関連者政治団体名を設定する
      *
-     * @param partnerName 政治団体名
+     * @param partnerName 関連者政治団体名
      */
     public void setPartnerName(final String partnerName) {
         this.partnerName = partnerName;
     }
 
-    /** 政治団体全住所 */
+    /** 関連者政治団体全住所 */
     @Column(name = "all_address")
     private String allAddress = INIT_STRING;
 
     /**
-     * 政治団体全住所を取得する
+     * 関連者政治団体全住所を取得する
      *
-     * @return 政治団体全住所
+     * @return 関連者政治団体全住所
      */
     public String getAllAddress() {
         return allAddress;
     }
 
     /**
-     * 政治団体全住所を設定する
+     * 関連者政治団体全住所を設定する
      *
-     * @param allAddress 政治団体全住所
+     * @param allAddress 関連者政治団体全住所
      */
     public void setAllAddress(final String allAddress) {
         this.allAddress = allAddress;
     }
 
-    /** 政治団体代表者 */
-    @Column(name = "poli_org_delegate")
-    private String poliOrgDelegate = INIT_STRING;
+    /** 団体代表者氏名 */
+    @Column(name = "org_delegate_name")
+    private String orgDelegateName = INIT_STRING;
 
     /**
-     * 政治団体代表者を取得する
+     * 団体代表者氏名を取得する
      *
-     * @return 政治団体代表者
+     * @return 団体代表者氏名
      */
-    public String getPoliOrgDelegate() {
-        return poliOrgDelegate;
+    public String getOrgDelegateName() {
+        return orgDelegateName;
     }
 
     /**
-     * 政治団体代表者を設定する
+     * 団体代表者氏名を設定する
      *
-     * @param poliOrgDelegate 政治団体代表者
+     * @param orgDelegateName 団体代表者氏名
      */
-    public void setPoliOrgDelegate(final String poliOrgDelegate) {
-        this.poliOrgDelegate = poliOrgDelegate;
+    public void setOrgDelegateName(final String orgDelegateName) {
+        this.orgDelegateName = orgDelegateName;
     }
 
-    /** 政治団体関連者コード */
-    @Column(name = "poli_org_kanrensha_code")
-    private String poliOrgKanrenshaCode = INIT_STRING;
-
-    /**
-     * 政治団体関連者コードを取得する
-     *
-     * @return 政治団体関連者コード
-     */
-    public String getPoliOrgKanrenshaCode() {
-        return poliOrgKanrenshaCode;
-    }
-
-    /**
-     * 政治団体関連者コードを設定する
-     *
-     * @param poliOrgKanrenshaCode 政治団体関連者コード
-     */
-    public void setPoliOrgKanrenshaCode(final String poliOrgKanrenshaCode) {
-        this.poliOrgKanrenshaCode = poliOrgKanrenshaCode;
-    }
-
-    /** 団体代表者関連者コード */
+    /** 団体代表者関連者個人コード */
     @Column(name = "org_delegate_code")
     private String orgDelegateCode = INIT_STRING;
 
     /**
-     * 団体代表者関連者コードを取得する
+     * 団体代表者関連者個人コードを取得する
      *
-     * @return 団体代表者関連者コード
+     * @return 団体代表者関連者個人コード
      */
     public String getOrgDelegateCode() {
         return orgDelegateCode;
     }
 
     /**
-     * 団体代表者関連者コードを設定する
+     * 団体代表者関連者個人コードを設定する
      *
-     * @param orgDelegateCode 団体代表者関連者コード
+     * @param orgDelegateCode 団体代表者関連者個人コード
      */
     public void setOrgDelegateCode(final String orgDelegateCode) {
         this.orgDelegateCode = orgDelegateCode;
     }
 
-    /** 全文検索用カラム */
+    /** 検索テキスト */
     @Column(name = "search_text")
     private String searchText = INIT_STRING;
 
     /**
-     * 全文検索用カラムを取得する
-     * 
-     * @return 全文検索用カラム
+     * 検索テキストを取得する
+     *
+     * @return 検索テキスト
      */
     public String getSearchText() {
         return searchText;
     }
 
     /**
-     * 全文検索用カラムを設定する
-     * 
-     * @param searchText 全文検索用カラム
+     * 検索テキストを設定する
+     *
+     * @param searchText 検索テキスト
      */
-    public void setSearchText(String searchText) {
+    public void setSearchText(final String searchText) {
         this.searchText = searchText;
     }
 
-    /** 挿入ユーザId */
+    /** 挿入ユーザーId */
     @Column(name = "insert_user_id")
     private Integer insertUserId = INIT_INTEGER;
 
     /**
-     * 挿入ユーザIdを取得する
+     * 挿入ユーザーIdを取得する
      *
-     * @return 挿入ユーザId
+     * @return 挿入ユーザーId
      */
     @Override
     public Integer getInsertUserId() {
@@ -217,9 +217,9 @@ public class KanrenshaSeijidantaiHistory99Entity // NOPMD DataClass
     }
 
     /**
-     * 挿入ユーザIdを設定する
+     * 挿入ユーザーIdを設定する
      *
-     * @param insertUserId 挿入ユーザId
+     * @param insertUserId 挿入ユーザーId
      */
     @Override
     public void setInsertUserId(final Integer insertUserId) {
@@ -250,14 +250,14 @@ public class KanrenshaSeijidantaiHistory99Entity // NOPMD DataClass
         this.insertUserCode = insertUserCode;
     }
 
-    /** 挿入ユーザ名称 */
+    /** 挿入ユーザ名 */
     @Column(name = "insert_user_name")
     private String insertUserName = INIT_STRING;
 
     /**
-     * 挿入ユーザ名称を取得する
+     * 挿入ユーザ名を取得する
      *
-     * @return 挿入ユーザ名称
+     * @return 挿入ユーザ名
      */
     @Override
     public String getInsertUserName() {
@@ -265,9 +265,9 @@ public class KanrenshaSeijidantaiHistory99Entity // NOPMD DataClass
     }
 
     /**
-     * 挿入ユーザ名称を設定する
+     * 挿入ユーザ名を設定する
      *
-     * @param insertUserName 挿入ユーザ名称
+     * @param insertUserName 挿入ユーザ名
      */
     @Override
     public void setInsertUserName(final String insertUserName) {
@@ -298,14 +298,14 @@ public class KanrenshaSeijidantaiHistory99Entity // NOPMD DataClass
         this.insertTimestamp = insertTimestamp;
     }
 
-    /** 無効ユーザId */
+    /** 削除ユーザId */
     @Column(name = "delete_user_id")
     private Integer deleteUserId = INIT_INTEGER;
 
     /**
-     * 無効ユーザIdを取得する
+     * 削除ユーザIdを取得する
      *
-     * @return 無効ユーザId
+     * @return 削除ユーザId
      */
     @Override
     public Integer getDeleteUserId() {
@@ -313,23 +313,23 @@ public class KanrenshaSeijidantaiHistory99Entity // NOPMD DataClass
     }
 
     /**
-     * 無効ユーザIdを設定する
+     * 削除ユーザIdを設定する
      *
-     * @param deleteUserId 無効ユーザId
+     * @param deleteUserId 削除ユーザId
      */
     @Override
     public void setDeleteUserId(final Integer deleteUserId) {
         this.deleteUserId = deleteUserId;
     }
 
-    /** 無効ユーザコード */
+    /** 削除ユーザコード */
     @Column(name = "delete_user_code")
     private Integer deleteUserCode = INIT_INTEGER;
 
     /**
-     * 無効ユーザコードを取得する
+     * 削除ユーザコードを取得する
      *
-     * @return 無効ユーザコード
+     * @return 削除ユーザコード
      */
     @Override
     public Integer getDeleteUserCode() {
@@ -337,23 +337,23 @@ public class KanrenshaSeijidantaiHistory99Entity // NOPMD DataClass
     }
 
     /**
-     * 無効ユーザコードを設定する
+     * 削除ユーザコードを設定する
      *
-     * @param deleteUserCode 無効ユーザコード
+     * @param deleteUserCode 削除ユーザコード
      */
     @Override
     public void setDeleteUserCode(final Integer deleteUserCode) {
         this.deleteUserCode = deleteUserCode;
     }
 
-    /** 無効ユーザ名称 */
+    /** 削除ユーザ名 */
     @Column(name = "delete_user_name")
     private String deleteUserName = INIT_STRING;
 
     /**
-     * 無効ユーザ名称を取得する
+     * 削除ユーザ名を取得する
      *
-     * @return 無効ユーザ名称
+     * @return 削除ユーザ名
      */
     @Override
     public String getDeleteUserName() {
@@ -361,23 +361,23 @@ public class KanrenshaSeijidantaiHistory99Entity // NOPMD DataClass
     }
 
     /**
-     * 無効ユーザ名称を設定する
+     * 削除ユーザ名を設定する
      *
-     * @param deleteUserName 無効ユーザ名称
+     * @param deleteUserName 削除ユーザ名
      */
     @Override
     public void setDeleteUserName(final String deleteUserName) {
         this.deleteUserName = deleteUserName;
     }
 
-    /** 無効日時 */
+    /** 削除日時 */
     @Column(name = "delete_timestamp")
     private LocalDateTime deleteTimestamp = INIT_TIMESTAMP;
 
     /**
-     * 無効日時を取得する
+     * 削除日時を取得する
      *
-     * @return 無効日時
+     * @return 削除日時
      */
     @Override
     public LocalDateTime getDeleteTimestamp() {
@@ -385,9 +385,9 @@ public class KanrenshaSeijidantaiHistory99Entity // NOPMD DataClass
     }
 
     /**
-     * 無効日時を設定する
+     * 削除日時を設定する
      *
-     * @param deleteTimestamp 無効日時
+     * @param deleteTimestamp 削除日時
      */
     @Override
     public void setDeleteTimestamp(final LocalDateTime deleteTimestamp) {

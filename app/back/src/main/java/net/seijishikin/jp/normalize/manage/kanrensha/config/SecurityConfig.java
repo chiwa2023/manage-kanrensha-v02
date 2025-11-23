@@ -40,14 +40,14 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @EnableWebSecurity
 @EnableMethodSecurity
 public class SecurityConfig {
-//
-//    /** ログインユーザ詳細取得Manager */
-//    @Autowired
-//    private CustomUserDetailsManager customUserDetailsManager;
-//
-//    /** jwt鍵 */
-//    @Autowired
-//    private JwtKeyProperties jwtKeyProperties;
+    //
+    //    /** ログインユーザ詳細取得Manager */
+    //    @Autowired
+    //    private CustomUserDetailsManager customUserDetailsManager;
+    //
+    //    /** jwt鍵 */
+    //    @Autowired
+    //    private JwtKeyProperties jwtKeyProperties;
 
     /**
      * SecurityFilterChainを取得する
@@ -64,78 +64,78 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(requests -> {
                     // 401,403エラー処理
-                    requests.requestMatchers("/", "/login", "/reflesh-token", "/replace-token", "/add-user/**","/trial-access")
-                            .permitAll() //
+                    requests.requestMatchers("/", "/login", "/reflesh-token", "/replace-token", "/add-user/**",
+                            "/trial-access", "/create-table").permitAll() //
                             .anyRequest().authenticated();
                     // TODO roleによる分岐が必要なら設定
                 })
-//                .oauth2ResourceServer(
-//                        oauth2 -> oauth2.jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter())))
-//                .addFilterBefore(new AuthorizeFilter(jwtDecoder()), UsernamePasswordAuthenticationFilter.class)
+                //                .oauth2ResourceServer(
+                //                        oauth2 -> oauth2.jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter())))
+                //                .addFilterBefore(new AuthorizeFilter(jwtDecoder()), UsernamePasswordAuthenticationFilter.class)
                 .logout(logout -> logout.logoutSuccessUrl("/"))
                 .cors(cors -> cors.configurationSource(this.corsConfigurationSource())).build();
     }
 
-//    /**
-//     * PasswordEncoderを取得する
-//     *
-//     * @return PasswordEncoder
-//     */
-//    @Bean
-//    protected PasswordEncoder passwordEncoder() {
-//        return new BCryptPasswordEncoder();
-//    }
+    //    /**
+    //     * PasswordEncoderを取得する
+    //     *
+    //     * @return PasswordEncoder
+    //     */
+    //    @Bean
+    //    protected PasswordEncoder passwordEncoder() {
+    //        return new BCryptPasswordEncoder();
+    //    }
 
-//    /**
-//     * DaoAuthenticationProvider を取得する
-//     *
-//     * @return DaoAuthenticationProvider
-//     */
-//    @Bean
-//    protected DaoAuthenticationProvider authenticationProvider() {
-//        DaoAuthenticationProvider provider = new DaoAuthenticationProvider(customUserDetailsManager);
-//        provider.setPasswordEncoder(passwordEncoder());
-//        return provider;
-//    }
+    //    /**
+    //     * DaoAuthenticationProvider を取得する
+    //     *
+    //     * @return DaoAuthenticationProvider
+    //     */
+    //    @Bean
+    //    protected DaoAuthenticationProvider authenticationProvider() {
+    //        DaoAuthenticationProvider provider = new DaoAuthenticationProvider(customUserDetailsManager);
+    //        provider.setPasswordEncoder(passwordEncoder());
+    //        return provider;
+    //    }
 
-//    /**
-//     * 権限(role)コンバータを取得する
-//     *
-//     * @return 権限(role)コンバータ
-//     */
-//    @Bean
-//    protected JwtAuthenticationConverter jwtAuthenticationConverter() {
-//        JwtGrantedAuthoritiesConverter grantedAuthoritiesConverter = new JwtGrantedAuthoritiesConverter();
-//        grantedAuthoritiesConverter.setAuthoritiesClaimName("roles");
-//        grantedAuthoritiesConverter.setAuthorityPrefix("ROLE_");
-//
-//        JwtAuthenticationConverter jwtAuthenticationConverter = new JwtAuthenticationConverter();
-//        jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(grantedAuthoritiesConverter);
-//        return jwtAuthenticationConverter;
-//    }
+    //    /**
+    //     * 権限(role)コンバータを取得する
+    //     *
+    //     * @return 権限(role)コンバータ
+    //     */
+    //    @Bean
+    //    protected JwtAuthenticationConverter jwtAuthenticationConverter() {
+    //        JwtGrantedAuthoritiesConverter grantedAuthoritiesConverter = new JwtGrantedAuthoritiesConverter();
+    //        grantedAuthoritiesConverter.setAuthoritiesClaimName("roles");
+    //        grantedAuthoritiesConverter.setAuthorityPrefix("ROLE_");
+    //
+    //        JwtAuthenticationConverter jwtAuthenticationConverter = new JwtAuthenticationConverter();
+    //        jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(grantedAuthoritiesConverter);
+    //        return jwtAuthenticationConverter;
+    //    }
 
-//    /**
-//     * JwtDecoderを取得する
-//     *
-//     * @return JwtDecoder
-//     */
-//    @Bean
-//    protected JwtDecoder jwtDecoder() {
-//        return NimbusJwtDecoder.withPublicKey(jwtKeyProperties.getPublicKey()).build();
-//    }
+    //    /**
+    //     * JwtDecoderを取得する
+    //     *
+    //     * @return JwtDecoder
+    //     */
+    //    @Bean
+    //    protected JwtDecoder jwtDecoder() {
+    //        return NimbusJwtDecoder.withPublicKey(jwtKeyProperties.getPublicKey()).build();
+    //    }
 
-//    /**
-//     * JwtEncoderを設定する
-//     *
-//     * @return JwtEncoder
-//     */
-//    @Bean
-//    protected JwtEncoder jwtEncoder() {
-//        JWK jwk = new RSAKey.Builder(jwtKeyProperties.getPublicKey()).privateKey(jwtKeyProperties.getPrivateKey())
-//                .build();
-//        JWKSource<SecurityContext> jwkSource = new ImmutableJWKSet<>(new JWKSet(jwk));
-//        return new NimbusJwtEncoder(jwkSource);
-//    }
+    //    /**
+    //     * JwtEncoderを設定する
+    //     *
+    //     * @return JwtEncoder
+    //     */
+    //    @Bean
+    //    protected JwtEncoder jwtEncoder() {
+    //        JWK jwk = new RSAKey.Builder(jwtKeyProperties.getPublicKey()).privateKey(jwtKeyProperties.getPrivateKey())
+    //                .build();
+    //        JWKSource<SecurityContext> jwkSource = new ImmutableJWKSet<>(new JWKSet(jwk));
+    //        return new NimbusJwtEncoder(jwkSource);
+    //    }
 
     /**
      * Cors設定を取得する
