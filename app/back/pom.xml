@@ -76,7 +76,11 @@
 			<artifactId>spring-security-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-webflux</artifactId>
+		</dependency>
+		
 		<!-- 初回、下記2つのjarをmaven参照ディレクトリに複写するため、下記をコメントアウトし、
 		mvnw clean installしたのち 再度コメント外して有効化する必要がある -->
 
@@ -86,10 +90,11 @@
 			<version>0.0.1-SNAPSHOT</version>
 			<artifactId>published_document</artifactId>
 		</dependency>
-		
+
 		<!--　このプロジェクト共通Tool  -->
 		<dependency>
-			<groupId>net.seijishikin.jp.normalize.manage.kanrensha.lib.common_tool</groupId>
+			<groupId>
+				net.seijishikin.jp.normalize.manage.kanrensha.lib.common_tool</groupId>
 			<version>0.0.1-SNAPSHOT</version>
 			<artifactId>common_tool</artifactId>
 		</dependency>

@@ -15,7 +15,7 @@ class BackApplicationTests {
      * 起動
      */
     @Test
-    void contextLoads() {
+    void contextLoads() throws Exception {
         fail();
     }
 

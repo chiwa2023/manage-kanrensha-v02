@@ -2,6 +2,7 @@ package net.seijishikin.jp.normalize.manage.kanrensha;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.scheduling.annotation.EnableAsync;
 
 /**
@@ -9,6 +10,8 @@ import org.springframework.scheduling.annotation.EnableAsync;
  */
 @SpringBootApplication
 @EnableAsync
+@ComponentScan(basePackages = { "net.seijishikin.jp.normalize.manage.kanrensha",
+        "net.seijishikin.jp.normalize.common_tool" })
 public class BackApplication { // NOPMD UtilityClass
 
     /**
