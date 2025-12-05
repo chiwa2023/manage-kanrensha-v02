@@ -1,0 +1,21 @@
+CREATE TABLE `kanrensha_kigyou_dt_property` (
+  `kanrensha_kigyou_dt_property_id` int NOT NULL AUTO_INCREMENT COMMENT 'テーブルId',
+  `kanrensha_kigyou_dt_id` int DEFAULT NULL COMMENT '関連者企業・団体Id',
+  `kigyou_dt_kanrensha_code` varchar(30) DEFAULT NULL COMMENT '関連者企業・団体コード',
+  `kanrensha_name` varchar(200) DEFAULT NULL COMMENT '関連者企業・団体名称',
+  `is_latest` tinyint DEFAULT NULL COMMENT '最新該否',
+  `houjin_sbts` varchar(5) DEFAULT NULL COMMENT '法人種別',
+  `is_foreign` tinyint DEFAULT NULL COMMENT '外国籍該否',
+  `org_name_kana` varchar(200) DEFAULT NULL COMMENT '関連者団体名称かな',
+  `is_shiten` tinyint DEFAULT NULL COMMENT '支店該当',
+  `org_delegate_code` varchar(30) DEFAULT NULL COMMENT '団体代表者関連者コード',
+  `insert_user_id` int DEFAULT NULL COMMENT '挿入ユーザId',
+  `insert_user_code` int DEFAULT NULL COMMENT '挿入ユーザコード',
+  `insert_user_name` varchar(200) DEFAULT NULL COMMENT '挿入ユーザ名称',
+  `insert_timestamp` datetime DEFAULT NULL COMMENT '挿入日時',
+  `delete_user_id` int DEFAULT NULL COMMENT '無効ユーザId',
+  `delete_user_code` int DEFAULT NULL COMMENT '無効ユーザコード',
+  `delete_user_name` varchar(200) DEFAULT NULL COMMENT '無効ユーザ名称',
+  `delete_timestamp` datetime DEFAULT NULL COMMENT '無効日時',
+  PRIMARY KEY (`kanrensha_kigyou_dt_property_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
