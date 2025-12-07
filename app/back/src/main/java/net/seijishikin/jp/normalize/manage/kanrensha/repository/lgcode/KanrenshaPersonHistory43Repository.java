@@ -31,8 +31,7 @@ public interface KanrenshaPersonHistory43Repository extends JpaRepository<Kanren
      * @param shokugyou 代表者名
      * @return 検索結果
      */
-    @Query(value = "SELECT * FROM partner_person_history_01 " + " WHERE partner_name = ?1 AND all_address = ?2 "
+    @Query(value = "SELECT * FROM kanrensha_person_history_43 " + " WHERE all_name = ?1 AND all_address = ?2 "
             + "   AND person_shokugyou = ?3 AND is_latest=1", nativeQuery = true)
     List<KanrenshaPersonHistoryBaseEntity> selectByProperty(String name, String address, String shokugyou);
-
 }

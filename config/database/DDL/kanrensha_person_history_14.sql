@@ -2,7 +2,7 @@ CREATE TABLE `kanrensha_person_history_14` (
   `kanrensha_person_history_id` int NOT NULL AUTO_INCREMENT COMMENT 'テーブルIdd',
   `person_kanrensha_code` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '個人関連者コード',
   `is_latest` tinyint DEFAULT NULL COMMENT '最新フラグ',
-  `partner_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '関連者個人名',
+  `all_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '関連者個人名',
   `all_address` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin COMMENT '関連者個人全住所',
   `person_shokugyou` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '関連者個人職業',
   `search_text` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin COMMENT '検索テキスト',

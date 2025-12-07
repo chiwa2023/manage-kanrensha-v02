@@ -2,7 +2,7 @@ CREATE TABLE `kanrensha_seijidantai_history_40` (
   `kanrensha_seijidantai_history_id` int NOT NULL AUTO_INCREMENT COMMENT 'テーブルId',
   `seijidantai_kanrensha_code` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '政治団体関連者コード',
   `is_latest` tinyint DEFAULT NULL COMMENT '最新フラグ',
-  `partner_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '関連者政治団体名',
+  `all_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '関連者政治団体名',
   `all_address` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin COMMENT '関連者政治団体全住所',
   `org_delegate_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '団体代表者氏名',
   `org_delegate_code` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '団体代表者関連者個人コード',

@@ -77,7 +77,6 @@ public class KanrenshaSeijidantaiHistory33Entity // NOPMD DataClass
      *
      * @return 最新フラグ
      */
-    @Override
     public Boolean getIsLatest() {
         return isLatest;
     }
@@ -87,31 +86,30 @@ public class KanrenshaSeijidantaiHistory33Entity // NOPMD DataClass
      *
      * @param isLatest 最新フラグ
      */
-    @Override
     public void setIsLatest(final Boolean isLatest) {
         this.isLatest = isLatest;
     }
 
     /** 関連者政治団体名 */
-    @Column(name = "partner_name")
-    private String partnerName = INIT_STRING;
+    @Column(name = "all_name")
+    private String allName = INIT_STRING;
 
     /**
      * 関連者政治団体名を取得する
      *
      * @return 関連者政治団体名
      */
-    public String getPartnerName() {
-        return partnerName;
+    public String getAllName() {
+        return allName;
     }
 
     /**
      * 関連者政治団体名を設定する
      *
-     * @param partnerName 関連者政治団体名
+     * @param allName 関連者政治団体名
      */
-    public void setPartnerName(final String partnerName) {
-        this.partnerName = partnerName;
+    public void setAllName(final String allName) {
+        this.allName = allName;
     }
 
     /** 関連者政治団体全住所 */
@@ -211,7 +209,6 @@ public class KanrenshaSeijidantaiHistory33Entity // NOPMD DataClass
      *
      * @return 挿入ユーザーId
      */
-    @Override
     public Integer getInsertUserId() {
         return insertUserId;
     }
@@ -221,7 +218,6 @@ public class KanrenshaSeijidantaiHistory33Entity // NOPMD DataClass
      *
      * @param insertUserId 挿入ユーザーId
      */
-    @Override
     public void setInsertUserId(final Integer insertUserId) {
         this.insertUserId = insertUserId;
     }
@@ -235,7 +231,6 @@ public class KanrenshaSeijidantaiHistory33Entity // NOPMD DataClass
      *
      * @return 挿入ユーザコード
      */
-    @Override
     public Integer getInsertUserCode() {
         return insertUserCode;
     }
@@ -245,7 +240,6 @@ public class KanrenshaSeijidantaiHistory33Entity // NOPMD DataClass
      *
      * @param insertUserCode 挿入ユーザコード
      */
-    @Override
     public void setInsertUserCode(final Integer insertUserCode) {
         this.insertUserCode = insertUserCode;
     }
@@ -259,7 +253,6 @@ public class KanrenshaSeijidantaiHistory33Entity // NOPMD DataClass
      *
      * @return 挿入ユーザ名
      */
-    @Override
     public String getInsertUserName() {
         return insertUserName;
     }
@@ -269,7 +262,6 @@ public class KanrenshaSeijidantaiHistory33Entity // NOPMD DataClass
      *
      * @param insertUserName 挿入ユーザ名
      */
-    @Override
     public void setInsertUserName(final String insertUserName) {
         this.insertUserName = insertUserName;
     }
@@ -283,7 +275,6 @@ public class KanrenshaSeijidantaiHistory33Entity // NOPMD DataClass
      *
      * @return 挿入日時
      */
-    @Override
     public LocalDateTime getInsertTimestamp() {
         return insertTimestamp;
     }
@@ -293,7 +284,6 @@ public class KanrenshaSeijidantaiHistory33Entity // NOPMD DataClass
      *
      * @param insertTimestamp 挿入日時
      */
-    @Override
     public void setInsertTimestamp(final LocalDateTime insertTimestamp) {
         this.insertTimestamp = insertTimestamp;
     }
@@ -307,7 +297,6 @@ public class KanrenshaSeijidantaiHistory33Entity // NOPMD DataClass
      *
      * @return 削除ユーザId
      */
-    @Override
     public Integer getDeleteUserId() {
         return deleteUserId;
     }
@@ -317,7 +306,6 @@ public class KanrenshaSeijidantaiHistory33Entity // NOPMD DataClass
      *
      * @param deleteUserId 削除ユーザId
      */
-    @Override
     public void setDeleteUserId(final Integer deleteUserId) {
         this.deleteUserId = deleteUserId;
     }
@@ -331,7 +319,6 @@ public class KanrenshaSeijidantaiHistory33Entity // NOPMD DataClass
      *
      * @return 削除ユーザコード
      */
-    @Override
     public Integer getDeleteUserCode() {
         return deleteUserCode;
     }
@@ -341,7 +328,6 @@ public class KanrenshaSeijidantaiHistory33Entity // NOPMD DataClass
      *
      * @param deleteUserCode 削除ユーザコード
      */
-    @Override
     public void setDeleteUserCode(final Integer deleteUserCode) {
         this.deleteUserCode = deleteUserCode;
     }
@@ -355,7 +341,6 @@ public class KanrenshaSeijidantaiHistory33Entity // NOPMD DataClass
      *
      * @return 削除ユーザ名
      */
-    @Override
     public String getDeleteUserName() {
         return deleteUserName;
     }
@@ -365,7 +350,6 @@ public class KanrenshaSeijidantaiHistory33Entity // NOPMD DataClass
      *
      * @param deleteUserName 削除ユーザ名
      */
-    @Override
     public void setDeleteUserName(final String deleteUserName) {
         this.deleteUserName = deleteUserName;
     }
@@ -379,7 +363,6 @@ public class KanrenshaSeijidantaiHistory33Entity // NOPMD DataClass
      *
      * @return 削除日時
      */
-    @Override
     public LocalDateTime getDeleteTimestamp() {
         return deleteTimestamp;
     }
@@ -389,7 +372,6 @@ public class KanrenshaSeijidantaiHistory33Entity // NOPMD DataClass
      *
      * @param deleteTimestamp 削除日時
      */
-    @Override
     public void setDeleteTimestamp(final LocalDateTime deleteTimestamp) {
         this.deleteTimestamp = deleteTimestamp;
     }

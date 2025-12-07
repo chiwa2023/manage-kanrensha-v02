@@ -22,7 +22,7 @@ public interface KanrenshaKigyouDtHistory45Repository extends JpaRepository<Kanr
     @Query(value = "SELECT * FROM kanrensha_kigyou_dt_history_45"
             + " WHERE search_text like ?1 AND is_latest=1", nativeQuery = true) // TODO MATCH AGAINST
     List<KanrenshaKigyouDtHistory45Entity> findFullText(String searchWords);
-
+    
     /**
      * 企業・団体の属性でリスト取得する
      *
@@ -31,8 +31,8 @@ public interface KanrenshaKigyouDtHistory45Repository extends JpaRepository<Kanr
      * @param delegate 代表者名
      * @return 検索結果
      */
-    @Query(value = "SELECT * FROM partner_corp_history_01 " + " WHERE partner_name = ?1 AND all_address = ?2 "
-            + "   AND corp_delegate = ?3 AND is_latest=1", nativeQuery = true)
+    @Query(value = "SELECT * FROM kanrensha_kigyou_dt_history_45 " + " WHERE all_name = ?1 AND all_address = ?2 "
+            + "   AND org_delegate_name = ?3 AND is_latest=1", nativeQuery = true)
     List<KanrenshaKigyouDtHistoryBaseEntity> selectByProperty(String name, String address, String delegate);
 
 }

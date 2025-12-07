@@ -91,25 +91,25 @@ public class KanrenshaPersonHistoryBaseEntity
     }
 
     /** 関連者個人名 */
-    @Column(name = "partner_name")
-    private String partnerName = INIT_STRING;
+    @Column(name = "all_name")
+    private String allName = INIT_STRING;
 
     /**
      * 関連者個人名を取得する
      *
      * @return 関連者個人名
      */
-    public String getPartnerName() {
-        return partnerName;
+    public String getAllName() {
+        return allName;
     }
 
     /**
      * 関連者個人名を設定する
      *
-     * @param partnerName 関連者個人名
+     * @param allName 関連者個人名
      */
-    public void setPartnerName(final String partnerName) {
-        this.partnerName = partnerName;
+    public void setAllName(final String allName) {
+        this.allName = allName;
     }
 
     /** 関連者個人全住所 */

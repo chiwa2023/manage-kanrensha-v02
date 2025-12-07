@@ -2,7 +2,7 @@ CREATE TABLE `kanrensha_kigyou_dt_history_44` (
   `kanrensha_kigyou_dt_history_id` int NOT NULL AUTO_INCREMENT COMMENT 'テーブルId',
   `kigyou_dt_kanrensha_code` varchar(30) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '企業団体関連者コード',
   `is_latest` tinyint DEFAULT NULL COMMENT '最新フラグ',
-  `partner_name` varchar(100) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '関連者企業・団体名',
+  `all_name` varchar(100) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '関連者企業・団体名',
   `all_address` text COLLATE utf8mb4_bin COMMENT '関連者企業・団体全住所',
   `org_delegate_name` varchar(100) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '団体代表者氏名',
   `org_delegate_code` varchar(30) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '団体代表者関連者個人コード',
