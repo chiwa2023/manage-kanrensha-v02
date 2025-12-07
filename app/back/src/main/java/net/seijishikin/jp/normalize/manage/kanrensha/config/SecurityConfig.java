@@ -30,8 +30,8 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 //import com.nimbusds.jose.jwk.source.JWKSource;
 //import com.nimbusds.jose.proc.SecurityContext;
 
-//import mitei.mitei.political.balancesheet.manage.kanrensha.service.security.AuthorizeFilter;
-//import mitei.mitei.political.balancesheet.manage.kanrensha.service.security.CustomUserDetailsManager;
+//import net.seijishikin.jp.normalize.manage.kanrensha.service.security.AuthorizeFilter;
+//import net.seijishikin.jp.normalize.manage.kanrensha.service.security.CustomUserDetailsManager;
 
 /**
  * セキュリティ設定
