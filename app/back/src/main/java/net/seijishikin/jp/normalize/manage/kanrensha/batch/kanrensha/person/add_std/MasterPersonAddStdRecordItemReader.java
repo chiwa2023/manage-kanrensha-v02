@@ -24,13 +24,13 @@ public class MasterPersonAddStdRecordItemReader extends RepositoryItemReader<WkT
     /**
      * コンストラクタ
      *
-     * @param wkTblMasterPersonRepository 関連者個人標準登録ワークテーブルRepository
+     * @param wkTblKanrenshaPersonMasterRepository 関連者個人標準登録ワークテーブルRepository
      */
     public MasterPersonAddStdRecordItemReader(
-            final @Autowired WkTblKanrenshaPersonMasterRepository wTblKanrenshaPersonMasterRepository) {
+            final @Autowired WkTblKanrenshaPersonMasterRepository wkTblKanrenshaPersonMasterRepository) {
 
         super();
-        super.setRepository(wTblKanrenshaPersonMasterRepository);
+        super.setRepository(wkTblKanrenshaPersonMasterRepository);
         super.setSort(new HashMap<String, Direction>()); // NOPMD
         super.setMethodName("findByInsertUserCodeAndIsLatestAndIsAffected");
 

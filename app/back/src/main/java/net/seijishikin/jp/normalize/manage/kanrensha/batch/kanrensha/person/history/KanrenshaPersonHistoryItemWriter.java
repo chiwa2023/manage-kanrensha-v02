@@ -65,20 +65,20 @@ public class KanrenshaPersonHistoryItemWriter extends JpaItemWriter<WkTblKanrens
     public void write(final Chunk<? extends WkTblKanrenshaPersonHistoryEntity> items) {
 
         int code = 0;
-//
-//        Optional<WkTblKanrenshaPersonHistoryEntity> optional = wkTbKanrenshaPersonHistoryRepository
-//                .findFirstByOrderByWkKanrenshaPersonHistoryCodeDesc();
-//        if (!optional.isEmpty()) {
-//            code = optional.get().getWkKanrenshaPersonHistoryCode();
-//        }
-//
-//        for (WkTblKanrenshaPersonHistoryEntity entity : items) {
-//            code++;
-//            setTableDataHistoryUtil.practiceInsert(userDto, entity);
-//            entity.setWkKanrenshaPersonHistoryCode(code);
-//        }
-//
-//        wkTbKanrenshaPersonHistoryRepository.saveAll(items);
+
+        Optional<WkTblKanrenshaPersonHistoryEntity> optional = wkTbKanrenshaPersonHistoryRepository
+                .findFirstByOrderByWkKanrenshaPersonHistoryCodeDesc();
+        if (!optional.isEmpty()) {
+            code = optional.get().getWkKanrenshaPersonHistoryCode();
+        }
+
+        for (WkTblKanrenshaPersonHistoryEntity entity : items) {
+            code++;
+            setTableDataHistoryUtil.practiceInsert(userDto, entity);
+            entity.setWkKanrenshaPersonHistoryCode(code);
+        }
+
+        wkTbKanrenshaPersonHistoryRepository.saveAll(items);
     }
 
 }

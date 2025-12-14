@@ -3,27 +3,20 @@ package net.seijishikin.jp.normalize.manage.kanrensha.batch.kanrensha.person.add
 import java.io.Serializable;
 
 import jakarta.persistence.Column;
+import net.seijishikin.jp.normalize.common_tool.dto.DtoEntityInitialValueInterface;
 
 /**
  * 関連者個人履歴Dto
  */
-public class KanrenshaPersonAddStdDto implements Serializable { // NOPMD DataClass
+public class KanrenshaPersonAddStdDto // NOPMD DataClass
+        implements Serializable, DtoEntityInitialValueInterface {
 
     /** serialId */
     private static final long serialVersionUID = 1L;
 
-    /** 初期データ(String) */
-    private static final String INIT_String = "";
-
-    /** 初期データ(Integer) */
-    private static final Integer INIT_Integer = 0;
-
-    /** 初期データ(Boolean) */
-    private static final Boolean INIT_Boolean = false;
-
     /** 個人名 */
     @Column(name = "kanrensha_name")
-    private String kanrenshaName = INIT_String;
+    private String kanrenshaName = INIT_STRING;
 
     /**
      * 個人名を取得する
@@ -45,7 +38,7 @@ public class KanrenshaPersonAddStdDto implements Serializable { // NOPMD DataCla
 
     /** 個人全住所 */
     @Column(name = "all_address")
-    private String allAddress = INIT_String;
+    private String allAddress = INIT_STRING;
 
     /**
      * 個人全住所を取得する
@@ -67,7 +60,7 @@ public class KanrenshaPersonAddStdDto implements Serializable { // NOPMD DataCla
 
     /** 個人職業 */
     @Column(name = "person_shokugyou")
-    private String personShokugyou = INIT_String;
+    private String personShokugyou = INIT_STRING;
 
     /**
      * 個人職業を取得する
@@ -89,7 +82,7 @@ public class KanrenshaPersonAddStdDto implements Serializable { // NOPMD DataCla
 
     /** 住所郵便番号 */
     @Column(name = "address_postal")
-    private String addressPostal = INIT_String;
+    private String addressPostal = INIT_STRING;
 
     /**
      * 住所郵便番号を取得する
@@ -111,7 +104,7 @@ public class KanrenshaPersonAddStdDto implements Serializable { // NOPMD DataCla
 
     /** 住所番地 */
     @Column(name = "address_block")
-    private String addressBlock = INIT_String;
+    private String addressBlock = INIT_STRING;
 
     /**
      * 住所番地を取得する
@@ -133,7 +126,7 @@ public class KanrenshaPersonAddStdDto implements Serializable { // NOPMD DataCla
 
     /** 住所建物 */
     @Column(name = "address_building")
-    private String addressBuilding = INIT_String;
+    private String addressBuilding = INIT_STRING;
 
     /**
      * 住所建物を取得する
@@ -153,55 +146,53 @@ public class KanrenshaPersonAddStdDto implements Serializable { // NOPMD DataCla
         this.addressBuilding = addressBuilding;
     }
 
-
     /** 郵便番号1 */
-    @Column(name = "postal1")
-    private String postal1 = INIT_String;
+    @Column(name = "postalcode1")
+    private String postalcode1 = INIT_STRING;
 
     /**
      * 郵便番号1を取得する
      *
      * @return 郵便番号1
      */
-    public String getPostal1() {
-        return postal1;
+    public String getPostalcode1() {
+        return postalcode1;
     }
 
     /**
      * 郵便番号1を設定する
      *
-     * @param postal1 郵便番号1
+     * @param postalcode1 郵便番号1
      */
-    public void setPostal1(final String postal1) {
-        this.postal1 = postal1;
+    public void setPostalcode1(final String postalcode1) {
+        this.postalcode1 = postalcode1;
     }
 
     /** 郵便番号2 */
-    @Column(name = "postal2")
-    private String postal2 = INIT_String;
+    @Column(name = "postalcode2")
+    private String postalcode2 = INIT_STRING;
 
     /**
      * 郵便番号2を取得する
      *
      * @return 郵便番号2
      */
-    public String getPostal2() {
-        return postal2;
+    public String getPostalcode2() {
+        return postalcode2;
     }
 
     /**
      * 郵便番号2を設定する
      *
-     * @param postal2 郵便番号2
+     * @param postalcode2 郵便番号2
      */
-    public void setPostal2(final String postal2) {
-        this.postal2 = postal2;
+    public void setPostalcode2(final String postalcode2) {
+        this.postalcode2 = postalcode2;
     }
-
 
     /** 姓名の姓 */
     @Column(name = "last_name")
-    private String lastName = INIT_String;
+    private String lastName = INIT_STRING;
 
     /**
      * 姓名の姓を取得する
@@ -223,7 +214,7 @@ public class KanrenshaPersonAddStdDto implements Serializable { // NOPMD DataCla
 
     /** 姓名の名 */
     @Column(name = "first_name")
-    private String firstName = INIT_String;
+    private String firstName = INIT_STRING;
 
     /**
      * 姓名の名を取得する
@@ -245,7 +236,7 @@ public class KanrenshaPersonAddStdDto implements Serializable { // NOPMD DataCla
 
     /** 姓名のミドルネーム */
     @Column(name = "middle_name")
-    private String middleName = INIT_String;
+    private String middleName = INIT_STRING;
 
     /**
      * 姓名のミドルネームを取得する
@@ -267,7 +258,7 @@ public class KanrenshaPersonAddStdDto implements Serializable { // NOPMD DataCla
 
     /** 姓名の姓かな */
     @Column(name = "last_name_kana")
-    private String lastNameKana = INIT_String;
+    private String lastNameKana = INIT_STRING;
 
     /**
      * 姓名の姓かなを取得する
@@ -289,7 +280,7 @@ public class KanrenshaPersonAddStdDto implements Serializable { // NOPMD DataCla
 
     /** 姓名の名かな */
     @Column(name = "first_name_kana")
-    private String firstNameKana = INIT_String;
+    private String firstNameKana = INIT_STRING;
 
     /**
      * 姓名の名かなを取得する
@@ -311,7 +302,7 @@ public class KanrenshaPersonAddStdDto implements Serializable { // NOPMD DataCla
 
     /** 姓名のミドルネームかな */
     @Column(name = "middle_name_kana")
-    private String middleNameKana = INIT_String;
+    private String middleNameKana = INIT_STRING;
 
     /**
      * 姓名のミドルネームかなを取得する
@@ -333,7 +324,7 @@ public class KanrenshaPersonAddStdDto implements Serializable { // NOPMD DataCla
 
     /** 職業の業種 */
     @Column(name = "gyoushu")
-    private String gyoushu = INIT_String;
+    private String gyoushu = INIT_STRING;
 
     /**
      * 職業の業種を取得する
@@ -355,7 +346,7 @@ public class KanrenshaPersonAddStdDto implements Serializable { // NOPMD DataCla
 
     /** 職業の役職 */
     @Column(name = "yakushoku")
-    private String yakushoku = INIT_String;
+    private String yakushoku = INIT_STRING;
 
     /**
      * 職業の役職を取得する
@@ -377,7 +368,7 @@ public class KanrenshaPersonAddStdDto implements Serializable { // NOPMD DataCla
 
     /** ユーザ記述の職業 */
     @Column(name = "shokugyou_user_write")
-    private String shokugyouUserWrite = INIT_String;
+    private String shokugyouUserWrite = INIT_STRING;
 
     /**
      * ユーザ記述の職業を取得する
@@ -399,7 +390,7 @@ public class KanrenshaPersonAddStdDto implements Serializable { // NOPMD DataCla
 
     /** 企業番号 */
     @Column(name = "KigyouDt_no")
-    private String KigyouDtNo = INIT_String;
+    private String KigyouDtNo = INIT_STRING;
 
     /**
      * 企業番号を取得する
@@ -421,7 +412,7 @@ public class KanrenshaPersonAddStdDto implements Serializable { // NOPMD DataCla
 
     /** 企業所在地 */
     @Column(name = "KigyouDt_address")
-    private String KigyouDtAddress = INIT_String;
+    private String KigyouDtAddress = INIT_STRING;
 
     /**
      * 企業所在地を取得する
@@ -443,7 +434,7 @@ public class KanrenshaPersonAddStdDto implements Serializable { // NOPMD DataCla
 
     /** 企業名 */
     @Column(name = "KigyouDt_name")
-    private String KigyouDtName = INIT_String;
+    private String KigyouDtName = INIT_STRING;
 
     /**
      * 企業名を取得する
@@ -462,10 +453,10 @@ public class KanrenshaPersonAddStdDto implements Serializable { // NOPMD DataCla
     public void setKigyouDtName(final String KigyouDtName) {
         this.KigyouDtName = KigyouDtName;
     }
-    
+
     /** 地方自治体コード */
     @Column(name = "lg_code")
-    private String lgCode = INIT_String;
+    private String lgCode = INIT_STRING;
 
     /**
      * 地方自治体コードを取得する
@@ -487,7 +478,7 @@ public class KanrenshaPersonAddStdDto implements Serializable { // NOPMD DataCla
 
     /** 町字コード */
     @Column(name = "machiaza_id")
-    private String machiazaId = INIT_String;
+    private String machiazaId = INIT_STRING;
 
     /**
      * 町字コードを取得する
@@ -509,7 +500,7 @@ public class KanrenshaPersonAddStdDto implements Serializable { // NOPMD DataCla
 
     /** 街区コード */
     @Column(name = "blk_id")
-    private String blkId = INIT_String;
+    private String blkId = INIT_STRING;
 
     /**
      * 街区コードを取得する
@@ -529,9 +520,31 @@ public class KanrenshaPersonAddStdDto implements Serializable { // NOPMD DataCla
         this.blkId = blkId;
     }
 
+    /** 地番コード */
+    @Column(name = "prc_id")
+    private String prcId = INIT_STRING;
+
+    /**
+     * 地番コードを取得する
+     *
+     * @return 地番コード
+     */
+    public String getPrcId() {
+        return prcId;
+    }
+
+    /**
+     * 地番コードを設定する
+     *
+     * @param prcId 地番コード
+     */
+    public void setPrcId(final String prcId) {
+        this.prcId = prcId;
+    }
+
     /** 住居コード */
     @Column(name = "rsdt_id")
-    private String rsdtId = INIT_String;
+    private String rsdtId = INIT_STRING;
 
     /**
      * 住居コードを取得する
@@ -553,7 +566,7 @@ public class KanrenshaPersonAddStdDto implements Serializable { // NOPMD DataCla
 
     /** 住居2コード */
     @Column(name = "rsdt2_id")
-    private String rsdt2Id = INIT_String;
+    private String rsdt2Id = INIT_STRING;
 
     /**
      * 住居2コードを取得する
@@ -575,7 +588,7 @@ public class KanrenshaPersonAddStdDto implements Serializable { // NOPMD DataCla
 
     /** 電話番号1 */
     @Column(name = "phon1")
-    private String phon1 = INIT_String;
+    private String phon1 = INIT_STRING;
 
     /**
      * 電話番号1を取得する
@@ -597,7 +610,7 @@ public class KanrenshaPersonAddStdDto implements Serializable { // NOPMD DataCla
 
     /** 電話番号2 */
     @Column(name = "phon2")
-    private String phon2 = INIT_String;
+    private String phon2 = INIT_STRING;
 
     /**
      * 電話番号2を取得する
@@ -619,7 +632,7 @@ public class KanrenshaPersonAddStdDto implements Serializable { // NOPMD DataCla
 
     /** 電話番号3 */
     @Column(name = "phon3")
-    private String phon3 = INIT_String;
+    private String phon3 = INIT_STRING;
 
     /**
      * 電話番号3を取得する
@@ -641,7 +654,7 @@ public class KanrenshaPersonAddStdDto implements Serializable { // NOPMD DataCla
 
     /** 電子メール */
     @Column(name = "email")
-    private String email = INIT_String;
+    private String email = INIT_STRING;
 
     /**
      * 電子メールを取得する
@@ -663,7 +676,7 @@ public class KanrenshaPersonAddStdDto implements Serializable { // NOPMD DataCla
 
     /** 自分の公式サイトUrl */
     @Column(name = "my_portal_url")
-    private String myPortalUrl = INIT_String;
+    private String myPortalUrl = INIT_STRING;
 
     /**
      * 自分の公式サイトUrlを取得する
@@ -683,53 +696,9 @@ public class KanrenshaPersonAddStdDto implements Serializable { // NOPMD DataCla
         this.myPortalUrl = myPortalUrl;
     }
 
-    /** SNSサービスコード */
-    @Column(name = "sns_service_id")
-    private Integer snsServiceId = INIT_Integer;
-
-    /**
-     * SNSサービスコードを取得する
-     *
-     * @return SNSサービスコード
-     */
-    public Integer getSnsServiceId() {
-        return snsServiceId;
-    }
-
-    /**
-     * SNSサービスコードを設定する
-     *
-     * @param snsServiceId SNSサービスコード
-     */
-    public void setSnsServiceId(final Integer snsServiceId) {
-        this.snsServiceId = snsServiceId;
-    }
-
-    /** SNSサービスコード */
-    @Column(name = "sns_service_code")
-    private Integer snsServiceCode = INIT_Integer;
-
-    /**
-     * SNSサービスコードを取得する
-     *
-     * @return SNSサービスコード
-     */
-    public Integer getSnsServiceCode() {
-        return snsServiceCode;
-    }
-
-    /**
-     * SNSサービスコードを設定する
-     *
-     * @param snsServiceCode SNSサービスコード
-     */
-    public void setSnsServiceCode(final Integer snsServiceCode) {
-        this.snsServiceCode = snsServiceCode;
-    }
-
     /** SNSサービス名称 */
     @Column(name = "sns_service_name")
-    private String snsServiceName = INIT_String;
+    private String snsServiceName = INIT_STRING;
 
     /**
      * SNSサービス名称を取得する
@@ -749,31 +718,9 @@ public class KanrenshaPersonAddStdDto implements Serializable { // NOPMD DataCla
         this.snsServiceName = snsServiceName;
     }
 
-    /** SNS玄関Url */
-    @Column(name = "sns_portal_url")
-    private String snsPortalUrl = INIT_String;
-
-    /**
-     * SNS玄関Urlを取得する
-     *
-     * @return SNS玄関Url
-     */
-    public String getSnsPortalUrl() {
-        return snsPortalUrl;
-    }
-
-    /**
-     * SNS玄関Urlを設定する
-     *
-     * @param snsPortalUrl SNS玄関Url
-     */
-    public void setSnsPortalUrl(final String snsPortalUrl) {
-        this.snsPortalUrl = snsPortalUrl;
-    }
-
     /** SNSサービスアカウント */
     @Column(name = "sns_account")
-    private String snsAccount = INIT_String;
+    private String snsAccount = INIT_STRING;
 
     /**
      * SNSサービスアカウントを取得する
@@ -795,7 +742,7 @@ public class KanrenshaPersonAddStdDto implements Serializable { // NOPMD DataCla
 
     /** 外国籍該否 */
     @Column(name = "is_foreign")
-    private Boolean isForeign = INIT_Boolean;
+    private Boolean isForeign = INIT_BOOLEAN;
 
     /**
      * 外国籍該否を取得する
@@ -815,5 +762,4 @@ public class KanrenshaPersonAddStdDto implements Serializable { // NOPMD DataCla
         this.isForeign = isForeign;
     }
 
-    
 }

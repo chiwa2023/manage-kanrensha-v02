@@ -1,5 +1,6 @@
 package net.seijishikin.jp.normalize.manage.kanrensha.batch.kanrensha.kigyou_dt.add_std;
 
+import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -69,10 +70,10 @@ public class KanrenshaKigyouDtAddStdLineMapper implements LineMapper<KanrenshaKi
     /** 団体代表者関連者コードカラム位置 */
     private static final int POS_DELEGEATE_CODE = 18;
 
-    /** 団体代表者関連者コードカラム位置 */
+    /** SNS名称カラム位置 */
     private static final int POS_SNS_NAME = 19;
 
-    /** 団体代表者関連者コードカラム位置 */
+    /** SNSアカウントカラム位置 */
     private static final int POS_SNS_ACCOUNT = 20;
 
     /** 地方公共団体コード */
@@ -81,13 +82,18 @@ public class KanrenshaKigyouDtAddStdLineMapper implements LineMapper<KanrenshaKi
     private static final int POS_MACHIAZA = 22;
     /** 街区Id */
     private static final int POS_BLOCK = 23;
+    /** 地番Id */
+    private static final int POS_PRC = 24;
     /** 住居Id */
-    private static final int POS_RSDT = 24;
+    private static final int POS_RSDT = 25;
     /** 住居2Id */
-    private static final int POS_RSDT2 = 25;
+    private static final int POS_RSDT2 = 26;
 
     /** 空文字 */
     private static final String EMPTY = "";
+    
+    /** ハイフン */
+    private static final String HYPHEN = "-";
 
     /** 該当文言リスト */
     private final List<String> listGaitou = new ArrayList<>();
@@ -117,8 +123,10 @@ public class KanrenshaKigyouDtAddStdLineMapper implements LineMapper<KanrenshaKi
         dto.setAllAddress(this.removeQuote(cell[POS_ADDRESS]));
         // 企業・団体代表者カラム位置
         dto.setKigyouDtDelegate(this.removeQuote(cell[POS_ORG_DELEGATE]));
-        // 企業・団体代表者カラム位置
-        dto.setHoujinNo(this.removeQuote(cell[POS_HOUJIN_NO]));
+        // 法人番号カラム位置
+        String seiki = Normalizer.normalize(this.removeQuote(cell[POS_HOUJIN_NO]), Normalizer.Form.NFKC)
+                .replaceAll(HYPHEN, EMPTY);
+        dto.setHoujinNo(seiki);
         
         // 住所郵便番号までカラム位置
         dto.setAddressPostal(this.removeQuote(cell[POS_ADDRESS_POSTAL]));
@@ -127,9 +135,9 @@ public class KanrenshaKigyouDtAddStdLineMapper implements LineMapper<KanrenshaKi
         // 住所建物までカラム位置
         dto.setAddressBuilding(this.removeQuote(cell[POS_ADDRESS_BUILDING]));
         // 郵便番号1カラム位置
-        dto.setPostal1(this.removeQuote(cell[POS_POSTAL1]));
+        dto.setPostalcode1(this.removeQuote(cell[POS_POSTAL1]));
         // 郵便番号2カラム位置
-        dto.setPostal2(this.removeQuote(cell[POS_POSTAL2]));
+        dto.setPostalcode2(this.removeQuote(cell[POS_POSTAL2]));
         // 電話番号市外局番カラム位置
         dto.setPhon1(this.removeQuote(cell[POS_PHONE1]));
         // 電話番号局番カラム位置
@@ -162,6 +170,8 @@ public class KanrenshaKigyouDtAddStdLineMapper implements LineMapper<KanrenshaKi
         dto.setMachiazaId(this.removeQuote(cell[POS_MACHIAZA]));
         // 街区Id
         dto.setBlkId(this.removeQuote(cell[POS_BLOCK]));
+        // 地番Id
+        dto.setPrcId(this.removeQuote(cell[POS_PRC]));
         // 住居Id
         dto.setRsdtId(this.removeQuote(cell[POS_RSDT]));
         // 住居2Id

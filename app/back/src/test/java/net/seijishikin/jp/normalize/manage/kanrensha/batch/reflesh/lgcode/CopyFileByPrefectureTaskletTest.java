@@ -55,17 +55,18 @@ class CopyFileByPrefectureTaskletTest {
         String srcPath = GetCurrentResourcePath.getBackSrcPath("");
         // エンティティ
         Path path = Paths.get(srcPath,
-                 "/main/java/net/seijishikin/jp/normalize/manage/kanrensha/entity/lgcode/KanrenshaKigyouDtHistory99Entity.java");
-        
+                "/main/java/net/seijishikin/jp/normalize/manage/kanrensha/entity/lgcode/KanrenshaKigyouDtHistory99Entity.java");
+
         // レポジトリ
         // Path path = Paths.get(srcPath,
-        //         "/main/java/net/seijishikin/jp/normalize/manage/kanrensha/repository/lgcode/KanrenshaKigyouDtHistory99Repository.java");
+        // "/main/java/net/seijishikin/jp/normalize/manage/kanrensha/repository/lgcode/KanrenshaPersonHistory99Repository.java");
 
         // DDL
         // Path pathBackRoot = Paths.get(srcPath);
-        //  Path pathApp = pathBackRoot.getParent().getParent().getParent();
+        // Path pathApp = pathBackRoot.getParent().getParent().getParent();
         // Path pathDdl = Paths.get(pathApp.toString(), "config/database/DDL");
-        // Path path = Paths.get(pathDdl.toString(), "kanrensha_seijidantai_history_99.sql");
+        // Path path = Paths.get(pathDdl.toString(),
+        // "kanrensha_kigyou_dt_history_99.sql");
 
         /* テスト */
         // String srcPath = GetCurrentResourcePath.getBackTestFilePath();

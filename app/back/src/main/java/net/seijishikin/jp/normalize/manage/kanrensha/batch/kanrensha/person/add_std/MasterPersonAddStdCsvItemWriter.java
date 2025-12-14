@@ -66,19 +66,19 @@ public class MasterPersonAddStdCsvItemWriter extends JpaItemWriter<WkTblKanrensh
 
         int code = 0;
 
-//        Optional<WkTblKanrenshaPersonMasterEntity> optional = wkTblKanrenshaPersonMasterRepository
-//                .findFirstByOrderByWkTblMasterPersonCodeDesc();
-//        if (!optional.isEmpty()) {
-//            code = optional.get().getWkTblMasterPersonCode();
-//        }
-//
-//        for (WkTblKanrenshaPersonMasterEntity entity : items) {
-//            code++;
-//            setTableDataHistoryUtil.practiceInsert(userDto, entity);
-//            entity.setWkTblMasterPersonCode(code);
-//        }
-//
-//        wkTblKanrenshaPersonMasterRepository.saveAll(items);
+        Optional<WkTblKanrenshaPersonMasterEntity> optional = wkTblKanrenshaPersonMasterRepository
+                .findFirstByOrderByWkTblKanrenshaPersonMasterCodeDesc();
+        if (!optional.isEmpty()) {
+            code = optional.get().getWkTblKanrenshaPersonMasterCode();
+        }
+
+        for (WkTblKanrenshaPersonMasterEntity entity : items) {
+            code++;
+            setTableDataHistoryUtil.practiceInsert(userDto, entity);
+            entity.setWkTblKanrenshaPersonMasterCode(code);
+        }
+
+        wkTblKanrenshaPersonMasterRepository.saveAll(items);
     }
 
 }

@@ -98,16 +98,16 @@ public class KanrenshaSeijidantaiResultProcessor
             stringBuilder.append("関連者コードが入力されていません;");
         }
 
-//        if (stringBuilder.isEmpty()) {
-//            // 少なくとも団体名と関連者コードが同一でない場合は未登録とみなす
-//            List<KanrenshaSeijidantaiMasterEntity> listMaster = kanrenshaSeijidantaiMasterRepository
-//                    .findBySeijidantaiKanrenshaCodeAndCompareNameTextAndIsLatest(entity.getSeijidantaiKanrenshaCode(),
-//                            formatNaturalSearchTextUtil.practice(entity.getKanrenshaName()),
-//                            SetTableDataHistoryUtil.INSERT_STATE);
-//            if (listMaster.isEmpty()) {
-//                stringBuilder.append("コードと名称に合致する関連者が存在しません;");
-//            }
-//        }
+        if (stringBuilder.isEmpty()) {
+            // 少なくとも団体名と関連者コードが同一でない場合は未登録とみなす
+            List<KanrenshaSeijidantaiMasterEntity> listMaster = kanrenshaSeijidantaiMasterRepository
+                    .findBySeijidantaiKanrenshaCodeAndCompareNameTextAndIsLatest(entity.getSeijidantaiKanrenshaCode(),
+                            formatNaturalSearchTextUtil.practice(entity.getKanrenshaName()),
+                            SetTableDataHistoryUtil.INSERT_STATE);
+            if (listMaster.isEmpty()) {
+                stringBuilder.append("コードと名称に合致する関連者が存在しません;");
+            }
+        }
 
         return stringBuilder;
     }

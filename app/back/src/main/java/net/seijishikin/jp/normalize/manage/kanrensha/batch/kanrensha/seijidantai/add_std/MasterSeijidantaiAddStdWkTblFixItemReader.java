@@ -24,13 +24,13 @@ public class MasterSeijidantaiAddStdWkTblFixItemReader extends RepositoryItemRea
     /**
      * コンストラクタ
      *
-     * @param wkTblMasterSeijidantaiResultRepository 関連者個人マスタ標準登録処理結果ワークテーブルRepository
+     * @param wkTblKanrenshaSeijidantaiMasterResultRepository 関連者個人マスタ標準登録処理結果ワークテーブルRepository
      */
     public MasterSeijidantaiAddStdWkTblFixItemReader(
-            final @Autowired WkTblKanrenshaSeijidantaiMasterResultRepository wkTblkanrenshaSeijidantaiMasterResultRepository) {
+            final @Autowired WkTblKanrenshaSeijidantaiMasterResultRepository wkTblKanrenshaSeijidantaiMasterResultRepository) {
 
         super();
-        super.setRepository(wkTblkanrenshaSeijidantaiMasterResultRepository);
+        super.setRepository(wkTblKanrenshaSeijidantaiMasterResultRepository);
         super.setSort(new HashMap<String, Direction>()); // NOPMD
         super.setMethodName("findByInsertUserCodeAndIsLatest");
 
@@ -39,7 +39,7 @@ public class MasterSeijidantaiAddStdWkTblFixItemReader extends RepositoryItemRea
     }
 
     /**
-     * BeforeStep(読み取りファイル指定)
+     * BeforeStep
      *
      * @param stepExecution stepExecution
      */

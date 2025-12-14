@@ -39,7 +39,7 @@ public class KanrenshaPersonAddMiniWkTblFixItemReader extends RepositoryItemRead
     }
 
     /**
-     * BeforeStep(読み取りファイル指定)
+     * BeforeStep
      *
      * @param stepExecution stepExecution
      */

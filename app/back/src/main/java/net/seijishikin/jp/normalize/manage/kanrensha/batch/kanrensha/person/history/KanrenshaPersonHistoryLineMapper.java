@@ -12,13 +12,13 @@ public class KanrenshaPersonHistoryLineMapper implements LineMapper<KanrenshaPer
     /** 団体名称カラム位置 */
     private static final int POS_NAME = 0;
 
-    /** 団体名称カラム位置 */
+    /** 団体住所カラム位置 */
     private static final int POS_ADDRESS = 1;
 
-    /** 団体名称カラム位置 */
+    /** 団体代表者カラム位置 */
     private static final int POS_DELEGATE = 2;
 
-    /** 団体名称カラム位置 */
+    /** 団体コードカラム位置 */
     private static final int POS_KANRENSHA_CODE = 3;
 
     /**

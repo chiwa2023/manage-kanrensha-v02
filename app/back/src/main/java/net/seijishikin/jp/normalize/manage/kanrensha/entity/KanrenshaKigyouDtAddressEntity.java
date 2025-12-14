@@ -16,8 +16,7 @@ import net.seijishikin.jp.normalize.common_tool.entity.AllTabeDataHistoryInterfa
  */
 @Entity
 @Table(name = "kanrensha_kigyou_dt_address")
-public class KanrenshaKigyouDtAddressEntity // NOPMD DataClass
-        implements Serializable, AllTabeDataHistoryInterface {
+public class KanrenshaKigyouDtAddressEntity implements Serializable, AllTabeDataHistoryInterface { // NOPMD DataClass
 
     /** Serialize id */
     private static final long serialVersionUID = 1L;
@@ -181,267 +180,267 @@ public class KanrenshaKigyouDtAddressEntity // NOPMD DataClass
     }
 
     /** 住所郵便番号まで */
-    @Column(name = "addressPostal")
-    private String addresspostal = INIT_STRING;
+    @Column(name = "address_postal")
+    private String addressPostal = INIT_STRING;
 
     /**
      * 住所郵便番号までを取得する
      *
      * @return 住所郵便番号まで
      */
-    public String getAddresspostal() {
-        return addresspostal;
+    public String getAddressPostal() {
+        return addressPostal;
     }
 
     /**
      * 住所郵便番号までを設定する
      *
-     * @param addresspostal 住所郵便番号まで
+     * @param addressPostal 住所郵便番号まで
      */
-    public void setAddresspostal(final String addresspostal) {
-        this.addresspostal = addresspostal;
+    public void setAddressPostal(final String addressPostal) {
+        this.addressPostal = addressPostal;
     }
 
     /** 住所番地 */
-    @Column(name = "addressBlock")
-    private String addressblock = INIT_STRING;
+    @Column(name = "address_block")
+    private String addressBlock = INIT_STRING;
 
     /**
      * 住所番地を取得する
      *
      * @return 住所番地
      */
-    public String getAddressblock() {
-        return addressblock;
+    public String getAddressBlock() {
+        return addressBlock;
     }
 
     /**
      * 住所番地を設定する
      *
-     * @param addressblock 住所番地
+     * @param addressBlock 住所番地
      */
-    public void setAddressblock(final String addressblock) {
-        this.addressblock = addressblock;
+    public void setAddressBlock(final String addressBlock) {
+        this.addressBlock = addressBlock;
     }
 
     /** 住所建物 */
-    @Column(name = "addressBuilding")
-    private String addressbuilding = INIT_STRING;
+    @Column(name = "address_building")
+    private String addressBuilding = INIT_STRING;
 
     /**
      * 住所建物を取得する
      *
      * @return 住所建物
      */
-    public String getAddressbuilding() {
-        return addressbuilding;
+    public String getAddressBuilding() {
+        return addressBuilding;
     }
 
     /**
      * 住所建物を設定する
      *
-     * @param addressbuilding 住所建物
+     * @param addressBuilding 住所建物
      */
-    public void setAddressbuilding(final String addressbuilding) {
-        this.addressbuilding = addressbuilding;
+    public void setAddressBuilding(final String addressBuilding) {
+        this.addressBuilding = addressBuilding;
     }
 
     /** 地方公共団体コード */
-    @Column(name = "lgCode")
-    private String lgcode = INIT_STRING;
+    @Column(name = "lg_code")
+    private String lgCode = INIT_STRING;
 
     /**
      * 地方公共団体コードを取得する
      *
      * @return 地方公共団体コード
      */
-    public String getLgcode() {
-        return lgcode;
+    public String getLgCode() {
+        return lgCode;
     }
 
     /**
      * 地方公共団体コードを設定する
      *
-     * @param lgcode 地方公共団体コード
+     * @param lgCode 地方公共団体コード
      */
-    public void setLgcode(final String lgcode) {
-        this.lgcode = lgcode;
+    public void setLgCode(final String lgCode) {
+        this.lgCode = lgCode;
     }
 
     /** 町字Id */
-    @Column(name = "machiazaId")
-    private String machiazaid = INIT_STRING;
+    @Column(name = "machiaza_id")
+    private String machiazaId = INIT_STRING;
 
     /**
      * 町字Idを取得する
      *
      * @return 町字Id
      */
-    public String getMachiazaid() {
-        return machiazaid;
+    public String getMachiazaId() {
+        return machiazaId;
     }
 
     /**
      * 町字Idを設定する
      *
-     * @param machiazaid 町字Id
+     * @param machiazaId 町字Id
      */
-    public void setMachiazaid(final String machiazaid) {
-        this.machiazaid = machiazaid;
+    public void setMachiazaId(final String machiazaId) {
+        this.machiazaId = machiazaId;
     }
 
     /** 街区Id */
-    @Column(name = "blkId")
-    private String blkid = INIT_STRING;
+    @Column(name = "blk_id")
+    private String blkId = INIT_STRING;
 
     /**
      * 街区Idを取得する
      *
      * @return 街区Id
      */
-    public String getBlkid() {
-        return blkid;
+    public String getBlkId() {
+        return blkId;
     }
 
     /**
      * 街区Idを設定する
      *
-     * @param blkid 街区Id
+     * @param blkId 街区Id
      */
-    public void setBlkid(final String blkid) {
-        this.blkid = blkid;
+    public void setBlkId(final String blkId) {
+        this.blkId = blkId;
     }
 
     /** 地番Id */
-    @Column(name = "prcId")
-    private String prcid = INIT_STRING;
+    @Column(name = "prc_id")
+    private String prcId = INIT_STRING;
 
     /**
      * 地番Idを取得する
      *
      * @return 地番Id
      */
-    public String getPrcid() {
-        return prcid;
+    public String getPrcId() {
+        return prcId;
     }
 
     /**
      * 地番Idを設定する
      *
-     * @param prcid 地番Id
+     * @param prcId 地番Id
      */
-    public void setPrcid(final String prcid) {
-        this.prcid = prcid;
+    public void setPrcId(final String prcId) {
+        this.prcId = prcId;
     }
 
     /** 住居Id */
-    @Column(name = "rsdtId")
-    private String rsdtid = INIT_STRING;
+    @Column(name = "rsdt_id")
+    private String rsdtId = INIT_STRING;
 
     /**
      * 住居Idを取得する
      *
      * @return 住居Id
      */
-    public String getRsdtid() {
-        return rsdtid;
+    public String getRsdtId() {
+        return rsdtId;
     }
 
     /**
      * 住居Idを設定する
      *
-     * @param rsdtid 住居Id
+     * @param rsdtId 住居Id
      */
-    public void setRsdtid(final String rsdtid) {
-        this.rsdtid = rsdtid;
+    public void setRsdtId(final String rsdtId) {
+        this.rsdtId = rsdtId;
     }
 
     /** 住居2Id */
-    @Column(name = "rsdt2Id")
-    private String rsdt2id = INIT_STRING;
+    @Column(name = "rsdt2_id")
+    private String rsdt2Id = INIT_STRING;
 
     /**
      * 住居2Idを取得する
      *
      * @return 住居2Id
      */
-    public String getRsdt2id() {
-        return rsdt2id;
+    public String getRsdt2Id() {
+        return rsdt2Id;
     }
 
     /**
      * 住居2Idを設定する
      *
-     * @param rsdt2id 住居2Id
+     * @param rsdt2Id 住居2Id
      */
-    public void setRsdt2id(final String rsdt2id) {
-        this.rsdt2id = rsdt2id;
+    public void setRsdt2Id(final String rsdt2Id) {
+        this.rsdt2Id = rsdt2Id;
     }
 
     /** 住所郵便番号まで編集有無 */
-    @Column(name = "isPostalEdit")
-    private Boolean ispostaledit = INIT_BOOLEAN;
+    @Column(name = "is_postal_edit")
+    private Boolean isPostalEdit = INIT_BOOLEAN;
 
     /**
      * 住所郵便番号まで編集有無を取得する
      *
      * @return 住所郵便番号まで編集有無
      */
-    public Boolean getIspostaledit() {
-        return ispostaledit;
+    public Boolean getIsPostalEdit() {
+        return isPostalEdit;
     }
 
     /**
      * 住所郵便番号まで編集有無を設定する
      *
-     * @param ispostaledit 住所郵便番号まで編集有無
+     * @param isPostalEdit 住所郵便番号まで編集有無
      */
-    public void setIspostaledit(final Boolean ispostaledit) {
-        this.ispostaledit = ispostaledit;
+    public void setIsPostalEdit(final Boolean isPostalEdit) {
+        this.isPostalEdit = isPostalEdit;
     }
 
     /** 住所番地編集有無 */
-    @Column(name = "isBlockEdit")
-    private Boolean isblockedit = INIT_BOOLEAN;
+    @Column(name = "is_block_edit")
+    private Boolean isBlockEdit = INIT_BOOLEAN;
 
     /**
      * 住所番地編集有無を取得する
      *
      * @return 住所番地編集有無
      */
-    public Boolean getIsblockedit() {
-        return isblockedit;
+    public Boolean getIsBlockEdit() {
+        return isBlockEdit;
     }
 
     /**
      * 住所番地編集有無を設定する
      *
-     * @param isblockedit 住所番地編集有無
+     * @param isBlockEdit 住所番地編集有無
      */
-    public void setIsblockedit(final Boolean isblockedit) {
-        this.isblockedit = isblockedit;
+    public void setIsBlockEdit(final Boolean isBlockEdit) {
+        this.isBlockEdit = isBlockEdit;
     }
 
     /** 住所建物編集有無 */
-    @Column(name = "isBuildingEdit")
-    private Boolean isbuildingedit = INIT_BOOLEAN;
+    @Column(name = "is_building_edit")
+    private Boolean isBuildingEdit = INIT_BOOLEAN;
 
     /**
      * 住所建物編集有無を取得する
      *
      * @return 住所建物編集有無
      */
-    public Boolean getIsbuildingedit() {
-        return isbuildingedit;
+    public Boolean getIsBuildingEdit() {
+        return isBuildingEdit;
     }
 
     /**
      * 住所建物編集有無を設定する
      *
-     * @param isbuildingedit 住所建物編集有無
+     * @param isBuildingEdit 住所建物編集有無
      */
-    public void setIsbuildingedit(final Boolean isbuildingedit) {
-        this.isbuildingedit = isbuildingedit;
+    public void setIsBuildingEdit(final Boolean isBuildingEdit) {
+        this.isBuildingEdit = isBuildingEdit;
     }
 
     /** 住所郵便番号承認該否 */

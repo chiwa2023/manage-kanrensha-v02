@@ -64,8 +64,8 @@ public class KanrenshaKigyouDtAddStdDto implements Serializable { // NOPMD DataC
     }
 
     /** 企業・団体代表者 */
-    @Column(name = "KigyouDt_delegate")
-    private String KigyouDtDelegate = INIT_String;
+    @Column(name = "kigyou_dt_delegate")
+    private String kigyouDtDelegate = INIT_String;
 
     /**
      * 企業・団体代表者を取得する
@@ -73,16 +73,16 @@ public class KanrenshaKigyouDtAddStdDto implements Serializable { // NOPMD DataC
      * @return 企業・団体代表者
      */
     public String getKigyouDtDelegate() {
-        return KigyouDtDelegate;
+        return kigyouDtDelegate;
     }
 
     /**
      * 企業・団体代表者を設定する
      *
-     * @param KigyouDtDelegate 企業・団体代表者
+     * @param kigyouDtDelegate 企業・団体代表者
      */
-    public void setKigyouDtDelegate(final String KigyouDtDelegate) {
-        this.KigyouDtDelegate = KigyouDtDelegate;
+    public void setKigyouDtDelegate(final String kigyouDtDelegate) {
+        this.kigyouDtDelegate = kigyouDtDelegate;
     }
 
 
@@ -241,47 +241,47 @@ public class KanrenshaKigyouDtAddStdDto implements Serializable { // NOPMD DataC
     }
 
     /** 郵便番号1 */
-    @Column(name = "postal1")
-    private String postal1 = INIT_String;
+    @Column(name = "postalcode1")
+    private String postalcode1 = INIT_String;
 
     /**
      * 郵便番号1を取得する
      *
      * @return 郵便番号1
      */
-    public String getPostal1() {
-        return postal1;
+    public String getPostalcode1() {
+        return postalcode1;
     }
 
     /**
      * 郵便番号1を設定する
      *
-     * @param postal1 郵便番号1
+     * @param postalcode1 郵便番号1
      */
-    public void setPostal1(final String postal1) {
-        this.postal1 = postal1;
+    public void setPostalcode1(final String postalcode1) {
+        this.postalcode1 = postalcode1;
     }
 
     /** 郵便番号2 */
-    @Column(name = "postal2")
-    private String postal2 = INIT_String;
+    @Column(name = "postalcode2")
+    private String postalcode2 = INIT_String;
 
     /**
      * 郵便番号2を取得する
      *
      * @return 郵便番号2
      */
-    public String getPostal2() {
-        return postal2;
+    public String getPostalcode2() {
+        return postalcode2;
     }
 
     /**
      * 郵便番号2を設定する
      *
-     * @param postal2 郵便番号2
+     * @param postalcode2 郵便番号2
      */
-    public void setPostal2(final String postal2) {
-        this.postal2 = postal2;
+    public void setPostalcode2(final String postalcode2) {
+        this.postalcode2 = postalcode2;
     }
 
     /** 地方自治体コード */
@@ -348,6 +348,28 @@ public class KanrenshaKigyouDtAddStdDto implements Serializable { // NOPMD DataC
      */
     public void setBlkId(final String blkId) {
         this.blkId = blkId;
+    }
+
+    /** 地番コード */
+    @Column(name = "prc_id")
+    private String prcId = INIT_String;
+
+    /**
+     * 地番コードを取得する
+     *
+     * @return 地番コード
+     */
+    public String getPrcId() {
+        return prcId;
+    }
+
+    /**
+     * 地番コードを設定する
+     *
+     * @param prcId 地番コード
+     */
+    public void setPrcId(final String prcId) {
+        this.prcId = prcId;
     }
 
     /** 住居コード */

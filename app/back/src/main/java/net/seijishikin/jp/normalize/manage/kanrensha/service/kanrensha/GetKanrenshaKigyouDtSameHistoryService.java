@@ -213,11 +213,11 @@ public class GetKanrenshaKigyouDtSameHistoryService {
 
     /**
      * 処理を行う
-     *
-     * @param name     団体名
+     * 
+     * @param name     名称
      * @param address  住所
-     * @param delegate 代表者名
-     * @return 検索結果
+     * @param delegate 代表者
+     * @return 関連者企業団体履歴リスト
      */
     public List<KanrenshaKigyouDtHistoryBaseEntity> practice( // SUPPRESS CHECKSTYLE ReturnCount NOPMD
             final String name, final String address, final String delegate) {

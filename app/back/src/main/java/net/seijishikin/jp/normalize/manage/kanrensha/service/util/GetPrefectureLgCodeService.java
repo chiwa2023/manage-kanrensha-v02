@@ -326,7 +326,7 @@ public class GetPrefectureLgCodeService {
         }
 
         // 山形県 1,068,027人
-        // 060003,山形県,ヤマガタケン,Yamagata,1947-04-17,,
+        // 060003,山形県
         if (address.startsWith("山形県")) {
             return PREF_06;
         }

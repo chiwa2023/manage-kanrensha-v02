@@ -28,6 +28,7 @@ import net.seijishikin.jp.normalize.manage.kanrensha.repository.WkTblKanrenshaKi
 @AutoConfigureMockMvc
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
+@Transactional
 @Sql("EraseWkTblMasterKigyouDtAddStdTaskletTest.sql")
 class EraseWkTblMasterKigyouDtAddStdTaskletTest {
     // CHECKSTYLE:OFF MagicNumber
@@ -46,7 +47,6 @@ class EraseWkTblMasterKigyouDtAddStdTaskletTest {
 
     @Test
     @Tag("TableTruncate")
-    @Transactional
     void test() throws Exception {
 
         assertEquals(5, wkTblKanrenshaKigyouDtMasterRepository.count());

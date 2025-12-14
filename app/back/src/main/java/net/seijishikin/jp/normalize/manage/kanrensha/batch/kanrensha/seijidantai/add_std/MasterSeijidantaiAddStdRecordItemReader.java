@@ -39,7 +39,7 @@ public class MasterSeijidantaiAddStdRecordItemReader extends RepositoryItemReade
     }
 
     /**
-     * BeforeStep(読み取りファイル指定)
+     * BeforeStep
      *
      * @param stepExecution stepExecution
      */

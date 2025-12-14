@@ -84,22 +84,23 @@ public class KanrenshaKigyouDtAddMiniCsvProcessor
             }
         }
 
-//        // 全く同じ履歴があるかどうか確認する
-//        List<KanrenshaKigyouDtHistoryBaseEntity> listHistory = this.selectSameRirekiList(entity.getKanrenshaName(),
-//                entity.getAllAddress(), entity.getKigyouDtDelegate());
-//        if (listHistory.isEmpty()) {
-//            if (!entity.getIsAffected()) {
-//                // マスタに同名の団体があるかどうか確認する
-//                List<KanrenshaKigyouDtMasterEntity> listMaster = kanrenshaKigyouDtMasterRepository.findByCompareNameTextAndIsLatest(
-//                        formatNaturalSearchTextUtil.practice(entity.getKanrenshaName()),
-//                        SetTableDataHistoryUtil.INSERT_STATE);
-//                if (!listMaster.isEmpty()) { // SUPPRESS CHECKSTYLE NestedIf
-//                    stringBuilder.append("同名の団体があります。確認調査の上、必要に応じて追加してください;");
-//                }
-//            }
-//        } else {
-//            stringBuilder.append("すでに登録が存在します(").append(listHistory.get(0).getKigyouDtKanrenshaCode()).append(");");
-//        }
+        // 全く同じ履歴があるかどうか確認する
+        List<KanrenshaKigyouDtHistoryBaseEntity> listHistory = this.selectSameRirekiList(entity.getKanrenshaName(),
+                entity.getAllAddress(), entity.getKigyouDtDelegate());
+        if (listHistory.isEmpty()) {
+            if (!entity.getIsAffected()) {
+                // マスタに同名の団体があるかどうか確認する
+                List<KanrenshaKigyouDtMasterEntity> listMaster = kanrenshaKigyouDtMasterRepository
+                        .findByCompareNameTextAndIsLatest(
+                                formatNaturalSearchTextUtil.practice(entity.getKanrenshaName()),
+                                SetTableDataHistoryUtil.INSERT_STATE);
+                if (!listMaster.isEmpty()) { // SUPPRESS CHECKSTYLE NestedIf
+                    stringBuilder.append("同名の団体があります。確認調査の上、必要に応じて追加してください;");
+                }
+            }
+        } else {
+            stringBuilder.append("すでに登録が存在します(").append(listHistory.get(0).getKigyouDtKanrenshaCode()).append(");");
+        }
 
         // 入力に問題がある場合は記録だけ残して処理中断
         if (stringBuilder.isEmpty()) {
@@ -115,16 +116,13 @@ public class KanrenshaKigyouDtAddMiniCsvProcessor
         return entity;
     }
 
-    /*
-     * 同属性リストを取得する
-     *
-     * @param name 団体名称
+    /**
+     * 同一履歴を取得する
      * 
-     * @param address 全住所
-     * 
-     * @param delegate 代表者名
-     * 
-     * @return 検索結果
+     * @param name     名称
+     * @param address  住所
+     * @param delegate 団体代表者
+     * @return 取得できたリスト
      */
     private List<KanrenshaKigyouDtHistoryBaseEntity> selectSameRirekiList(final String name, final String address,
             final String delegate) {

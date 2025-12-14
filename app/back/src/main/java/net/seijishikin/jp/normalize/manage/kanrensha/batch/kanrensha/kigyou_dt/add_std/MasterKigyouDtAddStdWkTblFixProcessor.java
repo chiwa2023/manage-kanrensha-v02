@@ -30,13 +30,13 @@ public class MasterKigyouDtAddStdWkTblFixProcessor
 
         WkTblKanrenshaKigyouDtMasterEntity entity = new WkTblKanrenshaKigyouDtMasterEntity();
 
-//        Optional<WkTblKanrenshaKigyouDtMasterEntity> optional = wkTblKanrenshaKigyouDtMasterRepository
-//                .findById(item.getWkTblMasterKigyouDtId());
-//        if (!optional.isEmpty()) {
-//            entity = optional.get();
-//            entity.setIsFinish(true);
-//            entity.setJudgeReason("正常終了");
-//        }
+        Optional<WkTblKanrenshaKigyouDtMasterEntity> optional = wkTblKanrenshaKigyouDtMasterRepository
+                .findById(item.getWkTblKanrenshaKigyouDtMasterId());
+        if (!optional.isEmpty()) {
+            entity = optional.get();
+            entity.setIsFinish(true);
+            entity.setJudgeReason("正常終了");
+        }
 
         return entity;
     }

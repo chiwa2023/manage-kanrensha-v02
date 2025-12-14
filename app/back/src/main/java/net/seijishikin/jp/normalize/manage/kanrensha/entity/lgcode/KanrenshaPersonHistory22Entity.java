@@ -77,6 +77,7 @@ public class KanrenshaPersonHistory22Entity // NOPMD DataClass
      *
      * @return 最新フラグ
      */
+    @Override
     public Boolean getIsLatest() {
         return isLatest;
     }
@@ -86,6 +87,7 @@ public class KanrenshaPersonHistory22Entity // NOPMD DataClass
      *
      * @param isLatest 最新フラグ
      */
+    @Override
     public void setIsLatest(final Boolean isLatest) {
         this.isLatest = isLatest;
     }
@@ -187,6 +189,7 @@ public class KanrenshaPersonHistory22Entity // NOPMD DataClass
      *
      * @return 挿入ユーザーId
      */
+    @Override
     public Integer getInsertUserId() {
         return insertUserId;
     }
@@ -196,6 +199,7 @@ public class KanrenshaPersonHistory22Entity // NOPMD DataClass
      *
      * @param insertUserId 挿入ユーザーId
      */
+    @Override
     public void setInsertUserId(final Integer insertUserId) {
         this.insertUserId = insertUserId;
     }
@@ -209,6 +213,7 @@ public class KanrenshaPersonHistory22Entity // NOPMD DataClass
      *
      * @return 挿入ユーザコード
      */
+    @Override
     public Integer getInsertUserCode() {
         return insertUserCode;
     }
@@ -218,6 +223,7 @@ public class KanrenshaPersonHistory22Entity // NOPMD DataClass
      *
      * @param insertUserCode 挿入ユーザコード
      */
+    @Override
     public void setInsertUserCode(final Integer insertUserCode) {
         this.insertUserCode = insertUserCode;
     }
@@ -231,6 +237,7 @@ public class KanrenshaPersonHistory22Entity // NOPMD DataClass
      *
      * @return 挿入ユーザ名
      */
+    @Override
     public String getInsertUserName() {
         return insertUserName;
     }
@@ -240,6 +247,7 @@ public class KanrenshaPersonHistory22Entity // NOPMD DataClass
      *
      * @param insertUserName 挿入ユーザ名
      */
+    @Override
     public void setInsertUserName(final String insertUserName) {
         this.insertUserName = insertUserName;
     }
@@ -253,6 +261,7 @@ public class KanrenshaPersonHistory22Entity // NOPMD DataClass
      *
      * @return 挿入日時
      */
+    @Override
     public LocalDateTime getInsertTimestamp() {
         return insertTimestamp;
     }
@@ -262,6 +271,7 @@ public class KanrenshaPersonHistory22Entity // NOPMD DataClass
      *
      * @param insertTimestamp 挿入日時
      */
+    @Override
     public void setInsertTimestamp(final LocalDateTime insertTimestamp) {
         this.insertTimestamp = insertTimestamp;
     }
@@ -275,6 +285,7 @@ public class KanrenshaPersonHistory22Entity // NOPMD DataClass
      *
      * @return 削除ユーザId
      */
+    @Override
     public Integer getDeleteUserId() {
         return deleteUserId;
     }
@@ -284,6 +295,7 @@ public class KanrenshaPersonHistory22Entity // NOPMD DataClass
      *
      * @param deleteUserId 削除ユーザId
      */
+    @Override
     public void setDeleteUserId(final Integer deleteUserId) {
         this.deleteUserId = deleteUserId;
     }
@@ -297,6 +309,7 @@ public class KanrenshaPersonHistory22Entity // NOPMD DataClass
      *
      * @return 削除ユーザコード
      */
+    @Override
     public Integer getDeleteUserCode() {
         return deleteUserCode;
     }
@@ -306,6 +319,7 @@ public class KanrenshaPersonHistory22Entity // NOPMD DataClass
      *
      * @param deleteUserCode 削除ユーザコード
      */
+    @Override
     public void setDeleteUserCode(final Integer deleteUserCode) {
         this.deleteUserCode = deleteUserCode;
     }
@@ -319,6 +333,7 @@ public class KanrenshaPersonHistory22Entity // NOPMD DataClass
      *
      * @return 削除ユーザ名
      */
+    @Override
     public String getDeleteUserName() {
         return deleteUserName;
     }
@@ -328,6 +343,7 @@ public class KanrenshaPersonHistory22Entity // NOPMD DataClass
      *
      * @param deleteUserName 削除ユーザ名
      */
+    @Override
     public void setDeleteUserName(final String deleteUserName) {
         this.deleteUserName = deleteUserName;
     }
@@ -341,6 +357,7 @@ public class KanrenshaPersonHistory22Entity // NOPMD DataClass
      *
      * @return 削除日時
      */
+    @Override
     public LocalDateTime getDeleteTimestamp() {
         return deleteTimestamp;
     }
@@ -350,6 +367,7 @@ public class KanrenshaPersonHistory22Entity // NOPMD DataClass
      *
      * @param deleteTimestamp 削除日時
      */
+    @Override
     public void setDeleteTimestamp(final LocalDateTime deleteTimestamp) {
         this.deleteTimestamp = deleteTimestamp;
     }

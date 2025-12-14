@@ -66,19 +66,19 @@ public class KanrenshaKigyouDtAddMiniCsvItemWriter extends JpaItemWriter<WkTblKa
 
         int code = 0;
 
-//        Optional<WkTblKanrenshaKigyouDtAddMinEntity> optional = wkTblKanrenshaKigyouDtAddMinRepository
-//                .findFirstByOrderByWkTblKanrenshaKigyouDtAddMinCodeDesc();
-//        if (!optional.isEmpty()) {
-//            code = optional.get().getWkTblKanrenshaKigyouDtAddMinCode();
-//        }
-//
-//        for (WkTblKanrenshaKigyouDtAddMinEntity entity : items) {
-//            code++;
-//            setTableDataHistoryUtil.practiceInsert(userDto, entity);
-//            entity.setWkTblKanrenshaKigyouDtAddMinCode(code);
-//        }
-//
-//        wkTblKanrenshaKigyouDtAddMinRepository.saveAll(items);
+        Optional<WkTblKanrenshaKigyouDtAddMinEntity> optional = wkTblKanrenshaKigyouDtAddMinRepository
+                .findFirstByOrderByWkTblKanrenshaKigyouDtAddMinCodeDesc();
+        if (!optional.isEmpty()) {
+            code = optional.get().getWkTblKanrenshaKigyouDtAddMinCode();
+        }
+
+        for (WkTblKanrenshaKigyouDtAddMinEntity entity : items) {
+            code++;
+            setTableDataHistoryUtil.practiceInsert(userDto, entity);
+            entity.setWkTblKanrenshaKigyouDtAddMinCode(code);
+        }
+
+        wkTblKanrenshaKigyouDtAddMinRepository.saveAll(items);
     }
 
 }

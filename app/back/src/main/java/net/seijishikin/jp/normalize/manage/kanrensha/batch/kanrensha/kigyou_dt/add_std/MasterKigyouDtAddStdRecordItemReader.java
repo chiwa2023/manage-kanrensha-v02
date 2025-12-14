@@ -24,7 +24,7 @@ public class MasterKigyouDtAddStdRecordItemReader extends RepositoryItemReader<W
     /**
      * コンストラクタ
      *
-     * @param wkTblMasterKigyouDtRepository 関連者企業・団体標準登録ワークテーブルRepository
+     * @param wkTblKanrenshaKigyouDtMasterRepository 関連者企業・団体標準登録ワークテーブルRepository
      */
     public MasterKigyouDtAddStdRecordItemReader(
             final @Autowired WkTblKanrenshaKigyouDtMasterRepository wkTblKanrenshaKigyouDtMasterRepository) {

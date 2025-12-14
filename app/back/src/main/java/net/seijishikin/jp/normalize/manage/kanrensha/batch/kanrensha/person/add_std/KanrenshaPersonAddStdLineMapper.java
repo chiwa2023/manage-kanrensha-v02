@@ -51,55 +51,63 @@ public class KanrenshaPersonAddStdLineMapper implements LineMapper<KanrenshaPers
     /** 自分の公式サイトカラム位置 */
     private static final int POS_MYPORTAL_URL = 12;
 
+    /** SNSサービス名称 */
+    private static final int POS_SNS_NAME = 13;
+
+    /** SNSサービスアカウント */
+    private static final int POS_SNS_ACCOUNT = 14;
+
     /** 外国籍該否カラム位置 */
-    private static final int POS_FOREIGN = 13;
+    private static final int POS_FOREIGN = 15;
 
     /** 姓名の姓 */
-    private static final int POS_LAST_NAME = 14;
+    private static final int POS_LAST_NAME = 16;
 
     /** 姓名の名 */
-    private static final int POS_FIRST_NAME = 15;
+    private static final int POS_FIRST_NAME = 17;
 
     /** 姓名のミドルネーム */
-    private static final int POS_MIDDLE_NAME = 16;
+    private static final int POS_MIDDLE_NAME = 18;
 
     /** 姓名の姓のかな */
-    private static final int POS_LAST_NAME_KANA = 17;
+    private static final int POS_LAST_NAME_KANA = 19;
 
     /** 姓名の名のかな */
-    private static final int POS_FIRST_NAME_KANA = 18;
+    private static final int POS_FIRST_NAME_KANA = 20;
 
     /** 姓名のミドルネームのかな */
-    private static final int POS_MIDDLE_KANA = 19;
+    private static final int POS_MIDDLE_KANA = 21;
 
     /** 職業の業種 */
-    private static final int POS_GYOUSHU = 20;
+    private static final int POS_GYOUSHU = 22;
 
     /** 職業の役職 */
-    private static final int POS_YAKUSHOKU = 21;
+    private static final int POS_YAKUSHOKU = 23;
 
     /** 職業のユーザ記載 */
-    private static final int POS_USER_WRITE = 22;
+    private static final int POS_USER_WRITE = 24;
 
     /** 職業法人番号 */
-    private static final int POS_CORP_NO = 23;
+    private static final int POS_CORP_NO = 25;
 
     /** 職業法人住所 */
-    private static final int POS_CORP_ADDRESS = 24;
+    private static final int POS_CORP_ADDRESS = 26;
 
     /** 職業法人名 */
-    private static final int POS_CORP_NAME = 25;
+    private static final int POS_CORP_NAME = 27;
 
     /** 地方公共団体コード */
-    private static final int POS_LGCODE = 26;
+    private static final int POS_LGCODE = 28;
     /** 町字Id */
-    private static final int POS_MACHIAZA = 27;
+    private static final int POS_MACHIAZA = 29;
     /** 街区Id */
-    private static final int POS_BLOCK = 28;
+    private static final int POS_BLOCK = 30;
+    /** 地番Id */
+    private static final int POS_PRC = 31;
     /** 住居Id */
-    private static final int POS_RSDT = 29;
+    private static final int POS_RSDT = 32;
     /** 住居2Id */
-    private static final int POS_RSDT2 = 30;
+    private static final int POS_RSDT2 = 33;
 
     /** 空文字 */
     private static final String EMPTY = "";
@@ -140,9 +148,9 @@ public class KanrenshaPersonAddStdLineMapper implements LineMapper<KanrenshaPers
         // 住所建物までカラム位置
         dto.setAddressBuilding(this.removeQuote(cell[POS_ADDRESS_BUILDING]));
         // 郵便番号1カラム位置
-        dto.setPostal1(this.removeQuote(cell[POS_POSTAL1]));
+        dto.setPostalcode1(this.removeQuote(cell[POS_POSTAL1]));
         // 郵便番号2カラム位置
-        dto.setPostal2(this.removeQuote(cell[POS_POSTAL2]));
+        dto.setPostalcode2(this.removeQuote(cell[POS_POSTAL2]));
         // 電話番号市外局番カラム位置
         dto.setPhon1(this.removeQuote(cell[POS_PHONE1]));
         // 電話番号局番カラム位置
@@ -187,10 +195,16 @@ public class KanrenshaPersonAddStdLineMapper implements LineMapper<KanrenshaPers
         dto.setMachiazaId(this.removeQuote(cell[POS_MACHIAZA]));
         // 街区Id
         dto.setBlkId(this.removeQuote(cell[POS_BLOCK]));
+        // 地番Id
+        dto.setPrcId(this.removeQuote(cell[POS_PRC]));
         // 住居Id
         dto.setRsdtId(this.removeQuote(cell[POS_RSDT]));
         // 住居2Id
         dto.setRsdt2Id(this.removeQuote(cell[POS_RSDT2]));
+        // SNSサービス名称
+        dto.setSnsServiceName(this.removeQuote(cell[POS_SNS_NAME]));
+        // SNSサービスアカウント
+        dto.setSnsAccount(this.removeQuote(cell[POS_SNS_ACCOUNT]));
 
         return dto;
     }

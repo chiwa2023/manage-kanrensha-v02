@@ -39,7 +39,7 @@ public class KanrenshaPersonAddMiniRecordItemReader extends RepositoryItemReader
     }
 
     /**
-     * BeforeStep(読み取りファイル指定)
+     * BeforeStep
      *
      * @param stepExecution stepExecution
      */

@@ -56,7 +56,7 @@ public class KanrenshaSeijidantaiAddMiniDto implements Serializable { // NOPMD D
     }
 
     /** 政治団体代表者 */
-    private String KigyouDtDelegate = INIT_String;
+    private String seijidantaiDelegate = INIT_String;
 
     /**
      * 政治団体代表者を取得する
@@ -64,16 +64,16 @@ public class KanrenshaSeijidantaiAddMiniDto implements Serializable { // NOPMD D
      * @return 政治団体代表者
      */
     public String getSeijidantaiDelegate() {
-        return KigyouDtDelegate;
+        return seijidantaiDelegate;
     }
 
     /**
      * 政治団体代表者を設定する
      *
-     * @param KigyouDtDelegate 政治団体代表者
+     * @param seijidantaiDelegate 政治団体代表者
      */
-    public void setSeijidantaiDelegate(final String KigyouDtDelegate) {
-        this.KigyouDtDelegate = KigyouDtDelegate;
+    public void setSeijidantaiDelegate(final String seijidantaiDelegate) {
+        this.seijidantaiDelegate = seijidantaiDelegate;
     }
 
     /** 政治団体区分 */

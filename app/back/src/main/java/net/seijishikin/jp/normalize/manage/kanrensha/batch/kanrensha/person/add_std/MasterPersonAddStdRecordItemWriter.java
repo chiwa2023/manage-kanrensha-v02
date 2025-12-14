@@ -80,9 +80,6 @@ public class MasterPersonAddStdRecordItemWriter extends JpaItemWriter<WkTblKanre
     /** ユーザ最低限Dto */
     private LeastUserDto userDto;
 
-    /** 空文字 */
-    private static final String EMPTY = "";
-
     /**
      * コンストラクタ
      *
@@ -149,19 +146,6 @@ public class MasterPersonAddStdRecordItemWriter extends JpaItemWriter<WkTblKanre
         addressEntity.setKanrenshaPersonId(masterId);
         BeanUtils.copyProperties(entityWkTbl, addressEntity);
         setTableDataHistoryUtil.practiceInsert(userDto, addressEntity);
-        // 各住所項目に記載がある場合はチェック対象とする
-//        if (!EMPTY.equals(entityWkTbl.getAddressPostal())) {
-//            addressEntity.setIsPostalEdit(true);
-//            addressEntity.setIsPostalAccept(false);
-//        }
-//        if (!EMPTY.equals(entityWkTbl.getAddressBlock())) {
-//            addressEntity.setIsBlockEdit(true);
-//            addressEntity.setIsBlockAccept(false);
-//        }
-//        if (!EMPTY.equals(entityWkTbl.getAddressBuilding())) {
-//            addressEntity.setIsBuildingEdit(true);
-//            addressEntity.setIsBuildingAccept(false);
-//        }
         masterPersonaddAddressRepository.save(addressEntity);
 
         // マスタ連絡先登録
@@ -172,19 +156,7 @@ public class MasterPersonAddStdRecordItemWriter extends JpaItemWriter<WkTblKanre
         setTableDataHistoryUtil.practiceInsert(userDto, accessEntity);
         masterPersonAccessRepository.save(accessEntity);
 
-        // マスタ基本登録
-//        KanrenshaPersonMasterBaseEntity baseEntity = new KanrenshaPersonMasterBaseEntity();
-//        baseEntity.setPersonKanrenshaCode(kanrenshaCode);
-//        baseEntity.setKanrenshaPersonMasterId(masterId);
-//        BeanUtils.copyProperties(entityWkTbl, baseEntity);
-//        setTableDataHistoryUtil.practiceInsert(userDto, baseEntity);
-//        if (!EMPTY.equals(entityWkTbl.getShokugyouUserWrite())) {
-//            baseEntity.setIsShokyouEdit(true);
-//            baseEntity.setIsShokyouAccept(false);
-//        }
-//        masterPersonBaseRepository.save(baseEntity);
-
-        // マスタ(その他)属性登録
+        // マスタ属性登録
         KanrenshaPersonPropertyEntity propertyEntity = new KanrenshaPersonPropertyEntity();
         propertyEntity.setPersonKanrenshaCode(kanrenshaCode);
         propertyEntity.setKanrenshaPersonId(masterId);

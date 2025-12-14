@@ -14,7 +14,7 @@ import net.seijishikin.jp.normalize.common_tool.entity.AllTabeDataHistoryInterfa
  * kanrensha_person_history_99接続用Entity
  */
 @Entity
-public class KanrenshaPersonHistoryBaseEntity
+public class KanrenshaPersonHistoryBaseEntity // NOPMD DataClass
         implements Serializable, AllTabeDataHistoryInterface {
 
     /** Serialize id */

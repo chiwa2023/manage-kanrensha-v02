@@ -33,7 +33,7 @@ public class MasterKigyouDtAddStdWkTblFixItemWriter extends JpaItemWriter<WkTblK
     private CreateUserLeastDtoByBatchParamUtil createUserLeastDtoByBatchParamUtil;
 
     /** ユーザ最低限Dto */
-    private LeastUserDto userDto;
+    private LeastUserDto userDto = new LeastUserDto();
 
     /**
      * コンストラクタ

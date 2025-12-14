@@ -77,6 +77,7 @@ public class WkTblKanrenshaKigyouDtMasterEntity // NOPMD DataClass
      *
      * @return 最新該否
      */
+    @Override
     public Boolean getIsLatest() {
         return isLatest;
     }
@@ -86,6 +87,7 @@ public class WkTblKanrenshaKigyouDtMasterEntity // NOPMD DataClass
      *
      * @param isLatest 最新該否
      */
+    @Override
     public void setIsLatest(final Boolean isLatest) {
         this.isLatest = isLatest;
     }
@@ -333,47 +335,47 @@ public class WkTblKanrenshaKigyouDtMasterEntity // NOPMD DataClass
     }
 
     /** 郵便番号1 */
-    @Column(name = "postal1")
-    private String postal1 = INIT_STRING;
+    @Column(name = "postalcode1")
+    private String postalcode1 = INIT_STRING;
 
     /**
      * 郵便番号1を取得する
      *
      * @return 郵便番号1
      */
-    public String getPostal1() {
-        return postal1;
+    public String getPostalcode1() {
+        return postalcode1;
     }
 
     /**
      * 郵便番号1を設定する
      *
-     * @param postal1 郵便番号1
+     * @param postalcode1 郵便番号1
      */
-    public void setPostal1(final String postal1) {
-        this.postal1 = postal1;
+    public void setPostalcode1(final String postalcode1) {
+        this.postalcode1 = postalcode1;
     }
 
     /** 郵便番号2 */
-    @Column(name = "postal2")
-    private String postal2 = INIT_STRING;
+    @Column(name = "postalcode2")
+    private String postalcode2 = INIT_STRING;
 
     /**
      * 郵便番号2を取得する
      *
      * @return 郵便番号2
      */
-    public String getPostal2() {
-        return postal2;
+    public String getPostalcode2() {
+        return postalcode2;
     }
 
     /**
      * 郵便番号2を設定する
      *
-     * @param postal2 郵便番号2
+     * @param postalcode2 郵便番号2
      */
-    public void setPostal2(final String postal2) {
-        this.postal2 = postal2;
+    public void setPostalcode2(final String postalcode2) {
+        this.postalcode2 = postalcode2;
     }
 
     /** 地方自治体コード */
@@ -440,6 +442,28 @@ public class WkTblKanrenshaKigyouDtMasterEntity // NOPMD DataClass
      */
     public void setBlkId(final String blkId) {
         this.blkId = blkId;
+    }
+
+    /** 地番コード */
+    @Column(name = "prc_id")
+    private String prcId = INIT_STRING;
+
+    /**
+     * 地番コードを取得する
+     *
+     * @return 地番コード
+     */
+    public String getPrcId() {
+        return prcId;
+    }
+
+    /**
+     * 地番コードを設定する
+     *
+     * @param prcId 地番コード
+     */
+    public void setPrcId(final String prcId) {
+        this.prcId = prcId;
     }
 
     /** 住居コード */
@@ -574,23 +598,23 @@ public class WkTblKanrenshaKigyouDtMasterEntity // NOPMD DataClass
         this.email = email;
     }
 
-    /** 代表(公式)url */
+    /** 代表(公式)サイトurl */
     @Column(name = "my_portal_url")
     private String myPortalUrl = INIT_STRING;
 
     /**
-     * 代表(公式)urlを取得する
+     * 代表(公式)サイトurlを取得する
      *
-     * @return 代表(公式)url
+     * @return 代表(公式)サイトurl
      */
     public String getMyPortalUrl() {
         return myPortalUrl;
     }
 
     /**
-     * 代表(公式)urlを設定する
+     * 代表(公式)サイトurlを設定する
      *
-     * @param myPortalUrl 代表(公式)url
+     * @param myPortalUrl 代表(公式)サイトurl
      */
     public void setMyPortalUrl(final String myPortalUrl) {
         this.myPortalUrl = myPortalUrl;
@@ -737,7 +761,8 @@ public class WkTblKanrenshaKigyouDtMasterEntity // NOPMD DataClass
      *
      * @return 挿入ユーザId
      */
-    public Integer getInsertUserId() {
+    @Override
+   public Integer getInsertUserId() {
         return insertUserId;
     }
 
@@ -746,6 +771,7 @@ public class WkTblKanrenshaKigyouDtMasterEntity // NOPMD DataClass
      *
      * @param insertUserId 挿入ユーザId
      */
+    @Override
     public void setInsertUserId(final Integer insertUserId) {
         this.insertUserId = insertUserId;
     }
@@ -759,6 +785,7 @@ public class WkTblKanrenshaKigyouDtMasterEntity // NOPMD DataClass
      *
      * @return 挿入ユーザコード
      */
+    @Override
     public Integer getInsertUserCode() {
         return insertUserCode;
     }
@@ -768,6 +795,7 @@ public class WkTblKanrenshaKigyouDtMasterEntity // NOPMD DataClass
      *
      * @param insertUserCode 挿入ユーザコード
      */
+    @Override
     public void setInsertUserCode(final Integer insertUserCode) {
         this.insertUserCode = insertUserCode;
     }
@@ -781,6 +809,7 @@ public class WkTblKanrenshaKigyouDtMasterEntity // NOPMD DataClass
      *
      * @return 挿入ユーザ名称
      */
+    @Override
     public String getInsertUserName() {
         return insertUserName;
     }
@@ -790,6 +819,7 @@ public class WkTblKanrenshaKigyouDtMasterEntity // NOPMD DataClass
      *
      * @param insertUserName 挿入ユーザ名称
      */
+    @Override
     public void setInsertUserName(final String insertUserName) {
         this.insertUserName = insertUserName;
     }
@@ -803,6 +833,7 @@ public class WkTblKanrenshaKigyouDtMasterEntity // NOPMD DataClass
      *
      * @return 挿入日時
      */
+    @Override
     public LocalDateTime getInsertTimestamp() {
         return insertTimestamp;
     }
@@ -812,6 +843,7 @@ public class WkTblKanrenshaKigyouDtMasterEntity // NOPMD DataClass
      *
      * @param insertTimestamp 挿入日時
      */
+    @Override
     public void setInsertTimestamp(final LocalDateTime insertTimestamp) {
         this.insertTimestamp = insertTimestamp;
     }
@@ -825,6 +857,7 @@ public class WkTblKanrenshaKigyouDtMasterEntity // NOPMD DataClass
      *
      * @return 無効ユーザId
      */
+    @Override
     public Integer getDeleteUserId() {
         return deleteUserId;
     }
@@ -834,6 +867,7 @@ public class WkTblKanrenshaKigyouDtMasterEntity // NOPMD DataClass
      *
      * @param deleteUserId 無効ユーザId
      */
+    @Override
     public void setDeleteUserId(final Integer deleteUserId) {
         this.deleteUserId = deleteUserId;
     }
@@ -847,6 +881,7 @@ public class WkTblKanrenshaKigyouDtMasterEntity // NOPMD DataClass
      *
      * @return 無効ユーザコード
      */
+    @Override
     public Integer getDeleteUserCode() {
         return deleteUserCode;
     }
@@ -856,6 +891,7 @@ public class WkTblKanrenshaKigyouDtMasterEntity // NOPMD DataClass
      *
      * @param deleteUserCode 無効ユーザコード
      */
+    @Override
     public void setDeleteUserCode(final Integer deleteUserCode) {
         this.deleteUserCode = deleteUserCode;
     }
@@ -869,6 +905,7 @@ public class WkTblKanrenshaKigyouDtMasterEntity // NOPMD DataClass
      *
      * @return 無効ユーザ名称
      */
+    @Override
     public String getDeleteUserName() {
         return deleteUserName;
     }
@@ -878,6 +915,7 @@ public class WkTblKanrenshaKigyouDtMasterEntity // NOPMD DataClass
      *
      * @param deleteUserName 無効ユーザ名称
      */
+    @Override
     public void setDeleteUserName(final String deleteUserName) {
         this.deleteUserName = deleteUserName;
     }
@@ -891,6 +929,7 @@ public class WkTblKanrenshaKigyouDtMasterEntity // NOPMD DataClass
      *
      * @return 無効日時
      */
+    @Override
     public LocalDateTime getDeleteTimestamp() {
         return deleteTimestamp;
     }
@@ -900,6 +939,7 @@ public class WkTblKanrenshaKigyouDtMasterEntity // NOPMD DataClass
      *
      * @param deleteTimestamp 無効日時
      */
+    @Override
     public void setDeleteTimestamp(final LocalDateTime deleteTimestamp) {
         this.deleteTimestamp = deleteTimestamp;
     }

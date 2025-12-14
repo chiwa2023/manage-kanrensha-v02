@@ -39,7 +39,7 @@ public class MasterPersonAddStdWkTblFixItemReader extends RepositoryItemReader<W
     }
 
     /**
-     * BeforeStep(読み取りファイル指定)
+     * BeforeStep
      *
      * @param stepExecution stepExecution
      */

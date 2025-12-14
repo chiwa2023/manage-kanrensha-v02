@@ -1,0 +1,42 @@
+TRUNCATE TABLE `wk_tbl_kanrensha_kigyou_dt_master`;
+ALTER TABLE `wk_tbl_kanrensha_kigyou_dt_master` AUTO_INCREMENT = 1;
+
+INSERT INTO `wk_tbl_kanrensha_kigyou_dt_master` (
+  `wk_tbl_kanrensha_kigyou_dt_master_id`,
+  `wk_tbl_kanrensha_kigyou_dt_master_code`,
+  `is_latest`,
+  `is_finish`,
+  `kanrensha_name`,
+  `all_address`,
+  `kigyou_dt_delegate`,
+  `houjin_no`,
+  `org_name_kana`,
+  `is_shiten`,
+  `org_delegate_code`,
+  `address_postal`,
+  `address_block`,
+  `address_building`,
+  `postalcode1`,
+  `postalcode2`,
+  `lg_code`,
+  `machiaza_id`,
+  `blk_id`,
+  `rsdt_id`,
+  `rsdt2_id`,
+  `phon1`,
+  `phon2`,
+  `phon3`,
+  `email`,
+  `my_portal_url`,
+  `sns_service_name`,
+  `sns_account`,
+  `houjin_sbts`,
+  `is_foreign`,
+  `is_affected`,
+  `judge_reason`,
+  `insert_user_id`,
+  `insert_user_code`,
+  `insert_user_name`,
+  `insert_timestamp`
+) VALUES
+(1001, 1101, 1, 0, '株式会社ABC', '東京都千代田区1-1-1', '代表山田', '1234567890123', 'カブシキガイシャエービーシー', 0, 'D1001', '100-0001', '千代田区', 'ビルディング101', '100', '0001', '131016', '0001', '0001', '0001', '0001', '03', '1234', '5678', 'abc@example.com', 'http://abc.co.jp', 'Twitter', '@abc_official', '001', 0, 1, '正)', 1, 190, 'gemini-user', NOW());

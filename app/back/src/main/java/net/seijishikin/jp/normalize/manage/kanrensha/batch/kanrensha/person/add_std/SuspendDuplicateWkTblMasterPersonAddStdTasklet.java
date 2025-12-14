@@ -59,25 +59,25 @@ public class SuspendDuplicateWkTblMasterPersonAddStdTasklet implements Tasklet, 
 
         Integer userCode = userDto.getUserPersonCode();
 
-//        List<KanrenshaPersonMasterUniquekeyDto> listKeyGroup = wkTblKanrenshaPersonMasterRepository
-//                .findDuplicateUniqueKey(userCode);
-//
-//        for (KanrenshaPersonMasterUniquekeyDto uniqueDto : listKeyGroup) {
-//            List<WkTblKanrenshaPersonMasterEntity> list = wkTblKanrenshaPersonMasterRepository
-//                    .findByKanrenshaNameAndAllAddressAndPersonShokugyouAndInsertUserCodeOrderByWkTblMasterPersonIdAsc(
-//                            uniqueDto.getKanrenshaName(), uniqueDto.getAllAddress(), uniqueDto.getPersonShokugyou(),
-//                            userCode);
-//
-//            list.remove(0); // 1行だけは処理実行行として残す
-//            for (WkTblKanrenshaPersonMasterEntity entity : list) {
-//                setTableDataHistoryUtil.practiceDelete(userDto, entity); // 削除
-//                entity.setIsLatest(SetTableDataHistoryUtil.DELETE_STATE);
-//                entity.setIsFinish(true);
-//                entity.setJudgeReason("アップロードファイル内で重複しているデータです");
-//            }
-//            wkTblKanrenshaPersonMasterRepository.saveAllAndFlush(list);
-//
-//        }
+        List<KanrenshaPersonMasterUniquekeyDto> listKeyGroup = wkTblKanrenshaPersonMasterRepository
+                .findDuplicateUniqueKey(userCode);
+
+        for (KanrenshaPersonMasterUniquekeyDto uniqueDto : listKeyGroup) {
+            List<WkTblKanrenshaPersonMasterEntity> list = wkTblKanrenshaPersonMasterRepository
+                    .findByKanrenshaNameAndAllAddressAndPersonShokugyouAndInsertUserCodeOrderByWkTblKanrenshaPersonMasterIdAsc(
+                            uniqueDto.getKanrenshaName(), uniqueDto.getAllAddress(), uniqueDto.getPersonShokugyou(),
+                            userCode);
+
+            list.remove(0); // 1行だけは処理実行行として残す
+            for (WkTblKanrenshaPersonMasterEntity entity : list) {
+                setTableDataHistoryUtil.practiceDelete(userDto, entity); // 削除
+                entity.setIsLatest(SetTableDataHistoryUtil.DELETE_STATE);
+                entity.setIsFinish(true);
+                entity.setJudgeReason("アップロードファイル内で重複しているデータです");
+            }
+            wkTblKanrenshaPersonMasterRepository.saveAllAndFlush(list);
+
+        }
 
         // 処理終了
         return RepeatStatus.FINISHED;

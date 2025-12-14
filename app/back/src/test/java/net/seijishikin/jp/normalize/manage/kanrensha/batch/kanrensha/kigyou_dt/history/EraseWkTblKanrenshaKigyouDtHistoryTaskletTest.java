@@ -30,6 +30,7 @@ import net.seijishikin.jp.normalize.manage.kanrensha.repository.WkTblKanrenshaKi
 @DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
 @Sql("EraseWkTblKanrenshaKigyouDtHistoryTaskletTest.sql")
 class EraseWkTblKanrenshaKigyouDtHistoryTaskletTest {
+    // CHECKSTYLE:OFF MagicNumber
 
     /** テスト対象 */
     @Autowired

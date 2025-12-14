@@ -27,7 +27,7 @@ import net.seijishikin.jp.normalize.manage.kanrensha.entity.KanrenshaSeijidantai
 @DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
 @Transactional
 @Sql("GetKanrenshaSeijidantaiSameHistoryServiceTest.sql")
-class GetKanrenshaSeijidantaiSameHistoryServiceTest {
+class GetKanrenshaSeijidantaiSameHistoryServiceTest { // NOPMD ManyMethod
 
     /** テスト対象 */
     @Autowired

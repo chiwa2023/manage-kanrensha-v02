@@ -13,13 +13,13 @@ import org.springframework.stereotype.Component;
 
 import jakarta.persistence.EntityManagerFactory;
 import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
+import net.seijishikin.jp.normalize.manage.kanrensha.entity.KanrenshaKigyouDtHistoryBaseEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.KanrenshaKigyouDtMasterEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.WkTblKanrenshaKigyouDtAddMinEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.WkTblKanrenshaKigyouDtAddMinResultEntity;
-import net.seijishikin.jp.normalize.manage.kanrensha.entity.lgcode.KanrenshaKigyouDtHistory01Entity;
 import net.seijishikin.jp.normalize.manage.kanrensha.repository.KanrenshaKigyouDtMasterRepository;
 import net.seijishikin.jp.normalize.manage.kanrensha.repository.WkTblKanrenshaKigyouDtAddMinResultRepository;
-import net.seijishikin.jp.normalize.manage.kanrensha.repository.lgcode.KanrenshaKigyouDtHistory01Repository;
+import net.seijishikin.jp.normalize.manage.kanrensha.service.kanrensha.InsertKanrenshaKigyouDtHistoryService;
 import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateDokujiCodeForKigyouDtUtil;
 import net.seijishikin.jp.normalize.common_tool.utils.CreateUserLeastDtoByBatchParamUtil;
 import net.seijishikin.jp.normalize.common_tool.utils.FormatNaturalSearchTextUtil;
@@ -30,10 +30,6 @@ import net.seijishikin.jp.normalize.common_tool.utils.SetTableDataHistoryUtil;
  */
 @Component
 public class KanrenshaKigyouDtAddMiniRecordItemWriter extends JpaItemWriter<WkTblKanrenshaKigyouDtAddMinEntity> {
-
-    /** 関連者企業・団体履歴(01)Repository */
-    @Autowired
-    private KanrenshaKigyouDtHistory01Repository kanrenshaKigyouDtHistory01Repository;
 
     /** 関連者企業・団体マスタRepository */
     @Autowired
@@ -58,6 +54,10 @@ public class KanrenshaKigyouDtAddMiniRecordItemWriter extends JpaItemWriter<WkTb
     /** 関連者コード企業・団体用発行Utility */
     @Autowired
     private CreateDokujiCodeForKigyouDtUtil createDokujiCodeForKigyouDtUtil;
+
+    /** 関連者企業団体履歴挿入Service */
+    @Autowired
+    private InsertKanrenshaKigyouDtHistoryService insertKanrenshaKigyouDtHistoryService;
 
     /** ユーザ最低限Dto */
     private LeastUserDto userDto;
@@ -108,6 +108,13 @@ public class KanrenshaKigyouDtAddMiniRecordItemWriter extends JpaItemWriter<WkTb
         wkTblKanrenshaKigyouDtAddMinResultRepository.saveAllAndFlush(list);
     }
 
+    /**
+     * マスタ登録する
+     * 
+     * @param entityWkTbl   ワークテーブルEntity
+     * @param kanrenshaCode 関連者コード
+     * @return 登録Id
+     */
     private int insertMaster(final WkTblKanrenshaKigyouDtAddMinEntity entityWkTbl, final String kanrenshaCode) {
 
         KanrenshaKigyouDtMasterEntity entity = new KanrenshaKigyouDtMasterEntity();
@@ -122,21 +129,35 @@ public class KanrenshaKigyouDtAddMiniRecordItemWriter extends JpaItemWriter<WkTb
 
     }
 
+    /**
+     * 履歴登録する
+     *
+     * @param entityWkTbl   ワークテーブルEntity
+     * @param kanrenshaCode 関連者コード
+     * @return 登録Id
+     */
     private int insertHistory(final WkTblKanrenshaKigyouDtAddMinEntity entityWkTbl, final String kanrenshaCode) {
 
-        // TODO 47都道府県とそれ以外に分割して登録する
-        KanrenshaKigyouDtHistory01Entity entity = new KanrenshaKigyouDtHistory01Entity();
+        KanrenshaKigyouDtHistoryBaseEntity entity = new KanrenshaKigyouDtHistoryBaseEntity();
         BeanUtils.copyProperties(entityWkTbl, entity);
         entity.setKigyouDtKanrenshaCode(kanrenshaCode);
+        entity.setAllName(entityWkTbl.getKanrenshaName());
+        entity.setOrgDelegateName(entityWkTbl.getKigyouDtDelegate());
+        entity.setSearchText(formatNaturalSearchTextUtil
+                .practice(entity.getAllName() + entity.getAllAddress() + entity.getOrgDelegateName()));
 
-        setTableDataHistoryUtil.practiceInsert(userDto, entity);
-        entity.setKanrenshaKigyouDtHistoryId(0); // auto_increment明示
-
-        return kanrenshaKigyouDtHistory01Repository.save(entity).getKanrenshaKigyouDtHistoryId();
+        return insertKanrenshaKigyouDtHistoryService.practice(userDto, entity);
 
     }
 
-    private WkTblKanrenshaKigyouDtAddMinResultEntity createResult(final WkTblKanrenshaKigyouDtAddMinEntity entityWkTbl) {
+    /**
+     * 登録結果Entityを作成する
+     * 
+     * @param entityWkTbl ワークテーブルEntity
+     * @return 登録Id
+     */
+    private WkTblKanrenshaKigyouDtAddMinResultEntity createResult(
+            final WkTblKanrenshaKigyouDtAddMinEntity entityWkTbl) {
         WkTblKanrenshaKigyouDtAddMinResultEntity entity = new WkTblKanrenshaKigyouDtAddMinResultEntity();
         setTableDataHistoryUtil.practiceInsert(userDto, entity);
         entity.setWkTblKanrenshaKigyouDtAddMinId(entityWkTbl.getWkTblKanrenshaKigyouDtAddMinId());

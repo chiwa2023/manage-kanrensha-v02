@@ -22,7 +22,7 @@ import net.seijishikin.jp.normalize.common_tool.utils.SetTableDataHistoryUtil;
  * アップロードファイル内で重複している行を処理対象外とするTasklet
  */
 @Component
-public class SuspendDuplicateWkTblKanrenshaKigyouDtHistoryTasklet implements Tasklet,StepExecutionListener {
+public class SuspendDuplicateWkTblKanrenshaKigyouDtHistoryTasklet implements Tasklet, StepExecutionListener {
 
     /** 関連者企業・団体履歴Repository */
     @Autowired
@@ -56,23 +56,24 @@ public class SuspendDuplicateWkTblKanrenshaKigyouDtHistoryTasklet implements Tas
     @Override
     public RepeatStatus execute(final StepContribution contribution, final ChunkContext chunkContext) throws Exception {
 
-//        Integer userCode = userDto.getUserPersonCode();
-//        List<KanrenshaKigyouDtUniquekeyDto> listKeyGroup = wkTblKanrenshaKigyouDtHistoryRepository.findDuplicateUniqueKey(userCode);
-//
-//        for (KanrenshaKigyouDtUniquekeyDto uniqueDto : listKeyGroup) {
-//            List<WkTblKanrenshaKigyouDtHistoryEntity> list = wkTblKanrenshaKigyouDtHistoryRepository
-//                    .findByKanrenshaNameAndAllAddressAndKigyouDtDelegateAndKigyouDtKanrenshaCodeAndInsertUserCodeOrderByWkKanrenshaKigyouDtHistoryIdAsc(
-//                            uniqueDto.getKanrenshaName(), uniqueDto.getAllAddress(), uniqueDto.getKigyouDtDelegate(),
-//                            uniqueDto.getKigyouDtKanrenshaCode(), userCode);
-//            list.remove(0); // 1行だけは処理実行行として残す
-//            for (WkTblKanrenshaKigyouDtHistoryEntity entity : list) {
-//                setTableDataHistoryUtil.practiceDelete(userDto, entity); // 削除
-//                entity.setIsLatest(SetTableDataHistoryUtil.DELETE_STATE);
-//                entity.setIsFinish(true);
-//                entity.setJudgeReason("アップロードファイル内で重複しているデータです");
-//            }
-//            wkTblKanrenshaKigyouDtHistoryRepository.saveAllAndFlush(list);
-//        }
+        Integer userCode = userDto.getUserPersonCode();
+        List<KanrenshaKigyouDtUniquekeyDto> listKeyGroup = wkTblKanrenshaKigyouDtHistoryRepository
+                .findDuplicateUniqueKey(userCode);
+
+        for (KanrenshaKigyouDtUniquekeyDto uniqueDto : listKeyGroup) {
+            List<WkTblKanrenshaKigyouDtHistoryEntity> list = wkTblKanrenshaKigyouDtHistoryRepository
+                    .findByKanrenshaNameAndAllAddressAndKigyouDtDelegateAndKigyouDtKanrenshaCodeAndInsertUserCodeOrderByWkKanrenshaKigyouDtHistoryIdAsc(
+                            uniqueDto.getKanrenshaName(), uniqueDto.getAllAddress(), uniqueDto.getKigyouDtDelegate(),
+                            uniqueDto.getKigyouDtKanrenshaCode(), userCode);
+            list.remove(0); // 1行だけは処理実行行として残す
+            for (WkTblKanrenshaKigyouDtHistoryEntity entity : list) {
+                setTableDataHistoryUtil.practiceDelete(userDto, entity); // 削除
+                entity.setIsLatest(SetTableDataHistoryUtil.DELETE_STATE);
+                entity.setIsFinish(true);
+                entity.setJudgeReason("アップロードファイル内で重複しているデータです");
+            }
+            wkTblKanrenshaKigyouDtHistoryRepository.saveAllAndFlush(list);
+        }
 
         // 処理終了
         return RepeatStatus.FINISHED;

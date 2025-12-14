@@ -66,19 +66,19 @@ public class KanrenshaSeijidantaiHistoryItemWriter extends JpaItemWriter<WkTblKa
 
         int code = 0;
 
-//        Optional<WkTblKanrenshaSeijidantaiHistoryEntity> optional = wkTbKanrenshaSeijidantaiHistoryRepository
-//                .findFirstByOrderByWkKanrenshaSeijidantaiHistoryCodeDesc();
-//        if (!optional.isEmpty()) {
-//            code = optional.get().getWkKanrenshaSeijidantaiHistoryCode();
-//        }
-//
-//        for (WkTblKanrenshaSeijidantaiHistoryEntity entity : items) {
-//            code++;
-//            setTableDataHistoryUtil.practiceInsert(userDto, entity);
-//            entity.setWkKanrenshaSeijidantaiHistoryCode(code);
-//        }
-//
-//        wkTbKanrenshaSeijidantaiHistoryRepository.saveAll(items);
+        Optional<WkTblKanrenshaSeijidantaiHistoryEntity> optional = wkTbKanrenshaSeijidantaiHistoryRepository
+                .findFirstByOrderByWkKanrenshaSeijidantaiHistoryCodeDesc();
+        if (!optional.isEmpty()) {
+            code = optional.get().getWkKanrenshaSeijidantaiHistoryCode();
+        }
+
+        for (WkTblKanrenshaSeijidantaiHistoryEntity entity : items) {
+            code++;
+            setTableDataHistoryUtil.practiceInsert(userDto, entity);
+            entity.setWkKanrenshaSeijidantaiHistoryCode(code);
+        }
+
+        wkTbKanrenshaSeijidantaiHistoryRepository.saveAll(items);
     }
 
 }

@@ -19,7 +19,8 @@ import net.seijishikin.jp.normalize.manage.kanrensha.service.kanrensha.GetKanren
  * 関連者個人標準登録Processor
  */
 @Component
-public class KanrenshaPersonAddStdCsvProcessor implements ItemProcessor<KanrenshaPersonAddStdDto, WkTblKanrenshaPersonMasterEntity> {
+public class KanrenshaPersonAddStdCsvProcessor
+        implements ItemProcessor<KanrenshaPersonAddStdDto, WkTblKanrenshaPersonMasterEntity> {
 
     /** 空文字 */
     private static final String BLANK = "";
@@ -39,11 +40,23 @@ public class KanrenshaPersonAddStdCsvProcessor implements ItemProcessor<Kanrensh
     @Autowired
     private FormatNaturalSearchTextUtil formatNaturalSearchTextUtil;
 
+    /** 個人名最大桁数 */
+    private static final int LIMIT_KANRENSHA_NAME = 100;
+
+    /** 全住所最大桁数 */
+    private static final int LIMIT_ALL_ADDRESS = 100;
+
+    /** 職業最大桁数 */
+    private static final int LIMIT_PERSON_SHOKUGYOU = 100;
+
+    /** Email最大桁数 */
+    private static final int LIMIT_EMAIL = 100;
+
     /** 電話番号最大桁数 */
     private static final int LIMIT_DIGIT_PHON = 10;
 
     /** 郵便番号最大桁数 */
-    private static final int LIMIT_DIGIT_POSTAL = 6;
+    private static final int LIMIT_DIGIT_POSTAL = 8;
 
     /** 地方自治体コード最大桁数 */
     private static final int LIMIT_LGCODE = 8;
@@ -54,11 +67,17 @@ public class KanrenshaPersonAddStdCsvProcessor implements ItemProcessor<Kanrensh
     /** 街区コード最大桁数 */
     private static final int LIMIT_BLK = 5;
 
+    /** 地番コード最大桁数 */
+    private static final int LIMIT_PRC = 17;
+
     /** 住居コード最大桁数 */
     private static final int LIMIT_RSDT = 5;
 
     /** 住居2コード最大桁数 */
     private static final int LIMIT_RSDT2 = 7;
+
+    /** 文字数超えメッセージ */
+    private static final String OVER_MESSAGE = "文字を超えています;";
 
     /**
      * 変換処理を実行する
@@ -78,7 +97,9 @@ public class KanrenshaPersonAddStdCsvProcessor implements ItemProcessor<Kanrensh
      * @param entity ワークテーブルEntity
      * @return 処理後Entity
      */
-    public WkTblKanrenshaPersonMasterEntity check(final WkTblKanrenshaPersonMasterEntity entity) { // SUPPRESS CHECKSTYLE NCSS NOPMD
+    public WkTblKanrenshaPersonMasterEntity check(// SUPPRESS CHECKSTYLE NCSS NOPMD
+            final WkTblKanrenshaPersonMasterEntity entity) {
+
         StringBuilder stringBuilder = new StringBuilder();
         // 未入力
         if (BLANK.equals(entity.getKanrenshaName())) {
@@ -113,55 +134,71 @@ public class KanrenshaPersonAddStdCsvProcessor implements ItemProcessor<Kanrensh
         }
 
         // 文字数制限
+        if (LIMIT_KANRENSHA_NAME < entity.getKanrenshaName().length()) {
+            stringBuilder.append("個人名が" + LIMIT_KANRENSHA_NAME + OVER_MESSAGE);
+        }
+        if (LIMIT_ALL_ADDRESS < entity.getAllAddress().length()) {
+            stringBuilder.append("個人全住所が" + LIMIT_ALL_ADDRESS + OVER_MESSAGE);
+        }
+        if (LIMIT_PERSON_SHOKUGYOU < entity.getPersonShokugyou().length()) {
+            stringBuilder.append("個人職業が" + LIMIT_PERSON_SHOKUGYOU + OVER_MESSAGE);
+        }
+        if (LIMIT_EMAIL < entity.getEmail().length()) {
+            stringBuilder.append("電子メールが" + LIMIT_EMAIL + OVER_MESSAGE);
+        }
         if (LIMIT_DIGIT_PHON < entity.getPhon1().length()) {
-            stringBuilder.append("電話番号市外局番が10文字以上です;");
+            stringBuilder.append("電話番号市外局番が" + LIMIT_DIGIT_PHON + OVER_MESSAGE);
         }
         if (LIMIT_DIGIT_PHON < entity.getPhon2().length()) {
-            stringBuilder.append("電話番号局番が10文字以上です;");
+            stringBuilder.append("電話番号局番が" + LIMIT_DIGIT_PHON + OVER_MESSAGE);
         }
-        if (LIMIT_DIGIT_PHON < entity.getPhon1().length()) {
-            stringBuilder.append("電話番号番号が10文字以上です;");
+        if (LIMIT_DIGIT_PHON < entity.getPhon3().length()) {
+            stringBuilder.append("電話番号番号が" + LIMIT_DIGIT_PHON + OVER_MESSAGE);
         }
-        if (LIMIT_DIGIT_POSTAL < entity.getPostal1().length()) {
-            stringBuilder.append("郵便番号1が6文字以上です;");
+        if (LIMIT_DIGIT_POSTAL < entity.getPostalcode1().length()) {
+            stringBuilder.append("郵便番号1が" + LIMIT_DIGIT_POSTAL + OVER_MESSAGE);
         }
-        if (LIMIT_DIGIT_POSTAL < entity.getPostal2().length()) {
-            stringBuilder.append("郵便番号2が6文字以上です;");
+        if (LIMIT_DIGIT_POSTAL < entity.getPostalcode2().length()) {
+            stringBuilder.append("郵便番号2が" + LIMIT_DIGIT_POSTAL + OVER_MESSAGE);
         }
         if (LIMIT_LGCODE < entity.getLgCode().length()) {
-            stringBuilder.append("地方自治体コードが8文字以上です;");
+            stringBuilder.append("地方自治体コードが" + LIMIT_LGCODE + OVER_MESSAGE);
         }
         if (LIMIT_MACHIAZA < entity.getMachiazaId().length()) {
-            stringBuilder.append("町字コードが9文字以上です;");
+            stringBuilder.append("町字コードが" + LIMIT_MACHIAZA + OVER_MESSAGE);
         }
         if (LIMIT_BLK < entity.getBlkId().length()) {
-            stringBuilder.append("街区コードが5文字以上です;");
+            stringBuilder.append("街区コードが" + LIMIT_BLK + OVER_MESSAGE);
+        }
+        if (LIMIT_PRC < entity.getPrcId().length()) {
+            stringBuilder.append("地番コードが" + LIMIT_PRC + OVER_MESSAGE);
         }
         if (LIMIT_RSDT < entity.getRsdtId().length()) {
-            stringBuilder.append("住居コードが5文字以上です;");
+            stringBuilder.append("住居コードが" + LIMIT_RSDT + OVER_MESSAGE);
         }
         if (LIMIT_RSDT2 < entity.getRsdt2Id().length()) {
-            stringBuilder.append("住居2コードが7文字以上です;");
+            stringBuilder.append("住居2コードが" + LIMIT_RSDT2 + OVER_MESSAGE);
         }
 
         // 全く同じ履歴があるかどうか確認する
-//        List<KanrenshaPersonHistoryBaseEntity> listHistory = this.selectSameRirekiList(entity.getKanrenshaName(),
-//                entity.getAllAddress(), entity.getPersonShokugyou());
-//        if (listHistory.isEmpty()) {
-//            // 初回はすべてチェック対象だが、自動・人為的に作業対象にした場合は同名チェックを行わない(同名でも登録できる)
-//            // マスタに同名の団体があるかどうか確認する
-//            if (!entity.getIsAffected()) {
-//                List<KanrenshaPersonMasterEntity> listMaster = kanrenshaPersonMasterRepository.findByCompareNameTextAndIsLatest(
-//                        formatNaturalSearchTextUtil.practice(entity.getKanrenshaName()),
-//                        SetTableDataHistoryUtil.INSERT_STATE);
-//                // 初回はすでにチェック対象だが
-//                if (!listMaster.isEmpty()) { // SUPPRESS CHECKSTYLE NestedIf
-//                    stringBuilder.append("同名の団体があります。確認調査の上、必要に応じて追加してください;");
-//                }
-//            }
-//        } else {
-//            stringBuilder.append("すでに登録が存在します(").append(listHistory.get(0).getPersonKanrenshaCode()).append(");");
-//        }
+        List<KanrenshaPersonHistoryBaseEntity> listHistory = this.selectSameRirekiList(entity.getKanrenshaName(),
+                entity.getAllAddress(), entity.getPersonShokugyou());
+        if (listHistory.isEmpty()) {
+            // 初回はすべてチェック対象だが、自動・人為的に作業対象にした場合は同名チェックを行わない(同名でも登録できる)
+            // マスタに同名の団体があるかどうか確認する
+            if (!entity.getIsAffected()) {
+                List<KanrenshaPersonMasterEntity> listMaster = kanrenshaPersonMasterRepository
+                        .findByCompareNameTextAndIsLatest(
+                                formatNaturalSearchTextUtil.practice(entity.getKanrenshaName()),
+                                SetTableDataHistoryUtil.INSERT_STATE);
+                // 初回はすでにチェック対象だが
+                if (!listMaster.isEmpty()) { // SUPPRESS CHECKSTYLE NestedIf
+                    stringBuilder.append("同名の団体があります。確認調査の上、必要に応じて追加してください;");
+                }
+            }
+        } else {
+            stringBuilder.append("すでに登録が存在します(").append(listHistory.get(0).getPersonKanrenshaCode()).append(");");
+        }
 
         // 入力に問題がある場合は記録だけ残して処理中断
         if (stringBuilder.isEmpty()) {
@@ -175,19 +212,15 @@ public class KanrenshaPersonAddStdCsvProcessor implements ItemProcessor<Kanrensh
         }
 
         return entity;
-
     }
 
-    /*
-     * 同属性リストを取得する
-     *
-     * @param name 団体名称
+    /**
+     * 関連者個人履歴リストを取得する
      * 
-     * @param address 全住所
-     * 
-     * @param delegate 代表者名
-     * 
-     * @return 検索結果
+     * @param name      名称
+     * @param address   住所
+     * @param shokugyou 職業
+     * @return 履歴リスト
      */
     private List<KanrenshaPersonHistoryBaseEntity> selectSameRirekiList(final String name, final String address,
             final String shokugyou) {

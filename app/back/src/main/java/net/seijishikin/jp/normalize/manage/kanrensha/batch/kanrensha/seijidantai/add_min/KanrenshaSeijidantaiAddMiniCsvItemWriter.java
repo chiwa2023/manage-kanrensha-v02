@@ -66,19 +66,19 @@ public class KanrenshaSeijidantaiAddMiniCsvItemWriter extends JpaItemWriter<WkTb
 
         int code = 0;
 
-//        Optional<WkTblKanrenshaSeijidantaiAddMinEntity> optional = wkTblKanrenshaSeijidantaiAddMinRepository
-//                .findFirstByOrderByWkTblKanrenshaSeijidantaiAddMinCodeDesc();
-//        if (!optional.isEmpty()) {
-//            code = optional.get().getWkTblKanrenshaSeijidantaiAddMinCode();
-//        }
-//
-//        for (WkTblKanrenshaSeijidantaiAddMinEntity entity : items) {
-//            code++;
-//            setTableDataHistoryUtil.practiceInsert(userDto, entity);
-//            entity.setWkTblKanrenshaSeijidantaiAddMinCode(code);
-//        }
-//
-//        wkTblKanrenshaSeijidantaiAddMinRepository.saveAll(items);
+        Optional<WkTblKanrenshaSeijidantaiAddMinEntity> optional = wkTblKanrenshaSeijidantaiAddMinRepository
+                .findFirstByOrderByWkTblKanrenshaSeijidantaiAddMinCodeDesc();
+        if (!optional.isEmpty()) {
+            code = optional.get().getWkTblKanrenshaSeijidantaiAddMinCode();
+        }
+
+        for (WkTblKanrenshaSeijidantaiAddMinEntity entity : items) {
+            code++;
+            setTableDataHistoryUtil.practiceInsert(userDto, entity);
+            entity.setWkTblKanrenshaSeijidantaiAddMinCode(code);
+        }
+
+        wkTblKanrenshaSeijidantaiAddMinRepository.saveAll(items);
     }
 
 }

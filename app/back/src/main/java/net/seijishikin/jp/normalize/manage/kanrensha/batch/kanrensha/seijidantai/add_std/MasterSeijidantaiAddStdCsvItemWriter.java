@@ -66,19 +66,19 @@ public class MasterSeijidantaiAddStdCsvItemWriter extends JpaItemWriter<WkTblKan
 
         int code = 0;
 
-//        Optional<WkTblKanrenshaSeijidantaiMasterEntity> optional = wkTblKanrenshaSeijidantaiMasterRepository
-//                .findFirstByOrderByWkTblMasterSeijidantaiCodeDesc();
-//        if (!optional.isEmpty()) {
-//            code = optional.get().getWkTblMasterSeijidantaiCode();
-//        }
-//
-//        for (WkTblKanrenshaSeijidantaiMasterEntity entity : items) {
-//            code++;
-//            setTableDataHistoryUtil.practiceInsert(userDto, entity);
-//            entity.setWkTblMasterSeijidantaiCode(code);
-//        }
-//
-//        wkTblKanrenshaSeijidantaiMasterRepository.saveAll(items);
+        Optional<WkTblKanrenshaSeijidantaiMasterEntity> optional = wkTblKanrenshaSeijidantaiMasterRepository
+                .findFirstByOrderByWkTblKanrenshaSeijidantaiMasterCodeDesc();
+        if (!optional.isEmpty()) {
+            code = optional.get().getWkTblKanrenshaSeijidantaiMasterCode();
+        }
+
+        for (WkTblKanrenshaSeijidantaiMasterEntity entity : items) {
+            code++;
+            setTableDataHistoryUtil.practiceInsert(userDto, entity);
+            entity.setWkTblKanrenshaSeijidantaiMasterCode(code);
+        }
+
+        wkTblKanrenshaSeijidantaiMasterRepository.saveAll(items);
     }
 
 }

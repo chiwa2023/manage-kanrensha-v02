@@ -81,9 +81,6 @@ public class MasterKigyouDtAddStdRecordItemWriter extends JpaItemWriter<WkTblKan
     /** ユーザ最低限Dto */
     private LeastUserDto userDto;
 
-    /** 空文字 */
-    private static final String EMPTY = "";
-
     /**
      * コンストラクタ
      *
@@ -150,19 +147,6 @@ public class MasterKigyouDtAddStdRecordItemWriter extends JpaItemWriter<WkTblKan
         addressEntity.setKanrenshaKigyouDtId(masterId);
         BeanUtils.copyProperties(entityWkTbl, addressEntity);
         setTableDataHistoryUtil.practiceInsert(userDto, addressEntity);
-        // 各住所項目に記載がある場合はチェック対象とする
-//        if (!EMPTY.equals(entityWkTbl.getAddressPostal())) {
-//            addressEntity.setIsPostalEdit(true);
-//            addressEntity.setIsPostalAccept(false);
-//        }
-//        if (!EMPTY.equals(entityWkTbl.getAddressBlock())) {
-//            addressEntity.setIsBlockEdit(true);
-//            addressEntity.setIsBlockAccept(false);
-//        }
-//        if (!EMPTY.equals(entityWkTbl.getAddressBuilding())) {
-//            addressEntity.setIsBuildingEdit(true);
-//            addressEntity.setIsBuildingAccept(false);
-//        }
         kanrenshaKigyouDtAddressRepository.save(addressEntity);
 
         // マスタ連絡先登録
@@ -173,15 +157,7 @@ public class MasterKigyouDtAddStdRecordItemWriter extends JpaItemWriter<WkTblKan
         setTableDataHistoryUtil.practiceInsert(userDto, accessEntity);
         kanrenshaKigyouDtAccessRepository.save(accessEntity);
 
-        // マスタ基本登録
-//        KanrenshaKigyouDtMasterBaseEntity baseEntity = new KanrenshaKigyouDtMasterBaseEntity();
-//        baseEntity.setKigyouDtKanrenshaCode(kanrenshaCode);
-//        baseEntity.setKanrenshaKigyouDtMasterId(masterId);
-//        BeanUtils.copyProperties(entityWkTbl, baseEntity);
-//        setTableDataHistoryUtil.practiceInsert(userDto, baseEntity);
-//        kanrenshaKigyouDtMasterBaseRepository.save(baseEntity);
-
-        // マスタ(その他)属性登録
+        // マスタ属性登録
         KanrenshaKigyouDtPropertyEntity propertyEntity = new KanrenshaKigyouDtPropertyEntity();
         propertyEntity.setKigyouDtKanrenshaCode(kanrenshaCode);
         propertyEntity.setKanrenshaKigyouDtId(masterId);

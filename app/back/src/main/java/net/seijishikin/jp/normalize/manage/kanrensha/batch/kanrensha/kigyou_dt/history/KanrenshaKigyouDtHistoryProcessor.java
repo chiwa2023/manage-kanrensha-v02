@@ -68,6 +68,12 @@ public class KanrenshaKigyouDtHistoryProcessor
         return entity;
     }
 
+    /**
+     * チェック結果メッセージを作成する
+     * 
+     * @param entity ワークテーブルEntity
+     * @return チェック結果
+     */
     private StringBuilder createCheckMessage(final WkTblKanrenshaKigyouDtHistoryEntity entity) {
 
         // どれかの値が入力していなければ情報不足として処理対象外
@@ -85,16 +91,16 @@ public class KanrenshaKigyouDtHistoryProcessor
             stringBuilder.append("関連者コードが入力されていません;");
         }
 
-//        if (stringBuilder.isEmpty()) {
-//            // 少なくとも団体名と関連者コードが同一でない場合は未登録とみなす
-//            List<KanrenshaKigyouDtMasterEntity> listMaster = kanrenshaKigyouDtMasterRepository
-//                    .findByKigyouDtKanrenshaCodeAndCompareNameTextAndIsLatest(entity.getKigyouDtKanrenshaCode(),
-//                            formatNaturalSearchTextUtil.practice(entity.getKanrenshaName()),
-//                            SetTableDataHistoryUtil.INSERT_STATE);
-//            if (listMaster.isEmpty()) {
-//                stringBuilder.append("コードと名称に合致する関連者が存在しません;");
-//            }
-//        }
+        if (stringBuilder.isEmpty()) {
+            // 少なくとも団体名と関連者コードが同一でない場合は未登録とみなす
+            List<KanrenshaKigyouDtMasterEntity> listMaster = kanrenshaKigyouDtMasterRepository
+                    .findByKigyouDtKanrenshaCodeAndCompareNameTextAndIsLatest(entity.getKigyouDtKanrenshaCode(),
+                            formatNaturalSearchTextUtil.practice(entity.getKanrenshaName()),
+                            SetTableDataHistoryUtil.INSERT_STATE);
+            if (!listMaster.isEmpty()) {
+                stringBuilder.append("コードと名称に合致する関連者が存在します;");
+            }
+        }
 
         return stringBuilder;
     }

@@ -80,9 +80,6 @@ public class MasterSeijidantaiAddStdRecordItemWriter extends JpaItemWriter<WkTbl
     /** ユーザ最低限Dto */
     private LeastUserDto userDto;
 
-    /** 空文字 */
-    private static final String EMPTY = "";
-
     /**
      * コンストラクタ
      *
@@ -151,19 +148,6 @@ public class MasterSeijidantaiAddStdRecordItemWriter extends JpaItemWriter<WkTbl
         addressEntity.setSeijidantaiKanrenshaCode(kanrenshaCode);
         addressEntity.setKanrenshaSeijidantaiId(masterId);
         BeanUtils.copyProperties(entityWkTbl, addressEntity);
-        // 各住所項目に記載がある場合はチェック対象とする
-//        if (!EMPTY.equals(entityWkTbl.getAddressPostal())) {
-//            addressEntity.setIsPostalEdit(true);
-//            addressEntity.setIsPostalAccept(false);
-//        }
-//        if (!EMPTY.equals(entityWkTbl.getAddressBlock())) {
-//            addressEntity.setIsBlockEdit(true);
-//            addressEntity.setIsBlockAccept(false);
-//        }
-//        if (!EMPTY.equals(entityWkTbl.getAddressBuilding())) {
-//            addressEntity.setIsBuildingEdit(true);
-//            addressEntity.setIsBuildingAccept(false);
-//        }
         setTableDataHistoryUtil.practiceInsert(userDto, addressEntity);
         kanrenshaSeijidantaiAddressRepository.save(addressEntity);
 
@@ -175,15 +159,7 @@ public class MasterSeijidantaiAddStdRecordItemWriter extends JpaItemWriter<WkTbl
         setTableDataHistoryUtil.practiceInsert(userDto, accessEntity);
         kanrenshaSeijidantaiAccessRepository.save(accessEntity);
 
-        // マスタ基本登録
-        //MasterSeijidantaiBaseEntity baseEntity = new MasterSeijidantaiBaseEntity();
-        //baseEntity.setSeijidantaiKanrenshaCode(kanrenshaCode);
-        //baseEntity.setMasterSeijidantaiId(masterId);
-        //BeanUtils.copyProperties(entityWkTbl, baseEntity);
-        //setTableDataHistoryUtil.practiceInsert(userDto, baseEntity);
-        //masterSeijidantaiBaseRepository.save(baseEntity);
-
-        // マスタ(その他)属性登録
+        // マスタ属性登録
         KanrenshaSeijidantaiPropertyEntity propertyEntity = new KanrenshaSeijidantaiPropertyEntity();
         propertyEntity.setSeijidantaiKanrenshaCode(kanrenshaCode);
         propertyEntity.setKanrenshaSeijidantaiId(masterId);
