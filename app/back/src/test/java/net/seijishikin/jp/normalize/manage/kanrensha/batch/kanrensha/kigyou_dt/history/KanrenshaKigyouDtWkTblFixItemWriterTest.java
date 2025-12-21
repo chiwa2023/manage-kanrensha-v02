@@ -24,7 +24,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.WkTblKanrenshaKigyouDtHistoryEntity;
+import net.seijishikin.jp.normalize.manage.kanrensha.entity.lgcode.KanrenshaKigyouDtHistory99Entity;
 import net.seijishikin.jp.normalize.manage.kanrensha.repository.WkTblKanrenshaKigyouDtHistoryRepository;
+import net.seijishikin.jp.normalize.manage.kanrensha.repository.lgcode.KanrenshaKigyouDtHistory99Repository;
 import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateLeastUserForTestUtil;
 
 /**
@@ -47,6 +49,10 @@ class KanrenshaKigyouDtWkTblFixItemWriterTest {
     @Autowired
     private WkTblKanrenshaKigyouDtHistoryRepository wkTbKanrenshaKigyouDtHistoryRepository;
 
+    /** テスト対象 */
+    @Autowired
+    private KanrenshaKigyouDtHistory99Repository kanrenshaKigyouDtHistory99Repository;
+
     @Test
     @Tag("TableTruncate")
     void testWriteAffectedEntity() throws Exception {
@@ -67,6 +73,18 @@ class KanrenshaKigyouDtWkTblFixItemWriterTest {
         assertEquals(1001, savedEntities.get(0).getWkKanrenshaKigyouDtHistoryId());
         assertEquals(true, savedEntities.get(0).getIsFinish());
         assertEquals("正常保存", savedEntities.get(0).getJudgeReason());
+
+        // 履歴に登録されているか確認
+        List<KanrenshaKigyouDtHistory99Entity> listHistory = kanrenshaKigyouDtHistory99Repository.findAll();
+        assertEquals(1, listHistory.size());
+        KanrenshaKigyouDtHistory99Entity historyEntity = listHistory.get(0);
+        assertEquals("テスト団体", historyEntity.getAllName());
+        assertEquals("テスト住所", historyEntity.getAllAddress());
+        assertEquals("テスト代表", historyEntity.getOrgDelegateName());
+        assertEquals("ORG-TEST-CODE", historyEntity.getOrgDelegateCode());
+        assertEquals("TEST-CODE", historyEntity.getKigyouDtKanrenshaCode());
+        assertEquals("テスト団体テスト住所テスト代表", historyEntity.getSearchText());
+
     }
 
     @Test
@@ -94,14 +112,13 @@ class KanrenshaKigyouDtWkTblFixItemWriterTest {
 
     private StepExecution getStepExecution() {
         LeastUserDto userDto = CreateLeastUserForTestUtil.practice();
-        JobParameters jobParameters = new JobParametersBuilder()
-                .addLong("userId", (long) userDto.getUserPersonId())
+        JobParameters jobParameters = new JobParametersBuilder().addLong("userId", (long) userDto.getUserPersonId())
                 .addLong("userCode", (long) userDto.getUserPersonCode())
                 .addString("userName", userDto.getUserPersonName()).toJobParameters();
         return MetaDataInstanceFactory.createStepExecution(jobParameters);
     }
 
-    private WkTblKanrenshaKigyouDtHistoryEntity createEntity(final Integer id,final boolean isAffected) { // NOPMD
+    private WkTblKanrenshaKigyouDtHistoryEntity createEntity(final Integer id, final boolean isAffected) { // NOPMD
         WkTblKanrenshaKigyouDtHistoryEntity entity = new WkTblKanrenshaKigyouDtHistoryEntity();
         entity.setWkKanrenshaKigyouDtHistoryId(id);
         entity.setKanrenshaName("テスト団体");

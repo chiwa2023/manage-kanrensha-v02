@@ -52,6 +52,15 @@ public interface WkTblKanrenshaKigyouDtMasterRepository
             + "GROUP BY kanrensha_name, all_address, kigyou_dt_delegate HAVING count(*) >1", nativeQuery = true)
     List<KanrenshaKigyouDtMasterUniquekeyDto> findDuplicateUniqueKey(Integer userCode);
 
+    /**
+     * 同一データを取得する
+     * 
+     * @param name     名称
+     * @param address  住所
+     * @param delegate 団体代表者
+     * @param userCode ユーザコード
+     * @return 同一データリスト
+     */
     List<WkTblKanrenshaKigyouDtMasterEntity> findByKanrenshaNameAndAllAddressAndKigyouDtDelegateAndInsertUserCodeOrderByWkTblKanrenshaKigyouDtMasterIdAsc(
             String name, String address, String delegate, Integer userCode);
 }

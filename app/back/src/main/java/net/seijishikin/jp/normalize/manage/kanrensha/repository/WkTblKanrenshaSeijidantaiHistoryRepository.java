@@ -10,7 +10,6 @@ import org.springframework.data.jpa.repository.Query;
 
 import net.seijishikin.jp.normalize.manage.kanrensha.batch.kanrensha.seijidantai.history.KanrenshaSeijidantaiUniquekeyDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.WkTblKanrenshaSeijidantaiHistoryEntity;
-import net.seijishikin.jp.normalize.manage.kanrensha.entity.WkTblKanrenshaSeijidantaiMasterEntity;
 
 /**
  * wk_tbl_kanrensha_seijidantai_history接続用Repository
@@ -33,9 +32,8 @@ public interface WkTblKanrenshaSeijidantaiHistoryRepository
      * @param pageable ページング条件
      * @return 検索結果
      */
-    Page<WkTblKanrenshaSeijidantaiHistoryEntity> findByInsertUserCodeAndIsLatestAndIsAffectedAndIsFinish(Integer userCode, boolean isLatest,
-            boolean isAffected,boolean isFinish, Pageable pageable);
-
+    Page<WkTblKanrenshaSeijidantaiHistoryEntity> findByInsertUserCodeAndIsLatestAndIsAffectedAndIsFinish(
+            Integer userCode, boolean isLatest, boolean isAffected, boolean isFinish, Pageable pageable);
 
     /**
      * 現在の最大コードを所持するデータ取得する
@@ -54,5 +52,16 @@ public interface WkTblKanrenshaSeijidantaiHistoryRepository
             + "GROUP BY kanrensha_name, all_address, seijidantai_delegate, seijidantai_kanrensha_code HAVING count(*) >1", nativeQuery = true)
     List<KanrenshaSeijidantaiUniquekeyDto> findDuplicateUniqueKey(Integer userCode);
 
-    List<WkTblKanrenshaSeijidantaiHistoryEntity> findByKanrenshaNameAndAllAddressAndSeijidantaiDelegateAndSeijidantaiKanrenshaCodeAndInsertUserCodeOrderByWkKanrenshaSeijidantaiHistoryIdAsc(String name,String address,String delegate,String code,Integer userCode);
+    /**
+     * 同一データリストを取得する
+     * 
+     * @param name     名称
+     * @param address  住所
+     * @param delegate 代表者
+     * @param code     関連者コード
+     * @param userCode ユーザコード
+     * @return 同一データリスト
+     */
+    List<WkTblKanrenshaSeijidantaiHistoryEntity> findByKanrenshaNameAndAllAddressAndSeijidantaiDelegateAndSeijidantaiKanrenshaCodeAndInsertUserCodeOrderByWkKanrenshaSeijidantaiHistoryIdAsc( // NOPMD
+            String name, String address, String delegate, String code, Integer userCode);
 }

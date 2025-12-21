@@ -71,7 +71,7 @@ public class SuspendDuplicateWkTblKanrenshaPersonHistoryTasklet implements Taskl
                 entity.setIsFinish(true);
                 entity.setJudgeReason("アップロードファイル内で重複しているデータです");
             }
-            wkTblKanrenshaPersonHistoryRepository.saveAllAndFlush(list);
+            wkTblKanrenshaPersonHistoryRepository.saveAll(list);
         }
 
         // 処理終了

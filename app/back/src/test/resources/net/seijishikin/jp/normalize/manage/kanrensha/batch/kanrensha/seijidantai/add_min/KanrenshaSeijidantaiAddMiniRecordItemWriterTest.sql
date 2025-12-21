@@ -1,0 +1,5 @@
+TRUNCATE TABLE wk_tbl_kanrensha_seijidantai_add_min;
+TRUNCATE TABLE kanrensha_seijidantai_master;
+TRUNCATE TABLE kanrensha_seijidantai_history_13;
+TRUNCATE TABLE wk_tbl_kanrensha_seijidantai_add_min_result;
+

@@ -1,6 +1,7 @@
 package net.seijishikin.jp.normalize.manage.kanrensha.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -30,5 +31,15 @@ public interface KanrenshaSeijidantaiMasterRepository extends JpaRepository<Kanr
      */
     List<KanrenshaSeijidantaiMasterEntity> findBySeijidantaiKanrenshaCodeAndCompareNameTextAndIsLatest(String code,
             String nameText, Boolean isLatest);
+
+    /**
+     * 最新かつ関連者コードが同一の最初の1件を取得する(1件しかない運用をする)
+     * 
+     * @param kanrenshaCode 関連者コード
+     * @param isLatest      最新該否
+     * @return 関連者コード同一Entity
+     */
+    Optional<KanrenshaSeijidantaiMasterEntity> findFirstBySeijidantaiKanrenshaCodeAndIsLatest(String kanrenshaCode,
+            boolean isLatest);
 
 }

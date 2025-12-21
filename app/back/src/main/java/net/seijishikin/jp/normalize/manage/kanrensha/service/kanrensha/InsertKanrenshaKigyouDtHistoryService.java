@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
+import net.seijishikin.jp.normalize.common_tool.utils.FormatNaturalSearchTextUtil;
 import net.seijishikin.jp.normalize.common_tool.utils.SetTableDataHistoryUtil;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.KanrenshaKigyouDtHistoryBaseEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.lgcode.KanrenshaKigyouDtHistory01Entity;
@@ -56,9 +57,6 @@ import net.seijishikin.jp.normalize.manage.kanrensha.entity.lgcode.KanrenshaKigy
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.lgcode.KanrenshaKigyouDtHistory47Entity;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.lgcode.KanrenshaKigyouDtHistory99Entity;
 
-
-
-
 import net.seijishikin.jp.normalize.manage.kanrensha.repository.lgcode.KanrenshaKigyouDtHistory01Repository;
 import net.seijishikin.jp.normalize.manage.kanrensha.repository.lgcode.KanrenshaKigyouDtHistory02Repository;
 import net.seijishikin.jp.normalize.manage.kanrensha.repository.lgcode.KanrenshaKigyouDtHistory03Repository;
@@ -108,10 +106,7 @@ import net.seijishikin.jp.normalize.manage.kanrensha.repository.lgcode.Kanrensha
 import net.seijishikin.jp.normalize.manage.kanrensha.repository.lgcode.KanrenshaKigyouDtHistory47Repository;
 import net.seijishikin.jp.normalize.manage.kanrensha.repository.lgcode.KanrenshaKigyouDtHistory99Repository;
 
-
-
 import net.seijishikin.jp.normalize.manage.kanrensha.service.util.GetPrefectureLgCodeService;
-
 
 /**
  * 関連者企業・団体履歴を挿入する
@@ -272,6 +267,10 @@ public class InsertKanrenshaKigyouDtHistoryService { // NOPMD
     @Autowired
     private KanrenshaKigyouDtHistory99Repository kanrenshaKigyouDtHistory99Repository;
 
+    /** 全文検索検索対象テキスト作成Uttility */
+    @Autowired
+    private FormatNaturalSearchTextUtil formatNaturalSearchTextUtil;
+
     /**
      * 処理を行う
      *
@@ -281,150 +280,153 @@ public class InsertKanrenshaKigyouDtHistoryService { // NOPMD
     public int practice( // NOPMD SUPPRESS CHECKSTYLE ReturbCount
             final LeastUserDto userDto, final KanrenshaKigyouDtHistoryBaseEntity baseEntity) {
 
+        baseEntity.setSearchText(formatNaturalSearchTextUtil
+                .practice(baseEntity.getAllName() + baseEntity.getAllAddress() + baseEntity.getOrgDelegateName()));
+
         switch (getPrefectureLgCodeService.practice(baseEntity.getAllAddress())) {
             case GetPrefectureLgCodeService.PREF_01:
-                return kanrenshaKigyouDtHistory01Repository.saveAndFlush(this.createEntity01(userDto, baseEntity))
+                return kanrenshaKigyouDtHistory01Repository.save(this.createEntity01(userDto, baseEntity))
                         .getKanrenshaKigyouDtHistoryId();
             case GetPrefectureLgCodeService.PREF_02:
-                return kanrenshaKigyouDtHistory02Repository.saveAndFlush(this.createEntity02(userDto, baseEntity))
+                return kanrenshaKigyouDtHistory02Repository.save(this.createEntity02(userDto, baseEntity))
                         .getKanrenshaKigyouDtHistoryId();
             case GetPrefectureLgCodeService.PREF_03:
-                return kanrenshaKigyouDtHistory03Repository.saveAndFlush(this.createEntity03(userDto, baseEntity))
+                return kanrenshaKigyouDtHistory03Repository.save(this.createEntity03(userDto, baseEntity))
                         .getKanrenshaKigyouDtHistoryId();
             case GetPrefectureLgCodeService.PREF_04:
-                return kanrenshaKigyouDtHistory04Repository.saveAndFlush(this.createEntity04(userDto, baseEntity))
+                return kanrenshaKigyouDtHistory04Repository.save(this.createEntity04(userDto, baseEntity))
                         .getKanrenshaKigyouDtHistoryId();
             case GetPrefectureLgCodeService.PREF_05:
-                return kanrenshaKigyouDtHistory05Repository.saveAndFlush(this.createEntity05(userDto, baseEntity))
+                return kanrenshaKigyouDtHistory05Repository.save(this.createEntity05(userDto, baseEntity))
                         .getKanrenshaKigyouDtHistoryId();
             case GetPrefectureLgCodeService.PREF_06:
-                return kanrenshaKigyouDtHistory06Repository.saveAndFlush(this.createEntity06(userDto, baseEntity))
+                return kanrenshaKigyouDtHistory06Repository.save(this.createEntity06(userDto, baseEntity))
                         .getKanrenshaKigyouDtHistoryId();
             case GetPrefectureLgCodeService.PREF_07:
-                return kanrenshaKigyouDtHistory07Repository.saveAndFlush(this.createEntity07(userDto, baseEntity))
+                return kanrenshaKigyouDtHistory07Repository.save(this.createEntity07(userDto, baseEntity))
                         .getKanrenshaKigyouDtHistoryId();
             case GetPrefectureLgCodeService.PREF_08:
-                return kanrenshaKigyouDtHistory08Repository.saveAndFlush(this.createEntity08(userDto, baseEntity))
+                return kanrenshaKigyouDtHistory08Repository.save(this.createEntity08(userDto, baseEntity))
                         .getKanrenshaKigyouDtHistoryId();
             case GetPrefectureLgCodeService.PREF_09:
-                return kanrenshaKigyouDtHistory09Repository.saveAndFlush(this.createEntity09(userDto, baseEntity))
+                return kanrenshaKigyouDtHistory09Repository.save(this.createEntity09(userDto, baseEntity))
                         .getKanrenshaKigyouDtHistoryId();
             case GetPrefectureLgCodeService.PREF_10:
-                return kanrenshaKigyouDtHistory10Repository.saveAndFlush(this.createEntity10(userDto, baseEntity))
+                return kanrenshaKigyouDtHistory10Repository.save(this.createEntity10(userDto, baseEntity))
                         .getKanrenshaKigyouDtHistoryId();
             case GetPrefectureLgCodeService.PREF_11:
-                return kanrenshaKigyouDtHistory11Repository.saveAndFlush(this.createEntity11(userDto, baseEntity))
+                return kanrenshaKigyouDtHistory11Repository.save(this.createEntity11(userDto, baseEntity))
                         .getKanrenshaKigyouDtHistoryId();
             case GetPrefectureLgCodeService.PREF_12:
-                return kanrenshaKigyouDtHistory12Repository.saveAndFlush(this.createEntity12(userDto, baseEntity))
+                return kanrenshaKigyouDtHistory12Repository.save(this.createEntity12(userDto, baseEntity))
                         .getKanrenshaKigyouDtHistoryId();
             case GetPrefectureLgCodeService.PREF_13:
-                return kanrenshaKigyouDtHistory13Repository.saveAndFlush(this.createEntity13(userDto, baseEntity))
+                return kanrenshaKigyouDtHistory13Repository.save(this.createEntity13(userDto, baseEntity))
                         .getKanrenshaKigyouDtHistoryId();
             case GetPrefectureLgCodeService.PREF_14:
-                return kanrenshaKigyouDtHistory14Repository.saveAndFlush(this.createEntity14(userDto, baseEntity))
+                return kanrenshaKigyouDtHistory14Repository.save(this.createEntity14(userDto, baseEntity))
                         .getKanrenshaKigyouDtHistoryId();
             case GetPrefectureLgCodeService.PREF_15:
-                return kanrenshaKigyouDtHistory15Repository.saveAndFlush(this.createEntity15(userDto, baseEntity))
+                return kanrenshaKigyouDtHistory15Repository.save(this.createEntity15(userDto, baseEntity))
                         .getKanrenshaKigyouDtHistoryId();
             case GetPrefectureLgCodeService.PREF_16:
-                return kanrenshaKigyouDtHistory16Repository.saveAndFlush(this.createEntity16(userDto, baseEntity))
+                return kanrenshaKigyouDtHistory16Repository.save(this.createEntity16(userDto, baseEntity))
                         .getKanrenshaKigyouDtHistoryId();
             case GetPrefectureLgCodeService.PREF_17:
-                return kanrenshaKigyouDtHistory17Repository.saveAndFlush(this.createEntity17(userDto, baseEntity))
+                return kanrenshaKigyouDtHistory17Repository.save(this.createEntity17(userDto, baseEntity))
                         .getKanrenshaKigyouDtHistoryId();
             case GetPrefectureLgCodeService.PREF_18:
-                return kanrenshaKigyouDtHistory18Repository.saveAndFlush(this.createEntity18(userDto, baseEntity))
+                return kanrenshaKigyouDtHistory18Repository.save(this.createEntity18(userDto, baseEntity))
                         .getKanrenshaKigyouDtHistoryId();
             case GetPrefectureLgCodeService.PREF_19:
-                return kanrenshaKigyouDtHistory19Repository.saveAndFlush(this.createEntity19(userDto, baseEntity))
+                return kanrenshaKigyouDtHistory19Repository.save(this.createEntity19(userDto, baseEntity))
                         .getKanrenshaKigyouDtHistoryId();
             case GetPrefectureLgCodeService.PREF_20:
-                return kanrenshaKigyouDtHistory20Repository.saveAndFlush(this.createEntity20(userDto, baseEntity))
+                return kanrenshaKigyouDtHistory20Repository.save(this.createEntity20(userDto, baseEntity))
                         .getKanrenshaKigyouDtHistoryId();
             case GetPrefectureLgCodeService.PREF_21:
-                return kanrenshaKigyouDtHistory21Repository.saveAndFlush(this.createEntity21(userDto, baseEntity))
+                return kanrenshaKigyouDtHistory21Repository.save(this.createEntity21(userDto, baseEntity))
                         .getKanrenshaKigyouDtHistoryId();
             case GetPrefectureLgCodeService.PREF_22:
-                return kanrenshaKigyouDtHistory22Repository.saveAndFlush(this.createEntity22(userDto, baseEntity))
+                return kanrenshaKigyouDtHistory22Repository.save(this.createEntity22(userDto, baseEntity))
                         .getKanrenshaKigyouDtHistoryId();
             case GetPrefectureLgCodeService.PREF_23:
-                return kanrenshaKigyouDtHistory23Repository.saveAndFlush(this.createEntity23(userDto, baseEntity))
+                return kanrenshaKigyouDtHistory23Repository.save(this.createEntity23(userDto, baseEntity))
                         .getKanrenshaKigyouDtHistoryId();
             case GetPrefectureLgCodeService.PREF_24:
-                return kanrenshaKigyouDtHistory24Repository.saveAndFlush(this.createEntity24(userDto, baseEntity))
+                return kanrenshaKigyouDtHistory24Repository.save(this.createEntity24(userDto, baseEntity))
                         .getKanrenshaKigyouDtHistoryId();
             case GetPrefectureLgCodeService.PREF_25:
-                return kanrenshaKigyouDtHistory25Repository.saveAndFlush(this.createEntity25(userDto, baseEntity))
+                return kanrenshaKigyouDtHistory25Repository.save(this.createEntity25(userDto, baseEntity))
                         .getKanrenshaKigyouDtHistoryId();
             case GetPrefectureLgCodeService.PREF_26:
-                return kanrenshaKigyouDtHistory26Repository.saveAndFlush(this.createEntity26(userDto, baseEntity))
+                return kanrenshaKigyouDtHistory26Repository.save(this.createEntity26(userDto, baseEntity))
                         .getKanrenshaKigyouDtHistoryId();
             case GetPrefectureLgCodeService.PREF_27:
-                return kanrenshaKigyouDtHistory27Repository.saveAndFlush(this.createEntity27(userDto, baseEntity))
+                return kanrenshaKigyouDtHistory27Repository.save(this.createEntity27(userDto, baseEntity))
                         .getKanrenshaKigyouDtHistoryId();
             case GetPrefectureLgCodeService.PREF_28:
-                return kanrenshaKigyouDtHistory28Repository.saveAndFlush(this.createEntity28(userDto, baseEntity))
+                return kanrenshaKigyouDtHistory28Repository.save(this.createEntity28(userDto, baseEntity))
                         .getKanrenshaKigyouDtHistoryId();
             case GetPrefectureLgCodeService.PREF_29:
-                return kanrenshaKigyouDtHistory29Repository.saveAndFlush(this.createEntity29(userDto, baseEntity))
+                return kanrenshaKigyouDtHistory29Repository.save(this.createEntity29(userDto, baseEntity))
                         .getKanrenshaKigyouDtHistoryId();
             case GetPrefectureLgCodeService.PREF_30:
-                return kanrenshaKigyouDtHistory30Repository.saveAndFlush(this.createEntity30(userDto, baseEntity))
+                return kanrenshaKigyouDtHistory30Repository.save(this.createEntity30(userDto, baseEntity))
                         .getKanrenshaKigyouDtHistoryId();
             case GetPrefectureLgCodeService.PREF_31:
-                return kanrenshaKigyouDtHistory31Repository.saveAndFlush(this.createEntity31(userDto, baseEntity))
+                return kanrenshaKigyouDtHistory31Repository.save(this.createEntity31(userDto, baseEntity))
                         .getKanrenshaKigyouDtHistoryId();
             case GetPrefectureLgCodeService.PREF_32:
-                return kanrenshaKigyouDtHistory32Repository.saveAndFlush(this.createEntity32(userDto, baseEntity))
+                return kanrenshaKigyouDtHistory32Repository.save(this.createEntity32(userDto, baseEntity))
                         .getKanrenshaKigyouDtHistoryId();
             case GetPrefectureLgCodeService.PREF_33:
-                return kanrenshaKigyouDtHistory33Repository.saveAndFlush(this.createEntity33(userDto, baseEntity))
+                return kanrenshaKigyouDtHistory33Repository.save(this.createEntity33(userDto, baseEntity))
                         .getKanrenshaKigyouDtHistoryId();
             case GetPrefectureLgCodeService.PREF_34:
-                return kanrenshaKigyouDtHistory34Repository.saveAndFlush(this.createEntity34(userDto, baseEntity))
+                return kanrenshaKigyouDtHistory34Repository.save(this.createEntity34(userDto, baseEntity))
                         .getKanrenshaKigyouDtHistoryId();
             case GetPrefectureLgCodeService.PREF_35:
-                return kanrenshaKigyouDtHistory35Repository.saveAndFlush(this.createEntity35(userDto, baseEntity))
+                return kanrenshaKigyouDtHistory35Repository.save(this.createEntity35(userDto, baseEntity))
                         .getKanrenshaKigyouDtHistoryId();
             case GetPrefectureLgCodeService.PREF_36:
-                return kanrenshaKigyouDtHistory36Repository.saveAndFlush(this.createEntity36(userDto, baseEntity))
+                return kanrenshaKigyouDtHistory36Repository.save(this.createEntity36(userDto, baseEntity))
                         .getKanrenshaKigyouDtHistoryId();
             case GetPrefectureLgCodeService.PREF_37:
-                return kanrenshaKigyouDtHistory37Repository.saveAndFlush(this.createEntity37(userDto, baseEntity))
+                return kanrenshaKigyouDtHistory37Repository.save(this.createEntity37(userDto, baseEntity))
                         .getKanrenshaKigyouDtHistoryId();
             case GetPrefectureLgCodeService.PREF_38:
-                return kanrenshaKigyouDtHistory38Repository.saveAndFlush(this.createEntity38(userDto, baseEntity))
+                return kanrenshaKigyouDtHistory38Repository.save(this.createEntity38(userDto, baseEntity))
                         .getKanrenshaKigyouDtHistoryId();
             case GetPrefectureLgCodeService.PREF_39:
-                return kanrenshaKigyouDtHistory39Repository.saveAndFlush(this.createEntity39(userDto, baseEntity))
+                return kanrenshaKigyouDtHistory39Repository.save(this.createEntity39(userDto, baseEntity))
                         .getKanrenshaKigyouDtHistoryId();
             case GetPrefectureLgCodeService.PREF_40:
-                return kanrenshaKigyouDtHistory40Repository.saveAndFlush(this.createEntity40(userDto, baseEntity))
+                return kanrenshaKigyouDtHistory40Repository.save(this.createEntity40(userDto, baseEntity))
                         .getKanrenshaKigyouDtHistoryId();
             case GetPrefectureLgCodeService.PREF_41:
-                return kanrenshaKigyouDtHistory41Repository.saveAndFlush(this.createEntity41(userDto, baseEntity))
+                return kanrenshaKigyouDtHistory41Repository.save(this.createEntity41(userDto, baseEntity))
                         .getKanrenshaKigyouDtHistoryId();
             case GetPrefectureLgCodeService.PREF_42:
-                return kanrenshaKigyouDtHistory42Repository.saveAndFlush(this.createEntity42(userDto, baseEntity))
+                return kanrenshaKigyouDtHistory42Repository.save(this.createEntity42(userDto, baseEntity))
                         .getKanrenshaKigyouDtHistoryId();
             case GetPrefectureLgCodeService.PREF_43:
-                return kanrenshaKigyouDtHistory43Repository.saveAndFlush(this.createEntity43(userDto, baseEntity))
+                return kanrenshaKigyouDtHistory43Repository.save(this.createEntity43(userDto, baseEntity))
                         .getKanrenshaKigyouDtHistoryId();
             case GetPrefectureLgCodeService.PREF_44:
-                return kanrenshaKigyouDtHistory44Repository.saveAndFlush(this.createEntity44(userDto, baseEntity))
+                return kanrenshaKigyouDtHistory44Repository.save(this.createEntity44(userDto, baseEntity))
                         .getKanrenshaKigyouDtHistoryId();
             case GetPrefectureLgCodeService.PREF_45:
-                return kanrenshaKigyouDtHistory45Repository.saveAndFlush(this.createEntity45(userDto, baseEntity))
+                return kanrenshaKigyouDtHistory45Repository.save(this.createEntity45(userDto, baseEntity))
                         .getKanrenshaKigyouDtHistoryId();
             case GetPrefectureLgCodeService.PREF_46:
-                return kanrenshaKigyouDtHistory46Repository.saveAndFlush(this.createEntity46(userDto, baseEntity))
+                return kanrenshaKigyouDtHistory46Repository.save(this.createEntity46(userDto, baseEntity))
                         .getKanrenshaKigyouDtHistoryId();
             case GetPrefectureLgCodeService.PREF_47:
-                return kanrenshaKigyouDtHistory47Repository.saveAndFlush(this.createEntity47(userDto, baseEntity))
+                return kanrenshaKigyouDtHistory47Repository.save(this.createEntity47(userDto, baseEntity))
                         .getKanrenshaKigyouDtHistoryId();
             default:
-                return kanrenshaKigyouDtHistory99Repository.saveAndFlush(this.createEntity99(userDto, baseEntity))
+                return kanrenshaKigyouDtHistory99Repository.save(this.createEntity99(userDto, baseEntity))
                         .getKanrenshaKigyouDtHistoryId();
         }
     }

@@ -106,7 +106,7 @@ public class KanrenshaPersonAddMiniRecordItemWriter extends JpaItemWriter<WkTblK
             }
         }
 
-        wkTblKanrenshaPersonAddMinResultRepository.saveAllAndFlush(list);
+        wkTblKanrenshaPersonAddMinResultRepository.saveAll(list);
     }
 
     private int insertMaster(final WkTblKanrenshaPersonAddMinEntity entityWkTbl, final String kanrenshaCode) {
@@ -126,7 +126,9 @@ public class KanrenshaPersonAddMiniRecordItemWriter extends JpaItemWriter<WkTblK
     private int insertHistory(final WkTblKanrenshaPersonAddMinEntity entityWkTbl, final String kanrenshaCode) {
 
         KanrenshaPersonHistoryBaseEntity entity = new KanrenshaPersonHistoryBaseEntity();
-        BeanUtils.copyProperties(entityWkTbl, entity);
+        entity.setAllName(entityWkTbl.getKanrenshaName());
+        entity.setAllAddress(entityWkTbl.getAllAddress());
+        entity.setPersonShokugyou(entityWkTbl.getPersonShokugyou());
         entity.setPersonKanrenshaCode(kanrenshaCode);
 
         setTableDataHistoryUtil.practiceInsert(userDto, entity);

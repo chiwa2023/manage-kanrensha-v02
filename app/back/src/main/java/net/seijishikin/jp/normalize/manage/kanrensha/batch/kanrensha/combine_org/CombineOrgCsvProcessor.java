@@ -120,7 +120,7 @@ public class CombineOrgCsvProcessor
         } else {
             entity.setYearArrayText(BLANK); // 最初の指定時はよかったのに、編集時にダメにした場合の対策
         }
-        
+
         // 作成予定の各年のテーブルについてチェックを行う
         if (!BLANK.equals(entity.getYearArrayText())) {
             String conditon = this.createCondition(entity);
@@ -134,7 +134,6 @@ public class CombineOrgCsvProcessor
                     stringBuilder.append("すでに登録があります(").append(year).append(")年;");
                 }
             }
-
         }
 
         // コード存在チェック
@@ -200,35 +199,42 @@ public class CombineOrgCsvProcessor
 
     private void checkExistCode(final StringBuilder stringBuilder, final WkTblKanrenshaCombineOrgEntity entity) {
 
-//        // 個人コード存在確認(最初の1件を呼んでいるようだが実質1件しか存在しない運用をする)
-//        Optional<KanrenshaPersonMasterEntity> optionalPerson = kanrenshaPersonMasterRepository.findFirstByPersonKanrenshaCodeAndIsLatest(
-//                entity.getPersonKanrenshaCode(), SetTableDataHistoryUtil.INSERT_STATE);
-//        if (optionalPerson.isEmpty()) {
-//            stringBuilder.append("指定された個人関連者コードが存在しません;");
-//        }
-//
-//        // 紐づけ団体が企業団体の場合
-//        if (KanrenshaKbnConstants.KIGYOU_DT== entity.getKanrenshaKbn()) { 
-//            Optional<KanrenshaKigyouDtMasterEntity> optionalKigyouDt = kanrenshaKigyouDtMasterRepository
-//                    .findFirstByKigyouDtKanrenshaCodeAndIsLatest(entity.getOrgKanrenshaCode(),
-//                            SetTableDataHistoryUtil.INSERT_STATE);
-//            if (optionalKigyouDt.isEmpty()) {
-//                stringBuilder.append("指定された企業／団体関連者コードが存在しません;");
-//            }
-//        }
-//
-//        // 紐づけ団体が政治団体の場合
-//        if (KanrenshaKbnConstants.SEIJIDANTAI == entity.getKanrenshaKbn()) {
-//            Optional<KanrenshaSeijidantaiMasterEntity> optionalSeijidantai = kanrenshaSeijidantaiMasterRepository
-//                    .findFirstBySeijidantaiKanrenshaCodeAndIsLatest(entity.getOrgKanrenshaCode(),
-//                            SetTableDataHistoryUtil.INSERT_STATE);
-//            if (optionalSeijidantai.isEmpty()) {
-//                stringBuilder.append("指定された政治団体団体関連者コードが存在しません;");
-//            }
-//        }
+        // 個人コード存在確認(最初の1件を呼んでいるようだが実質1件しか存在しない運用をする)
+        Optional<KanrenshaPersonMasterEntity> optionalPerson = kanrenshaPersonMasterRepository
+                .findFirstByPersonKanrenshaCodeAndIsLatest(entity.getPersonKanrenshaCode(),
+                        SetTableDataHistoryUtil.INSERT_STATE);
+        if (optionalPerson.isEmpty()) {
+            stringBuilder.append("指定された個人関連者コードが存在しません;");
+        }
+
+        // 紐づけ団体が企業団体の場合
+        if (KanrenshaKbnConstants.KIGYOU_DT == entity.getKanrenshaKbn()) {
+            Optional<KanrenshaKigyouDtMasterEntity> optionalKigyouDt = kanrenshaKigyouDtMasterRepository
+                    .findFirstByKigyouDtKanrenshaCodeAndIsLatest(entity.getOrgKanrenshaCode(),
+                            SetTableDataHistoryUtil.INSERT_STATE);
+            if (optionalKigyouDt.isEmpty()) {
+                stringBuilder.append("指定された企業／団体関連者コードが存在しません;");
+            }
+        }
+
+        // 紐づけ団体が政治団体の場合
+        if (KanrenshaKbnConstants.SEIJIDANTAI == entity.getKanrenshaKbn()) {
+            Optional<KanrenshaSeijidantaiMasterEntity> optionalSeijidantai = kanrenshaSeijidantaiMasterRepository
+                    .findFirstBySeijidantaiKanrenshaCodeAndIsLatest(entity.getOrgKanrenshaCode(),
+                            SetTableDataHistoryUtil.INSERT_STATE);
+            if (optionalSeijidantai.isEmpty()) {
+                stringBuilder.append("指定された政治団体団体関連者コードが存在しません;");
+            }
+        }
 
     }
 
+    /**
+     * 検索条件を作成する
+     * 
+     * @param entity ワークテーブルEntity
+     * @return 検索条件SQL
+     */
     private String createCondition(final WkTblKanrenshaCombineOrgEntity entity) {
 
         StringBuilder stringBuilder = new StringBuilder();

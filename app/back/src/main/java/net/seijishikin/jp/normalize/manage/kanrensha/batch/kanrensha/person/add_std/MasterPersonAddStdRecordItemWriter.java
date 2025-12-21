@@ -126,7 +126,7 @@ public class MasterPersonAddStdRecordItemWriter extends JpaItemWriter<WkTblKanre
             }
         }
 
-        wkTblKanrenshaPersonMasterResultRepository.saveAllAndFlush(list);
+        wkTblKanrenshaPersonMasterResultRepository.saveAll(list);
     }
 
     /* マスタ登録処理を行う */
@@ -137,7 +137,8 @@ public class MasterPersonAddStdRecordItemWriter extends JpaItemWriter<WkTblKanre
         BeanUtils.copyProperties(entityWkTbl, masterPersonEntity);
         masterPersonEntity.setPersonKanrenshaCode(kanrenshaCode);
         setTableDataHistoryUtil.practiceInsert(userDto, masterPersonEntity);
-        masterPersonEntity.setCompareNameText(formatNaturalSearchTextUtil.practice(masterPersonEntity.getKanrenshaName()));
+        masterPersonEntity
+                .setCompareNameText(formatNaturalSearchTextUtil.practice(masterPersonEntity.getKanrenshaName()));
         int masterId = masterPersonRepository.save(masterPersonEntity).getKanrenshaPersonMasterId();
 
         // マスタ住所登録
@@ -145,6 +146,14 @@ public class MasterPersonAddStdRecordItemWriter extends JpaItemWriter<WkTblKanre
         addressEntity.setPersonKanrenshaCode(kanrenshaCode);
         addressEntity.setKanrenshaPersonId(masterId);
         BeanUtils.copyProperties(entityWkTbl, addressEntity);
+
+        // TODO 住所編集フラグはサイト独自形式になっていることが周知されたらcsvにフラグで出す
+        // 承諾は住所整形済、、整形済でないにかかわらず承諾なし
+        boolean isEdit = !entityWkTbl.getIsJhushoFormat();
+        addressEntity.setIsPostalEdit(isEdit);
+        addressEntity.setIsBlockEdit(isEdit);
+        addressEntity.setIsBuildingEdit(isEdit);
+
         setTableDataHistoryUtil.practiceInsert(userDto, addressEntity);
         masterPersonaddAddressRepository.save(addressEntity);
 
@@ -161,6 +170,7 @@ public class MasterPersonAddStdRecordItemWriter extends JpaItemWriter<WkTblKanre
         propertyEntity.setPersonKanrenshaCode(kanrenshaCode);
         propertyEntity.setKanrenshaPersonId(masterId);
         BeanUtils.copyProperties(entityWkTbl, propertyEntity);
+        propertyEntity.setIsShokyouEdit(true);
         setTableDataHistoryUtil.practiceInsert(userDto, propertyEntity);
         masterPersonPropertyRepository.save(propertyEntity);
 
@@ -171,7 +181,10 @@ public class MasterPersonAddStdRecordItemWriter extends JpaItemWriter<WkTblKanre
     private int insertHistory(final WkTblKanrenshaPersonMasterEntity entityWkTbl, final String kanrenshaCode) {
 
         KanrenshaPersonHistoryBaseEntity entity = new KanrenshaPersonHistoryBaseEntity();
-        BeanUtils.copyProperties(entityWkTbl, entity);
+        entity.setAllName(entityWkTbl.getKanrenshaName());
+        entity.setAllAddress(entityWkTbl.getAllAddress());
+        entity.setPersonShokugyou(entityWkTbl.getPersonShokugyou());
+
         entity.setPersonKanrenshaCode(kanrenshaCode);
 
         return insertKanrenshaPersonHistoryService.practice(userDto, entity);

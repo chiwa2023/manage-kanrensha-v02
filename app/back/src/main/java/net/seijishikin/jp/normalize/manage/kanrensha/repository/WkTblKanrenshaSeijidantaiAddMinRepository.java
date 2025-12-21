@@ -9,7 +9,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import net.seijishikin.jp.normalize.manage.kanrensha.batch.kanrensha.seijidantai.add_min.KanrenshaSeijidantaiMasterUniquekeyDto;
-import net.seijishikin.jp.normalize.manage.kanrensha.entity.WkTblKanrenshaPersonMasterEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.WkTblKanrenshaSeijidantaiAddMinEntity;
 
 /**
@@ -63,6 +62,15 @@ public interface WkTblKanrenshaSeijidantaiAddMinRepository
             + "GROUP BY kanrensha_name, all_address, seijidantai_delegate HAVING count(*) >1", nativeQuery = true)
     List<KanrenshaSeijidantaiMasterUniquekeyDto> findDuplicateUniqueKey(Integer userCode);
 
-    List<WkTblKanrenshaSeijidantaiAddMinEntity> findByKanrenshaNameAndAllAddressAndSeijidantaiDelegateAndInsertUserCodeOrderByWkTblKanrenshaSeijidantaiAddMinIdAsc(
+    /**
+     * 同一データリストを取得する
+     * 
+     * @param name     名称
+     * @param address  住所
+     * @param delegate 団体代表者
+     * @param userCode ユーザコード
+     * @return 同一データリスト
+     */
+    List<WkTblKanrenshaSeijidantaiAddMinEntity> findByKanrenshaNameAndAllAddressAndSeijidantaiDelegateAndInsertUserCodeOrderByWkTblKanrenshaSeijidantaiAddMinIdAsc( // NOPMD
             String name, String address, String delegate, Integer userCode);
 }

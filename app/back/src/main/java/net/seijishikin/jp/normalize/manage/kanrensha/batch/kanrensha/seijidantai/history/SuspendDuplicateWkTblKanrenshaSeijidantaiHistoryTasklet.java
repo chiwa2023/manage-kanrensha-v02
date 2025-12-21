@@ -72,7 +72,7 @@ public class SuspendDuplicateWkTblKanrenshaSeijidantaiHistoryTasklet implements 
                 entity.setIsFinish(true);
                 entity.setJudgeReason("アップロードファイル内で重複しているデータです");
             }
-            wkTblKanrenshaSeijidantaiHistoryRepository.saveAllAndFlush(list);
+            wkTblKanrenshaSeijidantaiHistoryRepository.saveAll(list);
         }
 
         // 処理終了

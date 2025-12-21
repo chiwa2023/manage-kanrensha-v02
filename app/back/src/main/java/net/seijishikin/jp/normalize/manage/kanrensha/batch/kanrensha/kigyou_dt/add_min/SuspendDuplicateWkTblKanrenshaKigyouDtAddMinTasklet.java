@@ -73,7 +73,7 @@ public class SuspendDuplicateWkTblKanrenshaKigyouDtAddMinTasklet implements Task
                 entity.setIsFinish(true);
                 entity.setJudgeReason("アップロードファイル内で重複しているデータです");
             }
-            wkTblKanrenshaKigyouDtAddMinRepository.saveAllAndFlush(list);
+            wkTblKanrenshaKigyouDtAddMinRepository.saveAll(list);
         }
 
         // 処理終了

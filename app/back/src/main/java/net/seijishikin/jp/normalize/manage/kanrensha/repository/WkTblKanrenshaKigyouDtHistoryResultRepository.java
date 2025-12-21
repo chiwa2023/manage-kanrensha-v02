@@ -30,5 +30,12 @@ public interface WkTblKanrenshaKigyouDtHistoryResultRepository
     Page<WkTblKanrenshaKigyouDtHistoryResultEntity> findByInsertUserCodeAndIsLatest(Integer userCode, boolean isLatest,
             Pageable pageable);
 
+    /**
+     * ユーザコードが同一のデータを取得する
+     * 
+     * @param userCode ユーザコード
+     * @param pageable ページング
+     * @return 検索結果
+     */
     Page<WkTblKanrenshaKigyouDtHistoryResultEntity> findByInsertUserCode(Integer userCode, Pageable pageable);
 }

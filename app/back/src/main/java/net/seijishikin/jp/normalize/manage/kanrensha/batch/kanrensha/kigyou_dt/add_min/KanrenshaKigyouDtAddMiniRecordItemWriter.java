@@ -105,7 +105,7 @@ public class KanrenshaKigyouDtAddMiniRecordItemWriter extends JpaItemWriter<WkTb
             }
         }
 
-        wkTblKanrenshaKigyouDtAddMinResultRepository.saveAllAndFlush(list);
+        wkTblKanrenshaKigyouDtAddMinResultRepository.saveAll(list);
     }
 
     /**
@@ -143,9 +143,8 @@ public class KanrenshaKigyouDtAddMiniRecordItemWriter extends JpaItemWriter<WkTb
         entity.setKigyouDtKanrenshaCode(kanrenshaCode);
         entity.setAllName(entityWkTbl.getKanrenshaName());
         entity.setOrgDelegateName(entityWkTbl.getKigyouDtDelegate());
-        entity.setSearchText(formatNaturalSearchTextUtil
-                .practice(entity.getAllName() + entity.getAllAddress() + entity.getOrgDelegateName()));
-
+        
+        // 検索テキストはServiceで設定
         return insertKanrenshaKigyouDtHistoryService.practice(userDto, entity);
 
     }

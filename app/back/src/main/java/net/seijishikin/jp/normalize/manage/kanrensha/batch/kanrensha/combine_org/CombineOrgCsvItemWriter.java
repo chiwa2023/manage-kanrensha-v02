@@ -26,7 +26,6 @@ public class CombineOrgCsvItemWriter extends JpaItemWriter<WkTblKanrenshaCombine
     @Autowired
     private WkTblKanrenshaCombineOrgRepository wkTblKanrenshaCombineOrgRepository;
 
-    
     /** テーブル履歴設定Util */
     @Autowired
     private SetTableDataHistoryUtil setTableDataHistoryUtil;
@@ -67,20 +66,19 @@ public class CombineOrgCsvItemWriter extends JpaItemWriter<WkTblKanrenshaCombine
 
         int code = 0;
 
-//        Optional<WkTblKanrenshaCombineOrgEntity> optional = wkTblKanrenshaCombineOrgRepository
-//                .findFirstByOrderByWkTblKanrenshaCombineOrgCodeDesc();
-//        if (!optional.isEmpty()) {
-//            code = optional.get().getWkTblKanrenshaCombineOrgCode();
-//        }
-//
-//        for (WkTblKanrenshaCombineOrgEntity entity : items) {
-//            code++;
-//            setTableDataHistoryUtil.practiceInsert(userDto, entity);
-//            entity.setWkTblKanrenshaCombineOrgCode(code);
-//        }
-//
-//        wkTblKanrenshaCombineOrgRepository.saveAll(items);
-    }
+        Optional<WkTblKanrenshaCombineOrgEntity> optional = wkTblKanrenshaCombineOrgRepository
+                .findFirstByOrderByWkTblKanrenshaCombineOrgCodeDesc();
+        if (!optional.isEmpty()) {
+            code = optional.get().getWkTblKanrenshaCombineOrgCode();
+        }
 
+        for (WkTblKanrenshaCombineOrgEntity entity : items) {
+            code++;
+            setTableDataHistoryUtil.practiceInsert(userDto, entity);
+            entity.setWkTblKanrenshaCombineOrgCode(code);
+        }
+
+        wkTblKanrenshaCombineOrgRepository.saveAll(items);
+    }
 
 }

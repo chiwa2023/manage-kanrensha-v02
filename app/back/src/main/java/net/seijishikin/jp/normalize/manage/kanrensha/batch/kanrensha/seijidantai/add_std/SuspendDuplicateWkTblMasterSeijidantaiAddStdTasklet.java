@@ -74,7 +74,7 @@ public class SuspendDuplicateWkTblMasterSeijidantaiAddStdTasklet implements Task
                 entity.setIsFinish(true);
                 entity.setJudgeReason("アップロードファイル内で重複しているデータです");
             }
-            wkTblMasterSeijidantaiRepository.saveAllAndFlush(list);
+            wkTblMasterSeijidantaiRepository.saveAll(list);
 
         }
 

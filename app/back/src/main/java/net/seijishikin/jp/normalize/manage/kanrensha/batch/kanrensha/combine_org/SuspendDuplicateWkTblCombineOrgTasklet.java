@@ -56,25 +56,25 @@ public class SuspendDuplicateWkTblCombineOrgTasklet implements Tasklet, StepExec
     @Override
     public RepeatStatus execute(final StepContribution contribution, final ChunkContext chunkContext) throws Exception {
 
-//        Integer userCode = userDto.getUserPersonCode();
-//
-//        List<KanrenshaCombineOrgUniquekeyDto> listKeyGroup = wkTblKanrenshaCombineOrgRepository
-//                .findDuplicateUniqueKey(userCode);
-//
-//        for (KanrenshaCombineOrgUniquekeyDto uniqueDto : listKeyGroup) {
-//            List<WkTblKanrenshaCombineOrgEntity> list = wkTblKanrenshaCombineOrgRepository
-//                    .findByPersonKanrenshaCodeAndOrgKanrenshaCodeAndYearArrayTextAndKanrenshaKbnAndInsertUserCodeOrderByWkTblKanrenshaCombineOrgIdAsc(
-//                            uniqueDto.getPersonKanrenshaCode(), uniqueDto.getOrgKanrenshaCode(), uniqueDto.getYearArrayText(),
-//                            uniqueDto.getKanrenshaKbn(), userCode);
-//            list.remove(0); // 1行だけは処理実行行として残す
-//            for (WkTblKanrenshaCombineOrgEntity entity : list) {
-//                setTableDataHistoryUtil.practiceDelete(userDto, entity); // 削除
-//                entity.setIsLatest(SetTableDataHistoryUtil.DELETE_STATE);
-//                entity.setIsFinish(true);
-//                entity.setJudgeReason("アップロードファイル内で重複しているデータです");
-//            }
-//            wkTblKanrenshaCombineOrgRepository.saveAllAndFlush(list);
-//        }
+        Integer userCode = userDto.getUserPersonCode();
+
+        List<KanrenshaCombineOrgUniquekeyDto> listKeyGroup = wkTblKanrenshaCombineOrgRepository
+                .findDuplicateUniqueKey(userCode);
+
+        for (KanrenshaCombineOrgUniquekeyDto uniqueDto : listKeyGroup) {
+            List<WkTblKanrenshaCombineOrgEntity> list = wkTblKanrenshaCombineOrgRepository
+                    .findByPersonKanrenshaCodeAndOrgKanrenshaCodeAndYearArrayTextAndKanrenshaKbnAndInsertUserCodeOrderByWkTblKanrenshaCombineOrgIdAsc(
+                            uniqueDto.getPersonKanrenshaCode(), uniqueDto.getOrgKanrenshaCode(), uniqueDto.getYearArrayText(),
+                            uniqueDto.getKanrenshaKbn(), userCode);
+            list.remove(0); // 1行だけは処理実行行として残す
+            for (WkTblKanrenshaCombineOrgEntity entity : list) {
+                setTableDataHistoryUtil.practiceDelete(userDto, entity); // 削除
+                entity.setIsLatest(SetTableDataHistoryUtil.DELETE_STATE);
+                entity.setIsFinish(true);
+                entity.setJudgeReason("アップロードファイル内で重複しているデータです");
+            }
+            wkTblKanrenshaCombineOrgRepository.saveAllAndFlush(list);
+        }
 
         // 処理終了
         return RepeatStatus.FINISHED;

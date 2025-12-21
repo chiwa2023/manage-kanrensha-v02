@@ -21,6 +21,13 @@ public interface WkTblKanrenshaSeijidantaiHistoryResultRepository
     int deleteByInsertUserCode(Integer userCode);
 
     /**
+     * ユーザが一致するデータ取得する
+     * 
+     * @return 検索結果
+     */
+    Page<WkTblKanrenshaSeijidantaiHistoryResultEntity> findByInsertUserCode(Integer userCode, Pageable pageable);
+
+    /**
      * 操作者のコードで検索する
      *
      * @param userCode ユーザコード

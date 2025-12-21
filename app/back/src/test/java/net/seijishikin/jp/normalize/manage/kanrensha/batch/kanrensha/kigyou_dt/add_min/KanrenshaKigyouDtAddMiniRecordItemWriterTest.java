@@ -94,6 +94,7 @@ class KanrenshaKigyouDtAddMiniRecordItemWriterTest {
         assertEquals(entity00.getAllAddress(), entity10.getAllAddress());
         assertEquals(entity00.getKigyouDtDelegate(), entity10.getOrgDelegateName());
         assertTrue(entity10.getKigyouDtKanrenshaCode().startsWith(key));
+        assertEquals("超元素製造組合宮崎県架空市湖畔町組合長花子", entity10.getSearchText());
 
         // マスタ本体に正常登録
         List<KanrenshaKigyouDtMasterEntity> listMaster = kanrenshaKigyouDtMasterRepository.findAll();

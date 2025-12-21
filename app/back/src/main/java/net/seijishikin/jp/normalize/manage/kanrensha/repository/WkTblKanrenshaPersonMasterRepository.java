@@ -31,8 +31,8 @@ public interface WkTblKanrenshaPersonMasterRepository extends JpaRepository<WkTb
      * @param pageable ページング条件
      * @return 検索結果
      */
-    Page<WkTblKanrenshaPersonMasterEntity> findByInsertUserCodeAndIsLatestAndIsAffectedAndIsFinish(Integer userCode, boolean isLatest,
-            boolean isAffected,boolean isFinish, Pageable pageable);
+    Page<WkTblKanrenshaPersonMasterEntity> findByInsertUserCodeAndIsLatestAndIsAffectedAndIsFinish(Integer userCode,
+            boolean isLatest, boolean isAffected, boolean isFinish, Pageable pageable);
 
     /**
      * 操作者のコードで検索する
@@ -41,8 +41,8 @@ public interface WkTblKanrenshaPersonMasterRepository extends JpaRepository<WkTb
      * @param pageable ページング条件
      * @return 検索結果
      */
-    Page<WkTblKanrenshaPersonMasterEntity> findByInsertUserCodeAndIsLatestAndIsAffected(Integer userCode, boolean isLatest,
-            boolean isAffected, Pageable pageable);
+    Page<WkTblKanrenshaPersonMasterEntity> findByInsertUserCodeAndIsLatestAndIsAffected(Integer userCode,
+            boolean isLatest, boolean isAffected, Pageable pageable);
 
     /**
      * 現在の最大コードを所持するデータ取得する
@@ -50,7 +50,6 @@ public interface WkTblKanrenshaPersonMasterRepository extends JpaRepository<WkTb
      * @return 検索結果
      */
     Optional<WkTblKanrenshaPersonMasterEntity> findFirstByOrderByWkTblKanrenshaPersonMasterCodeDesc();
-
 
     /**
      * 重複キーを検出する
@@ -62,5 +61,15 @@ public interface WkTblKanrenshaPersonMasterRepository extends JpaRepository<WkTb
             + "GROUP BY kanrensha_name, all_address, person_shokugyou HAVING count(*) >1", nativeQuery = true)
     List<KanrenshaPersonMasterUniquekeyDto> findDuplicateUniqueKey(Integer userCode);
 
-    List<WkTblKanrenshaPersonMasterEntity> findByKanrenshaNameAndAllAddressAndPersonShokugyouAndInsertUserCodeOrderByWkTblKanrenshaPersonMasterIdAsc(String name,String address ,String shokugyou,Integer userCode);
+    /**
+     * 同一データリストを取得する
+     * 
+     * @param name      名称
+     * @param address   住所
+     * @param shokugyou 職業
+     * @param userCode  ユーザコード
+     * @return 同一データリスト
+     */
+    List<WkTblKanrenshaPersonMasterEntity> findByKanrenshaNameAndAllAddressAndPersonShokugyouAndInsertUserCodeOrderByWkTblKanrenshaPersonMasterIdAsc( // NOPMD
+            String name, String address, String shokugyou, Integer userCode);
 }

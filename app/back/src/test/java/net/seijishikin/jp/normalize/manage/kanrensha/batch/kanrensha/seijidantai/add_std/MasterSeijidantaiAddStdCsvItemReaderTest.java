@@ -1,6 +1,7 @@
 package net.seijishikin.jp.normalize.manage.kanrensha.batch.kanrensha.seijidantai.add_std;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -21,7 +22,6 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import org.springframework.transaction.annotation.Transactional;
 
-import net.seijishikin.jp.normalize.manage.kanrensha.batch.kanrensha.kigyou_dt.history.KanrenshaKigyouDtHistoryDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.constants.GetCurrentResourcePath;
 
 /**

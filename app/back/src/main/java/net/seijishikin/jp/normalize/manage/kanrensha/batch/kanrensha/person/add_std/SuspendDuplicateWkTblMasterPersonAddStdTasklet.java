@@ -75,7 +75,7 @@ public class SuspendDuplicateWkTblMasterPersonAddStdTasklet implements Tasklet, 
                 entity.setIsFinish(true);
                 entity.setJudgeReason("アップロードファイル内で重複しているデータです");
             }
-            wkTblKanrenshaPersonMasterRepository.saveAllAndFlush(list);
+            wkTblKanrenshaPersonMasterRepository.saveAll(list);
 
         }
 

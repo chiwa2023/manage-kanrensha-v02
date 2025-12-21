@@ -32,8 +32,8 @@ public interface WkTblKanrenshaKigyouDtHistoryRepository
      * @param pageable ページング条件
      * @return 検索結果
      */
-    Page<WkTblKanrenshaKigyouDtHistoryEntity> findByInsertUserCodeAndIsLatestAndIsAffectedAndIsFinish(Integer userCode, boolean isLatest,
-            boolean isAffected,boolean isFinish, Pageable pageable);
+    Page<WkTblKanrenshaKigyouDtHistoryEntity> findByInsertUserCodeAndIsLatestAndIsAffectedAndIsFinish(Integer userCode,
+            boolean isLatest, boolean isAffected, boolean isFinish, Pageable pageable);
 
     /**
      * 現在の最大コードを所持するデータ取得する
@@ -52,6 +52,16 @@ public interface WkTblKanrenshaKigyouDtHistoryRepository
             + "GROUP BY kanrensha_name, all_address, kigyou_dt_delegate, kigyou_dt_kanrensha_code HAVING count(*) >1", nativeQuery = true)
     List<KanrenshaKigyouDtUniquekeyDto> findDuplicateUniqueKey(Integer userCode);
 
-    List<WkTblKanrenshaKigyouDtHistoryEntity> findByKanrenshaNameAndAllAddressAndKigyouDtDelegateAndKigyouDtKanrenshaCodeAndInsertUserCodeOrderByWkKanrenshaKigyouDtHistoryIdAsc(String name,String address,String orgDelegate,String delegateName,Integer UserCode);
+    /**
+     * すべてが同一であるデータリストを取得する
+     * 
+     * @param name          名称
+     * @param address       住所
+     * @param orgDelegate   団体代表者
+     * @param kanrenshaCode 関連者コード
+     * @return 同一データリスト
+     */
+    List<WkTblKanrenshaKigyouDtHistoryEntity> findByKanrenshaNameAndAllAddressAndKigyouDtDelegateAndKigyouDtKanrenshaCodeAndInsertUserCodeOrderByWkKanrenshaKigyouDtHistoryIdAsc( // NOPMD
+            String name, String address, String orgDelegate, String kanrenshaCode, Integer UserCode);
 
 }

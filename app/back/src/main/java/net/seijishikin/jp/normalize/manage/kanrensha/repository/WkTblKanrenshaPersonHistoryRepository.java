@@ -9,7 +9,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import net.seijishikin.jp.normalize.manage.kanrensha.batch.kanrensha.person.history.KanrenshaPersonUniquekeyDto;
-import net.seijishikin.jp.normalize.manage.kanrensha.entity.WkTblKanrenshaPersonAddMinEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.WkTblKanrenshaPersonHistoryEntity;
 
 /**
@@ -33,8 +32,8 @@ public interface WkTblKanrenshaPersonHistoryRepository
      * @param pageable ページング条件
      * @return 検索結果
      */
-    Page<WkTblKanrenshaPersonHistoryEntity> findByInsertUserCodeAndIsLatestAndIsAffectedAndIsFinish(Integer userCode, boolean isLatest,
-            boolean isAffected,boolean isFinish, Pageable pageable);
+    Page<WkTblKanrenshaPersonHistoryEntity> findByInsertUserCodeAndIsLatestAndIsAffectedAndIsFinish(Integer userCode,
+            boolean isLatest, boolean isAffected, boolean isFinish, Pageable pageable);
 
     /**
      * 現在の最大コードを所持するデータ取得する
@@ -53,5 +52,16 @@ public interface WkTblKanrenshaPersonHistoryRepository
             + "GROUP BY kanrensha_name, all_address, person_shokugyou, person_kanrensha_code HAVING count(*) >1", nativeQuery = true)
     List<KanrenshaPersonUniquekeyDto> findDuplicateUniqueKey(Integer userCode);
 
-    List<WkTblKanrenshaPersonHistoryEntity> findByKanrenshaNameAndAllAddressAndPersonShokugyouAndPersonKanrenshaCodeAndInsertUserCodeOrderByWkKanrenshaPersonHistoryIdAsc(String name,String address,String shokugyou,String code,Integer userCode);
+    /**
+     * 同一データリストを取得する
+     * 
+     * @param name      名称
+     * @param address   住所
+     * @param shokugyou 職業
+     * @param code      関連者コード
+     * @param userCode  ユーザコード
+     * @return 同一データリスト
+     */
+    List<WkTblKanrenshaPersonHistoryEntity> findByKanrenshaNameAndAllAddressAndPersonShokugyouAndPersonKanrenshaCodeAndInsertUserCodeOrderByWkKanrenshaPersonHistoryIdAsc( // NOPMD
+            String name, String address, String shokugyou, String code, Integer userCode);
 }

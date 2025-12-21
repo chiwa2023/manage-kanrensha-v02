@@ -85,8 +85,7 @@ public class MasterSeijidantaiAddStdRecordItemWriter extends JpaItemWriter<WkTbl
      *
      * @param entityManagerFactory entityManagerFactory
      */
-    public MasterSeijidantaiAddStdRecordItemWriter(
-            final @Autowired EntityManagerFactory entityManagerFactory) {
+    public MasterSeijidantaiAddStdRecordItemWriter(final @Autowired EntityManagerFactory entityManagerFactory) {
         super();
         super.setEntityManagerFactory(entityManagerFactory);
     }
@@ -114,7 +113,7 @@ public class MasterSeijidantaiAddStdRecordItemWriter extends JpaItemWriter<WkTbl
         for (WkTblKanrenshaSeijidantaiMasterEntity entity : items) {
 
             // 関連者コードを設定
-            String kanrenshaCode = createDokujiCodeForSeijidantaiUtil.practice("");
+            String kanrenshaCode = createDokujiCodeForSeijidantaiUtil.practice(entity.getPoliOrgNo());
 
             // マスタ登録
             int masterId = this.insertMaster(entity, kanrenshaCode);
@@ -127,7 +126,7 @@ public class MasterSeijidantaiAddStdRecordItemWriter extends JpaItemWriter<WkTbl
             }
         }
 
-        wkTblKanrenshaSeijidantaiMasterResultRepository.saveAllAndFlush(list);
+        wkTblKanrenshaSeijidantaiMasterResultRepository.saveAll(list);
     }
 
     /* マスタ登録処理を行う */
@@ -137,8 +136,8 @@ public class MasterSeijidantaiAddStdRecordItemWriter extends JpaItemWriter<WkTbl
         KanrenshaSeijidantaiMasterEntity masterSeijidantaiEntity = new KanrenshaSeijidantaiMasterEntity();
         BeanUtils.copyProperties(entityWkTbl, masterSeijidantaiEntity);
         masterSeijidantaiEntity.setSeijidantaiKanrenshaCode(kanrenshaCode);
-        masterSeijidantaiEntity.setCompareNameText(
-                formatNaturalSearchTextUtil.practice(masterSeijidantaiEntity.getKanrenshaName()));
+        masterSeijidantaiEntity
+                .setCompareNameText(formatNaturalSearchTextUtil.practice(masterSeijidantaiEntity.getKanrenshaName()));
         setTableDataHistoryUtil.practiceInsert(userDto, masterSeijidantaiEntity);
         int masterId = kanrenshaSeijidantaiMasterRepository.save(masterSeijidantaiEntity)
                 .getKanrenshaSeijidantaiMasterId();
@@ -148,6 +147,14 @@ public class MasterSeijidantaiAddStdRecordItemWriter extends JpaItemWriter<WkTbl
         addressEntity.setSeijidantaiKanrenshaCode(kanrenshaCode);
         addressEntity.setKanrenshaSeijidantaiId(masterId);
         BeanUtils.copyProperties(entityWkTbl, addressEntity);
+
+        // TODO 住所整形済は自社サイト独自形式であることが周知しできた時点でcsvにフラグとして追加
+        boolean isEdit = !entityWkTbl.getIsJhushoFormat();
+        addressEntity.setIsPostalEdit(isEdit);
+        addressEntity.setIsBlockEdit(isEdit);
+        addressEntity.setIsBuildingEdit(isEdit);
+        // 整形済、整形済でないにかかわらず承認はしていない
+
         setTableDataHistoryUtil.practiceInsert(userDto, addressEntity);
         kanrenshaSeijidantaiAddressRepository.save(addressEntity);
 
@@ -174,14 +181,19 @@ public class MasterSeijidantaiAddStdRecordItemWriter extends JpaItemWriter<WkTbl
     private int insertHistory(final WkTblKanrenshaSeijidantaiMasterEntity entityWkTbl, final String kanrenshaCode) {
 
         KanrenshaSeijidantaiHistoryBaseEntity entity = new KanrenshaSeijidantaiHistoryBaseEntity();
-        BeanUtils.copyProperties(entityWkTbl, entity);
+        entity.setAllName(entityWkTbl.getKanrenshaName());
+        entity.setAllAddress(entityWkTbl.getAllAddress());
+        entity.setOrgDelegateName(entityWkTbl.getSeijidantaiDelegate());
+        entity.setOrgDelegateCode(entityWkTbl.getOrgDelegateCode());
+
         entity.setSeijidantaiKanrenshaCode(kanrenshaCode);
 
         return insertKanrenshaSeijidantaiHistoryService.practice(userDto, entity);
     }
 
     /* ワークテーブル処理結果Entityを作成する */
-    private WkTblKanrenshaSeijidantaiMasterResultEntity createJudge(final WkTblKanrenshaSeijidantaiMasterEntity entityWkTbl) {
+    private WkTblKanrenshaSeijidantaiMasterResultEntity createJudge(
+            final WkTblKanrenshaSeijidantaiMasterEntity entityWkTbl) {
 
         WkTblKanrenshaSeijidantaiMasterResultEntity entity = new WkTblKanrenshaSeijidantaiMasterResultEntity();
         setTableDataHistoryUtil.practiceInsert(userDto, entity);

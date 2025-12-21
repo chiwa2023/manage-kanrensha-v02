@@ -32,8 +32,8 @@ public interface WkTblKanrenshaSeijidantaiMasterRepository
      * @param pageable ページング条件
      * @return 検索結果
      */
-    Page<WkTblKanrenshaSeijidantaiMasterEntity> findByInsertUserCodeAndIsLatestAndIsAffectedAndIsFinish(Integer userCode, boolean isLatest,
-            boolean isAffected,boolean isFinish, Pageable pageable);
+    Page<WkTblKanrenshaSeijidantaiMasterEntity> findByInsertUserCodeAndIsLatestAndIsAffectedAndIsFinish(
+            Integer userCode, boolean isLatest, boolean isAffected, boolean isFinish, Pageable pageable);
 
     /**
      * 操作者のコードで検索する
@@ -42,8 +42,8 @@ public interface WkTblKanrenshaSeijidantaiMasterRepository
      * @param pageable ページング条件
      * @return 検索結果
      */
-    Page<WkTblKanrenshaSeijidantaiMasterEntity> findByInsertUserCodeAndIsLatestAndIsAffected(Integer userCode, boolean isLatest,
-            boolean isAffected, Pageable pageable);
+    Page<WkTblKanrenshaSeijidantaiMasterEntity> findByInsertUserCodeAndIsLatestAndIsAffected(Integer userCode,
+            boolean isLatest, boolean isAffected, Pageable pageable);
 
     /**
      * 現在の最大コードを所持するデータ取得する
@@ -62,5 +62,15 @@ public interface WkTblKanrenshaSeijidantaiMasterRepository
             + "GROUP BY kanrensha_name, all_address, seijidantai_delegate HAVING count(*) >1", nativeQuery = true)
     List<KanrenshaSeijidantaiMasterUniquekeyDto> findDuplicateUniqueKey(Integer userCode);
 
-    List<WkTblKanrenshaSeijidantaiMasterEntity> findByKanrenshaNameAndAllAddressAndSeijidantaiDelegateAndInsertUserCodeOrderByWkTblKanrenshaSeijidantaiMasterIdAsc(String name,String address,String delegateName,Integer userCode);
+    /**
+     * 同一データリストを取得する
+     * 
+     * @param name         名称
+     * @param address      住所
+     * @param delegateName 代表者名
+     * @param userCode     ユーザコード
+     * @return 同一データリスト
+     */
+    List<WkTblKanrenshaSeijidantaiMasterEntity> findByKanrenshaNameAndAllAddressAndSeijidantaiDelegateAndInsertUserCodeOrderByWkTblKanrenshaSeijidantaiMasterIdAsc( // NOPMD
+            String name, String address, String delegateName, Integer userCode);
 }

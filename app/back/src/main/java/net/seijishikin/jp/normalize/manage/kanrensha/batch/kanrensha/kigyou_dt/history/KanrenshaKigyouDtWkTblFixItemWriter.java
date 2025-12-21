@@ -102,7 +102,12 @@ public class KanrenshaKigyouDtWkTblFixItemWriter extends JpaItemWriter<WkTblKanr
 
         KanrenshaKigyouDtHistoryBaseEntity entity = new KanrenshaKigyouDtHistoryBaseEntity();
         BeanUtils.copyProperties(entityWkTbl, entity);
+        entity.setAllName(entityWkTbl.getKanrenshaName());
+        entity.setOrgDelegateName(entityWkTbl.getKigyouDtDelegate());
+
+        // 検索テキストはServiceで設定
         insertKanrenshaKigyouDtHistoryService.practice(userDto, entity);
+
     }
 
 }

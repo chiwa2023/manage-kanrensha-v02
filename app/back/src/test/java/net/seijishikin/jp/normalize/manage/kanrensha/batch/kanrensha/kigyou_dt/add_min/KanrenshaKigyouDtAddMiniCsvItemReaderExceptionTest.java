@@ -41,7 +41,7 @@ class KanrenshaKigyouDtAddMiniCsvItemReaderExceptionTest {
     private KanrenshaKigyouDtAddMiniCsvItemReader kanrenshaKigyouDtAddMiniCsvItemReader;
 
     @Test
-    @Tag("TableTruncate")
+    @Tag("TableTruncate") // NOPMD
     void testOnlyHeader() throws Exception {
 
         StepExecution stepExecution = this.getStepExecutionFormat("ヘッダのみ存在.csv");
@@ -98,8 +98,8 @@ class KanrenshaKigyouDtAddMiniCsvItemReaderExceptionTest {
         StepExecution stepExecution = this.getStepExecutionFormat("aaaa.csv");
         kanrenshaKigyouDtAddMiniCsvItemReader.beforeStep(stepExecution);
 
-        // readの前段階で、引数例外がそのまま出てくる
-        assertThrows(IllegalStateException.class,
+        // readの前段階で、引数例外が、対象がstreamできない例外として変換されて出てくる
+        assertThrows(ItemStreamException.class,
                 () -> kanrenshaKigyouDtAddMiniCsvItemReader.open(stepExecution.getExecutionContext()));
     }
 

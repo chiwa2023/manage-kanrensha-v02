@@ -80,6 +80,9 @@ class KanrenshaKigyouDtAddMiniWkTblFixItemWriterTest {
         assertEquals(entity00.getIsFinish(), entityAns.getIsFinish());
         assertEquals(entity00.getJudgeReason(), entityAns.getJudgeReason());
         assertEquals(entity00.getKanrenshaName(), entityAns.getKanrenshaName());
+        
+        
+        
     }
 
     private StepExecution getStepExecution() {

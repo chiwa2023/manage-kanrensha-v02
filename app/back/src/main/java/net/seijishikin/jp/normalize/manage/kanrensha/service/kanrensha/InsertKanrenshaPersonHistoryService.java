@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
+import net.seijishikin.jp.normalize.common_tool.utils.FormatNaturalSearchTextUtil;
 import net.seijishikin.jp.normalize.common_tool.utils.SetTableDataHistoryUtil;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.KanrenshaPersonHistoryBaseEntity;
 
@@ -266,6 +267,10 @@ public class InsertKanrenshaPersonHistoryService { // NOPMD
     @Autowired
     private KanrenshaPersonHistory99Repository kanrenshaPersonHistory99Repository;
 
+    /** 全文検索検索対象テキスト作成Uttility */
+    @Autowired
+    private FormatNaturalSearchTextUtil formatNaturalSearchTextUtil;
+
     /**
      * 処理を行う
      *
@@ -276,150 +281,153 @@ public class InsertKanrenshaPersonHistoryService { // NOPMD
     public int practice( // NOPMD SUPPRESS CHECKSTYLE ReturnCount
             final LeastUserDto userDto, final KanrenshaPersonHistoryBaseEntity baseEntity) {
 
+        baseEntity.setSearchText(formatNaturalSearchTextUtil
+                .practice(baseEntity.getAllName() + baseEntity.getAllAddress() + baseEntity.getPersonShokugyou()));
+
         switch (getPrefectureLgCodeService.practice(baseEntity.getAllAddress())) {
             case GetPrefectureLgCodeService.PREF_01:
-                return kanrenshaPersonHistory01Repository.saveAndFlush(this.createEntity01(userDto, baseEntity))
+                return kanrenshaPersonHistory01Repository.save(this.createEntity01(userDto, baseEntity))
                         .getKanrenshaPersonHistoryId();
             case GetPrefectureLgCodeService.PREF_02:
-                return kanrenshaPersonHistory02Repository.saveAndFlush(this.createEntity02(userDto, baseEntity))
+                return kanrenshaPersonHistory02Repository.save(this.createEntity02(userDto, baseEntity))
                         .getKanrenshaPersonHistoryId();
             case GetPrefectureLgCodeService.PREF_03:
-                return kanrenshaPersonHistory03Repository.saveAndFlush(this.createEntity03(userDto, baseEntity))
+                return kanrenshaPersonHistory03Repository.save(this.createEntity03(userDto, baseEntity))
                         .getKanrenshaPersonHistoryId();
             case GetPrefectureLgCodeService.PREF_04:
-                return kanrenshaPersonHistory04Repository.saveAndFlush(this.createEntity04(userDto, baseEntity))
+                return kanrenshaPersonHistory04Repository.save(this.createEntity04(userDto, baseEntity))
                         .getKanrenshaPersonHistoryId();
             case GetPrefectureLgCodeService.PREF_05:
-                return kanrenshaPersonHistory05Repository.saveAndFlush(this.createEntity05(userDto, baseEntity))
+                return kanrenshaPersonHistory05Repository.save(this.createEntity05(userDto, baseEntity))
                         .getKanrenshaPersonHistoryId();
             case GetPrefectureLgCodeService.PREF_06:
-                return kanrenshaPersonHistory06Repository.saveAndFlush(this.createEntity06(userDto, baseEntity))
+                return kanrenshaPersonHistory06Repository.save(this.createEntity06(userDto, baseEntity))
                         .getKanrenshaPersonHistoryId();
             case GetPrefectureLgCodeService.PREF_07:
-                return kanrenshaPersonHistory07Repository.saveAndFlush(this.createEntity07(userDto, baseEntity))
+                return kanrenshaPersonHistory07Repository.save(this.createEntity07(userDto, baseEntity))
                         .getKanrenshaPersonHistoryId();
             case GetPrefectureLgCodeService.PREF_08:
-                return kanrenshaPersonHistory08Repository.saveAndFlush(this.createEntity08(userDto, baseEntity))
+                return kanrenshaPersonHistory08Repository.save(this.createEntity08(userDto, baseEntity))
                         .getKanrenshaPersonHistoryId();
             case GetPrefectureLgCodeService.PREF_09:
-                return kanrenshaPersonHistory09Repository.saveAndFlush(this.createEntity09(userDto, baseEntity))
+                return kanrenshaPersonHistory09Repository.save(this.createEntity09(userDto, baseEntity))
                         .getKanrenshaPersonHistoryId();
             case GetPrefectureLgCodeService.PREF_10:
-                return kanrenshaPersonHistory10Repository.saveAndFlush(this.createEntity10(userDto, baseEntity))
+                return kanrenshaPersonHistory10Repository.save(this.createEntity10(userDto, baseEntity))
                         .getKanrenshaPersonHistoryId();
             case GetPrefectureLgCodeService.PREF_11:
-                return kanrenshaPersonHistory11Repository.saveAndFlush(this.createEntity11(userDto, baseEntity))
+                return kanrenshaPersonHistory11Repository.save(this.createEntity11(userDto, baseEntity))
                         .getKanrenshaPersonHistoryId();
             case GetPrefectureLgCodeService.PREF_12:
-                return kanrenshaPersonHistory12Repository.saveAndFlush(this.createEntity12(userDto, baseEntity))
+                return kanrenshaPersonHistory12Repository.save(this.createEntity12(userDto, baseEntity))
                         .getKanrenshaPersonHistoryId();
             case GetPrefectureLgCodeService.PREF_13:
-                return kanrenshaPersonHistory13Repository.saveAndFlush(this.createEntity13(userDto, baseEntity))
+                return kanrenshaPersonHistory13Repository.save(this.createEntity13(userDto, baseEntity))
                         .getKanrenshaPersonHistoryId();
             case GetPrefectureLgCodeService.PREF_14:
-                return kanrenshaPersonHistory14Repository.saveAndFlush(this.createEntity14(userDto, baseEntity))
+                return kanrenshaPersonHistory14Repository.save(this.createEntity14(userDto, baseEntity))
                         .getKanrenshaPersonHistoryId();
             case GetPrefectureLgCodeService.PREF_15:
-                return kanrenshaPersonHistory15Repository.saveAndFlush(this.createEntity15(userDto, baseEntity))
+                return kanrenshaPersonHistory15Repository.save(this.createEntity15(userDto, baseEntity))
                         .getKanrenshaPersonHistoryId();
             case GetPrefectureLgCodeService.PREF_16:
-                return kanrenshaPersonHistory16Repository.saveAndFlush(this.createEntity16(userDto, baseEntity))
+                return kanrenshaPersonHistory16Repository.save(this.createEntity16(userDto, baseEntity))
                         .getKanrenshaPersonHistoryId();
             case GetPrefectureLgCodeService.PREF_17:
-                return kanrenshaPersonHistory17Repository.saveAndFlush(this.createEntity17(userDto, baseEntity))
+                return kanrenshaPersonHistory17Repository.save(this.createEntity17(userDto, baseEntity))
                         .getKanrenshaPersonHistoryId();
             case GetPrefectureLgCodeService.PREF_18:
-                return kanrenshaPersonHistory18Repository.saveAndFlush(this.createEntity18(userDto, baseEntity))
+                return kanrenshaPersonHistory18Repository.save(this.createEntity18(userDto, baseEntity))
                         .getKanrenshaPersonHistoryId();
             case GetPrefectureLgCodeService.PREF_19:
-                return kanrenshaPersonHistory19Repository.saveAndFlush(this.createEntity19(userDto, baseEntity))
+                return kanrenshaPersonHistory19Repository.save(this.createEntity19(userDto, baseEntity))
                         .getKanrenshaPersonHistoryId();
             case GetPrefectureLgCodeService.PREF_20:
-                return kanrenshaPersonHistory20Repository.saveAndFlush(this.createEntity20(userDto, baseEntity))
+                return kanrenshaPersonHistory20Repository.save(this.createEntity20(userDto, baseEntity))
                         .getKanrenshaPersonHistoryId();
             case GetPrefectureLgCodeService.PREF_21:
-                return kanrenshaPersonHistory21Repository.saveAndFlush(this.createEntity21(userDto, baseEntity))
+                return kanrenshaPersonHistory21Repository.save(this.createEntity21(userDto, baseEntity))
                         .getKanrenshaPersonHistoryId();
             case GetPrefectureLgCodeService.PREF_22:
-                return kanrenshaPersonHistory22Repository.saveAndFlush(this.createEntity22(userDto, baseEntity))
+                return kanrenshaPersonHistory22Repository.save(this.createEntity22(userDto, baseEntity))
                         .getKanrenshaPersonHistoryId();
             case GetPrefectureLgCodeService.PREF_23:
-                return kanrenshaPersonHistory23Repository.saveAndFlush(this.createEntity23(userDto, baseEntity))
+                return kanrenshaPersonHistory23Repository.save(this.createEntity23(userDto, baseEntity))
                         .getKanrenshaPersonHistoryId();
             case GetPrefectureLgCodeService.PREF_24:
-                return kanrenshaPersonHistory24Repository.saveAndFlush(this.createEntity24(userDto, baseEntity))
+                return kanrenshaPersonHistory24Repository.save(this.createEntity24(userDto, baseEntity))
                         .getKanrenshaPersonHistoryId();
             case GetPrefectureLgCodeService.PREF_25:
-                return kanrenshaPersonHistory25Repository.saveAndFlush(this.createEntity25(userDto, baseEntity))
+                return kanrenshaPersonHistory25Repository.save(this.createEntity25(userDto, baseEntity))
                         .getKanrenshaPersonHistoryId();
             case GetPrefectureLgCodeService.PREF_26:
-                return kanrenshaPersonHistory26Repository.saveAndFlush(this.createEntity26(userDto, baseEntity))
+                return kanrenshaPersonHistory26Repository.save(this.createEntity26(userDto, baseEntity))
                         .getKanrenshaPersonHistoryId();
             case GetPrefectureLgCodeService.PREF_27:
-                return kanrenshaPersonHistory27Repository.saveAndFlush(this.createEntity27(userDto, baseEntity))
+                return kanrenshaPersonHistory27Repository.save(this.createEntity27(userDto, baseEntity))
                         .getKanrenshaPersonHistoryId();
             case GetPrefectureLgCodeService.PREF_28:
-                return kanrenshaPersonHistory28Repository.saveAndFlush(this.createEntity28(userDto, baseEntity))
+                return kanrenshaPersonHistory28Repository.save(this.createEntity28(userDto, baseEntity))
                         .getKanrenshaPersonHistoryId();
             case GetPrefectureLgCodeService.PREF_29:
-                return kanrenshaPersonHistory29Repository.saveAndFlush(this.createEntity29(userDto, baseEntity))
+                return kanrenshaPersonHistory29Repository.save(this.createEntity29(userDto, baseEntity))
                         .getKanrenshaPersonHistoryId();
             case GetPrefectureLgCodeService.PREF_30:
-                return kanrenshaPersonHistory30Repository.saveAndFlush(this.createEntity30(userDto, baseEntity))
+                return kanrenshaPersonHistory30Repository.save(this.createEntity30(userDto, baseEntity))
                         .getKanrenshaPersonHistoryId();
             case GetPrefectureLgCodeService.PREF_31:
-                return kanrenshaPersonHistory31Repository.saveAndFlush(this.createEntity31(userDto, baseEntity))
+                return kanrenshaPersonHistory31Repository.save(this.createEntity31(userDto, baseEntity))
                         .getKanrenshaPersonHistoryId();
             case GetPrefectureLgCodeService.PREF_32:
-                return kanrenshaPersonHistory32Repository.saveAndFlush(this.createEntity32(userDto, baseEntity))
+                return kanrenshaPersonHistory32Repository.save(this.createEntity32(userDto, baseEntity))
                         .getKanrenshaPersonHistoryId();
             case GetPrefectureLgCodeService.PREF_33:
-                return kanrenshaPersonHistory33Repository.saveAndFlush(this.createEntity33(userDto, baseEntity))
+                return kanrenshaPersonHistory33Repository.save(this.createEntity33(userDto, baseEntity))
                         .getKanrenshaPersonHistoryId();
             case GetPrefectureLgCodeService.PREF_34:
-                return kanrenshaPersonHistory34Repository.saveAndFlush(this.createEntity34(userDto, baseEntity))
+                return kanrenshaPersonHistory34Repository.save(this.createEntity34(userDto, baseEntity))
                         .getKanrenshaPersonHistoryId();
             case GetPrefectureLgCodeService.PREF_35:
-                return kanrenshaPersonHistory35Repository.saveAndFlush(this.createEntity35(userDto, baseEntity))
+                return kanrenshaPersonHistory35Repository.save(this.createEntity35(userDto, baseEntity))
                         .getKanrenshaPersonHistoryId();
             case GetPrefectureLgCodeService.PREF_36:
-                return kanrenshaPersonHistory36Repository.saveAndFlush(this.createEntity36(userDto, baseEntity))
+                return kanrenshaPersonHistory36Repository.save(this.createEntity36(userDto, baseEntity))
                         .getKanrenshaPersonHistoryId();
             case GetPrefectureLgCodeService.PREF_37:
-                return kanrenshaPersonHistory37Repository.saveAndFlush(this.createEntity37(userDto, baseEntity))
+                return kanrenshaPersonHistory37Repository.save(this.createEntity37(userDto, baseEntity))
                         .getKanrenshaPersonHistoryId();
             case GetPrefectureLgCodeService.PREF_38:
-                return kanrenshaPersonHistory38Repository.saveAndFlush(this.createEntity38(userDto, baseEntity))
+                return kanrenshaPersonHistory38Repository.save(this.createEntity38(userDto, baseEntity))
                         .getKanrenshaPersonHistoryId();
             case GetPrefectureLgCodeService.PREF_39:
-                return kanrenshaPersonHistory39Repository.saveAndFlush(this.createEntity39(userDto, baseEntity))
+                return kanrenshaPersonHistory39Repository.save(this.createEntity39(userDto, baseEntity))
                         .getKanrenshaPersonHistoryId();
             case GetPrefectureLgCodeService.PREF_40:
-                return kanrenshaPersonHistory40Repository.saveAndFlush(this.createEntity40(userDto, baseEntity))
+                return kanrenshaPersonHistory40Repository.save(this.createEntity40(userDto, baseEntity))
                         .getKanrenshaPersonHistoryId();
             case GetPrefectureLgCodeService.PREF_41:
-                return kanrenshaPersonHistory41Repository.saveAndFlush(this.createEntity41(userDto, baseEntity))
+                return kanrenshaPersonHistory41Repository.save(this.createEntity41(userDto, baseEntity))
                         .getKanrenshaPersonHistoryId();
             case GetPrefectureLgCodeService.PREF_42:
-                return kanrenshaPersonHistory42Repository.saveAndFlush(this.createEntity42(userDto, baseEntity))
+                return kanrenshaPersonHistory42Repository.save(this.createEntity42(userDto, baseEntity))
                         .getKanrenshaPersonHistoryId();
             case GetPrefectureLgCodeService.PREF_43:
-                return kanrenshaPersonHistory43Repository.saveAndFlush(this.createEntity43(userDto, baseEntity))
+                return kanrenshaPersonHistory43Repository.save(this.createEntity43(userDto, baseEntity))
                         .getKanrenshaPersonHistoryId();
             case GetPrefectureLgCodeService.PREF_44:
-                return kanrenshaPersonHistory44Repository.saveAndFlush(this.createEntity44(userDto, baseEntity))
+                return kanrenshaPersonHistory44Repository.save(this.createEntity44(userDto, baseEntity))
                         .getKanrenshaPersonHistoryId();
             case GetPrefectureLgCodeService.PREF_45:
-                return kanrenshaPersonHistory45Repository.saveAndFlush(this.createEntity45(userDto, baseEntity))
+                return kanrenshaPersonHistory45Repository.save(this.createEntity45(userDto, baseEntity))
                         .getKanrenshaPersonHistoryId();
             case GetPrefectureLgCodeService.PREF_46:
-                return kanrenshaPersonHistory46Repository.saveAndFlush(this.createEntity46(userDto, baseEntity))
+                return kanrenshaPersonHistory46Repository.save(this.createEntity46(userDto, baseEntity))
                         .getKanrenshaPersonHistoryId();
             case GetPrefectureLgCodeService.PREF_47:
-                return kanrenshaPersonHistory47Repository.saveAndFlush(this.createEntity47(userDto, baseEntity))
+                return kanrenshaPersonHistory47Repository.save(this.createEntity47(userDto, baseEntity))
                         .getKanrenshaPersonHistoryId();
             default:
-                return kanrenshaPersonHistory99Repository.saveAndFlush(this.createEntity99(userDto, baseEntity))
+                return kanrenshaPersonHistory99Repository.save(this.createEntity99(userDto, baseEntity))
                         .getKanrenshaPersonHistoryId();
         }
     }

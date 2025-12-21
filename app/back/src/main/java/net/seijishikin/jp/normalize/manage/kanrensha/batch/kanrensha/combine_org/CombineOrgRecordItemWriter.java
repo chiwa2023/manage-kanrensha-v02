@@ -82,7 +82,7 @@ public class CombineOrgRecordItemWriter extends JpaItemWriter<WkTblKanrenshaComb
             }
         }
 
-        wkTblKanrenshaCombineOrgResultRepository.saveAllAndFlush(list);
+        wkTblKanrenshaCombineOrgResultRepository.saveAll(list);
     }
 
     private WkTblKanrenshaCombineOrgResultEntity createJudge(final WkTblKanrenshaCombineOrgEntity entityWkTbl) {

@@ -752,6 +752,28 @@ public class WkTblKanrenshaSeijidantaiMasterEntity // NOPMD DataClass
         this.judgeReason = judgeReason;
     }
 
+    /** 住所整形済 */
+    @Column(name = "is_jhusho_format")
+    private Boolean isJhushoFormat = INIT_BOOLEAN;
+
+    /**
+     * 住所整形済を取得する
+     * 
+     * @return 住所整形済
+     */
+    public Boolean getIsJhushoFormat() {
+        return isJhushoFormat;
+    }
+
+    /**
+     * 住所整形済を設定する
+     * 
+     * @param isJhushoFormat 住所整形済
+     */
+    public void setIsJhushoFormat(final Boolean isJhushoFormat) {
+        this.isJhushoFormat = isJhushoFormat;
+    }
+
     /** 挿入ユーザId */
     @Column(name = "insert_user_id")
     private Integer insertUserId = INIT_INTEGER;

@@ -13,21 +13,21 @@ import org.springframework.stereotype.Component;
 
 import jakarta.persistence.EntityManagerFactory;
 import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
+import net.seijishikin.jp.normalize.manage.kanrensha.entity.KanrenshaKigyouDtHistoryBaseEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.KanrenshaKigyouDtMasterEntity;
+import net.seijishikin.jp.normalize.manage.kanrensha.entity.KanrenshaPersonHistoryBaseEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.KanrenshaPersonMasterEntity;
+import net.seijishikin.jp.normalize.manage.kanrensha.entity.KanrenshaSeijidantaiHistoryBaseEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.KanrenshaSeijidantaiMasterEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.WkTblMasterAllByXmlEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.WkTblMasterAllByXmlResultEntity;
-import net.seijishikin.jp.normalize.manage.kanrensha.entity.lgcode.KanrenshaKigyouDtHistory01Entity;
-import net.seijishikin.jp.normalize.manage.kanrensha.entity.lgcode.KanrenshaPersonHistory01Entity;
-import net.seijishikin.jp.normalize.manage.kanrensha.entity.lgcode.KanrenshaSeijidantaiHistory01Entity;
 import net.seijishikin.jp.normalize.manage.kanrensha.repository.KanrenshaKigyouDtMasterRepository;
 import net.seijishikin.jp.normalize.manage.kanrensha.repository.KanrenshaPersonMasterRepository;
 import net.seijishikin.jp.normalize.manage.kanrensha.repository.KanrenshaSeijidantaiMasterRepository;
 import net.seijishikin.jp.normalize.manage.kanrensha.repository.WkTblMasterAllByXmlResultRepository;
-import net.seijishikin.jp.normalize.manage.kanrensha.repository.lgcode.KanrenshaKigyouDtHistory01Repository;
-import net.seijishikin.jp.normalize.manage.kanrensha.repository.lgcode.KanrenshaPersonHistory01Repository;
-import net.seijishikin.jp.normalize.manage.kanrensha.repository.lgcode.KanrenshaSeijidantaiHistory01Repository;
+import net.seijishikin.jp.normalize.manage.kanrensha.service.kanrensha.InsertKanrenshaKigyouDtHistoryService;
+import net.seijishikin.jp.normalize.manage.kanrensha.service.kanrensha.InsertKanrenshaPersonHistoryService;
+import net.seijishikin.jp.normalize.manage.kanrensha.service.kanrensha.InsertKanrenshaSeijidantaiHistoryService;
 import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateDokujiCodeForKigyouDtUtil;
 import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateDokujiCodeForPersonUtil;
 import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateDokujiCodeForSeijidantaiUtil;
@@ -41,25 +41,13 @@ import net.seijishikin.jp.normalize.common_tool.utils.SetTableDataHistoryUtil;
 @Component
 public class KanrenshaByXmlMinRecordItemWriter extends JpaItemWriter<WkTblMasterAllByXmlEntity> {
 
-    /** 関連者個人履歴(01)Repository */
-    @Autowired
-    private KanrenshaPersonHistory01Repository kanrenshaPersonHistory01Repository;
-
     /** 関連者個人マスタRepository */
     @Autowired
     private KanrenshaPersonMasterRepository kanrenshaPersonMasterRepository;
 
-    /** 関連者企業・団体履歴(01)Repository */
-    @Autowired
-    private KanrenshaKigyouDtHistory01Repository kanrenshaKigyouDtHistory01Repository;
-
     /** 関連者企業・団体マスタRepository */
     @Autowired
     private KanrenshaKigyouDtMasterRepository kanrenshaKigyouDtMasterRepository;
-
-    /** 関連者政治団体履歴(01)Repository */
-    @Autowired
-    private KanrenshaSeijidantaiHistory01Repository kanrenshaSeijidantaiHistory01Repository;
 
     /** 関連者政治団体マスタRepository */
     @Autowired
@@ -95,6 +83,18 @@ public class KanrenshaByXmlMinRecordItemWriter extends JpaItemWriter<WkTblMaster
 
     /** ユーザ最低限Dto */
     private LeastUserDto userDto;
+
+    /** 関連者企業団体履歴挿入Service */
+    @Autowired
+    private InsertKanrenshaKigyouDtHistoryService insertKanrenshaKigyouDtHistoryService;
+
+    /** 関連者個人履歴登録Service */
+    @Autowired
+    private InsertKanrenshaPersonHistoryService insertKanrenshaPersonHistoryService;
+
+    /** 関連者個人履歴登録Service */
+    @Autowired
+    private InsertKanrenshaSeijidantaiHistoryService insertKanrenshaSeijidantaiHistoryService;
 
     /**
      * コンストラクタ
@@ -150,7 +150,7 @@ public class KanrenshaByXmlMinRecordItemWriter extends JpaItemWriter<WkTblMaster
 
                 case 3: // SUPPRESS CHECKSTYLE MagicNumber
                     // 政治団体登録
-                    kanrenshaCode = createDokujiCodeForSeijidantaiUtil.practice("");
+                    kanrenshaCode = createDokujiCodeForSeijidantaiUtil.practice(entity.getPoliOrgNo());
 
                     masterId = this.insertMasterSeijidantai(entity, kanrenshaCode);
                     historyId = this.insertHistorySeijidantai(entity, kanrenshaCode);
@@ -167,7 +167,7 @@ public class KanrenshaByXmlMinRecordItemWriter extends JpaItemWriter<WkTblMaster
             }
         }
 
-        wkTblMasterAllByXmlResultRepository.saveAllAndFlush(list);
+        wkTblMasterAllByXmlResultRepository.saveAll(list);
     }
 
     private int insertMasterKigyouDt(final WkTblMasterAllByXmlEntity entityWkTbl, final String kanrenshaCode) {
@@ -186,16 +186,17 @@ public class KanrenshaByXmlMinRecordItemWriter extends JpaItemWriter<WkTblMaster
 
     private int insertHistoryKigyouDt(final WkTblMasterAllByXmlEntity entityWkTbl, final String kanrenshaCode) {
 
-        // TODO 47都道府県とそれ以外に分割して登録する
-        KanrenshaKigyouDtHistory01Entity entity = new KanrenshaKigyouDtHistory01Entity();
+        KanrenshaKigyouDtHistoryBaseEntity entity = new KanrenshaKigyouDtHistoryBaseEntity();
         BeanUtils.copyProperties(entityWkTbl, entity);
+        entity.setAllName(entityWkTbl.getKanrenshaName());
         entity.setKigyouDtKanrenshaCode(kanrenshaCode);
         entity.setOrgDelegateName(entityWkTbl.getOrgDelegate());
 
         setTableDataHistoryUtil.practiceInsert(userDto, entity);
         entity.setKanrenshaKigyouDtHistoryId(0); // auto_increment明示
 
-        return kanrenshaKigyouDtHistory01Repository.save(entity).getKanrenshaKigyouDtHistoryId();
+        // 検索テキストはServiceで設定
+        return insertKanrenshaKigyouDtHistoryService.practice(userDto, entity);
 
     }
 
@@ -215,15 +216,16 @@ public class KanrenshaByXmlMinRecordItemWriter extends JpaItemWriter<WkTblMaster
 
     private int insertHistoryPerson(final WkTblMasterAllByXmlEntity entityWkTbl, final String kanrenshaCode) {
 
-        // TODO 47都道府県とそれ以外に分割して登録する
-        KanrenshaPersonHistory01Entity entity = new KanrenshaPersonHistory01Entity();
-        BeanUtils.copyProperties(entityWkTbl, entity);
+        KanrenshaPersonHistoryBaseEntity entity = new KanrenshaPersonHistoryBaseEntity();
+        entity.setAllName(entityWkTbl.getKanrenshaName());
+        entity.setAllAddress(entityWkTbl.getAllAddress());
+        entity.setPersonShokugyou(entityWkTbl.getPersonShokugyou());
         entity.setPersonKanrenshaCode(kanrenshaCode);
 
         setTableDataHistoryUtil.practiceInsert(userDto, entity);
         entity.setKanrenshaPersonHistoryId(0); // auto_increment明示
 
-        return kanrenshaPersonHistory01Repository.save(entity).getKanrenshaPersonHistoryId();
+        return insertKanrenshaPersonHistoryService.practice(userDto, entity);
 
     }
 
@@ -233,7 +235,7 @@ public class KanrenshaByXmlMinRecordItemWriter extends JpaItemWriter<WkTblMaster
         BeanUtils.copyProperties(entityWkTbl, entity);
         entity.setSeijidantaiKanrenshaCode(kanrenshaCode);
         entity.setSeijidantaiDelegate(entityWkTbl.getOrgDelegate());
-        
+
         entity.setCompareNameText(formatNaturalSearchTextUtil.practice(entity.getKanrenshaName()));
 
         setTableDataHistoryUtil.practiceInsert(userDto, entity);
@@ -245,16 +247,16 @@ public class KanrenshaByXmlMinRecordItemWriter extends JpaItemWriter<WkTblMaster
 
     private int insertHistorySeijidantai(final WkTblMasterAllByXmlEntity entityWkTbl, final String kanrenshaCode) {
 
-        // TODO 47都道府県とそれ以外に分割して登録する
-        KanrenshaSeijidantaiHistory01Entity entity = new KanrenshaSeijidantaiHistory01Entity();
-        BeanUtils.copyProperties(entityWkTbl, entity);
-        entity.setSeijidantaiKanrenshaCode(kanrenshaCode);
+        KanrenshaSeijidantaiHistoryBaseEntity entity = new KanrenshaSeijidantaiHistoryBaseEntity();
+        entity.setAllName(entityWkTbl.getKanrenshaName());
+        entity.setAllAddress(entityWkTbl.getAllAddress());
         entity.setOrgDelegateName(entityWkTbl.getOrgDelegate());
+        entity.setSeijidantaiKanrenshaCode(kanrenshaCode);
 
         setTableDataHistoryUtil.practiceInsert(userDto, entity);
         entity.setKanrenshaSeijidantaiHistoryId(0); // auto_increment明示
 
-        return kanrenshaSeijidantaiHistory01Repository.save(entity).getKanrenshaSeijidantaiHistoryId();
+        return insertKanrenshaSeijidantaiHistoryService.practice(userDto, entity);
 
     }
 

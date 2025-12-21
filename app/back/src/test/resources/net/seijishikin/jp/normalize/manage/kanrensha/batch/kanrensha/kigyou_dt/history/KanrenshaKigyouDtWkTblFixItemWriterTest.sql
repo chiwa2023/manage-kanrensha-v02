@@ -1,6 +1,8 @@
 TRUNCATE TABLE `wk_tbl_kanrensha_kigyou_dt_history`;
 ALTER TABLE `wk_tbl_kanrensha_kigyou_dt_history` AUTO_INCREMENT = 1;
 
+TRUNCATE TABLE `kanrensha_kigyou_dt_history_99`;
+
 INSERT INTO `wk_tbl_kanrensha_kigyou_dt_history` (
   `wk_kanrensha_kigyou_dt_history_id`,
   `wk_kanrensha_kigyou_dt_history_code`,

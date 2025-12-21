@@ -1,0 +1,4 @@
+TRUNCATE TABLE wk_tbl_kanrensha_person_add_min;
+TRUNCATE TABLE kanrensha_person_master;
+TRUNCATE TABLE kanrensha_person_history_13;
+TRUNCATE TABLE wk_tbl_kanrensha_person_add_min_result;

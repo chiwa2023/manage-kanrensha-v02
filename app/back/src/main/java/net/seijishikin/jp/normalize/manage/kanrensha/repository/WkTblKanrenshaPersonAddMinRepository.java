@@ -31,8 +31,8 @@ public interface WkTblKanrenshaPersonAddMinRepository extends JpaRepository<WkTb
      * @param pageable ページング条件
      * @return 検索結果
      */
-    Page<WkTblKanrenshaPersonAddMinEntity> findByInsertUserCodeAndIsLatestAndIsAffectedAndIsFinish(Integer userCode, boolean isLatest,
-            boolean isAffected,boolean isFinish, Pageable pageable);
+    Page<WkTblKanrenshaPersonAddMinEntity> findByInsertUserCodeAndIsLatestAndIsAffectedAndIsFinish(Integer userCode,
+            boolean isLatest, boolean isAffected, boolean isFinish, Pageable pageable);
 
     /**
      * 現在の最大コードを所持するデータ取得する
@@ -51,5 +51,15 @@ public interface WkTblKanrenshaPersonAddMinRepository extends JpaRepository<WkTb
             + "GROUP BY kanrensha_name, all_address, person_shokugyou HAVING count(*) >1", nativeQuery = true)
     List<KanrenshaPersonMasterUniquekeyDto> findDuplicateUniqueKey(Integer userCode);
 
-    List<WkTblKanrenshaPersonAddMinEntity> findByKanrenshaNameAndAllAddressAndPersonShokugyouAndInsertUserCodeOrderByWkTblKanrenshaPersonAddMinIdAsc(String name,String address ,String shokugyou,Integer userCode);
+    /**
+     * 同一データリストを取得する
+     * 
+     * @param name      名称
+     * @param address   住所
+     * @param shokugyou 職業
+     * @param userCode  ユーザコード
+     * @return 同一データリスト
+     */
+    List<WkTblKanrenshaPersonAddMinEntity> findByKanrenshaNameAndAllAddressAndPersonShokugyouAndInsertUserCodeOrderByWkTblKanrenshaPersonAddMinIdAsc(
+            String name, String address, String shokugyou, Integer userCode);
 }

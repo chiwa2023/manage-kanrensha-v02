@@ -94,7 +94,7 @@ public class KanrenshaSeijidantaiAddMiniRecordItemWriter extends JpaItemWriter<W
         // 編集処理
         for (WkTblKanrenshaSeijidantaiAddMinEntity entity : items) {
 
-            String kanrenshaCode = createDokujiCodeForSeijidantaiUtil.practice("");
+            String kanrenshaCode = createDokujiCodeForSeijidantaiUtil.practice(entity.getPoliOrgNo());
 
             int masterId = this.insertMaster(entity, kanrenshaCode);
             int historyId = this.insertHistory(entity, kanrenshaCode);
@@ -106,7 +106,7 @@ public class KanrenshaSeijidantaiAddMiniRecordItemWriter extends JpaItemWriter<W
             }
         }
 
-        wkTblKanrenshaSeijidantaiAddMinResultRepository.saveAllAndFlush(list);
+        wkTblKanrenshaSeijidantaiAddMinResultRepository.saveAll(list);
     }
 
     private int insertMaster(final WkTblKanrenshaSeijidantaiAddMinEntity entityWkTbl, final String kanrenshaCode) {
@@ -115,7 +115,6 @@ public class KanrenshaSeijidantaiAddMiniRecordItemWriter extends JpaItemWriter<W
         BeanUtils.copyProperties(entityWkTbl, entity);
         entity.setSeijidantaiKanrenshaCode(kanrenshaCode);
         entity.setCompareNameText(formatNaturalSearchTextUtil.practice(entity.getKanrenshaName()));
-
         setTableDataHistoryUtil.practiceInsert(userDto, entity);
         entity.setKanrenshaSeijidantaiMasterId(0); // auto_increment明示
 
@@ -126,7 +125,9 @@ public class KanrenshaSeijidantaiAddMiniRecordItemWriter extends JpaItemWriter<W
     private int insertHistory(final WkTblKanrenshaSeijidantaiAddMinEntity entityWkTbl, final String kanrenshaCode) {
 
         KanrenshaSeijidantaiHistoryBaseEntity entity = new KanrenshaSeijidantaiHistoryBaseEntity();
-        BeanUtils.copyProperties(entityWkTbl, entity);
+        entity.setAllName(entityWkTbl.getKanrenshaName());
+        entity.setAllAddress(entityWkTbl.getAllAddress());
+        entity.setOrgDelegateName(entityWkTbl.getSeijidantaiDelegate());
         entity.setSeijidantaiKanrenshaCode(kanrenshaCode);
 
         setTableDataHistoryUtil.practiceInsert(userDto, entity);
