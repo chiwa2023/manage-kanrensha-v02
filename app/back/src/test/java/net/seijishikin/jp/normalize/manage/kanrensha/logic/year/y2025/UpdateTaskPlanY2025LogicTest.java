@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.time.LocalDateTime;
 
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -47,6 +48,7 @@ class UpdateTaskPlanY2025LogicTest {
     private TaskPlan2025Repository taskPlan2025Repository;
 
     @Test
+    @Tag("TableTruncate")
     void test() throws Exception {
 
         Integer taskCode = 101;

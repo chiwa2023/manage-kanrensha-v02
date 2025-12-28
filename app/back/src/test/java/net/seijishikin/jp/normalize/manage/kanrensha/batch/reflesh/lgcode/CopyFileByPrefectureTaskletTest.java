@@ -51,15 +51,20 @@ class CopyFileByPrefectureTaskletTest {
 
     private StepExecution getStepExecution() {
 
-        /* 元ソース */
-        String srcPath = GetCurrentResourcePath.getBackSrcPath("");
         // エンティティ
-        Path path = Paths.get(srcPath,
-                "/main/java/net/seijishikin/jp/normalize/manage/kanrensha/entity/lgcode/KanrenshaKigyouDtHistory99Entity.java");
+        // String srcPath = GetCurrentResourcePath.getBackSrcPath("");
+        // Path path = Paths.get(srcPath,
+        // "/main/java/net/seijishikin/jp/normalize/manage/kanrensha/entity/lgcode/KanrenshaKigyouDtHistory99Entity.java");
 
         // レポジトリ
+        // String srcPath = GetCurrentResourcePath.getBackSrcPath("");
         // Path path = Paths.get(srcPath,
-        // "/main/java/net/seijishikin/jp/normalize/manage/kanrensha/repository/lgcode/KanrenshaPersonHistory99Repository.java");
+        // "/main/java/net/seijishikin/jp/normalize/manage/kanrensha/repository/lgcode/KanrenshaKigyouDtHistory99Repository.java");
+
+        // PG
+        // String srcPath = GetCurrentResourcePath.getBackSrcPath("");
+        // Path path = Paths.get(srcPath,
+        // "/main/java/net/seijishikin/jp/normalize/manage/kanrensha/batch/kanrensha/dump/sabun/history/DumpSabunKanrenshaSeijidantaiHistory99ItemReader.java");
 
         // DDL
         // Path pathBackRoot = Paths.get(srcPath);
@@ -69,12 +74,14 @@ class CopyFileByPrefectureTaskletTest {
         // "kanrensha_kigyou_dt_history_99.sql");
 
         /* テスト */
-        // String srcPath = GetCurrentResourcePath.getBackTestFilePath();
-        // Path path = Paths.get(srcPath,
-        // "/mitei/mitei/political/balancesheet/manage/kanrensha/batch/dump/history/DumpPartnerCorpHistory99ItemWriterTest.java");
+        String srcPath = GetCurrentResourcePath.getBackTestFilePath();
+        Path path = Paths.get(srcPath,
+                "net/seijishikin/jp/normalize/manage/kanrensha/batch/kanrensha/dump/sabun/history/DumpSabunKanrenshaSeijidantaiHistory99ItemReaderTest.java");
 
-        // Path path =
-        // Paths.get("C:/workspace/git/pg/manage-kanrensha-v01/back/src/main/resources/DDL/partner_poli_org_history_99.sql");
+        // テストSQL
+        // String srcPath = GetCurrentResourcePath.getBackTestResourcePath();
+        // Path path = Paths.get(srcPath,
+        // "net/seijishikin/jp/normalize/manage/kanrensha/batch/kanrensha/dump/sabun/history/DumpSabunKanrenshaSeijidantaiHistory99ItemReaderTest.sql");
 
         // 出力フォルダ
         Path pathOutput = getAbsolutePathLogic.practice("out_source", "");

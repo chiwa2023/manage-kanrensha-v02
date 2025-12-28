@@ -1,4 +1,4 @@
-package net.seijishikin.jp.normalize.manage.kanrensha.batch.kanrensha.xml;
+package net.seijishikin.jp.normalize.manage.kanrensha.batch.kanrensha.xml; //NOPMD
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;

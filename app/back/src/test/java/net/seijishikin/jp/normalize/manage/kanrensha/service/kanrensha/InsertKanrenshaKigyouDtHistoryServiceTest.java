@@ -1,4 +1,4 @@
-package net.seijishikin.jp.normalize.manage.kanrensha.service.kanrensha;
+package net.seijishikin.jp.normalize.manage.kanrensha.service.kanrensha; // NOPMD ExcessiveImport
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -128,7 +128,7 @@ import net.seijishikin.jp.normalize.manage.kanrensha.repository.lgcode.Kanrensha
 @DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
 @Transactional
 @Sql("InsertKanrenshaKigyouDtHistoryServiceTest.sql")
-class InsertKanrenshaKigyouDtHistoryServiceTest {
+class InsertKanrenshaKigyouDtHistoryServiceTest { // NOPMD ManyMethod
 
     /** テスト対象 */
     @Autowired

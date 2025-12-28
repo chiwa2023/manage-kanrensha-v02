@@ -1,8 +1,11 @@
 package net.seijishikin.jp.normalize.manage.kanrensha.repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.KanrenshaKigyouDtMasterEntity;
@@ -42,4 +45,26 @@ public interface KanrenshaKigyouDtMasterRepository extends JpaRepository<Kanrens
     Optional<KanrenshaKigyouDtMasterEntity> findFirstByKigyouDtKanrenshaCodeAndIsLatest(String kanrenshaCode,
             boolean isLatest);
 
+    /**
+     * 基準時間より前の最新データを取得する
+     *
+     * @param dateTime 基準日時開始
+     * @param isLatest 最新該否
+     * @param pageable ページング条件
+     * @return 検索結果
+     */
+    Page<KanrenshaKigyouDtMasterEntity> findByInsertTimestampLessThanAndIsLatest(LocalDateTime dateTime,
+            boolean isLatest, Pageable pageable);
+
+    /**
+     * 基準時間開始以上かつ終了より前の最新を取得する
+     *
+     * @param dateTimeStart 基準日時開始
+     * @param dateTimeEnd   基準日時終了
+     * @param isLatest      最新該否
+     * @param pageable      ページング条件
+     * @return 検索結果
+     */
+    Page<KanrenshaKigyouDtMasterEntity> findByInsertTimestampGreaterThanEqualAndInsertTimestampLessThanAndIsLatest(
+            LocalDateTime dateTimeStart, LocalDateTime dateTimeEnd, boolean isLatest, Pageable pageable);
 }

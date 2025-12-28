@@ -3,6 +3,7 @@ package net.seijishikin.jp.normalize.manage.kanrensha.service.year;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -44,6 +45,7 @@ class SwitchYearInsertTaskPlanServiceTest {
     }
 
     @Test
+    @Tag("TableTruncate")
     void test() throws Exception {
 
         Integer countPre = Math.toIntExact(taskPlan2025Repository.count());

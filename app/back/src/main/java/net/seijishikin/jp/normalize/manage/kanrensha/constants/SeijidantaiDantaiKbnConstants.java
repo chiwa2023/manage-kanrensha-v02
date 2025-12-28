@@ -21,6 +21,19 @@ public final class SeijidantaiDantaiKbnConstants { // NOPMD DataClass
     /** 団体区分06:その他の政治団体支部 */
     public static final String DANTAI_KBN_06 = "06";
 
+    /** 団体区分01:政党 */
+    public static final String DANTAI_KBN_01_LABEL = "政党";
+    /** 団体区分02:政党支部 */
+    public static final String DANTAI_KBN_02_LABEL = "政党支部";
+    /** 団体区分03:政治資金団体 */
+    public static final String DANTAI_KBN_03_LABEL = "政治資金団体";
+    /** 団体区分04:18条2項1規定団体 */
+    public static final String DANTAI_KBN_04_LABEL = "18条2項1規定団体";
+    /** 団体区分05:その他の政治団体 */
+    public static final String DANTAI_KBN_05_LABEL = "その他の政治団体";
+    /** 団体区分06:その他の政治団体支部 */
+    public static final String DANTAI_KBN_06_LABEL = "その他の政治団体支部";
+
     /** 団体区分リスト */
     private static final List<String> list = new ArrayList<>();
 
@@ -41,6 +54,39 @@ public final class SeijidantaiDantaiKbnConstants { // NOPMD DataClass
         }
 
         return list;
+    }
+
+    /**
+     * 政治団体区分名称を取得する
+     * 
+     * @param kbn 政治団体区分
+     * @return 区分名称
+     */
+    public static String getLabel(final String kbn) {
+
+        switch (kbn) {
+
+            case DANTAI_KBN_01:
+                return DANTAI_KBN_01_LABEL;
+
+            case DANTAI_KBN_02:
+                return DANTAI_KBN_02_LABEL;
+
+            case DANTAI_KBN_03:
+                return DANTAI_KBN_03_LABEL;
+
+            case DANTAI_KBN_04:
+                return DANTAI_KBN_04_LABEL;
+
+            case DANTAI_KBN_05:
+                return DANTAI_KBN_05_LABEL;
+
+            case DANTAI_KBN_06:
+                return DANTAI_KBN_06_LABEL;
+
+            default:
+                throw new IllegalArgumentException("Unexpected value: " + kbn);
+        }
     }
 
 }

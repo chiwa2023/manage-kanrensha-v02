@@ -49,7 +49,7 @@ class KanrenshaByXmlMinWkTblFixItemWriterTest {
     private WkTblMasterAllByXmlRepository wkTblMasterAllByXmlRepository;
 
     /** テスト用ユーザ最小限Dto */
-    private LeastUserDto userDto = CreateLeastUserForTestUtil.practice();
+    private final LeastUserDto userDto = CreateLeastUserForTestUtil.practice();
 
     @Test
     @Tag("TableTruncate")

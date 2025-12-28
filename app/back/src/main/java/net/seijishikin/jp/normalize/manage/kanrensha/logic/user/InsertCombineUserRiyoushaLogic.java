@@ -1,10 +1,10 @@
 package net.seijishikin.jp.normalize.manage.kanrensha.logic.user;
 
-import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
-import net.seijishikin.jp.normalize.common_tool.utils.SetTableDataHistoryUtil;
+//import net.seijishikin.jp.normalize.common_tool.utils.SetTableDataHistoryUtil;
 
 
 /**
@@ -17,9 +17,9 @@ public class InsertCombineUserRiyoushaLogic {
 //    @Autowired
 //    private UserRiyoushaCombineRepository userRiyoushaCombineRepository;
 
-    /** テーブル履歴設定Util */
-    @Autowired
-    private SetTableDataHistoryUtil setTableDataHistoryUtil;
+//    /** テーブル履歴設定Util */
+//    @Autowired
+//    private SetTableDataHistoryUtil setTableDataHistoryUtil;
 
     /**
      * 処理を行う

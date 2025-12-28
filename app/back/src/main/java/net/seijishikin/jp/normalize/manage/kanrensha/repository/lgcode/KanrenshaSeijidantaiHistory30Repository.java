@@ -1,7 +1,10 @@
 package net.seijishikin.jp.normalize.manage.kanrensha.repository.lgcode;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -35,5 +38,30 @@ public interface KanrenshaSeijidantaiHistory30Repository
     @Query(value = "SELECT * FROM kanrensha_seijidantai_history_30 " + " WHERE all_name = ?1 AND all_address = ?2 "
             + "   AND org_delegate_name = ?3 AND is_latest=1", nativeQuery = true)
     List<KanrenshaSeijidantaiHistoryBaseEntity> selectByProperty(String name, String address, String delegate);
+
+    
+    
+    /**
+     * 基準時間より前の最新データを取得する
+     *
+     * @param dateTime 基準日時開始
+     * @param isLatest 最新該否
+     * @param pageable ページング条件
+     * @return 検索結果
+     */
+    Page<KanrenshaSeijidantaiHistory30Entity> findByInsertTimestampLessThanAndIsLatest(LocalDateTime dateTime, boolean isLatest,
+            Pageable pageable);
+
+    /**
+     * 基準時間開始以上かつ終了より前の最新を取得する
+     *
+     * @param dateTimeStart 基準日時開始
+     * @param dateTimeEnd   基準日時終了
+     * @param isLatest      最新該否
+     * @param pageable      ページング条件
+     * @return 検索結果
+     */
+    Page<KanrenshaSeijidantaiHistory30Entity> findByInsertTimestampGreaterThanEqualAndInsertTimestampLessThanAndIsLatest(
+            LocalDateTime dateTimeStart, LocalDateTime dateTimeEnd, boolean isLatest, Pageable pageable);
 
 }
