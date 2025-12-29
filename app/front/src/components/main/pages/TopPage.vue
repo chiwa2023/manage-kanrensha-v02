@@ -15,7 +15,7 @@ import LoginConstants from '../dto/user/loginConstants';
 // userDto.value.listRoles.push(UserRoleConstants.ROLE_MANAGER);
 // userDto.value.listRoles.push(UserRoleConstants.ROLE_COMRADE);
 // userDto.value.listRoles.push(UserRoleConstants.ROLE_PARTNER_PERSON);
-// userDto.value.listRoles.push(UserRoleConstants.ROLE_PARTNER_CORP);
+// userDto.value.listRoles.push(UserRoleConstants.ROLE_PARTNER_KIGYOU);
 // userDto.value.listRoles.push(UserRoleConstants.ROLE_PARTNER_POLI_ORG);
 // userDto.value.userPersonCode=190;
 // sessionStorage.setItem("userDto", JSON.stringify(userDto.value));
@@ -41,10 +41,7 @@ function tempLogin() {
     userDto.value.userPersonId = 213;
     userDto.value.userPersonCode = 190;
     userDto.value.userPersonName = "管理者　太郎";
-
-    alert("ログイン");
     sessionStorage.setItem(LoginConstants.SESSION_KEY_USER, JSON.stringify(userDto.value));
-    // sessionStorage.setItem("jwtToken", JSON.stringify(resultDto.jwtTokenDto));
 }
 
 function checkLogin() {
@@ -57,10 +54,8 @@ function addPrivridge(role: string) {
     if (!userDto.value.listRoles.includes(role)) {
         userDto.value.listRoles.push(role);
     }
-    alert(userDto.value.listRoles.toString());
     sessionStorage.setItem(LoginConstants.SESSION_KEY_USER, JSON.stringify(userDto.value));
 }
-
 
 /**
  * back側疎通確認
@@ -131,16 +126,12 @@ function recieveSubmit(button: string) {
         <RouterLink :to=RoutePathConstants.PAGE_MENU_MANAGER>運営者メニュー</RouterLink><br>
         <RouterLink :to=RoutePathConstants.PAGE_MENU_PARTNER_API>APIユーザメニュー</RouterLink><br>
         <RouterLink :to=RoutePathConstants.PAGE_MENU_KANRENSHA>関連者メニュー</RouterLink><br>
-        <hr>
         <RouterLink :to=RoutePathConstants.PAGE_MENU_ADMIN>SEメニュー</RouterLink><br>
-        <!-- 
         <hr>
         <RouterLink :to=RoutePathConstants.PAGE_DOWNLOAD_HISTORY>関連者履歴データダウンロード(公開文書記載水準)</RouterLink><br>
         <RouterLink :to=RoutePathConstants.PAGE_DOWNLOAD_MASTER_MIN>関連者マスタ最小ダウンロード(公開文書記載水準)</RouterLink><br>
         <RouterLink :to=RoutePathConstants.PAGE_DOWNLOAD_SABUN_HISTORY>関連者履歴データダウンロード差分(公開文書記載水準)</RouterLink><br>
         <RouterLink :to=RoutePathConstants.PAGE_DOWNLOAD_SABUN_MASTER_MIN>関連者マスタ最小ダウンロード差分(公開文書記載水準)</RouterLink><br>
-        <hr>
-        -->
 
         <hr>
         <h3>開発用</h3>

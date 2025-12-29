@@ -1,10 +1,22 @@
-export default interface RiyoushaManagerInterface {
+interface RiyoushaManagerEntityInterface {
+
+    /** 利用者運営者Id */
+    riyoushaManagerId: number;
+
+    /** 利用者運営者コード */
+    riyoushaManagerCode: number;
+
+    /** 利用者運営者名称 */
+    riyoushaManagerName: string;
+
+    /** 最新該否 */
+    isLatest: boolean;
 
 }
 
 
 
-export default class RiyoushaManagerEntity implements RiyoushaManagerInterface {
+class RiyoushaManagerEntity implements RiyoushaManagerEntityInterface {
 
     /** 利用者運営者Id */
     riyoushaManagerId: number;
@@ -36,3 +48,5 @@ export default class RiyoushaManagerEntity implements RiyoushaManagerInterface {
     }
 
 }
+
+export{}

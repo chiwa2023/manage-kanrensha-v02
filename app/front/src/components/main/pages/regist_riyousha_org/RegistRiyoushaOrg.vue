@@ -4,6 +4,9 @@ import {
     type InputAccessDtoInterface, type InputAddressDtoInterface, type InputOrgNameDtoInterface
 } from 'seijishikin-jp-normalize_common-tool';
 import { ref, type Ref } from 'vue';
+import MockManagerInfo from '../../../test/common/user_info/MockManagerInfo.vue';
+import type { LeastUserDtoInterface } from '../../dto/user/leastUserDto';
+import { getLoginUser } from '../../utils/getLoginUser';
 
 //仮
 // よく使う定数
@@ -17,14 +20,30 @@ import { ref, type Ref } from 'vue';
 //const title: Ref<string> = ref(BLANK);
 //const message: Ref<string> = ref(BLANK);
 
+// ユーザ呼び出し
+const userDto: Ref<LeastUserDtoInterface> = ref(getLoginUser());
+
 
 const tempOrgName: Ref<InputOrgNameDtoInterface> = ref(new InputOrgNameDto());
 const tempAddress: Ref<InputAddressDtoInterface> = ref(new InputAddressDto());
 const tempAccess: Ref<InputAccessDtoInterface> = ref(new InputAccessDto());
 
 
+
+function onCancel() {
+    alert("キャンセル");
+    history.back();
+
+}
+function onSave() {
+    alert("保存");
+}
+
 </script>
 <template>
+    <!-- 運営者権限 -->
+    <MockManagerInfo :user-dto="userDto"></MockManagerInfo>
+
     <h1>利用者組織登録・編集</h1><br>
 
     <h3 class="accent-h3">利用者組織の指定</h3><br>
@@ -42,6 +61,7 @@ const tempAccess: Ref<InputAccessDtoInterface> = ref(new InputAccessDto());
     </div>
 
 
+
     <h3 class="accent-h3">利用者組織の編集</h3>
 
     <!-- 団体名入力 -->
@@ -54,8 +74,8 @@ const tempAccess: Ref<InputAccessDtoInterface> = ref(new InputAccessDto());
     <ViewInputAccess :edit-dto="tempAccess"></ViewInputAccess>
 
     <div class="footer">
-        <button class="footer-button">キャンセル</button>
-        <button class="footer-button left-space">送信</button>
+        <button class="footer-button" @click="onCancel">キャンセル</button>
+        <button class="footer-button left-space" @click="onSave">送信</button>
     </div>
 
 </template>

@@ -38,30 +38,30 @@ const viewStatus1: Ref<string> = ref(showContentA);
 const viewStatus2: Ref<string> = ref(showContentA);
 
 // 法人検索
-const isCorpSearch: Ref<boolean> = ref(false);
+const isKigyouDtSearch: Ref<boolean> = ref(false);
 const houjinNo:Ref<string> = ref(BLANK);
 const houjinName:Ref<string> = ref(BLANK);
 
-function onRaiseCorpNoSearch() {
-    isCorpSearch.value = true;
+function onRaiseKigyouDtNoSearch() {
+    isKigyouDtSearch.value = true;
 }
 
 /**
 * 法人番号キャンセル選択なし
 */
-function recieveCancelCorpNo() {
+function recieveCancelKigyouDtNo() {
     // 非表示
-    isCorpSearch.value = false;
+    isKigyouDtSearch.value = false;
 }
 
 /**
 * 法人番号選択データ受信
 */
-function recieveCorpNoInterface(sendDto:HoujinNoDtoInterface) {
+function recieveKigyouDtNoInterface(sendDto:HoujinNoDtoInterface) {
     houjinNo.value = sendDto.houjinNo;
     houjinName.value = sendDto.houjinName;    
     // 非表示
-    isCorpSearch.value = false;
+    isKigyouDtSearch.value = false;
 }
 
 function recievePagingNumber(selecteddNumber: number) {
@@ -163,7 +163,7 @@ const inputShokugyouDto: Ref<InputShokugyouDtoInterface> = ref(new InputShokugyo
             <div class="right-area">
                 コード：<input type="text" v-model="houjinNo" class="short-input" :disabled="true">
                 名：<input type="text" v-model="houjinName" class="name-input left-space" :disabled="true"></input>
-                <button class="left-space" @click="onRaiseCorpNoSearch">検索</button>
+                <button class="left-space" @click="onRaiseKigyouDtNoSearch">検索</button>
             </div>
         </div>
 
@@ -351,11 +351,11 @@ const inputShokugyouDto: Ref<InputShokugyouDtoInterface> = ref(new InputShokugyo
 
     </div>
     <!-- 検索コンポーネント -->
-    <div v-if="isCorpSearch" class="overBackground"></div>
-    <div v-if="isCorpSearch">
+    <div v-if="isKigyouDtSearch" class="overBackground"></div>
+    <div v-if="isKigyouDtSearch">
         <div class="overComponent">
-            <SearchHoujinNo v-if="isCorpSearch" @send-cancel-houjin-no="recieveCancelCorpNo"
-                @send-houjin-no-interface="recieveCorpNoInterface"></SearchHoujinNo>
+            <SearchHoujinNo v-if="isKigyouDtSearch" @send-cancel-houjin-no="recieveCancelKigyouDtNo"
+                @send-houjin-no-interface="recieveKigyouDtNoInterface"></SearchHoujinNo>
         </div>
     </div>
 
