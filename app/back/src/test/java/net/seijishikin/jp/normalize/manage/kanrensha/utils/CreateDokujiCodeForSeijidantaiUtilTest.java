@@ -7,6 +7,7 @@ import java.util.regex.Pattern;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -16,6 +17,7 @@ class CreateDokujiCodeForSeijidantaiUtilTest {
     // CHECKSTYLE:OFF
 
     @Test
+    @Tag("TableTruncate")
     void test() {
 
         CreateDokujiCodeForSeijidantaiUtil createDokujiCodeForSeijidantaiUtil = new CreateDokujiCodeForSeijidantaiUtil();

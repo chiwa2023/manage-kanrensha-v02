@@ -67,4 +67,14 @@ public interface KanrenshaKigyouDtMasterRepository extends JpaRepository<Kanrens
      */
     Page<KanrenshaKigyouDtMasterEntity> findByInsertTimestampGreaterThanEqualAndInsertTimestampLessThanAndIsLatest(
             LocalDateTime dateTimeStart, LocalDateTime dateTimeEnd, boolean isLatest, Pageable pageable);
+
+    /**
+     * 関連者コードで検索する
+     * 
+     * @param kanrenshaCode 関連者コード
+     * @return 検索結果
+     */
+    List<KanrenshaKigyouDtMasterEntity> findByKigyouDtKanrenshaCodeOrderByKanrenshaKigyouDtMasterIdDesc(
+            String kanrenshaCode);
+
 }

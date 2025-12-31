@@ -68,4 +68,14 @@ public interface KanrenshaSeijidantaiMasterRepository extends JpaRepository<Kanr
     Page<KanrenshaSeijidantaiMasterEntity> findByInsertTimestampGreaterThanEqualAndInsertTimestampLessThanAndIsLatest(
             LocalDateTime dateTimeStart, LocalDateTime dateTimeEnd, boolean isLatest, Pageable pageable);
 
+    
+    /**
+     * 関連者コードで検索する
+     * 
+     * @param kanrenshaCode 関連者コード
+     * @return 検索結果
+     */
+    List<KanrenshaSeijidantaiMasterEntity> findBySeijidantaiKanrenshaCodeOrderByKanrenshaSeijidantaiMasterIdDesc(
+            String kanrenshaCode);
+
 }
