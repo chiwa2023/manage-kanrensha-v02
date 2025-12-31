@@ -1,7 +1,7 @@
-import { PagingDto, type PagingDtoInterface } from "../paging/pagingDto";
+import { FrameworkPagingDto, type FrameworkPagingDtoInterface } from "seijishikin-jp-normalize_common-tool";
 import { LeastUserDto, type LeastUserDtoInterface } from "../user/leastUserDto";
 
-interface SearchWkTblPagingCapsuleDtoInterface extends PagingDtoInterface {
+interface SearchWkTblPagingCapsuleDtoInterface extends FrameworkPagingDtoInterface {
 
 
     /** 履歴データ検索結果保持 */
@@ -18,7 +18,8 @@ interface SearchWkTblPagingCapsuleDtoInterface extends PagingDtoInterface {
 }
 
 
-class SearchWkTblPagingCapsuleDto extends PagingDto implements SearchWkTblPagingCapsuleDtoInterface {
+class SearchWkTblPagingCapsuleDto extends FrameworkPagingDto
+    implements SearchWkTblPagingCapsuleDtoInterface {
 
     /** 履歴データ検索結果保持 */
     hasHistorry: boolean;

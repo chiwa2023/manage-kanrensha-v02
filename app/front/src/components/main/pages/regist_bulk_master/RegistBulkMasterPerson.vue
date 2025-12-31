@@ -4,7 +4,7 @@ import type { LeastUserDtoInterface } from '../../dto/user/leastUserDto';
 import { getLoginUser } from '../../utils/getLoginUser';
 import MockManagerInfo from '../../../test/common/user_info/MockManagerInfo.vue';
 import { RegistDataByCsvFileCapsuleDto, type RegistDataByCsvFileCapsuleDtoInterface } from '../../dto/storage_file/registDataByCsvFileCapsuleDto';
-import { FrameworkCapsuleDto, type FrameworkCapsuleDtoInterface } from '../../dto/frameworkCapsuleDto';
+import { FrameworkCapsuleDto, type FrameworkCapsuleDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import type { StorageFileDtoInterface } from '../../dto/storage_file/storageFileDto';
 import MockReadCsv from '../../../test/common/read_csv/MockReadCsv.vue';
 import EditWkTblStdPerson from '../../common/wktbl_edit_std/EditWkTblStdPerson.vue';

@@ -1,8 +1,8 @@
 import { WkTblKanrenshaSeijidantaiHistoryEntity, type WkTblKanrenshaSeijidantaiHistoryEntityInterface } from "../../entity/wkTblKanrenshaSeijidantaiHistoryEntity";
-import { FrameworkResultDto } from "../frameworkResultDto";
+import { FrameworkMessageAndResultDto, type FrameworkMessageAndResultDtoInterface } from "seijishikin-jp-normalize_common-tool";
 
 
-interface UpdateWkTblHistorySeijidantaiResultDtoInterface {
+interface UpdateWkTblHistorySeijidantaiResultDtoInterface extends FrameworkMessageAndResultDtoInterface {
     /** 編集対象Entity */
     wkTblKanrenshaSeijidantaiHistoryEntity: WkTblKanrenshaSeijidantaiHistoryEntityInterface;
 }
@@ -10,7 +10,7 @@ interface UpdateWkTblHistorySeijidantaiResultDtoInterface {
 /**
  * 政治団体一括登録履歴ワークテーブル更新ResultDto
  */
-class UpdateWkTblHistorySeijidantaiResultDto extends FrameworkResultDto
+class UpdateWkTblHistorySeijidantaiResultDto extends FrameworkMessageAndResultDto
     implements UpdateWkTblHistorySeijidantaiResultDtoInterface {
 
     /** 編集対象Entity */

@@ -9,13 +9,12 @@ import { SearchWkTblPagingCapsuleDto, type SearchWkTblPagingCapsuleDtoInterface 
 import { SearchWkTblAddByXmlPagingResultDto, type SearchWkTblAddByXmlPagingResultDtoInterface } from '../../dto/add_xml/searchWkTblAddByXmlPagingResultDto';
 import { RegistDataByXmlCapsuleDto, type RegistDataByXmlCapsuleDtoInterface } from '../../dto/add_xml/registDataByXmlCapsuleDto';
 import type { StorageFileDtoInterface } from '../../dto/storage_file/storageFileDto';
-import { FrameworkCapsuleDto, type FrameworkCapsuleDtoInterface } from '../../dto/frameworkCapsuleDto';
 import MockReadPublishXml from '../../../test/common/read_publish_xml/MockReadPublishXml.vue';
 import EditWkTblMinPerson from '../../common/wktbl_edit_min/EditWkTblMinPerson.vue';
 import EditWkTblMinKigyouDt from '../../common/wktbl_edit_min/EditWkTblMinKigyouDt.vue';
 import EditWkTblMinSeijidantai from '../../common/wktbl_edit_min/EditWkTblMinSeijidantai.vue';
 import getMockRegistByXmlList from './mock/getMockRegistByXmlList';
-import { PagingControl } from 'seijishikin-jp-normalize_common-tool';
+import { FrameworkCapsuleDto, PagingControl, type FrameworkCapsuleDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import { UpdateWkTblAddByXmlTableListCapsuleDto, type UpdateWkTblAddByXmlTableListCapsuleDtoInterface } from '../../dto/add_xml/updateWkTblAddByXmlTableListCapsuleDto';
 import { UpdateWkTblAddByXmlCapsuleDto, type UpdateWkTblAddByXmlCapsuleDtoInterface } from '../../dto/add_xml/updateWkTblAddByXmlCapsuleDto';
 
@@ -49,7 +48,7 @@ const limit: Ref<number> = ref(20);
 const byXmlCapsuleDto: Ref<SearchWkTblPagingCapsuleDtoInterface> = ref(new SearchWkTblPagingCapsuleDto());
 const byXmlResultDto: Ref<SearchWkTblAddByXmlPagingResultDtoInterface> = ref(new SearchWkTblAddByXmlPagingResultDto());
 byXmlCapsuleDto.value.userDto = userDto.value;
-//byXmlCapsuleDto.value.limit = 30;
+byXmlCapsuleDto.value.limit = 30;
 byXmlCapsuleDto.value.pageNumber = 0;
 byXmlCapsuleDto.value.hasAffectNot = true;
 
@@ -429,7 +428,7 @@ function recievePagingNumber(selecteddNumber: number) {
                                 <option :value=seijidantaiKbnNoSelect> </option>
                                 <option :value=seijidantaiKbnSeitou>{{
                                     SeijidantaiDantaiKbnConstants.getLabel(seijidantaiKbnSeitou)
-                                    }}</option>
+                                }}</option>
                                 <option :value=seijidantaiKbnSeitouShibu>{{
                                     SeijidantaiDantaiKbnConstants.getLabel(seijidantaiKbnSeitouShibu) }}</option>
                                 <option :value=seijidantaiKbnSeijishikin>{{
@@ -438,7 +437,7 @@ function recievePagingNumber(selecteddNumber: number) {
                                     SeijidantaiDantaiKbnConstants.getLabel(seijidantaiKbn18Jou2KouDantai) }}</option>
                                 <option :value=seijidantaiKbnSonota>{{
                                     SeijidantaiDantaiKbnConstants.getLabel(seijidantaiKbnSonota)
-                                    }}</option>
+                                }}</option>
                                 <option :value=seijidantaiKbnSonotaShibu>{{
                                     SeijidantaiDantaiKbnConstants.getLabel(seijidantaiKbnSonotaShibu) }}</option>
                             </select>

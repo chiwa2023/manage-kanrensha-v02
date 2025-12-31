@@ -1,14 +1,14 @@
 import type { WkTblKanrenshaPersonAddMinEntityInterface } from "../../entity/wkTblKanrenshaPersonAddMinEntity";
-import { PagingDto, type PagingDtoInterface } from "../paging/pagingDto";
+import { FrameworkPagingDto, type FrameworkPagingDtoInterface } from "seijishikin-jp-normalize_common-tool";
 
-interface SearchWkTblMinPersonPagingResultDtoInterface extends PagingDtoInterface {
+interface SearchWkTblMinPersonPagingResultDtoInterface extends FrameworkPagingDtoInterface {
 
     /** 個人登録候補リスト */
     listWktblPerson: WkTblKanrenshaPersonAddMinEntityInterface[];
 
 }
 
-class SearchWkTblMinPersonPagingResultDto extends PagingDto
+class SearchWkTblMinPersonPagingResultDto extends FrameworkPagingDto
     implements SearchWkTblMinPersonPagingResultDtoInterface {
 
     /** 個人登録候補リスト */

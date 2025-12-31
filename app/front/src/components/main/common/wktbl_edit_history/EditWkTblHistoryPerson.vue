@@ -23,7 +23,7 @@ const limit: Ref<number> = ref(20);
 const personCapsuleDto: Ref<SearchWkTblPagingCapsuleDtoInterface> = ref(new SearchWkTblPagingCapsuleDto());
 
 personCapsuleDto.value.userDto = props.userDto;
-//personCapsuleDto.value.limit = 30;
+personCapsuleDto.value.limit = 30;
 personCapsuleDto.value.pageNumber = 0;
 personCapsuleDto.value.hasAffectNot = true;
 

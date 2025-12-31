@@ -1,7 +1,7 @@
-import { FrameworkResultDto, type FrameworkResultDtoInterface } from "../frameworkResultDto";
+import { FrameworkMessageAndResultDto, type FrameworkMessageAndResultDtoInterface } from "seijishikin-jp-normalize_common-tool";
 import { StorageFileDto, type StorageFileDtoInterface } from "./storageFileDto";
 
-interface LookAheadPublishXmlResultDtoInterface extends FrameworkResultDtoInterface {
+interface LookAheadPublishXmlResultDtoInterface extends FrameworkMessageAndResultDtoInterface {
 
     /** ファイル格納Dto */
     storageFileDto: StorageFileDtoInterface;
@@ -21,7 +21,7 @@ interface LookAheadPublishXmlResultDtoInterface extends FrameworkResultDtoInterf
 }
 
 
-class LookAheadPublishXmlResultDto extends FrameworkResultDto
+class LookAheadPublishXmlResultDto extends FrameworkMessageAndResultDto
     implements LookAheadPublishXmlResultDtoInterface {
 
     /** ファイル格納Dto */

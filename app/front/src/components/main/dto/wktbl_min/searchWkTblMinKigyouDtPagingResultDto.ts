@@ -1,7 +1,7 @@
 import type { WkTblKanrenshaKigyouDtAddMinEntityInterface } from "../../entity/wkTblKanrenshaKigyouDtAddMinEntity";
-import { PagingDto, type PagingDtoInterface } from "../paging/pagingDto";
+import { FrameworkPagingDto, type FrameworkPagingDtoInterface } from "seijishikin-jp-normalize_common-tool";
 
-interface SearchWkTblMinKigyouDtPagingResultDtoInterface extends PagingDtoInterface {
+interface SearchWkTblMinKigyouDtPagingResultDtoInterface extends FrameworkPagingDtoInterface {
 
     /** 企業／団体登録候補リスト */
     listWktblKigyouDt: WkTblKanrenshaKigyouDtAddMinEntityInterface[];
@@ -9,7 +9,7 @@ interface SearchWkTblMinKigyouDtPagingResultDtoInterface extends PagingDtoInterf
 }
 
 
-class SearchWkTblMinKigyouDtPagingResultDto extends PagingDto
+class SearchWkTblMinKigyouDtPagingResultDto extends FrameworkPagingDto
     implements SearchWkTblMinKigyouDtPagingResultDtoInterface {
 
     /** 企業／団体登録候補リスト */

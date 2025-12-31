@@ -1,13 +1,14 @@
 import type { WkTblKanrenshaSeijidantaiHistoryEntityInterface } from "../../entity/wkTblKanrenshaSeijidantaiHistoryEntity";
-import { PagingDto, type PagingDtoInterface } from "../paging/pagingDto";
+import { FrameworkPagingDto, type FrameworkPagingDtoInterface } from "seijishikin-jp-normalize_common-tool";
 
-interface SearchWkTblHistorySeijidantaiPagingResultDtoInterface extends PagingDtoInterface {
+interface SearchWkTblHistorySeijidantaiPagingResultDtoInterface extends FrameworkPagingDtoInterface {
 
     /** 政治団体登録候補リスト */
     listWktblSeijidantai: WkTblKanrenshaSeijidantaiHistoryEntityInterface[];
 }
 
-class SearchWkTblHistorySeijidantaiPagingResultDto extends PagingDto implements SearchWkTblHistorySeijidantaiPagingResultDtoInterface {
+class SearchWkTblHistorySeijidantaiPagingResultDto extends FrameworkPagingDto
+    implements SearchWkTblHistorySeijidantaiPagingResultDtoInterface {
 
     /** 政治団体登録候補リスト */
     listWktblSeijidantai: WkTblKanrenshaSeijidantaiHistoryEntityInterface[];

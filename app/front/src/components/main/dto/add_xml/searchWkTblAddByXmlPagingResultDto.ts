@@ -1,16 +1,15 @@
+import { FrameworkPagingDto, type FrameworkPagingDtoInterface } from "seijishikin-jp-normalize_common-tool";
 import type { WkTblMasterAllByXmlEntityInterface } from "../../entity/wkTblMasterAllByXmlEntity";
-import { PagingDto, type PagingDtoInterface } from "../paging/pagingDto";
 
 
-interface SearchWkTblAddByXmlPagingResultDtoInterface extends PagingDtoInterface {
+interface SearchWkTblAddByXmlPagingResultDtoInterface extends FrameworkPagingDtoInterface {
 
     /** 全XML登録リスト */
     listXmlEntity: WkTblMasterAllByXmlEntityInterface[];
-
 }
 
 
-class SearchWkTblAddByXmlPagingResultDto extends PagingDto implements SearchWkTblAddByXmlPagingResultDtoInterface {
+class SearchWkTblAddByXmlPagingResultDto extends FrameworkPagingDto implements SearchWkTblAddByXmlPagingResultDtoInterface {
 
     /** 全XML登録リスト */
     listXmlEntity: WkTblMasterAllByXmlEntityInterface[];

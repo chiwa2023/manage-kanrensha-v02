@@ -1,6 +1,6 @@
-import { FrameworkCapsuleDto } from "../frameworkCapsuleDto";
+import { type FrameworkCapsuleDtoInterface, FrameworkCapsuleDto } from "seijishikin-jp-normalize_common-tool";
 
-interface ForceDumpCapsuleDtoInterface {
+interface ForceDumpCapsuleDtoInterface extends FrameworkCapsuleDtoInterface {
 
     /** 企業団体処理該否 */
     isExecuteKigyouDt: boolean;

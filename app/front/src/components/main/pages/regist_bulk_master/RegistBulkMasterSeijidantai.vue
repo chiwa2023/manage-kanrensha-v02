@@ -4,7 +4,7 @@ import type { LeastUserDtoInterface } from '../../dto/user/leastUserDto';
 import { getLoginUser } from '../../utils/getLoginUser';
 import MockManagerInfo from '../../../test/common/user_info/MockManagerInfo.vue';
 import { RegistDataByCsvFileCapsuleDto, type RegistDataByCsvFileCapsuleDtoInterface } from '../../dto/storage_file/registDataByCsvFileCapsuleDto';
-import { FrameworkCapsuleDto } from '../../dto/frameworkCapsuleDto';
+import { FrameworkCapsuleDto, type FrameworkCapsuleDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import type { StorageFileDtoInterface } from '../../dto/storage_file/storageFileDto';
 import MockReadCsv from '../../../test/common/read_csv/MockReadCsv.vue';
 import EditWkTblMinSeijidantai from '../../common/wktbl_edit_min/EditWkTblMinSeijidantai.vue';
@@ -33,7 +33,7 @@ const capsuleDto: Ref<RegistDataByCsvFileCapsuleDtoInterface> = ref(new RegistDa
 capsuleDto.value.userDto = userDto.value;
 
 // 再処理起動条件(ユーザ)
-const retryCapsuleDto: Ref<FrameworkCapsuleDto> = ref(new FrameworkCapsuleDto());
+const retryCapsuleDto: Ref<FrameworkCapsuleDtoInterface> = ref(new FrameworkCapsuleDto());
 retryCapsuleDto.value.userDto = userDto.value;
 
 // ファイル保全情報受信

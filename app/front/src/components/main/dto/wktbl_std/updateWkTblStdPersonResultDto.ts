@@ -1,7 +1,7 @@
 import { WkTblKanrenshaPersonMasterEntity, type WkTblKanrenshaPersonMasterEntityInterface } from "../../entity/wkTblKanrenshaPersonMasterEntity";
-import { FrameworkResultDto, type FrameworkResultDtoInterface } from "../frameworkResultDto";
+import { FrameworkMessageAndResultDto, type FrameworkMessageAndResultDtoInterface } from "seijishikin-jp-normalize_common-tool";
 
-interface UpdateWkTblStdPersonResultDtoInterface extends FrameworkResultDtoInterface {
+interface UpdateWkTblStdPersonResultDtoInterface extends FrameworkMessageAndResultDtoInterface {
 
     /** 編集対象Entity */
     wkTblMasterPersonEntity: WkTblKanrenshaPersonMasterEntityInterface;
@@ -11,7 +11,7 @@ interface UpdateWkTblStdPersonResultDtoInterface extends FrameworkResultDtoInter
 /**
  * 個人一括登録マスタ標準ワークテーブル更新ResultDto
  */
-class UpdateWkTblStdPersonResultDto extends FrameworkResultDto
+class UpdateWkTblStdPersonResultDto extends FrameworkMessageAndResultDto
     implements UpdateWkTblStdPersonResultDtoInterface {
 
 

@@ -1,7 +1,7 @@
 import { WkTblKanrenshaKigyouDtMasterEntity, type WkTblKanrenshaKigyouDtMasterEntityInterface } from "../../entity/wkTblKanrenshaKigyouDtMasterEntity";
-import { FrameworkResultDto, type FrameworkResultDtoInterface } from "../frameworkResultDto";
+import { FrameworkMessageAndResultDto, type FrameworkMessageAndResultDtoInterface } from "seijishikin-jp-normalize_common-tool";
 
-interface UpdateWkTblStdKigyouDtResultDtoInterface extends FrameworkResultDtoInterface {
+interface UpdateWkTblStdKigyouDtResultDtoInterface extends FrameworkMessageAndResultDtoInterface {
 
     /** 編集対象Entity */
     wkTblMasterKigyouDtEntity: WkTblKanrenshaKigyouDtMasterEntityInterface;
@@ -11,7 +11,7 @@ interface UpdateWkTblStdKigyouDtResultDtoInterface extends FrameworkResultDtoInt
 /**
  * 企業／団体一括登録マスタ標準ワークテーブル更新ResultDto
  */
-class UpdateWkTblStdKigyouDtResultDto extends FrameworkResultDto
+class UpdateWkTblStdKigyouDtResultDto extends FrameworkMessageAndResultDto
     implements UpdateWkTblStdKigyouDtResultDtoInterface {
 
     /** 編集対象Entity */

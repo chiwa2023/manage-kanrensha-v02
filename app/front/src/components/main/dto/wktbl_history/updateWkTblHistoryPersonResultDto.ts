@@ -1,7 +1,7 @@
 import { WkTblKanrenshaPersonHistoryEntity, type WkTblKanrenshaPersonHistoryEntityInterface } from "../../entity/wkTblKanrenshaPersonHistoryEntity";
-import { FrameworkResultDto, type FrameworkResultDtoInterface } from "../frameworkResultDto";
+import { FrameworkMessageAndResultDto, type FrameworkMessageAndResultDtoInterface } from "seijishikin-jp-normalize_common-tool";
 
-interface UpdateWkTblHistoryPersonResultDtoInterface extends FrameworkResultDtoInterface {
+interface UpdateWkTblHistoryPersonResultDtoInterface extends FrameworkMessageAndResultDtoInterface {
 
     /** 編集対象Entity */
     wkTblKanrenshaPersonHistoryEntity: WkTblKanrenshaPersonHistoryEntityInterface;
@@ -11,7 +11,7 @@ interface UpdateWkTblHistoryPersonResultDtoInterface extends FrameworkResultDtoI
 /**
  * 個人一括登録履歴ワークテーブル更新CapsuleDto
  */
-class UpdateWkTblHistoryPersonResultDto extends FrameworkResultDto
+class UpdateWkTblHistoryPersonResultDto extends FrameworkMessageAndResultDto
     implements UpdateWkTblHistoryPersonResultDtoInterface {
 
     /** 編集対象Entity */

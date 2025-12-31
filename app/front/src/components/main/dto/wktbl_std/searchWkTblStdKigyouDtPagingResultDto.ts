@@ -1,16 +1,16 @@
 import type { WkTblKanrenshaKigyouDtMasterEntity } from "../../entity/wkTblKanrenshaKigyouDtMasterEntity";
-import { PagingDto, type PagingDtoInterface } from "../paging/pagingDto";
+import { FrameworkPagingDto, type FrameworkPagingDtoInterface } from "seijishikin-jp-normalize_common-tool";
 
 
-interface SearchWkTblStdKigyouDtPagingResultDtoInterface extends PagingDtoInterface {
+interface SearchWkTblStdKigyouDtPagingResultDtoInterface extends FrameworkPagingDtoInterface {
 
-        /** 企業／団体登録候補リスト */
+    /** 企業／団体登録候補リスト */
     listWktblKigyouDt: WkTblKanrenshaKigyouDtMasterEntity[];
 
 }
 
 
-class SearchWkTblStdKigyouDtPagingResultDto extends PagingDto
+class SearchWkTblStdKigyouDtPagingResultDto extends FrameworkPagingDto
     implements SearchWkTblStdKigyouDtPagingResultDtoInterface {
 
     /** 企業／団体登録候補リスト */

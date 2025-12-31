@@ -1,7 +1,7 @@
 import { WkTblKanrenshaPersonAddMinEntity, type WkTblKanrenshaPersonAddMinEntityInterface } from "../../entity/wkTblKanrenshaPersonAddMinEntity";
-import { FrameworkResultDto, type FrameworkResultDtoInterface } from "../frameworkResultDto";
+import { FrameworkMessageAndResultDto, type FrameworkMessageAndResultDtoInterface } from "seijishikin-jp-normalize_common-tool";
 
-interface UpdateWkTblMinPersonResultDtoInterface extends FrameworkResultDtoInterface {
+interface UpdateWkTblMinPersonResultDtoInterface extends FrameworkMessageAndResultDtoInterface {
 
     /** 編集対象Entity */
     wkTblKanrenshaPersonAddMinEntity: WkTblKanrenshaPersonAddMinEntityInterface;
@@ -11,7 +11,7 @@ interface UpdateWkTblMinPersonResultDtoInterface extends FrameworkResultDtoInter
 /**
  * 個人一括登録マスタ最小ワークテーブル更新ResultDto
  */
-class UpdateWkTblMinPersonResultDto extends FrameworkResultDto
+class UpdateWkTblMinPersonResultDto extends FrameworkMessageAndResultDto
     implements UpdateWkTblMinPersonResultDtoInterface {
 
     /** 編集対象Entity */

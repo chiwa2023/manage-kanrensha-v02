@@ -21,7 +21,7 @@ const limit: Ref<number> = ref(20);
 
 const kigyouDtCapsuleDto: Ref<SearchWkTblPagingCapsuleDtoInterface> = ref(new SearchWkTblPagingCapsuleDto());
 kigyouDtCapsuleDto.value.userDto = props.userDto;
-//kigyouDtCapsuleDto.value.limit = 30;
+kigyouDtCapsuleDto.value.limit = 30;
 kigyouDtCapsuleDto.value.pageNumber = 0;
 kigyouDtCapsuleDto.value.hasAffectNot = true;
 

@@ -7,7 +7,7 @@ import MockManagerInfo from '../../../test/common/user_info/MockManagerInfo.vue'
 import type { StorageFileDtoInterface } from '../../dto/storage_file/storageFileDto';
 import MockReadCsv from '../../../test/common/read_csv/MockReadCsv.vue';
 import { RegistDataByCsvFileCapsuleDto, type RegistDataByCsvFileCapsuleDtoInterface } from '../../dto/storage_file/registDataByCsvFileCapsuleDto';
-import { FrameworkCapsuleDto, type FrameworkCapsuleDtoInterface } from '../../dto/frameworkCapsuleDto';
+import { FrameworkCapsuleDto, type FrameworkCapsuleDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 
 // back側アクセス
 //const urlBack: string = RoutePathConstants.DOMAIN_BACK + RoutePathConstants.PATH_BACK;
@@ -97,7 +97,7 @@ function recieveStorageFileInterface(storageFileDto: StorageFileDtoInterface) {
 
     <div class="one-line">
         <button @click="viewSample">{{ templateViewButtonText }}</button>
-        </div>
+    </div>
     <div class="one-line">
         <div v-if="isVisibleTemplate">
             ヘッダ必須。1行目は読み飛ばすので、ないと1行目が登録されません<br>

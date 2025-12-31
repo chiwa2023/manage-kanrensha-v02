@@ -3,7 +3,7 @@ import { computed, ref, type ComputedRef, type Ref } from 'vue';
 import type { LeastUserDtoInterface } from '../../dto/user/leastUserDto';
 import { getLoginUser } from '../../utils/getLoginUser';
 import MockManagerInfo from '../../../test/common/user_info/MockManagerInfo.vue';
-import { FrameworkCapsuleDto, type FrameworkCapsuleDtoInterface } from '../../dto/frameworkCapsuleDto';
+import { FrameworkCapsuleDto, type FrameworkCapsuleDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import { RegistDataByCsvFileCapsuleDto, type RegistDataByCsvFileCapsuleDtoInterface } from '../../dto/storage_file/registDataByCsvFileCapsuleDto';
 import type { StorageFileDtoInterface } from '../../dto/storage_file/storageFileDto';
 import MockReadCsv from '../../../test/common/read_csv/MockReadCsv.vue';
@@ -314,7 +314,7 @@ function onBatchByFile() {
             </div>
         </div>
     </div>
-    
+
     <!-- 登録結果と編集 -->
     <EditWkTblStdKigyouDt v-if="isVisibleFormat !== formatMin" :user-dto="userDto"></EditWkTblStdKigyouDt>
 

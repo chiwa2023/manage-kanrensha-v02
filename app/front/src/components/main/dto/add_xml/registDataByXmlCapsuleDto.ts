@@ -1,4 +1,4 @@
-import { FrameworkCapsuleDto, type FrameworkCapsuleDtoInterface } from "../frameworkCapsuleDto";
+import { type FrameworkCapsuleDtoInterface ,FrameworkCapsuleDto } from "seijishikin-jp-normalize_common-tool";
 import { StorageFileDto, type StorageFileDtoInterface } from "../storage_file/storageFileDto";
 
 interface RegistDataByXmlCapsuleDtoInterface extends FrameworkCapsuleDtoInterface {

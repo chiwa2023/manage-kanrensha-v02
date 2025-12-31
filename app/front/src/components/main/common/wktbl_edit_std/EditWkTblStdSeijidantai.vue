@@ -31,7 +31,7 @@ const limit: Ref<number> = ref(20);
 
 const seijidantaiCapsuleDto: Ref<SearchWkTblPagingCapsuleDtoInterface> = ref(new SearchWkTblPagingCapsuleDto());
 seijidantaiCapsuleDto.value.userDto = props.userDto;
-//seijidantaiCapsuleDto.value.limit = 30;
+seijidantaiCapsuleDto.value.limit = 30;
 seijidantaiCapsuleDto.value.pageNumber = 0;
 seijidantaiCapsuleDto.value.hasAffectNot = true;
 

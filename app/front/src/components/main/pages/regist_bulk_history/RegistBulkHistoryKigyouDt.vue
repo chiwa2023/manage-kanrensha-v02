@@ -4,7 +4,7 @@ import type { LeastUserDtoInterface } from '../../dto/user/leastUserDto';
 import MockManagerInfo from '../../../test/common/user_info/MockManagerInfo.vue';
 import type { StorageFileDtoInterface } from '../../dto/storage_file/storageFileDto';
 import { RegistDataByCsvFileCapsuleDto, type RegistDataByCsvFileCapsuleDtoInterface } from '../../dto/storage_file/registDataByCsvFileCapsuleDto';
-import { FrameworkCapsuleDto, type FrameworkCapsuleDtoInterface } from '../../dto/frameworkCapsuleDto';
+import { FrameworkCapsuleDto, type FrameworkCapsuleDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import EditWkTblHistoryKigyouDt from '../../common/wktbl_edit_history/EditWkTblHistoryKigyouDt.vue';
 import { getLoginUser } from '../../utils/getLoginUser';
 import MockReadCsv from '../../../test/common/read_csv/MockReadCsv.vue';
@@ -145,7 +145,7 @@ function recieveStorageFileInterface(storageFileDto: StorageFileDtoInterface) {
 
     <!-- 登録結果と編集 -->
     <EditWkTblHistoryKigyouDt :user-dto="userDto"></EditWkTblHistoryKigyouDt>
-    
+
     <div class="footer">
         <button @click="onCancel" class="footer-button">キャンセル</button>
         <button @click="onSave" class="footer-button left-space">送信</button>

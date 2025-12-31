@@ -19,7 +19,7 @@ const kigyouDtCapsuleDto: Ref<SearchWkTblPagingCapsuleDtoInterface> = ref(new Se
 const kigyouDtResultDto: Ref<SearchWkTblHistoryKigyouDtPagingResultDtoInterface> = ref(new SearchWkTblHistoryKigyouDtPagingResultDto());
 
 kigyouDtCapsuleDto.value.userDto = props.userDto;
-//kigyouDtCapsuleDto.value.limit = 30;
+kigyouDtCapsuleDto.value.limit = 30;
 kigyouDtCapsuleDto.value.pageNumber = 0;
 kigyouDtCapsuleDto.value.hasAffectNot = true;
 
