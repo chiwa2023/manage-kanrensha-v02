@@ -12,13 +12,24 @@ const routes = [
     
     // SEメニュー
     { path: RoutePathConstants.PAGE_MENU_ADMIN, name: "MenuRiyoushaAdminBase", component: () => import("./components/main/pages/menu/MenuRiyoushaAdminBase.vue") },
-    // 管理者メニュー
+    // 運営者メニュー
     { path: RoutePathConstants.PAGE_MENU_MANAGER, name: "MenuRiyoushaManagerBase", component: () => import("./components/main/pages/menu/MenuRiyoushaManagerBase.vue") },
     // APIユーザメニュー
     { path: RoutePathConstants.PAGE_MENU_PARTNER_API, name: "MenuRiyoushaPartnerApiBase", component: () => import("./components/main/pages/menu/MenuRiyoushaPartnerApiBase.vue") },
 
     // 関連者メニュー
     { path: RoutePathConstants.PAGE_MENU_KANRENSHA, name: "MenuKanrenshaBase", component: () => import("./components/main/pages/menu/MenuKanrenshaBase.vue") },
+
+
+    // 新規アカウント作成
+    { path: RoutePathConstants.PAGE_ADD_ACCOUNT, name: "AddAccountMenu", component: () => import("./components/main/pages/add_account/AddAccountMenu.vue") },
+    { path: RoutePathConstants.PAGE_SEND_ACCESS_CODE, name: "SendAccessCode", component: () => import("./components/main/pages/add_account/SendAccessCode.vue") },
+    { path: RoutePathConstants.PAGE_SWITCH_USER_KBN, name: "SwitchNewUserKbn", component: () => import("./components/main/pages/add_account/SwitchNewUserKbn.vue") },
+    
+   // { path: RoutePathConstants.PAGE_INPUT_KANRENSHA, name: "InputKanrensha", component: () => import("./components/pages/add_account/InputKanrensha.vue") },
+   // { path: RoutePathConstants.PAGE_INPUT_COMRADE, name: "InputComrade", component: () => import("./components/pages/add_account/InputComrade.vue") },
+   // { path: RoutePathConstants.PAGE_INPUT_MANAGER, name: "InputManager", component: () => import("./components/pages/add_account/InputManager.vue") },
+
 
 
     // 利用者検索

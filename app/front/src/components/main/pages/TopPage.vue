@@ -2,9 +2,10 @@
 import { MessageConstants, MessageView } from 'seijishikin-jp-normalize_common-tool';
 import RoutePathConstants from '../../../routePathConstants';
 import { ref, type Ref } from 'vue';
-import { LeastUserDto, type LeastUserDtoInterface } from '../dto/user/leastUserDto';
-import UserRoleConstants from '../dto/user/userRoleConstants';
-import LoginConstants from '../dto/user/loginConstants';
+// import { LeastUserDto, type LeastUserDtoInterface } from '../dto/user/leastUserDto';
+import { LoginUserCapsuleDto, type LoginUserCapsuleDtoInterface } from '../dto/login/loginUserCapsuleDto';
+//import UserRoleConstants from '../dto/user/userRoleConstants';
+// import LoginConstants from '../dto/user/loginConstants';
 // import RoutePathConstants from './routePathConstants';
 // import type UserPersonLeastInterface from './dto/user/userPersonLeastDto';
 // import UserPersonLeastDto from './dto/user/userPersonLeastDto';
@@ -22,8 +23,8 @@ import LoginConstants from '../dto/user/loginConstants';
 
 // よく使う定数
 const BLANK: string = "";
-const INIT_NUMBER: number = 0;
-const SERVER_STATUS_OK: number = 200;
+// const INIT_NUMBER: number = 0;
+// const SERVER_STATUS_OK: number = 200;
 // const SERVER_STATUS_ERROR: number = 400;
 
 // メッセージ表示定数
@@ -32,76 +33,9 @@ const messageType: Ref<number> = ref(MessageConstants.VIEW_NONE);
 const title: Ref<string> = ref(BLANK);
 const message: Ref<string> = ref(BLANK);
 
-/**
- *  仮ログイン処理
- *  */
-const userDto: Ref<LeastUserDtoInterface> = ref(new LeastUserDto());
+// 仮インスタンスを設定?
+// const userDto: Ref<LeastUserDtoInterface> = ref(new LeastUserDto());
 
-function tempLogin() {
-    userDto.value.userPersonId = 213;
-    userDto.value.userPersonCode = 190;
-    userDto.value.userPersonName = "管理者　太郎";
-
-    alert("ログイン");
-    sessionStorage.setItem(LoginConstants.SESSION_KEY_USER, JSON.stringify(userDto.value));
-    // sessionStorage.setItem("jwtToken", JSON.stringify(resultDto.jwtTokenDto));
-}
-
-function checkLogin() {
-    const isPage: boolean = userDto.value.userPersonId !== INIT_NUMBER;
-    const isSession: boolean = sessionStorage.getItem(LoginConstants.SESSION_KEY_USER) !== null;
-    alert("ログイン状態チェック:dto--" + isPage + ":session--" + isSession);
-}
-
-function addPrivridge(role: string) {
-    if (!userDto.value.listRoles.includes(role)) {
-        userDto.value.listRoles.push(role);
-    }
-    alert(userDto.value.listRoles.toString());
-    sessionStorage.setItem(LoginConstants.SESSION_KEY_USER, JSON.stringify(userDto.value));
-}
-
-
-/**
- * back側疎通確認
- *  */
-const testResult: Ref<string> = ref(BLANK);
-function onBackendTest() {
-    const url = RoutePathConstants.DOMAIN + "/trial-access";
-    const method = "GET";
-    const headers = {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-    };
-    fetch(url, { method, headers })
-        .then(async (response) => {
-            const status: string = await response.text();
-            if (SERVER_STATUS_OK === response.status && status !== null) {
-                testResult.value = status;
-
-                infoLevel.value = MessageConstants.LEVEL_INFO;
-                title.value = "back側疎通確認";
-                message.value = "疎通確認できました";
-                // 表示
-                messageType.value = MessageConstants.VIEW_TOAST;
-            } else {
-                infoLevel.value = MessageConstants.LEVEL_INFO;
-                title.value = "back側疎通確認";
-                message.value = "疎通はしていますがレスポンスが戻っていません";
-                // 表示
-                messageType.value = MessageConstants.VIEW_TOAST;
-            }
-        })
-        .catch((error) => {
-            alert(error);
-            // メッセージ文面は考える
-            infoLevel.value = MessageConstants.LEVEL_ERROR;
-            title.value = "システム担当者に連絡";
-            message.value = error;
-            // 表示
-            messageType.value = MessageConstants.VIEW_OK;
-        });
-}
 
 function recieveSubmit(button: string) {
     console.log(button); // 警告除け
@@ -111,48 +45,115 @@ function recieveSubmit(button: string) {
     infoLevel.value = 0;
     messageType.value = 0;
 }
+
+const user: Ref<LoginUserCapsuleDtoInterface> = ref(new LoginUserCapsuleDto());
+function onLogin() {
+    // 入力チェック
+    if (user.value.userId === BLANK || user.value.password === BLANK) {
+        infoLevel.value = MessageConstants.LEVEL_ERROR;
+        messageType.value = MessageConstants.VIEW_OK;
+        title.value = "入力エラー";
+        message.value = "メールアドレスとパスワードは必須です。";
+        return;
+    }
+
+    // const url = urlBack + "/login";
+    // const method = "POST";
+    // const body = JSON.stringify({
+    //     ...user.value,
+    //     rememberMe: rememberMe.value
+    // });
+    // const headers = {
+    //     'Accept': 'application/json',
+    //     'Content-Type': 'application/json'
+    // };
+    // fetch(url, { method, headers, body })
+    //     .then(async (response) => {
+    //         const status = response.status;
+    //         if (status === 200) {
+    //             const resultDto: LoginUserResultInterface = await response.json();
+    //             sessionStorage.setItem("userDto", JSON.stringify(resultDto.userPersonLeastDto));
+    //             sessionStorage.setItem("jwtToken", JSON.stringify(resultDto.jwtTokenDto));
+    //             switch (resultDto.userPersonLeastDto.listRoles[0]) {
+    //                 case "ROLE_admin":
+    //                     // 運営者
+    //                     router.push(RoutePathConstants.PAGE_MENU_ADMIN);
+    //                     break;
+    //                 case "ROLE_manager":
+    //                     // 運営者
+    //                     router.push(RoutePathConstants.PAGE_MENU_MANAGER);
+    //                     break;
+    //                 case "ROLE_comrade":
+    //                     // APIユーザ
+    //                     router.push(RoutePathConstants.PAGE_MENU_PARTNER_API);
+    //                     break;
+    //                 case "ROLE_partner_person":
+    //                 case "ROLE_partner_corp":
+    //                 case "ROLE_partner_poli_org":
+    //                     // 関連者
+    //                     router.push(RoutePathConstants.PAGE_MENU_KANRENSHA);
+    //                     break;
+    //                 default:
+    //                     alert("権限設定が登録できませんでした");
+    //                     break;
+    //             }
+    //         }
+    //         if (status === 401) {
+    //             alert("status 401");
+    //         }
+    //     })
+    //     .catch((error) => { alert(error); });
+}
+
+// パスワード可視／不可視切り替えロジック
+const isPasswordVisible: Ref<boolean> = ref(false);
+const passwordInputType: Ref<string> = ref("password");
+function changeVisiblePassword() {
+    isPasswordVisible.value = !isPasswordVisible.value;
+    if (isPasswordVisible.value) {
+        passwordInputType.value = "text";
+    } else {
+        passwordInputType.value = "password";
+    }
+}
+
 </script>
 <template>
     <div class="container">
+        <div class="login-page">
+            <div class="form-container">
+                <h1>政治資金関連者標準化サイト</h1>
+                <h2>ユーザログイン</h2>
 
-        <h1>政治資金関連者標準化サイト</h1>
+                <div class="form-group">
+                    <label for="email">メールアドレス</label>
+                    <input type="text" id="email" v-model="user.userId">
+                </div>
 
-        <h3>権限付与</h3>
-        <button @click="tempLogin">ログイン</button><button class="left-space" @click="checkLogin">ログイン状態確認</button>
+                <div class="form-group">
+                    <label for="password">パスワード</label>
+                    <div class="password-wrapper">
+                        <input :type="passwordInputType" id="password" v-model="user.password" autocomplete="off">
+                        <span @click="changeVisiblePassword" class="password-toggle-icon">
+                            <img v-show="!isPasswordVisible" src="../../../assets/password_hidden.png">
+                            <img v-show="isPasswordVisible" src="../../../assets/password_visible.png">
+                        </span>
+                    </div>
+                </div>
 
+                <div class="form-options">
+                    <input type="checkbox" v-model="user.rememberMe" id="rememberMe">
+                    <label for="rememberMe">ログイン情報を記憶する</label>
+                </div>
 
-        <h3>権限付与</h3>
-        <button @click="addPrivridge(UserRoleConstants.ROLE_ADMIN)">SE権限</button><button class="left-space"
-            @click="addPrivridge(UserRoleConstants.ROLE_MANAGER)">運営者</button><button class="left-space"
-            @click="addPrivridge(UserRoleConstants.ROLE_PARTNER_API)">APIユーザ</button><button class="left-space"
-            @click="addPrivridge(UserRoleConstants.ROLE_KANRENSHA_PERSON)">関連者</button>
+                <button @click="onLogin" class="login-button">ログイン</button>
 
-        <h3>ログイン処理を省略・・・</h3>
-        <RouterLink :to=RoutePathConstants.PAGE_MENU_MANAGER>管理者メニュー</RouterLink><br>
-        <RouterLink :to=RoutePathConstants.PAGE_MENU_PARTNER_API>APIユーザメニュー</RouterLink><br>
-        <RouterLink :to=RoutePathConstants.PAGE_MENU_KANRENSHA>関連者メニュー</RouterLink><br>
-        <hr>
-        <RouterLink :to=RoutePathConstants.PAGE_MENU_ADMIN>SEメニュー</RouterLink><br>
-        <!-- 
-        <hr>
-        <RouterLink :to=RoutePathConstants.PAGE_DOWNLOAD_HISTORY>関連者履歴データダウンロード(公開文書記載水準)</RouterLink><br>
-        <RouterLink :to=RoutePathConstants.PAGE_DOWNLOAD_MASTER_MIN>関連者マスタ最小ダウンロード(公開文書記載水準)</RouterLink><br>
-        <RouterLink :to=RoutePathConstants.PAGE_DOWNLOAD_SABUN_HISTORY>関連者履歴データダウンロード差分(公開文書記載水準)</RouterLink><br>
-        <RouterLink :to=RoutePathConstants.PAGE_DOWNLOAD_SABUN_MASTER_MIN>関連者マスタ最小ダウンロード差分(公開文書記載水準)</RouterLink><br>
-        <hr>
-        -->
-
-        <hr>
-        <h3>開発用</h3>
-
-        本当に初回だけback側疎通確認<button @click="onBackendTest" class="left-space">確認</button><br>
-        <textarea v-model="testResult" class="max-input"> </textarea><br>
-
-        <RouterLink :to=RoutePathConstants.PAGE_DEVELOP_TEMPLATE>テンプレートと共通ツールカタログ</RouterLink><br>
-
-        <!-- 
-        <RouterLink :to=RoutePathConstants.PAGE_COMPONENT>コンポーネント作成台紙</RouterLink><br>
-        -->
+                <div class="links">
+                    <RouterLink :to="RoutePathConstants.PAGE_ADD_ACCOUNT">新規登録ですか?</RouterLink>
+                    <RouterLink to="/reset_password/propose">※パスワードを忘れたので再発行</RouterLink>
+                </div>
+            </div>
+        </div>
 
         <!-- メッセージ表示 -->
         <div class="overMessage" v-if="messageType !== MessageConstants.VIEW_NONE">
@@ -160,7 +161,122 @@ function recieveSubmit(button: string) {
                 @send-submit="recieveSubmit">
             </MessageView>
         </div>
-
     </div>
 </template>
-<style scoped></style>
+
+<style scoped>
+.login-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
+    background-color: #f4f4f4;
+}
+
+.form-container {
+    background: white;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+}
+
+h1 {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+h2 {
+    font-size: 1.2rem;
+    color: #666;
+    margin-bottom: 2rem;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+    text-align: left;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+}
+
+.form-group input[type="text"],
+.form-group input[type="password"] {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box; /* paddingを含めてwidth 100%に */
+}
+
+.password-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.password-wrapper input {
+    padding-right: 2.5rem; /* アイコンのスペース確保 */
+}
+
+.password-toggle-icon {
+    position: absolute;
+    right: 0.75rem;
+    cursor: pointer;
+    height: 1.35em;
+}
+
+.password-toggle-icon img {
+    height: 1.35em;
+    width: auto;
+}
+
+
+.form-options {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.form-options input[type="checkbox"] {
+    margin-right: 0.5rem;
+}
+
+.login-button {
+    width: 100%;
+    padding: 0.75rem;
+    border: none;
+    border-radius: 4px;
+    background-color: #007bff;
+    color: white;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.login-button:hover {
+    background-color: #0056b3;
+}
+
+.links {
+    margin-top: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.links a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.links a:hover {
+    text-decoration: underline;
+}
+</style>

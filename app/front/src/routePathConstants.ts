@@ -5,7 +5,7 @@ export default class RoutePathConstants {
 
     /** ベース */
     static readonly BASE_PATH: string = "/manage-kanrensha";
-
+ 
     /** ログインページ */
     static readonly PAGE_LOGIN: string = this.BASE_PATH + "/";
 
@@ -17,20 +17,26 @@ export default class RoutePathConstants {
 
     /** SE権限メニュー */
     static readonly PAGE_MENU_ADMIN: string = this.BASE_PATH + "/menu-admin";
-    /** 管理者メニュー */
+    /** 運営者メニュー */
     static readonly PAGE_MENU_MANAGER: string = this.BASE_PATH + "/menu-manager";
     /** APIユーザメニュー */
     static readonly PAGE_MENU_PARTNER_API: string = this.BASE_PATH + "/menu-partner-api";
     /** 関連者メニュー */
     static readonly PAGE_MENU_KANRENSHA: string = this.BASE_PATH + "/menu-kanrensha";
 
+    /** 新規追加メニュー */
+    static readonly PAGE_ADD_ACCOUNT: string = this.BASE_PATH + "/add-account";
+    /** アクセスコード送信 */
+    static readonly PAGE_SEND_ACCESS_CODE: string = this.BASE_PATH + "/send-access-code";
+    /** ユーザの種類変更 */
+    static readonly PAGE_SWITCH_USER_KBN: string = this.BASE_PATH + "/switch-user-kbn";
 
 
 
 
 
 
-        /** 利用者検索 */
+    /** 利用者検索 */
     static readonly PAGE_RIYOUSHA_SEARCH: string = this.BASE_PATH + "/riyousha-search";
 
 
@@ -100,7 +106,7 @@ export default class RoutePathConstants {
     // /** 関連者個人－企業／団体紐づけ登録 */
     // static readonly PAGE_REGI_COMBINE_POLI_ORG: string = this.BASE_PATH + "/combine-poli-org";
 
-    // /** 管理者による関連者管理 */
+    // /** 運営者による関連者管理 */
     // static readonly PAGE_REGI_PARTNER_MANAGE: string = this.BASE_PATH + "/partner-manage";
 
     // /** 本人による関連者編集 */
@@ -109,15 +115,9 @@ export default class RoutePathConstants {
     // /** 作業内容承認 */
     // static readonly PAGE_WORKS_APPROVAL: string = this.BASE_PATH + "/works-approval";
 
-    // /** 管理者による利用者検索編集 */
+    // /** 運営者による利用者検索編集 */
     // static readonly PAGE_SEARCH_RIYOUSHA: string = this.BASE_PATH + "/search-riyousha";
 
-    // /** 新規追加メニュー */
-    // static readonly PAGE_ADD_ACCOUNT: string = this.BASE_PATH + "/add-account";
-    // /** アクセスコード送信 */
-    // static readonly PAGE_SEND_ACCESS_CODE: string = this.BASE_PATH + "/send-access-code";
-    // /** ユーザの種類変更 */
-    // static readonly PAGE_SWITCH_USER_KBN: string = this.BASE_PATH + "/switch-user-kbn";
     // /** 関連者編集 */
     // static readonly PAGE_INPUT_KANRENSHA: string = this.BASE_PATH + "/input-kanrensha";
     // /** APIユーザ編集 */
