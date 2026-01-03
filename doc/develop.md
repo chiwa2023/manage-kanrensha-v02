@@ -12,29 +12,46 @@
 
 4. vitest導入 `npm i -D vitest`
 
-
 5. @vue/test-utils導入 `npm install --save-dev @vue/test-utils`
-
 
 6. jsdom導入 `npm install --save-dev jsdom`
 
 7. vitest.config.jsの追加
 
+8. このgithubアカウント共通機能を導入する
+
 ※ 5,6はコンポーネントテスト用。コンポーネントをテストしない場合は不要。
 
 ### 2. back側
 
+1. spring boot導入
+新規プロジェクト-spring starter project
+    - boot本体
+    - spring batch
+    - spring oauth2
+    - spring security
+    - spring mail
+    - spring JDBC
+    - spring MySQLドライバ
 
+2.このgithubアカウント全体共通機能jarを導入する
 
+3.spring security用キーペアの作成
+opensslインストールディレクトリ/binからcmdを起動。秘密鍵(パスフレーズなし)と公開鍵の作成は下記の通り
 
+```
+openssl genrsa -out app.key 2048
+openssl rsa -in app.key -pubout -out app.pub
+```
 
+githubに鍵本体をpushするとセキュリティ警告が来るので、.gitignoreでpush除外とする必要がある。
+
+```
+src/main/resources/app.pub
+src/main/resources/app.key
+```
 
 ### 3. Database
-
-
-
-
-
 
 ### 4. Upgrade
 

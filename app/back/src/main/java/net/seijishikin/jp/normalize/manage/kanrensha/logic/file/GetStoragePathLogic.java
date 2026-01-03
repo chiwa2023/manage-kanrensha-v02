@@ -45,7 +45,7 @@ public class GetStoragePathLogic {
     /**
      * 処理を行う
      *
-     * @param userPersonLeastDto ユーザ最低限Dto
+     * @param userDto ユーザ最低限Dto
      * @return 保存ディレクトリ
      * @throws IOException ファイル書き込み時例外
      */

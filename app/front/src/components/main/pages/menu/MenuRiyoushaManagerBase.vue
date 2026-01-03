@@ -19,13 +19,12 @@ import { getLoginUser } from '../../utils/getLoginUser';
 
 // ユーザ呼び出し
 const userDto: Ref<LeastUserDtoInterface> = ref(getLoginUser());
-
 </script>
 <template>
 
     <!-- 運営者 -->
     <MockManagerInfo :user-dto="userDto"></MockManagerInfo>
-
+    
     <h1>運営者メニュー</h1><br>
     <MenuRiyoushaManagerContent></MenuRiyoushaManagerContent>
 

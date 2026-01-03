@@ -1,25 +1,17 @@
 ﻿<script setup lang="ts">
 import { ref, type Ref } from 'vue';
-//import RoutePathConstants from '../../../../routePathConstants';
 import { NewComerDto, type NewComerDtoInterface } from '../../dto/add_account/newComerDto';
 import router from '../../../../router';
 import RoutePathConstants from '../../../../routePathConstants';
 import MockNewComerInfo from '../../../test/common/user_info/MockNewComerInfo.vue';
 import { MessageConstants, MessageView } from 'seijishikin-jp-normalize_common-tool';
-// import router from '../../../router';
-// import type NewComerInterface from '../../../dto/user/newComerDto';
-// import NewComerDto from '../../../dto/user/newComerDto';
+import { useApi } from '../../utils/useApi';
 
 // back側アクセス
-// const urlBack: string = RoutePathConstants.DOMAIN + RoutePathConstants.BASE_PATH;
-
-// const sessionStorage = window["sessionStorage"];
+const urlBack: string = RoutePathConstants.DOMAIN + RoutePathConstants.BASE_PATH;
 
 // よく使う定数
 const BLANK: string = "";
-// const INIT_NUMBER: number = 0;
-// const SERVER_STATUS_OK: number = 200;
-// const SERVER_STATUS_ERROR: number = 400;
 
 // メッセージ表示定数
 const infoLevel: Ref<number> = ref(MessageConstants.LEVEL_NONE);
@@ -30,7 +22,10 @@ const message: Ref<string> = ref(BLANK);
 // 入力用Dto
 const newComer: Ref<NewComerDtoInterface> = ref(new NewComerDto());
 
-function onRegistMail() {
+// API呼び出し用Composable
+const { loading: publishLoading, error: publishError, fetchData: fetchPublish } = useApi<NewComerDtoInterface>();
+
+async function onRegistMail() {
     // 入力チェック
     if (newComer.value.mailAddress === BLANK) {
         infoLevel.value = MessageConstants.LEVEL_ERROR;
@@ -40,41 +35,32 @@ function onRegistMail() {
         return;
     }
 
-    //     const date: Date = new Date();
-    //     date.setDate(date.getDate() + 1);
-    //     newComer.value.limitDateTime = date;
+    // メールアドレスを用いて新規登録用コードを発行
+    const url = urlBack + "/add-user/publish-code";
+    const config = {
+        method: "POST",
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(newComer.value)
+    };
 
-    //     // メールアドレスを用いて新規登録用コードを発行
-    //     const url = urlBack + "0/add-user/publish-code";
-    //     const method = "POST";
-    //     const body = JSON.stringify(newComer.value);
-    //     const headers = {
-    //         'Accept': 'application/json',
-    //         'Content-Type': 'application/json'
-    //     };
-    //     fetch(url, { method, headers, body })
-    //         .then(async (response) => {
+    const resultDto = await fetchPublish(url, config);
 
-    //             const status = response.status;
-    //             if (status === 200) {
-    //                 const resultDto: NewComerInterface = await response.json();
-    // TODO　運用時にはセッションストレージへの保存を削除する
-    newComer.value.registCode = "12345";
-    sessionStorage.setItem("new-comer", JSON.stringify(newComer.value));
-    router.push(RoutePathConstants.PAGE_SEND_ACCESS_CODE);
-    //             } else {
-    //                 alert("発行できませんでした");
-    //             }
-    //         })
-    //         .catch((error) => { alert(error); });
+    if (resultDto) {
+        sessionStorage.setItem("new-comer", JSON.stringify(resultDto));
+        router.push(RoutePathConstants.PAGE_SEND_ACCESS_CODE);
+    } else if (publishError.value) {
+        infoLevel.value = MessageConstants.LEVEL_ERROR;
+        messageType.value = MessageConstants.VIEW_OK;
+        title.value = "コード発行エラー";
+        message.value = publishError.value;
+    }
 }
 
-
 function recieveSubmit(button: string) {
-    console.log(button); // 警告除け
-    // TODO ボタンタイプ別の挙動はこの中で変える
-
-    // 非表示
+    console.log(button);
     infoLevel.value = 0;
     messageType.value = 0;
 }
@@ -100,10 +86,9 @@ function onCancel() {
         </div>
     </div>
 
-
     <div class="footer">
         <button class="footer-button" @click="onCancel">前に戻る</button>
-        <button class="footer-button left-space" @click="onRegistMail">送信</button>
+        <button class="footer-button left-space" @click="onRegistMail" :disabled="publishLoading">送信</button>
     </div>
 
     <!-- メッセージ表示 -->
@@ -114,28 +99,4 @@ function onCancel() {
     </div>
 
 </template>
-<style scoped>
-span.explain {
-    font-size: 110%;
-}
-
-span.kbn {
-    font-size: 120%;
-    font-weight: bold;
-}
-
-table {
-    border-style: solid;
-    border-width: 1px;
-}
-
-td {
-    border-style: solid;
-    border-width: 1px;
-}
-
-th {
-    border-style: solid;
-    border-width: 1px;
-}
-</style>
+<style scoped></style>

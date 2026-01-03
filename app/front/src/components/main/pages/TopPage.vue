@@ -2,24 +2,15 @@
 import { MessageConstants, MessageView } from 'seijishikin-jp-normalize_common-tool';
 import RoutePathConstants from '../../../routePathConstants';
 import { ref, type Ref } from 'vue';
-// import { LeastUserDto, type LeastUserDtoInterface } from '../dto/user/leastUserDto';
 import { LoginUserCapsuleDto, type LoginUserCapsuleDtoInterface } from '../dto/login/loginUserCapsuleDto';
-//import UserRoleConstants from '../dto/user/userRoleConstants';
-// import LoginConstants from '../dto/user/loginConstants';
-// import RoutePathConstants from './routePathConstants';
-// import type UserPersonLeastInterface from './dto/user/userPersonLeastDto';
-// import UserPersonLeastDto from './dto/user/userPersonLeastDto';
-// import UserRoleConstants from './dto/user/userRoleConstants';
+import { useApi } from '../utils/useApi';
+import type { LoginUserResultDtoInterface } from '../dto/login/loginUserResultDto';
+import router from '../../../router';
+import LoginConstants from '../dto/user/loginConstants';
+import RoleConstants from '../dto/login/RoleConstants';
 
-// const userDto: Ref<UserPersonLeastInterface> = ref(new UserPersonLeastDto());
-// userDto.value.listRoles.push(UserRoleConstants.ROLE_ADMIN);
-// userDto.value.listRoles.push(UserRoleConstants.ROLE_MANAGER);
-// userDto.value.listRoles.push(UserRoleConstants.ROLE_COMRADE);
-// userDto.value.listRoles.push(UserRoleConstants.ROLE_PARTNER_PERSON);
-// userDto.value.listRoles.push(UserRoleConstants.ROLE_PARTNER_CORP);
-// userDto.value.listRoles.push(UserRoleConstants.ROLE_PARTNER_POLI_ORG);
-// userDto.value.userPersonCode=190;
-// sessionStorage.setItem("userDto", JSON.stringify(userDto.value));
+// back側アクセス
+const urlBack: string = RoutePathConstants.DOMAIN + RoutePathConstants.BASE_PATH;
 
 // よく使う定数
 const BLANK: string = "";
@@ -33,21 +24,21 @@ const messageType: Ref<number> = ref(MessageConstants.VIEW_NONE);
 const title: Ref<string> = ref(BLANK);
 const message: Ref<string> = ref(BLANK);
 
-// 仮インスタンスを設定?
-// const userDto: Ref<LeastUserDtoInterface> = ref(new LeastUserDto());
-
 
 function recieveSubmit(button: string) {
     console.log(button); // 警告除け
-    // TODO ボタンタイプ別の挙動はこの中で変える
-
+    // このページではメッセージに対して挙動を変える必要はない
     // 非表示
     infoLevel.value = 0;
     messageType.value = 0;
 }
 
 const user: Ref<LoginUserCapsuleDtoInterface> = ref(new LoginUserCapsuleDto());
-function onLogin() {
+
+// API呼び出し用Composable
+const { loading: loginLoading, error: loginError, fetchData: fetchLogin } = useApi<LoginUserResultDtoInterface>();
+
+async function onLogin() {
     // 入力チェック
     if (user.value.userId === BLANK || user.value.password === BLANK) {
         infoLevel.value = MessageConstants.LEVEL_ERROR;
@@ -57,52 +48,57 @@ function onLogin() {
         return;
     }
 
-    // const url = urlBack + "/login";
-    // const method = "POST";
-    // const body = JSON.stringify({
-    //     ...user.value,
-    //     rememberMe: rememberMe.value
-    // });
-    // const headers = {
-    //     'Accept': 'application/json',
-    //     'Content-Type': 'application/json'
-    // };
-    // fetch(url, { method, headers, body })
-    //     .then(async (response) => {
-    //         const status = response.status;
-    //         if (status === 200) {
-    //             const resultDto: LoginUserResultInterface = await response.json();
-    //             sessionStorage.setItem("userDto", JSON.stringify(resultDto.userPersonLeastDto));
-    //             sessionStorage.setItem("jwtToken", JSON.stringify(resultDto.jwtTokenDto));
-    //             switch (resultDto.userPersonLeastDto.listRoles[0]) {
-    //                 case "ROLE_admin":
-    //                     // 運営者
-    //                     router.push(RoutePathConstants.PAGE_MENU_ADMIN);
-    //                     break;
-    //                 case "ROLE_manager":
-    //                     // 運営者
-    //                     router.push(RoutePathConstants.PAGE_MENU_MANAGER);
-    //                     break;
-    //                 case "ROLE_comrade":
-    //                     // APIユーザ
-    //                     router.push(RoutePathConstants.PAGE_MENU_PARTNER_API);
-    //                     break;
-    //                 case "ROLE_partner_person":
-    //                 case "ROLE_partner_corp":
-    //                 case "ROLE_partner_poli_org":
-    //                     // 関連者
-    //                     router.push(RoutePathConstants.PAGE_MENU_KANRENSHA);
-    //                     break;
-    //                 default:
-    //                     alert("権限設定が登録できませんでした");
-    //                     break;
-    //             }
-    //         }
-    //         if (status === 401) {
-    //             alert("status 401");
-    //         }
-    //     })
-    //     .catch((error) => { alert(error); });
+    const url = urlBack + "/login";
+    const config = {
+        method: "POST",
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(user.value)
+    };
+
+    const resultDto:LoginUserResultDtoInterface | null = await fetchLogin(url, config);
+
+    if (resultDto !== null) {
+        sessionStorage.setItem(LoginConstants.SESSION_KEY_USER, JSON.stringify(resultDto.userDto));
+
+        switch (resultDto.userDto.listRoles[0]) {
+            case RoleConstants.ROLE + RoleConstants.ADMIN:
+                // 運営者
+                router.push(RoutePathConstants.PAGE_MENU_ADMIN);
+                break;
+            case RoleConstants.ROLE + RoleConstants.MANAGER:
+                // 運営者
+                router.push(RoutePathConstants.PAGE_MENU_MANAGER);
+                break;
+            case RoleConstants.ROLE + RoleConstants.PARTNER_API:
+                // APIユーザ
+                router.push(RoutePathConstants.PAGE_MENU_PARTNER_API);
+                break;
+            case RoleConstants.ROLE + RoleConstants.KANRENSHA_PERSON:
+            case RoleConstants.ROLE + RoleConstants.KANRENSHA_KIGYOU_DT:
+            case RoleConstants.ROLE + RoleConstants.KANRENSHA_SEIJIDANTAI:
+                // 関連者
+                router.push(RoutePathConstants.PAGE_MENU_KANRENSHA);
+                break;
+            default:
+                infoLevel.value = MessageConstants.LEVEL_ERROR;
+                messageType.value = MessageConstants.VIEW_OK;
+                title.value = "権限取得エラー";
+                if (loginError.value !== null) {
+                    message.value = loginError.value;
+                }
+                break;
+        }
+    } else {
+        infoLevel.value = MessageConstants.LEVEL_ERROR;
+        messageType.value = MessageConstants.VIEW_OK;
+        title.value = "システムエラー";
+        if (loginError.value !== null) {
+            message.value = loginError.value;
+        }
+    }
 }
 
 // パスワード可視／不可視切り替えロジック
@@ -116,7 +112,6 @@ function changeVisiblePassword() {
         passwordInputType.value = "password";
     }
 }
-
 </script>
 <template>
     <div class="container">
@@ -146,7 +141,7 @@ function changeVisiblePassword() {
                     <label for="rememberMe">ログイン情報を記憶する</label>
                 </div>
 
-                <button @click="onLogin" class="login-button">ログイン</button>
+                <button @click="onLogin" class="login-button" :disabled="loginLoading">ログイン</button>
 
                 <div class="links">
                     <RouterLink :to="RoutePathConstants.PAGE_ADD_ACCOUNT">新規登録ですか?</RouterLink>
@@ -211,7 +206,8 @@ h2 {
     padding: 0.75rem;
     border: 1px solid #ccc;
     border-radius: 4px;
-    box-sizing: border-box; /* paddingを含めてwidth 100%に */
+    box-sizing: border-box;
+    /* paddingを含めてwidth 100%に */
 }
 
 .password-wrapper {
@@ -221,7 +217,8 @@ h2 {
 }
 
 .password-wrapper input {
-    padding-right: 2.5rem; /* アイコンのスペース確保 */
+    padding-right: 2.5rem;
+    /* アイコンのスペース確保 */
 }
 
 .password-toggle-icon {

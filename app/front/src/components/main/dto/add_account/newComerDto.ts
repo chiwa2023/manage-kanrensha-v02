@@ -20,6 +20,8 @@ interface NewComerDtoInterface extends FrameworkMessageAndResultDtoInterface {
     /** ユーザ区分(ロール・権限) */
     role: string;
 
+    /** URLダイレクトアクセス用認証トークン */
+    verifyToken:string;
 }
 
 class NewComerDto extends FrameworkMessageAndResultDto
@@ -43,6 +45,9 @@ class NewComerDto extends FrameworkMessageAndResultDto
     /** ユーザ区分(ロール・権限) */
     role: string;
 
+    /** URLダイレクトアクセス用認証トークン */
+    verifyToken:string;
+
     constructor() {
         super();
         
@@ -53,6 +58,7 @@ class NewComerDto extends FrameworkMessageAndResultDto
         this.registCode = INIT_STRING;
         this.limitDateTime = new Date(1948, 7, 28);
         this.role = INIT_STRING;
+        this.verifyToken = INIT_STRING;
     }
 }
 

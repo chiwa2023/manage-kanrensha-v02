@@ -1,0 +1,29 @@
+【email】 さん
+
+メール疎通確認認証コード送信のお知らせ
+
+メール疎通確認用の認証コードを発行しました。
+下記リンクから接続したページにアクセスし、登録作業を継続してください
+
+リンクの有効期限：
+発行から2時間
+
+リンク：
+http://localhost:5173/manage-kanrensha/send-access-code?token=【verifyToken】
+
+---
+もし上記リンクからアクセスできない、または手動で認証コードを入力する場合は、
+下記の情報をご利用ください。
+
+手入力用認証コードの有効期限：
+発行から2時間 (【limitTime】)
+
+認証コード入力ページ:
+http://localhost:5173/manage-kanrensha/send-access-code
+
+メールアドレス: 【email】
+認証コード: 【regiCode】
+---
+
+政治資金関連者標準化サイト
+https://normalize.jp.seijishikin.net/

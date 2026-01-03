@@ -28,7 +28,6 @@ const listMenuRoleOptions: Ref<SelectOptionStringDtoInterface[]> = ref(createLis
 
 // ログインと権限チェック
 if (INIT_NUMBER === props.userDto.userPersonId || !props.userDto.listRoles.includes(UserRoleConstants.ROLE_ADMIN)) {
-    //alert("必要な権限が存在しません");
     infoLevel.value = MessageConstants.LEVEL_ERROR;
     messageType.value = MessageConstants.VIEW_OK;
     title.value = "ログイン状態またはSE権限が確認できませんでした";

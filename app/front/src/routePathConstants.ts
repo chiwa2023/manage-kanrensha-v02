@@ -31,6 +31,12 @@ export default class RoutePathConstants {
     /** ユーザの種類変更 */
     static readonly PAGE_SWITCH_USER_KBN: string = this.BASE_PATH + "/switch-user-kbn";
 
+    /** 関連者編集 */
+    static readonly PAGE_INSERT_KANRENSHA: string = this.BASE_PATH + "/insert-kanrensha";
+    /** APIユーザ編集 */
+    static readonly PAGE_INSERT_PARTNER_API: string = this.BASE_PATH + "/insert-partner";
+    /** 運営者編集 */
+    static readonly PAGE_INSERT_MANAGER: string = this.BASE_PATH + "/isert-manager";
 
 
 
@@ -118,12 +124,6 @@ export default class RoutePathConstants {
     // /** 運営者による利用者検索編集 */
     // static readonly PAGE_SEARCH_RIYOUSHA: string = this.BASE_PATH + "/search-riyousha";
 
-    // /** 関連者編集 */
-    // static readonly PAGE_INPUT_KANRENSHA: string = this.BASE_PATH + "/input-kanrensha";
-    // /** APIユーザ編集 */
-    // static readonly PAGE_INPUT_COMRADE: string = this.BASE_PATH + "/input-comrade";
-    // /** 運営者編集 */
-    // static readonly PAGE_INPUT_MANAGER: string = this.BASE_PATH + "/input-manager";
 
     // /** 運営者組織個人紐づけ */
     // static readonly PAGE_COMBINE_MANAGER: string = this.BASE_PATH + "/combine-manager";

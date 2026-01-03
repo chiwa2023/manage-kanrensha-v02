@@ -9,7 +9,7 @@ const routes = [
 
     // 開発用テンプレート
     { path: RoutePathConstants.PAGE_DEVELOP_TEMPLATE, name: "Template", component: () => import("./components/main/Template.vue") },
-    
+
     // SEメニュー
     { path: RoutePathConstants.PAGE_MENU_ADMIN, name: "MenuRiyoushaAdminBase", component: () => import("./components/main/pages/menu/MenuRiyoushaAdminBase.vue") },
     // 運営者メニュー
@@ -25,10 +25,11 @@ const routes = [
     { path: RoutePathConstants.PAGE_ADD_ACCOUNT, name: "AddAccountMenu", component: () => import("./components/main/pages/add_account/AddAccountMenu.vue") },
     { path: RoutePathConstants.PAGE_SEND_ACCESS_CODE, name: "SendAccessCode", component: () => import("./components/main/pages/add_account/SendAccessCode.vue") },
     { path: RoutePathConstants.PAGE_SWITCH_USER_KBN, name: "SwitchNewUserKbn", component: () => import("./components/main/pages/add_account/SwitchNewUserKbn.vue") },
-    
-   // { path: RoutePathConstants.PAGE_INPUT_KANRENSHA, name: "InputKanrensha", component: () => import("./components/pages/add_account/InputKanrensha.vue") },
-   // { path: RoutePathConstants.PAGE_INPUT_COMRADE, name: "InputComrade", component: () => import("./components/pages/add_account/InputComrade.vue") },
-   // { path: RoutePathConstants.PAGE_INPUT_MANAGER, name: "InputManager", component: () => import("./components/pages/add_account/InputManager.vue") },
+
+    // 関連者・利用者追加
+    { path: RoutePathConstants.PAGE_INSERT_KANRENSHA, name: "InsertKanrensha", component: () => import("./components/main/pages/add_account/InsertKanrensha.vue") },
+    { path: RoutePathConstants.PAGE_INSERT_PARTNER_API, name: "InsertRiyoushaPartner", component: () => import("./components/main/pages/add_account/InsertRiyoushaPartner.vue") },
+    { path: RoutePathConstants.PAGE_INSERT_MANAGER, name: "InsertRiyoushaManager", component: () => import("./components/main/pages/add_account/InsertRiyoushaManager.vue") },
 
 
 

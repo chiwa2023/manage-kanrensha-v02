@@ -8,5 +8,25 @@
     "name": "net.seijishikin.jp.normalize.kanrensha.uncompress",
     "type": "java.lang.String",
     "description": "A description for 'net.seijishikin.jp.normalize.kanrensha.uncompress'"
+  },
+  {
+    "name": "jwt.key.publickey",
+    "type": "java.lang.String",
+    "description": "A description for 'jwt.key.publickey'"
+  },
+  {
+    "name": "jwt.key.privatekey",
+    "type": "java.lang.String",
+    "description": "A description for 'jwt.key.privatekey'"
+  },
+  {
+    "name": "jwt.expiration.access",
+    "type": "java.lang.String",
+    "description": "A description for 'jwt.expiration.access'"
+  },
+  {
+    "name": "jwt.expiration.reflesh",
+    "type": "java.lang.String",
+    "description": "A description for 'jwt.expiration.reflesh'"
   }
 ]}

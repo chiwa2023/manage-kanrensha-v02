@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.5.7</version>
+		<version>3.5.9</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>net.seijishikin.jp.normalize.manage.kanrensha</groupId>
@@ -47,6 +47,12 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-mail</artifactId>
 		</dependency>
+
+		
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>
@@ -86,10 +92,11 @@
 			<version>0.0.1-SNAPSHOT</version>
 			<artifactId>published_document</artifactId>
 		</dependency>
-		
+
 		<!--　このプロジェクト共通Tool  -->
 		<dependency>
-			<groupId>net.seijishikin.jp.normalize.manage.kanrensha.lib.common_tool</groupId>
+			<groupId>
+				net.seijishikin.jp.normalize.manage.kanrensha.lib.common_tool</groupId>
 			<version>0.0.1-SNAPSHOT</version>
 			<artifactId>common_tool</artifactId>
 		</dependency>
