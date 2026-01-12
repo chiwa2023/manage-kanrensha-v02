@@ -27,6 +27,9 @@ public class AuthenticationEvents {
     // @Autowired
     private HttpServletRequest request;
 
+    /** データ未取得 */
+    private static final String UNKNOWN = "Unknown";
+
     /**
      * 認証成功時に呼び出されるリスナー
      * 
@@ -51,8 +54,8 @@ public class AuthenticationEvents {
         // 存在しないユーザIDでのログイン試行の場合もある
 
         String username = "N/A";
-        if (!Objects.isNull(event.getAuthentication())) {
-            event.getAuthentication().getName();
+        if (event.getAuthentication() != null && event.getAuthentication().getPrincipal() != null) {
+            username = event.getAuthentication().getPrincipal().toString(); //NOPMD LowDemeter
         }
 
         String ipAddress = getIpAddressFromFailureEvent(event);
@@ -68,11 +71,14 @@ public class AuthenticationEvents {
      * 失敗イベントからIPアドレスを取得する
      */
     private String getIpAddressFromFailureEvent(final AbstractAuthenticationFailureEvent event) {
+        if (event.getAuthentication() == null) {
+            return UNKNOWN;
+        }
         Object details = event.getAuthentication().getDetails(); // NOPMD LawDemeter
         if (details instanceof WebAuthenticationDetails) {
             return ((WebAuthenticationDetails) details).getRemoteAddress();
         }
-        return "Unknown";
+        return UNKNOWN;
     }
 
     /**
@@ -83,7 +89,7 @@ public class AuthenticationEvents {
         if (details instanceof WebAuthenticationDetails) {
             return ((WebAuthenticationDetails) details).getRemoteAddress();
         }
-        return "Unknown";
+        return UNKNOWN;
     }
 
     /**
@@ -91,8 +97,12 @@ public class AuthenticationEvents {
      */
     private String getUserAgent() {
         if (request != null) {
-            return request.getHeader("User-Agent");
+            String agent = request.getHeader("User-Agent");
+            if (Objects.isNull(agent)) {
+                agent = "";
+            }
+            return agent;
         }
-        return "Unknown";
+        return UNKNOWN;
     }
 }

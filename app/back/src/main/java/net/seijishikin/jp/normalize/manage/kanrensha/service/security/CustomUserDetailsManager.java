@@ -3,17 +3,24 @@ package net.seijishikin.jp.normalize.manage.kanrensha.service.security;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.stereotype.Component;
 
-//import net.seijishikin.jp.normalize.common_tool.utils.SetTableDataHistoryUtil;
+import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
+import net.seijishikin.jp.normalize.common_tool.utils.SetTableDataHistoryUtil;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.LoginStatusEntity;
+import net.seijishikin.jp.normalize.manage.kanrensha.entity.UserPersonEntity;
+import net.seijishikin.jp.normalize.manage.kanrensha.entity.UserRoleEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.repository.LoginStatusRepository;
-//import net.seijishikin.jp.normalize.manage.kanrensha.repository.UserPersonRepository;
+import net.seijishikin.jp.normalize.manage.kanrensha.repository.UserPersonRepository;
 import net.seijishikin.jp.normalize.manage.kanrensha.repository.UserRoleRepository;
 
 /**
@@ -32,13 +39,17 @@ public class CustomUserDetailsManager implements UserDetailsManager {
     @Autowired
     private LoginStatusRepository loginStatusRepository;
 
-//    /** ユーザ人物Repository */
-//    @Autowired
-//    private UserPersonRepository userPersonRepository;
+    /** ユーザ人物Repository */
+    @Autowired
+    private UserPersonRepository userPersonRepository;
 
     /** ユーザ権限Repository */
     @Autowired
     private UserRoleRepository userRoleRepository;
+
+    /** テーブル履歴設定util */
+    @Autowired
+    private SetTableDataHistoryUtil setTableDataHistoryUtil;
 
     /**
      * ユーザ名で該当データを呼び出す
@@ -79,101 +90,121 @@ public class CustomUserDetailsManager implements UserDetailsManager {
     }
 
     /**
-     * ユーザ情報を更新する(必要な情報がないので実装がない)
+     * ユーザ更新作業を行う ユーザ更新作業と言いながら、権限更新作業であるため非推奨
      */
     @Override
-    @Deprecated
     public void updateUser(final UserDetails user) {
-        // ユーザ名とパスワードだけだと更新処理の情報として少なすぎるので実装しない
+        
+        String email = user.getUsername();
+        
+        if (loginStatusRepository.findById(email).isEmpty()) {
+            throw new UsernameNotFoundException("User not found");
+        }
+
+        // パスワード変更は別ページで行う
+        // if (user.getPassword() != null) {
+        // statusEntity.setPassword(passwordEncoder.encode(user.getPassword()));
+        // }
+        // statusEntity.setDisabled(!user.isEnabled());
+        // loginStatusRepository.save(statusEntity);
+
+        // ログイン中の操作ユーザを取得
+        LeastUserDto operatorUserDto = this.getCurrentUser(user.getUsername());
+        
+        // 既存のロールを無効化
+        List<UserRoleEntity> oldRoles = userRoleRepository.findByEmailAndIsLatestTrue(user.getUsername());
+        for (UserRoleEntity oldRole : oldRoles) {
+            setTableDataHistoryUtil.practiceDelete(operatorUserDto, oldRole);
+            userRoleRepository.save(oldRole);
+        }
+
+        // 新しいロールを追加
+        user.getAuthorities().forEach(authority -> {
+            UserRoleEntity newRole = new UserRoleEntity();
+            newRole.setEmail(user.getUsername());
+            newRole.setRole(authority.getAuthority());
+            setTableDataHistoryUtil.practiceDelete(operatorUserDto, newRole);
+            userRoleRepository.save(newRole);
+        });
     }
 
     /**
-     * ユーザを削除する(基本的にこのメソッドを他クラスから使用しない)
+     * ユーザを削除する
      */
     @Override
     public void deleteUser(final String username) {
-//
-//        Optional<LoginStatusEntity> optional = loginStatusRepository.findById(username);
-//        if (!optional.isEmpty()) {
-//            LoginStatusEntity statusEntity = optional.get();
-//            LocalDateTime now = LocalDateTime.now();
-//            statusEntity.setDisabled(true);
-//            statusEntity.setDiabledReason("人為による退会操作");
-//            statusEntity.setLoginTime(now);
-//            loginStatusRepository.save(statusEntity);
-//        }
-//
-//        // 権限その他の処理は別メソッドで実装(操作者情報が入れられない)
-    }
 
-//    /**
-//     * ユーザを削除する
-//     *
-//     * @param personDeleteDto  削除ユーザ最低限Dto
-//     * @param personOperateDto 操作者ユーザ最低限Dto
-//     * @return 処理結果
-//     */
-//    public boolean deleteUser(final UserPersonLeastDto personDeleteDto, final UserPersonLeastDto personOperateDto) {
-//
-//        Optional<UserPersonEntity> optional = userPersonRepository.findById(personDeleteDto.getUserPersonId());
-//        if (optional.isEmpty()) {
-//            // 呼び出せなかったら処理中断
-//            return false;
-//        }
-//
-//        // ログイン情報の削除
-//        UserPersonEntity personEntity = optional.get();
-//        String email = personEntity.getEmail();
-//        this.deleteUser(email);
-//
-//        // ユーザ削除処理
-//        setTableDataHistoryUtil.practiceDelete(personOperateDto, personEntity);
-//        userPersonRepository.saveAndFlush(personEntity);
-//
-//        // 権限の削除
-//        List<UserRoleEntity> listRole = userRoleRepository.findByIsLatestAndEmail(true, email);
-//        for (UserRoleEntity roleEntity : listRole) {
-//            setTableDataHistoryUtil.practiceDelete(personOperateDto, roleEntity);
-//        }
-//        userRoleRepository.saveAllAndFlush(listRole);
-//
-//        return true;
-//    }
+        // 操作者の取得
+        Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
+        if (currentUser == null) {
+            throw new IllegalStateException("Cannot change password for anonymous user.");
+        }
+
+        String operateUserName = currentUser.getName();
+
+        // 操作対象の取得
+        // login_statusの更新
+        Optional<LoginStatusEntity> optional = loginStatusRepository.findById(username);
+
+        if (!optional.isEmpty()) {
+            final String blank = "";
+            LoginStatusEntity statusEntity = optional.get();
+
+            if (blank.equals(statusEntity.getDisabledReason())) {
+
+                if (username.equals(operateUserName)) { // SUPPRESS CHECKSTYLE NestDepth
+                    statusEntity.setDisabledReason("ユーザ自身による退会操作(理由未記入)");
+                } else {
+                    statusEntity.setDisabledReason("権限者による強制退会(理由未記入)");
+                }
+            }
+
+            statusEntity.setDisabled(true);
+            statusEntity.setLoginTime(LocalDateTime.now());
+            loginStatusRepository.save(statusEntity);
+        }
+
+        // ログイン中の操作ユーザを取得
+        LeastUserDto operatorUserDto = this.getCurrentUser(operateUserName);
+        Optional<UserPersonEntity> personOptional = userPersonRepository.findByEmailAndIsLatestTrue(username);
+
+        // user_personの更新
+        if (personOptional.isPresent()) {
+            UserPersonEntity personEntity = personOptional.get();
+            setTableDataHistoryUtil.practiceDelete(operatorUserDto, personEntity);
+            userPersonRepository.save(personEntity);
+        }
+
+        // user_roleの更新
+        List<UserRoleEntity> listRole = userRoleRepository.findByEmailAndIsLatestTrue(username);
+        for (UserRoleEntity roleEntity : listRole) {
+            setTableDataHistoryUtil.practiceDelete(operatorUserDto, roleEntity);
+            userRoleRepository.save(roleEntity);
+        }
+
+    }
 
     /**
-     * 誰のパスワードを変更するか、指定できないinterfaceなので実装不能
+     * パスワードを変更する
      */
     @Override
-    @Deprecated
     public void changePassword(final String oldPassword, final String newPassword) {
-//        // 古いパスワードを基にユーザを呼び出すべきだ、ということ？
-//        // 十分に強度があるパスワードがユーザ間で重複しない想定?
-    }
 
-//
-//    /**
-//     * パスワード(encode済)を更新する
-//     *
-//     * @param username           ユーザ名
-//     * @param oldPasswordEncoded 旧パスワード(encode済)
-//     * @param newPasswordEncoded 新パスワード(encode済)
-//     */
-//    public boolean changePassword(final String username, final String oldPasswordEncoded,
-//            final String newPasswordEncoded) {
-//
-//        Optional<LoginStatusEntity> optional = loginStatusRepository.findById(username);
-//        if (!optional.isEmpty()) {
-//            LoginStatusEntity statusEntity = optional.get();
-//
-//            // TODO 旧パスワード比較
-//
-//            statusEntity.setPassword(newPasswordEncoded);
-//            loginStatusRepository.saveAndFlush(statusEntity);
-//            return true;
-//        }
-//
-//        return false;
-//    }
+        // 操作者の取得
+        Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
+        if (currentUser == null) {
+            throw new IllegalStateException("Cannot change password for anonymous user.");
+        }
+
+        String operateUserName = currentUser.getName();
+
+        LoginStatusEntity statusEntity = loginStatusRepository.findById(operateUserName)
+                .orElseThrow(() -> new UsernameNotFoundException("User '" + operateUserName + "' not found."));
+
+        statusEntity.setPassword(newPassword);
+        statusEntity.setPassChangeTime(LocalDateTime.now());
+        loginStatusRepository.save(statusEntity);
+    }
 
     /**
      * ユーザの存在確認を行う
@@ -183,4 +214,20 @@ public class CustomUserDetailsManager implements UserDetailsManager {
         return !loginStatusRepository.findById(username).isEmpty();
     }
 
+    private LeastUserDto getCurrentUser(final String oprtateUserName) {
+        LeastUserDto userDto = new LeastUserDto();
+        Optional<UserPersonEntity> optional = userPersonRepository.findLatestByMail(oprtateUserName);
+
+        // メールアドレスと最新でユーザが取れない
+        if (optional.isEmpty()) {
+            throw new UsernameNotFoundException("ログイン情報で例外が発生しました");
+        }
+
+        UserPersonEntity personEntity = optional.get();
+        userDto.setUserPersonId(personEntity.getUserPersonId());
+        userDto.setUserPersonCode(personEntity.getUserPersonCode());
+        userDto.setUserPersonName(personEntity.getUserPersonName());
+
+        return userDto;
+    }
 }

@@ -16,8 +16,8 @@ import RoutePathConstants from '../../../../routePathConstants';
 </script>
 <template>
     <h3>SE権限メニュー</h3>
+    <RouterLink :to=RoutePathConstants.PAGE_USER_CHANGE>他者ユーザ変更</RouterLink><br>
     <!--
-    <RouterLink :to=RoutePathConstants.PAGE_USER_DELETE>ユーザ削除</RouterLink><br>
     <RouterLink :to=RoutePathConstants.PAGE_USER_CHANGE>ユーザ編集</RouterLink><br>
     <RouterLink :to=RoutePathConstants.PAGE_PROMOTE_ROLE>管理者からSE権限へ引き上げ</RouterLink><br>
     <RouterLink :to=RoutePathConstants.PAGE_REGI_PARTNER_MANAGE>関連者管理</RouterLink><br>

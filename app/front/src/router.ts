@@ -32,9 +32,15 @@ const routes = [
     { path: RoutePathConstants.PAGE_INSERT_MANAGER, name: "InsertRiyoushaManager", component: () => import("./components/main/pages/add_account/InsertRiyoushaManager.vue") },
 
 
-
     // 利用者検索
     { path: RoutePathConstants.PAGE_RIYOUSHA_SEARCH, name: "SearchEditRiyousha", component: () => import("./components/main/pages/search_edit_riyousha/SearchEditRiyousha.vue") },
+
+    // ユーザ編集
+    { path: RoutePathConstants.PAGE_REFRESH_PASSWORD, name: "RefreshPassword", component: () => import("./components/main/pages/user_edit/RefreshPassword.vue") },
+    { path: RoutePathConstants.PAGE_RESET_PASSWORD, name: "ResetPassword", component: () => import("./components/main/pages/user_edit/ResetPassword.vue") },
+    { path: RoutePathConstants.PAGE_USER_EDIT, name: "EditUser", component: () => import("./components/main/pages/user_edit/EditUser.vue") },
+    { path: RoutePathConstants.PAGE_USER_WITHDRAW, name: "WithdrawUser", component: () => import("./components/main/pages/user_edit/WithdrawUser.vue") },
+    { path: RoutePathConstants.PAGE_USER_CHANGE, name: "ChangeUser", component: () => import("./components/main/pages/user_edit/ChangeUser.vue") },
 
 ];
 

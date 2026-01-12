@@ -7,7 +7,6 @@ import org.springframework.data.jpa.repository.Query;
 
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.UserRoleEntity;
 
-
 /**
  * user_role接続用Repository
  */
@@ -21,6 +20,14 @@ public interface UserRoleRepository extends JpaRepository<UserRoleEntity, Intege
      */
     @Query(value = "SELECT role FROM user_role WHERE is_latest = 1 AND email = ?1", nativeQuery = true)
     List<String> findLatestRoleByMail(String email);
+
+    /**
+     * emailとis_latestフラグでUserRoleEntityのリストを検索する
+     * 
+     * @param email メールアドレス
+     * @return ユーザ権限Entityのリスト
+     */
+    List<UserRoleEntity> findByEmailAndIsLatestTrue(String email);
 
     /**
      * 最新フラグかつemailで検索する

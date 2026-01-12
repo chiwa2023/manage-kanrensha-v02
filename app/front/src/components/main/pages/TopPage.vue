@@ -1,13 +1,14 @@
 ﻿<script setup lang="ts">
 import { MessageConstants, MessageView } from 'seijishikin-jp-normalize_common-tool';
 import RoutePathConstants from '../../../routePathConstants';
-import { ref, type Ref } from 'vue';
+import { onMounted, ref, type Ref } from 'vue';
 import { LoginUserCapsuleDto, type LoginUserCapsuleDtoInterface } from '../dto/login/loginUserCapsuleDto';
 import { useApi } from '../utils/useApi';
 import type { LoginUserResultDtoInterface } from '../dto/login/loginUserResultDto';
 import router from '../../../router';
-import LoginConstants from '../dto/user/loginConstants';
-import RoleConstants from '../dto/login/RoleConstants';
+import { useUserInfoStore } from '../stores/storeUserInfo';
+import { rememberMeStore } from '../../main/stores/remeberMe';
+import UserRoleConstants from '../dto/user/userRoleConstants';
 
 // back側アクセス
 const urlBack: string = RoutePathConstants.DOMAIN + RoutePathConstants.BASE_PATH;
@@ -23,7 +24,19 @@ const infoLevel: Ref<number> = ref(MessageConstants.LEVEL_NONE);
 const messageType: Ref<number> = ref(MessageConstants.VIEW_NONE);
 const title: Ref<string> = ref(BLANK);
 const message: Ref<string> = ref(BLANK);
+// pinia
+const userInfo = useUserInfoStore();
+const rememberMe = rememberMeStore();
 
+onMounted(() => {
+    // PiniaローカルストレージのrememberMeに値が残っていれば復元
+    if (rememberMe.hasData()) {
+        isPasswordVisible.value = false;
+        user.value.userId = rememberMe.getMail();
+        user.value.password = rememberMe.getPassowrd();
+        user.value.rememberMe = true;
+    }
+});
 
 function recieveSubmit(button: string) {
     console.log(button); // 警告除け
@@ -39,7 +52,8 @@ const user: Ref<LoginUserCapsuleDtoInterface> = ref(new LoginUserCapsuleDto());
 const { loading: loginLoading, error: loginError, fetchData: fetchLogin } = useApi<LoginUserResultDtoInterface>();
 
 async function onLogin() {
-    // 入力チェック
+
+    // ユーザIdとパスワードが未入力の場合は
     if (user.value.userId === BLANK || user.value.password === BLANK) {
         infoLevel.value = MessageConstants.LEVEL_ERROR;
         messageType.value = MessageConstants.VIEW_OK;
@@ -58,27 +72,38 @@ async function onLogin() {
         body: JSON.stringify(user.value)
     };
 
-    const resultDto:LoginUserResultDtoInterface | null = await fetchLogin(url, config);
+    const resultDto: LoginUserResultDtoInterface | null = await fetchLogin(url, config);
 
     if (resultDto !== null) {
-        sessionStorage.setItem(LoginConstants.SESSION_KEY_USER, JSON.stringify(resultDto.userDto));
+        // 取得できたら保存
+        userInfo.jwtDto = resultDto.jwtTokenDto;
+        userInfo.userDto = resultDto.userDto;
+
+        // ログインに成功かつrememberMeを使用したいときだけPiniaに保存
+        if (user.value.rememberMe) {
+            rememberMe.setMail(user.value.userId);
+            rememberMe.setPassword(user.value.password);
+        }else{
+            // チェックが外されたら初期化
+            rememberMe.initialize();            
+        }
 
         switch (resultDto.userDto.listRoles[0]) {
-            case RoleConstants.ROLE + RoleConstants.ADMIN:
+            case UserRoleConstants.ROLE_ADMIN:
                 // 運営者
                 router.push(RoutePathConstants.PAGE_MENU_ADMIN);
                 break;
-            case RoleConstants.ROLE + RoleConstants.MANAGER:
+            case UserRoleConstants.ROLE_MANAGER:
                 // 運営者
                 router.push(RoutePathConstants.PAGE_MENU_MANAGER);
                 break;
-            case RoleConstants.ROLE + RoleConstants.PARTNER_API:
+            case UserRoleConstants.ROLE_PARTNER_API:
                 // APIユーザ
                 router.push(RoutePathConstants.PAGE_MENU_PARTNER_API);
                 break;
-            case RoleConstants.ROLE + RoleConstants.KANRENSHA_PERSON:
-            case RoleConstants.ROLE + RoleConstants.KANRENSHA_KIGYOU_DT:
-            case RoleConstants.ROLE + RoleConstants.KANRENSHA_SEIJIDANTAI:
+            case UserRoleConstants.ROLE_KANRENSHA_PERSON:
+            case UserRoleConstants.ROLE_KANRENSHA_KIGYOU_DT:
+            case UserRoleConstants.ROLE_KANRENSHA_SEIJIDANTAI:
                 // 関連者
                 router.push(RoutePathConstants.PAGE_MENU_KANRENSHA);
                 break;
@@ -89,6 +114,7 @@ async function onLogin() {
                 if (loginError.value !== null) {
                     message.value = loginError.value;
                 }
+                // router.push(RoutePathConstants.PAGE_MENU_MANAGER);
                 break;
         }
     } else {
@@ -145,7 +171,7 @@ function changeVisiblePassword() {
 
                 <div class="links">
                     <RouterLink :to="RoutePathConstants.PAGE_ADD_ACCOUNT">新規登録ですか?</RouterLink>
-                    <RouterLink to="/reset_password/propose">※パスワードを忘れたので再発行</RouterLink>
+                    <RouterLink :to="RoutePathConstants.PAGE_RESET_PASSWORD">※パスワードを忘れたので再発行</RouterLink>
                 </div>
             </div>
         </div>

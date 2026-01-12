@@ -111,9 +111,9 @@ import {  InputPersonNameDto, ViewInputPersonName, type InputPersonNameDtoInterf
 </script>
 <template>
     <div class="container">
-        <!-- SEページ -->
-        <MockAdminInfo></MockAdminInfo>
-
+        <!-- SEページ
+        <MockAdminInfo :user-dto="user"></MockAdminInfo>
+ -->
         <h1>利用者検索</h1> <br>
 
         <h3 class="accent-h3">検索条件</h3>

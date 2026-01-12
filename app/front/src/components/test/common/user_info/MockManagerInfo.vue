@@ -1,5 +1,5 @@
 ﻿<script setup lang="ts">
-import { ref, type Ref } from 'vue';
+import { onBeforeMount, onMounted, ref, type Ref } from 'vue';
 import type { LeastUserDtoInterface } from '../../../main/dto/user/leastUserDto';
 import { MessageConstants, MessageView } from 'seijishikin-jp-normalize_common-tool';
 import router from '../../../../router';
@@ -27,13 +27,15 @@ const props = defineProps<{ userDto: LeastUserDtoInterface }>();
 
 const listMenuRoleOptions: Ref<SelectOptionStringDtoInterface[]> = ref(createListRoleOptions(props.userDto.listRoles));
 
-// ログインと権限チェック
-if (INIT_NUMBER === props.userDto.userPersonId || !props.userDto.listRoles.includes(UserRoleConstants.ROLE_MANAGER)) {
-    infoLevel.value = MessageConstants.LEVEL_ERROR;
-    messageType.value = MessageConstants.VIEW_OK;
-    title.value = "ログイン状態またはAPIユーザ権限が確認できませんでした";
-    message.value = "ログアウト処理をします。再度ログイン処理をするかシステム担当者にお問い合わせください";
-}
+onBeforeMount(() => {
+    // ログインと権限チェック
+    if (INIT_NUMBER === props.userDto.userPersonId || !props.userDto.listRoles.includes(UserRoleConstants.ROLE_MANAGER)) {
+        infoLevel.value = MessageConstants.LEVEL_ERROR;
+        messageType.value = MessageConstants.VIEW_OK;
+        title.value = "ログイン状態またはAPIユーザ権限が確認できませんでした";
+        message.value = "ログアウト処理をします。再度ログイン処理をするかシステム担当者にお問い合わせください";
+    }
+});
 
 const viewMenuRole: Ref<string> = ref(BLANK);
 const isVewAllMenu: Ref<boolean> = ref(false);

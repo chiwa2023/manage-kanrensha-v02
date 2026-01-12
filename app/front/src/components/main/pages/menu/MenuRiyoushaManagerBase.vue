@@ -24,9 +24,12 @@ const userDto: Ref<LeastUserDtoInterface> = ref(getLoginUser());
 
     <!-- 運営者 -->
     <MockManagerInfo :user-dto="userDto"></MockManagerInfo>
-    
+
     <h1>運営者メニュー</h1><br>
     <MenuRiyoushaManagerContent></MenuRiyoushaManagerContent>
+
+    {{ userDto.userPersonId }}<br>
+    {{ userDto.userPersonName }}<br>
 
 </template>
 <style scoped></style>

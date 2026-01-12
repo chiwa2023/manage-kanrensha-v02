@@ -1,0 +1,49 @@
+package net.seijishikin.jp.normalize.manage.kanrensha.service.security;
+
+import static org.junit.jupiter.api.Assertions.assertFalse;
+
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
+import org.springframework.test.context.jdbc.Sql;
+import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
+import org.springframework.transaction.annotation.Transactional;
+
+import net.seijishikin.jp.normalize.common_tool.dto.FrameworkMessageAndResultDto;
+import net.seijishikin.jp.normalize.manage.kanrensha.dto.sequrity.ResetPassswordCapsuleDto;
+
+/**
+ * ResetPasswordMailInputService単体テスト
+ */
+@SpringJUnitConfig
+@AutoConfigureMockMvc
+@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
+@DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
+@Transactional
+@Sql("ResetPasswordMailInputServiceTest.sql")
+class ResetPasswordMailInputServiceTest {
+
+    /** テスト対象 */
+    @Autowired
+    private ResetPasswordMailInputService resetPasswordMailInputService;
+
+    @Test
+    @Tag("ExternalService")
+    void test() throws Exception {
+
+        ResetPassswordCapsuleDto capsuleDto = new ResetPassswordCapsuleDto();
+        capsuleDto.setEmail("ccc@seijishikin.net"); // すでにテーブル存在するメアドでも通常送信できる
+        
+        FrameworkMessageAndResultDto resultDto = resetPasswordMailInputService.practice(capsuleDto);
+        assertFalse(resultDto.getIsFailure());
+        
+        // その他についてはメール送信Logicテスト
+        //　メール内容については目視で確認
+    }
+
+}

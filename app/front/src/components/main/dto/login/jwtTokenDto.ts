@@ -4,7 +4,7 @@ interface JwtTokenDtoInterface {
     accessToken: string;
 
     /** リフレッシュトークン */
-    refleshToken: string;
+    refreshToken: string;
 
     /** 有効期限 */
     expiresAt: Date;
@@ -18,7 +18,7 @@ class JwtTokenDto implements JwtTokenDtoInterface {
     accessToken: string;
 
     /** リフレッシュトークン */
-    refleshToken: string;
+    refreshToken: string;
 
     /** 有効期限 */
     expiresAt: Date;
@@ -27,7 +27,7 @@ class JwtTokenDto implements JwtTokenDtoInterface {
         const INIT_STRING: string = "";
 
         this.accessToken = INIT_STRING;
-        this.refleshToken = INIT_STRING;
+        this.refreshToken = INIT_STRING;
         this.expiresAt = new Date(1948, 7, 29);
     }
 }

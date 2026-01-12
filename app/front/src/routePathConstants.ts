@@ -31,15 +31,25 @@ export default class RoutePathConstants {
     /** ユーザの種類変更 */
     static readonly PAGE_SWITCH_USER_KBN: string = this.BASE_PATH + "/switch-user-kbn";
 
-    /** 関連者編集 */
+    /** 関連者追加 */
     static readonly PAGE_INSERT_KANRENSHA: string = this.BASE_PATH + "/insert-kanrensha";
-    /** APIユーザ編集 */
+    /** APIユーザ追加 */
     static readonly PAGE_INSERT_PARTNER_API: string = this.BASE_PATH + "/insert-partner";
-    /** 運営者編集 */
-    static readonly PAGE_INSERT_MANAGER: string = this.BASE_PATH + "/isert-manager";
+    /** 運営者追加 */
+    static readonly PAGE_INSERT_MANAGER: string = this.BASE_PATH + "/insert-manager";
 
 
+    /** ユーザパスワード更新 */
+    static readonly PAGE_REFRESH_PASSWORD: string = this.BASE_PATH + "/user/refresh-password";
+    /** ユーザパスワードリセット */
+    static readonly PAGE_RESET_PASSWORD: string = this.BASE_PATH + "/user/reset-password";
+    /** ユーザ自身を編集 */
+    static readonly PAGE_USER_EDIT: string = this.BASE_PATH + "/user/edit";
+    /** ユーザ退会 */
+    static readonly PAGE_USER_WITHDRAW: string = this.BASE_PATH + "/user/withdraw";
 
+    /** 他者ユーザを編集 */
+    static readonly PAGE_USER_CHANGE: string = this.BASE_PATH + "/user/change";
 
 
     /** 利用者検索 */
@@ -140,10 +150,6 @@ export default class RoutePathConstants {
     // static readonly PAGE_CHANGE_ROLE: string = this.BASE_PATH + "/user/change-role";
     // /** 運営者を管理者に格上げ */
     // static readonly PAGE_PROMOTE_ROLE: string = this.BASE_PATH + "/user/promote-role";
-    // /** ユーザパスワード更新 */
-    // static readonly PAGE_REFLESH_PASSWORD: string = this.BASE_PATH + "/user/reflesh-password";
-    // /** ユーザ退会 */
-    // static readonly PAGE_USER_WITHDRAW: string = this.BASE_PATH + "/user/withdraw";
 
     // /** APIユーザ編集 */
     // static readonly PAGE_EDIT_COMRADE: string = this.BASE_PATH + "/edit-comrade";

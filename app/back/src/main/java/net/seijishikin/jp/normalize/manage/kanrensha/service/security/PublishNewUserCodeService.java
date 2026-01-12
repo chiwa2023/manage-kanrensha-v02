@@ -28,14 +28,14 @@ import net.seijishikin.jp.normalize.manage.kanrensha.repository.UserNewRepositor
 public class PublishNewUserCodeService {
 
     // TODO 正しいアドレスに修正する
-    /** 新規登録中ユーザRepository */
+    /** 送信メールアドレス */
     private static final String sendEmail = "test@example.com";
 
     /** 新規登録中ユーザRepository */
     @Autowired
     private UserNewRepository userNewRepository;
 
-    /** mail送信Logci */
+    /** mail送信Logic */
     @Autowired
     private SendMailUserLogic sendMailUserLogic;
 

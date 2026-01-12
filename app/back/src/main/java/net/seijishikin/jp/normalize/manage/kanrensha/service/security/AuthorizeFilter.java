@@ -91,7 +91,7 @@ public class AuthorizeFilter extends OncePerRequestFilter {
 
         // 最初の1回だけリスト生成
         if (Objects.isNull(list)) {
-            String[] publicUrls = { PathRouteConstants.ROOT + "/login", PathRouteConstants.ROOT + "/reflesh-token",
+            String[] publicUrls = { PathRouteConstants.ROOT + "/login", PathRouteConstants.ROOT + "/refresh-token",
                     PathRouteConstants.ROOT + "/add-user/**" };
             list = new ArrayList<>();
             for (String path : publicUrls) {

@@ -132,25 +132,25 @@ public class LoginStatusEntity // NOPMD DataClass
     }
 
     /** 無効状態理由 */
-    @Column(name = "diabled_reason")
-    private String diabledReason = INIT_STRING;
+    @Column(name = "disabled_reason")
+    private String disabledReason = INIT_STRING;
 
     /**
      * 無効状態理由を取得する
      *
      * @return 無効状態理由
      */
-    public String getDiabledReason() {
-        return diabledReason;
+    public String getDisabledReason() {
+        return disabledReason;
     }
 
     /**
      * 無効状態理由を設定する
      *
-     * @param diabledReason 無効状態理由
+     * @param disabledReason 無効状態理由
      */
-    public void setDiabledReason(final String diabledReason) {
-        this.diabledReason = diabledReason;
+    public void setDisabledReason(final String disabledReason) {
+        this.disabledReason = disabledReason;
     }
 
     /** ログイン日時 */

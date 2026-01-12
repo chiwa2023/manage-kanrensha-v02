@@ -14,7 +14,7 @@ public class JwtConfig { // NOPMD DataClass
     private long expiration;
 
     /** リフレッシュトークンの有効期限（ms） */
-    @Value("${jwt.expiration.reflesh}")
+    @Value("${jwt.expiration.refresh}")
     private long refreshExpiration;
 
     /**

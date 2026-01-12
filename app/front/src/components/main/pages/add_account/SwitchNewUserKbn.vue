@@ -7,7 +7,7 @@ import { useApi } from '../../utils/useApi';
 import type { LoginUserResultDtoInterface } from '../../dto/login/loginUserResultDto';
 import { MessageConstants, MessageView } from 'seijishikin-jp-normalize_common-tool';
 import router from '../../../../router';
-import RoleConstants from '../../dto/login/RoleConstants';
+import UserRoleConstants from '../../dto/user/userRoleConstants';
 
 // back側アクセス
 const urlBack: string = RoutePathConstants.DOMAIN + RoutePathConstants.BASE_PATH;
@@ -58,17 +58,17 @@ async function onRegistUser() {
         sessionStorage.setItem("jwtToken", JSON.stringify(resultDto.jwtTokenDto));
 
         switch (newComer.value.role) {
-            case RoleConstants.MANAGER:
+            case UserRoleConstants.ROLE_MANAGER:
                 // 運営者
                 router.push(RoutePathConstants.PAGE_INSERT_MANAGER);
                 break;
-            case RoleConstants.PARTNER_API:
+            case UserRoleConstants.ROLE_PARTNER_API:
                 // APIユーザ
                 router.push(RoutePathConstants.PAGE_INSERT_PARTNER_API);
                 break;
-            case RoleConstants.KANRENSHA_PERSON:
-            case RoleConstants.KANRENSHA_KIGYOU_DT:
-            case RoleConstants.KANRENSHA_SEIJIDANTAI:
+            case UserRoleConstants.ROLE_KANRENSHA_PERSON:
+            case UserRoleConstants.ROLE_KANRENSHA_KIGYOU_DT:
+            case UserRoleConstants.ROLE_KANRENSHA_SEIJIDANTAI:
                 // 関連者
                 router.push(RoutePathConstants.PAGE_INSERT_KANRENSHA);
                 break;
@@ -166,26 +166,29 @@ function recieveSubmit(button: string) {
         <div class="right-area">
             <div class="form-group-vertical">
                 <div>
-                    <input type="radio" id="role" v-model="newComer.role" :value=RoleConstants.MANAGER>このサイトで<span
-                        class="explain">大量・一括関連者データ編集</span>を行いたい<span class="kbn">運営者</span>
+                    <input type="radio" id="role" v-model="newComer.role"
+                        :value=UserRoleConstants.MANAGER>このサイトで<span class="explain">大量・一括関連者データ編集</span>を行いたい<span
+                        class="kbn">運営者</span>
                 </div>
                 <div>
                     <input type="radio" id="role" v-model="newComer.role"
-                        :value=RoleConstants.PARTNER_API>自作ソフトウェアに<span class="explain">このサイトの関連者情報を取り込みたい</span><span
-                        class="kbn">APIユーザ</span>
+                        :value=UserRoleConstants.PARTNER_API>自作ソフトウェアに<span
+                        class="explain">このサイトの関連者情報を取り込みたい</span><span class="kbn">APIユーザ</span>
                 </div>
                 <div>
-                    <input type="radio" id="role" v-model="newComer.role" :value=RoleConstants.KANRENSHA_PERSON><span
+                    <input type="radio" id="role" v-model="newComer.role"
+                        :value=UserRoleConstants.KANRENSHA_PERSON><span
                         class="explain">政治団体と資金・物品の取引</span>をする<span class="kbn">関連者個人</span>
                 </div>
                 <div>
-                    <input type="radio" id="role" v-model="newComer.role" :value=RoleConstants.KANRENSHA_KIGYOU_DT><span
+                    <input type="radio" id="role" v-model="newComer.role"
+                        :value=UserRoleConstants.KANRENSHA_KIGYOU_DT><span
                         class="explain">政治団体と資金・物品の取引</span>をする<span class="kbn">関連者企業・団体</span>
                 </div>
                 <div>
                     <input type="radio" id="role" v-model="newComer.role"
-                        :value=RoleConstants.KANRENSHA_SEIJIDANTAI><span class="explain">政治団体と資金・物品の取引</span>をする<span
-                        class="kbn">関連者政治団体</span>
+                        :value=UserRoleConstants.KANRENSHA_SEIJIDANTAI><span
+                        class="explain">政治団体と資金・物品の取引</span>をする<span class="kbn">関連者政治団体</span>
                 </div>
             </div>
         </div>
@@ -233,9 +236,7 @@ function recieveSubmit(button: string) {
         <button class="footer-button" @click="onCancel">前に戻る</button>
         <button class="footer-button left-space" @click="onRegistUser" :disabled="addUserLoading">送信</button>
     </div>
-
-
-
+    
     <!-- メッセージ表示 -->
     <div class="overMessage" v-if="messageType !== MessageConstants.VIEW_NONE">
         <MessageView :info-level="infoLevel" :message-type="messageType" :title="title" :message="message"

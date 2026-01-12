@@ -30,4 +30,13 @@ public interface UserPersonRepository extends JpaRepository<UserPersonEntity, In
      */
     @Query(value = "SELECT * FROM user_person WHERE is_latest = 1 AND email = ?1", nativeQuery = true)
     Optional<UserPersonEntity> findLatestByMail(String email);
+
+    /**
+     * emailが同一で最新データを取得する
+     * 
+     * @param email email
+     * @return 検索結果
+     */
+    Optional<UserPersonEntity> findByEmailAndIsLatestTrue(String email);
+
 }

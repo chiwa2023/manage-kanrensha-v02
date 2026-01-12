@@ -6,21 +6,30 @@
 
 1. vite-vue導入 `npm create vite@latest --save-dev  . -- --template vue-ts`
 
-2. vue-router導入 `npm install vue-router --save-dev`
+2. pinia導入 `npm install pinia`
 
-3. eslint導入 `npm install eslint --save-dev`
+3. pinia永続化プラグイン導入 `npm i pinia-plugin-persistedstate`
 
-4. vitest導入 `npm i -D vitest`
+4. 暗号化crypto-js導入 `npm i --save-dev @types/crypto-js`
 
-5. @vue/test-utils導入 `npm install --save-dev @vue/test-utils`
+5. vitest.config.jsの追加
 
-6. jsdom導入 `npm install --save-dev jsdom`
+6. eslint導入 `npm install eslint --save-dev`
 
-7. vitest.config.jsの追加
+7. vitest導入 `npm i -D vitest`
 
-8. このgithubアカウント共通機能を導入する
+8. @vue/test-utils導入 `npm install --save-dev @vue/test-utils`
 
-※ 5,6はコンポーネントテスト用。コンポーネントをテストしない場合は不要。
+9. jsdom導入 `npm install --save-dev jsdom`
+
+10. vitest.config.jsの追加
+
+11. このgithubアカウント共通機能を導入する
+
+- npm install seijishikin-jp-normalize_common-tool-x.y.z.tgz
+- npm install seijishikin-jp-normalize-x.y.z.tgz
+
+※ 9,10はコンポーネントテスト用。コンポーネントをテストしない場合は不要。
 
 ### 2. back側
 
@@ -66,6 +75,11 @@ b.front側
 ## 4.起動
 
 ### 1. front
+
+フロントエンドアプリケーションを初めて起動する前に、暗号化キーを設定する必要があります。
+
+1.  `app/front` ディレクトリにある `.env.example` ファイルをコピーして、同じディレクトリに `.env` という名前のファイルを作成します。
+2.  作成した `.env` ファイルを開き、`VITE_CRYPTO_SECRET_KEY` の値をあなただけのユニークでランダムな文字列に変更してください。
 
 viteを起動 `npm run dev`
 

@@ -20,7 +20,7 @@ import RoutePathConstants from '../../../../routePathConstants';
     <a href="#">メニューサンプル関連者</a><br>
 
     <!--
-    <RouterLink :to=RoutePathConstants.PAGE_REFLESH_PASSWORD>パスワード更新</RouterLink><br>
+    <RouterLink :to=RoutePathConstants.PAGE_REFRESH_PASSWORD>パスワード更新</RouterLink><br>
     <RouterLink :to=RoutePathConstants.PAGE_USER_EDIT>ユーザ編集</RouterLink><br>
     <RouterLink :to=RoutePathConstants.PAGE_CHANGE_ROLE>権限変更</RouterLink><br>
     <RouterLink :to=RoutePathConstants.PAGE_USER_WITHDRAW>退会</RouterLink><br>

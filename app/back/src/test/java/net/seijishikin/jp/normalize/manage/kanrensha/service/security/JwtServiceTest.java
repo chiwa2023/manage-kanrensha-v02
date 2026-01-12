@@ -59,10 +59,10 @@ class JwtServiceTest {
         assertTrue(jwtAccess.getExpiresAt().isAfter(Instant.now()));
 
         // リフレッシュトークンはロールを含まない
-        Jwt jwtReflesh = jwtDecoder.decode(tokenDto.getRefreshToken());
-        assertNull(jwtReflesh.getClaimAsStringList(roleKey));
-        assertEquals(user, jwtReflesh.getSubject());
-        assertTrue(jwtReflesh.getIssuedAt().isBefore(Instant.now()));
+        Jwt jwtRefresh = jwtDecoder.decode(tokenDto.getRefreshToken());
+        assertNull(jwtRefresh.getClaimAsStringList(roleKey));
+        assertEquals(user, jwtRefresh.getSubject());
+        assertTrue(jwtRefresh.getIssuedAt().isBefore(Instant.now()));
     }
 
 }

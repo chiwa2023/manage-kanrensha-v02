@@ -25,8 +25,8 @@
     "description": "A description for 'jwt.expiration.access'"
   },
   {
-    "name": "jwt.expiration.reflesh",
+    "name": "jwt.expiration.refresh",
     "type": "java.lang.String",
-    "description": "A description for 'jwt.expiration.reflesh'"
+    "description": "A description for 'jwt.expiration.refresh'"
   }
 ]}

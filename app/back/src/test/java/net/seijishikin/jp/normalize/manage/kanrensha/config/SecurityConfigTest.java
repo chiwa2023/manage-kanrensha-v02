@@ -32,8 +32,7 @@ class SecurityConfigTest {
     /** テスト対象 */
     @Autowired
     private SecurityConfig securityConfig;
-    
-    
+
     /** テスト呼び出しタグ */
     private static final String TAG = "TableTruncate";
 

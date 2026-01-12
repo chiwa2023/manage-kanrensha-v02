@@ -8,7 +8,7 @@ import net.seijishikin.jp.normalize.common_tool.dto.FrameworkCapsuleDto;
 /**
  * パスワード更新Dto
  */
-public class RefleshPasswordCapsuleDto extends FrameworkCapsuleDto // NOPMD DataClass
+public class RefreshPasswordCapsuleDto extends FrameworkCapsuleDto // NOPMD DataClass
         implements Serializable, DtoEntityInitialValueInterface {
 
     /** Serialize id */
@@ -19,6 +19,9 @@ public class RefleshPasswordCapsuleDto extends FrameworkCapsuleDto // NOPMD Data
 
     /** 旧パスワード */
     private String oldPassword = INIT_STRING;
+
+    /** メールアドレス(backだけで使用) */
+    private String email = INIT_STRING;
 
     /**
      * 新パスワードを取得する
@@ -54,6 +57,24 @@ public class RefleshPasswordCapsuleDto extends FrameworkCapsuleDto // NOPMD Data
      */
     public void setOldPassword(final String oldPassword) {
         this.oldPassword = oldPassword;
+    }
+
+    /**
+     * メールアドレスを取得する
+     * 
+     * @return メールアドレス
+     */
+    public String getEmail() {
+        return email;
+    }
+
+    /**
+     * メールアドレスを設定する
+     * 
+     * @param email メールアドレス
+     */
+    public void setEmail(final String email) {
+        this.email = email;
     }
 
 }

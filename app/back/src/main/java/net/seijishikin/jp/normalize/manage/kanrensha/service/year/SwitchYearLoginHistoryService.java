@@ -24,7 +24,7 @@ public class SwitchYearLoginHistoryService {
 
     /** 登録対応年(2026) */
     private static final int YEAR_2026 = 2026;
-    /** ログイン履歴複写Logic(2025) */
+    /** ログイン履歴複写Logic(2026) */
     @Autowired
     private SaveLoginStatusHistoryY2026Logic copyLoginStatusHistoryY2026Logic;
 

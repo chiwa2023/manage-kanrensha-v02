@@ -1,0 +1,63 @@
+package net.seijishikin.jp.normalize.manage.kanrensha.service.user;
+
+import static org.junit.jupiter.api.Assertions.assertFalse;
+
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
+import org.springframework.test.context.jdbc.Sql;
+import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
+
+import net.seijishikin.jp.normalize.common_tool.dto.FrameworkMessageAndResultDto;
+import net.seijishikin.jp.normalize.manage.kanrensha.dto.user.DeleteUserCapsuleDto;
+
+/**
+ * DeleteUserService単体テスト
+ */
+@SpringJUnitConfig
+@AutoConfigureMockMvc
+@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
+@DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
+//@Transactional
+@Sql("RefreshPasswordServiceTest.sql")
+class DeleteUserServiceTest {
+    // CHECKSTYLE:OFF MagicNumber
+
+    /** テスト対象 */
+    @Autowired
+    private DeleteUserService deleteUserService;
+
+    @Test
+    @Tag("TableTruncate")
+    void test() throws Exception {
+
+        // 本人退会
+        String mail = "aaa@politician.balanse.report.net";
+        String password = "qwerty1234";
+
+        UserDetails testUser = User.withUsername(mail).password(password).roles("manager").build();
+
+        // 力ずくでログイン状態を作成
+        Authentication auth = new UsernamePasswordAuthenticationToken(mail, password, testUser.getAuthorities());
+        SecurityContextHolder.getContext().setAuthentication(auth);
+
+        DeleteUserCapsuleDto capsuleDto = new DeleteUserCapsuleDto();
+        capsuleDto.getUserDto().setUserPersonId(81);
+        capsuleDto.getUserDto().setUserPersonCode(80);
+        capsuleDto.getUserDto().setUserPersonName("aaa");
+
+        FrameworkMessageAndResultDto resultDto = deleteUserService.practice(capsuleDto);
+        assertFalse(resultDto.getIsFailure());
+    }
+
+}

@@ -1,17 +1,11 @@
-import LoginConstants from "../dto/user/loginConstants";
+import { JwtTokenDto } from "../dto/login/jwtTokenDto";
+import { LeastUserDto } from "../dto/user/leastUserDto";
+import { useUserInfoStore } from '../stores/storeUserInfo';
 
 function logout() {
-    // ユーザ情報削除
-    const userText: string | null = sessionStorage.getItem(LoginConstants.SESSION_KEY_USER);
-    if (userText !== null) {
-        sessionStorage.removeItem(LoginConstants.SESSION_KEY_USER);
-    }
-
-    // トークン削除
-    const tokenText: string | null = sessionStorage.getItem(LoginConstants.SESSION_KEY_TOKEN);
-    if (tokenText !== null) {
-        sessionStorage.removeItem(LoginConstants.SESSION_KEY_TOKEN);
-    }
+        const userInfo = useUserInfoStore();
+        userInfo.jwtDto = new JwtTokenDto();
+        userInfo.userDto = new LeastUserDto();
 }
 
 export { logout }

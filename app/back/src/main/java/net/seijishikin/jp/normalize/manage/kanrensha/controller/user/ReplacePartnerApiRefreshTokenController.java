@@ -22,7 +22,7 @@ import net.seijishikin.jp.normalize.manage.kanrensha.dto.sequrity.LoginUserCapsu
  */
 @RestController
 @RequestMapping(PathRouteConstants.ROOT)
-public class ReplaceComradeRefleshTokenController {
+public class ReplacePartnerApiRefreshTokenController {
     // CHECKSTYLE:OFF
 
 //    /** JwtService */
