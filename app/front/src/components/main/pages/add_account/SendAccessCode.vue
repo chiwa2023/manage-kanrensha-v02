@@ -1,5 +1,5 @@
 ﻿<script setup lang="ts">
-import { ref, type Ref, onMounted } from 'vue';
+import { ref, type Ref, onBeforeMount } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { NewComerDto, type NewComerDtoInterface } from '../../dto/add_account/newComerDto';
 import RoutePathConstants from '../../../../routePathConstants';
@@ -29,7 +29,7 @@ const message: Ref<string> = ref(BLANK);
 const {  loading: verifyLoading, error: verifyError, fetchData: fetchVerify } = useApi<NewComerDtoInterface>();
 const {  loading: publishLoading, error: publishError, fetchData: fetchPublish } = useApi<NewComerDtoInterface>();
 
-onMounted(async () => {
+onBeforeMount(async () => {
     const token = route.query.token;
     if (token && typeof token === 'string') {
         // 【トークン検証モード】

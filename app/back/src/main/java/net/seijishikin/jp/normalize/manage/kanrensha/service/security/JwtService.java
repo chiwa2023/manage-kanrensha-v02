@@ -61,7 +61,7 @@ public class JwtService {
      * ユーザ名と役割からトークンを作成する
      *
      * @param username ユーザ名
-     * @param roles 役割
+     * @param roles    役割
      * @return トークン
      */
     public JwtTokenDto generateToken(final String username, final Iterable<String> roles) {
@@ -87,7 +87,16 @@ public class JwtService {
         return new JwtTokenDto(accessToken, refreshToken, Date.from(accessTokenExpiry));
     }
 
-    private String createToken(final String subject, final Instant issuedAt, final Instant expiresAt,
+    /**
+     * トークンを生成する
+     * 
+     * @param subject   ユーザ
+     * @param issuedAt  発行日時
+     * @param expiresAt 有効期間
+     * @param claims    権限
+     * @return トークン
+     */
+    public String createToken(final String subject, final Instant issuedAt, final Instant expiresAt,
             final Map<String, Object> claims) {
         JwtClaimsSet.Builder claimsBuilder = JwtClaimsSet.builder().subject(subject).issuedAt(issuedAt)
                 .expiresAt(expiresAt);

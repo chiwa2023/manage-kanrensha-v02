@@ -1,5 +1,9 @@
 package net.seijishikin.jp.normalize.manage.kanrensha.controller.user;
 
+import java.time.LocalDate;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -7,16 +11,26 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import net.seijishikin.jp.normalize.common_tool.dto.FrameworkCapsuleDto;
-import net.seijishikin.jp.normalize.common_tool.dto.FrameworkMessageAndResultDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.controller.PathRouteConstants;
+import net.seijishikin.jp.normalize.manage.kanrensha.dto.user.SearchUserCapsuleDto;
+import net.seijishikin.jp.normalize.manage.kanrensha.entity.UserPersonEntity;
+import net.seijishikin.jp.normalize.manage.kanrensha.service.user.SearchUserServcie;
+import net.seijishikin.jp.normalize.manage.kanrensha.service.util.SaveStackTraceService;
 
 /**
  * ユーザ検索Controller
  */
 @RestController
-@RequestMapping(PathRouteConstants.ROOT + "/user")
+@RequestMapping(PathRouteConstants.ROOT + "/edit-user")
 public class SearchUserController {
+
+    /** ユーザ検索Service */
+    @Autowired
+    private SearchUserServcie searchUserServcie;
+
+    /** StackTrace保存Service */
+    @Autowired
+    private SaveStackTraceService saveStackTraceService;
 
     /**
      * 処理を行う
@@ -25,9 +39,15 @@ public class SearchUserController {
      * @return 処理結果Dto
      */
     @PostMapping("/search")
-    public ResponseEntity<FrameworkMessageAndResultDto> practice(@RequestBody final FrameworkCapsuleDto capsuleDto) {
+    public ResponseEntity<List<UserPersonEntity>> practice(@RequestBody final SearchUserCapsuleDto capsuleDto) {
 
-        return ResponseEntity.status(HttpStatus.OK).body(new FrameworkMessageAndResultDto());
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(searchUserServcie.practice(capsuleDto));
+
+        } catch (Exception exception) { // NOPMD
+            saveStackTraceService.practice(exception, LocalDate.now().getYear(), 0);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
 
     }
 

@@ -35,10 +35,9 @@ function onCancel() {
         <RouterLink :to=RoutePathConstants.PAGE_REFRESH_PASSWORD>パスワード更新</RouterLink><br>
         <br>
         <RouterLink :to=RoutePathConstants.PAGE_LOGOUT>ログアウト</RouterLink><br>
-        <br>
-        <hr>
-        <RouterLink :to=RoutePathConstants.PAGE_USER_WITHDRAW>退会</RouterLink><br>
     </p>
+    <hr>
+    <RouterLink :to=RoutePathConstants.PAGE_USER_WITHDRAW>退会</RouterLink><br>
     <div class="footer_sub">
         <button @click="onCancel" class="footer-button">閉じる</button>
     </div>

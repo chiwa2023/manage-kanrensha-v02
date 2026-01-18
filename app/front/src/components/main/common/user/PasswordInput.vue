@@ -1,5 +1,5 @@
 ﻿<script setup lang="ts">
-import { onMounted, ref, type Ref } from 'vue';
+import { onBeforeMount,  ref, type Ref } from 'vue';
 const emits = defineEmits(["sendPassword"]);
 
 // props,emits
@@ -19,7 +19,7 @@ const passwordData: Ref<string> = ref("");
 //const title: Ref<string> = ref(BLANK);
 //const message: Ref<string> = ref(BLANK);
 
-onMounted(() => {
+onBeforeMount(() => {
     passwordData.value = props.password;
 });
 

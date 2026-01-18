@@ -1,5 +1,7 @@
 package net.seijishikin.jp.normalize.manage.kanrensha.controller.user;
 
+import java.time.LocalDate;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +14,7 @@ import net.seijishikin.jp.normalize.manage.kanrensha.controller.PathRouteConstan
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.user.GetUserDtoCapsuleDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.user.GetUserDtoResultDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.user.GetUserLeastByIdService;
+import net.seijishikin.jp.normalize.manage.kanrensha.service.util.SaveStackTraceService;
 
 /**
  * ユーザ編集対象取得Controller
@@ -23,6 +26,10 @@ public class GetUserLeastByIdController {
     /** ユーザ編集対象取得Service */
     @Autowired
     private GetUserLeastByIdService getUserLeastByIdService;
+
+    /** StackTrace保存Service */
+    @Autowired
+    private SaveStackTraceService saveStackTraceService;
 
     /**
      * 処理を行う
@@ -41,7 +48,9 @@ public class GetUserLeastByIdController {
             } else {
                 return ResponseEntity.status(HttpStatus.OK).body(resultDto);
             }
-        } catch (Exception exception) {
+        } catch (Exception exception) { // NOPMD
+            saveStackTraceService.practice(exception, LocalDate.now().getYear(), 0);
+
             GetUserDtoResultDto resultDto = new GetUserDtoResultDto();
             resultDto.setIsFailure(true);
             resultDto.setMessage("システム例外が発生しました");

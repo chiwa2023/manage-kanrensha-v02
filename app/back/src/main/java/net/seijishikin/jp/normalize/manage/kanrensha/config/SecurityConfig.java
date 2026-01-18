@@ -83,7 +83,8 @@ public class SecurityConfig {
                     requests.requestMatchers(PathRouteConstants.ROOT + "/", PathRouteConstants.ROOT + "/login",
                             PathRouteConstants.ROOT + "/refresh-token", PathRouteConstants.ROOT + "/replace-token",
                             PathRouteConstants.ROOT + "/add-user/**", PathRouteConstants.ROOT + "/trial-access",
-                            PathRouteConstants.ROOT + "/reset-password/**")//
+                            PathRouteConstants.ROOT + "/reset-password/**",
+                            PathRouteConstants.ROOT + "/api-for-partner/**")//
                             .permitAll() //
                             .anyRequest().authenticated();
                     // TODO roleによる分岐が必要なら設定

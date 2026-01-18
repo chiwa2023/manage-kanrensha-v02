@@ -48,7 +48,7 @@ class GetLeastUserByMailServiceTest {
         final String mail = "aaa@politician.balanse.report.net";
         final String pass = "qwerty1234";
 
-        // テスト時にはdaoAuthenticationProvider出ないと動かない
+        // テスト時にはdaoAuthenticationProviderでないと動かない
         Authentication authentication = daoAuthenticationProvider
                 .authenticate(new UsernamePasswordAuthenticationToken(mail, pass));
 

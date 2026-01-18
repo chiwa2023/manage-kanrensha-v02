@@ -5,7 +5,7 @@ export default class RoutePathConstants {
 
     /** ベース */
     static readonly BASE_PATH: string = "/manage-kanrensha";
- 
+
     /** ログインページ */
     static readonly PAGE_LOGIN: string = this.BASE_PATH + "/";
 
@@ -51,6 +51,9 @@ export default class RoutePathConstants {
     /** 他者ユーザを編集 */
     static readonly PAGE_USER_CHANGE: string = this.BASE_PATH + "/user/change";
 
+
+    /** APIパートナーTokenおきかえ */
+    static readonly PAGE_PARTNER_TOKEN_REPLACE: string = this.BASE_PATH + "/partner-api/token-replace";
 
     /** 利用者検索 */
     static readonly PAGE_RIYOUSHA_SEARCH: string = this.BASE_PATH + "/riyousha-search";

@@ -1,5 +1,5 @@
 ﻿<script setup lang="ts">
-import { onBeforeMount, onMounted, ref, type Ref } from 'vue';
+import { onBeforeMount,  ref, type Ref } from 'vue';
 import type { LeastUserDtoInterface } from '../../../main/dto/user/leastUserDto';
 import { MessageConstants, MessageView } from 'seijishikin-jp-normalize_common-tool';
 import router from '../../../../router';

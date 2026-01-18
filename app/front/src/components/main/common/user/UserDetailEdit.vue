@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref, watch, type Ref } from 'vue';
+import { onBeforeMount,  ref,  type Ref } from 'vue';
 import { LeastUserDto, type LeastUserDtoInterface } from '../../dto/user/leastUserDto';
 import mockGetEditUser from '../../../test/common/user/mock/mockGetEditUser';
 import UserRoleConstants from '../../dto/user/userRoleConstants';
@@ -16,7 +16,7 @@ const hasRolePartnerApi: Ref<boolean> = ref(false);
 const kanrenshaRole: Ref<string> = ref("");
 const disabledKanrensha: Ref<boolean> = ref(false);
 
-onMounted(() => {
+onBeforeMount(() => {
     editUserDto.value = mockGetEditUser(props.editUserId);
     // 利用者権限設定
     if (editUserDto.value.listRoles.includes(UserRoleConstants.MANAGER)) {

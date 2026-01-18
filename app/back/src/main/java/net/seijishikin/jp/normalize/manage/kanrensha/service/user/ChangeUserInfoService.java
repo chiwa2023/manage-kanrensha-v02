@@ -79,9 +79,6 @@ public class ChangeUserInfoService {
 
         Integer newId = userPersonRepository.save(newPersonEntity).getUserPersonId();
 
-        System.out.println("personId" + newId);
-        
-        
         // 既存のロールを無効化
         List<UserRoleEntity> oldRoles = userRoleRepository.findByEmailAndIsLatestTrue(oldPersonEntity.getEmail());
         for (UserRoleEntity oldRole : oldRoles) {
@@ -91,11 +88,7 @@ public class ChangeUserInfoService {
 
         // 新しいロールを追加
         for (String role : capsuleDto.getUserDto().getListRoles()) {
-            UserRoleEntity newRole = new UserRoleEntity();
-            newRole.setEmail(newPersonEntity.getEmail());
-            newRole.setRole(role);
-            newRole.setUserRoleId(newId);
-            newRole.setDeleteUserName(newName);
+            UserRoleEntity newRole = this.createRoleEntitty(newId, newPersonEntity.getEmail(), role, newName);
             setTableDataHistoryUtil.practiceInsert(operatorUserDto, newRole);
             newRole.setUserRoleId(0); // auto increment明記
             userRoleRepository.save(newRole);
@@ -136,6 +129,18 @@ public class ChangeUserInfoService {
         operatorUserDto.setUserPersonName(entityOperator.getUserPersonName());
 
         return operatorUserDto;
+    }
+
+    private UserRoleEntity createRoleEntitty(final Integer newId, final String email, final String role,
+            final String newName) {
+
+        UserRoleEntity newRole = new UserRoleEntity();
+        newRole.setEmail(email);
+        newRole.setRole(role);
+        newRole.setUserRoleId(newId);
+        newRole.setDeleteUserName(newName);
+
+        return newRole;
     }
 
 }

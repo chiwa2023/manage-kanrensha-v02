@@ -1,7 +1,7 @@
 ﻿<script setup lang="ts">
 import { MessageConstants, MessageView } from 'seijishikin-jp-normalize_common-tool';
 import RoutePathConstants from '../../../routePathConstants';
-import { onMounted, ref, type Ref } from 'vue';
+import { onBeforeMount,  ref, type Ref } from 'vue';
 import { LoginUserCapsuleDto, type LoginUserCapsuleDtoInterface } from '../dto/login/loginUserCapsuleDto';
 import { useApi } from '../utils/useApi';
 import type { LoginUserResultDtoInterface } from '../dto/login/loginUserResultDto';
@@ -28,7 +28,7 @@ const message: Ref<string> = ref(BLANK);
 const userInfo = useUserInfoStore();
 const rememberMe = rememberMeStore();
 
-onMounted(() => {
+onBeforeMount(() => {
     // PiniaローカルストレージのrememberMeに値が残っていれば復元
     if (rememberMe.hasData()) {
         isPasswordVisible.value = false;

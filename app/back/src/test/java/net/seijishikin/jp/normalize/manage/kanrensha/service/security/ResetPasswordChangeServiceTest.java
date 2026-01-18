@@ -65,7 +65,6 @@ class ResetPasswordChangeServiceTest {
         capsuleDto1.setPassword("998877"); // 実際には暗号化されている
 
         FrameworkMessageAndResultDto resultDto1 = resetPasswordChangeService.practice(capsuleDto1);
-        System.out.println(resultDto1.getMessage());
         assertFalse(resultDto1.getIsFailure());
         
         LoginStatusEntity statusEntity = loginStatusRepository.findById(capsuleDto1.getEmail()).get();

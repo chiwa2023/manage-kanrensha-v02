@@ -1,5 +1,7 @@
 package net.seijishikin.jp.normalize.manage.kanrensha.controller.user;
 
+import java.time.LocalDate;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +14,7 @@ import net.seijishikin.jp.normalize.common_tool.dto.FrameworkCapsuleDto;
 import net.seijishikin.jp.normalize.common_tool.dto.FrameworkMessageAndResultDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.controller.PathRouteConstants;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.user.ChangeUserInfoService;
+import net.seijishikin.jp.normalize.manage.kanrensha.service.util.SaveStackTraceService;
 
 /**
  * ユーザ権限変更Controller
@@ -23,6 +26,10 @@ public class ChangeUserInfoController {
     /** ユーザ権限変更Service */
     @Autowired
     private ChangeUserInfoService changeUserInfoService;
+
+    /** StackTrace保存Service */
+    @Autowired
+    private SaveStackTraceService saveStackTraceService;
 
     /**
      * 処理を行う
@@ -43,7 +50,9 @@ public class ChangeUserInfoController {
                 return ResponseEntity.status(HttpStatus.OK).body(resultDto);
             }
 
-        } catch (Exception exception) {
+        } catch (Exception exception) { // NOPMD
+            saveStackTraceService.practice(exception, LocalDate.now().getYear(), 0);
+
             FrameworkMessageAndResultDto resultDto = new FrameworkMessageAndResultDto();
             resultDto.setIsFailure(true);
             resultDto.setMessage("システム例外が発生しました");

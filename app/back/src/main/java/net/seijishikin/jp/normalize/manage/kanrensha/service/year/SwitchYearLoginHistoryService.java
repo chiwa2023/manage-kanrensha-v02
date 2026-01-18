@@ -20,13 +20,13 @@ public class SwitchYearLoginHistoryService {
     private static final int YEAR_2025 = 2025;
     /** ログイン履歴複写Logic(2025) */
     @Autowired
-    private SaveLoginStatusHistoryY2025Logic copyLoginStatusHistoryY2025Logic;
+    private SaveLoginStatusHistoryY2025Logic saveLoginStatusHistoryY2025Logic;
 
     /** 登録対応年(2026) */
     private static final int YEAR_2026 = 2026;
     /** ログイン履歴複写Logic(2026) */
     @Autowired
-    private SaveLoginStatusHistoryY2026Logic copyLoginStatusHistoryY2026Logic;
+    private SaveLoginStatusHistoryY2026Logic saveLoginStatusHistoryY2026Logic;
 
     /**
      * 処理を行う
@@ -49,9 +49,9 @@ public class SwitchYearLoginHistoryService {
 
         switch (now.getYear()) {
             case YEAR_2025:
-                return copyLoginStatusHistoryY2025Logic.practice(baseEntity);
+                return saveLoginStatusHistoryY2025Logic.practice(baseEntity);
             case YEAR_2026:
-                return copyLoginStatusHistoryY2026Logic.practice(baseEntity);
+                return saveLoginStatusHistoryY2026Logic.practice(baseEntity);
             default:
                 throw new IllegalArgumentException("Unexpected value: " + now.getYear());
         }

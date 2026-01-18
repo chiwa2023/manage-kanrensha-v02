@@ -325,10 +325,6 @@
             <ruleset>Performance</ruleset>
         </rule>
         <rule>
-            <name>BooleanGetMethodName</name>
-            <ruleset>Code Style</ruleset>
-        </rule>
-        <rule>
             <name>BrokenNullCheck</name>
             <ruleset>Error Prone</ruleset>
         </rule>

@@ -1,5 +1,6 @@
 package net.seijishikin.jp.normalize.manage.kanrensha.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -39,4 +40,15 @@ public interface UserPersonRepository extends JpaRepository<UserPersonEntity, In
      */
     Optional<UserPersonEntity> findByEmailAndIsLatestTrue(String email);
 
+    /**
+     * 名称と権限からユーザを検索する
+     * 
+     * @param name     名称(部分一致)
+     * @param listRole 権限リスト
+     * @return 検索結果
+     */
+    @Query(value = "SELECT * FROM user_person "
+            + "   WHERE email IN (SELECT email FROM user_role WHERE role IN ?2 AND is_latest = 1) "
+            + "     AND is_latest = 1 AND user_person_name LIKE ?1 ORDER BY user_person_id", nativeQuery = true)
+    List<UserPersonEntity> findNameAndRoles(String name, List<String> listRole);
 }
