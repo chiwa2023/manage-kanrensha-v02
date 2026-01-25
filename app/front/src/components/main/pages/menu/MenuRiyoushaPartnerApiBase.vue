@@ -1,6 +1,6 @@
 ﻿<script setup lang="ts">
 import MenuRiyoushaPartnerApiContent from '../../common/menu/MenuRiyoushaPartnerApiContent.vue';
-import { type LeastUserDtoInterface } from '../../dto/user/leastUserDto';
+import { type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import { ref, type Ref } from 'vue';
 import { getLoginUser } from '../../utils/getLoginUser';
 import MockPartnerApiInfo from '../../../test/common/user_info/MockPartnerApiInfo.vue';

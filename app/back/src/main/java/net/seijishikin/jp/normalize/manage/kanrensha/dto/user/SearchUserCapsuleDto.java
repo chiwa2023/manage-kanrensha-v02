@@ -4,13 +4,13 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.seijishikin.jp.normalize.common_tool.dto.DtoEntityInitialValueInterface;
+import net.seijishikin.jp.normalize.common_tool.dto.paging.PagingIntegerDtoInterface;
 
 /**
  * ユーザ検索条件Dto
  */
 public class SearchUserCapsuleDto // NOPMD DataClass
-        implements Serializable, DtoEntityInitialValueInterface {
+        implements Serializable, PagingIntegerDtoInterface {
 
     /** Serialize id */
     private static final long serialVersionUID = 1L;
@@ -55,6 +55,63 @@ public class SearchUserCapsuleDto // NOPMD DataClass
      */
     public void setListRole(final List<String> listRole) {
         this.listRole = listRole;
+    }
+
+    /** 全件数 */
+    private Integer allCount = INIT_INTEGER;
+
+    /** 抽出件数 */
+    private Integer limit = INIT_INTEGER;
+
+    /** ページ番号 */
+    private Integer pageNumber = INIT_INTEGER;
+
+    /**
+     * 全件数を取得する
+     */
+    @Override
+    public Integer getAllCount() {
+        return allCount;
+    }
+
+    /**
+     * 全件数を設定する
+     */
+    @Override
+    public void setAllCount(final Integer allCount) {
+        this.allCount = allCount;
+    }
+
+    /**
+     * 抽出件数を取得する
+     */
+    @Override
+    public Integer getLimit() {
+        return limit;
+    }
+
+    /**
+     * 抽出件数を設定する
+     */
+    @Override
+    public void setLimit(final Integer limit) {
+        this.limit = limit;
+    }
+
+    /**
+     * ページ番号を取得する
+     */
+    @Override
+    public Integer getPageNumber() {
+        return pageNumber;
+    }
+
+    /**
+     * ページ番号を設定する
+     */
+    @Override
+    public void setPageNumber(final Integer pageNumber) {
+        this.pageNumber = pageNumber;
     }
 
 }

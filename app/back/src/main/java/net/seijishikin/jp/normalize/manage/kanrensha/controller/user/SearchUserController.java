@@ -1,7 +1,6 @@
 package net.seijishikin.jp.normalize.manage.kanrensha.controller.user;
 
 import java.time.LocalDate;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import net.seijishikin.jp.normalize.manage.kanrensha.controller.PathRouteConstants;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.user.SearchUserCapsuleDto;
-import net.seijishikin.jp.normalize.manage.kanrensha.entity.UserPersonEntity;
+import net.seijishikin.jp.normalize.manage.kanrensha.dto.user.SearchUserEntityResultDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.user.SearchUserServcie;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.util.SaveStackTraceService;
 
@@ -39,16 +38,16 @@ public class SearchUserController {
      * @return 処理結果Dto
      */
     @PostMapping("/search")
-    public ResponseEntity<List<UserPersonEntity>> practice(@RequestBody final SearchUserCapsuleDto capsuleDto) {
-
+    public ResponseEntity<SearchUserEntityResultDto> practice(@RequestBody final SearchUserCapsuleDto capsuleDto) {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(searchUserServcie.practice(capsuleDto));
 
         } catch (Exception exception) { // NOPMD
             saveStackTraceService.practice(exception, LocalDate.now().getYear(), 0);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            
+            SearchUserEntityResultDto resultDto = new SearchUserEntityResultDto();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(resultDto);
         }
-
     }
 
 }

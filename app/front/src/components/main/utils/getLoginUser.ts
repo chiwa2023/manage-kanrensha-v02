@@ -1,4 +1,4 @@
-import { LeastUserDto } from "../dto/user/leastUserDto";
+import { LeastUserDto } from 'seijishikin-jp-normalize_common-tool';
 import { useUserInfoStore } from '../stores/storeUserInfo';
 
 function getLoginUser(): LeastUserDto {

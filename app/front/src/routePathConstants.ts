@@ -47,9 +47,12 @@ export default class RoutePathConstants {
     static readonly PAGE_USER_EDIT: string = this.BASE_PATH + "/user/edit";
     /** ユーザ退会 */
     static readonly PAGE_USER_WITHDRAW: string = this.BASE_PATH + "/user/withdraw";
-
     /** 他者ユーザを編集 */
     static readonly PAGE_USER_CHANGE: string = this.BASE_PATH + "/user/change";
+    /** SE権限追加推薦 */
+    static readonly PAGE_ADMIN_PROMOTE: string = this.BASE_PATH + "/user/admin-promote";
+    /** SE権限追加認否 */
+    static readonly PAGE_ADMIN_ACCEPT: string = this.BASE_PATH + "/user/admin-accept";
 
 
     /** APIパートナーTokenおきかえ */
@@ -143,16 +146,6 @@ export default class RoutePathConstants {
     // /** APIユーザ組織個人紐づけ */
     // static readonly PAGE_COMBINE_COMRADE: string = this.BASE_PATH + "/combine-comrade";
 
-    // /** ユーザ変更 */
-    // static readonly PAGE_USER_CHANGE: string = this.BASE_PATH + "/user/change";
-    // /** ユーザ削除 */
-    // static readonly PAGE_USER_DELETE: string = this.BASE_PATH + "/user/delete";
-    // /** ユーザ編集 */
-    // static readonly PAGE_USER_EDIT: string = this.BASE_PATH + "/user/edit";
-    // /** ユーザ権限変更 */
-    // static readonly PAGE_CHANGE_ROLE: string = this.BASE_PATH + "/user/change-role";
-    // /** 運営者を管理者に格上げ */
-    // static readonly PAGE_PROMOTE_ROLE: string = this.BASE_PATH + "/user/promote-role";
 
     // /** APIユーザ編集 */
     // static readonly PAGE_EDIT_COMRADE: string = this.BASE_PATH + "/edit-comrade";
@@ -169,8 +162,8 @@ export default class RoutePathConstants {
     // /** 運営者組織に招待を個人が承認 */
     // static readonly PAGE_ACCEPT_MANAGER_PERSON: string = this.BASE_PATH + "/accept-manager";
 
-    // /** タスク計画検索 */
-    // static readonly PAGE_SEARCH_TASK_PLAN: string = this.BASE_PATH + "/search-task-plan";
+    /** タスク計画検索 */
+    static readonly PAGE_SEARCH_TASK_PLAN: string = this.BASE_PATH + "/search-task-plan";
 
 
     /** 開発テンプレート(共通ツール) */

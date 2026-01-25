@@ -2,6 +2,9 @@ package net.seijishikin.jp.normalize.manage.kanrensha.service.user;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.time.LocalDateTime;
+
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
@@ -78,8 +81,10 @@ class RefreshPasswordServiceTest {
         Authentication auth = new UsernamePasswordAuthenticationToken(mail, password, testUser.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(auth);
 
-        final LoginStatusEntity entityPre = loginStatusRepository.findById(mail).get();
-
+        LoginStatusEntity entityPre = loginStatusRepository.findById(mail).get();
+        final String hash = entityPre.getPassword();
+        final LocalDateTime oldTime = entityPre.getPassChangeTime();
+        
         // 新旧パスワードが同じだとCustomUserDetailsManagerで例外
         RefreshPasswordCapsuleDto capsuleDto = new RefreshPasswordCapsuleDto();
         String newPassword = "asdfg1234";
@@ -93,8 +98,8 @@ class RefreshPasswordServiceTest {
 
         LoginStatusEntity entityPro = loginStatusRepository.findById(mail).get();
 
-        assertNotEquals(entityPre.getPassword(), entityPro.getPassword());
-        assertNotEquals(entityPre.getPassChangeTime(), entityPro.getPassChangeTime());
+        assertNotEquals(hash, entityPro.getPassword());
+        assertNotEquals(oldTime, entityPro.getPassChangeTime());
     }
 
 }

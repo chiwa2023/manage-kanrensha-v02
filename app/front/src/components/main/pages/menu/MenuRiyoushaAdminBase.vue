@@ -1,7 +1,7 @@
 ﻿<script setup lang="ts">
 import MockAdminInfo from '../../../test/common/user_info/MockAdminInfo.vue';
 import MenuRiyoushaAdminContent from '../../common/menu/MenuRiyoushaAdminContent.vue';
-import { type LeastUserDtoInterface } from '../../dto/user/leastUserDto';
+import { type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import { ref, type Ref } from 'vue';
 import { getLoginUser } from '../../utils/getLoginUser';
 

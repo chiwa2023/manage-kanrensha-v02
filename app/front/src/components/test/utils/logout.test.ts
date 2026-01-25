@@ -6,7 +6,7 @@ import { createApp } from 'vue';
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 import { useUserInfoStore } from '../../main/stores/storeUserInfo';
 import { JwtTokenDto, type JwtTokenDtoInterface } from '../../main/dto/login/jwtTokenDto';
-import { LeastUserDto, type LeastUserDtoInterface } from '../../main/dto/user/leastUserDto';
+import { LeastUserDto, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 
 // pinia設定
 const app = createApp(App);

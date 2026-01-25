@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onBeforeMount, ref, type Ref } from 'vue';
 import MockPartnerApiInfo from '../../../test/common/user_info/MockPartnerApiInfo.vue';
-import type { LeastUserDtoInterface } from '../../dto/user/leastUserDto';
+import { type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import { getLoginUser } from '../../utils/getLoginUser';
 import router from '../../../../router';
 import { PartnerAccessTokenStateDto, type PartnerAccessTokenStateDtoInterface } from '../../dto/user/partnerAccessTokenStateDto';

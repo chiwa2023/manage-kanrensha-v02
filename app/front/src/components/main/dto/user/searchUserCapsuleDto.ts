@@ -1,4 +1,6 @@
-interface SearchUserCapsuleDtoInterface {
+import { FrameworkPagingDto, type FrameworkPagingDtoInterface } from "seijishikin-jp-normalize_common-tool";
+
+interface SearchUserCapsuleDtoInterface extends FrameworkPagingDtoInterface{
 
     /** 名称 */
     name: string;
@@ -9,7 +11,7 @@ interface SearchUserCapsuleDtoInterface {
 }
 
 
-class SearchUserCapsuleDto implements SearchUserCapsuleDtoInterface {
+class SearchUserCapsuleDto extends FrameworkPagingDto implements SearchUserCapsuleDtoInterface {
 
     /** 名称 */
     name: string;
@@ -18,6 +20,7 @@ class SearchUserCapsuleDto implements SearchUserCapsuleDtoInterface {
     listRole: string[];
 
     constructor() {
+        super();
         this.name = "";
         this.listRole = [];
     }

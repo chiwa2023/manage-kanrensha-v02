@@ -1,7 +1,7 @@
 ﻿<script setup lang="ts">
 import { ref, type Ref } from 'vue';
 import RoutePathConstants from '../../../../routePathConstants';
-import type { LeastUserDtoInterface } from '../../dto/user/leastUserDto';
+import { type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import { getLoginUser } from '../../utils/getLoginUser';
 import router from '../../../../router';
 import MockAllUserInfo from '../../../test/common/user_info/MockAllUserInfo.vue';

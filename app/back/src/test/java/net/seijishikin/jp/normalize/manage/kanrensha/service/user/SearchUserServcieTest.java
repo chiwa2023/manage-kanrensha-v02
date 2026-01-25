@@ -16,6 +16,7 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.user.SearchUserCapsuleDto;
+import net.seijishikin.jp.normalize.manage.kanrensha.dto.user.SearchUserEntityResultDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.UserPersonEntity;
 
 /**
@@ -42,8 +43,18 @@ class SearchUserServcieTest {
         capsuleDto.setName("bb");
         capsuleDto.getListRole().add("manager");
         capsuleDto.getListRole().add("kanrensha_person");
+        capsuleDto.setAllCount(25);
+        capsuleDto.setPageNumber(4);
+        capsuleDto.setLimit(20);
 
-        List<UserPersonEntity> list = searchUserServcie.practice(capsuleDto);
+        SearchUserEntityResultDto resultDto = searchUserServcie.practice(capsuleDto);
+
+        assertEquals(2, resultDto.getAllCount());
+        assertEquals(capsuleDto.getLimit(), resultDto.getLimit());
+        assertEquals(0, resultDto.getPageNumber());
+
+        List<UserPersonEntity> list = resultDto.getListPersonEntity();
+
         assertEquals(2, list.size());
 
         assertEquals(81, list.get(0).getUserPersonId());

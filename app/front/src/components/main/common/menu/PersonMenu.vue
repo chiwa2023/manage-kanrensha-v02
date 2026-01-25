@@ -31,6 +31,9 @@ function onCancel() {
 </script>
 <template>
     <p>
+        <RouterLink :to=RoutePathConstants.PAGE_SEARCH_TASK_PLAN>タスク検索</RouterLink><br>
+    </p>
+    <p>
         <RouterLink :to=RoutePathConstants.PAGE_USER_EDIT>個人名・権限編集</RouterLink><br>
         <RouterLink :to=RoutePathConstants.PAGE_REFRESH_PASSWORD>パスワード更新</RouterLink><br>
         <br>

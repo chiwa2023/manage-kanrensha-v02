@@ -2,7 +2,7 @@
 import { ref, type Ref } from 'vue';
 import RoutePathConstants from '../../../../routePathConstants';
 import { getLoginUser } from '../../utils/getLoginUser';
-import type { LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool/dist/components/main/dto/user/leastUserDto';
+import type { LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import router from '../../../../router';
 import MockAllUserInfo from '../../../test/common/user_info/MockAllUserInfo.vue';
 import { MessageConstants, MessageView } from 'seijishikin-jp-normalize_common-tool';

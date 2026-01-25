@@ -1,7 +1,7 @@
 ﻿<script setup lang="ts">
 import MockManagerInfo from '../../../test/common/user_info/MockManagerInfo.vue';
 import MenuRiyoushaManagerContent from '../../common/menu/MenuRiyoushaManagerContent.vue';
-import { type LeastUserDtoInterface } from '../../dto/user/leastUserDto';
+import { type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import { ref, type Ref } from 'vue';
 import { getLoginUser } from '../../utils/getLoginUser';
 
@@ -27,9 +27,6 @@ const userDto: Ref<LeastUserDtoInterface> = ref(getLoginUser());
 
     <h1>運営者メニュー</h1><br>
     <MenuRiyoushaManagerContent></MenuRiyoushaManagerContent>
-
-    {{ userDto.userPersonId }}<br>
-    {{ userDto.userPersonName }}<br>
 
 </template>
 <style scoped></style>

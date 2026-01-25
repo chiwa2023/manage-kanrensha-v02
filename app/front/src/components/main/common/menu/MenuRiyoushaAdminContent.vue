@@ -17,9 +17,11 @@ import RoutePathConstants from '../../../../routePathConstants';
 <template>
     <h3>SE権限メニュー</h3>
     <RouterLink :to=RoutePathConstants.PAGE_USER_CHANGE>他者ユーザ変更</RouterLink><br>
+    <RouterLink :to=RoutePathConstants.PAGE_ADMIN_PROMOTE>管理者からSE権限へ引き上げ</RouterLink><br>
+
+
     <!--
     <RouterLink :to=RoutePathConstants.PAGE_USER_CHANGE>ユーザ編集</RouterLink><br>
-    <RouterLink :to=RoutePathConstants.PAGE_PROMOTE_ROLE>管理者からSE権限へ引き上げ</RouterLink><br>
     <RouterLink :to=RoutePathConstants.PAGE_REGI_PARTNER_MANAGE>関連者管理</RouterLink><br>
     <RouterLink :to=RoutePathConstants.PAGE_WORKS_APPROVAL>作業内容承認</RouterLink><br>
 

@@ -3,7 +3,7 @@ import { ref, type Ref } from 'vue';
 import RoutePathConstants from '../../../../routePathConstants';
 import router from '../../../../router';
 import MockAdminInfo from '../../../test/common/user_info/MockAdminInfo.vue';
-import type { LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool/dist/components/main/dto/user/leastUserDto';
+import type { LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import { getLoginUser } from '../../utils/getLoginUser';
 import type { UserPersonEntityInterface } from '../../entity/userPersonEntity';
 import mockGetUserList from '../../../test/pages/user/mock/mockGetUserList';
@@ -125,7 +125,6 @@ function onCancel() {
 
     <!-- ユーザメニュー兼チェック -->
     <MockAdminInfo :user-dto="userDto"></MockAdminInfo>
-    <hr>
 
     <h1>ユーザ変更</h1>
 
@@ -192,15 +191,12 @@ function onCancel() {
         <button @click="onCancel" class="footer-button">キャンセル</button>
     </div>
 
-
-    <!-- メニュー表示 -->
+    <!-- ユーザ編集 -->
     <div v-if="isViewEdit" class="overComponent">
         <UserDetailEdit :user-dto="userDto" :edit-user-id="selectedUserId"
             @send-cancel-edit-user="recieveCancelEditUser" @send-edit-user-interface="recieveEditUserInterface">
         </UserDetailEdit>
     </div>
-
-
 
 </template>
 <style scoped>

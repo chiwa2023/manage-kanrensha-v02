@@ -42,7 +42,15 @@ const routes = [
     { path: RoutePathConstants.PAGE_USER_WITHDRAW, name: "WithdrawUser", component: () => import("./components/main/pages/user_edit/WithdrawUser.vue") },
     { path: RoutePathConstants.PAGE_USER_CHANGE, name: "ChangeUser", component: () => import("./components/main/pages/user_edit/ChangeUser.vue") },
 
+    { path: RoutePathConstants.PAGE_ADMIN_PROMOTE, name: "AdminRolePromote", component: () => import("./components/main/pages/user_edit/AdminRolePromote.vue") },
+    { path: RoutePathConstants.PAGE_ADMIN_ACCEPT, name: "AdminRoleAccept", component: () => import("./components/main/pages/user_edit/AdminRoleAccept.vue") },
+
+
+    // トークン置き換え
     { path: RoutePathConstants.PAGE_PARTNER_TOKEN_REPLACE, name: "ReplacePartnerApiToken", component: () => import("./components/main/pages/user_edit/ReplacePartnerApiToken.vue") },
+
+    // タスク計画
+    { path: RoutePathConstants.PAGE_SEARCH_TASK_PLAN, name: "SearchTaskPlan", component: () => import("./components/main/pages/search_task_plan/SearchTaskPlan.vue") },
 ];
 
 const router = createRouter({

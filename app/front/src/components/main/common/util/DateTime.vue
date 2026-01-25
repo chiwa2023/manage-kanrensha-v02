@@ -3,7 +3,7 @@ import { onBeforeMount, ref, type Ref } from 'vue';
 
 
 // props,emmits
-const props = defineProps<{ datetime: Date, index: number ,isEdit:boolean}>();
+const props = defineProps<{ datetime: Date, index: number, isEdit: boolean }>();
 const emits = defineEmits(["sendDateTime"]);
 
 //仮
@@ -24,7 +24,7 @@ onBeforeMount(() => {
     if (props.datetime !== null) {
         dateString.value = props.datetime.toLocaleDateString('sv-SE');
         const time = props.datetime.toLocaleDateString('ja-JP', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false });
-        timeString.value = time.substring(10, 18);
+        timeString.value = time.substring(time.length - 8, time.length);
     } else {
         dateString.value = "";
         timeString.value = "";

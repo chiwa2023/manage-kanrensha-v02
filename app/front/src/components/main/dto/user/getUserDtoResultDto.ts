@@ -1,5 +1,5 @@
 import { FrameworkMessageAndResultDto, type FrameworkMessageAndResultDtoInterface } from "seijishikin-jp-normalize_common-tool";
-import { LeastUserDto, type LeastUserDtoInterface } from "./leastUserDto";
+import { LeastUserDto, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 
 interface GetUserDtoResultDtoInterface extends FrameworkMessageAndResultDtoInterface {
 

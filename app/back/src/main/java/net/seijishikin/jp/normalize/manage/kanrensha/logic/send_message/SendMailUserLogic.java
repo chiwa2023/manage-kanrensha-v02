@@ -36,7 +36,7 @@ public class SendMailUserLogic {
     private WriteLogService writeLogService;
 
     /**
-     * メール送信を行います。 送信完了者と未送信者を分けて処理できるように実装を行います
+     * メール送信を行います。
      *
      * @param listMailData メール送信格納Dto
      * @return メール送信結果Dto

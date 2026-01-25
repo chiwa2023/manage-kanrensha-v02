@@ -1,4 +1,4 @@
-import { LeastUserDto, type LeastUserDtoInterface } from "../../../../main/dto/user/leastUserDto";
+import { LeastUserDto, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import UserRoleConstants from "../../../../main/dto/user/userRoleConstants";
 
 export default function mockGetEditUser(userId:number):LeastUserDtoInterface{

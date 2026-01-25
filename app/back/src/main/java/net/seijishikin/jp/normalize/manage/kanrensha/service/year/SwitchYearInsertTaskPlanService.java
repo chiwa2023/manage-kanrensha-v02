@@ -1,0 +1,55 @@
+package net.seijishikin.jp.normalize.manage.kanrensha.service.year;
+
+import java.time.LocalDateTime;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
+import net.seijishikin.jp.normalize.manage.kanrensha.dto.task.InsertTaskPlanResultDto;
+import net.seijishikin.jp.normalize.manage.kanrensha.entity.TaskInfoEntity;
+import net.seijishikin.jp.normalize.manage.kanrensha.logic.year.y2025.InsertTaskPlanY2025Logic;
+import net.seijishikin.jp.normalize.manage.kanrensha.logic.year.y2026.InsertTaskPlanY2026Logic;
+
+/**
+ * 年切り替えタスク計画追加Service
+ */
+@Service
+public class SwitchYearInsertTaskPlanService {
+
+    /** 登録対応年(2025) */
+    private static final int YEAR_2025 = 2025;
+    /** タスク計画追加Logic(2025) */
+    @Autowired
+    private InsertTaskPlanY2025Logic insertTaskPlanY2025Logic;
+
+    /** 登録対応年(2026) */
+    private static final int YEAR_2026 = 2026;
+    /** タスク計画追加Logic(2026) */
+    @Autowired
+    private InsertTaskPlanY2026Logic insertTaskPlanY2026Logic;
+
+    /**
+     * 処理を行う
+     * 
+     * @param userDto        ユーザ最小限Dto
+     * @param startDatetime  タスク開始時間
+     * @param taskInfoEntity タスク情報Entity
+     * @return 追加Id
+     */
+    public InsertTaskPlanResultDto practice(final LeastUserDto userDto, final LocalDateTime startDatetime,
+            final TaskInfoEntity taskInfoEntity,final Map<String,String> mapParam) {
+
+        Integer year = startDatetime.getYear();
+        switch (year) {
+            case YEAR_2025:
+                return insertTaskPlanY2025Logic.practice(userDto, startDatetime, taskInfoEntity);
+            case YEAR_2026:
+                return insertTaskPlanY2026Logic.practice(userDto, startDatetime, taskInfoEntity,mapParam);
+            default:
+                throw new IllegalArgumentException("Unexpected value: " + year);
+        }
+    }
+
+}

@@ -1,13 +1,24 @@
 <script setup lang="ts">
 import { onBeforeMount,  ref,  type Ref } from 'vue';
-import { LeastUserDto, type LeastUserDtoInterface } from '../../dto/user/leastUserDto';
 import mockGetEditUser from '../../../test/common/user/mock/mockGetEditUser';
 import UserRoleConstants from '../../dto/user/userRoleConstants';
-
+import { LeastUserDto, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 
 // props,emits
 const props = defineProps<{ editUserId: number, userDto: LeastUserDtoInterface }>()
 const emits = defineEmits(["sendCancelEditUser", "sendEditUserInterface"]);
+
+//仮
+// よく使う定数
+// const BLANK: string = "";
+// const INIT_NUMBER: number = 0;
+// const SERVER_STATUS_OK: number = 200;
+// const SERVER_STATUS_ERROR: number = 400;
+// メッセージボックス表示定数
+//const infoLevel: Ref<number> = ref(MessageConstants.LEVEL_NONE);
+//const messageType: Ref<number> = ref(MessageConstants.VIEW_NONE);
+//const title: Ref<string> = ref(BLANK);
+//const message: Ref<string> = ref(BLANK);
 
 const editUserDto: Ref<LeastUserDtoInterface> = ref(new LeastUserDto());
 const hasRoleManager: Ref<boolean> = ref(false);
@@ -39,17 +50,6 @@ onBeforeMount(() => {
     }
 });
 
-//仮
-// よく使う定数
-// const BLANK: string = "";
-// const INIT_NUMBER: number = 0;
-// const SERVER_STATUS_OK: number = 200;
-// const SERVER_STATUS_ERROR: number = 400;
-// メッセージボックス表示定数
-//const infoLevel: Ref<number> = ref(MessageConstants.LEVEL_NONE);
-//const messageType: Ref<number> = ref(MessageConstants.VIEW_NONE);
-//const title: Ref<string> = ref(BLANK);
-//const message: Ref<string> = ref(BLANK);
 
 function onSave() {
     emits("sendEditUserInterface");
@@ -107,13 +107,8 @@ function onCancel() {
         </div>
     </div>
 
-
-
-
-
-
     <div class="footer">
-        <button @click="onCancel" class="footer-button">キャンセル</button>
+         <button @click="onCancel" class="footer-button">キャンセル</button>
         <button @click="onSave" class="left-space footer-button">保存</button>
     </div>
 

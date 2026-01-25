@@ -16,8 +16,9 @@ import RoutePathConstants from '../../../../routePathConstants';
 </script>
 <template>
 
-
     <a href="#">サンプル運営者</a><br>
+
+    <RouterLink :to=RoutePathConstants.PAGE_ADMIN_ACCEPT>管理者から推薦諾否</RouterLink><br>
 
     <!--
     <h3>関連者メニュー</h3>

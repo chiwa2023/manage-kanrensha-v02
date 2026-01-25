@@ -1,4 +1,4 @@
-import { LeastUserDto } from "../user/leastUserDto";
+import { LeastUserDto } from 'seijishikin-jp-normalize_common-tool';
 import { JwtTokenDto, type JwtTokenDtoInterface } from "./jwtTokenDto";
 
 interface LoginUserResultDtoInterface {

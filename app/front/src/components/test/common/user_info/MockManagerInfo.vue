@@ -1,6 +1,6 @@
 ﻿<script setup lang="ts">
-import { onBeforeMount,  ref, type Ref } from 'vue';
-import type { LeastUserDtoInterface } from '../../../main/dto/user/leastUserDto';
+import { onBeforeMount, ref, type Ref } from 'vue';
+import { type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import { MessageConstants, MessageView } from 'seijishikin-jp-normalize_common-tool';
 import router from '../../../../router';
 import RoutePathConstants from '../../../../routePathConstants';
@@ -9,6 +9,7 @@ import AllMenu from '../../../main/common/menu/AllMenu.vue';
 import type { SelectOptionStringDtoInterface } from '../../../main/dto/select_options/selectOptionStringDto';
 import { createListRoleOptions } from '../../../main/common/menu/createListRoleOptions';
 import PersonMenu from '../../../main/common/menu/PersonMenu.vue';
+import ShowTask from '../../../main/common/show_task/ShowTask.vue';
 
 // よく使う定数
 const BLANK: string = "";
@@ -80,13 +81,26 @@ function recieveSubmit(button: string) {
     messageType.value = 0;
     router.push(RoutePathConstants.PAGE_LOGOUT);
 }
+
+// タスク表示
+const isShowTask: Ref<Boolean> = ref(false);
+function onTaskView() {
+    isShowTask.value = true;
+}
+function recieveCancelShowTask() {
+    isShowTask.value = false;
+}
 </script>
 <template>
     <!-- ユーザrole別制御コンポーネント -->
     <div class="user-role-container-manager">
         <div class="user-role-content">
             <div class="user-role-title">
-                運営者
+                運営者<br>
+                {{ props.userDto.userPersonName }}さん
+            </div>
+            <div class="user-role-title left-space">
+                ユーザ固有タスク<button @click="onTaskView">タスク検索</button>
             </div>
             <!-- 遷移メニュー -->
             <div class="user-role-menu-wrapper">
@@ -120,6 +134,12 @@ function recieveSubmit(button: string) {
     <div class="personMenuLayer" v-if="isVewPersonMenu">
         <PersonMenu :view-role="UserRoleConstants.ROLE_ADMIN" @send-canceel-menu="recieveCanceelPersonMenu">
         </PersonMenu>
+    </div>
+
+    <!-- ユーザ編集 -->
+    <div v-if="isShowTask" class="overComponent">
+        <ShowTask :is-search-condition="false" :user-dto="userDto" @send-canceel-show-task="recieveCancelShowTask">
+        </ShowTask>
     </div>
 
 </template>

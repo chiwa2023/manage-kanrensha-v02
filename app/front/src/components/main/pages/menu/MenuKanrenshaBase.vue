@@ -1,7 +1,7 @@
 ﻿<script setup lang="ts">
 import MockKanrenshaInfo from '../../../test/common/user_info/MockKanrenshaInfo.vue';
 import MenuKanrenshaContent from '../../common/menu/MenuKanrenshaContent.vue';
-import { type LeastUserDtoInterface } from '../../dto/user/leastUserDto';
+import { type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import { ref, type Ref } from 'vue';
 import { getLoginUser } from '../../utils/getLoginUser';
 

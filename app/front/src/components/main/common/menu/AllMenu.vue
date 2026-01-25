@@ -43,8 +43,7 @@ function onCancel() {
     <!-- 利用者運営者権限メニュー -->
     <div v-if="UserRoleConstants.ROLE_MANAGER === vRole || UserRoleConstants.ROLE_ADMIN === vRole">
         <h3>運営者メニュー</h3>
-        <MenuRiyoushaManagerContent>
-        </MenuRiyoushaManagerContent>
+        <MenuRiyoushaManagerContent> </MenuRiyoushaManagerContent>
     </div>
 
     <!-- APIユーザ権限メニュー -->
@@ -59,7 +58,6 @@ function onCancel() {
         <h3>関連者用メニュー</h3>
         <MenuKanrenshaContent></MenuKanrenshaContent>
     </div>
-
 
     <div class="footer">
         <button @click="onCancel" class="footer-button">キャンセル</button>
