@@ -23,6 +23,9 @@ interface TaskPlanBaseEntityInterface {
 
     /** 終了日時 */
     endDatetime: Date;
+    
+    /** 遷移パス */
+    transferPass: string;
 
     /** 作成日時 */
     insertTimestamp: Date;
@@ -54,6 +57,9 @@ class TaskPlanBaseEntity implements TaskPlanBaseEntityInterface {
     /** 終了日時 */
     endDatetime: Date;
 
+    /** 遷移パス */
+    transferPass: string;
+
     /** 作成日時 */
     insertTimestamp: Date;
 
@@ -71,6 +77,7 @@ class TaskPlanBaseEntity implements TaskPlanBaseEntityInterface {
         this.isFinished = INIT_BOOLEAN;
         this.isSuspended = INIT_BOOLEAN;
         this.taskPlanName = INIT_STRING;
+        this.transferPass = INIT_STRING;
 
         this.startDatetime = INIT_DATE;
         this.endDatetime = INIT_DATE;

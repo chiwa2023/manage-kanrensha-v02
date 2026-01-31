@@ -1,16 +1,18 @@
 ﻿<script setup lang="ts">
 import { computed, onBeforeMount, ref, type ComputedRef, type Ref } from 'vue';
 import { SearchTaskPlanCapsuleDto, type SearchTaskPlanCapsuleDtoInterface } from '../../dto/task_plan/searchTaskPlanCapsuleDto';
-import { MessageConstants, MessageView, PagingControl, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
+import { convertDatetimeText, InputDatetime, MessageConstants, MessageView, PagingControl, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import UserRoleConstants from '../../dto/user/userRoleConstants';
 import { SearchTaskPlanResultDto, type SearchTaskPlanResultDtoInterface } from '../../dto/task_plan/searchTaskPlanResultDto';
 import { SearchTaskHistoryResultDto, type SearchTaskHistoryResultDtoInterface } from '../../dto/task_plan/searchTaskHistoryResultDto';
-import DateTime from '../util/DateTime.vue';
 import getAuthorizedPromiseArea from '../../dto/login/getAuthorizedPromiseArea';
 import RoutePathConstants from '../../../../routePathConstants';
 import { AccessTokenNotFoundError, TokenRefreshError } from '../../dto/login/errors';
 import { SearchTaskHistoryCapsuleDto, type SearchTaskHistoryCapsuleDtoInterface } from '../../dto/task_plan/searchTaskHistoryCapsuleDto';
 import DownloadStackTrace from './DownloadStackTrace.vue';
+import type { TaskInfoCodeCheckOptionDtoInterface } from '../../dto/task_plan/taskInfoCodeCheckOptionDto';
+import { getTaskCheckboxListCategory0, getTaskCheckboxListCategory3, getTaskCheckboxListCategory9 } from '../../dto/task_plan/getTaskCheckboxList';
+import router from '../../../../router';
 
 // props,emmits
 const props = defineProps<{ isSearchCondition: boolean, userDto: LeastUserDtoInterface }>();
@@ -55,8 +57,10 @@ const resultDto: Ref<SearchTaskPlanResultDtoInterface> = ref(new SearchTaskPlanR
 const resultHistoryDto: Ref<SearchTaskHistoryResultDtoInterface> = ref(new SearchTaskHistoryResultDto());
 
 function onSearch() {
-    // TODO タスクの種類を決定したらチェックボックスを設定し
-    // タスクの種類のnumber配列に変換
+
+    // タスクコードリストを設定
+    capsuleDto.value.infoCodeList.splice(0);
+    capsuleDto.value.infoCodeList = createCodeList();
 
     // 検索実行
     getAuthorizedPromiseArea().then(token => {
@@ -74,9 +78,8 @@ function onSearch() {
                 if (SERVER_STATUS_OK === response.status) {
                     allCount.value = resultDto.value.allCount;
                     pageNumber.value = resultDto.value.pageNumber;
-                }else{
+                } else {
                     infoLevel.value = MessageConstants.LEVEL_INFO;
-                    // トークン保持ができていない場合
                     messageType.value = MessageConstants.VIEW_TOAST;
                     title.value = "検索結果が存在しませんでした";
                     message.value = "検索条件を変えて試してください";
@@ -152,12 +155,37 @@ function getStateText(isState: boolean, column: string): string {
     return column + (isState ? "しています" : "していません");
 }
 
-// 検索条件を入力しないときは無条件で本日から1か月に実行した最新タスク
+const listCategory0: Ref<TaskInfoCodeCheckOptionDtoInterface[]> = ref(getTaskCheckboxListCategory0());
+const listCategory3: Ref<TaskInfoCodeCheckOptionDtoInterface[]> = ref(getTaskCheckboxListCategory3());
+const listCategory9: Ref<TaskInfoCodeCheckOptionDtoInterface[]> = ref(getTaskCheckboxListCategory9());
+
+// 検索条件を入力しないときは2年間の未処理タスク
 onBeforeMount(() => {
+    // タスクコードリストを設定
+    capsuleDto.value.infoCodeList.splice(0);
+    capsuleDto.value.infoCodeList = createCodeList();
+
     if (!props.isSearchCondition) {
+
+        // 検索期間は前年初頭から今年末
+        const year: number = new Date().getFullYear();
+        capsuleDto.value.startDate = new Date((year - 1) + "-01-01");
+        capsuleDto.value.startDate.setHours(0);
+        capsuleDto.value.startDate.setMinutes(0);
+        capsuleDto.value.startDate.setSeconds(0);
+
+        capsuleDto.value.startDate.setHours(9, 0, 0, 0);
+        capsuleDto.value.endDate = new Date((year) + "-12-31");
+        capsuleDto.value.endDate.setHours(32, 59, 59, 0);
+
         onSearch();
     }
+
 });
+
+
+
+
 
 function onCancel() {
     emits("sendCanceelShowTask");
@@ -174,6 +202,70 @@ function recievePagingNumber(selecteddNumber: number) {
     onSearch();
 }
 
+
+function createCodeList(): number[] {
+    const list: number[] = [];
+    for (const dto of listCategory0.value) {
+        if (dto.isChecked) {
+            list.push(dto.codeValue);
+        }
+    }
+    for (const dto of listCategory3.value) {
+        if (dto.isChecked) {
+            list.push(dto.codeValue);
+        }
+    }
+    for (const dto of listCategory9.value) {
+        if (dto.isChecked) {
+            list.push(dto.codeValue);
+        }
+    }
+    return list;
+}
+
+// タスクコードチェック編集
+const isTaskCodeCheck: Ref<boolean> = ref(false); //初期状態非表示
+function onInfoCodeCheck() {
+    isTaskCodeCheck.value = !isTaskCodeCheck.value;
+}
+
+const flgAllCheck1: Ref<boolean> = ref(true);
+function onAllCheck0() {
+    const ans = flgAllCheck1.value;
+    for (const dto of listCategory0.value) {
+        dto.isChecked = ans
+    }
+}
+
+const flgAllCheck3: Ref<boolean> = ref(true);
+function onAllCheck3() {
+    const ans = flgAllCheck3.value;
+    for (const dto of listCategory3.value) {
+        dto.isChecked = ans
+    }
+}
+
+const flgAllCheck9: Ref<boolean> = ref(true);
+function onAllCheck9() {
+    const ans = flgAllCheck9.value;
+    for (const dto of listCategory9.value) {
+        dto.isChecked = ans
+    }
+}
+
+// コンポーネントから時刻受け取り
+function recieveDatetime(date: Date, index: number) {
+    if (1 == index) {
+        capsuleDto.value.startDate = date;
+    }
+    if (2 == index) {
+        capsuleDto.value.endDate = date;
+    }
+}
+
+function onTransfer(path: string) {
+    router.push(RoutePathConstants.BASE_PATH + path);
+}
 </script>
 <template>
     <div v-if="!isSearchCondition">
@@ -188,21 +280,88 @@ function recievePagingNumber(selecteddNumber: number) {
                 検索期間
             </div>
             <div class="right-area">
-                <DateTime :datetime="capsuleDto.startDate" :index="1" :is-edit="true"></DateTime>
+                <InputDatetime :datetime="capsuleDto.startDate" :index="1" :is-edit="true"
+                    @send-date-time="recieveDatetime"></InputDatetime>
                 <span>&nbsp;から&nbsp;</span>
-                <DateTime :datetime="capsuleDto.endDate" :index="2" :is-edit="true"></DateTime>
+                <InputDatetime :datetime="capsuleDto.endDate" :index="2" :is-edit="true"
+                    @send-date-time="recieveDatetime"></InputDatetime>
                 <span>&nbsp;まで</span>
+            </div>
+        </div>
+
+        <div class=" one-line">
+            <div class="left-area">
+                タスク着手
+            </div>
+            <div class="right-area">
+                <div class="form-group-vertical">
+                    <div>
+                        <span>終了条件：</span>
+                        <input type="radio" v-model="capsuleDto.flgFinished" value="2" class="left-space">指定なし
+                        <input type="radio" v-model="capsuleDto.flgFinished" value="1" class="left-space">終了した
+                        のみ
+                        <input type="radio" v-model="capsuleDto.flgFinished" value="0" class="left-space">終了していない のみ
+                    </div>
+                    <div>
+                        <span>開始条件：</span>
+                        <input type="radio" v-model="capsuleDto.flgStart" value="2" class="left-space">指定なし
+                        <input type="radio" v-model="capsuleDto.flgStart" value="1" class="left-space">開始した のみ
+                        <input type="radio" v-model="capsuleDto.flgStart" value="0" class="left-space">開始していない
+                        のみ
+                    </div>
+                    <div>
+                        <span>中断条件：</span>
+                        <input type="radio" v-model="capsuleDto.flgSuspended" value="2" class="left-space">指定なし
+                        <input type="radio" v-model="capsuleDto.flgSuspended" value="1" class="left-space">中断した
+                        のみ
+                        <input type="radio" v-model="capsuleDto.flgSuspended" value="0" class="left-space">中断していない のみ
+                    </div>
+                </div>
             </div>
         </div>
 
         <div class="one-line">
             <div class="left-area">
-                タスク
+                タスクの名称
             </div>
             <div class="right-area">
-                タスクの種類複数選択
-                <br>
                 <input type="texr" v-model="capsuleDto.searchTaskWord" placeholder="タスク名称自由記述"></input>
+            </div>
+        </div>
+
+        <!-- TODO タスクの種類はさらに種類が確定するまで調整 -->
+        <div class="one-line">
+            <div class="left-area">
+                タスクの種類
+            </div>
+            <div class="right-area">
+                <div class="form-group-vertical">
+                    <div> <button @click="onInfoCodeCheck">指定するので展開</button></div>
+                    <div v-if="isTaskCodeCheck">
+                        <div>
+                            <input type="checkbox" v-model="flgAllCheck1" @change="onAllCheck0()">グループ1すべて
+                            <div>
+                                <span v-for="dto in listCategory0" class="left-space">
+                                    <input type="checkbox" v-model="dto.isChecked">{{ dto.codeName }}
+                                </span>
+                            </div>
+                        </div>
+                        <div> <input type="checkbox" v-model="flgAllCheck3" @change="onAllCheck3()">グループ3すべて
+                            <div>
+                                <span v-for="dto in listCategory3" class="left-space">
+                                    <input type="checkbox" v-model="dto.isChecked">{{ dto.codeName }}
+                                </span>
+                            </div>
+                        </div>
+                        <div> <input type="checkbox" v-model="flgAllCheck9" @change="onAllCheck9()">グループ9すべて
+                        </div>
+                        <div>
+                            <span v-for="dto in listCategory9" class="left-space">
+                                <input type="checkbox" v-model="dto.isChecked">{{ dto.codeName }}
+                            </span>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -229,6 +388,7 @@ function recievePagingNumber(selecteddNumber: number) {
                     <th>開始</th>
                     <th>終了</th>
                     <th>途中停止</th>
+                    <th>遷移</th>
                     <th v-if="isGetTrace">&nbsp;</th>
                 </tr>
                 <tr v-for="entity of resultDto.listTaskPlan">
@@ -237,14 +397,18 @@ function recievePagingNumber(selecteddNumber: number) {
                         entity.taskPlanCode
                             }})</button> </td>
                     <td>{{ entity.taskPlanName }}</td>
-                    <td>{{ entity.insertTimestamp }}</td>
+                    <td>{{ convertDatetimeText(entity.insertTimestamp) }}</td>
                     <td>{{ getStateText(entity.isStart, "開始") }}<br><span v-if="entity.isStart"> {{
-                        entity.startDatetime }}</span></td>
+                        convertDatetimeText(entity.startDatetime) }}</span></td>
                     <td>{{ getStateText(entity.isFinished, "終了") }}<br><span v-if="entity.isFinished"> {{
-                        entity.endDatetime }}</span>
+                        convertDatetimeText(entity.endDatetime) }}</span>
                     </td>
                     <td>{{ getStateText(entity.isSuspended, "中断") }}<br><span v-if="entity.isSuspended">{{
-                        entity.endDatetime }}</span>
+                        convertDatetimeText(entity.endDatetime) }}</span>
+                    </td>
+                    <td>
+                        <button @click="onTransfer(entity.transferPass)"
+                            :disabled="entity.transferPass == ''">遷移</button>
                     </td>
                     <td v-if="isGetTrace">
                         <DownloadStackTrace :task-plan-code="entity.taskPlanCode" :task-year="entity.tableYear"
@@ -275,14 +439,15 @@ function recievePagingNumber(selecteddNumber: number) {
                     <td>{{ entity.tableYear }}</td>
                     <td>{{ entity.taskPlanCode }}</td>
                     <td>{{ entity.taskPlanName }}</td>
-                    <td>{{ entity.insertTimestamp }}</td>
-                    <td>{{ getStateText(entity.isStart, "開始") }}<br><span v-if="entity.isStart">{{ entity.startDatetime
-                    }}</span></td>
+                    <td>{{ convertDatetimeText(entity.insertTimestamp) }}</td>
+                    <td>{{ getStateText(entity.isStart, "開始") }}<br><span v-if="entity.isStart">{{
+                        convertDatetimeText(entity.startDatetime)
+                            }}</span></td>
                     <td>{{ getStateText(entity.isFinished, "終了") }}<br><span v-if="entity.isFinished"> {{
-                        entity.endDatetime }}</span>
+                        convertDatetimeText(entity.endDatetime) }}</span>
                     </td>
                     <td>{{ getStateText(entity.isSuspended, "中断") }}<br><span v-if="entity.isSuspended">{{
-                        entity.endDatetime }}</span>
+                        convertDatetimeText(entity.endDatetime) }}</span>
                     </td>
                 </tr>
             </tbody>

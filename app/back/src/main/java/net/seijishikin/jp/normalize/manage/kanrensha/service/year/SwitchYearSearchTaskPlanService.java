@@ -59,7 +59,7 @@ public class SwitchYearSearchTaskPlanService {
                     SearchTaskPlanResultDto resultDto2025 = searchTaskPlanY2025Logic.practice(capsuleDto);
                     resultDto.getListTaskPlan().addAll(resultDto2025.getListTaskPlan());
                     resultDto.setLimit(resultDto2025.getLimit());
-                    resultDto.setAllCount(resultDto2025.getAllCount());
+                    resultDto.setAllCount(resultDto.getAllCount() + resultDto2025.getAllCount());
                     resultDto.setPageNumber(resultDto2025.getPageNumber());
                     break;
 
@@ -68,7 +68,7 @@ public class SwitchYearSearchTaskPlanService {
                     SearchTaskPlanResultDto resultDto2026 = searchTaskPlanY2026Logic.practice(capsuleDto);
                     resultDto.getListTaskPlan().addAll(resultDto2026.getListTaskPlan());
                     resultDto.setLimit(resultDto2026.getLimit());
-                    resultDto.setAllCount(resultDto2026.getAllCount());
+                    resultDto.setAllCount(resultDto.getAllCount() + resultDto2026.getAllCount());
                     resultDto.setPageNumber(resultDto2026.getPageNumber());
                     break;
 

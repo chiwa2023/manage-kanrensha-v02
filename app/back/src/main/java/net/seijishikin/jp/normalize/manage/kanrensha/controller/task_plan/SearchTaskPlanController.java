@@ -39,11 +39,23 @@ public class SearchTaskPlanController {
     public ResponseEntity<SearchTaskPlanResultDto> practice(final @RequestBody SearchTaskPlanCapsuleDto capsuleDto) {
 
         try {
+            
+            System.out.println("------検索条件");            
+            System.out.println("**" + capsuleDto.getStartDate());            
+            System.out.println("**" + capsuleDto.getEndDate());            
+            System.out.println("**" + capsuleDto.getSearchTaskWord());            
+            System.out.println("**" + capsuleDto.getFlgFinished());            
+            System.out.println("**" + capsuleDto.getFlgStart());            
+            System.out.println("**" + capsuleDto.getFlgSuspended());            
+            System.out.println("**" + capsuleDto.getInfoCodeList());            
+            
+            
+            
             SearchTaskPlanResultDto resultDto = switchYearSearchTaskPlanService.practice(capsuleDto);
 
             final Integer zero = 0;
             if (zero.equals(resultDto.getAllCount())) {
-                return ResponseEntity.status(HttpStatus.NO_CONTENT).body(resultDto);
+                return ResponseEntity.status(HttpStatus.ACCEPTED).body(resultDto);
             } else {
                 return ResponseEntity.status(HttpStatus.OK).body(resultDto);
             }

@@ -19,7 +19,7 @@ export default class RoutePathConstants {
     static readonly PAGE_MENU_ADMIN: string = this.BASE_PATH + "/menu-admin";
     /** 運営者メニュー */
     static readonly PAGE_MENU_MANAGER: string = this.BASE_PATH + "/menu-manager";
-    /** APIユーザメニュー */
+    /** APIパートナーメニュー */
     static readonly PAGE_MENU_PARTNER_API: string = this.BASE_PATH + "/menu-partner-api";
     /** 関連者メニュー */
     static readonly PAGE_MENU_KANRENSHA: string = this.BASE_PATH + "/menu-kanrensha";
@@ -33,7 +33,7 @@ export default class RoutePathConstants {
 
     /** 関連者追加 */
     static readonly PAGE_INSERT_KANRENSHA: string = this.BASE_PATH + "/insert-kanrensha";
-    /** APIユーザ追加 */
+    /** APIパートナー追加 */
     static readonly PAGE_INSERT_PARTNER_API: string = this.BASE_PATH + "/insert-partner";
     /** 運営者追加 */
     static readonly PAGE_INSERT_MANAGER: string = this.BASE_PATH + "/insert-manager";
@@ -143,18 +143,18 @@ export default class RoutePathConstants {
 
     // /** 運営者組織個人紐づけ */
     // static readonly PAGE_COMBINE_MANAGER: string = this.BASE_PATH + "/combine-manager";
-    // /** APIユーザ組織個人紐づけ */
+    // /** APIパートナー組織個人紐づけ */
     // static readonly PAGE_COMBINE_COMRADE: string = this.BASE_PATH + "/combine-comrade";
 
 
-    // /** APIユーザ編集 */
+    // /** APIパートナー編集 */
     // static readonly PAGE_EDIT_COMRADE: string = this.BASE_PATH + "/edit-comrade";
     // /** 運営者編集 */
     // static readonly PAGE_EDIT_MANAGER: string = this.BASE_PATH + "/edit-manager";
 
-    // /** APIユーザ組織に個人を招待 */
+    // /** APIパートナー組織に個人を招待 */
     // static readonly PAGE_INVITE_COMRADE_PERSON: string = this.BASE_PATH + "/invite-comrade";
-    // /** APIユーザ組織に招待を個人が承認 */
+    // /** APIパートナー組織に招待を個人が承認 */
     // static readonly PAGE_ACCEPT_COMRADE_PERSON: string = this.BASE_PATH + "/accept-comrade";
 
     // /** 運営者組織に個人を招待 */

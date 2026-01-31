@@ -3,7 +3,7 @@ import MenuRiyoushaPartnerApiContent from '../../common/menu/MenuRiyoushaPartner
 import { type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import { ref, type Ref } from 'vue';
 import { getLoginUser } from '../../utils/getLoginUser';
-import MockPartnerApiInfo from '../../../test/common/user_info/MockPartnerApiInfo.vue';
+import PartnerApiInfo from '../../common/user_info/PartnerApiInfo.vue';
 
 //仮
 // よく使う定数
@@ -24,9 +24,9 @@ const userDto: Ref<LeastUserDtoInterface> = ref(getLoginUser());
 <template>
 
     <!-- 運営者 -->
-    <MockPartnerApiInfo :user-dto="userDto"></MockPartnerApiInfo>
+    <PartnerApiInfo :user-dto="userDto"></PartnerApiInfo>
 
-    <h1>APIユーザ向けメニュー</h1><br>
+    <h1>APIパートナー向けメニュー</h1><br>
     <MenuRiyoushaPartnerApiContent></MenuRiyoushaPartnerApiContent>
 
 </template>

@@ -43,8 +43,7 @@ public class GetPromoteAdminController {
         try {
             GetPromoteAdminResultDto resultDto = getPromoteAdminService.practice(capsuleDto.getUserDto());
             if (resultDto.getIsFailure()) {
-                return ResponseEntity.status(HttpStatus.NO_CONTENT).body(resultDto);
-
+                return ResponseEntity.status(HttpStatus.ACCEPTED).body(resultDto);
             } else {
                 return ResponseEntity.status(HttpStatus.OK).body(resultDto);
             }

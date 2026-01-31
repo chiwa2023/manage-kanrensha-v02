@@ -31,7 +31,7 @@ const listMenuRoleOptions: Ref<SelectOptionStringDtoInterface[]> = ref(createLis
 if (INIT_NUMBER === props.userDto.userPersonId || !props.userDto.listRoles.includes(UserRoleConstants.ROLE_PARTNER_API)) {
     infoLevel.value = MessageConstants.LEVEL_ERROR;
     messageType.value = MessageConstants.VIEW_OK;
-    title.value = "ログイン状態またはAPIユーザ権限が確認できませんでした";
+    title.value = "ログイン状態またはAPIパートナー権限が確認できませんでした";
     message.value = "ログアウト処理をします。再度ログイン処理をするかシステム担当者にお問い合わせください";
 }
 
@@ -84,7 +84,7 @@ function recieveSubmit(button: string) {
     <div class="user-role-container-partner">
         <div class="user-role-content">
             <div class="user-role-title">
-                APIユーザ
+                APIパートナー
             </div>
             <!-- 遷移メニュー -->
             <div class="user-role-menu-wrapper">

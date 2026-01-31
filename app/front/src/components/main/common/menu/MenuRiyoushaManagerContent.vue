@@ -66,6 +66,7 @@ import RoutePathConstants from '../../../../routePathConstants';
     <hr>
     <RouterLink :to=RoutePathConstants.PAGE_LOGIN>ログインページ</RouterLink><br>
  -->
+    <RouterLink :to=RoutePathConstants.PAGE_MENU_MANAGER>ページで見る</RouterLink><br>
 
     <RouterLink :to="RoutePathConstants.PAGE_LOGOUT">ログアウト</RouterLink><br>
 

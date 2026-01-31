@@ -4,8 +4,8 @@ import RoutePathConstants from '../../../../routePathConstants';
 import { type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import { getLoginUser } from '../../utils/getLoginUser';
 import router from '../../../../router';
-import MockAllUserInfo from '../../../test/common/user_info/MockAllUserInfo.vue';
 import UserDetailEdit from '../../common/user/UserDetailEdit.vue';
+import AllUserInfo from '../../common/user_info/AllUserInfo.vue';
 
 // back側アクセス
 const urlBack: string = RoutePathConstants.DOMAIN + RoutePathConstants.BASE_PATH;
@@ -47,7 +47,7 @@ function onSave() {
 <template>
 
     <!-- ユーザメニュー兼チェック -->
-    <MockAllUserInfo :user-dto="userDto"></MockAllUserInfo>
+    <AllUserInfo :user-dto="userDto"></AllUserInfo>
 
     <h1>ユーザ編集</h1>
 
@@ -69,7 +69,7 @@ function onSave() {
         </div>
         <div class="right-area">
             <input type="checkbox">運営者権限
-            <input type="checkbox" class="left-space">APIユーザ
+            <input type="checkbox" class="left-space">APIパートナー
         </div>
     </div>
 

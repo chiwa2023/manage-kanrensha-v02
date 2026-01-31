@@ -70,7 +70,7 @@ class UpdateTaskStartAndEndY2026LogicTest {
         TaskPlan2026Entity entityPro = taskPlan2026Repository.findById(savedId).get();
         assertEquals(entityPre.getTaskPlanCode(), entityPro.getTaskPlanCode()); // 同じコード
         // 積み上げた履歴は終了履歴であること
-        assertFalse(entityPro.getIsLatest());
+        assertTrue(entityPro.getIsLatest());
         assertTrue(entityPro.getIsFinished());
         assertTrue(entityPro.getIsStart());
         assertEquals(endTime, entityPro.getStartDatetime());

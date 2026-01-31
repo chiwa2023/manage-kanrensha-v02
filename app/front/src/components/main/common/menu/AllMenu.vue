@@ -46,7 +46,7 @@ function onCancel() {
         <MenuRiyoushaManagerContent> </MenuRiyoushaManagerContent>
     </div>
 
-    <!-- APIユーザ権限メニュー -->
+    <!-- APIパートナー権限メニュー -->
     <div v-if="UserRoleConstants.ROLE_PARTNER_API === vRole">
         <h3>API利用者メニュー</h3>
         <MenuRiyoushaPartnerApiContent></MenuRiyoushaPartnerApiContent>

@@ -87,7 +87,7 @@ function onCancel() {
         </div>
         <div class="right-area">
             <input type="checkbox" v-model="hasRoleManager">運営者権限
-            <input type="checkbox" v-model="hasRolePartnerApi" class="left-space">APIユーザ
+            <input type="checkbox" v-model="hasRolePartnerApi" class="left-space">APIパートナー
         </div>
     </div>
 

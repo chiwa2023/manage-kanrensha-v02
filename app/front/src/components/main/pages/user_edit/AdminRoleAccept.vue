@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { onBeforeMount, ref, type Ref } from 'vue';
 import router from '../../../../router';
-import MockManagerInfo from '../../../test/common/user_info/MockManagerInfo.vue';
 import { FrameworkCapsuleDto, MessageConstants, MessageView, type FrameworkCapsuleDtoInterface, type FrameworkMessageAndResultDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import { getLoginUser } from '../../utils/getLoginUser';
 import getAuthorizedPromiseArea from '../../dto/login/getAuthorizedPromiseArea';
@@ -9,6 +8,9 @@ import RoutePathConstants from '../../../../routePathConstants';
 import { AccessTokenNotFoundError, TokenRefreshError } from '../../dto/login/errors';
 import { GetPromoteAdminResultDto, type GetPromoteAdminResultDtoInterface } from '../../dto/user/getPromoteAdminResultDto';
 import { AcceptUserAdminCapsuleDto, type AcceptUserAdminCapsuleDtoInterface } from '../../dto/user/acceptUserAdminCapsuleDto';
+import { nextTransferPassStore } from '../../stores/nextTransferPass';
+import ManagerInfo from '../../common/user_info/ManagerInfo.vue';
+import { notCompletedTaskStore } from '../../stores/notCompletedTask';
 
 // back側アクセス
 const urlBack: string = RoutePathConstants.DOMAIN + RoutePathConstants.BASE_PATH;
@@ -16,8 +18,9 @@ const urlBack: string = RoutePathConstants.DOMAIN + RoutePathConstants.BASE_PATH
 //仮
 // よく使う定数
 const BLANK: string = "";
-// const INIT_NUMBER: number = 0;
-const SERVER_STATUS_OK: number = 200;
+const INIT_NUMBER: number = 0;
+//const SERVER_STATUS_OK: number = 200;
+const SERVER_ACCEPTED: number = 202;
 // const SERVER_STATUS_ERROR: number = 400;
 // メッセージボックス表示定数
 const infoLevel: Ref<number> = ref(MessageConstants.LEVEL_NONE);
@@ -25,15 +28,25 @@ const messageType: Ref<number> = ref(MessageConstants.VIEW_NONE);
 const title: Ref<string> = ref(BLANK);
 const message: Ref<string> = ref(BLANK);
 
-
 // ユーザ呼び出し
 const userDto: Ref<LeastUserDtoInterface> = ref(getLoginUser());
+
+// pinia(タスク)
+const notCompletedTaskInfo = notCompletedTaskStore();
 
 // 表示Dto
 const resultDto: Ref<GetPromoteAdminResultDtoInterface> = ref(new GetPromoteAdminResultDto());
 
 //初期表示で該当ユーザの推薦状況を表示する
 onBeforeMount(() => {
+    // 直リンク(パスチェックあり)を許容ロジック
+    if (INIT_NUMBER === userDto.value.userPersonId) {
+        const passStore = nextTransferPassStore()
+        passStore.fullPath = RoutePathConstants.PAGE_ADMIN_ACCEPT;
+        router.push(RoutePathConstants.PAGE_LOGIN);
+        return;
+    }
+
     const capsuleDto: FrameworkCapsuleDtoInterface = new FrameworkCapsuleDto();
     capsuleDto.userDto = userDto.value;
     // 検索実行
@@ -49,7 +62,7 @@ onBeforeMount(() => {
         fetch(url, { method, headers, body })
             .then(async (response) => {
                 resultDto.value = await response.json();
-                if (SERVER_STATUS_OK !== response.status) {
+                if (SERVER_ACCEPTED == response.status) {
                     infoLevel.value = MessageConstants.LEVEL_ERROR;
                     messageType.value = MessageConstants.VIEW_OK;
                     title.value = "SE権限追加推薦取得処理";
@@ -86,7 +99,7 @@ function onSave() {
     casuleDtoAccept.promoteAdminEntity = resultDto.value.promoteAdminEntity;
     casuleDtoAccept.userDto = userDto.value;
 
-    // 解凍保存
+    // 回答保存
     getAuthorizedPromiseArea().then(token => {
         const url = urlBack + "/user-role/accept";
         const method = "POST";
@@ -99,13 +112,13 @@ function onSave() {
         fetch(url, { method, headers, body })
             .then(async (response) => {
                 const resultDtoAccept: FrameworkMessageAndResultDtoInterface = await response.json();
-
+                // 何によらずメッセージを出す
                 infoLevel.value = MessageConstants.LEVEL_INFO;
-                // トークン保持ができていない場合
                 messageType.value = MessageConstants.VIEW_TOAST;
                 title.value = "SE権限追加諾否登録";
                 message.value = resultDtoAccept.message;
-
+                 // タスク更新につき次ページでタスクを取りなおす
+                notCompletedTaskInfo.notCompleteTaskDto.isRefreshed = false;
             })
             .catch((e) => {
                 if (e instanceof AccessTokenNotFoundError) {
@@ -143,7 +156,7 @@ function recieveSubmit(button: string) {
 <template>
 
     <!-- ユーザメニュー兼チェック -->
-    <MockManagerInfo :user-dto="userDto"></MockManagerInfo>
+    <ManagerInfo :user-dto="userDto"></ManagerInfo>
 
     <h1>SE権限追加承諾</h1>
 

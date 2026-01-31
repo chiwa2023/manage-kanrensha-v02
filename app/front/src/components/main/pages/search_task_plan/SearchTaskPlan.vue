@@ -1,11 +1,10 @@
 ﻿<script setup lang="ts">
 import { ref, type Ref } from 'vue';
 import ShowTask from '../../common/show_task/ShowTask.vue';
-import MockManagerInfo from '../../../test/common/user_info/MockManagerInfo.vue';
 import type { LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import { getLoginUser } from '../../utils/getLoginUser';
 import router from '../../../../router';
-
+import AllUserInfo from '../../common/user_info/AllUserInfo.vue';
 
 //仮
 // よく使う定数
@@ -17,7 +16,6 @@ import router from '../../../../router';
 // ユーザ呼び出し
 const userDto: Ref<LeastUserDtoInterface> = ref(getLoginUser());
 
-
 function recieveCancelShowTask() {
     router.back();
 }
@@ -25,7 +23,7 @@ function recieveCancelShowTask() {
 </script>
 <template>
     <!-- 全メニュー兼チェック -->
-    <MockManagerInfo :user-dto="userDto"></MockManagerInfo>
+    <AllUserInfo :user-dto="userDto"></AllUserInfo>
 
     <h1>タスク計画検索</h1>
 

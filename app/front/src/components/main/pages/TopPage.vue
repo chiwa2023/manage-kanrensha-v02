@@ -1,7 +1,7 @@
 ﻿<script setup lang="ts">
 import { MessageConstants, MessageView } from 'seijishikin-jp-normalize_common-tool';
 import RoutePathConstants from '../../../routePathConstants';
-import { onBeforeMount,  ref, type Ref } from 'vue';
+import { onBeforeMount, ref, type Ref } from 'vue';
 import { LoginUserCapsuleDto, type LoginUserCapsuleDtoInterface } from '../dto/login/loginUserCapsuleDto';
 import { useApi } from '../utils/useApi';
 import type { LoginUserResultDtoInterface } from '../dto/login/loginUserResultDto';
@@ -9,6 +9,7 @@ import router from '../../../router';
 import { useUserInfoStore } from '../stores/storeUserInfo';
 import { rememberMeStore } from '../../main/stores/remeberMe';
 import UserRoleConstants from '../dto/user/userRoleConstants';
+import { nextTransferPassStore } from '../stores/nextTransferPass';
 
 // back側アクセス
 const urlBack: string = RoutePathConstants.DOMAIN + RoutePathConstants.BASE_PATH;
@@ -27,7 +28,7 @@ const message: Ref<string> = ref(BLANK);
 // pinia
 const userInfo = useUserInfoStore();
 const rememberMe = rememberMeStore();
-
+let nextPath: string | null = BLANK;
 onBeforeMount(() => {
     // PiniaローカルストレージのrememberMeに値が残っていれば復元
     if (rememberMe.hasData()) {
@@ -36,6 +37,10 @@ onBeforeMount(() => {
         user.value.password = rememberMe.getPassowrd();
         user.value.rememberMe = true;
     }
+    // 次の遷移先があれば取得して、保存先は空にする
+    const passStore = nextTransferPassStore()
+    nextPath = passStore.fullPath;
+    passStore.fullPath = BLANK;
 });
 
 function recieveSubmit(button: string) {
@@ -83,9 +88,15 @@ async function onLogin() {
         if (user.value.rememberMe) {
             rememberMe.setMail(user.value.userId);
             rememberMe.setPassword(user.value.password);
-        }else{
+        } else {
             // チェックが外されたら初期化
-            rememberMe.initialize();            
+            rememberMe.initialize();
+        }
+
+        // 次の行き先が保存してある場合はその遷移先に移動
+        if (null !== nextPath && BLANK !== nextPath) {
+            router.push(nextPath);
+            return;
         }
 
         switch (resultDto.userDto.listRoles[0]) {
@@ -98,7 +109,7 @@ async function onLogin() {
                 router.push(RoutePathConstants.PAGE_MENU_MANAGER);
                 break;
             case UserRoleConstants.ROLE_PARTNER_API:
-                // APIユーザ
+                // APIパートナー
                 router.push(RoutePathConstants.PAGE_MENU_PARTNER_API);
                 break;
             case UserRoleConstants.ROLE_KANRENSHA_PERSON:

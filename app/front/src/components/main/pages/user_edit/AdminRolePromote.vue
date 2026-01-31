@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { ref, type Ref } from 'vue';
 import router from '../../../../router';
-import MockAdminInfo from '../../../test/common/user_info/MockAdminInfo.vue';
 import { MessageConstants, MessageView, type FrameworkMessageAndResultDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import { getLoginUser } from '../../utils/getLoginUser';
 import UserRoleConstants from '../../dto/user/userRoleConstants';
@@ -12,6 +11,7 @@ import getAuthorizedPromiseArea from '../../dto/login/getAuthorizedPromiseArea';
 import RoutePathConstants from '../../../../routePathConstants';
 import { AccessTokenNotFoundError, TokenRefreshError } from '../../dto/login/errors';
 import { SearchUserEntityResultDto, type SearchUserEntityResultDtoInterface } from '../../dto/user/searchUserEntityResultDto';
+import AdminInfo from '../../common/user_info/AdminInfo.vue';
 
 // back側アクセス
 const urlBack: string = RoutePathConstants.DOMAIN + RoutePathConstants.BASE_PATH;
@@ -145,7 +145,7 @@ function recieveSubmit(button: string) {
 </script>
 <template>
     <!-- ユーザメニュー兼チェック -->
-    <MockAdminInfo :user-dto="userDto"></MockAdminInfo>
+    <AdminInfo :user-dto="userDto"></AdminInfo>
 
     <h1>SE権限追加推薦</h1>
 

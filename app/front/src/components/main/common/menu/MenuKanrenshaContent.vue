@@ -25,7 +25,9 @@ import RoutePathConstants from '../../../../routePathConstants';
     <RouterLink :to=RoutePathConstants.PAGE_CHANGE_ROLE>権限変更</RouterLink><br>
     <RouterLink :to=RoutePathConstants.PAGE_USER_WITHDRAW>退会</RouterLink><br>
     -->
- 
+
+     <RouterLink :to=RoutePathConstants.PAGE_MENU_KANRENSHA>ページで見る</RouterLink><br>
+
      <RouterLink :to="RoutePathConstants.PAGE_LOGOUT">ログアウト</RouterLink><br>
 
 </template>

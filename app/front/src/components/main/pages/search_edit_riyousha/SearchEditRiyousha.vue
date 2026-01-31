@@ -1,11 +1,14 @@
 ﻿<script setup lang="ts">
 import { ref, type Ref } from 'vue';
-import MockAdminInfo from '../../../test/common/user_info/MockAdminInfo.vue';
+import AdminInfo from '../../common/user_info/AdminInfo.vue';
+import type { LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
+import { getLoginUser } from '../../utils/getLoginUser';
+
 // import UserRoleConstants from '../../dto/user/userRoleConstants';
 // import { LeastUserDto, type LeastUserDtoInterface } from '../../dto/user/leastUserDto';
 // import type RiyoushaManagerInterface from '../../entity/riyoushaManagerEntity';
 // import RiyoushaManagerEntity from '../../entity/riyoushaManagerEntity';
-import {  InputPersonNameDto, ViewInputPersonName, type InputPersonNameDtoInterface, } from 'seijishikin-jp-normalize_common-tool';
+//import {  InputPersonNameDto, ViewInputPersonName, type InputPersonNameDtoInterface, } from 'seijishikin-jp-normalize_common-tool';
 //import { ComponentCatalog, InputPersonNameDto, ViewInputPersonName, type InputPersonNameDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 
 // import type RiyoushaComradeInterface from '../../../entity/riyoushaComradeEntity';
@@ -34,13 +37,9 @@ import {  InputPersonNameDto, ViewInputPersonName, type InputPersonNameDtoInterf
 // // back側アクセス
 // const urlBack: string = RoutePathConstants.DOMAIN_BACK + RoutePathConstants.PATH_BACK;
 
-// // ユーザメニューで取得したユーザを保持
-// const sessionStorage = window["sessionStorage"];
-// const userDtoText: string | null = sessionStorage.getItem("userDto");
-// const userDto: Ref<LeastUserDtoInterface> = ref(new LeastUserDto());
-// if (userDtoText !== null) {
-//     userDto.value = JSON.parse(userDtoText);
-// }
+// ユーザ呼び出し
+const userDto: Ref<LeastUserDtoInterface> = ref(getLoginUser());
+
 
 // // 入力用変数
 // const viewStatus: Ref<string> = ref("");
@@ -111,9 +110,9 @@ import {  InputPersonNameDto, ViewInputPersonName, type InputPersonNameDtoInterf
 </script>
 <template>
     <div class="container">
-        <!-- SEページ
-        <MockAdminInfo :user-dto="user"></MockAdminInfo>
- -->
+        <!-- SEページ -->
+        <AdminInfo :user-dto="userDto"></AdminInfo>
+
         <h1>利用者検索</h1> <br>
 
         <h3 class="accent-h3">検索条件</h3>
@@ -213,7 +212,7 @@ import {  InputPersonNameDto, ViewInputPersonName, type InputPersonNameDtoInterf
         <!-- <PagingControl :all-count="allCount" :limit="limit" :page-number="pageNumber"></PagingControl> -->
 
 
-        <!-- APIユーザ編集
+        <!-- APIパートナー編集
     <div v-if="viewStatus === UserRoleConstants.ROLE_COMRADE">
         <RiyoushaComradeEdit :base-entity="inputComradeEntity" :is-edit-new="isNew" :is-combine-user="isCombineUser"
             :user-dto="userDto"></RiyoushaComradeEdit>

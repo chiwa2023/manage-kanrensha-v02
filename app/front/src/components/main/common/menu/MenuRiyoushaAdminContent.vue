@@ -40,6 +40,8 @@ import RoutePathConstants from '../../../../routePathConstants';
  -->
     <RouterLink :to=RoutePathConstants.PAGE_RIYOUSHA_SEARCH>利用者検索／編集</RouterLink><br>
 
+    <RouterLink :to=RoutePathConstants.PAGE_MENU_ADMIN>ページで見る</RouterLink><br>
+
     <RouterLink :to="RoutePathConstants.PAGE_LOGOUT">ログアウト</RouterLink><br>
 
 </template>

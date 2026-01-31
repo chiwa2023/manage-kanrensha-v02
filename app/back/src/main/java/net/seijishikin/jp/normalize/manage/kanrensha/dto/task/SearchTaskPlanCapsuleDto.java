@@ -2,6 +2,8 @@ package net.seijishikin.jp.normalize.manage.kanrensha.dto.task;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import net.seijishikin.jp.normalize.common_tool.dto.FrameworkCapsuleDto;
 import net.seijishikin.jp.normalize.common_tool.dto.paging.SwitchYearPagingIntegerDatetimeDtoInterface;
@@ -187,6 +189,90 @@ public class SearchTaskPlanCapsuleDto extends FrameworkCapsuleDto // NOPMD DataC
     @Override
     public void setPreStepViewCount(final Integer preStepViewCount) {
         this.preStepViewCount = preStepViewCount;
+    }
+
+    /** 終了検索条件 */
+    private Integer flgFinished = INIT_INTEGER;
+
+    /** 開始検索条件 */
+    private Integer flgStart = INIT_INTEGER;
+
+    /** 中断検索条件 */
+    private Integer flgSuspended = INIT_INTEGER;
+
+    /** タスクの種類検索条件 */
+    private List<Integer> infoCodeList = new ArrayList<>();
+
+    /**
+     * 終了検索条件を取得する
+     * 
+     * @return 終了検索条件
+     */
+    public Integer getFlgFinished() {
+        return flgFinished;
+    }
+
+    /**
+     * 終了検索条件を設定する
+     * 
+     * @param flgFinished 終了検索条件
+     */
+    public void setFlgFinished(final Integer flgFinished) {
+        this.flgFinished = flgFinished;
+    }
+
+    /**
+     * 開始検索条件を取得する
+     * 
+     * @return 開始検索条件
+     */
+    public Integer getFlgStart() {
+        return flgStart;
+    }
+
+    /**
+     * 開始検索条件を設定する
+     * 
+     * @param flgStart 開始検索条件
+     */
+    public void setFlgStart(final Integer flgStart) {
+        this.flgStart = flgStart;
+    }
+
+    /**
+     * 中断検索条件を取得する
+     * 
+     * @return 中断検索条件
+     */
+    public Integer getFlgSuspended() {
+        return flgSuspended;
+    }
+
+    /**
+     * 中断検索条件を設定する
+     * 
+     * @param flgSuspended 中断検索条件
+     */
+    public void setFlgSuspended(final Integer flgSuspended) {
+        this.flgSuspended = flgSuspended;
+    }
+
+    /**
+     * タスクの種類検索条件を取得する
+     * 
+     * @return タスクの種類検索条件
+     */
+    public List<Integer> getInfoCodeList() {
+        return infoCodeList;
+    }
+
+    /**
+     * タスクの種類検索条件を設定する
+     * 
+     * @param infoCodeList タスクの種類検索条件
+     */
+    public void setInfoCodeList(final List<Integer> infoCodeList) {
+        this.infoCodeList = infoCodeList;
     }
 
 }

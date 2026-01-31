@@ -63,7 +63,7 @@ async function onRegistUser() {
                 router.push(RoutePathConstants.PAGE_INSERT_MANAGER);
                 break;
             case UserRoleConstants.ROLE_PARTNER_API:
-                // APIユーザ
+                // APIパートナー
                 router.push(RoutePathConstants.PAGE_INSERT_PARTNER_API);
                 break;
             case UserRoleConstants.ROLE_KANRENSHA_PERSON:
@@ -173,7 +173,7 @@ function recieveSubmit(button: string) {
                 <div>
                     <input type="radio" id="role" v-model="newComer.role"
                         :value=UserRoleConstants.PARTNER_API>自作ソフトウェアに<span
-                        class="explain">このサイトの関連者情報を取り込みたい</span><span class="kbn">APIユーザ</span>
+                        class="explain">このサイトの関連者情報を取り込みたい</span><span class="kbn">APIパートナー</span>
                 </div>
                 <div>
                     <input type="radio" id="role" v-model="newComer.role"
@@ -215,7 +215,7 @@ function recieveSubmit(button: string) {
                         <td>○</td>
                     </tr>
                     <tr>
-                        <td>APIユーザ</td>
+                        <td>APIパートナー</td>
                         <td>△：本人のみ</td>
                         <td>×：申請制を予定</td>
                         <td>○</td>

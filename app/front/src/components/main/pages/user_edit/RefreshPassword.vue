@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { ref, type Ref } from 'vue';
 import router from '../../../../router';
-import MockAllUserInfo from '../../../test/common/user_info/MockAllUserInfo.vue';
 import RoutePathConstants from '../../../../routePathConstants';
 import type { LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import { getLoginUser } from '../../utils/getLoginUser';
 import { MessageConstants, MessageView } from 'seijishikin-jp-normalize_common-tool';
 import { RefreshPasswordCapsuleDto, type RefreshPasswordCapsuleDtoInterface } from '../../dto/user/refreshPasswordCapsuleDto';
 import PasswordInput from '../../common/user/PasswordInput.vue';
+import AllUserInfo from '../../common/user_info/AllUserInfo.vue';
 
 // back側アクセス
 const urlBack: string = RoutePathConstants.DOMAIN + RoutePathConstants.BASE_PATH;
@@ -92,7 +92,7 @@ function recievePasswordReInput(password: string) {
 <template>
 
     <!-- ユーザメニュー兼チェック -->
-    <MockAllUserInfo :user-dto="userDto"></MockAllUserInfo>
+    <AllUserInfo :user-dto="userDto"></AllUserInfo>
 
     <h1>パスワード変更</h1>
 

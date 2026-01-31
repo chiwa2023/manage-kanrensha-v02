@@ -1,12 +1,10 @@
 <script setup lang="ts">
 import { onBeforeMount, ref, type Ref } from 'vue';
-import MockPartnerApiInfo from '../../../test/common/user_info/MockPartnerApiInfo.vue';
-import { type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
+import { InputDatetime, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import { getLoginUser } from '../../utils/getLoginUser';
 import router from '../../../../router';
 import { PartnerAccessTokenStateDto, type PartnerAccessTokenStateDtoInterface } from '../../dto/user/partnerAccessTokenStateDto';
 import mockGetPartnerApiForNewToken from '../../../test/common/user/mock/mockGetPartnerApiForNewToken';
-import DateTime from '../../common/util/DateTime.vue';
 import IpAddress from '../../common/util/IpAddress.vue';
 import RoutePathConstants from '../../../../routePathConstants';
 import { PartnerApiTokenCapsuleDto, type PartnerApiTokenCapsuleDtoInterface } from '../../dto/user/partnerApiTokenCapsuleDto';
@@ -15,6 +13,7 @@ import { MessageConstants, MessageView } from 'seijishikin-jp-normalize_common-t
 import getAuthorizedPromiseArea from '../../dto/login/getAuthorizedPromiseArea';
 import { AccessTokenNotFoundError, TokenRefreshError } from '../../dto/login/errors';
 import { logout } from '../../utils/logout';
+import PartnerApiInfo from '../../common/user_info/PartnerApiInfo.vue';
 
 // back側アクセス
 const urlBack: string = RoutePathConstants.DOMAIN + RoutePathConstants.BASE_PATH;
@@ -231,7 +230,7 @@ function recieveSubmit(button: string) {
 </script>
 <template>
 
-    <MockPartnerApiInfo :user-dto="userDto"></MockPartnerApiInfo>
+    <PartnerApiInfo :user-dto="userDto"></PartnerApiInfo>
 
     <h1>APIパートナー長期トークン(再)発行</h1>
 
@@ -262,7 +261,7 @@ function recieveSubmit(button: string) {
             発行時間
         </div>
         <div class="right-area">
-            <DateTime :datetime="stateDto.createdAt" :index="1" :is-edit="false"></DateTime>
+            <InputDatetime :datetime="stateDto.createdAt" :index="1" :is-edit="false"></InputDatetime>
         </div>
     </div>
 
@@ -271,7 +270,7 @@ function recieveSubmit(button: string) {
             有効期限
         </div>
         <div class="right-area">
-            <DateTime :datetime="stateDto.createdAt" :index="2" :is-edit="false"></DateTime>
+            <InputDatetime :datetime="stateDto.createdAt" :index="2" :is-edit="false"></InputDatetime>
         </div>
     </div>
 
@@ -280,7 +279,7 @@ function recieveSubmit(button: string) {
             最新アクセス
         </div>
         <div class="right-area">
-            <DateTime :datetime="stateDto.lastUsedAt" :index="3" :is-edit="false"></DateTime>
+            <InputDatetime :datetime="stateDto.lastUsedAt" :index="3" :is-edit="false"></InputDatetime>
         </div>
     </div>
 
@@ -289,7 +288,7 @@ function recieveSubmit(button: string) {
             失効時間
         </div>
         <div class="right-area">
-            <DateTime :datetime="stateDto.lastUsedAt" :index="4" :is-edit="false"></DateTime>
+            <InputDatetime :datetime="stateDto.lastUsedAt" :index="4" :is-edit="false"></InputDatetime>
         </div>
     </div>
 

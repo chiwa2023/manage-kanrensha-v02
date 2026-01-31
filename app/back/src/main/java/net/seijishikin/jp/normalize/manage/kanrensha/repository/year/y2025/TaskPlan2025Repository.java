@@ -52,7 +52,7 @@ public interface TaskPlan2025Repository extends JpaRepository<TaskPlan2025Entity
      * @return 最新リスト(基本的に1件)
      */
     List<TaskPlan2025Entity> findByTaskPlanCodeAndIsLatest(Integer taskCode, Boolean isLatest);
-    
+
     /**
      * タスク計画を検索条件で検索する
      *
@@ -66,11 +66,10 @@ public interface TaskPlan2025Repository extends JpaRepository<TaskPlan2025Entity
             + "   WHERE insert_timestamp BETWEEN ?1 AND ?2" //
             + "       AND is_latest = 1" //
             + "       AND CASE" //
-            //+ "              WHEN ?3 <> '' THEN MATCH(task_plan_name) AGAINST (?3 IN BOOLEAN MODE)" //
+            // + " WHEN ?3 <> '' THEN MATCH(task_plan_name) AGAINST (?3 IN BOOLEAN MODE)" //
             + "              WHEN ?3 <> '' THEN task_plan_name LIKE ?3" //
             + "              ELSE 1=1"//
-            + "           END"
-            , nativeQuery = true)
+            + "           END", nativeQuery = true)
     List<TaskPlanBaseEntity> findTaskPlan(LocalDateTime startDateTime, LocalDateTime endDateTime, String searchWord,
             Pageable pageable);
 
@@ -86,11 +85,19 @@ public interface TaskPlan2025Repository extends JpaRepository<TaskPlan2025Entity
             + "   WHERE insert_timestamp BETWEEN ?1 AND ?2" //
             + "       AND is_latest = 1" //
             + "       AND CASE" //
-            //+ "              WHEN ?3 <> '' THEN MATCH(task_plan_name) AGAINST (?3 IN BOOLEAN MODE)" //
+            // + " WHEN ?3 <> '' THEN MATCH(task_plan_name) AGAINST (?3 IN BOOLEAN MODE)" //
             + "              WHEN ?3 <> '' THEN task_plan_name LIKE ?3" //
             + "              ELSE 1=1"//
-            + "           END"
-            , nativeQuery = true)
+            + "           END", nativeQuery = true)
     Integer countTaskPlan(LocalDateTime startDateTime, LocalDateTime endDateTime, String searchWord);
 
+    /**
+     * 未処理タスクを抽出する
+     * 
+     * @param userCode ユーザコード
+     * @param pageable ページング
+     * @return 検索結果
+     */
+    List<TaskPlan2025Entity> findByInsertUserCodeAndIsLatestTrueAndIsFinishedFalseOrderByInsertTimestampDesc(
+            Integer userCode, Pageable pageable);
 }

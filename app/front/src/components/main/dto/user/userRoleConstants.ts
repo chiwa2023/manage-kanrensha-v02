@@ -9,7 +9,7 @@ export default class UserRoleConstants {
     /** 運営者権限 */
     static readonly MANAGER: string = "manager";
 
-    /** APIユーザ権限 */
+    /** APIパートナー権限 */
     static readonly PARTNER_API: string = "partner_api";
 
     /** 関連者個人権限 */
@@ -27,7 +27,7 @@ export default class UserRoleConstants {
     /** 運営者権限 */
     static readonly ROLE_MANAGER: string = "ROLE_manager";
 
-    /** APIユーザ権限 */
+    /** APIパートナー権限 */
     static readonly ROLE_PARTNER_API: string = "ROLE_partner_api";
 
     /** 関連者個人権限 */
@@ -45,8 +45,8 @@ export default class UserRoleConstants {
     /** 運営者権限表示テキスト */
     static readonly ROLE_MANAGER_TEXT: string = "運営者";
 
-    /** APIユーザ権限表示テキスト */
-    static readonly ROLE_PARTNER_API_TEXT: string = "APIユーザ";
+    /** APIパートナー権限表示テキスト */
+    static readonly ROLE_PARTNER_API_TEXT: string = "APIパートナー";
 
     /** 関連者個人権限表示テキスト */
     static readonly ROLE_KANRENSHA_PERSON_TEXT: string = "関連者個人";

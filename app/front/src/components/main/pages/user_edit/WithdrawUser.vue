@@ -4,9 +4,9 @@ import RoutePathConstants from '../../../../routePathConstants';
 import { getLoginUser } from '../../utils/getLoginUser';
 import type { LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import router from '../../../../router';
-import MockAllUserInfo from '../../../test/common/user_info/MockAllUserInfo.vue';
 import { MessageConstants, MessageView } from 'seijishikin-jp-normalize_common-tool';
 import { DeleteUserCapsuleDto, type DeleteUserCapsuleDtoInterface } from '../../dto/user/deleteUserCapsuleDto';
+import AllUserInfo from '../../common/user_info/AllUserInfo.vue';
 
 // back側アクセス
 const urlBack: string = RoutePathConstants.DOMAIN + RoutePathConstants.BASE_PATH;
@@ -83,7 +83,7 @@ function recieveSubmit(button: string) {
 </script>
 <template>
     <!-- ユーザメニュー兼チェック -->
-    <MockAllUserInfo :user-dto="userDto"></MockAllUserInfo>
+    <AllUserInfo :user-dto="userDto"></AllUserInfo>
 
     <h1>退会処理</h1>
 

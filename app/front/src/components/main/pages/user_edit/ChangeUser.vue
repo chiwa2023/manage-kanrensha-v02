@@ -2,7 +2,6 @@
 import { ref, type Ref } from 'vue';
 import RoutePathConstants from '../../../../routePathConstants';
 import router from '../../../../router';
-import MockAdminInfo from '../../../test/common/user_info/MockAdminInfo.vue';
 import type { LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import { getLoginUser } from '../../utils/getLoginUser';
 import type { UserPersonEntityInterface } from '../../entity/userPersonEntity';
@@ -10,6 +9,7 @@ import mockGetUserList from '../../../test/pages/user/mock/mockGetUserList';
 import UserDetailEdit from '../../common/user/UserDetailEdit.vue';
 import { SearchUserCapsuleDto, type SearchUserCapsuleDtoInterface } from '../../dto/user/searchUserCapsuleDto';
 import UserRoleConstants from '../../dto/user/userRoleConstants';
+import AdminInfo from '../../common/user_info/AdminInfo.vue';
 
 // back側アクセス
 const urlBack: string = RoutePathConstants.DOMAIN + RoutePathConstants.BASE_PATH;
@@ -124,7 +124,7 @@ function onCancel() {
 <template>
 
     <!-- ユーザメニュー兼チェック -->
-    <MockAdminInfo :user-dto="userDto"></MockAdminInfo>
+    <AdminInfo :user-dto="userDto"></AdminInfo>
 
     <h1>ユーザ変更</h1>
 
@@ -146,7 +146,7 @@ function onCancel() {
             <div class="form-group-vertical">
                 <span>
                     <input type="checkbox" v-model="hasConditionManager">運営者
-                    <input type="checkbox" v-model="hasConditionPartnerApi" class="left-space">APIユーザ
+                    <input type="checkbox" v-model="hasConditionPartnerApi" class="left-space">APIパートナー
                 </span>
                 <span>
 

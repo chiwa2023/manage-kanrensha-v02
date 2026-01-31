@@ -13,6 +13,6 @@
 
 </script>
 <template>
-    <h1>APIユーザ追加</h1>
+    <h1>APIパートナー追加</h1>
 </template>
 <style scoped></style>

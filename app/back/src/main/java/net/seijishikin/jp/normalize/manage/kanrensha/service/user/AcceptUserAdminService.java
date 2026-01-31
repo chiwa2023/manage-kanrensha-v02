@@ -122,7 +122,6 @@ public class AcceptUserAdminService {
         }
         List<UserRoleEntity> listUser = userRoleRepository.findByEmailAndIsLatestTrue(optionalPerson.get().getEmail());
 
-        System.out.println("取得メール" + optionalPerson.get().getEmail());
         if (listUser.isEmpty()) {
             throw new EmptyResultDataAccessException("ユーザ権限が1件も見つかりませんでした", 1);
         }

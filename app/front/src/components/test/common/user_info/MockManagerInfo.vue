@@ -1,6 +1,6 @@
 ﻿<script setup lang="ts">
-import { onBeforeMount, ref, type Ref } from 'vue';
-import { type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
+import { computed, onBeforeMount, ref, type ComputedRef, type Ref } from 'vue';
+import { FrameworkCapsuleDto, type FrameworkCapsuleDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import { MessageConstants, MessageView } from 'seijishikin-jp-normalize_common-tool';
 import router from '../../../../router';
 import RoutePathConstants from '../../../../routePathConstants';
@@ -10,6 +10,17 @@ import type { SelectOptionStringDtoInterface } from '../../../main/dto/select_op
 import { createListRoleOptions } from '../../../main/common/menu/createListRoleOptions';
 import PersonMenu from '../../../main/common/menu/PersonMenu.vue';
 import ShowTask from '../../../main/common/show_task/ShowTask.vue';
+import { notCompletedTaskStore } from '../../../main/stores/notCompletedTask';
+import getAuthorizedPromiseArea from '../../../main/dto/login/getAuthorizedPromiseArea';
+import { AccessTokenNotFoundError, TokenRefreshError } from '../../../main/dto/login/errors';
+import { TaskListForUserInfoResultDto, type TaskListForUserInfoResultDtoInterface } from '../../../main/dto/task_plan/taskListForUserInfoResultDto';
+import convertTaskToOption from '../../../main/dto/task_plan/convertTaskToOptions';
+
+// props,emmits
+const props = defineProps<{ userDto: LeastUserDtoInterface }>();
+
+// back側アクセス
+const urlBack: string = RoutePathConstants.DOMAIN + RoutePathConstants.BASE_PATH;
 
 // よく使う定数
 const BLANK: string = "";
@@ -22,20 +33,92 @@ const messageType: Ref<number> = ref(MessageConstants.VIEW_NONE);
 const title: Ref<string> = ref(BLANK);
 const message: Ref<string> = ref(BLANK);
 
+// pinia
+const notCompletedTaskInfo = notCompletedTaskStore();
 
-// props,emmits
-const props = defineProps<{ userDto: LeastUserDtoInterface }>();
-
+// 権限別メニュー
 const listMenuRoleOptions: Ref<SelectOptionStringDtoInterface[]> = ref(createListRoleOptions(props.userDto.listRoles));
 
-onBeforeMount(() => {
+// 未処理タスク表示
+const resultDtoTask: Ref<TaskListForUserInfoResultDtoInterface> = ref(new TaskListForUserInfoResultDto());
+const optionsThisYear: Ref<SelectOptionStringDtoInterface[]> = ref([]);
+const optionsLastYear: Ref<SelectOptionStringDtoInterface[]> = ref([]);
+const optionsView:ComputedRef<SelectOptionStringDtoInterface[]> = computed(() => {
+    if("1" === switchYear.value){
+        return optionsThisYear.value;
+    }else{
+        return optionsLastYear.value;
+    }
+});
+const selectedTask: Ref<string> = ref("");
+const switchYear: Ref<string> = ref("");
+const tansferDisabled:ComputedRef<boolean> = computed(() => BLANK === selectedTask.value);
+
+onBeforeMount(async () => {
     // ログインと権限チェック
     if (INIT_NUMBER === props.userDto.userPersonId || !props.userDto.listRoles.includes(UserRoleConstants.ROLE_MANAGER)) {
         infoLevel.value = MessageConstants.LEVEL_ERROR;
         messageType.value = MessageConstants.VIEW_OK;
-        title.value = "ログイン状態またはAPIユーザ権限が確認できませんでした";
+        title.value = "ログイン状態またはAPIパートナー権限が確認できませんでした";
         message.value = "ログアウト処理をします。再度ログイン処理をするかシステム担当者にお問い合わせください";
     }
+
+    // 未処理タスクが最新でなければ更新
+    if (notCompletedTaskInfo !== null) {
+        if (!notCompletedTaskInfo.notCompleteTaskDto.isRefreshed) {
+            // 更新処理
+            const capsuleDto: FrameworkCapsuleDtoInterface = new FrameworkCapsuleDto();
+            capsuleDto.userDto = props.userDto;
+            // 検索実行
+            getAuthorizedPromiseArea().then(token => {
+                const url = urlBack + "/task-plan/get-not-finished";
+                const method = "POST";
+                const body = JSON.stringify(capsuleDto);
+                const headers = {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'X-AUTH-TOKEN': 'Bearer ' + token
+                };
+                fetch(url, { method, headers, body })
+                    .then(async (response) => {
+
+                        resultDtoTask.value = await response.json();
+                        if (resultDtoTask.value.listThisYear.length === 0 && resultDtoTask.value.listLastYear.length === 0) {
+                            infoLevel.value = MessageConstants.LEVEL_INFO;
+                            messageType.value = MessageConstants.VIEW_TOAST;
+                            title.value = "未処理タスク確認";
+                            message.value = "未処理タスクは存在しませんでした";
+                        } else {
+                            // TODO selectboxに変換
+                            optionsThisYear.value = convertTaskToOption(resultDtoTask.value.listThisYear);
+                            optionsLastYear.value = convertTaskToOption(resultDtoTask.value.listLastYear);
+                            notCompletedTaskInfo.notCompleteTaskDto.isRefreshed = true;
+                            switchYear.value = "1";
+                        }
+                    })
+                    .catch((e) => {
+                        if (e instanceof AccessTokenNotFoundError) {
+                            // トークン保持ができていない場合
+                            infoLevel.value = MessageConstants.LEVEL_ERROR;
+                            messageType.value = MessageConstants.VIEW_OK;
+                            title.value = "現在トークンが存在しません";
+                            message.value = e.message;
+                            return;
+                        }
+                        if (e instanceof TokenRefreshError) {
+                            // 取得に失敗している場合
+                            infoLevel.value = MessageConstants.LEVEL_ERROR;
+                            messageType.value = MessageConstants.VIEW_OK;
+                            title.value = "有効期限まじかのトークンを再取得できませんでした";
+                            message.value = e.message;
+                            return;
+                        }
+                        alert(e);
+                    });
+            });
+        }
+    }
+
 });
 
 const viewMenuRole: Ref<string> = ref(BLANK);
@@ -90,6 +173,11 @@ function onTaskView() {
 function recieveCancelShowTask() {
     isShowTask.value = false;
 }
+
+function onTransfer() {
+    alert("遷移");
+    // router.push(selectedTask.value);
+}
 </script>
 <template>
     <!-- ユーザrole別制御コンポーネント -->
@@ -99,8 +187,16 @@ function recieveCancelShowTask() {
                 運営者<br>
                 {{ props.userDto.userPersonName }}さん
             </div>
+            <div class="user-role-title left-space" style="text-align: left;">
+                <input type="radio" v-model="switchYear" value="1" id="test">本年{{ optionsThisYear.length-1 }}件
+                <input type="radio" v-model="switchYear" value="2" id="test">前年{{ optionsLastYear.length-1 }}件<br>
+                <select v-model="selectedTask">
+                    <option v-for="option in optionsView" :value="option.value">{{ option.text }}</option>
+                </select>
+                <button @click="onTransfer" :disabled="tansferDisabled">遷移</button>
+            </div>
             <div class="user-role-title left-space">
-                ユーザ固有タスク<button @click="onTaskView">タスク検索</button>
+                <button @click="onTaskView">未処理タスクをもっと見る</button>
             </div>
             <!-- 遷移メニュー -->
             <div class="user-role-menu-wrapper">

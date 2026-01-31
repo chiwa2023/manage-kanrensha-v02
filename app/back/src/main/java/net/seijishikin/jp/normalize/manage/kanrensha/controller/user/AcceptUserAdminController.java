@@ -48,7 +48,7 @@ public class AcceptUserAdminController {
             if (0 == savedCount) {
                 resultDto.setIsFailure(true);
                 resultDto.setMessage("保存できませんでした");
-                return ResponseEntity.status(HttpStatus.NO_CONTENT).body(resultDto);
+                return ResponseEntity.status(HttpStatus.ACCEPTED).body(resultDto);
             } else {
                 resultDto.setMessage("登録できました");
                 return ResponseEntity.status(HttpStatus.OK).body(resultDto);
