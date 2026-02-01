@@ -62,10 +62,10 @@ class RefreshPasswordControllerTest {
         String path = PathRouteConstants.ROOT + "/edit-user/refresh-password";
 
         // サーバステータスがNO_CONTEMT(204)
-        assertEquals(HttpStatus.NO_CONTENT.value(), mockMvc // NOPMD LawOfDemeter
+        assertEquals(HttpStatus.ACCEPTED.value(), mockMvc // NOPMD LawOfDemeter
                 .perform(post(path).content(objectMapper.writeValueAsString(capsuleDto)) //
                         .contentType(MediaType.APPLICATION_JSON_VALUE)) //
-                .andExpect(status().isNoContent()).andReturn().getResponse().getStatus());
+                .andExpect(status().isAccepted()).andReturn().getResponse().getStatus());
     }
 
     @Test
@@ -84,10 +84,10 @@ class RefreshPasswordControllerTest {
         String path = PathRouteConstants.ROOT + "/edit-user/refresh-password";
 
         // サーバステータスがNO_CONTENT(204)
-        assertEquals(HttpStatus.NO_CONTENT.value(), mockMvc // NOPMD LawOfDemeter
+        assertEquals(HttpStatus.ACCEPTED.value(), mockMvc // NOPMD LawOfDemeter
                 .perform(post(path).content(objectMapper.writeValueAsString(capsuleDto)) //
                         .contentType(MediaType.APPLICATION_JSON_VALUE)) //
-                .andExpect(status().isNoContent()).andReturn().getResponse().getStatus());
+                .andExpect(status().isAccepted()).andReturn().getResponse().getStatus());
     }
 
     @Test

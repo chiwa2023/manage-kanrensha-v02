@@ -13,6 +13,7 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import net.seijishikin.jp.normalize.common_tool.dto.FrameworkMessageAndResultDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.constants.GetCurrentResourcePath;
@@ -54,10 +55,11 @@ public class ResetPasswordMailInputService {
      * @return 処理結果
      * @throws IOException メール例文読み込み不可例外
      */
+    @Transactional
     public FrameworkMessageAndResultDto practice(final ResetPassswordCapsuleDto capsuleDto) throws IOException {
 
         String email = capsuleDto.getEmail();
-        
+
         Optional<LoginStatusEntity> optional = loginStatusRepository.findById(email);
 
         FrameworkMessageAndResultDto resultDto = new FrameworkMessageAndResultDto();
@@ -67,9 +69,8 @@ public class ResetPasswordMailInputService {
             return resultDto;
         }
 
-        // 現在テーブル内にあるなしかかわらず主キーで削除
-        userPasswordResetRepository.deleteById(email);
-
+        //userPasswordResetRepository.flush();
+        
         // エンティティにセットして登録
         UserPasswordResetEntity restEntity = new UserPasswordResetEntity();
         restEntity.setEmail(email);
@@ -77,6 +78,8 @@ public class ResetPasswordMailInputService {
         restEntity.setRegistCode(regiCode);
         LocalDateTime limitTime = LocalDateTime.now().plusHours(2L);
         restEntity.setLimitDatetime(limitTime);
+        // 更新か挿入かはspring boot側で判断してね!
+        userPasswordResetRepository.save(restEntity);
 
         // 返却Dtoに複写
         List<MailDataDto> list = new ArrayList<>();

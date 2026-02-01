@@ -36,6 +36,7 @@ import net.seijishikin.jp.normalize.manage.kanrensha.dto.user.SearchUserCapsuleD
 @Transactional
 @Sql("../../service/user/SearchUserServcieTest.sql")
 class SearchUserControllerTest {
+    // CHECKSTYLE:OFF MagicNumber
 
     /** MockMvc */
     @Autowired
@@ -47,6 +48,7 @@ class SearchUserControllerTest {
     void test() throws Exception {
 
         SearchUserCapsuleDto capsuleDto = new SearchUserCapsuleDto();
+        capsuleDto.setLimit(20);
         capsuleDto.setName("bb");
         capsuleDto.getListRole().add("manager");
         capsuleDto.getListRole().add("kanrensha_person");

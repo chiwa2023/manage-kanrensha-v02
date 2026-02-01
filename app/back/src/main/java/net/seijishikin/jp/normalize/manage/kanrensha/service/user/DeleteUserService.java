@@ -3,8 +3,8 @@ package net.seijishikin.jp.normalize.manage.kanrensha.service.user;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import net.seijishikin.jp.normalize.common_tool.dto.FrameworkMessageAndResultDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.user.DeleteUserCapsuleDto;
@@ -38,6 +38,7 @@ public class DeleteUserService {
      * @param capsuleDto 退会ユーザ最小限Dto
      * @return 処理結果
      */
+    @Transactional
     public FrameworkMessageAndResultDto practice(final DeleteUserCapsuleDto capsuleDto) {
 
         Optional<UserPersonEntity> optionalPerson = userPersonRepository
@@ -52,28 +53,21 @@ public class DeleteUserService {
 
         String mail = optionalPerson.get().getEmail();
 
-        try {
+        Optional<LoginStatusEntity> optionalLogin = loginStatusRepository.findById(mail);
+        if (optionalLogin.isPresent()) {
+            LoginStatusEntity statusEntity = optionalLogin.get();
 
-            Optional<LoginStatusEntity> optionalLogin = loginStatusRepository.findById(mail);
-            if (optionalLogin.isPresent()) {
-                LoginStatusEntity statusEntity = optionalLogin.get();
-
-                // ばかばかしいとは思ううが、退会理由と退会処理は@Overrideの都合上、分離しているため分離して処理
-                statusEntity.setDisabledReason(capsuleDto.getWithdrawReason());
-                loginStatusRepository.save(statusEntity);
-            }
-
-            // 削除処理
-            customUserDetailsManager.deleteUser(mail);
-            
-            resultDto.setMessage("退会処理が完了しました。ご利用をいただきましてありがとうございました");
-            return resultDto;
-            
-        } catch (IllegalStateException | UsernameNotFoundException e) {
-            resultDto.setIsFailure(true);
-            resultDto.setMessage(e.getMessage());
-            return resultDto;
+            // ばかばかしいとは思ううが、退会理由と退会処理は@Overrideの都合上、分離しているため分離して処理
+            statusEntity.setDisabledReason(capsuleDto.getWithdrawReason());
+            loginStatusRepository.save(statusEntity);
         }
+
+        // 削除処理
+        customUserDetailsManager.deleteUser(mail);
+
+        resultDto.setMessage("退会処理が完了しました。ご利用をいただきましてありがとうございました");
+        return resultDto;
+
     }
 
 }

@@ -3,9 +3,9 @@ import { ref, type Ref, onBeforeMount } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { NewComerDto, type NewComerDtoInterface } from '../../dto/add_account/newComerDto';
 import RoutePathConstants from '../../../../routePathConstants';
-import MockNewComerInfo from '../../../test/common/user_info/MockNewComerInfo.vue';
 import { MessageConstants, MessageView } from 'seijishikin-jp-normalize_common-tool';
 import { useApi } from '../../utils/useApi';
+import NewComerInfo from '../../common/user_info/NewComerInfo.vue';
 
 const route = useRoute();
 const router = useRouter();
@@ -175,7 +175,7 @@ function recieveSubmit(button: string) {
 </script>
 <template>
 
-    <MockNewComerInfo :current-step="2"></MockNewComerInfo>
+    <NewComerInfo :current-step="2"></NewComerInfo>
 
     <!-- 1. トークン検証中の表示 -->
     <div v-if="pageMode === 'verifying'">

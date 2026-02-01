@@ -128,12 +128,13 @@ onBeforeMount(async () => {
                             message.value = e.message;
                             return;
                         }
-                        alert(e);
+                        infoLevel.value = MessageConstants.LEVEL_ERROR;
+                        messageType.value = MessageConstants.VIEW_OK;
+                        title.value = "システムエラーが発生しました";
+                        message.value = "システム管理者にお問い合わせください";
                     });
             });
         } else {
-            alert("タスク取得済で疑似最新状態");
-            // TODO selectboxに変換
             optionsThisYear.value = convertTaskToOption(notCompletedTaskInfo.notCompleteTaskDto.listThisYear);
             optionsLastYear.value = convertTaskToOption(notCompletedTaskInfo.notCompleteTaskDto.listLastYear);
             notCompletedTaskInfo.notCompleteTaskDto.isRefreshed = true;
@@ -181,14 +182,14 @@ function recieveCancelShowTask() {
 }
 
 function onTransfer() {
-    alert("遷移");
-    // router.push(selectedTask.value);
+    // ページ遷移
+    router.push(RoutePathConstants.BASE_PATH + selectedTask.value);
 }
 
 </script>
 <template>
     <!-- ユーザrole別制御コンポーネント -->
-    <div class="user-role-container-admin">
+    <div class="user-role-container-all">
         <div class="user-role-content">
             <div class="user-role-title">
                 <span class="user-role-text">全ユーザ共通</span><br>
@@ -246,5 +247,4 @@ function onTransfer() {
     </div>
 
 </template>
-<style scoped>
-</style>
+<style scoped></style>

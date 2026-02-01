@@ -50,7 +50,7 @@ public interface UserPersonRepository extends JpaRepository<UserPersonEntity, In
      */
     @Query(value = "SELECT * FROM user_person "
             + "   WHERE email IN (SELECT email FROM user_role WHERE role IN ?2 AND is_latest = 1) "
-            + "     AND is_latest = 1 AND user_person_name LIKE ?1 ORDER BY user_person_id", nativeQuery = true)
+            + "     AND is_latest = 1 AND CASE WHEN ?1<> '' THEN user_person_name LIKE ?1 ELSE 1=1 END ORDER BY user_person_id", nativeQuery = true)
     List<UserPersonEntity> findNameAndRoles(String name, List<String> listRole ,Pageable pageable);
     
     /**
@@ -62,7 +62,7 @@ public interface UserPersonRepository extends JpaRepository<UserPersonEntity, In
      */
     @Query(value = "SELECT count(*) FROM user_person "
             + "   WHERE email IN (SELECT email FROM user_role WHERE role IN ?2 AND is_latest = 1) "
-            + "     AND is_latest = 1 AND user_person_name LIKE ?1 ORDER BY user_person_id", nativeQuery = true)
+            + "     AND is_latest = 1 AND CASE WHEN ?1<> '' THEN user_person_name LIKE ?1 ELSE 1=1 END ORDER BY user_person_id", nativeQuery = true)
     Integer countNameAndRoles(String name, List<String> listRole);
 
 }

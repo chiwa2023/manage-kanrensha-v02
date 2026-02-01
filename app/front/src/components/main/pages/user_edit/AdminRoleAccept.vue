@@ -86,7 +86,10 @@ onBeforeMount(() => {
                     message.value = e.message;
                     return;
                 }
-                alert(e);
+                infoLevel.value = MessageConstants.LEVEL_ERROR;
+                messageType.value = MessageConstants.VIEW_OK;
+                title.value = "システムエラーが発生しました";
+                message.value = "システム管理者にお問い合わせください";
             });
     });
 
@@ -117,7 +120,7 @@ function onSave() {
                 messageType.value = MessageConstants.VIEW_TOAST;
                 title.value = "SE権限追加諾否登録";
                 message.value = resultDtoAccept.message;
-                 // タスク更新につき次ページでタスクを取りなおす
+                // タスク更新につき次ページでタスクを取りなおす
                 notCompletedTaskInfo.notCompleteTaskDto.isRefreshed = false;
             })
             .catch((e) => {
@@ -137,7 +140,10 @@ function onSave() {
                     message.value = e.message;
                     return;
                 }
-                alert(e);
+                infoLevel.value = MessageConstants.LEVEL_ERROR;
+                messageType.value = MessageConstants.VIEW_OK;
+                title.value = "システムエラーが発生しました";
+                message.value = "システム管理者にお問い合わせください";
             });
     });
 

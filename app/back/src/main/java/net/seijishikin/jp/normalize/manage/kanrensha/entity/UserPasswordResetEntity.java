@@ -6,8 +6,6 @@ import java.time.LocalDateTime;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Table;
 import net.seijishikin.jp.normalize.common_tool.dto.DtoEntityInitialValueInterface;
 
@@ -23,7 +21,6 @@ public class UserPasswordResetEntity implements Serializable, DtoEntityInitialVa
 
     /** メールアドレス */
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "email")
     private String email = INIT_STRING;
 

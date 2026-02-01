@@ -65,13 +65,14 @@ public class ChangeUserInfoService {
             return resultDto;
         }
 
+        UserPersonEntity newPersonEntity = new UserPersonEntity();
+        BeanUtils.copyProperties(oldPersonEntity, newPersonEntity);
+
         // 該当Entityを履歴にする
         setTableDataHistoryUtil.practiceDelete(operatorUserDto, oldPersonEntity);
         userPersonRepository.save(oldPersonEntity).getUserPersonId();
 
         // 新規Entityを設定
-        UserPersonEntity newPersonEntity = new UserPersonEntity();
-        BeanUtils.copyProperties(oldPersonEntity, newPersonEntity);
         String newName = capsuleDto.getUserDto().getUserPersonName();
         newPersonEntity.setUserPersonName(newName);
         setTableDataHistoryUtil.practiceInsert(operatorUserDto, newPersonEntity);

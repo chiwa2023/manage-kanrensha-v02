@@ -102,7 +102,10 @@ function onSearch() {
                     message.value = e.message;
                     return;
                 }
-                alert(e);
+                infoLevel.value = MessageConstants.LEVEL_ERROR;
+                messageType.value = MessageConstants.VIEW_OK;
+                title.value = "システムエラーが発生しました";
+                message.value = "システム管理者にお問い合わせください";
             });
     });
 }
@@ -144,7 +147,10 @@ function onShowHistory(selectedCode: number, taskYear: number) {
                     message.value = e.message;
                     return;
                 }
-                alert(e);
+                infoLevel.value = MessageConstants.LEVEL_ERROR;
+                messageType.value = MessageConstants.VIEW_OK;
+                title.value = "システムエラーが発生しました";
+                message.value = "システム管理者にお問い合わせください";
             });
     });
 

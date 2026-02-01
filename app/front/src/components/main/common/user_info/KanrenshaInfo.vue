@@ -141,9 +141,17 @@ onBeforeMount(async () => {
                             message.value = e.message;
                             return;
                         }
-                        alert(e);
+                        infoLevel.value = MessageConstants.LEVEL_ERROR;
+                        messageType.value = MessageConstants.VIEW_OK;
+                        title.value = "システムエラーが発生しました";
+                        message.value = "システム管理者にお問い合わせください";
                     });
             });
+        } else {
+            optionsThisYear.value = convertTaskToOption(notCompletedTaskInfo.notCompleteTaskDto.listThisYear);
+            optionsLastYear.value = convertTaskToOption(notCompletedTaskInfo.notCompleteTaskDto.listLastYear);
+            notCompletedTaskInfo.notCompleteTaskDto.isRefreshed = true;
+            switchYear.value = "1";
         }
     }
 });
@@ -187,8 +195,8 @@ function recieveCancelShowTask() {
 }
 
 function onTransfer() {
-    alert("遷移");
-    // router.push(selectedTask.value);
+    // ページ遷移
+    router.push(RoutePathConstants.BASE_PATH + selectedTask.value);
 }
 </script>
 <template>
@@ -248,8 +256,6 @@ function onTransfer() {
         <ShowTask :is-search-condition="false" :user-dto="userDto" @send-canceel-show-task="recieveCancelShowTask">
         </ShowTask>
     </div>
-
-
 
 </template>
 <style scoped></style>

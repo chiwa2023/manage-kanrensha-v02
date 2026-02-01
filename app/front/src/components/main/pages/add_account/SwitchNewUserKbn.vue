@@ -2,12 +2,12 @@
 import { ref, type Ref } from 'vue';
 import RoutePathConstants from '../../../../routePathConstants';
 import { NewComerDto, type NewComerDtoInterface } from '../../dto/add_account/newComerDto';
-import MockNewComerInfo from '../../../test/common/user_info/MockNewComerInfo.vue';
 import { useApi } from '../../utils/useApi';
 import type { LoginUserResultDtoInterface } from '../../dto/login/loginUserResultDto';
 import { MessageConstants, MessageView } from 'seijishikin-jp-normalize_common-tool';
 import router from '../../../../router';
 import UserRoleConstants from '../../dto/user/userRoleConstants';
+import NewComerInfo from '../../common/user_info/NewComerInfo.vue';
 
 // back側アクセス
 const urlBack: string = RoutePathConstants.DOMAIN + RoutePathConstants.BASE_PATH;
@@ -115,7 +115,7 @@ function recieveSubmit(button: string) {
 </script>
 <template>
     <!-- 新規登録コードチェック -->
-    <MockNewComerInfo :current-step="3" :regist-code="newComer.registCode"></MockNewComerInfo>
+    <NewComerInfo :current-step="3" :regist-code="newComer.registCode"></NewComerInfo>
 
     <h1>ユーザ登録</h1>
 

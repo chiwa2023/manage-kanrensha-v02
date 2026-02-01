@@ -52,13 +52,13 @@ class GetUserLeastByIdControllerTest {
 
         ObjectMapper objectMapper = GetObjectMapperWithTimeModuleUtil.practice();
 
-        String path = PathRouteConstants.ROOT + "/edit-user/refresh-password";
+        String path = PathRouteConstants.ROOT + "/edit-user/get";
 
-        // サーバステータスがNO_CONTEMT(204)
-        assertEquals(HttpStatus.NO_CONTENT.value(), mockMvc // NOPMD LawOfDemeter
+        // サーバステータスがOK(200)
+        assertEquals(HttpStatus.OK.value(), mockMvc // NOPMD LawOfDemeter
                 .perform(post(path).content(objectMapper.writeValueAsString(capsuleDto)) //
                         .contentType(MediaType.APPLICATION_JSON_VALUE)) //
-                .andExpect(status().isNoContent()).andReturn().getResponse().getStatus());
+                .andExpect(status().isOk()).andReturn().getResponse().getStatus());
     }
 
 }

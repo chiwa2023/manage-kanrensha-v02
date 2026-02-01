@@ -17,6 +17,7 @@ public class SearchUserServcie {
     /** ユーザ個人Repojitory */
     @Autowired
     private UserPersonRepository userPersonRepository;
+
     /**
      * 処理を行う
      * 
@@ -26,7 +27,10 @@ public class SearchUserServcie {
     public SearchUserEntityResultDto practice(final SearchUserCapsuleDto capsuleDto) {
 
         // TODO 現状では全文検索用にフォーマット化したカラムを持たないので全文検索しない
-        String nameCondition = "%" + capsuleDto.getName() + "%";
+        String nameCondition = "";
+        if (!"".equals(capsuleDto.getName())) {
+            nameCondition = "%" + capsuleDto.getName() + "%";
+        }
 
         SearchUserEntityResultDto resultDto = new SearchUserEntityResultDto();
         resultDto.setLimit(capsuleDto.getLimit());

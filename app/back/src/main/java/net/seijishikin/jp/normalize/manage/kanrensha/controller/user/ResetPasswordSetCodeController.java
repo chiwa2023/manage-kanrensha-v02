@@ -45,7 +45,7 @@ public class ResetPasswordSetCodeController {
             FrameworkMessageAndResultDto resultDto = resetPasswordSetCodeService.practice(capsuleDto);
 
             if (resultDto.getIsFailure()) {
-                return ResponseEntity.status(HttpStatus.NO_CONTENT).body(resultDto);
+                return ResponseEntity.status(HttpStatus.ACCEPTED).body(resultDto);
             } else {
                 return ResponseEntity.status(HttpStatus.OK).body(resultDto);
             }

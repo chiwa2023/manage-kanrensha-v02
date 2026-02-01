@@ -43,16 +43,16 @@ const listMenuRoleOptions: Ref<SelectOptionStringDtoInterface[]> = ref(createLis
 const resultDtoTask: Ref<TaskListForUserInfoResultDtoInterface> = ref(new TaskListForUserInfoResultDto());
 const optionsThisYear: Ref<SelectOptionStringDtoInterface[]> = ref([]);
 const optionsLastYear: Ref<SelectOptionStringDtoInterface[]> = ref([]);
-const optionsView:ComputedRef<SelectOptionStringDtoInterface[]> = computed(() => {
-    if("1" === switchYear.value){
+const optionsView: ComputedRef<SelectOptionStringDtoInterface[]> = computed(() => {
+    if ("1" === switchYear.value) {
         return optionsThisYear.value;
-    }else{
+    } else {
         return optionsLastYear.value;
     }
 });
 const selectedTask: Ref<string> = ref("");
 const switchYear: Ref<string> = ref("");
-const tansferDisabled:ComputedRef<boolean> = computed(() => BLANK === selectedTask.value);
+const tansferDisabled: ComputedRef<boolean> = computed(() => BLANK === selectedTask.value);
 
 onBeforeMount(async () => {
     // ログインと権限チェック
@@ -113,7 +113,10 @@ onBeforeMount(async () => {
                             message.value = e.message;
                             return;
                         }
-                        alert(e);
+                        infoLevel.value = MessageConstants.LEVEL_ERROR;
+                        messageType.value = MessageConstants.VIEW_OK;
+                        title.value = "システムエラーが発生しました";
+                        message.value = "システム管理者にお問い合わせください";
                     });
             });
         }
@@ -176,7 +179,6 @@ function recieveCancelShowTask() {
 
 function onTransfer() {
     alert("遷移");
-    // router.push(selectedTask.value);
 }
 </script>
 <template>
@@ -188,8 +190,8 @@ function onTransfer() {
                 {{ props.userDto.userPersonName }}さん
             </div>
             <div class="user-role-title left-space" style="text-align: left;">
-                <input type="radio" v-model="switchYear" value="1" id="test">本年{{ optionsThisYear.length-1 }}件
-                <input type="radio" v-model="switchYear" value="2" id="test">前年{{ optionsLastYear.length-1 }}件<br>
+                <input type="radio" v-model="switchYear" value="1" id="test">本年{{ optionsThisYear.length - 1 }}件
+                <input type="radio" v-model="switchYear" value="2" id="test">前年{{ optionsLastYear.length - 1 }}件<br>
                 <select v-model="selectedTask">
                     <option v-for="option in optionsView" :value="option.value">{{ option.text }}</option>
                 </select>

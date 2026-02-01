@@ -71,7 +71,10 @@ function onSearch() {
                     message.value = e.message;
                     return;
                 }
-                alert(e);
+                infoLevel.value = MessageConstants.LEVEL_ERROR;
+                messageType.value = MessageConstants.VIEW_OK;
+                title.value = "システムエラーが発生しました";
+                message.value = "システム管理者にお問い合わせください";
             });
     });
 
@@ -80,9 +83,6 @@ function onSearch() {
 
 function onCancel() {
     router.back();
-}
-function onSave() {
-    alert("保存");
 }
 
 async function onAdminPromote(userId: number) {
@@ -129,7 +129,10 @@ async function onAdminPromote(userId: number) {
                         message.value = e.message;
                         return;
                     }
-                    alert(e);
+                    infoLevel.value = MessageConstants.LEVEL_ERROR;
+                    messageType.value = MessageConstants.VIEW_OK;
+                    title.value = "システムエラーが発生しました";
+                    message.value = "システム管理者にお問い合わせください";
                 });
         });
 
@@ -190,7 +193,6 @@ function recieveSubmit(button: string) {
 
     <div class="footer">
         <button @click="onCancel" class="footer-button">キャンセル</button>
-        <button @click="onSave" class="left-space footer-button">保存</button>
     </div>
 
     <!-- メッセージ表示 -->

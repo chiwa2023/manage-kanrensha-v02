@@ -48,25 +48,6 @@ onBeforeMount(() => {
     stateDto.value = mockGetPartnerApiForNewToken();
 });
 
-// function recievDateTime(datetime: Date, index: number) {
-//     switch (index) {
-//         case 1:
-//             stateDto.value.createdAt = datetime;
-//             break;
-//         case 2:
-//             stateDto.value.expiresAt = datetime;
-//             break;
-//         case 3:
-//             stateDto.value.lastUsedAt = datetime;
-//             break;
-//         case 4:
-//             stateDto.value.revokedAt = datetime;
-//             break;
-//         default:
-//             break;
-//     }
-// }
-
 function recieveIpAddress(ipAddress: string) {
     stateDto.value.ipAddress = ipAddress;
 }
@@ -130,91 +111,6 @@ async function onSave() {
     });
 
 }
-
-// async function getAccessToken() {
-//     alert("アクセストークンを取得");
-
-//     const url = urlBack + "/api-for-partner/convert";
-//     const config = {
-//         method: "POST",
-//         headers: {
-//             'Accept': 'application/json',
-//             'Content-Type': 'application/json',
-//             'X-AUTH-TOKEN': 'Bearer ' + newToken.value
-//         },
-//         //body: JSON.stringify(user.value)
-//     };
-
-//     const { loading: loginLoading, error: loginError, fetchData: fetchRefresh } = useApi<JwtTokenResultDtoInterface>();
-//     const resultDto: JwtTokenResultDtoInterface | null = await fetchRefresh(url, config);
-
-//     const userInfo = useUserInfoStore();
-//     if (resultDto !== null) {
-//         // jwtTokenを新たばTokenに入れ替え
-//         userInfo.jwtDto = resultDto.jwtTokenDto;
-//         alert("token取得" + resultDto.jwtTokenDto.accessToken);
-//     }else{
-//         alert("token初期化");
-//         userInfo.jwtDto = new JwtTokenDto();
-//     }
-// }
-
-// function doAnything() {
-//     alert("アクセストークンで何か実行");
-
-//     getAuthorizedPromiseArea().then(token => {
-//         alert("token取得" + token);
-//         // TODO 選択されたUserEntityを最小限ユーザに変換して削除対象、操作者はメニューから取得する
-//         const capsuleDto: GetUserDtoCapsuleDtoInterface = new GetUserDtoCapsuleDto();
-//         capsuleDto.editUserid = 1;
-
-//         const url = urlBack + "/edit-user/get";
-//         const method = "POST";
-//         const body = JSON.stringify(capsuleDto);
-//         const headers = {
-//             'Accept': 'application/json',
-//             'Content-Type': 'application/json',
-//             'X-AUTH-TOKEN': 'Bearer ' + token
-//         };
-//         fetch(url, { method, headers, body })
-//             .then(async (response) => {
-//                 alert(response.status);
-//                 const resultDto: GetUserDtoResultDtoInterface = await response.json();
-//                 if (resultDto.isFailure) {
-//                     // 取得に失敗している場合
-//                     infoLevel.value = MessageConstants.LEVEL_ERROR;
-//                     messageType.value = MessageConstants.VIEW_OK;
-//                     title.value = "ユーザ作成失敗";
-//                     message.value = "ユーザが取得できませんでした。" + resultDto.message;
-//                 } else {
-//                     // 取得に成功している場合
-//                     // infoLevel.value = MessageConstants.LEVEL_INFO;
-//                     // messageType.value = MessageConstants.VIEW_TOAST;
-//                     // title.value = "長期トークン作成成功";
-//                     // message.value = resultDto.message;
-//                     alert("権限リスト" + resultDto.userDto.listRoles);
-//                 }
-//             })
-//             .catch((e) => {
-//                 if (e instanceof AccessTokenNotFoundError) {
-//                     infoLevel.value = MessageConstants.LEVEL_ERROR;
-//                     // トークン保持ができていない場合
-//                     messageType.value = MessageConstants.VIEW_OK;
-//                     title.value = "現在トークンが存在しません";
-//                     messageIndex.value = 1;
-//                     message.value = e.message;
-//                 }
-//                 if (e instanceof TokenRefreshError) {
-//                     // 取得に失敗している場合
-//                     infoLevel.value = MessageConstants.LEVEL_ERROR;
-//                     messageType.value = MessageConstants.VIEW_OK;
-//                     title.value = "有効期限まじかの現在トークンを再取得できませんでした";
-//                     message.value = e.message;
-//                 }
-//             });
-//     });
-
-// }
 
 function recieveSubmit(button: string) {
     // 非表示
@@ -299,29 +195,11 @@ function recieveSubmit(button: string) {
         <div class="right-area">
             <div class="form-group-vertical">
                 <span>全く同じトークンは再発行できません。安全な場所に保管してください</span>
-                <textarea v-model="newToken" :disabled="true" class="max-input" placeholder="このトークンは再発行できません。"></textarea>
+                <textarea v-model="newToken" :disabled="true" class="max-input"
+                    placeholder="このトークンは再発行できません。"></textarea>
             </div>
         </div>
     </div>
-    <!-- 
-    <div class="one-line">
-        <div class="left-area">
-            トークン取得
-        </div>
-        <div class="right-area">
-            <button @click="getAccessToken">トークン取得</button>
-        </div>
-    </div>
-
-    <div class="one-line">
-        <div class="left-area">
-            長期トークン→アクセストークン→機能
-        </div>
-        <div class="right-area">
-            <button @click="doAnything">何か実行</button>
-        </div>
-    </div>
-    -->
 
     <div class="footer">
         <button @click="onCancel" class="footer-button">キャンセル</button>

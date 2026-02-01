@@ -62,7 +62,7 @@ public class RefreshPasswordController {
         if (optional.isEmpty()) {
             resultDto.setIsFailure(true);
             resultDto.setMessage("指定されたユーザが存在しません");
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(resultDto);
+            return ResponseEntity.status(HttpStatus.ACCEPTED).body(resultDto);
         }
 
         String email = optional.get().getEmail();
@@ -77,19 +77,19 @@ public class RefreshPasswordController {
             // 古いパスワード指定誤り
             resultDto.setIsFailure(true);
             resultDto.setMessage("現在のパスワードに不正な値が入力されています");
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(resultDto);
+            return ResponseEntity.status(HttpStatus.ACCEPTED).body(resultDto);
         } catch (Exception exception) {// NOPMD AvoidGenericException
             saveStackTraceService.practice(exception, LocalDate.now().getYear(), 0);
             resultDto.setIsFailure(true);
             resultDto.setMessage("現在のパスワードの再確認中に予期せぬ例外が発生しました");
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(resultDto);
+            return ResponseEntity.status(HttpStatus.ACCEPTED).body(resultDto);
         }
 
         // パスワード更新
         resultDto = refreshPasswordService.practice(capsuleDto);
 
         if (resultDto.getIsFailure()) {
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(resultDto);
+            return ResponseEntity.status(HttpStatus.ACCEPTED).body(resultDto);
         } else {
             return ResponseEntity.status(HttpStatus.OK).body(resultDto);
         }

@@ -2,12 +2,14 @@
 import { ref, type Ref } from 'vue';
 import router from '../../../../router';
 import RoutePathConstants from '../../../../routePathConstants';
-import type { LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
+import type { FrameworkMessageAndResultDtoInterface, LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import { getLoginUser } from '../../utils/getLoginUser';
 import { MessageConstants, MessageView } from 'seijishikin-jp-normalize_common-tool';
 import { RefreshPasswordCapsuleDto, type RefreshPasswordCapsuleDtoInterface } from '../../dto/user/refreshPasswordCapsuleDto';
 import PasswordInput from '../../common/user/PasswordInput.vue';
 import AllUserInfo from '../../common/user_info/AllUserInfo.vue';
+import getAuthorizedPromiseArea from '../../dto/login/getAuthorizedPromiseArea';
+import { AccessTokenNotFoundError, TokenRefreshError } from '../../dto/login/errors';
 
 // back側アクセス
 const urlBack: string = RoutePathConstants.DOMAIN + RoutePathConstants.BASE_PATH;
@@ -16,6 +18,7 @@ const urlBack: string = RoutePathConstants.DOMAIN + RoutePathConstants.BASE_PATH
 const BLANK: string = "";
 // const INIT_NUMBER: number = 0;
 // const SERVER_STATUS_OK: number = 200;
+const SERVER_ACCEPTED: number = 201;
 // const SERVER_STATUS_ERROR: number = 400;
 
 // ユーザ呼び出し
@@ -31,6 +34,8 @@ const message: Ref<string> = ref(BLANK);
 const reInputPassword: Ref<string> = ref("");
 
 const capsuleDto: Ref<RefreshPasswordCapsuleDtoInterface> = ref(new RefreshPasswordCapsuleDto());
+capsuleDto.value.userDto = userDto.value;
+
 function onSave() {
 
     if (reInputPassword.value !== capsuleDto.value.newPassword) {
@@ -43,29 +48,50 @@ function onSave() {
         return;
     }
 
-    // getAuthorizedPromiseArea().then(token => {
-    //     if (token !== "") {
-    //         // パスワード更新
-    //         const url = urlBack + "/edit-user/refresh-password";
-    //         const method = "POST";
-    //         const body = JSON.stringify(capsuleDto.value);
-    //         const headers = {
-    //             'Accept': 'application/json',
-    //             'Content-Type': 'application/json',
-    //             'X-AUTH-TOKEN': 'Bearer ' + token
-    //         };
-    //         fetch(url, { method, headers, body })
-    //             .then(async (response) => {
-    //                 // 結果を受け取ってメッセージ表示
-    //                 const resultDto: FrameworkResultInterface = await response.json();
-    //                 alert(resultDto.message);
-    //             })
-    //             .catch((e) => { alert(e); });
-    //     } else {
-    //         alert("エラーのつもり");
-    //     }
-    // });
-
+    getAuthorizedPromiseArea().then(token => {
+        const url = urlBack + "/edit-user/refresh-password";
+        const method = "POST";
+        const body = JSON.stringify(capsuleDto.value);
+        const headers = {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'X-AUTH-TOKEN': 'Bearer ' + token
+        };
+        fetch(url, { method, headers, body })
+            .then(async (response) => {
+                const resultDto: FrameworkMessageAndResultDtoInterface = await response.json();
+                messageType.value = MessageConstants.VIEW_OK;
+                title.value = "パスワード更新処理";
+                message.value = resultDto.message;
+                if (SERVER_ACCEPTED == response.status) {
+                    infoLevel.value = MessageConstants.LEVEL_ERROR;
+                } else {
+                    infoLevel.value = MessageConstants.LEVEL_INFO;
+                }
+            })
+            .catch((e) => {
+                if (e instanceof AccessTokenNotFoundError) {
+                    infoLevel.value = MessageConstants.LEVEL_ERROR;
+                    // トークン保持ができていない場合
+                    messageType.value = MessageConstants.VIEW_OK;
+                    title.value = "現在トークンが存在しません";
+                    message.value = e.message;
+                    return;
+                }
+                if (e instanceof TokenRefreshError) {
+                    // 取得に失敗している場合
+                    infoLevel.value = MessageConstants.LEVEL_ERROR;
+                    messageType.value = MessageConstants.VIEW_OK;
+                    title.value = "有効期限まじかのトークンを再取得できませんでした";
+                    message.value = e.message;
+                    return;
+                }
+                infoLevel.value = MessageConstants.LEVEL_ERROR;
+                messageType.value = MessageConstants.VIEW_OK;
+                title.value = "システムエラーが発生しました";
+                message.value = "システム管理者にお問い合わせください";
+            });
+    });
 }
 
 function onCancel() {

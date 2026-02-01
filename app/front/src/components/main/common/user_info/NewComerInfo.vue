@@ -47,10 +47,10 @@ function recieveSubmit(button: string) {
 
 <template>
     <!-- ユーザrole別制御コンポーネント -->
-    <div class="user-role-container-partner">
+    <div class="user-role-container-all">
         <div class="user-role-content">
             <div class="user-role-title">
-                新規ユーザ登録作業中・・・
+                新規ユーザ<br>登録作業中・・・
             </div>
             <!-- ステップバーの追加 -->
             <nav class="progress-steps">

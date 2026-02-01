@@ -53,7 +53,7 @@ public class ResetPasswordChangeController {
             FrameworkMessageAndResultDto resultDto = resetPasswordChangeService.practice(capsuleDto);
 
             if (resultDto.getIsFailure()) {
-                return ResponseEntity.status(HttpStatus.NO_CONTENT).body(resultDto);
+                return ResponseEntity.status(HttpStatus.ACCEPTED).body(resultDto);
 
             } else {
                 // MEMO パスワードリセットがログインページに飛ばす。
@@ -61,9 +61,8 @@ public class ResetPasswordChangeController {
                 return ResponseEntity.status(HttpStatus.OK).body(resultDto);
             }
 
-        } catch (Exception exception) { // NOPMD 
+        } catch (Exception exception) { // NOPMD
             saveStackTraceService.practice(exception, LocalDate.now().getYear(), 0);
-            
             FrameworkMessageAndResultDto resultDto = new FrameworkMessageAndResultDto();
             resultDto.setIsFailure(true);
             resultDto.setMessage("システム例外が発生しました");

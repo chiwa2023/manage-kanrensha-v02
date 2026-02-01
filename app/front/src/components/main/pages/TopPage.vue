@@ -3,7 +3,6 @@ import { MessageConstants, MessageView } from 'seijishikin-jp-normalize_common-t
 import RoutePathConstants from '../../../routePathConstants';
 import { onBeforeMount, ref, type Ref } from 'vue';
 import { LoginUserCapsuleDto, type LoginUserCapsuleDtoInterface } from '../dto/login/loginUserCapsuleDto';
-import { useApi } from '../utils/useApi';
 import type { LoginUserResultDtoInterface } from '../dto/login/loginUserResultDto';
 import router from '../../../router';
 import { useUserInfoStore } from '../stores/storeUserInfo';
@@ -17,8 +16,9 @@ const urlBack: string = RoutePathConstants.DOMAIN + RoutePathConstants.BASE_PATH
 // よく使う定数
 const BLANK: string = "";
 // const INIT_NUMBER: number = 0;
-// const SERVER_STATUS_OK: number = 200;
+const SERVER_STATUS_OK: number = 200;
 // const SERVER_STATUS_ERROR: number = 400;
+const SERVER_STATUS_UNAUTHORIZED: number = 401;
 
 // メッセージ表示定数
 const infoLevel: Ref<number> = ref(MessageConstants.LEVEL_NONE);
@@ -53,8 +53,6 @@ function recieveSubmit(button: string) {
 
 const user: Ref<LoginUserCapsuleDtoInterface> = ref(new LoginUserCapsuleDto());
 
-// API呼び出し用Composable
-const { loading: loginLoading, error: loginError, fetchData: fetchLogin } = useApi<LoginUserResultDtoInterface>();
 
 async function onLogin() {
 
@@ -77,65 +75,78 @@ async function onLogin() {
         body: JSON.stringify(user.value)
     };
 
-    const resultDto: LoginUserResultDtoInterface | null = await fetchLogin(url, config);
+    const response = await fetch(url, config);
+    if (SERVER_STATUS_OK === response.status) {
+        try {
+            const resultDto: LoginUserResultDtoInterface = await response.json();
 
-    if (resultDto !== null) {
-        // 取得できたら保存
-        userInfo.jwtDto = resultDto.jwtTokenDto;
-        userInfo.userDto = resultDto.userDto;
+            // 取得できたら保存
+            userInfo.jwtDto = resultDto.jwtTokenDto;
+            userInfo.userDto = resultDto.userDto;
 
-        // ログインに成功かつrememberMeを使用したいときだけPiniaに保存
-        if (user.value.rememberMe) {
-            rememberMe.setMail(user.value.userId);
-            rememberMe.setPassword(user.value.password);
-        } else {
-            // チェックが外されたら初期化
-            rememberMe.initialize();
+            // ログインに成功かつrememberMeを使用したいときだけPiniaに保存
+            if (user.value.rememberMe) {
+                rememberMe.setMail(user.value.userId);
+                rememberMe.setPassword(user.value.password);
+            } else {
+                // チェックが外されたら初期化
+                rememberMe.initialize();
+            }
+
+            // 次の行き先が保存してある場合はその遷移先に移動
+            if (null !== nextPath && BLANK !== nextPath) {
+                router.push(nextPath);
+                return;
+            }
+
+            switch (resultDto.userDto.listRoles[0]) {
+                case UserRoleConstants.ROLE_ADMIN:
+                    // 運営者
+                    router.push(RoutePathConstants.PAGE_MENU_ADMIN);
+                    break;
+                case UserRoleConstants.ROLE_MANAGER:
+                    // 運営者
+                    router.push(RoutePathConstants.PAGE_MENU_MANAGER);
+                    break;
+                case UserRoleConstants.ROLE_PARTNER_API:
+                    // APIパートナー
+                    router.push(RoutePathConstants.PAGE_MENU_PARTNER_API);
+                    break;
+                case UserRoleConstants.ROLE_KANRENSHA_PERSON:
+                case UserRoleConstants.ROLE_KANRENSHA_KIGYOU_DT:
+                case UserRoleConstants.ROLE_KANRENSHA_SEIJIDANTAI:
+                    // 関連者
+                    router.push(RoutePathConstants.PAGE_MENU_KANRENSHA);
+                    break;
+                default:
+                    infoLevel.value = MessageConstants.LEVEL_ERROR;
+                    messageType.value = MessageConstants.VIEW_OK;
+                    title.value = "権限取得エラー";
+                    message.value = "権限取得でエラーが発生しています";
+                    break;
+            }
+        } catch {
+            // レスポンスは正常だがSJONが合わない→実装ミス
+            infoLevel.value = MessageConstants.LEVEL_ERROR;
+            messageType.value = MessageConstants.VIEW_OK;
+            title.value = "システムエラー";
+            message.value = "システムエラーが発生しました";
         }
 
-        // 次の行き先が保存してある場合はその遷移先に移動
-        if (null !== nextPath && BLANK !== nextPath) {
-            router.push(nextPath);
-            return;
-        }
-
-        switch (resultDto.userDto.listRoles[0]) {
-            case UserRoleConstants.ROLE_ADMIN:
-                // 運営者
-                router.push(RoutePathConstants.PAGE_MENU_ADMIN);
-                break;
-            case UserRoleConstants.ROLE_MANAGER:
-                // 運営者
-                router.push(RoutePathConstants.PAGE_MENU_MANAGER);
-                break;
-            case UserRoleConstants.ROLE_PARTNER_API:
-                // APIパートナー
-                router.push(RoutePathConstants.PAGE_MENU_PARTNER_API);
-                break;
-            case UserRoleConstants.ROLE_KANRENSHA_PERSON:
-            case UserRoleConstants.ROLE_KANRENSHA_KIGYOU_DT:
-            case UserRoleConstants.ROLE_KANRENSHA_SEIJIDANTAI:
-                // 関連者
-                router.push(RoutePathConstants.PAGE_MENU_KANRENSHA);
-                break;
-            default:
-                infoLevel.value = MessageConstants.LEVEL_ERROR;
-                messageType.value = MessageConstants.VIEW_OK;
-                title.value = "権限取得エラー";
-                if (loginError.value !== null) {
-                    message.value = loginError.value;
-                }
-                // router.push(RoutePathConstants.PAGE_MENU_MANAGER);
-                break;
-        }
-    } else {
+        return;
+    }
+    if (SERVER_STATUS_UNAUTHORIZED === response.status) {
         infoLevel.value = MessageConstants.LEVEL_ERROR;
         messageType.value = MessageConstants.VIEW_OK;
-        title.value = "システムエラー";
-        if (loginError.value !== null) {
-            message.value = loginError.value;
-        }
+        title.value = "ログイン失敗";
+        message.value = "パスワードまたはメールアドレスに誤りがあります。再入力してください";
+        return;
     }
+
+    infoLevel.value = MessageConstants.LEVEL_ERROR;
+    messageType.value = MessageConstants.VIEW_OK;
+    title.value = "システムエラー";
+    message.value = "システムエラーが発生しました";
 }
 
 // パスワード可視／不可視切り替えロジック
@@ -178,7 +189,7 @@ function changeVisiblePassword() {
                     <label for="rememberMe">ログイン情報を記憶する</label>
                 </div>
 
-                <button @click="onLogin" class="login-button" :disabled="loginLoading">ログイン</button>
+                <button @click="onLogin" class="login-button">ログイン</button>
 
                 <div class="links">
                     <RouterLink :to="RoutePathConstants.PAGE_ADD_ACCOUNT">新規登録ですか?</RouterLink>

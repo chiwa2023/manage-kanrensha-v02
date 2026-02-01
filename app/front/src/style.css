@@ -16,7 +16,8 @@
   --role-admin-color: #FF0000;
   --role-manager-color: #0000FF;
   --role-apiuser-color: #008000;
-  --role-kanrensha-color: #FFA500;
+  --role-kanrensha-color: 	darkkhaki;
+  --role-all-color: gold;
 
   /* Font */
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
@@ -372,14 +373,6 @@ td.table-column-select-row {
 }
 
 /* ユーザrole別制御コンポーネント */
-.user-role-container_admin {
-  background-color: var(--role-admin-color);
-  padding-left: 0.7%;
-  z-index: 2;
-}
-
-
-/* ユーザrole別制御コンポーネント */
 .user-role-container-admin {
   background-color: var(--role-admin-color);
   padding-left: 0.7%;
@@ -403,6 +396,13 @@ td.table-column-select-row {
 /* ユーザrole別制御コンポーネント */
 .user-role-container-kanrensha {
   background-color: var(--role-kanrensha-color);
+  padding-left: 0.7%;
+  z-index: 2;
+}
+
+/* ユーザrole別制御コンポーネント */
+.user-role-container-all {
+  background-color: var(--role-all-color);
   padding-left: 0.7%;
   z-index: 2;
 }

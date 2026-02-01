@@ -2,17 +2,41 @@
 import { ref, type Ref } from 'vue';
 import RoutePathConstants from '../../../../routePathConstants';
 import router from '../../../../router';
-import type { LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
+import { LeastUserDto, MessageConstants, MessageView, PagingControl, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import { getLoginUser } from '../../utils/getLoginUser';
 import type { UserPersonEntityInterface } from '../../entity/userPersonEntity';
-import mockGetUserList from '../../../test/pages/user/mock/mockGetUserList';
 import UserDetailEdit from '../../common/user/UserDetailEdit.vue';
 import { SearchUserCapsuleDto, type SearchUserCapsuleDtoInterface } from '../../dto/user/searchUserCapsuleDto';
 import UserRoleConstants from '../../dto/user/userRoleConstants';
 import AdminInfo from '../../common/user_info/AdminInfo.vue';
+import getAuthorizedPromiseArea from '../../dto/login/getAuthorizedPromiseArea';
+import { AccessTokenNotFoundError, TokenRefreshError } from '../../dto/login/errors';
+import type { SearchUserEntityResultDtoInterface } from '../../dto/user/searchUserEntityResultDto';
+import { DeleteUserCapsuleDto, type DeleteUserCapsuleDtoInterface } from '../../dto/user/deleteUserCapsuleDto';
+
+// よく使う定数
+const BLANK: string = "";
+//const INIT_NUMBER: number = 0;
+//const SERVER_STATUS_OK: number = 200;
+//const SERVER_ACCEPTED: number = 202;
+// const SERVER_STATUS_ERROR: number = 400;
+const SERVER_STATUS_ACCEPTED: number = 201;
+const SEARCH_LIMIT: number = 20;
 
 // back側アクセス
 const urlBack: string = RoutePathConstants.DOMAIN + RoutePathConstants.BASE_PATH;
+
+// メッセージボックス表示定数
+const infoLevel: Ref<number> = ref(MessageConstants.LEVEL_NONE);
+const messageType: Ref<number> = ref(MessageConstants.VIEW_NONE);
+const title: Ref<string> = ref(BLANK);
+const message: Ref<string> = ref(BLANK);
+
+// Paging
+const pageNumber: Ref<number> = ref(0); // Mock data
+const allCount: Ref<number> = ref(0); // Mock data
+const limit: Ref<number> = ref(SEARCH_LIMIT); // Mock data
+
 
 // ユーザ呼び出し
 const userDto: Ref<LeastUserDtoInterface> = ref(getLoginUser());
@@ -29,6 +53,8 @@ function onSearch() {
 
     // 検索条件の設定
     capsuleDto.value.listRole.splice(0);
+    capsuleDto.value.limit = limit.value;
+
     if (hasConditionManager) {
         capsuleDto.value.listRole.push(UserRoleConstants.MANAGER);
     }
@@ -45,61 +71,88 @@ function onSearch() {
         capsuleDto.value.listRole.push(UserRoleConstants.KANRENSHA_SEIJIDANTAI);
     }
 
-    // TODO 検索条件を確定したら検索
+    // 検索実行
+    getAuthorizedPromiseArea().then(token => {
+        const url = urlBack + "/edit-user/search";
+        const method = "POST";
+        const body = JSON.stringify(capsuleDto.value);
+        const headers = {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'X-AUTH-TOKEN': 'Bearer ' + token
+        };
+        fetch(url, { method, headers, body })
+            .then(async (response) => {
+                const resultDto: SearchUserEntityResultDtoInterface = await response.json();
 
+                if (resultDto.listPersonEntity.length === 0) {
+                    infoLevel.value = MessageConstants.LEVEL_INFO;
+                    // トークン保持ができていない場合
+                    messageType.value = MessageConstants.VIEW_TOAST;
+                    title.value = "ユーザ検索";
+                    message.value = "検索結果が0件でした";
 
-
-    listEntity.value = mockGetUserList();
+                } else {
+                    listEntity.value = resultDto.listPersonEntity;
+                    allCount.value = resultDto.allCount;
+                    pageNumber.value = resultDto.pageNumber;
+                }
+            })
+            .catch((e) => {
+                if (e instanceof AccessTokenNotFoundError) {
+                    infoLevel.value = MessageConstants.LEVEL_ERROR;
+                    // トークン保持ができていない場合
+                    messageType.value = MessageConstants.VIEW_OK;
+                    title.value = "現在トークンが存在しません";
+                    message.value = e.message;
+                    return;
+                }
+                if (e instanceof TokenRefreshError) {
+                    // 取得に失敗している場合
+                    infoLevel.value = MessageConstants.LEVEL_ERROR;
+                    messageType.value = MessageConstants.VIEW_OK;
+                    title.value = "有効期限まじかのトークンを再取得できませんでした";
+                    message.value = e.message;
+                    return;
+                }
+                infoLevel.value = MessageConstants.LEVEL_ERROR;
+                messageType.value = MessageConstants.VIEW_OK;
+                title.value = "システムエラーが発生しました";
+                message.value = "システム管理者にお問い合わせください";
+            });
+    });
 }
 
-
-
-
-
-
-
-
 const isViewEdit: Ref<boolean> = ref(false);
-const isViewDelete: Ref<boolean> = ref(false);
 
 function onEdit(selectedId: number) {
     selectedUserId.value = selectedId;
     isViewEdit.value = true;
 }
 
+const deleteUserDto: LeastUserDtoInterface = new LeastUserDto();
 function onDelete(selectedId: number) {
 
-    alert("削除" + selectedId);
+    const entityDelete: UserPersonEntityInterface | undefined = listEntity.value.filter((e) => e.userPersonId === selectedId)[0];
+    if (entityDelete === undefined) {
+        infoLevel.value = MessageConstants.LEVEL_ERROR;
+        // トークン保持ができていない場合
+        messageType.value = MessageConstants.VIEW_OK;
+        title.value = "ユーザ削除処理";
+        message.value = "削除するユーザが指定できませんでした。";
+        // ユーザが指定できない場合はメッセージを出して離脱
+        return;
+    } else {
+        deleteUserDto.userPersonId = entityDelete.userPersonId;
+        deleteUserDto.userPersonCode = entityDelete.userPersonCode;
+        deleteUserDto.userPersonName = entityDelete.userPersonName;
 
-    // TODO アラート
-
-    // getAuthorizedPromiseArea().then(token => {
-    //     if (token !== "") {
-    //         // TODO 選択されたUserEntityを最小限ユーザに変換して削除対象、操作者はメニューから取得する
-    //         const capsuleDto: Ref<FrameworkCapsuleInterface> = ref(new FrameworkCapsuleDto());
-    //         capsuleDto.value.userPersonLeastDto = userLeastDto.value;
-
-    //         const url = urlBack + "/";
-    //         const method = "POST";
-    //         const body = JSON.stringify(null);
-    //         const headers = {
-    //             'Accept': 'application/json',
-    //             'Content-Type': 'application/json',
-    //             'X-AUTH-TOKEN': 'Bearer ' + token
-    //         };
-    //         fetch(url, { method, headers, body })
-    //             .then(async (response) => {
-    //                 // 結果を受け取ってメッセージ表示
-    //                 const resultDto: FrameworkResultInterface = await response.json();
-    //                 alert(resultDto.message);
-
-    //             })
-    //             .catch((e) => { alert(e); });
-    //     } else {
-    //         alert("エラーのつもり");
-    //     }
-    // });
-
+        infoLevel.value = MessageConstants.LEVEL_WARNING;
+        // トークン保持ができていない場合
+        messageType.value = MessageConstants.VIEW_YES_NO;
+        title.value = "ユーザ削除処理";
+        message.value = entityDelete.userPersonName + "を削除します。戻すことはできません。よろしいですか";
+    }
 }
 
 // ユーザ検索と選択
@@ -112,6 +165,8 @@ function recieveCancelEditUser() {
 
 function recieveEditUserInterface() {
     isViewEdit.value = false;
+    // 更新後に最新データ取得
+    onSearch();
 }
 
 
@@ -119,6 +174,72 @@ function recieveEditUserInterface() {
 
 function onCancel() {
     router.push(RoutePathConstants.PAGE_LOGIN);
+}
+
+function recieveSubmit(button: string) {
+    // 削除前の確認
+    if (button === "yes") {
+
+        const capsuleDtoDelete: DeleteUserCapsuleDtoInterface = new DeleteUserCapsuleDto();
+        capsuleDtoDelete.userDto = deleteUserDto;
+        capsuleDtoDelete.withdrawReason = "SE権限者による作業"; // TODO 必要ならば入力窓作成
+        // 処理実行
+        getAuthorizedPromiseArea().then(token => {
+            const url = urlBack + "/edit-user/delete";
+            const method = "POST";
+            const body = JSON.stringify(capsuleDtoDelete);
+            const headers = {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'X-AUTH-TOKEN': 'Bearer ' + token
+            };
+            fetch(url, { method, headers, body })
+                .then(async (response) => {
+                    const resultDto = await response.json();
+                    title.value = "ユーザ削除処理";
+                    if (SERVER_STATUS_ACCEPTED == response.status) {
+                        infoLevel.value = MessageConstants.LEVEL_ERROR;
+                        messageType.value = MessageConstants.VIEW_OK;
+                        message.value = resultDto.message;
+                    } else {
+                        infoLevel.value = MessageConstants.LEVEL_INFO;
+                        messageType.value = MessageConstants.VIEW_TOAST;
+                        message.value = "ユーザ削除処理が完了しました";
+                        onSearch();
+                    }
+                })
+                .catch((e) => {
+                    if (e instanceof AccessTokenNotFoundError) {
+                        infoLevel.value = MessageConstants.LEVEL_ERROR;
+                        // トークン保持ができていない場合
+                        messageType.value = MessageConstants.VIEW_OK;
+                        title.value = "現在トークンが存在しません";
+                        message.value = e.message;
+                        return;
+                    }
+                    if (e instanceof TokenRefreshError) {
+                        // 取得に失敗している場合
+                        infoLevel.value = MessageConstants.LEVEL_ERROR;
+                        messageType.value = MessageConstants.VIEW_OK;
+                        title.value = "有効期限まじかのトークンを再取得できませんでした";
+                        message.value = e.message;
+                        return;
+                    }
+                    infoLevel.value = MessageConstants.LEVEL_ERROR;
+                    messageType.value = MessageConstants.VIEW_OK;
+                    title.value = "システムエラーが発生しました";
+                    message.value = "システム管理者にお問い合わせください";
+                });
+        });
+    }
+
+    infoLevel.value = 0;
+    messageType.value = 0;
+}
+
+function recievePagingNumber(selecteddNumber: number) {
+    capsuleDto.value.pageNumber = selecteddNumber;
+    onSearch();
 }
 </script>
 <template>
@@ -134,7 +255,7 @@ function onCancel() {
             ユーザ名
         </div>
         <div class="right-area">
-            <input type="text">
+            <input type="text" v-model="capsuleDto.name">
         </div>
     </div>
 
@@ -168,8 +289,12 @@ function onCancel() {
     </div>
 
     <h3>ユーザ検索結果</h3>
+    <!-- ページング -->
+    <PagingControl :all-count="allCount" :limit="limit" :page-number="pageNumber"
+        @send-paging-number="recievePagingNumber"></PagingControl>
+
     <!-- 選択されたユーザを編集 -->
-    <div class="one-line">
+    <div class="one-line-scroll">
         <table>
             <tbody>
                 <tr>
@@ -196,6 +321,13 @@ function onCancel() {
         <UserDetailEdit :user-dto="userDto" :edit-user-id="selectedUserId"
             @send-cancel-edit-user="recieveCancelEditUser" @send-edit-user-interface="recieveEditUserInterface">
         </UserDetailEdit>
+    </div>
+
+    <!-- メッセージ表示 -->
+    <div class="overMessage" v-if="messageType !== MessageConstants.VIEW_NONE">
+        <MessageView :info-level="infoLevel" :message-type="messageType" :title="title" :message="message"
+            @send-submit="recieveSubmit">
+        </MessageView>
     </div>
 
 </template>

@@ -3,9 +3,9 @@ import { ref, type Ref } from 'vue';
 import { NewComerDto, type NewComerDtoInterface } from '../../dto/add_account/newComerDto';
 import router from '../../../../router';
 import RoutePathConstants from '../../../../routePathConstants';
-import MockNewComerInfo from '../../../test/common/user_info/MockNewComerInfo.vue';
 import { MessageConstants, MessageView } from 'seijishikin-jp-normalize_common-tool';
 import { useApi } from '../../utils/useApi';
+import NewComerInfo from '../../common/user_info/NewComerInfo.vue';
 
 // back側アクセス
 const urlBack: string = RoutePathConstants.DOMAIN + RoutePathConstants.BASE_PATH;
@@ -70,7 +70,7 @@ function onCancel() {
 }
 </script>
 <template>
-    <MockNewComerInfo :current-step="1"></MockNewComerInfo>
+    <NewComerInfo :current-step="1"></NewComerInfo>
     <h1>新規登録(アカウント入力)</h1>
 
     <div class="one-line">

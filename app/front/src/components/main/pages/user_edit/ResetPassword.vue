@@ -2,9 +2,10 @@
 import { ref, type Ref } from 'vue';
 import router from '../../../../router';
 import RoutePathConstants from '../../../../routePathConstants';
-import { MessageConstants, MessageView } from 'seijishikin-jp-normalize_common-tool';
+import { MessageConstants, MessageView, type FrameworkMessageAndResultDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import { ResetPassswordCapsuleDto, type ResetPassswordCapsuleDtoInterface } from '../../dto/user/resetPassswordCapsuleDto';
 import PasswordInput from '../../common/user/PasswordInput.vue';
+import { useApi } from '../../utils/useApi';
 
 // back側アクセス
 const urlBack: string = RoutePathConstants.DOMAIN + RoutePathConstants.BASE_PATH;
@@ -36,22 +37,84 @@ const stageClass3: Ref<string> = ref("");
 const capsuleDto: Ref<ResetPassswordCapsuleDtoInterface> = ref(new ResetPassswordCapsuleDto());
 
 
-function onSendEmail() {
-    alert("メールアドアドレス送信");
-    // ページ編集
-    inputStage.value = 2;
-    stageClass1.value = "stage-complete";
+async function onSendEmail() {
+
+    const { loading: sendLoading, error: sendError, fetchData: fetchLogin } = useApi<FrameworkMessageAndResultDtoInterface>();
+
+    const url = urlBack + "/reset-password/send-code";
+    const config = {
+        method: "POST",
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(capsuleDto.value)
+    };
+
+    const resultDto: FrameworkMessageAndResultDtoInterface | null = await fetchLogin(url, config);
+    messageType.value = MessageConstants.VIEW_OK;
+    title.value = "パスワードリセット(コード送信)";
+    if (resultDto !== null) {
+        if (resultDto.isFailure) {
+            infoLevel.value = MessageConstants.LEVEL_WARNING;
+        } else {
+            infoLevel.value = MessageConstants.LEVEL_INFO;
+            // ページ編集
+            inputStage.value = 2;
+            stageClass1.value = "stage-complete";
+        }
+        message.value = resultDto.message;
+    } else {
+        infoLevel.value = MessageConstants.LEVEL_ERROR;
+        if (sendError.value != null) {
+            message.value = sendError.value;
+        } else {
+            message.value = "システムエラーが発生しました";
+        }
+
+    }
+
 }
 
-function onSendCode() {
-    alert("認証コード送信");
-    // ページ編集
-    inputStage.value = 3;
-    stageClass2.value = "stage-complete";
+async function onSendCode() {
+
+    const { loading: sendLoading, error: sendError, fetchData: fetchLogin } = useApi<FrameworkMessageAndResultDtoInterface>();
+
+    const url = urlBack + "/reset-password/check-code";
+    const config = {
+        method: "POST",
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(capsuleDto.value)
+    };
+
+    const resultDto: FrameworkMessageAndResultDtoInterface | null = await fetchLogin(url, config);
+    messageType.value = MessageConstants.VIEW_OK;
+    title.value = "パスワードリセット(コード照合)";
+    if (resultDto !== null) {
+        if (resultDto.isFailure) {
+            infoLevel.value = MessageConstants.LEVEL_WARNING;
+        } else {
+            infoLevel.value = MessageConstants.LEVEL_INFO;
+            // ページ編集
+            inputStage.value = 3;
+            stageClass2.value = "stage-complete";
+        }
+        message.value = resultDto.message;
+    } else {
+        infoLevel.value = MessageConstants.LEVEL_ERROR;
+        if (sendError.value != null) {
+            message.value = sendError.value;
+        } else {
+            message.value = "システムエラーが発生しました";
+        }
+    }
 }
 
 
-function onSavePassword() {
+async function onSavePassword() {
     if (reInputPassword.value !== capsuleDto.value.password) {
         // パスワードの再入力が異なる場合はメッセージを出して離脱
         infoLevel.value = MessageConstants.LEVEL_ERROR;
@@ -62,32 +125,40 @@ function onSavePassword() {
         return;
     }
 
-    // getAuthorizedPromiseArea().then(token => {
-    //     if (token !== "") {
-    //         // パスワード更新
-    //         const url = urlBack + "/edit-user/refresh-password";
-    //         const method = "POST";
-    //         const body = JSON.stringify(capsuleDto.value);
-    //         const headers = {
-    //             'Accept': 'application/json',
-    //             'Content-Type': 'application/json',
-    //             'X-AUTH-TOKEN': 'Bearer ' + token
-    //         };
-    //         fetch(url, { method, headers, body })
-    //             .then(async (response) => {
-    //                 // 結果を受け取ってメッセージ表示
-    //                 const resultDto: FrameworkResultInterface = await response.json();
-    //                 alert(resultDto.message);
-    //             })
-    //             .catch((e) => { alert(e); });
-    //     } else {
-    //         alert("エラーのつもり");
-    //     }
-    // });
-    //stageClass3.value = "stage-complete";
 
-    // 作業成功時にはログインページに遷移
-    router.push(RoutePathConstants.PAGE_LOGIN);
+    const { loading: sendLoading, error: sendError, fetchData: fetchLogin } = useApi<FrameworkMessageAndResultDtoInterface>();
+
+    const url = urlBack + "/reset-password/save";
+    const config = {
+        method: "POST",
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(capsuleDto.value)
+    };
+
+    const resultDto: FrameworkMessageAndResultDtoInterface | null = await fetchLogin(url, config);
+    messageType.value = MessageConstants.VIEW_OK;
+    title.value = "パスワードリセット(パスワード設定)";
+    if (resultDto !== null) {
+        if (resultDto.isFailure) {
+            infoLevel.value = MessageConstants.LEVEL_WARNING;
+        } else {
+            infoLevel.value = MessageConstants.LEVEL_INFO;
+            // ページ編集
+            stageClass3.value = "stage-complete";
+        }
+        message.value = resultDto.message;
+    } else {
+        infoLevel.value = MessageConstants.LEVEL_ERROR;
+        if (sendError.value != null) {
+            message.value = sendError.value;
+        } else {
+            message.value = "システムエラーが発生しました";
+        }
+    }
+
 }
 
 function onCancel() {
@@ -96,6 +167,11 @@ function onCancel() {
 
 function recieveSubmit(button: string) {
     console.log(button);
+
+    if(stageClass3.value == "stage-complete" && button == "yes"){
+        // パスワード設定成功時にはログインページに遷移
+         router.push(RoutePathConstants.PAGE_LOGIN);
+    }
     infoLevel.value = 0;
     messageType.value = 0;
 }
@@ -110,6 +186,10 @@ function recievePassword2(password: string) {
 <template>
 
     <h1>パスワードリセット</h1>
+    <div>
+        【注意】作業が終わるまでのこのページを閉じたり、別のページへ移動したりしないでください
+    </div>
+
 
     <div :class="stageClass1">
         <h3> (1)連絡用メールアドレスに認証コードを送信します</h3>

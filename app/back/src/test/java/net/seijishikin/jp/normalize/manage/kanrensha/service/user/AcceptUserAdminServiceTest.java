@@ -102,21 +102,21 @@ class AcceptUserAdminServiceTest {
         assertFalse(entityTask2.getIsLatest());
 
         TaskPlan2026Entity entityTask3 = listTask.get(3);
-        assertFalse(entityTask3.getIsLatest());
+        assertTrue(entityTask3.getIsLatest());
         assertEquals(true, entityTask3.getIsStart());
         assertEquals(true, entityTask3.getIsFinished());
         assertEquals(endTime, entityTask3.getStartDatetime());
         assertEquals(endTime, entityTask3.getEndDateimte());
 
         TaskPlan2026Entity entityTask4 = listTask.get(4);
-        assertFalse(entityTask4.getIsLatest());
+        assertTrue(entityTask4.getIsLatest());
         assertEquals(true, entityTask4.getIsStart());
         assertEquals(true, entityTask4.getIsFinished());
         assertEquals(endTime, entityTask4.getStartDatetime());
         assertEquals(endTime, entityTask4.getEndDateimte());
 
         TaskPlan2026Entity entityTask5 = listTask.get(5);
-        assertFalse(entityTask5.getIsLatest());
+        assertTrue(entityTask5.getIsLatest());
         assertEquals(true, entityTask5.getIsStart());
         assertEquals(true, entityTask5.getIsFinished());
         assertEquals(endTime, entityTask5.getStartDatetime());

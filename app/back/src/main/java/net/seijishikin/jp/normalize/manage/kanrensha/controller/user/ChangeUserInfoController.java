@@ -44,19 +44,17 @@ public class ChangeUserInfoController {
             FrameworkMessageAndResultDto resultDto = changeUserInfoService.practice(capsuleDto);
 
             if (resultDto.getIsFailure()) {
-                return ResponseEntity.status(HttpStatus.NO_CONTENT).body(resultDto);
+                return ResponseEntity.status(HttpStatus.ACCEPTED).body(resultDto);
 
             } else {
                 return ResponseEntity.status(HttpStatus.OK).body(resultDto);
             }
 
-        } catch (Exception exception) { // NOPMD
+        } catch (Exception exception) { // NOPMD GenericException 業務的な理由から積極的に許容
             saveStackTraceService.practice(exception, LocalDate.now().getYear(), 0);
-
             FrameworkMessageAndResultDto resultDto = new FrameworkMessageAndResultDto();
             resultDto.setIsFailure(true);
             resultDto.setMessage("システム例外が発生しました");
-
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(resultDto);
         }
     }

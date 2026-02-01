@@ -43,8 +43,8 @@ public class SearchUserController {
             return ResponseEntity.status(HttpStatus.OK).body(searchUserServcie.practice(capsuleDto));
 
         } catch (Exception exception) { // NOPMD
+            exception.printStackTrace();
             saveStackTraceService.practice(exception, LocalDate.now().getYear(), 0);
-            
             SearchUserEntityResultDto resultDto = new SearchUserEntityResultDto();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(resultDto);
         }
