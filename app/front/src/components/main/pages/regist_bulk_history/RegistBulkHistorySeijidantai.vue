@@ -9,6 +9,8 @@ import type { StorageFileDtoInterface } from '../../dto/storage_file/storageFile
 import MockReadCsv from '../../../test/common/read_csv/MockReadCsv.vue';
 import EditWkTblHistorySeijidantai from '../../common/wktbl_edit_history/EditWkTblHistorySeijidantai.vue';
 
+const INIT_BOOLEAN: boolean = false;
+
 // ユーザ呼び出し
 const userDto: Ref<LeastUserDtoInterface> = ref(getLoginUser());
 
@@ -17,7 +19,7 @@ const userDto: Ref<LeastUserDtoInterface> = ref(getLoginUser());
 
 // サンプル表示
 const templateViewButtonText: ComputedRef<String> = computed(() => isVisibleTemplate.value ? "CSVサンプルを隠す" : "CSVサンプルを表示する");
-const isVisibleTemplate: Ref<boolean> = ref(false);
+const isVisibleTemplate: Ref<boolean> = ref(INIT_BOOLEAN);
 function viewSample() {
     isVisibleTemplate.value = !isVisibleTemplate.value;
 }

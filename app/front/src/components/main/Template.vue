@@ -13,6 +13,7 @@ import {
 // よく使う定数
 const BLANK: string = "";
 //const INIT_NUMBER: number = 0;
+const INIT_BOOLEAN: boolean = false;
 // const SERVER_STATUS_OK: number = 200;
 // const SERVER_STATUS_ERROR: number = 400;
 // メッセージ表示定数
@@ -38,7 +39,7 @@ const viewStatus1: Ref<string> = ref(showContentA);
 const viewStatus2: Ref<string> = ref(showContentA);
 
 // 法人検索
-const isKigyouDtSearch: Ref<boolean> = ref(false);
+const isKigyouDtSearch: Ref<boolean> = ref(INIT_BOOLEAN);
 const houjinNo:Ref<string> = ref(BLANK);
 const houjinName:Ref<string> = ref(BLANK);
 

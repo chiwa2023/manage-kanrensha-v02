@@ -10,6 +10,9 @@ import MockReadCsv from '../../../test/common/read_csv/MockReadCsv.vue';
 import EditWkTblStdPerson from '../../common/wktbl_edit_std/EditWkTblStdPerson.vue';
 import EditWkTblMinPerson from '../../common/wktbl_edit_min/EditWkTblMinPerson.vue';
 
+
+const INIT_BOOLEAN: boolean = false;
+
 // ユーザ呼び出し
 const userDto: Ref<LeastUserDtoInterface> = ref(getLoginUser());
 
@@ -18,7 +21,7 @@ const userDto: Ref<LeastUserDtoInterface> = ref(getLoginUser());
 
 // サンプル表示
 const templateViewButtonText: ComputedRef<String> = computed(() => isVisibleTemplate.value ? "CSVサンプルを隠す" : "CSVサンプルを表示する");
-const isVisibleTemplate: Ref<boolean> = ref(false);
+const isVisibleTemplate: Ref<boolean> = ref(INIT_BOOLEAN);
 function viewSample() {
     isVisibleTemplate.value = !isVisibleTemplate.value;
 }

@@ -12,13 +12,21 @@ import getMockWkTblPoliOrgList from './mock/getMockWkTblSeijidantaiList';
 //props,emit
 const props = defineProps<{ userDto: LeastUserDtoInterface }>()
 
+// よく使う定数
+// const BLANK: string = "";
+const INIT_NUMBER: number = 0;
+const INIT_BOOLEAN: boolean = false;
+// const SERVER_STATUS_OK: number = 200;
+// const SERVER_STATUS_ERROR: number = 400;
+const SEARCH_LIMIT: number = 20;
+
 // back側アクセス
 //const urlBack: string = RoutePathConstants.DOMAIN_BACK + RoutePathConstants.PATH_BACK;
 
 // Paging
-const pageNumber: Ref<number> = ref(0);
-const allCount: Ref<number> = ref(0);
-const limit: Ref<number> = ref(20);
+const pageNumber: Ref<number> = ref(INIT_NUMBER);
+const allCount: Ref<number> = ref(INIT_NUMBER);
+const limit: Ref<number> = ref(SEARCH_LIMIT);
 
 
 // 政治団体区分定数
@@ -63,7 +71,7 @@ function onSearchSeijidantai() {
 
 
 // 編集用
-const isEditData: Ref<boolean> = ref(false);
+const isEditData: Ref<boolean> = ref(INIT_BOOLEAN);
 const entityEdit: Ref<WkTblKanrenshaSeijidantaiAddMinEntityInterface> = ref(new WkTblKanrenshaSeijidantaiAddMinEntity());
 const editCapsuleDto: Ref<UpdateWkTblMinSeijidantaiCapsuleDtoInterface> = ref(new UpdateWkTblMinSeijidantaiCapsuleDto());
 editCapsuleDto.value.userDto = props.userDto;

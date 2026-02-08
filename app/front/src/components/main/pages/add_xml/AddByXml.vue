@@ -21,6 +21,13 @@ import { UpdateWkTblAddByXmlCapsuleDto, type UpdateWkTblAddByXmlCapsuleDtoInterf
 // ユーザ呼び出し
 const userDto: Ref<LeastUserDtoInterface> = ref(getLoginUser());
 
+// よく使う定数
+// const BLANK: string = "";
+const INIT_NUMBER: number = 0;
+// const SERVER_STATUS_OK: number = 200;
+// const SERVER_STATUS_ERROR: number = 400;
+const SEARCH_LIMIT: number = 20;
+
 // back側アクセス
 // const urlBack: string = RoutePathConstants.DOMAIN_BACK + RoutePathConstants.PATH_BACK;
 
@@ -40,9 +47,9 @@ const seijidantaiKbnSonota: string = SeijidantaiDantaiKbnConstants.SONOTA;
 const seijidantaiKbnSonotaShibu: string = SeijidantaiDantaiKbnConstants.SONOTA_SHIBU;
 
 // Paging
-const pageNumber: Ref<number> = ref(0);
-const allCount: Ref<number> = ref(0);
-const limit: Ref<number> = ref(20);
+const pageNumber: Ref<number> = ref(INIT_NUMBER);
+const allCount: Ref<number> = ref(INIT_NUMBER);
+const limit: Ref<number> = ref(SEARCH_LIMIT);
 
 // 表示用Dto
 const byXmlCapsuleDto: Ref<SearchWkTblPagingCapsuleDtoInterface> = ref(new SearchWkTblPagingCapsuleDto());
@@ -428,7 +435,7 @@ function recievePagingNumber(selecteddNumber: number) {
                                 <option :value=seijidantaiKbnNoSelect> </option>
                                 <option :value=seijidantaiKbnSeitou>{{
                                     SeijidantaiDantaiKbnConstants.getLabel(seijidantaiKbnSeitou)
-                                }}</option>
+                                    }}</option>
                                 <option :value=seijidantaiKbnSeitouShibu>{{
                                     SeijidantaiDantaiKbnConstants.getLabel(seijidantaiKbnSeitouShibu) }}</option>
                                 <option :value=seijidantaiKbnSeijishikin>{{
@@ -437,7 +444,7 @@ function recievePagingNumber(selecteddNumber: number) {
                                     SeijidantaiDantaiKbnConstants.getLabel(seijidantaiKbn18Jou2KouDantai) }}</option>
                                 <option :value=seijidantaiKbnSonota>{{
                                     SeijidantaiDantaiKbnConstants.getLabel(seijidantaiKbnSonota)
-                                }}</option>
+                                    }}</option>
                                 <option :value=seijidantaiKbnSonotaShibu>{{
                                     SeijidantaiDantaiKbnConstants.getLabel(seijidantaiKbnSonotaShibu) }}</option>
                             </select>

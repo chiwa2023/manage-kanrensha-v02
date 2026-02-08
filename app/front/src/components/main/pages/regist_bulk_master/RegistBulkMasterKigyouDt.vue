@@ -10,6 +10,8 @@ import MockReadCsv from '../../../test/common/read_csv/MockReadCsv.vue';
 import EditWkTblMinKigyouDt from '../../common/wktbl_edit_min/EditWkTblMinKigyouDt.vue';
 import EditWkTblStdKigyouDt from '../../common/wktbl_edit_std/EditWkTblStdKigyouDt.vue';
 
+const INIT_BOOLEAN: boolean = false;
+
 // back側アクセス
 //const urlBack: string = RoutePathConstants.DOMAIN_BACK + RoutePathConstants.PATH_BACK;
 
@@ -18,7 +20,7 @@ const userDto: Ref<LeastUserDtoInterface> = ref(getLoginUser());
 
 // サンプル表示
 const templateViewButtonText: ComputedRef<String> = computed(() => isVisibleTemplate.value ? "CSVサンプルを隠す" : "CSVサンプルを表示する");
-const isVisibleTemplate: Ref<boolean> = ref(false);
+const isVisibleTemplate: Ref<boolean> = ref(INIT_BOOLEAN);
 function viewSample() {
     isVisibleTemplate.value = !isVisibleTemplate.value;
 }

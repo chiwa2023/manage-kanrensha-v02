@@ -11,19 +11,27 @@ import getMockWkTblPersonList from './mock/getMockWkTblPersonList';
 //props,emit
 const props = defineProps<{ userDto: LeastUserDtoInterface }>()
 
+// よく使う定数
+// const BLANK: string = "";
+const INIT_NUMBER: number = 0;
+const INIT_BOOLEAN: boolean = false;
+// const SERVER_STATUS_OK: number = 200;
+// const SERVER_STATUS_ERROR: number = 400;
+const SEARCH_LIMIT: number = 20;
+
 // back側アクセス
 //const urlBack: string = RoutePathConstants.DOMAIN_BACK + RoutePathConstants.PATH_BACK;
 
 // Paging
-const pageNumber: Ref<number> = ref(0);
-const allCount: Ref<number> = ref(0);
-const limit: Ref<number> = ref(20);
+const pageNumber: Ref<number> = ref(INIT_NUMBER);
+const allCount: Ref<number> = ref(INIT_NUMBER);
+const limit: Ref<number> = ref(SEARCH_LIMIT);
 
 // 表示必要なDto
 const personCapsuleDto: Ref<SearchWkTblPagingCapsuleDtoInterface> = ref(new SearchWkTblPagingCapsuleDto());
 personCapsuleDto.value.userDto = props.userDto;
-personCapsuleDto.value.limit = 30;
-personCapsuleDto.value.pageNumber = 0;
+personCapsuleDto.value.limit = SEARCH_LIMIT;
+personCapsuleDto.value.pageNumber = INIT_NUMBER;
 personCapsuleDto.value.hasAffectNot = true;
 
 const personResultDto: Ref<SearchWkTblMinPersonPagingResultDtoInterface> = ref(new SearchWkTblMinPersonPagingResultDto());
@@ -53,7 +61,7 @@ function onSearchPerson() {
 
 
 // 編集用
-const isEditData: Ref<boolean> = ref(false);
+const isEditData: Ref<boolean> = ref(INIT_BOOLEAN);
 const entityEdit: Ref<WkTblKanrenshaPersonAddMinEntityInterface> = ref(new WkTblKanrenshaPersonAddMinEntity());
 const editCapsuleDto: Ref<UpdateWkTblMinPersonCapsuleDtoInterface> = ref(new UpdateWkTblMinPersonCapsuleDto());
 editCapsuleDto.value.userDto = props.userDto;

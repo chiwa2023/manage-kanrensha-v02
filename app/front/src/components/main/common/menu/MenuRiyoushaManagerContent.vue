@@ -20,25 +20,10 @@ import RoutePathConstants from '../../../../routePathConstants';
         <!--
     <h4>関連者メニュー</h4>
     <RouterLink :to=RoutePathConstants.PAGE_REGI_PARTNER_MANAGE>関連者管理</RouterLink><br>
-    <RouterLink :to=RoutePathConstants.PAGE_WORKS_APPROVAL>作業内容承認</RouterLink><br>
-
-    <hr>
-
-    <h4>郵便番号メニュー</h4>
-    <RouterLink :to=RoutePathConstants.PAGE_POSTAL_BUILDING>フロア郵便番号住所追加</RouterLink><br>
-    <RouterLink :to=RoutePathConstants.PAGE_POSTAL_EDIT>郵便番号編集</RouterLink><br>
-    <RouterLink :to=RoutePathConstants.PAGE_POSTAL_SABUN>郵便番号差分更新</RouterLink><br>
-    <hr>
-
-    <h4>アドレス・ベース・レジストリ</h4>
-    <RouterLink :to=RoutePathConstants.PAGE_ADDRESS_REGI_EDIT>アドレス・ベース・レジストリ編集</RouterLink><br>
-    <RouterLink :to=RoutePathConstants.PAGE_ADDRESS_REGI_SABUN>アドレス・ベース・レジストリ差分更新</RouterLink><br>
     <hr>
 
     <h4>関連者履歴一括登録</h4>
-
     <hr>
-
         <RouterLink :to=RoutePathConstants.PAGE_REGI_COMBINE_KIGYOU>個人－企業／団体紐づけ登録</RouterLink><br>
     <RouterLink :to=RoutePathConstants.PAGE_REGI_COMBINE_POLI_ORG>個人－政治団体紐づけ登録</RouterLink><br>
 
@@ -76,8 +61,24 @@ import RoutePathConstants from '../../../../routePathConstants';
         </div>
 
         <div class="menu-section">
+            <h4 class="menu-title">利用者・関連者編集</h4>
+            <RouterLink :to="RoutePathConstants.PAGE_WORKS_APPROVAL" class="menu-item">作業内容承認</RouterLink><br>
+        </div>
+
+        <div class="menu-section">
             <h4 class="menu-title">本人情報編集</h4>
             <RouterLink :to="RoutePathConstants.PAGE_EDIT_RIYOUSHA_MANAGER" class="menu-item">名称・住所・連絡先編集</RouterLink>
+        </div>
+    </div>
+
+    <div class="menu-container">
+        <div class="menu-section">
+            <h4 class="menu-title">住所編集</h4>
+            <RouterLink :to="RoutePathConstants.PAGE_POSTAL_BUILDING" class="menu-item">フロア郵便番号建物住所入力</RouterLink>
+            <RouterLink :to="RoutePathConstants.PAGE_POSTAL_EDIT" class="menu-item">郵便番号編集</RouterLink>
+            <RouterLink :to="RoutePathConstants.PAGE_POSTAL_SABUN" class="menu-item">郵便番号差分取込</RouterLink>
+            <RouterLink :to="RoutePathConstants.PAGE_ADDRESS_REGI_EDIT" class="menu-item">住所編集</RouterLink>
+            <RouterLink :to="RoutePathConstants.PAGE_ADDRESS_REGI_SABUN" class="menu-item">住所差分取込</RouterLink>
         </div>
     </div>
 
@@ -87,7 +88,6 @@ import RoutePathConstants from '../../../../routePathConstants';
             <RouterLink :to="RoutePathConstants.PAGE_LOGOUT" class="menu-item">ログアウト</RouterLink>
         </div>
     </div>
-
 
 </template>
 <style scoped></style>

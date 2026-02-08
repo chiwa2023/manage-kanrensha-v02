@@ -13,6 +13,7 @@ import PersonMenu from '../../../main/common/menu/PersonMenu.vue';
 // よく使う定数
 const BLANK: string = "";
 const INIT_NUMBER: number = 0;
+const INIT_BOOLEAN: boolean = false;
 // const SERVER_STATUS_OK: number = 200;
 // const SERVER_STATUS_ERROR: number = 400;
 // メッセージ表示定数
@@ -41,8 +42,8 @@ if (INIT_NUMBER === props.userDto.userPersonId
 
 
 const viewMenuRole: Ref<string> = ref(BLANK);
-const isVewAllMenu: Ref<boolean> = ref(false);
-const isVewPersonMenu: Ref<boolean> = ref(false);
+const isVewAllMenu: Ref<boolean> = ref(INIT_BOOLEAN);
+const isVewPersonMenu: Ref<boolean> = ref(INIT_BOOLEAN);
 
 function viewAllMenu() {
     isVewPersonMenu.value = false;

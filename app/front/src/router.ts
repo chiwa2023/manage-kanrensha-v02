@@ -63,6 +63,18 @@ const routes = [
     { path: RoutePathConstants.PAGE_DOWNLOAD_SABUN_MASTER_MIN, name: "DownloadSabunMasterMin", component: () => import("./components/main/pages/download_sabun/DownloadSabunMasterMin.vue") },
     { path: RoutePathConstants.PAGE_DOWNLOAD_SABUN_HISTORY, name: "DownloadSabunHistory", component: () => import("./components/main/pages/download_sabun/DownloadSabunHistory.vue") },
 
+        // 郵便番号編集
+    { path: RoutePathConstants.PAGE_POSTAL_BUILDING, name: "PostalCodeBuilding", component: () => import("./components/main/pages/address_postal/PostalCodeBuilding.vue") },
+    { path: RoutePathConstants.PAGE_POSTAL_EDIT, name: "PostalCodeEdit", component: () => import("./components/main/pages/address_postal/PostalCodeEdit.vue") },
+    { path: RoutePathConstants.PAGE_POSTAL_SABUN, name: "PostalCodeSabun", component: () => import("./components/main/pages/address_postal/PostalCodeSabun.vue") },
+
+    // アドレス・ベース・レジストリ編集
+    { path: RoutePathConstants.PAGE_ADDRESS_REGI_EDIT, name: "AddressRegistryEdit", component: () => import("./components/main/pages/address_registory/AddressRegistryEdit.vue") },
+    { path: RoutePathConstants.PAGE_ADDRESS_REGI_SABUN, name: "AddressRegistrySabun", component: () => import("./components/main/pages/address_registory/AddressRegistrySabun.vue") },
+
+        // 入力内容承認
+    { path: RoutePathConstants.PAGE_WORKS_APPROVAL, name: "WorksApproval", component: () => import("./components/main/pages/works_approval/WorksApproval.vue") },
+
 ];
 
 const router = createRouter({
