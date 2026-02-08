@@ -106,7 +106,7 @@ function recieveStorageFileInterface(storageFileDto: StorageFileDtoInterface) {
     <div class="one-line">
         <div v-if="isVisibleTemplate">
             ヘッダ必須。1行目は読み飛ばすので、ないと1行目が登録されません<br>
-            最初の1列は不要です。(ファイル内は4列)
+            ファイル内は5列です。
             <table>
                 <tbody>
                     <tr>
@@ -114,7 +114,8 @@ function recieveStorageFileInterface(storageFileDto: StorageFileDtoInterface) {
                         <th>団体名称</th>
                         <th>団体住所</th>
                         <th>団体代表者氏名</th>
-                        <th>関連者コード</th>
+                        <th>関連者番号(企業・団体)</th>
+                        <th>代表者関連者番号</th>
                     </tr>
                     <tr>
                         <th class="hojo">説明</th>
@@ -122,20 +123,47 @@ function recieveStorageFileInterface(storageFileDto: StorageFileDtoInterface) {
                         <th class="explain">必須</th>
                         <th class="explain">任意<br>(項目省略不可)</th>
                         <th class="explain">必須</th>
+                        <th class="explain">任意<br>(項目省略不可)</th>
+                    </tr>
+                    <tr>
+                        <th class="hojo">データ例</th>
+                        <td>ぼったくり企業</td>
+                        <td>和歌山県架空市実在町</td>
+                        <td>代表者　太郎</td>
+                        <td>12-345-ABCCDEF</td>
+                        <td>8-7654-1</td>
+                    </tr>
+                    <tr>
+                        <th class="hojo">データ例(同一行許容)<br>・システム側で処理停止</th>
+                        <td>ぼったくり企業</td>
+                        <td>和歌山県架空市実在町</td>
+                        <td>代表者　太郎</td>
+                        <td>12-345-ABCCDEF</td>
+                        <td>8-7654-1</td>
                     </tr>
                     <tr>
                         <th class="hojo">データ例</th>
                         <td>ふんだくり企業</td>
-                        <td>和歌山県実在市山麓町</td>
-                        <td>代表者　太郎</td>
-                        <td>1-234-55678</td>
+                        <td>宮崎県架空市実在町</td>
+                        <td>代表者　次郎</td>
+                        <td>23-45657-QWERTY</td>
+                        <td>8-7654-3</td>
+                    </tr>
+                    <tr>
+                        <th class="hojo">データ例(最小入力例)</th>
+                        <td>職業組合A</td>
+                        <td>山形県架空市実在町</td>
+                        <td></td>
+                        <td>12-33-44-55</td>
+                        <td></td>
                     </tr>
                     <tr>
                         <th class="hojo">データ例</th>
-                        <td>超元素製造組合</td>
-                        <td>宮崎県架空市湖畔町</td>
-                        <td></td>
-                        <td>2-345-6789</td>
+                        <td>職業組合B</td>
+                        <td>山梨県架空市実在町</td>
+                        <td>代表者　四郎</td>
+                        <td>99-88-77-66</td>
+                        <td>8-7654-5</td>
                     </tr>
                 </tbody>
             </table>

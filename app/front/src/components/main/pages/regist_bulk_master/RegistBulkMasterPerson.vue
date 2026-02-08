@@ -137,14 +137,14 @@ function onBatchByFile() {
                 ヘッダ必須。1行目は読み飛ばすので、ないと1行目が登録されません<br>
                 最初の1列は不要です。(ファイル内は3列)
             </div>
-            <div class="one-line">
+            <div class="one-line-scroll">
                 <table>
                     <tbody>
                         <tr>
                             <th class="hojo">要件</th>
-                            <th>個人氏名</th>
-                            <th>個人全住所</th>
-                            <th>職業</th>
+                            <th>名称</th>
+                            <th>全住所</th>
+                            <th>代表者名</th>
                         </tr>
                         <tr>
                             <th class="hojo">説明</th>
@@ -155,14 +155,32 @@ function onBatchByFile() {
                         <tr>
                             <th class="hojo">データ例</th>
                             <td>迂回献金　太郎</td>
-                            <td>和歌山県実在市山麓町</td>
-                            <td>教師</td>
+                            <td>和歌山県架空市実在町</td>
+                            <td>経営者</td>
+                        </tr>
+                        <tr>
+                            <th class="hojo">データ例(同一行許容)<br>・システム側で処理停止</th>
+                            <td>迂回献金　太郎</td>
+                            <td>和歌山県架空市実在町</td>
+                            <td>経営者</td>
                         </tr>
                         <tr>
                             <th class="hojo">データ例</th>
+                            <td>迂回献金　次郎</td>
+                            <td>宮崎県架空市実在町</td>
+                            <td>教師</td>
+                        </tr>
+                        <tr>
+                            <th class="hojo">データ例(最小入力例)</th>
                             <td>寄付上限　花子</td>
-                            <td>宮崎県架空市湖畔町</td>
+                            <td>山形県架空市実在町</td>
                             <td></td>
+                        </tr>
+                        <tr>
+                            <th class="hojo">データ例</th>
+                            <td>寄付上限　直子</td>
+                            <td>山梨県架空市実在町</td>
+                            <td>弁護士</td>
                         </tr>
                     </tbody>
                 </table>
@@ -178,7 +196,6 @@ function onBatchByFile() {
     <h3 v-if="isVisibleFormat !== formatMin">標準フォーマット</h3>
     <div v-if="isVisibleFormat !== formatMin">
         <div class="one-line">
-
             <button @click="viewSample">{{ templateViewButtonText }}</button>
         </div>
         <div v-if="isVisibleTemplate">
@@ -186,13 +203,12 @@ function onBatchByFile() {
                 ヘッダ必須。1行目は読み飛ばすので、ないと1行目が登録されません<br>
                 最初の1列は不要です。(ファイル内は28列)
             </div>
-
-            <div class="one-line">
+            <div class="one-line-scroll">
                 <table class="std">
                     <tbody>
                         <tr>
                             <th class="hojo">要件</th>
-                            <th>個人の姓名</th>
+                            <th>名称</th>
                             <th>全住所</th>
                             <th>個人職業</th>
                             <th>住所郵便番号まで</th>
@@ -205,6 +221,8 @@ function onBatchByFile() {
                             <th>電話番号番号</th>
                             <th>メールアドレス</th>
                             <th>自分の公式サイト</th>
+                            <th>SNSサービス名称</th>
+                            <th>SNSサービスアカウント</th>
                             <th>外国籍該否</th>
                             <th>姓名の姓</th>
                             <th>姓名の名</th>
@@ -218,11 +236,10 @@ function onBatchByFile() {
                             <th>職業法人番号</th>
                             <th>職業法人住所</th>
                             <th>職業法人名</th>
-                            <th>SNS名称</th>
-                            <th>SNSアカウント</th>
                             <th>地方公共団体コード</th>
                             <th>町字Id</th>
                             <th>街区Id</th>
+                            <th>地番Id</th>
                             <th>住居Id</th>
                             <th>住居2Id</th>
                         </tr>
@@ -234,12 +251,14 @@ function onBatchByFile() {
                             <th class="explain">必須</th>
                             <th class="explain">必須</th>
                             <th class="explain">任意</th>
-                            <th class="explain">任意<br>5文字まで</th>
-                            <th class="explain">任意<br>5文字まで</th>
-                            <th class="explain">必須<br>9文字まで</th>
-                            <th class="explain">必須<br>9文字まで</th>
-                            <th class="explain">必須<br>9文字まで</th>
+                            <th class="explain">任意<br>8文字まで</th>
+                            <th class="explain">任意<br>8文字まで</th>
+                            <th class="explain">必須<br>10文字まで</th>
+                            <th class="explain">必須<br>10文字まで</th>
+                            <th class="explain">必須<br>10文字まで</th>
                             <th class="explain">必須</th>
+                            <th class="explain">任意</th>
+                            <th class="explain">任意</th>
                             <th class="explain">任意</th>
                             <th class="explain">任意<br>"はい","1","true","該当"の<br>いずれかが設定されているときは該当</th>
                             <th class="explain">任意</th>
@@ -254,85 +273,198 @@ function onBatchByFile() {
                             <th class="explain">任意</th>
                             <th class="explain">任意</th>
                             <th class="explain">任意</th>
-                            <th class="explain">任意</th>
-                            <th class="explain">任意</th>
-                            <th class="explain">任意<br>7文字まで</th>
-                            <th class="explain">任意<br>6文字まで</th>
                             <th class="explain">任意<br>8文字まで</th>
-                            <th class="explain">任意<br>4文字まで</th>
-                            <th class="explain">任意<br>6文字まで</th>
+                            <th class="explain">任意<br>9文字まで</th>
+                            <th class="explain">任意<br>5文字まで</th>
+                            <th class="explain">任意<br>17文字まで</th>
+                            <th class="explain">任意<br>5文字まで</th>
+                            <th class="explain">任意<br>7文字まで</th>
                         </tr>
+
                         <tr>
                             <th class="hojo">データ例</th>
-                            <td>迂回献金　ミカエル　太郎</td>
-                            <td>和歌山県実在市山麓町</td>
-                            <td>団体役員</td>
-                            <td>和歌山県実在市山麓町</td>
-                            <td>2丁目6番地</td>
-                            <td>四角ビル7F</td>
-                            <td>012</td>
-                            <td>3456</td>
-                            <td>023</td>
-                            <td>4567</td>
-                            <td>8901</td>
-                            <td>taro@jakusho.net</td>
-                            <td>http://jakusho.net/taro</td>
-                            <td>いいえ</td>
-                            <td>迂回献金</td>
-                            <td>太郎</td>
-                            <td>ミカエル</td>
-                            <td>うかいけんきん</td>
-                            <td>たろう</td>
-                            <td>みかえる</td>
-                            <td>水産業</td>
-                            <td>役職者</td>
-                            <td>団体役員</td>
-                            <td>1-234-5678</td>
-                            <td>三重県架空市湖畔町</td>
-                            <td>とこぶし収穫組合</td>
-                            <td>弱小ブログ</td>
-                            <td>@uaikenkin</td>
-                            <td>098765</td>
+                            <td>山田太郎</td>
+                            <td>東京都千代田区1-1-1</td>
+                            <td>会社員</td>
+                            <td>東京都千代田区</td>
+                            <td>1-1</td>
+                            <td>丸の内ビル1F</td>
+                            <td>100</td>
+                            <td>0001</td>
+                            <td>03</td>
                             <td>1234</td>
-                            <td>123</td>
-                            <td>234</td>
                             <td>5678</td>
+                            <td>taro.yamada@example.com</td>
+                            <td>https://taro-yamada.com</td>
+                            <td>X</td>
+                            <td>@taro_yamada</td>
+                            <td>いいえ</td>
+                            <td>山田</td>
+                            <td>太郎</td>
+                            <td>ジェイムズ</td>
+                            <td>やまだ</td>
+                            <td>たろう</td>
+                            <td>じぇいむず</td>
+                            <td>IT</td>
+                            <td>エンジニア</td>
+                            <td>ソフトウェア開発</td>
+                            <td>1234567890123</td>
+                            <td>東京都千代田区</td>
+                            <td>株式会社ABC</td>
+                            <td>13101</td>
+                            <td>001</td>
+                            <td>001</td>
+                            <td>001</td>
+                            <td>001</td>
+                            <td>001</td>
+                        </tr>
+                        <tr>
+                            <th class="hojo">データ例(同一行許容)<br>・システム側で処理停止</th>
+                            <td>山田太郎</td>
+                            <td>東京都千代田区1-1-1</td>
+                            <td>会社員</td>
+                            <td>東京都千代田区</td>
+                            <td>1-1</td>
+                            <td>丸の内ビル1F</td>
+                            <td>100</td>
+                            <td>0001</td>
+                            <td>03</td>
+                            <td>1234</td>
+                            <td>5678</td>
+                            <td>taro.yamada@example.com</td>
+                            <td>https://taro-yamada.com</td>
+                            <td>X</td>
+                            <td>@taro_yamada</td>
+                            <td>いいえ</td>
+                            <td>山田</td>
+                            <td>太郎</td>
+                            <td>ジェイムズ</td>
+                            <td>やまだ</td>
+                            <td>たろう</td>
+                            <td>じぇいむず</td>
+                            <td>IT</td>
+                            <td>エンジニア</td>
+                            <td>ソフトウェア開発</td>
+                            <td>1234567890123</td>
+                            <td>東京都千代田区</td>
+                            <td>株式会社ABC</td>
+                            <td>13101</td>
+                            <td>001</td>
+                            <td>001</td>
+                            <td>001</td>
+                            <td>001</td>
+                            <td>001</td>
                         </tr>
                         <tr>
                             <th class="hojo">データ例</th>
-                            <td>寄付上限　花子</td>
-                            <td>宮崎県架空市湖畔町</td>
+                            <td>佐藤花子</td>
+                            <td>大阪府大阪市中央区2-2-2</td>
+                            <td>公務員</td>
+                            <td>大阪府大阪市中央区</td>
+                            <td>2-2</td>
+                            <td>大阪市役所</td>
+                            <td>540</td>
+                            <td>0002</td>
+                            <td>06</td>
+                            <td>9876</td>
+                            <td>5432</td>
+                            <td>hanako.sato@example.jp</td>
                             <td></td>
-                            <td>宮崎県架空市湖畔町</td>
-                            <td>3丁目9番地4</td>
+                            <td>Facebook</td>
+                            <td>hanako.sato</td>
+                            <td>いいえ</td>
+                            <td>佐藤</td>
+                            <td>花子</td>
                             <td></td>
+                            <td>さとう</td>
+                            <td>はなこ</td>
                             <td></td>
-                            <td></td>
-                            <td>087</td>
-                            <td>654</td>
-                            <td>3210</td>
-                            <td>hanako@chan0poran.com</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
+                            <td>行政</td>
+                            <td>一般職</td>
+                            <td>地方公務員</td>
                             <td></td>
                             <td></td>
                             <td></td>
+                            <td>27100</td>
+                            <td>002</td>
+                            <td>002</td>
+                            <td>002</td>
+                            <td>002</td>
+                            <td>002</td>
+                        </tr>
+                        <tr>
+                            <th class="hojo">データ例(最小入力例)</th>
+                            <td>田中一郎</td>
+                            <td>福岡県福岡市博多区3-3-3</td>
+                            <td>自営業</td>
+                            <td>福岡県福岡市博多区</td>
+                            <td>3-3</td>
+                            <td>博多ビル3F</td>
+                            <td></td>
+                            <td></td>
+                            <td>092</td>
+                            <td>1111</td>
+                            <td>2222</td>
+                            <td>ichiro.tanaka@example.net</td>
                             <td></td>
                             <td></td>
                             <td></td>
+                            <td></td>
+                            <td>田中</td>
+                            <td>一郎</td>
+                            <td></td>
+                            <td>たなか</td>
+                            <td>いちろう</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <th class="hojo">データ例</th>
+                            <td>鈴木美咲</td>
+                            <td>愛知県名古屋市中区4-4-4</td>
+                            <td>学生</td>
+                            <td>愛知県名古屋市中区</td>
+                            <td>4-4</td>
+                            <td>大学寮</td>
+                            <td>460</td>
+                            <td>0004</td>
+                            <td>052</td>
+                            <td>3333</td>
+                            <td>4444</td>
+                            <td>misaki.suzuki@example.co.jp</td>
+                            <td></td>
+                            <td>TikTok</td>
+                            <td>@misaki_s</td>
+                            <td>いいえ</td>
+                            <td>鈴木</td>
+                            <td>美咲</td>
+                            <td>アン</td>
+                            <td>すずき</td>
+                            <td>みさき</td>
+                            <td>あん</td>
+                            <td></td>
+                            <td></td>
+                            <td>大学生</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td>23100</td>
+                            <td>004</td>
+                            <td>004</td>
+                            <td>004</td>
+                            <td>004</td>
+                            <td>004</td>
                         </tr>
                     </tbody>
                 </table>
@@ -352,19 +484,20 @@ function onBatchByFile() {
 </template>
 
 <style scoped>
-:root {
-    --cell_width: 200 px;
+.one-line-scroll {
+    width: 100%;
+    overflow-x: auto;
+    white-space: nowrap;
 }
 
 table {
     border-style: solid;
     border-width: 1px;
 }
-
 table.std {
     border-style: solid;
     border-width: 1px;
-    width: calc(200px * 33);
+    table-layout: fixed;
 }
 
 td {
@@ -375,15 +508,15 @@ td {
 th {
     border-style: solid;
     border-width: 1px;
+    width: 200px;
+    min-width: 200px;
 }
 
 th.hojo {
     background-color: lightgray;
-    width: --cell_width px;
 }
 
 th.explain {
     background-color: lightcyan;
-    width: --cell_width px;
 }
 </style>

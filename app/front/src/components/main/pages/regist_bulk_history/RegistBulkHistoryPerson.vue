@@ -106,10 +106,10 @@ function recieveStorageFileInterface(storageFileDto: StorageFileDtoInterface) {
                 <tbody>
                     <tr>
                         <th class="hojo">要件</th>
-                        <th>個人姓名</th>
-                        <th>個人の住所</th>
+                        <th>名称</th>
+                        <th>全住所</th>
                         <th>職業</th>
-                        <th>関連者コード</th>
+                        <th>関連者番号(個人)</th>
                     </tr>
                     <tr>
                         <th class="hojo">説明</th>
@@ -120,17 +120,38 @@ function recieveStorageFileInterface(storageFileDto: StorageFileDtoInterface) {
                     </tr>
                     <tr>
                         <th class="hojo">データ例</th>
-                        <td>迂回献金　花子</td>
-                        <td>和歌山県実在市山麓町</td>
-                        <td>団体役員</td>
-                        <td>12-ABCDE-5678</td>
+                        <td>迂回献金　太郎</td>
+                        <td>和歌山県架空市実在町</td>
+                        <td>経営者</td>
+                        <td>1-2345-ABCCDEF</td>
+                    </tr>
+                    <tr>
+                        <th class="hojo">データ例(同一行許容)<br>・システム側で処理停止</th>
+                        <td>迂回献金　太郎</td>
+                        <td>和歌山県架空市実在町</td>
+                        <td>経営者</td>
+                        <td>1-2345-ABCCDEF</td>
                     </tr>
                     <tr>
                         <th class="hojo">データ例</th>
-                        <td>不記載　直子</td>
-                        <td>宮崎県架空市湖畔町</td>
+                        <td>迂回献金　次郎</td>
+                        <td>宮崎県架空市実在町</td>
+                        <td>教師</td>
+                        <td>2-345657-QWERTY</td>
+                    </tr>
+                    <tr>
+                        <th class="hojo">データ例(最小入力例)</th>
+                        <td>寄付上限　花子</td>
+                        <td>山形県架空市実在町</td>
                         <td></td>
-                        <td>23-BCDEF-6789</td>
+                        <td>1-233-44-55</td>
+                    </tr>
+                    <tr>
+                        <th class="hojo">データ例</th>
+                        <td>寄付上限　直子</td>
+                        <td>山梨県架空市実在町</td>
+                        <td>弁護士</td>
+                        <td>9-988-77-66</td>
                     </tr>
                 </tbody>
             </table>

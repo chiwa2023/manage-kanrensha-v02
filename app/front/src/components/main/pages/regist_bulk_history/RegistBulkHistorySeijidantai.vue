@@ -105,10 +105,11 @@ function onBatchByFile() {
                 <tbody>
                     <tr>
                         <th class="hojo">要件</th>
-                        <th>政治団体名称</th>
-                        <th>政治団体住所</th>
-                        <th>政治団体代表者</th>
-                        <th>関連者コード</th>
+                        <th>名称</th>
+                        <th>全住所</th>
+                        <th>代表者名</th>
+                        <th>関連者番号(政治団体)</th>
+                        <th>代表者関連者コード</th>
                     </tr>
                     <tr>
                         <th class="hojo">説明</th>
@@ -116,24 +117,51 @@ function onBatchByFile() {
                         <th class="explain">必須</th>
                         <th class="explain">任意<br>(項目省略不可)</th>
                         <th class="explain">必須</th>
+                        <th class="explain">任意</th>
                     </tr>
                     <tr>
                         <th class="hojo">データ例</th>
-                        <td>ちゃらんぽらん政治団体</td>
-                        <td>和歌山県実在市山麓町</td>
+                        <td>ちゃらんぽらん団体</td>
+                        <td>和歌山県架空市実在町</td>
                         <td>代表者　太郎</td>
-                        <td>123-ABCD-8E01</td>
+                        <td>12-345-ABCCDEF</td>
+                        <td>8-7654-1</td>
+                    </tr>
+                    <tr>
+                        <th class="hojo">データ例(同一行許容)<br>・システム側で処理停止</th>
+                        <td>ちゃらんぽらん団体</td>
+                        <td>和歌山県架空市実在町</td>
+                        <td>代表者　太郎</td>
+                        <td>12-345-ABCCDEF</td>
+                        <td>8-7654-2</td>
                     </tr>
                     <tr>
                         <th class="hojo">データ例</th>
                         <td>いいかげん政治団体</td>
-                        <td>宮崎県架空市湖畔町</td>
+                        <td>宮崎県架空市実在町</td>
+                        <td>代表者　次郎</td>
+                        <td>23-45657-QWERTY</td>
+                        <td>8-7654-3</td>
+                    </tr>
+                    <tr>
+                        <th class="hojo">データ例(最小入力例)</th>
+                        <td>政治団体A</td>
+                        <td>山形県架空市実在町</td>
                         <td></td>
-                        <td>234-BCDE-9F12</td>
+                        <td>12-33-44-55</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <th class="hojo">データ例</th>
+                        <td>政治団体B</td>
+                        <td>山梨県架空市実在町</td>
+                        <td>代表者　四郎</td>
+                        <td>99-88-77-66</td>
+                        <td>8-7654-5</td>
                     </tr>
                 </tbody>
             </table>
-            <a href="sample_csv/sample_bulk_history_poli_org.csv">上記内容サンプルcsvをダウンロード</a>
+            <a href="sample_csv/sample_bulk_history_seijidantai.csv">上記内容サンプルcsvをダウンロード</a>
         </div>
     </div>
 

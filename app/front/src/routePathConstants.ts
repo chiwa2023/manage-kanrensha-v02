@@ -43,17 +43,17 @@ export default class RoutePathConstants {
     // /** 全ユーザ共通メニュー */
     // static readonly PAGE_MENU_ALL_USER: string = this.BASE_PATH + "/menu-user-all";
 
-    // /** 郵便番号建物入力 */
-    // static readonly PAGE_POSTAL_BUILDING: string = this.BASE_PATH + "/postal-code-building";
-    // /** 郵便番号編集 */
-    // static readonly PAGE_POSTAL_EDIT: string = this.BASE_PATH + "/postal-code-edit";
-    // /** 郵便番号差分 */
-    // static readonly PAGE_POSTAL_SABUN: string = this.BASE_PATH + "/postal-code-sabun";
+    /** 郵便番号建物入力 */
+    static readonly PAGE_POSTAL_BUILDING: string = this.BASE_PATH + "/postal-code-building";
+    /** 郵便番号編集 */
+    static readonly PAGE_POSTAL_EDIT: string = this.BASE_PATH + "/postal-code-edit";
+    /** 郵便番号差分 */
+    static readonly PAGE_POSTAL_SABUN: string = this.BASE_PATH + "/postal-code-sabun";
 
-    // /** アドレス・ベース・レジストリ編集 */
-    // static readonly PAGE_ADDRESS_REGI_EDIT: string = this.BASE_PATH + "/address-registry-edit";
-    // /** アドレス・ベース・レジストリ差分 */
-    // static readonly PAGE_ADDRESS_REGI_SABUN: string = this.BASE_PATH + "/address=registry-sabun";
+    /** アドレス・ベース・レジストリ編集 */
+    static readonly PAGE_ADDRESS_REGI_EDIT: string = this.BASE_PATH + "/address-registry-edit";
+    /** アドレス・ベース・レジストリ差分 */
+    static readonly PAGE_ADDRESS_REGI_SABUN: string = this.BASE_PATH + "/address=registry-sabun";
 
     /** 関連者企業・団体履歴一括登録 */
     static readonly PAGE_REGI_BULK_HISTORY_KIGYOU: string = this.BASE_PATH + "/bulk-history-kigyou";
@@ -100,6 +100,9 @@ export default class RoutePathConstants {
     /** 関連者履歴データ差分ダウンロード */
     static readonly PAGE_DOWNLOAD_SABUN_HISTORY: string = this.BASE_PATH + "/download-sabun-history";
 
+    /** 作業内容承認 */
+    static readonly PAGE_WORKS_APPROVAL: string = this.BASE_PATH + "/works-approval";
+
     // /** 関連者個人－企業／団体紐づけ登録 */
     // static readonly PAGE_REGI_COMBINE_KIGYOU: string = this.BASE_PATH + "/combine-kigyou";
 
@@ -112,8 +115,6 @@ export default class RoutePathConstants {
     // /** 本人による関連者編集 */
     // static readonly PAGE_REGI_PARTNER_EDIT: string = this.BASE_PATH + "/partner-edit";
 
-    // /** 作業内容承認 */
-    // static readonly PAGE_WORKS_APPROVAL: string = this.BASE_PATH + "/works-approval";
 
     // /** 運営者による利用者検索編集 */
     // static readonly PAGE_SEARCH_RIYOUSHA: string = this.BASE_PATH + "/search-riyousha";
@@ -136,20 +137,6 @@ export default class RoutePathConstants {
     // /** APIユーザ組織個人紐づけ */
     // static readonly PAGE_COMBINE_COMRADE: string = this.BASE_PATH + "/combine-comrade";
 
-    // /** ユーザ変更 */
-    // static readonly PAGE_USER_CHANGE: string = this.BASE_PATH + "/user/change";
-    // /** ユーザ削除 */
-    // static readonly PAGE_USER_DELETE: string = this.BASE_PATH + "/user/delete";
-    // /** ユーザ編集 */
-    // static readonly PAGE_USER_EDIT: string = this.BASE_PATH + "/user/edit";
-    // /** ユーザ権限変更 */
-    // static readonly PAGE_CHANGE_ROLE: string = this.BASE_PATH + "/user/change-role";
-    // /** 運営者をSE権限に格上げ */
-    // static readonly PAGE_PROMOTE_ROLE: string = this.BASE_PATH + "/user/promote-role";
-    // /** ユーザパスワード更新 */
-    // static readonly PAGE_REFLESH_PASSWORD: string = this.BASE_PATH + "/user/reflesh-password";
-    // /** ユーザ退会 */
-    // static readonly PAGE_USER_WITHDRAW: string = this.BASE_PATH + "/user/withdraw";
 
     // /** APIユーザ編集 */
     // static readonly PAGE_EDIT_COMRADE: string = this.BASE_PATH + "/edit-comrade";
@@ -166,8 +153,6 @@ export default class RoutePathConstants {
     // /** 運営者組織に招待を個人が承認 */
     // static readonly PAGE_ACCEPT_MANAGER_PERSON: string = this.BASE_PATH + "/accept-manager";
 
-    // /** タスク計画検索 */
-    // static readonly PAGE_SEARCH_TASK_PLAN: string = this.BASE_PATH + "/search-task-plan";
 
 
     /** 開発テンプレート(共通ツール) */
