@@ -12,8 +12,9 @@ import {
 
 // よく使う定数
 const BLANK: string = "";
-//const INIT_NUMBER: number = 0;
+const INIT_NUMBER: number = 0;
 const INIT_BOOLEAN: boolean = false;
+const SEARCH_LIMIT: number = 20;
 // const SERVER_STATUS_OK: number = 200;
 // const SERVER_STATUS_ERROR: number = 400;
 // メッセージ表示定数
@@ -23,9 +24,9 @@ const title: Ref<string> = ref(BLANK);
 const message: Ref<string> = ref(BLANK);
 
 // Paging
-const pageNumber: Ref<number> = ref(6); // Mock data
-const allCount: Ref<number> = ref(123); // Mock data
-const limit: Ref<number> = ref(10); // Mock data
+const pageNumber: Ref<number> = ref(INIT_NUMBER);
+const allCount: Ref<number> = ref(INIT_NUMBER);
+const limit: Ref<number> = ref(SEARCH_LIMIT);
 
 // ラジオボタン入力サンプル
 const radioInputData: Ref<string> = ref("");

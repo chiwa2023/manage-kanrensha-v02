@@ -1,5 +1,5 @@
 ﻿<script setup lang="ts">
-import { FrameworkPagingDto, InputAddressDto, InputBuildingAddress, MessageConstants, MessageView, PagingControl, type FrameworkPagingDtoInterface, type InputAddressDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
+import { InputAddressDto, InputBuildingAddress, MessageConstants, MessageView, PagingControl, type InputAddressDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import { onBeforeMount, ref, type Ref } from 'vue';
 import { getLoginUser } from '../../utils/getLoginUser';
 import MockManagerInfo from '../../../test/common/user_info/MockManagerInfo.vue';
@@ -38,7 +38,7 @@ const commonAddress: Ref<string> = ref("");
 const resultDtoItem: Ref<SearchPostalIllegularResultDtoInterface> = ref(new SearchPostalIllegularResultDto());
 
 onBeforeMount(() => {
-    const capsuleDtoItem: Ref<FrameworkPagingDtoInterface> = ref(new FrameworkPagingDto());
+    //const capsuleDtoItem: Ref<FrameworkPagingDtoInterface> = ref(new FrameworkPagingDto());
     resultDtoItem.value = mockGetIllegularItem();
     allCount.value = resultDtoItem.value.listItem.length;
 

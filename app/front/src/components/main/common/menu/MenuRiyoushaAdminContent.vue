@@ -29,6 +29,7 @@ import RoutePathConstants from '../../../../routePathConstants';
         <div class="menu-section">
             <h4>利用者管理</h4>
             <RouterLink class="menu-item" :to=RoutePathConstants.PAGE_RIYOUSHA_SEARCH>利用者検索／編集</RouterLink><br>
+            <RouterLink class="menu-item" :to=RoutePathConstants.PAGE_SEARCH_RIYOUSHA_ORG>利用者組織検索／編集</RouterLink><br>
         </div>
 
         <div class="menu-section">

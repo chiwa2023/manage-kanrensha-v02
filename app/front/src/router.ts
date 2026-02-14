@@ -27,6 +27,7 @@ const routes = [
     { path: RoutePathConstants.PAGE_EDIT_RIYOUSHA_MANAGER, name: "EditRiyoushaManager", component: () => import("./components/main/pages/edit_riyousha/EditRiyoushaManager.vue") },
     // 利用者APIユーザ編集
     { path: RoutePathConstants.PAGE_EDIT_RIYOUSHA_PARTNER, name: "EditRiyoushaPartnerApi", component: () => import("./components/main/pages/edit_riyousha/EditRiyoushaPartnerApi.vue") },
+    { path: RoutePathConstants.PAGE_SEARCH_RIYOUSHA_ORG, name: "SearchRiyoushaOrg", component: () => import("./components/main/pages/regist_riyousha_org/SearchRiyoushaOrg.vue") },
 
     // 利用者検索
     { path: RoutePathConstants.PAGE_RIYOUSHA_SEARCH, name: "SearchEditRiyousha", component: () => import("./components/main/pages/search_edit_riyousha/SearchEditRiyousha.vue") },
@@ -71,9 +72,12 @@ const routes = [
     // アドレス・ベース・レジストリ編集
     { path: RoutePathConstants.PAGE_ADDRESS_REGI_EDIT, name: "AddressRegistryEdit", component: () => import("./components/main/pages/address_registory/AddressRegistryEdit.vue") },
     { path: RoutePathConstants.PAGE_ADDRESS_REGI_SABUN, name: "AddressRegistrySabun", component: () => import("./components/main/pages/address_registory/AddressRegistrySabun.vue") },
+    { path: RoutePathConstants.PAGE_LGCODE_SABUN, name: "LgCodeSabun", component: () => import("./components/main/pages/address_registory/LgCodeSabun.vue") },
 
         // 入力内容承認
     { path: RoutePathConstants.PAGE_WORKS_APPROVAL, name: "WorksApproval", component: () => import("./components/main/pages/works_approval/WorksApproval.vue") },
+
+
 
 ];
 

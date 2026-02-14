@@ -1,17 +1,15 @@
 ﻿<script setup lang="ts">
-import {
-    InputAccessDto, InputAddressDto, InputOrgNameDto, MockViewInputAddress, ViewInputAccess, ViewInputOrgName,
-    type InputAccessDtoInterface, type InputAddressDtoInterface, type InputOrgNameDtoInterface
-} from 'seijishikin-jp-normalize_common-tool';
-import { ref, type Ref } from 'vue';
+import { onBeforeMount, ref, type Ref } from 'vue';
 import MockManagerInfo from '../../../test/common/user_info/MockManagerInfo.vue';
 import type { LeastUserDtoInterface } from '../../dto/user/leastUserDto';
 import { getLoginUser } from '../../utils/getLoginUser';
+import RiyoushaOrgEdit from '../../common/riyousha_edit/RiyoushaOrgEdit.vue';
+import { SelectOptionNumberDto, type SelectOptionNumberDtoInterface } from '../../dto/select_options/selectOptionNumberDto';
 
 //仮
 // よく使う定数
 // const BLANK: string = "";
-// const INIT_NUMBER: number = 0;
+const INIT_NUMBER: number = 0;
 // const SERVER_STATUS_OK: number = 200;
 // const SERVER_STATUS_ERROR: number = 400;
 // メッセージボックス表示定数
@@ -23,20 +21,25 @@ import { getLoginUser } from '../../utils/getLoginUser';
 // ユーザ呼び出し
 const userDto: Ref<LeastUserDtoInterface> = ref(getLoginUser());
 
+const riyoshaOrgoptions: Ref<SelectOptionNumberDtoInterface[]> = ref([]);
+const selectedOrgId: Ref<number> = ref(INIT_NUMBER);
+onBeforeMount(() => {
 
-const tempOrgName: Ref<InputOrgNameDtoInterface> = ref(new InputOrgNameDto());
-const tempAddress: Ref<InputAddressDtoInterface> = ref(new InputAddressDto());
-const tempAccess: Ref<InputAccessDtoInterface> = ref(new InputAccessDto());
+    const dto1: SelectOptionNumberDtoInterface = new SelectOptionNumberDto();
+    dto1.value = 0;
+    dto1.text = "新規";
 
+    riyoshaOrgoptions.value.push(dto1);
 
+    const dto2: SelectOptionNumberDtoInterface = new SelectOptionNumberDto();
+    dto2.value = 143;
+    dto2.text = "利用者組織1";
+    riyoshaOrgoptions.value.push(dto2);
 
-function onCancel() {
-    alert("キャンセル");
+});
+
+function recieveCancelRiyoushaOrg() {
     history.back();
-
-}
-function onSave() {
-    alert("保存");
 }
 
 </script>
@@ -53,30 +56,15 @@ function onSave() {
             編集する利用者組織
         </div>
         <div class="right-area">
-            <select>
-                <option>新規</option>
+            <select v-model="selectedOrgId">
+                <option v-for="dto of riyoshaOrgoptions" :value="dto.value">{{ dto.text }}</option>
             </select>
-            <button class="left-space">新規登録</button>
         </div>
     </div>
 
-
-
-    <h3 class="accent-h3">利用者組織の編集</h3>
-
-    <!-- 団体名入力 -->
-    <ViewInputOrgName :edit-dto="tempOrgName"></ViewInputOrgName>
-
-    <!-- 住所入力 -->
-    <MockViewInputAddress :edit-dto="tempAddress"></MockViewInputAddress>
-
-    <!-- 連絡先入力 -->
-    <ViewInputAccess :edit-dto="tempAccess"></ViewInputAccess>
-
-    <div class="footer">
-        <button class="footer-button" @click="onCancel">キャンセル</button>
-        <button class="footer-button left-space" @click="onSave">送信</button>
-    </div>
+    <!-- 利用者編集 -->
+    <RiyoushaOrgEdit :user-dto="userDto" :selected-id="selectedOrgId"
+        @send-cancel-riyousha-org="recieveCancelRiyoushaOrg"></RiyoushaOrgEdit>
 
 </template>
 <style scoped></style>

@@ -40,9 +40,6 @@ export default class RoutePathConstants {
     static readonly PAGE_RIYOUSHA_SEARCH: string = this.BASE_PATH + "/riyousha-search";
 
 
-    // /** 全ユーザ共通メニュー */
-    // static readonly PAGE_MENU_ALL_USER: string = this.BASE_PATH + "/menu-user-all";
-
     /** 郵便番号建物入力 */
     static readonly PAGE_POSTAL_BUILDING: string = this.BASE_PATH + "/postal-code-building";
     /** 郵便番号編集 */
@@ -53,7 +50,9 @@ export default class RoutePathConstants {
     /** アドレス・ベース・レジストリ編集 */
     static readonly PAGE_ADDRESS_REGI_EDIT: string = this.BASE_PATH + "/address-registry-edit";
     /** アドレス・ベース・レジストリ差分 */
-    static readonly PAGE_ADDRESS_REGI_SABUN: string = this.BASE_PATH + "/address=registry-sabun";
+    static readonly PAGE_ADDRESS_REGI_SABUN: string = this.BASE_PATH + "/address-registry-sabun";
+    /** 地方自治体コード差分 */
+    static readonly PAGE_LGCODE_SABUN: string = this.BASE_PATH + "/lgcode-sabun";
 
     /** 関連者企業・団体履歴一括登録 */
     static readonly PAGE_REGI_BULK_HISTORY_KIGYOU: string = this.BASE_PATH + "/bulk-history-kigyou";
@@ -68,6 +67,12 @@ export default class RoutePathConstants {
     static readonly PAGE_REGI_BULK_MASTER_PERSON: string = this.BASE_PATH + "/bulk-master-person";
     /** 関連者政治団体マスタ一括登録 */
     static readonly PAGE_REGI_BULK_MASTER_POLI_ORG: string = this.BASE_PATH + "/bulk-master-seijidantai";
+
+    // /** 関連者個人－企業／団体紐づけ登録 */
+    // static readonly PAGE_REGI_COMBINE_KIGYOU: string = this.BASE_PATH + "/combine-kigyou";
+
+    // /** 関連者個人－企業／団体紐づけ登録 */
+    // static readonly PAGE_REGI_COMBINE_POLI_ORG: string = this.BASE_PATH + "/combine-seijidantai";
 
     /** 関連者マスタ一ダンプ(指定期間まで) */
     static readonly PAGE_DUMP_MASTER: string = this.BASE_PATH + "/dump-master";
@@ -103,11 +108,25 @@ export default class RoutePathConstants {
     /** 作業内容承認 */
     static readonly PAGE_WORKS_APPROVAL: string = this.BASE_PATH + "/works-approval";
 
-    // /** 関連者個人－企業／団体紐づけ登録 */
-    // static readonly PAGE_REGI_COMBINE_KIGYOU: string = this.BASE_PATH + "/combine-kigyou";
+    /** 利用者組織登録(SE検索) */
+    static readonly PAGE_SEARCH_RIYOUSHA_ORG: string = this.BASE_PATH + "/search-riyousha-org-regist";
 
-    // /** 関連者個人－企業／団体紐づけ登録 */
-    // static readonly PAGE_REGI_COMBINE_POLI_ORG: string = this.BASE_PATH + "/combine-seijidantai";
+    /** 利用者組織登録編集(所属組織) */
+    static readonly PAGE_RIYOUSHA_ORG_EDIT: string = this.BASE_PATH + "/riyousha-org-edit";
+
+    /** 利用者組織編集(他者) */
+    // static readonly PAGE_RIYOUSHA_ORG_EDIT: string = this.BASE_PATH + "/riyousha-org-regist";
+
+    /** 利用者組織個人招待 */
+
+    /** 利用者組織個人承認 */
+
+
+
+
+
+
+
 
     // /** 運営者による関連者管理 */
     // static readonly PAGE_REGI_PARTNER_MANAGE: string = this.BASE_PATH + "/partner-manage";
@@ -115,43 +134,12 @@ export default class RoutePathConstants {
     // /** 本人による関連者編集 */
     // static readonly PAGE_REGI_PARTNER_EDIT: string = this.BASE_PATH + "/partner-edit";
 
-
     // /** 運営者による利用者検索編集 */
     // static readonly PAGE_SEARCH_RIYOUSHA: string = this.BASE_PATH + "/search-riyousha";
 
-    // /** 新規追加メニュー */
-    // static readonly PAGE_ADD_ACCOUNT: string = this.BASE_PATH + "/add-account";
-    // /** アクセスコード送信 */
-    // static readonly PAGE_SEND_ACCESS_CODE: string = this.BASE_PATH + "/send-access-code";
-    // /** ユーザの種類変更 */
-    // static readonly PAGE_SWITCH_USER_KBN: string = this.BASE_PATH + "/switch-user-kbn";
-    // /** 関連者編集 */
-    // static readonly PAGE_INPUT_KANRENSHA: string = this.BASE_PATH + "/input-kanrensha";
-    // /** APIユーザ編集 */
-    // static readonly PAGE_INPUT_COMRADE: string = this.BASE_PATH + "/input-comrade";
-    // /** 運営者編集 */
-    // static readonly PAGE_INPUT_MANAGER: string = this.BASE_PATH + "/input-manager";
-
-    // /** 運営者組織個人紐づけ */
-    // static readonly PAGE_COMBINE_MANAGER: string = this.BASE_PATH + "/combine-manager";
-    // /** APIユーザ組織個人紐づけ */
-    // static readonly PAGE_COMBINE_COMRADE: string = this.BASE_PATH + "/combine-comrade";
 
 
-    // /** APIユーザ編集 */
-    // static readonly PAGE_EDIT_COMRADE: string = this.BASE_PATH + "/edit-comrade";
-    // /** 運営者編集 */
-    // static readonly PAGE_EDIT_MANAGER: string = this.BASE_PATH + "/edit-manager";
 
-    // /** APIユーザ組織に個人を招待 */
-    // static readonly PAGE_INVITE_COMRADE_PERSON: string = this.BASE_PATH + "/invite-comrade";
-    // /** APIユーザ組織に招待を個人が承認 */
-    // static readonly PAGE_ACCEPT_COMRADE_PERSON: string = this.BASE_PATH + "/accept-comrade";
-
-    // /** 運営者組織に個人を招待 */
-    // static readonly PAGE_INVITE_MANAGER_PERSON: string = this.BASE_PATH + "/invite-manager";
-    // /** 運営者組織に招待を個人が承認 */
-    // static readonly PAGE_ACCEPT_MANAGER_PERSON: string = this.BASE_PATH + "/accept-manager";
 
 
 

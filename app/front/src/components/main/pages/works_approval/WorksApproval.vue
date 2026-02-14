@@ -1,170 +1,47 @@
 ﻿<script setup lang="ts">
-import { ref, toRaw, type Ref } from 'vue';
+import { ref, type Ref } from 'vue';
 import MockManagerInfo from '../../../test/common/user_info/MockManagerInfo.vue';
 import { getLoginUser } from '../../utils/getLoginUser';
-import { InputAddressDto, InputShokugyouDto, type InputAddressDtoInterface, type InputShokugyouDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
-import type { KanrenshaPersonPropertyEntityInterface } from '../../entity/kanrenshaPersonPropertyEntity';
-import mockGetPersonApprovalAddressList from '../../../test/pages/works_approval/mock/mockGetPersonApprovalAddressList';
-import mockGetPersonApprovaShokugyouList from '../../../test/pages/works_approval/mock/mockGetPersonApprovalShokugyouList';
+import { type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import ApprovalPersonAddress from '../../common/works_approval/ApprovalPersonAddress.vue';
 import ApprovalPersonShokugyou from '../../common/works_approval/ApprovalPersonShokugyou.vue';
 import ApprovalSeijidantaiAddress from '../../common/works_approval/ApprovalSeijidantaiAddress.vue';
 import ApprovalKigyouDtAddress from '../../common/works_approval/ApprovalKigyouDtAddress.vue';
-import type { KanrenshaPersonAddressEntityInterface } from '../../entity/kanrenshaPersonAddressEntity';
-
-
-const INIT_BOOLEAN: boolean = false;
 
 
 // ユーザ呼び出し
 const userDto: Ref<LeastUserDtoInterface> = ref(getLoginUser());
 
-
 const viewStatus: Ref<string> = ref("1");
-const isAddressInput: Ref<boolean> = ref(INIT_BOOLEAN);
-const isPortalAddressInput: Ref<boolean> = ref(INIT_BOOLEAN);
 
 //初期表示日時
 const yesterday: Date = new Date();
 yesterday.setDate(yesterday.getDate() - 1);
-const yesterdayText: string = yesterday.toISOString().substring(0, 10);
 
-// 検索期間
-const searchStartDate: Ref<string> = ref(yesterdayText);
-const searchEndDate: Ref<string> = ref(yesterdayText);
+// function onSearch() {
+//     switch (viewStatus.value) {
+//         case "1":
+//             listPersonAdsdress.value = mockGetPersonApprovalAddressList();
+//             listPersonShokugyou.value = mockGetPersonApprovaShokugyouList();
+//             // listCorp.value = [];
+//             // listPoliOrg.value = [];
+//             break;
 
-const isSearchApproval: Ref<boolean> = ref(true);
+//         case "2":
+//             // listCorp.value = mockGetCorpApprovalList();
+//             // listPerson.value = [];
+//             // listPoliOrg.value = [];
+//             break;
 
-// 検索表示リスト
-const listPersonAdsdress: Ref<KanrenshaPersonAddressEntityInterface[]> = ref([]);
-const listPersonShokugyou: Ref<KanrenshaPersonPropertyEntityInterface[]> = ref([]);
-// const listCorp: Ref<CorpNoApprovalInterface[]> = ref([]);
-// const listPoliOrg: Ref<PoliOrgNoApprovalInterface[]> = ref([]);
-
-function onSearch() {
-    switch (viewStatus.value) {
-        case "1":
-            listPersonAdsdress.value = mockGetPersonApprovalAddressList();
-            listPersonShokugyou.value = mockGetPersonApprovaShokugyouList();
-            // listCorp.value = [];
-            // listPoliOrg.value = [];
-            break;
-
-        case "2":
-            // listCorp.value = mockGetCorpApprovalList();
-            // listPerson.value = [];
-            // listPoliOrg.value = [];
-            break;
-
-        case "3":
-            // listPerson.value = [];
-            // listPoliOrg.value = mockGetPoliOrgNoApprovalList();
-            // listCorp.value = [];
-            // listPerson.value = [];
-            break;
-        default:
-            break;
-    }
-}
-
-// const inputAddressDto: Ref<InputAddressDto> = ref(new InputAddressDto());
-// const bakupInputAddressDto: Ref<InputAddressDto> = ref(new InputAddressDto());
-let editCorpNo: string = "";
-function editAddress(corpNo: string) {
-    // editCorpNo = corpNo;
-    // //　選択したデータ
-    // const editDto: CorpNoApprovalInterface = listCorp.value.filter((e) => e.corpKanrenshaCode === editCorpNo)[0];// idのため1件
-    // inputAddressDto.value = structuredClone(toRaw(editDto.inputAddressDto));
-    // bakupInputAddressDto.value = structuredClone(toRaw(editDto.inputAddressDto));
-    // //非表示
-    // isAddressInput.value = true;
-}
-
-
-/**
- * 関連者検索キャンセル
- */
-function recieveCancelInputAddress() {
-
-    // //　選択したデータ
-    // const editDto: CorpNoApprovalInterface = listCorp.value.filter((e) => e.corpKanrenshaCode === editCorpNo)[0];// idのため1件
-    // editDto.inputAddressDto = bakupInputAddressDto.value;
-    // //非表示
-    // isAddressInput.value = false;
-}
-
-// /**
-//  * 関連者検索選択
-//  * @param sendDto 選択Dto
-//  */
-// function recieveInputAddressInterface(sendDto: InputAddressDto) {
-
-//     //　選択したデータ
-//     const editDto: CorpNoApprovalInterface = listCorp.value.filter((e) => e.corpKanrenshaCode === editCorpNo)[0];// idのため1件
-//     editDto.inputAddressDto = sendDto;
-
-//     //非表示
-//     isAddressInput.value = false;
-// }
-
-
-/** 支店を外す */
-function changeIsShiten(corpNo: string) {
-    // const editDto: CorpNoApprovalInterface = listCorp.value.filter((e) => e.corpKanrenshaCode === corpNo)[0];// idのため1件
-
-    // if (editDto.isShiten === false) {
-
-    //     if (confirm("支店入力をやめて、法人番号情報に書き換えしてもよいですか?")) {
-    //         // 仮の法人番号の紐づ区データに更新
-    //         editDto.corpKanrenshaCode = editDto.houjinNo + "-abcde";
-    //         editDto.inputOrgNameDto.orgName = "ABCD企業";
-    //         editDto.inputOrgNameDto.orgNameKana = "えーびーしーでぃーきぎょう";
-
-    //         editDto.inputAddressDto.addressPostal = "法人番号住所1";
-    //         editDto.inputAddressDto.addressBlock = "法人番号住所2";
-    //         editDto.inputAddressDto.addressBuilding = "法人番号住所3";
-    //         editDto.inputAddressDto.rsdtAddressPostl = "法人番号住所1";
-    //         editDto.inputAddressDto.rsdtAddressBlock = "法人番号住所2";
-    //         editDto.inputAddressDto.rsdtAddressBuilding = "法人番号住所3";
-    //     } else {
-    //         editDto.isShiten = true;
-    //     }
-    // }
-}
-
-
-// 簡易住所入力(コピペ)
-const inputAddressPortalDto: InputAddressDtoInterface = new InputAddressDto();
-function onPortalAddressInput() {
-    isPortalAddressInput.value = true;
-}
-function recieveCancelInputPortalAddress() {
-    isPortalAddressInput.value = false;
-}
-function recieveInputPortalAddressInterface() {
-    isPortalAddressInput.value = false;
-}
-
-
-// 簡易職業入力(コピペ)
-const inputShokugyouDto: InputShokugyouDtoInterface = new InputShokugyouDto();
-const isShokugyouInput: Ref<boolean> = ref(INIT_BOOLEAN);
-function onShokugyouInput() {
-    isShokugyouInput.value = true;
-}
-
-
-function recieveCancelInputShokugyou() {
-    // isShokugyouInput.value = false;
-}
-
-// function onCancel() {
-//     alert("キャンセル");
-//     history.back();
-
-// }
-// function onSave() {
-//     alert("保存");
+//         case "3":
+//             // listPerson.value = [];
+//             // listPoliOrg.value = mockGetPoliOrgNoApprovalList();
+//             // listCorp.value = [];
+//             // listPerson.value = [];
+//             break;
+//         default:
+//             break;
+//     }
 // }
 </script>
 <template>

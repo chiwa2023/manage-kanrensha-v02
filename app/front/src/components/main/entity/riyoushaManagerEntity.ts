@@ -30,9 +30,8 @@ class RiyoushaManagerEntity implements RiyoushaManagerEntityInterface {
     /** 最新該否 */
     isLatest: boolean;
 
-    
     /** 組織非該当 */
-    isNotOrg:boolean;
+    isNotOrg: boolean;
 
     constructor() {
         const INIT_NUMBER: number = 0;
@@ -46,7 +45,6 @@ class RiyoushaManagerEntity implements RiyoushaManagerEntityInterface {
         this.isNotOrg = INIT_BOOLEAN;
 
     }
-
 }
 
-export{}
+export { type RiyoushaManagerEntityInterface, RiyoushaManagerEntity }
