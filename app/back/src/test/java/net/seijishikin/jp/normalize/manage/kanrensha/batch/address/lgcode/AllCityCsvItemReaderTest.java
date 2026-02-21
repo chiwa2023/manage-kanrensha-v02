@@ -1,0 +1,100 @@
+package net.seijishikin.jp.normalize.manage.kanrensha.batch.address.lgcode;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.time.LocalDate;
+
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
+import org.springframework.batch.core.JobParameters;
+import org.springframework.batch.core.JobParametersBuilder;
+import org.springframework.batch.core.StepExecution;
+import org.springframework.batch.test.MetaDataInstanceFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
+import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
+
+import net.seijishikin.jp.normalize.manage.kanrensha.constants.GetCurrentResourcePath;
+
+/**
+ * AllCityCsvItemReader単体テスト
+ */
+@SpringJUnitConfig
+@AutoConfigureMockMvc
+@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
+@DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
+class AllCityCsvItemReaderTest {
+    // CHECKSTYLE:OFF MagicNumber
+
+    /** テスト対象 */
+    @Autowired
+    private AllCityCsvItemReader allCityCsvItemReader;
+
+    @Test
+    @Tag("TableTruncate")
+    void test() throws Exception {
+
+        StepExecution execution = getStepExecution();
+        allCityCsvItemReader.beforeStep(execution);
+        allCityCsvItemReader.open(execution.getExecutionContext());
+
+        AllCityCsvDto csvDto0 = allCityCsvItemReader.read();
+        assertEquals("011002", csvDto0.getLgCode());
+        assertEquals("北海道札幌市", csvDto0.getAddressName());
+        assertEquals("ホッカイドウサッポロシ", csvDto0.getAddressNameKana());
+        assertEquals(LocalDate.of(1947, 4, 17), csvDto0.getEffectDate());
+        assertNull(csvDto0.getAbolishDate());
+
+        AllCityCsvDto csvDto1 = allCityCsvItemReader.read();
+        assertEquals("011011", csvDto1.getLgCode());
+        assertEquals("北海道札幌市中央区", csvDto1.getAddressName());
+        assertEquals("ホッカイドウサッポロシチュウオウク", csvDto1.getAddressNameKana());
+        assertEquals(LocalDate.of(1947, 4, 17), csvDto1.getEffectDate());
+        assertNull(csvDto1.getAbolishDate());
+
+        AllCityCsvDto csvDto2 = allCityCsvItemReader.read();
+        assertEquals("011029", csvDto2.getLgCode());
+        assertEquals("北海道札幌市北区", csvDto2.getAddressName());
+        assertEquals("ホッカイドウサッポロシキタク", csvDto2.getAddressNameKana());
+        assertEquals(LocalDate.of(1947, 4, 17), csvDto2.getEffectDate());
+        assertEquals(LocalDate.of(2044, 12, 31), csvDto2.getAbolishDate());
+
+        AllCityCsvDto csvDto3 = allCityCsvItemReader.read();
+        assertEquals("012076", csvDto3.getLgCode());
+        assertEquals("北海道帯広市", csvDto3.getAddressName());
+        assertEquals("ホッカイドウオビヒロシ", csvDto3.getAddressNameKana());
+        assertEquals(LocalDate.of(1947, 4, 17), csvDto3.getEffectDate());
+        assertNull(csvDto3.getAbolishDate());
+
+        AllCityCsvDto csvDto4 = allCityCsvItemReader.read();
+        assertEquals("012084", csvDto4.getLgCode());
+        assertEquals("北海道北見市", csvDto4.getAddressName());
+        assertEquals("ホッカイドウキタミシ", csvDto4.getAddressNameKana());
+        assertEquals(LocalDate.of(1947, 4, 17), csvDto4.getEffectDate());
+        assertNull(csvDto4.getAbolishDate());
+
+        assertNull(allCityCsvItemReader.read());
+    }
+
+    private StepExecution getStepExecution() throws URISyntaxException, IOException {
+
+        Path path = Paths.get(GetCurrentResourcePath.getBackTestResourcePath(), "/file/batch/address_base/",
+                "mt_city_all_sample.csv");
+
+        JobParameters jobParameters = new JobParametersBuilder() // NOPMD
+                .addString("readFilePath", path.toString()).toJobParameters();
+
+        // 起動引数付きのStepExecutionを作成
+        return MetaDataInstanceFactory.createStepExecution(jobParameters);
+    }
+
+}

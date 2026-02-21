@@ -1,5 +1,7 @@
 package net.seijishikin.jp.normalize.manage.kanrensha.batch.task_plan;
 
+import java.time.LocalDateTime;
+
 import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.StepContribution;
 import org.springframework.batch.core.StepExecution;
@@ -13,7 +15,7 @@ import org.springframework.stereotype.Component;
 
 import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
 import net.seijishikin.jp.normalize.common_tool.utils.CreateUserLeastDtoByBatchParamUtil;
-import net.seijishikin.jp.normalize.manage.kanrensha.service.year.SwitchYearUpdateTaskPlanService;
+import net.seijishikin.jp.normalize.manage.kanrensha.service.year.SwitchYearUpdateTaskStartAndEndService;
 
 /**
  * タスク計画終了更新Tasklet
@@ -23,7 +25,7 @@ public class RecordTaskPlanTasklet implements Tasklet, StepExecutionListener {
 
     /** タスク計画年切替保存Service */
     @Autowired
-    private SwitchYearUpdateTaskPlanService switchYearUpdateTaskPlanService;
+    private SwitchYearUpdateTaskStartAndEndService switchYearUpdateTaskStartAndEndService;
 
     /** BatchユーザDto復元Utility */
     @Autowired
@@ -69,7 +71,7 @@ public class RecordTaskPlanTasklet implements Tasklet, StepExecutionListener {
     public RepeatStatus execute(final StepContribution contribution, final ChunkContext chunkContext) throws Exception {
 
         // このタスクレットまでたどり着いた場合、すべてのステップで例外で落ちなかったときになるので処理終了を登録する
-        switchYearUpdateTaskPlanService.practice(tableYear, userDto, taskId, true);
+        switchYearUpdateTaskStartAndEndService.practice(userDto, tableYear, taskId, LocalDateTime.now());
 
         // 処理終了
         return RepeatStatus.FINISHED;

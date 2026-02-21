@@ -1,0 +1,44 @@
+package net.seijishikin.jp.normalize.manage.kanrensha.repository;
+
+import java.util.List;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+
+import net.seijishikin.jp.normalize.manage.kanrensha.entity.AddressAllCityEntity;
+
+/**
+ * address_all_city接続用Repository
+ */
+public interface AddressAllCityRepository extends JpaRepository<AddressAllCityEntity, Integer> {
+
+    /**
+     * 地方公共団体コード前方一致条件で取得する
+     *
+     * @param lgStarts 地方公共団体コードの一部
+     * @return 検索結果
+     */
+    List<AddressAllCityEntity> findByLgCodeStartingWith(String lgStarts);
+
+    /**
+     * 登録ファイルに存在しない地方自治体を取得する
+     * 
+     * @param userCode ユーザコード
+     * @param pageable ページング
+     * @return 検索結果
+     */
+    @Query(value = "select * from address_all_city where lg_code not in "
+            + "      (select lg_code from wk_tbl_address_city "
+            + "         where insert_user_code = ?1 and is_latest = 1)", nativeQuery = true)
+    Page<AddressAllCityEntity> findAllCityNotIn(Integer userCode, Pageable pageable);
+
+    /**
+     * 最新かつ地方自治体コードが一致する地方自治体を取得する
+     * 
+     * @param lgCode 地方自治体コード
+     * @return 検索結果
+     */
+    List<AddressAllCityEntity> findByLgCodeAndIsLatestTrue(String lgCode);
+}
