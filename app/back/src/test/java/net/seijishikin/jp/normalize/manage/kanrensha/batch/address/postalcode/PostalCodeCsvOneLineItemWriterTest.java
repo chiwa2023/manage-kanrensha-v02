@@ -1,0 +1,94 @@
+package net.seijishikin.jp.normalize.manage.kanrensha.batch.address.postalcode;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
+import org.springframework.batch.core.JobParameters;
+import org.springframework.batch.core.JobParametersBuilder;
+import org.springframework.batch.core.StepExecution;
+import org.springframework.batch.item.Chunk;
+import org.springframework.batch.test.MetaDataInstanceFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
+import org.springframework.test.context.jdbc.Sql;
+import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
+import org.springframework.transaction.annotation.Transactional;
+
+import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
+import net.seijishikin.jp.normalize.manage.kanrensha.entity.AddressPostalEntity;
+import net.seijishikin.jp.normalize.manage.kanrensha.repository.AddressPostalRepository;
+import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateLeastUserForTestUtil;
+
+/**
+ * PostalCodeCsvOneLineItemWriter単体テスト
+ */
+@SpringJUnitConfig
+@AutoConfigureMockMvc
+@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
+@DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
+@Transactional
+@Sql("PostalCodeCsvOneLineItemWriterTest.sql")
+class PostalCodeCsvOneLineItemWriterTest {
+
+    /** テスト対象 */
+    @Autowired
+    private PostalCodeCsvOneLineItemWriter postalCodeCsvOneLineItemWriter;
+
+    /** 郵便番号Repository */
+    @Autowired
+    private AddressPostalRepository addressPostalRepository;
+
+    @Test
+    @Tag("TableTruncate")
+    void test() throws Exception {
+
+        AddressPostalEntity entity00 = new AddressPostalEntity();
+        entity00.setLgCode("965314");
+        entity00.setPostalcode("253467");
+        entity00.setAddressOrg("町字？");
+        entity00.setAddressName("都道府県行政区");
+        entity00.setIsGyoseikuData(true);
+
+        List<AddressPostalEntity> list = new ArrayList<>();
+        list.add(entity00);
+
+        // Chunkを作成してセット
+        Chunk<? extends AddressPostalEntity> items = new Chunk<>(list);
+
+        postalCodeCsvOneLineItemWriter.beforeStep(this.getStepExecution());
+        postalCodeCsvOneLineItemWriter.write(items);
+
+        List<AddressPostalEntity> listAns = addressPostalRepository.findAll();
+        assertEquals(1, listAns.size());
+
+        AddressPostalEntity answerEntity00 = listAns.get(0);
+
+        assertEquals(entity00.getLgCode(), answerEntity00.getLgCode());
+        assertEquals(entity00.getPostalcode(), answerEntity00.getPostalcode());
+        assertEquals(entity00.getAddressOrg(), answerEntity00.getAddressOrg());
+        assertEquals(entity00.getAddressName(), answerEntity00.getAddressName());
+        assertEquals(entity00.getIsGyoseikuData(), answerEntity00.getIsGyoseikuData());
+    }
+
+    private StepExecution getStepExecution() {
+
+        LeastUserDto userDto = CreateLeastUserForTestUtil.practice();
+
+        JobParameters jobParameters = new JobParametersBuilder() // NOPMD
+                .addLong("userId", (long) userDto.getUserPersonId())
+                .addLong("userCode", (long) userDto.getUserPersonCode())
+                .addString("userName", userDto.getUserPersonName()).toJobParameters();
+
+        // 起動引数付きのStepExecutionを作成
+        return MetaDataInstanceFactory.createStepExecution(jobParameters);
+    }
+
+}

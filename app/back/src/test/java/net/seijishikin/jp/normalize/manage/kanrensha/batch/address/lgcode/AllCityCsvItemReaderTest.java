@@ -8,6 +8,7 @@ import java.net.URISyntaxException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -91,7 +92,7 @@ class AllCityCsvItemReaderTest {
                 "mt_city_all_sample.csv");
 
         JobParameters jobParameters = new JobParametersBuilder() // NOPMD
-                .addString("readFilePath", path.toString()).toJobParameters();
+                .addLocalDateTime("executeTime", LocalDateTime.now()).addString("readFilePath", path.toString()).toJobParameters();
 
         // 起動引数付きのStepExecutionを作成
         return MetaDataInstanceFactory.createStepExecution(jobParameters);
