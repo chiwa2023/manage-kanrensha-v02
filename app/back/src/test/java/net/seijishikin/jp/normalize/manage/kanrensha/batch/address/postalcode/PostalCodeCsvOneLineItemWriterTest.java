@@ -52,7 +52,8 @@ class PostalCodeCsvOneLineItemWriterTest {
 
         AddressPostalEntity entity00 = new AddressPostalEntity();
         entity00.setLgCode("965314");
-        entity00.setPostalcode("253467");
+        entity00.setPostalcode1("253");
+        entity00.setPostalcode2("9162");
         entity00.setAddressOrg("町字？");
         entity00.setAddressName("都道府県行政区");
         entity00.setIsGyoseikuData(true);
@@ -72,7 +73,8 @@ class PostalCodeCsvOneLineItemWriterTest {
         AddressPostalEntity answerEntity00 = listAns.get(0);
 
         assertEquals(entity00.getLgCode(), answerEntity00.getLgCode());
-        assertEquals(entity00.getPostalcode(), answerEntity00.getPostalcode());
+        assertEquals(entity00.getPostalcode1(), answerEntity00.getPostalcode1());
+        assertEquals(entity00.getPostalcode2(), answerEntity00.getPostalcode2());
         assertEquals(entity00.getAddressOrg(), answerEntity00.getAddressOrg());
         assertEquals(entity00.getAddressName(), answerEntity00.getAddressName());
         assertEquals(entity00.getIsGyoseikuData(), answerEntity00.getIsGyoseikuData());

@@ -1,5 +1,6 @@
 package net.seijishikin.jp.normalize.manage.kanrensha.repository;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
@@ -41,4 +42,23 @@ public interface AddressAllCityRepository extends JpaRepository<AddressAllCityEn
      * @return 検索結果
      */
     List<AddressAllCityEntity> findByLgCodeAndIsLatestTrue(String lgCode);
+
+    /**
+     * 最新かつ廃止していない地方自治体コードを取得する
+     *
+     * @param pageable ページング
+     * @return 検索結果
+     */
+    @Query(value = "SELECT lg_code FROM address_all_city WHERE is_latest = 1 and (abolish_date is null or abolish_date > ?1)", nativeQuery = true)
+    List<String> findLgCode(LocalDate abolishDate, Pageable pageable);
+
+    /**
+     * 最新かつ廃止していない地方自治体コードの件数を取得する
+     * 
+     * @param abolishDate 廃止日
+     * @return 検索結果
+     */
+    @Query(value = "SELECT count(*) FROM address_all_city WHERE is_latest = 1 and (abolish_date is null or abolish_date > ?1)", nativeQuery = true)
+    Integer countLgCode(LocalDate abolishDate);
+
 }

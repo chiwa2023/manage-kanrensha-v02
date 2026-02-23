@@ -20,33 +20,21 @@ import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 @AutoConfigureMockMvc
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
+@Sql("GetChibanCsvLogicTest.sql")
 class GetChibanCsvLogicTest {
 
     /** テスト対象 */
     @Autowired
     private GetChibanCsvLogic getChibanCsvLogic;
-    
-//    @Test
-//    @Tag("TableTruncate")
-//    void test()throws Exception {
-//        
-//        String storeDir = "c:/temp/address/mt_parcel_city";
-//        final String lgCodePref = "13";
-//        getChibanCsvLogic.practice(lgCodePref,storeDir);
-//        
-//        fail("Not yet implemented");
-//    }
 
-    
     @Test
     @Tag("TableTruncate")
-    @Sql("GetChibanCsvLogicTest.sql")
-    void testLimit()throws Exception {
-        
+    void testLimit() throws Exception {
+
         String storeDir = "c:/temp/address/mt_parcel_city";
         final String lgCodePref = "13";
-        getChibanCsvLogic.practice(lgCodePref,storeDir);
-        
+        getChibanCsvLogic.practice(lgCodePref, storeDir);
+
         fail("Not yet implemented");
     }
 

@@ -1,0 +1,4 @@
+lg_code,machiaza_id,blk_id,rsdt_id,rsdt2_id,city,ward,oaza_cho,chome,koaza,machiaza_dist,blk_num,rsdt_num,rsdt_num2,basic_rsdt_div,rsdt_addr_flg,rsdt_addr_mtd_code,status_flg,efct_date,ablt_date,src_code,remarks
+131016,0001001,006,001,,千代田区,,内幸町,一丁目,,,6,1,,0,1,1,0,1947-04-17,,0,
+131016,0001001,006,002,,千代田区,,内幸町,一丁目,,,6,2,,0,1,1,0,1947-04-17,,0,
+131016,0001001,006,003,,千代田区,,内幸町,一丁目,,,6,3,,0,1,1,0,1947-04-17,,0,

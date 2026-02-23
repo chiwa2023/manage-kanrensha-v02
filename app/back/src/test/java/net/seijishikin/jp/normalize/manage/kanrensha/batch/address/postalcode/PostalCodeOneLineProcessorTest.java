@@ -30,7 +30,8 @@ class PostalCodeOneLineProcessorTest {
         AddressPostalEntity postalEntity = processor.process(item);
 
         assertEquals("263664", postalEntity.getLgCode());
-        assertEquals(item.getPostalcode(), postalEntity.getPostalcode());
+        assertEquals("619", postalEntity.getPostalcode1());
+        assertEquals("0248", postalEntity.getPostalcode2());
         assertEquals("京都府相楽郡精華町新精台", postalEntity.getAddressName());
         assertEquals(item.getAddressOrg(), postalEntity.getAddressOrg());
         assertTrue(postalEntity.getIsGyoseikuData());

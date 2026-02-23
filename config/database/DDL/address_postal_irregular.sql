@@ -1,0 +1,22 @@
+CREATE TABLE `address_postal_irregular` (
+  `address_postal_irregular_id` int NOT NULL AUTO_INCREMENT COMMENT 'テーブルId',
+  `postalcode1` varchar(5) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '郵便番号1',
+  `postalcode2` varchar(6) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '郵便番号2',
+  `is_latest` tinyint DEFAULT NULL COMMENT '最新該否',
+  `lg_code` varchar(8) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '地方自治体コード',
+  `address_org` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin COMMENT '原文書住所',
+  `address_name` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin COMMENT '表示住所',
+  `address_postal` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin COMMENT '住所郵便番号まで',
+  `address_block` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin COMMENT '住所番地まで',
+  `is_add_postal` tinyint DEFAULT NULL COMMENT '郵便番号テーブル追加',
+  `is_repair_rsdt` tinyint DEFAULT NULL COMMENT '住居テーブル修正可否',
+  `insert_user_id` int DEFAULT NULL COMMENT '挿入ユーザId',
+  `insert_user_code` int DEFAULT NULL COMMENT '挿入ユーザコード',
+  `insert_user_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '挿入ユーザ名称',
+  `insert_timestamp` datetime DEFAULT NULL COMMENT '挿入日時',
+  `delete_user_id` int DEFAULT NULL COMMENT '無効ユーザId',
+  `delete_user_code` int DEFAULT NULL COMMENT '無効ユーザコード',
+  `delete_user_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '無効ユーザ名称',
+  `delete_timestamp` datetime DEFAULT NULL COMMENT '無効日時',
+  PRIMARY KEY (`address_postal_irregular_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;

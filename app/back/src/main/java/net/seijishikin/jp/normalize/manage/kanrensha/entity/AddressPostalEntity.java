@@ -45,27 +45,51 @@ public class AddressPostalEntity implements Serializable, AllTabeDataHistoryInte
         this.addressPostalId = addressPostalId;
     }
 
-    /** 郵便番号7桁 */
-    @Column(name = "postalcode")
-    private String postalcode = INIT_STRING;
+
+    /** 郵便番号1 */
+    @Column(name = "postalcode1")
+    private String postalcode1 = INIT_STRING;
 
     /**
-     * 郵便番号7桁を取得する
-     * 
-     * @return 郵便番号7桁
+     * 郵便番号1を取得する
+     *
+     * @return 郵便番号1
      */
-    public String getPostalcode() {
-        return postalcode;
+    public String getPostalcode1() {
+        return postalcode1;
     }
 
     /**
-     * 郵便番号7桁を設定する
-     * 
-     * @param postalcode 郵便番号7桁
+     * 郵便番号1を設定する
+     *
+     * @param postalcode1 郵便番号1
      */
-    public void setPostalcode(final String postalcode) {
-        this.postalcode = postalcode;
+    public void setPostalcode1(final String postalcode1) {
+        this.postalcode1 = postalcode1;
     }
+
+    /** 郵便番号2 */
+    @Column(name = "postalcode2")
+    private String postalcode2 = INIT_STRING;
+
+    /**
+     * 郵便番号2を取得する
+     *
+     * @return 郵便番号2
+     */
+    public String getPostalcode2() {
+        return postalcode2;
+    }
+
+    /**
+     * 郵便番号2を設定する
+     *
+     * @param postalcode2 郵便番号2
+     */
+    public void setPostalcode2(final String postalcode2) {
+        this.postalcode2 = postalcode2;
+    }
+
 
     /** 最新該否 */
     @Column(name = "is_latest")

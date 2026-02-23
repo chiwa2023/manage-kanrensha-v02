@@ -59,7 +59,8 @@ class PostalCodeCsvJigyoushaItemWriterTest {
 
         AddressPostalIrregularEntity entity00 = new AddressPostalIrregularEntity();
         entity00.setLgCode("965314");
-        entity00.setPostalcode("253467");
+        entity00.setPostalcode1("253");
+        entity00.setPostalcode2("9652");
         entity00.setAddressOrg("町字？");
         entity00.setAddressName("都道府県行政区");
         entity00.setAddressPostal("都道府県行政区");
@@ -82,7 +83,8 @@ class PostalCodeCsvJigyoushaItemWriterTest {
         AddressPostalIrregularEntity answerEntity00 = listAns.get(0);
 
         assertEquals(entity00.getLgCode(), answerEntity00.getLgCode());
-        assertEquals(entity00.getPostalcode(), answerEntity00.getPostalcode());
+        assertEquals(entity00.getPostalcode1(), answerEntity00.getPostalcode1());
+        assertEquals(entity00.getPostalcode2(), answerEntity00.getPostalcode2());
         assertEquals(entity00.getAddressOrg(), answerEntity00.getAddressOrg());
         assertEquals(entity00.getAddressName(), answerEntity00.getAddressName());
         assertEquals(entity00.getIsAddPostal(), answerEntity00.getIsAddPostal());
@@ -94,7 +96,8 @@ class PostalCodeCsvJigyoushaItemWriterTest {
         AddressPostalEntity answerEntityPostal00 = listAnsPostal.get(0);
 
         assertEquals(entity00.getLgCode(), answerEntityPostal00.getLgCode());
-        assertEquals(entity00.getPostalcode(), answerEntityPostal00.getPostalcode());
+        assertEquals(entity00.getPostalcode1(), answerEntityPostal00.getPostalcode1());
+        assertEquals(entity00.getPostalcode2(), answerEntityPostal00.getPostalcode2());
         assertEquals(entity00.getAddressOrg(), answerEntityPostal00.getAddressOrg());
         assertEquals(entity00.getAddressName(), answerEntityPostal00.getAddressName());
         assertFalse(answerEntityPostal00.getIsGyoseikuData());

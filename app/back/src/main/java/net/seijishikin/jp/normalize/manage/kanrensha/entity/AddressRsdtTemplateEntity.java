@@ -1,6 +1,7 @@
 package net.seijishikin.jp.normalize.manage.kanrensha.entity;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import jakarta.persistence.Entity;
@@ -12,11 +13,11 @@ import jakarta.persistence.Table;
 import net.seijishikin.jp.normalize.common_tool.entity.AllTabeDataHistoryInterface;
 
 /**
- * address_postal_irregular接続用Entity
+ * address_rsdt_template接続用Entity
  */
 @Entity
-@Table(name = "address_postal_irregular")
-public class AddressPostalIrregularEntity implements Serializable, AllTabeDataHistoryInterface { // NOPMD DataClass
+@Table(name = "address_rsdt_template")
+public class AddressRsdtTemplateEntity implements Serializable,AllTabeDataHistoryInterface { // NOPMD DataClass
 
     /** Serialize id */
     private static final long serialVersionUID = 1L;
@@ -24,27 +25,48 @@ public class AddressPostalIrregularEntity implements Serializable, AllTabeDataHi
     /** テーブルId */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "address_postal_irregular_id")
-    private Integer addressPostalIrregularId = INIT_INTEGER;
+    @Column(name = "address_rsdt_id")
+    private Integer addressRsdtId = INIT_INTEGER;
 
     /**
      * テーブルIdを取得する
      *
      * @return テーブルId
      */
-    public Integer getAddressPostalIrregularId() {
-        return addressPostalIrregularId;
+    public Integer getAddressRsdtId() {
+        return addressRsdtId;
     }
 
     /**
      * テーブルIdを設定する
      *
-     * @param addressPostalIrregularId テーブルId
+     * @param addressRsdtId テーブルId
      */
-    public void setAddressPostalIrregularId(final Integer addressPostalIrregularId) {
-        this.addressPostalIrregularId = addressPostalIrregularId;
+    public void setAddressRsdtId(final Integer addressRsdtId) {
+        this.addressRsdtId = addressRsdtId;
     }
 
+    /** 地方自治体コード */
+    @Column(name = "lg_code")
+    private String lgCode = INIT_STRING;
+
+    /**
+     * 地方自治体コードを取得する
+     *
+     * @return 地方自治体コード
+     */
+    public String getLgCode() {
+        return lgCode;
+    }
+
+    /**
+     * 地方自治体コードを設定する
+     *
+     * @param lgCode 地方自治体コード
+     */
+    public void setLgCode(final String lgCode) {
+        this.lgCode = lgCode;
+    }
 
     /** 郵便番号1 */
     @Column(name = "postalcode1")
@@ -90,7 +112,6 @@ public class AddressPostalIrregularEntity implements Serializable, AllTabeDataHi
         this.postalcode2 = postalcode2;
     }
 
-
     /** 最新該否 */
     @Column(name = "is_latest")
     private Boolean isLatest = INIT_BOOLEAN;
@@ -115,158 +136,202 @@ public class AddressPostalIrregularEntity implements Serializable, AllTabeDataHi
         this.isLatest = isLatest;
     }
 
-    /** 地方自治体コード */
-    @Column(name = "lg_code")
-    private String lgCode = INIT_STRING;
-
-    /**
-     * 地方自治体コードを取得する
-     *
-     * @return 地方自治体コード
-     */
-    public String getLgCode() {
-        return lgCode;
-    }
-
-    /**
-     * 地方自治体コードを設定する
-     *
-     * @param lgCode 地方自治体コード
-     */
-    public void setLgCode(final String lgCode) {
-        this.lgCode = lgCode;
-    }
-
-    /** 原文書住所 */
-    @Column(name = "address_org")
-    private String addressOrg = INIT_STRING;
-
-    /**
-     * 原文書住所を取得する
-     *
-     * @return 原文書住所
-     */
-    public String getAddressOrg() {
-        return addressOrg;
-    }
-
-    /**
-     * 原文書住所を設定する
-     *
-     * @param addressOrg 原文書住所
-     */
-    public void setAddressOrg(final String addressOrg) {
-        this.addressOrg = addressOrg;
-    }
-
-    /** 表示住所 */
-    @Column(name = "address_name")
-    private String addressName = INIT_STRING;
-
-    /**
-     * 表示住所を取得する
-     *
-     * @return 表示住所
-     */
-    public String getAddressName() {
-        return addressName;
-    }
-
-    /**
-     * 表示住所を設定する
-     *
-     * @param addressName 表示住所
-     */
-    public void setAddressName(final String addressName) {
-        this.addressName = addressName;
-    }
-
-    /** 住所郵便番号まで */
-    @Column(name = "address_postal")
-    private String addressPostal = INIT_STRING;
-
-    /**
-     * 住所郵便番号までを取得する
-     *
-     * @return 住所郵便番号まで
-     */
-    public String getAddressPostal() {
-        return addressPostal;
-    }
-
-    /**
-     * 住所郵便番号までを設定する
-     *
-     * @param addressPostal 住所郵便番号まで
-     */
-    public void setAddressPostal(final String addressPostal) {
-        this.addressPostal = addressPostal;
-    }
-
-    /** 住所番地まで */
+    /** 街区住所 */
     @Column(name = "address_block")
     private String addressBlock = INIT_STRING;
 
     /**
-     * 住所番地までを取得する
+     * 街区住所を取得する
      *
-     * @return 住所番地まで
+     * @return 街区住所
      */
     public String getAddressBlock() {
         return addressBlock;
     }
 
     /**
-     * 住所番地までを設定する
+     * 街区住所を設定する
      *
-     * @param addressBlock 住所番地まで
+     * @param addressBlock 街区住所
      */
     public void setAddressBlock(final String addressBlock) {
         this.addressBlock = addressBlock;
     }
 
-    /** 郵便番号テーブル追加 */
-    @Column(name = "is_add_postal")
-    private Boolean isAddPostal = INIT_BOOLEAN;
+    /** 住所建物 */
+    @Column(name = "address_building")
+    private String addressBuilding = INIT_STRING;
 
     /**
-     * 郵便番号テーブル追加を取得する
+     * 住所建物を取得する
      *
-     * @return 郵便番号テーブル追加
+     * @return 住所建物
      */
-    public Boolean getIsAddPostal() {
-        return isAddPostal;
+    public String getAddressBuilding() {
+        return addressBuilding;
     }
 
     /**
-     * 郵便番号テーブル追加を設定する
+     * 住所建物を設定する
      *
-     * @param isAddPostal 郵便番号テーブル追加
+     * @param addressBuilding 住所建物
      */
-    public void setIsAddPostal(final Boolean isAddPostal) {
-        this.isAddPostal = isAddPostal;
+    public void setAddressBuilding(final String addressBuilding) {
+        this.addressBuilding = addressBuilding;
     }
 
-    /** 住居テーブル修正可否 */
-    @Column(name = "is_repair_rsdt")
-    private Boolean isRepairRsdt = INIT_BOOLEAN;
+    /** 町字Id */
+    @Column(name = "machiaza_id")
+    private String machiazaId = INIT_STRING;
 
     /**
-     * 住居テーブル修正可否を取得する
+     * 町字Idを取得する
      *
-     * @return 住居テーブル修正可否
+     * @return 町字Id
      */
-    public Boolean getIsRepairRsdt() {
-        return isRepairRsdt;
+    public String getMachiazaId() {
+        return machiazaId;
     }
 
     /**
-     * 住居テーブル修正可否を設定する
+     * 町字Idを設定する
      *
-     * @param isRepairRsdt 住居テーブル修正可否
+     * @param machiazaId 町字Id
      */
-    public void setIsRepairRsdt(final Boolean isRepairRsdt) {
-        this.isRepairRsdt = isRepairRsdt;
+    public void setMachiazaId(final String machiazaId) {
+        this.machiazaId = machiazaId;
+    }
+
+    /** 街区Id */
+    @Column(name = "blk_id")
+    private String blkId = INIT_STRING;
+
+    /**
+     * 街区Idを取得する
+     *
+     * @return 街区Id
+     */
+    public String getBlkId() {
+        return blkId;
+    }
+
+    /**
+     * 街区Idを設定する
+     *
+     * @param blkId 街区Id
+     */
+    public void setBlkId(final String blkId) {
+        this.blkId = blkId;
+    }
+
+    /** 地番Id */
+    @Column(name = "prc_id")
+    private String prcId = INIT_STRING;
+
+    /**
+     * 地番Idを取得する
+     *
+     * @return 地番Id
+     */
+    public String getPrcId() {
+        return prcId;
+    }
+
+    /**
+     * 地番Idを設定する
+     *
+     * @param prcId 地番Id
+     */
+    public void setPrcId(final String prcId) {
+        this.prcId = prcId;
+    }
+
+    /** 住居Id */
+    @Column(name = "rsdt_id")
+    private String rsdtId = INIT_STRING;
+
+    /**
+     * 住居Idを取得する
+     *
+     * @return 住居Id
+     */
+    public String getRsdtId() {
+        return rsdtId;
+    }
+
+    /**
+     * 住居Idを設定する
+     *
+     * @param rsdtId 住居Id
+     */
+    public void setRsdtId(final String rsdtId) {
+        this.rsdtId = rsdtId;
+    }
+
+    /** 住居2Id */
+    @Column(name = "rsdt2_id")
+    private String rsdt2Id = INIT_STRING;
+
+    /**
+     * 住居2Idを取得する
+     *
+     * @return 住居2Id
+     */
+    public String getRsdt2Id() {
+        return rsdt2Id;
+    }
+
+    /**
+     * 住居2Idを設定する
+     *
+     * @param rsdt2Id 住居2Id
+     */
+    public void setRsdt2Id(final String rsdt2Id) {
+        this.rsdt2Id = rsdt2Id;
+    }
+
+    /** 適用開始日 */
+    @Column(name = "effect_date")
+    private LocalDate effectDate = INIT_DATE;
+
+    /**
+     * 適用開始日を取得する
+     *
+     * @return 適用開始日
+     */
+    public LocalDate getEffectDate() {
+        return effectDate;
+    }
+
+    /**
+     * 適用開始日を設定する
+     *
+     * @param effectDate 適用開始日
+     */
+    public void setEffectDate(final LocalDate effectDate) {
+        this.effectDate = effectDate;
+    }
+
+    /** 廃止日 */
+    @Column(name = "abolish_date")
+    private LocalDate abolishDate = INIT_DATE;
+
+    /**
+     * 廃止日を取得する
+     *
+     * @return 廃止日
+     */
+    public LocalDate getAbolishDate() {
+        return abolishDate;
+    }
+
+    /**
+     * 廃止日を設定する
+     *
+     * @param abolishDate 廃止日
+     */
+    public void setAbolishDate(final LocalDate abolishDate) {
+        this.abolishDate = abolishDate;
     }
 
     /** 挿入ユーザId */
