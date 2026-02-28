@@ -61,7 +61,7 @@ class ParcelAddressCsvItemReaderTest {
         assertEquals("1", csvDto0.getPrcNum1());
         assertEquals("1", csvDto0.getPrcNum2());
         assertEquals("", csvDto0.getPrcNum3());
-        assertEquals(1, csvDto0.getRsdtAddrFlg());
+        assertEquals(0, csvDto0.getRsdtAddrFlg());
         assertEquals(1, csvDto0.getPrcRecFlg());
         assertEquals(0, csvDto0.getPrcAreaCode());
         assertEquals(LocalDate.of(1947, 4, 17), csvDto0.getEffectDate());
@@ -73,7 +73,7 @@ class ParcelAddressCsvItemReaderTest {
     private StepExecution getStepExecution() throws URISyntaxException, IOException {
 
         Path path = Paths.get(GetCurrentResourcePath.getBackTestResourcePath(), "/file/batch/address_base/parcel",
-                "mt_parcel_city011029.csv");
+                "mt_parcel_city011029_sample.csv");
 
         JobParameters jobParameters = new JobParametersBuilder() // NOPMD
                 .addString("readFilePath", path.toString()).toJobParameters();

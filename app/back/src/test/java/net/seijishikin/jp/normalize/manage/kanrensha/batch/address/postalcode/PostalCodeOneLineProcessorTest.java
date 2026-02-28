@@ -36,10 +36,6 @@ class PostalCodeOneLineProcessorTest {
         assertEquals(item.getAddressOrg(), postalEntity.getAddressOrg());
         assertTrue(postalEntity.getIsGyoseikuData());
         
-        
-        
-        
-        
         fail("Not yet implemented");
     }
 

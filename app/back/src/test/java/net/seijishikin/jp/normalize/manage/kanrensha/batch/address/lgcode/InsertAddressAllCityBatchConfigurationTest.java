@@ -62,6 +62,12 @@ class InsertAddressAllCityBatchConfigurationTest {
     void testExecute() throws Exception {
 
         jobLauncherTestUtils.setJob(insertAddressAllCity);
+        // 本番用データ作成ファイル指定
+        // Path pathRoot = Paths.get(GetCurrentResourcePath.getBackSrcPath(""));
+        // Path pathBase =
+        // Paths.get(pathRoot.getParent().getParent().getParent().toString(),
+        // "/config/file_address/lg_code/");
+        // Path path = Paths.get(pathBase.toString(), "mt_city_all.csv");
 
         Path path = Paths.get(GetCurrentResourcePath.getBackTestResourcePath(), "/file/batch/address_base/",
                 "mt_city_all_sample.csv");

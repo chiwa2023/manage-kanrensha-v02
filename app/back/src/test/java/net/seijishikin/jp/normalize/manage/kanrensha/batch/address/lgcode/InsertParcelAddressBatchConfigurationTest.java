@@ -62,7 +62,7 @@ class InsertParcelAddressBatchConfigurationTest {
         jobLauncherTestUtils.setJob(InsertParcelAddress);
 
         Path path = Paths.get(GetCurrentResourcePath.getBackTestResourcePath(), "/file/batch/address_base/parcel",
-                "mt_parcel_city011029.csv");
+                "mt_parcel_city011029_sample.csv");
 
         LeastUserDto userDto = CreateLeastUserForTestUtil.practice();
 

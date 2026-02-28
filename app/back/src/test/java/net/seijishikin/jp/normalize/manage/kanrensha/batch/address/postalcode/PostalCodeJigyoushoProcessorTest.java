@@ -30,8 +30,8 @@ class PostalCodeJigyoushoProcessorTest {
         AddressPostalIrregularEntity postalEntity = processor.process(item);
 
         assertEquals("022012", postalEntity.getLgCode());
-        assertEquals("8556", postalEntity.getPostalcode1());
-        assertEquals(item.getPostalcode(), postalEntity.getPostalcode2());
+        assertEquals("030", postalEntity.getPostalcode1());
+        assertEquals("8556", postalEntity.getPostalcode2());
         assertEquals("青森県青森市長島", postalEntity.getAddressPostal());
         assertEquals("二丁目２５－３ニッセイ青森センタービル６階", postalEntity.getAddressBlock());
         assertEquals("長島", postalEntity.getAddressOrg());

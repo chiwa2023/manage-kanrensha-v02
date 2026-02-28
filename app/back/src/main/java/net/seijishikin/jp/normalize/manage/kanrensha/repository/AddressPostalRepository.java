@@ -1,12 +1,27 @@
 package net.seijishikin.jp.normalize.manage.kanrensha.repository;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import java.util.List;
 
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+
+import net.seijishikin.jp.normalize.common_tool.dto.select_options.SelectOptionIntegerDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.AddressPostalEntity;
 
 /**
  * address_postal接続用Repository
  */
 public interface AddressPostalRepository extends JpaRepository<AddressPostalEntity, Integer> {
+
+    /**
+     * 郵便番号から住所郵便番号までを取得する
+     *
+     * @param postal1 郵便番号
+     * @return 検索結果
+     */
+    @Query(value = "SELECT address_postal_id AS value , address_name AS text"
+            + " FROM address_postal WHERE postalcode1 = ?1 AND postalcode2 = ?2 "
+            + " AND is_gyoseiku_data = 1 AND is_latest = 1", nativeQuery = true)
+    List<SelectOptionIntegerDto> findByPostalCodeAndSearchGyoseiku(String postal1, String postal2);
 
 }
