@@ -61,21 +61,26 @@ class RebuildAddressPostalCodeBatchConfigurationTest {
     void testExecute() throws Exception {
 
         jobLauncherTestUtils.setJob(rebuildAddressPostalCode);
-        
+
         // 本番用データ作成ファイル指定
         // Path pathRoot = Paths.get(GetCurrentResourcePath.getBackSrcPath(""));
-        // Path pathBase = Paths.get(pathRoot.getParent().getParent().getParent().toString(),"/config/file_address/postal/");
-        
-        // Path pathOneLine = Paths.get(pathBase.toString(),"/utf_ken_all/" ,"utf_ken_all.csv");
-        // Path pathJigyousha = Paths.get(pathBase.toString(),"/jigyousho/" ,"JIGYOSYO.CSV");
-        // Path pathOneLine = Paths.get(pathBase.toString(),"/utf_ken_all/" ,"temp.csv");
-        // Path pathJigyousha = Paths.get(pathBase.toString(),"/jigyousho/" ,"temp.csv");
-        
+        // Path pathBase =
+        // Paths.get(pathRoot.getParent().getParent().getParent().toString(),"/config/file_address/postal/");
+
+        // Path pathOneLine = Paths.get(pathBase.toString(),"/utf_ken_all/"
+        // ,"utf_ken_all.csv");
+        // Path pathJigyousha = Paths.get(pathBase.toString(),"/jigyousho/"
+        // ,"JIGYOSYO.CSV");
+        // Path pathOneLine = Paths.get(pathBase.toString(),"/utf_ken_all/"
+        // ,"temp.csv");
+        // Path pathJigyousha = Paths.get(pathBase.toString(),"/jigyousho/"
+        // ,"temp.csv");
+
         Path pathOneLine = Paths.get(GetCurrentResourcePath.getBackTestResourcePath(), "/file/batch/postalcode/",
                 "utf_add_2601.csv");
         Path pathJigyousha = Paths.get(GetCurrentResourcePath.getBackTestResourcePath(), "/file/batch/postalcode/",
                 "JIGYOSYO_SAMPLE.CSV");
-        
+
         LeastUserDto userDto = CreateLeastUserForTestUtil.practice();
 
         JobParameters jobParameters = new JobParametersBuilder(

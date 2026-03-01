@@ -1,13 +1,9 @@
-package net.seijishikin.jp.normalize.manage.kanrensha.batch.address.postalcode;
-
-import java.util.ArrayList;
-import java.util.List;
+package net.seijishikin.jp.normalize.manage.kanrensha.batch.address.block;
 
 import org.springframework.batch.core.StepExecution;
 import org.springframework.batch.core.annotation.BeforeStep;
 import org.springframework.batch.item.Chunk;
 import org.springframework.batch.item.database.JpaItemWriter;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -15,24 +11,18 @@ import jakarta.persistence.EntityManagerFactory;
 import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
 import net.seijishikin.jp.normalize.common_tool.utils.CreateUserLeastDtoByBatchParamUtil;
 import net.seijishikin.jp.normalize.common_tool.utils.SetTableDataHistoryUtil;
-import net.seijishikin.jp.normalize.manage.kanrensha.entity.AddressPostalEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.AddressPostalIrregularEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.repository.AddressPostalIrregularRepository;
-import net.seijishikin.jp.normalize.manage.kanrensha.repository.AddressPostalRepository;
 
 /**
- * 郵便番号ItemWriter
+ * 郵便番号不規則更新ItemWriter
  */
 @Component
-public class PostalCodeCsvJigyoushaItemWriter extends JpaItemWriter<AddressPostalIrregularEntity> {
+public class IrregularPostalItemWriter extends JpaItemWriter<AddressPostalIrregularEntity> {
 
-    /** 郵便番号不規則Repository */
+    /** 郵便番号不規則Respository */
     @Autowired
     private AddressPostalIrregularRepository addressPostalIrregularRepository;
-
-    /** 郵便番号Repository */
-    @Autowired
-    private AddressPostalRepository addressPostalRepository;
 
     /** テーブル履歴設定Util */
     @Autowired
@@ -48,9 +38,9 @@ public class PostalCodeCsvJigyoushaItemWriter extends JpaItemWriter<AddressPosta
     /**
      * コンストラクタ
      *
-     * @param entityManagerFactory entityManagerFactory
+     * @param entityManagerFactory EntityManagerFactory
      */
-    public PostalCodeCsvJigyoushaItemWriter(final @Autowired EntityManagerFactory entityManagerFactory) {
+    public IrregularPostalItemWriter(final @Autowired EntityManagerFactory entityManagerFactory) {
         super();
         super.setEntityManagerFactory(entityManagerFactory);
     }
@@ -72,25 +62,12 @@ public class PostalCodeCsvJigyoushaItemWriter extends JpaItemWriter<AddressPosta
     @Override
     public void write(final Chunk<? extends AddressPostalIrregularEntity> items) {
 
-        List<AddressPostalEntity> listPostal = new ArrayList<>();
         for (AddressPostalIrregularEntity entity : items) {
             setTableDataHistoryUtil.practiceInsert(userDto, entity);
-            entity.setAddressPostalIrregularId(0); // auto increment明記
-            listPostal.add(this.createPostal(entity));
         }
 
-        addressPostalIrregularRepository.saveAll(items);
-        addressPostalRepository.saveAll(listPostal);
+        // 編集済みデータを保存するだけ
+        addressPostalIrregularRepository.saveAllAndFlush(items);
     }
 
-    private AddressPostalEntity createPostal(final AddressPostalIrregularEntity entity) {
-
-        AddressPostalEntity postalEntity = new AddressPostalEntity();
-        BeanUtils.copyProperties(entity, postalEntity);
-        postalEntity.setIsGyoseikuData(false); // 必ず不規則テーブルを呼ぶ
-        setTableDataHistoryUtil.practiceInsert(userDto, postalEntity);
-        postalEntity.setAddressPostalId(0); // auto increment明記
-
-        return postalEntity;
-    }
 }

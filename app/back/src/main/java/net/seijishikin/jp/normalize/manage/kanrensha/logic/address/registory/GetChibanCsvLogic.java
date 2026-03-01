@@ -11,14 +11,11 @@ import java.util.List;
 
 import javax.net.ssl.HttpsURLConnection;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.AddressAllCityEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.repository.AddressAllCityRepository;
-import net.seijishikin.jp.normalize.manage.kanrensha.service.util.WriteLogService;
 
 /**
  * ファイルダウンロード(アドレス・べース・レジストリから地番ファイルを県ごとに抜き出し)Logic
@@ -31,7 +28,8 @@ public class GetChibanCsvLogic {
     private AddressAllCityRepository addressAllCityRepository;
 
     /** Logger */
-    private final Logger log = LoggerFactory.getLogger(WriteLogService.class);
+    @Autowired
+    private WriteLogAddressFormatLogic writeLogAddressFormatLogic;
 
     /**
      * 処理を行う
@@ -58,14 +56,15 @@ public class GetChibanCsvLogic {
 
                 // HTTP(S)接続の応答メッセージのステータスコードを返す
                 int statusCode = conn.getResponseCode();
-                log.info("HTTP Status Code: " + statusCode + "===" + lgCode);
-
+                writeLogAddressFormatLogic.practice(WriteLogAddressFormatLogic.INFO, "HTTP Status Code: ",
+                        String.valueOf(statusCode), "===" + lgCode);
                 this.saveFile(conn, lgCode, storeDir);
 
                 Thread.sleep(1000); // SUPPRESS CHECKSTYLE MagicNumber // NOPMD
 
             } catch (Exception e) { // NOPMD
-                log.error(lgCode + "not access!");
+                writeLogAddressFormatLogic.practice(WriteLogAddressFormatLogic.ERROR, lgCode, "not access!");
+
             }
         }
 
@@ -79,7 +78,7 @@ public class GetChibanCsvLogic {
             Files.copy(input, targetFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
 
         } catch (IOException exception) { // NOPMD
-            log.error(lgCode + "not save!");
+            writeLogAddressFormatLogic.practice(WriteLogAddressFormatLogic.ERROR, lgCode, "not save!");
         }
 
     }

@@ -4,12 +4,12 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.batch.item.file.LineMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import net.seijishikin.jp.normalize.common_tool.dto.DtoEntityInitialValueInterface;
+import net.seijishikin.jp.normalize.manage.kanrensha.logic.address.registory.WriteLogAddressFormatLogic;
 
 /**
  * アドレス・ベース・レジストリ住居表示－住居Csv(mt_rsdtdsp_rsdt_prefxx.csv)変換LineMapper
@@ -23,7 +23,8 @@ public class RsdtAddressCsvLineMapper implements LineMapper<RsdtAddressCsvDto> {
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     /** Logger */
-    private final Logger log = LoggerFactory.getLogger(RsdtAddressCsvLineMapper.class);
+    @Autowired
+    private WriteLogAddressFormatLogic writeLogAddressFormatLogic;
 
     /** 空白文字 */
     private static final String BLANK = "";
@@ -105,37 +106,24 @@ public class RsdtAddressCsvLineMapper implements LineMapper<RsdtAddressCsvDto> {
         return dto;
     }
 
-    /*
-     * 日付を変換する
-     * 
-     * @param dateText 日付テキスト
-     * 
-     * @return 日付
-     */
     private LocalDate convertLocalDate(final String dateText, final int lineNumber) {
         try {
             return LocalDate.parse(dateText, formatter);
         } catch (DateTimeParseException e) {
-            log.error(lineNumber + "行目日付変換不可", e);
+            writeLogAddressFormatLogic.practice(WriteLogAddressFormatLogic.ERROR, dateText, String.valueOf(lineNumber),
+                    "行目日付変換不可");
+
         }
         return DtoEntityInitialValueInterface.INIT_DATE;
     }
 
-    /*
-     * 数値に変換する
-     * 
-     * @param codeText コードテキスト
-     * 
-     * @param lineNumber 行数
-     * 
-     * @return
-     */
     private Integer convertInteger(final String codeText, final int lineNumber) {
 
         try {
             return Integer.parseInt(codeText);
         } catch (NumberFormatException e) {
-            log.error(lineNumber + "行目数値変換不可", e);
+            writeLogAddressFormatLogic.practice(WriteLogAddressFormatLogic.ERROR, codeText, String.valueOf(lineNumber),
+                    "行目数値変換不可");
         }
         return 0;
 

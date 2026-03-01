@@ -2,6 +2,8 @@ package net.seijishikin.jp.normalize.manage.kanrensha.repository;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -31,7 +33,8 @@ public interface AddressPostalIrregularRepository extends JpaRepository<AddressP
      * @param isRepairRsdt 修正完了の有無
      * @return 検索結果
      */
-    List<AddressPostalIrregularEntity> findByAddressOrgContainingAndIsRepairRsdtAndIsLatestTrue(String words, Boolean isRepairRsdt);
+    List<AddressPostalIrregularEntity> findByAddressOrgContainingAndIsRepairRsdtAndIsLatestTrue(String words,
+            Boolean isRepairRsdt);
 
     /**
      * 住所名称が一致する郵便番号不規則を取得する
@@ -40,5 +43,42 @@ public interface AddressPostalIrregularRepository extends JpaRepository<AddressP
      * @return 住所名が一致するデータ
      */
     List<AddressPostalIrregularEntity> findByAddressNameAndIsLatestTrue(String words);
+
+    /**
+     * （その他）を抽出する
+     *
+     * @param lgCode   地方公共団体コード(県部分)
+     * @param pageable ページング
+     * @return 検索結果
+     */
+    @Query(value = "SELECT * FROM address_postal_irregular WHERE lg_code LIKE ?1"
+            + " AND (address_org LIKE '%その他%' OR address_org LIKE '%次のビルを除く%') AND is_latest = 1", nativeQuery = true)
+    Page<AddressPostalIrregularEntity> findOtherAddress(String lgCode, Pageable pageable);
+
+    /**
+     * 波文字を含み、カンマ文字がない(範囲が1項目)を取得する
+     *
+     * @param lgCode   地方公共団体コード(県部分)
+     * @param nami     波ダッシュ文字
+     * @param comma    カンマ文字
+     * @param pageable ページング
+     * @return 検索結果
+     */
+    Page<AddressPostalIrregularEntity> findByLgCodeStartingWithAndAddressOrgLikeAndAddressOrgNotLikeAndIsLatestTrue(String lgCode,
+            String nami, String comma, Pageable pageable);
+
+    /**
+     * 地名(地名)といった単一地域を抽出する
+     *
+     * @param lgCode   地方公共団体コード(県部分)
+     * @param pageable ページング
+     * @return 検索結果
+     */
+    @Query(value = "SELECT * FROM address_postal_irregular WHERE lg_code LIKE ?1" + " AND address_org NOT LIKE '%〜%'"
+            + " AND address_org NOT LIKE '%、%' AND address_org NOT LIKE '%階）%'"
+            + " AND address_org NOT LIKE '%階層不明）%' AND address_org NOT LIKE '%（その他）%'"
+            + " AND address_org NOT LIKE '%（次のビルを除く）%' AND address_org NOT LIKE '%番地%'"
+            + " AND address_org NOT LIKE '%丁目%' AND is_latest = 1", nativeQuery = true)
+    Page<AddressPostalIrregularEntity> findSingleAddress(String lgCode, Pageable pageable);
 
 }

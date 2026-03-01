@@ -4,12 +4,12 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.batch.item.file.LineMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import net.seijishikin.jp.normalize.common_tool.dto.DtoEntityInitialValueInterface;
+import net.seijishikin.jp.normalize.manage.kanrensha.logic.address.registory.WriteLogAddressFormatLogic;
 
 /**
  * アドレス・ベース・レジストリ地番CsvデータLineMapper
@@ -23,7 +23,8 @@ public class ParcelAddressCsvLineMapper implements LineMapper<ParcelAddressCsvDt
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     /** Logger */
-    private final Logger log = LoggerFactory.getLogger(ParcelAddressCsvLineMapper.class);
+    @Autowired
+    private WriteLogAddressFormatLogic writeLogAddressFormatLogic;
 
     /** 空文字 */
     private static final String BLANK = "";
@@ -97,7 +98,8 @@ public class ParcelAddressCsvLineMapper implements LineMapper<ParcelAddressCsvDt
         try {
             return LocalDate.parse(dateText, formatter);
         } catch (DateTimeParseException e) {
-            log.error(lineNumber + "行目日付変換不可", e);
+            writeLogAddressFormatLogic.practice(WriteLogAddressFormatLogic.ERROR, dateText, String.valueOf(lineNumber),
+                    "行目日付変換不可");
         }
         return DtoEntityInitialValueInterface.INIT_DATE;
     }
@@ -107,7 +109,8 @@ public class ParcelAddressCsvLineMapper implements LineMapper<ParcelAddressCsvDt
         try {
             return Integer.parseInt(codeText);
         } catch (NumberFormatException e) {
-            log.error(lineNumber + "行目数値変換不可", e);
+            writeLogAddressFormatLogic.practice(WriteLogAddressFormatLogic.ERROR, codeText, String.valueOf(lineNumber),
+                    "行目数値変換不可");
         }
         return 0;
     }

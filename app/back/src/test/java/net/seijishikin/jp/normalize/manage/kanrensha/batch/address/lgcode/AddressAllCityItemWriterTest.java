@@ -57,7 +57,7 @@ class AddressAllCityItemWriterTest {
 
     @Test
     @Tag("TableTruncate")
-    void testAdd() {
+    void testAdd()throws Exception {
 
         // 完全新規
         AddressAllCityEntity entity00 = new AddressAllCityEntity();

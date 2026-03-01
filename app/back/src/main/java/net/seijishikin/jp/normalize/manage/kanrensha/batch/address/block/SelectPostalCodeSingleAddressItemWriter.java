@@ -1,13 +1,11 @@
-package net.seijishikin.jp.normalize.manage.kanrensha.batch.address.postalcode;
+package net.seijishikin.jp.normalize.manage.kanrensha.batch.address.block;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.batch.core.StepExecution;
 import org.springframework.batch.core.annotation.BeforeStep;
 import org.springframework.batch.item.Chunk;
 import org.springframework.batch.item.database.JpaItemWriter;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -16,23 +14,28 @@ import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
 import net.seijishikin.jp.normalize.common_tool.utils.CreateUserLeastDtoByBatchParamUtil;
 import net.seijishikin.jp.normalize.common_tool.utils.SetTableDataHistoryUtil;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.AddressPostalEntity;
-import net.seijishikin.jp.normalize.manage.kanrensha.entity.AddressPostalIrregularEntity;
-import net.seijishikin.jp.normalize.manage.kanrensha.repository.AddressPostalIrregularRepository;
+import net.seijishikin.jp.normalize.manage.kanrensha.entity.WkTblPostalCommonEntity;
+import net.seijishikin.jp.normalize.manage.kanrensha.logic.postal.SelectSingleAddressLogic;
 import net.seijishikin.jp.normalize.manage.kanrensha.repository.AddressPostalRepository;
+import net.seijishikin.jp.normalize.manage.kanrensha.repository.WkTblPostalCommonRepository;
 
 /**
- * 郵便番号ItemWriter
+ * （）内単一住所データの呼び出し住所を正規郵便番号に反映するItemWriter
  */
 @Component
-public class PostalCodeCsvJigyoushaItemWriter extends JpaItemWriter<AddressPostalIrregularEntity> {
+public class SelectPostalCodeSingleAddressItemWriter extends JpaItemWriter<WkTblPostalCommonEntity> {
 
-    /** 郵便番号不規則Repository */
+    /** 単独住所検索Logic */
     @Autowired
-    private AddressPostalIrregularRepository addressPostalIrregularRepository;
+    private SelectSingleAddressLogic selectSingleAddressLogic;
 
     /** 郵便番号Repository */
     @Autowired
     private AddressPostalRepository addressPostalRepository;
+
+    /** 郵便番号作業Repository */
+    @Autowired
+    private WkTblPostalCommonRepository wkTblPostalCommonRepository;
 
     /** テーブル履歴設定Util */
     @Autowired
@@ -48,9 +51,9 @@ public class PostalCodeCsvJigyoushaItemWriter extends JpaItemWriter<AddressPosta
     /**
      * コンストラクタ
      *
-     * @param entityManagerFactory entityManagerFactory
+     * @param entityManagerFactory EntityManagerFactory
      */
-    public PostalCodeCsvJigyoushaItemWriter(final @Autowired EntityManagerFactory entityManagerFactory) {
+    public SelectPostalCodeSingleAddressItemWriter(final @Autowired EntityManagerFactory entityManagerFactory) {
         super();
         super.setEntityManagerFactory(entityManagerFactory);
     }
@@ -70,27 +73,19 @@ public class PostalCodeCsvJigyoushaItemWriter extends JpaItemWriter<AddressPosta
      * 書き込み処理
      */
     @Override
-    public void write(final Chunk<? extends AddressPostalIrregularEntity> items) {
+    public void write(final Chunk<? extends WkTblPostalCommonEntity> items) {
 
-        List<AddressPostalEntity> listPostal = new ArrayList<>();
-        for (AddressPostalIrregularEntity entity : items) {
+        for (WkTblPostalCommonEntity entity : items) {
+            // 住居テーブルに存在する地名で有効化
+            List<AddressPostalEntity> list = selectSingleAddressLogic.practice(entity, userDto);
+
             setTableDataHistoryUtil.practiceInsert(userDto, entity);
-            entity.setAddressPostalIrregularId(0); // auto increment明記
-            listPostal.add(this.createPostal(entity));
+            if (!list.isEmpty()) {
+                // 住所データは必要部分は編集済みなのでそのまま保存
+                addressPostalRepository.saveAll(list);
+                wkTblPostalCommonRepository.save(entity);
+            }
         }
-
-        addressPostalIrregularRepository.saveAll(items);
-        addressPostalRepository.saveAll(listPostal);
     }
 
-    private AddressPostalEntity createPostal(final AddressPostalIrregularEntity entity) {
-
-        AddressPostalEntity postalEntity = new AddressPostalEntity();
-        BeanUtils.copyProperties(entity, postalEntity);
-        postalEntity.setIsGyoseikuData(false); // 必ず不規則テーブルを呼ぶ
-        setTableDataHistoryUtil.practiceInsert(userDto, postalEntity);
-        postalEntity.setAddressPostalId(0); // auto increment明記
-
-        return postalEntity;
-    }
 }
