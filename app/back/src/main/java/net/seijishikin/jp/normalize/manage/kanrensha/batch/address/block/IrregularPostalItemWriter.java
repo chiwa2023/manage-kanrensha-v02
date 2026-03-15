@@ -63,7 +63,11 @@ public class IrregularPostalItemWriter extends JpaItemWriter<AddressPostalIrregu
     public void write(final Chunk<? extends AddressPostalIrregularEntity> items) {
 
         for (AddressPostalIrregularEntity entity : items) {
-            setTableDataHistoryUtil.practiceInsert(userDto, entity);
+            if (entity.getIsLatest()) {
+                setTableDataHistoryUtil.practiceInsert(userDto, entity);
+            } else {
+                setTableDataHistoryUtil.practiceDelete(userDto, entity);
+            }
         }
 
         // 編集済みデータを保存するだけ

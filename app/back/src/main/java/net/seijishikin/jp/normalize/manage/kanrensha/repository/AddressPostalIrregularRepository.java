@@ -81,4 +81,27 @@ public interface AddressPostalIrregularRepository extends JpaRepository<AddressP
             + " AND address_org NOT LIKE '%丁目%' AND is_latest = 1", nativeQuery = true)
     Page<AddressPostalIrregularEntity> findSingleAddress(String lgCode, Pageable pageable);
 
+    /**
+     * 番地まで住所に空白文字を含むデータを取得する
+     *
+     * @param lgCode   地方公共団体コード(県部分)
+     * @param space     空白文字
+     * @param pageable ページング
+     * @return 検索結果
+     */
+    Page<AddressPostalIrregularEntity> findByLgCodeStartingWithAndAddressBlockLikeAndIsLatestTrue(String lgCode,
+            String space,  Pageable pageable);
+
+    
+    /**
+     * 原文書に読点を含むデータを取得する
+     *
+     * @param lgCode   地方公共団体コード(県部分)
+     * @param touten     空白文字
+     * @param pageable ページング
+     * @return 検索結果
+     */
+    Page<AddressPostalIrregularEntity> findByLgCodeStartingWithAndAddressOrgLikeAndIsLatestTrue(String lgCode,
+            String touten,  Pageable pageable);
+    
 }

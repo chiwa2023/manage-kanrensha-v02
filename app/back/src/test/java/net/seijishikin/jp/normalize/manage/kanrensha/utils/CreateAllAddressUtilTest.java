@@ -2,6 +2,7 @@ package net.seijishikin.jp.normalize.manage.kanrensha.utils;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -10,6 +11,7 @@ import org.junit.jupiter.api.Test;
 class CreateAllAddressUtilTest {
 
     @Test
+    @Tag("TableTruncate")
     void test() {
 
         // すべてnullの時は全角スペース
@@ -20,6 +22,7 @@ class CreateAllAddressUtilTest {
     }
 
     @Test
+    @Tag("TableTruncate")
     void testTanshuku() {
 
         // すべてnullの時は空文字

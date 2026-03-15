@@ -68,6 +68,15 @@ class JigyoushoBlockNormalizeLogicTest {
         
         assertDoesNotThrow(() -> jigyoushoBlockNormalizeLogic.practice(null));
         
+        String data12 = "6丁目7番地8号9";
+        assertEquals("六丁目7番地8号9", jigyoushoBlockNormalizeLogic.practice(data12), "号の後が数字の場合は空白を追加しない");
+
+        String data13 = "6丁目7番地の9";
+        assertEquals("六丁目7番地の9", jigyoushoBlockNormalizeLogic.practice(data13), "番地とのの間に空白を作成しない");
+
+        String data14 = "５丁目４－９号庁舎西館9号館402室";
+        assertEquals("五丁目4番地9号　庁舎西館9号館402室", jigyoushoBlockNormalizeLogic.practice(data14), "番地住所に号が含まれるとダメケースでなくなる");
+
     }
 
 }

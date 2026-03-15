@@ -11,6 +11,7 @@ import jakarta.persistence.Query;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.AddressPostalEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.AddressRsdtBaseEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.WkTblPostalCommonEntity;
+import net.seijishikin.jp.normalize.manage.kanrensha.logic.address.registory.WriteLogAddressFormatLogic;
 import net.seijishikin.jp.normalize.manage.kanrensha.repository.AddressPostalRepository;
 
 /**
@@ -26,6 +27,10 @@ public class CheckExistPostalCodeByOtherLogic {
     /** 郵便番号Repository */
     @Autowired
     private AddressPostalRepository addressPostalRepository;
+
+    /** Logger */
+    @Autowired
+    private WriteLogAddressFormatLogic writeLogAddressFormatLogic;
 
     /**
      * 処理を行う
@@ -43,11 +48,12 @@ public class CheckExistPostalCodeByOtherLogic {
         List<AddressPostalEntity> list = new ArrayList<>();
         if (query.getResultList().isEmpty()) {
             // 住居テーブルにデータが存在しないときは、本来起きないことが起きているとして空リスト
+            writeLogAddressFormatLogic.practice(WriteLogAddressFormatLogic.ERROR, "その他変換で郵便番号ファイルにあるがアドレスレジストリにありません",
+                    worksEntity.getAddressName(),worksEntity.getLgCode());
             return list;
         } else {
             return addressPostalRepository.findByPostalcode1AndPostalcode2OrderByAddressNameAsc(
                     worksEntity.getPostalcode1(), worksEntity.getPostalcode2());
         }
-
     }
 }

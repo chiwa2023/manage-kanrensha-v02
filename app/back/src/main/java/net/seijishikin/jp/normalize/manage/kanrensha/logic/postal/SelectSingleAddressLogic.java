@@ -14,6 +14,7 @@ import net.seijishikin.jp.normalize.common_tool.utils.SetTableDataHistoryUtil;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.AddressPostalEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.AddressRsdtBaseEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.WkTblPostalCommonEntity;
+import net.seijishikin.jp.normalize.manage.kanrensha.logic.address.registory.WriteLogAddressFormatLogic;
 import net.seijishikin.jp.normalize.manage.kanrensha.repository.AddressPostalRepository;
 
 /**
@@ -34,6 +35,10 @@ public class SelectSingleAddressLogic {
     @Autowired
     private SetTableDataHistoryUtil setTableDataHistoryUtil;
 
+    /** Logger */
+    @Autowired
+    private WriteLogAddressFormatLogic writeLogAddressFormatLogic;
+
     /**
      * 処理を行う
      *
@@ -41,11 +46,19 @@ public class SelectSingleAddressLogic {
      * @return 郵便番号リスト
      */
     @SuppressWarnings("unchecked")
-    public List<AddressPostalEntity> practice(final WkTblPostalCommonEntity worksEntity,final LeastUserDto userDto) {
+    public List<AddressPostalEntity> practice(final WkTblPostalCommonEntity worksEntity, final LeastUserDto userDto) {
         String baseAddress = worksEntity.getAddressName();
         String org = worksEntity.getAddressOrg();
         int posStart = org.indexOf("（");
         int posEnd = org.indexOf("）");
+
+        List<AddressPostalEntity> list = new ArrayList<>();
+        if (posStart == -1 || posEnd == -1) {
+            writeLogAddressFormatLogic.practice(WriteLogAddressFormatLogic.ERROR, "カッコが両方揃っていません",
+                    String.valueOf(worksEntity.getAddressPostalId()));
+            return list;
+        }
+
         String place = org.substring(posStart + 1, posEnd);
 
         // 共通部分(address_name)で始まり、（）内の語句までが一致するデータをピックアップ
@@ -57,9 +70,10 @@ public class SelectSingleAddressLogic {
 
         List<AddressRsdtBaseEntity> listRsdt = (List<AddressRsdtBaseEntity>) query.getResultList();
 
-        List<AddressPostalEntity> list = new ArrayList<>();
         if (listRsdt.isEmpty()) {
             // 住居テーブルにデータが存在しないときは、本来起きないことが起きているとして空リスト
+            writeLogAddressFormatLogic.practice(WriteLogAddressFormatLogic.ERROR, "単一指定で郵便番号ファイルにあるがアドレスレジストリにありません",
+                    baseAddress);
             return list;
         } else {
             List<String> listNameAddress = new ArrayList<>();

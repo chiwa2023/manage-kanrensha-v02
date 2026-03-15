@@ -80,6 +80,7 @@ public class SelectPostalCodeSingleAddressItemWriter extends JpaItemWriter<WkTbl
             List<AddressPostalEntity> list = selectSingleAddressLogic.practice(entity, userDto);
 
             setTableDataHistoryUtil.practiceInsert(userDto, entity);
+            entity.setIsLatest(false); // 処理したら履歴になるようにする
             if (!list.isEmpty()) {
                 // 住所データは必要部分は編集済みなのでそのまま保存
                 addressPostalRepository.saveAll(list);

@@ -44,6 +44,9 @@ public class RsdtAddressItemWriter extends JpaItemWriter<AddressRsdtBaseEntity> 
     /** ユーザ最低限Dto */
     private LeastUserDto userDto;
 
+    /** 県表示 */
+    private String pref = "";
+
     /**
      * コンストラクタ
      *
@@ -63,6 +66,7 @@ public class RsdtAddressItemWriter extends JpaItemWriter<AddressRsdtBaseEntity> 
     @BeforeStep
     public void beforeStep(final StepExecution stepExecution) {
         userDto = createUserLeastDtoByBatchParamUtil.practice(stepExecution);
+        pref = stepExecution.getJobParameters().getString("pref");
     }
 
     /**
@@ -107,10 +111,10 @@ public class RsdtAddressItemWriter extends JpaItemWriter<AddressRsdtBaseEntity> 
                 .append(QUOTE_SINGLE).append(entity.getBlkId()).append(QUOTE_SINGLE).append(COMMA) //
                 .append(QUOTE_SINGLE).append(entity.getRsdtId()).append(QUOTE_SINGLE).append(COMMA) //
                 .append(QUOTE_SINGLE).append(entity.getRsdt2Id()).append(QUOTE_SINGLE).append(COMMA)
-                .append(QUOTE_SINGLE).append(entity.getAddressBlock()).append(QUOTE_SINGLE).append(COMMA)
+                .append(QUOTE_SINGLE).append(pref).append(entity.getAddressBlock()).append(QUOTE_SINGLE).append(COMMA)
                 .append(QUOTE_SINGLE).append(entity.getAddressBuilding()).append(QUOTE_SINGLE).append(COMMA)
                 .append(QUOTE_SINGLE).append(entity.getEffectDate()).append(QUOTE_SINGLE).append(COMMA);
-        
+
         // null insert時にはコンマを外さないと例外を食らってしまう
         if (Objects.isNull(entity.getAbolishDate())) {
             builder.append(entity.getAbolishDate()).append(COMMA);

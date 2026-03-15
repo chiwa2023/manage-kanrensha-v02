@@ -7,22 +7,33 @@ import java.time.LocalDate;
 
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
 
 /**
  * ParcelAddressCsvLineMapper単体テスト
  */
+@AutoConfigureMockMvc
+@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
+@DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
 class ParcelAddressCsvLineMapperTest {
     // CHECKSTYLE:OFF MagicNumber
+
+    /** テスト対象 */
+    @Autowired
+    private ParcelAddressCsvLineMapper parcelAddressCsvLineMapper;
 
     @Test
     @Tag("TableTruncate")
     void test() throws Exception {
 
-        ParcelAddressCsvLineMapper lineMapper = new ParcelAddressCsvLineMapper();
-
         String line0 = "011011,0001001,000010000000000,札幌市,中央区,旭ケ丘,一丁目,aaa,bbb,99,98,97,1,1,0,1947-04-17,2022-12-05,1,,";
 
-        ParcelAddressCsvDto dto00 = lineMapper.mapLine(line0, 0);
+        ParcelAddressCsvDto dto00 = parcelAddressCsvLineMapper.mapLine(line0, 0);
 
         // 地方自治体コード
         assertEquals("011011", dto00.getLgCode());
@@ -62,7 +73,7 @@ class ParcelAddressCsvLineMapperTest {
         // すべて空文字
         String line1 = ",,,,,,,,,,,,,,,,,,,0,";
 
-        ParcelAddressCsvDto dto01 = lineMapper.mapLine(line1, 0);
+        ParcelAddressCsvDto dto01 = parcelAddressCsvLineMapper.mapLine(line1, 0);
 
         // 地方自治体コード
         assertEquals("", dto01.getLgCode());

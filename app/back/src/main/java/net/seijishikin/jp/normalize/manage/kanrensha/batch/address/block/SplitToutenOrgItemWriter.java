@@ -6,6 +6,7 @@ import org.springframework.batch.core.StepExecution;
 import org.springframework.batch.core.annotation.BeforeStep;
 import org.springframework.batch.item.Chunk;
 import org.springframework.batch.item.database.JpaItemWriter;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -13,29 +14,24 @@ import jakarta.persistence.EntityManagerFactory;
 import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
 import net.seijishikin.jp.normalize.common_tool.utils.CreateUserLeastDtoByBatchParamUtil;
 import net.seijishikin.jp.normalize.common_tool.utils.SetTableDataHistoryUtil;
-import net.seijishikin.jp.normalize.manage.kanrensha.entity.AddressPostalEntity;
+import net.seijishikin.jp.normalize.manage.kanrensha.entity.AddressPostalIrregularEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.WkTblPostalCommonEntity;
-import net.seijishikin.jp.normalize.manage.kanrensha.logic.postal.CheckExistPostalCodeByOtherLogic;
-import net.seijishikin.jp.normalize.manage.kanrensha.repository.AddressPostalRepository;
+import net.seijishikin.jp.normalize.manage.kanrensha.logic.postal.SplitIrregularToutenLogic;
 import net.seijishikin.jp.normalize.manage.kanrensha.repository.WkTblPostalCommonRepository;
 
 /**
- * 郵便番号不規則データ(その他)有効ItemWriter
+ * 読点分割ItemWriter
  */
 @Component
-public class SelectPostalCodeOtherItemWriter extends JpaItemWriter<WkTblPostalCommonEntity> {
-
-    /** その他住所存在確認Logic */
-    @Autowired
-    private CheckExistPostalCodeByOtherLogic checkExistPostalCodeByOtherLogic;
-
-    /** 郵便番号Repository */
-    @Autowired
-    private AddressPostalRepository addressPostalRepository;
+public class SplitToutenOrgItemWriter extends JpaItemWriter<AddressPostalIrregularEntity> {
 
     /** 郵便番号作業Repository */
     @Autowired
     private WkTblPostalCommonRepository wkTblPostalCommonRepository;
+
+    /** 郵便番号読点分割Logic */
+    @Autowired
+    private SplitIrregularToutenLogic splitIrregularToutenLogic;
 
     /** テーブル履歴設定Util */
     @Autowired
@@ -53,7 +49,7 @@ public class SelectPostalCodeOtherItemWriter extends JpaItemWriter<WkTblPostalCo
      *
      * @param entityManagerFactory EntityManagerFactory
      */
-    public SelectPostalCodeOtherItemWriter(final @Autowired EntityManagerFactory entityManagerFactory) {
+    public SplitToutenOrgItemWriter(final @Autowired EntityManagerFactory entityManagerFactory) {
         super();
         super.setEntityManagerFactory(entityManagerFactory);
     }
@@ -73,24 +69,30 @@ public class SelectPostalCodeOtherItemWriter extends JpaItemWriter<WkTblPostalCo
      * 書き込み処理
      */
     @Override
-    public void write(final Chunk<? extends WkTblPostalCommonEntity> items) {
+    public void write(final Chunk<? extends AddressPostalIrregularEntity> items) {
 
-        for (WkTblPostalCommonEntity entity : items) {
-            // 住居テーブルに共通部分データが存在すれば、データとして有効化
-            List<AddressPostalEntity> list = checkExistPostalCodeByOtherLogic.practice(entity);
+        for (AddressPostalIrregularEntity entity : items) {
             setTableDataHistoryUtil.practiceInsert(userDto, entity);
-            entity.setIsLatest(false);
+            entity.setIsLatest(false); // ワークテーブルに登録する場合は終了にする
+
+            // 範囲複写用郵便番号作成を試みて空リストが返ってこなければ作業対象
+            List<WkTblPostalCommonEntity> list = splitIrregularToutenLogic.practice(entity, userDto);
             if (!list.isEmpty()) {
-                // 住居データ参照可能フラグをON
-                for (AddressPostalEntity postalEntity : list) {
-                    postalEntity.setAddressName(entity.getAddressName());
-                    postalEntity.setIsGyoseikuData(true);
-                    setTableDataHistoryUtil.practiceInsert(userDto, postalEntity);
-                }
-                addressPostalRepository.saveAll(list);
-                wkTblPostalCommonRepository.save(entity);
+
+                wkTblPostalCommonRepository.saveAll(list);
+                wkTblPostalCommonRepository.save(this.createWkTblEntity(entity));
             }
         }
+    }
+
+    private WkTblPostalCommonEntity createWkTblEntity(final AddressPostalIrregularEntity irregularEntity) {
+
+        WkTblPostalCommonEntity entity = new WkTblPostalCommonEntity();
+        BeanUtils.copyProperties(irregularEntity, entity);
+        setTableDataHistoryUtil.practiceInsert(userDto, entity);
+        entity.setIsLatest(false); // 後から消去用設定だけをする
+
+        return entity;
     }
 
 }

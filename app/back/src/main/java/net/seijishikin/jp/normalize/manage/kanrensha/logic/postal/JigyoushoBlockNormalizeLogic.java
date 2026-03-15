@@ -5,6 +5,8 @@ import java.util.Objects;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import net.seijishikin.jp.normalize.manage.kanrensha.utils.ConvertNumberUtil;
+
 /**
  * 事業所郵便番号住所を標準化する
  */
@@ -42,7 +44,7 @@ public class JigyoushoBlockNormalizeLogic {
             return "";
         }
 
-        String answer = this.convertNumbber(data);
+        String answer = ConvertNumberUtil.practice(data);
 
         // 丁目表示はアドレス・ベース・レジストリに倣って漢数字表記が必要
         int posChoume = answer.indexOf(KEY_CHOUME);
@@ -55,48 +57,38 @@ public class JigyoushoBlockNormalizeLogic {
             }
         }
 
-        int posBanchi = answer.indexOf(KEY_BANCHI);
         int posGou = answer.indexOf(KEY_GOU);
 
         // 私書箱表示の場合は私書箱表示をいったんカットして終了。『５丁目３番地(郵便局私書箱１号)中央ビル４Ｆ』のような表示はないと信じたい
         answer = this.convertShishobako(answer);
 
-        // 号チェックはすでに住所分のみとなっている(私書箱に含まれる号表示はすでにreturnした)
-        // 最後が号で終わっていない場合は号の後を1文字開ける(ただし最初のみ、、後の文字が数字の場合は除く)
-        if (posGou != -1 && posGou != answer.length() - 1) {
-            answer = answer.replace(KEY_GOU, KEY_GOU + WIDE_SPACE);
+        // 英数ハイフンの両端が数字の場合は番地に変換する
+        if (answer.indexOf(KEY_HYPHEN) != -1 && this.isEdgeNumber(answer, KEY_HYPHEN)) {
+            answer = answer.replaceFirst(KEY_HYPHEN, KEY_BANCHI);
         }
+
+        // 号チェックはすでに住所分のみとなっている(私書箱に含まれる号表示はすでにカットした)
+        // 最後が号で終わっていない場合は号の後を1文字開ける(ただし最初のみ、、後の文字が数字の場合は除く)
+        if (posGou != -1 && posGou != answer.length() - 1 && this.hasNotProNumber(answer, KEY_GOU)) {
+            answer = answer.replaceFirst(KEY_GOU, KEY_GOU + WIDE_SPACE);
+        }
+
+        int posBanchi = answer.indexOf(KEY_BANCHI);
 
         // 最後が番地で終わっていない場合は番地の後を1文字開ける(ただし最初のみ、、後の文字が数字の場合は除く)
         if (posGou == -1 && posBanchi != -1 && this.hasNotProNumber(answer, KEY_BANCHI)) {
-            answer = answer.replace(KEY_BANCHI, KEY_BANCHI + WIDE_SPACE);
+            answer = answer.replaceFirst(KEY_BANCHI, KEY_BANCHI + WIDE_SPACE);
         }
 
         // 最後が丁目で終わっていない場合は丁目の後を1文字開ける(ただし最初のみ、、後の文字が数字の場合は除く)
         if (posGou == -1 && posBanchi == -1 && posChoume != -1 && this.hasNotProNumber(answer, KEY_CHOUME)) {
-            answer = answer.replace(KEY_CHOUME, KEY_CHOUME + WIDE_SPACE);
+            answer = answer.replaceFirst(KEY_CHOUME, KEY_CHOUME + WIDE_SPACE);
         }
 
-        // 英数ハイフンの両端が数字の場合は番地に変換する
-        if (answer.indexOf(KEY_HYPHEN) != -1 && this.isEdgeNumber(answer, KEY_HYPHEN)) {
-            answer = answer.replace(KEY_HYPHEN, KEY_BANCHI);
-        }
+        // 「番地 の4」の表記は作成した空白を閉じる
+        answer = answer.replaceAll("番地　の", "番地の");
 
         return answer;
-    }
-
-    private String convertNumbber(final String data) {
-        String dt0 = data.replaceAll("０", "0");
-        String dt1 = dt0.replaceAll("１", "1");
-        String dt2 = dt1.replaceAll("２", "2");
-        String dt3 = dt2.replaceAll("３", "3");
-        String dt4 = dt3.replaceAll("４", "4");
-        String dt5 = dt4.replaceAll("５", "5");
-        String dt6 = dt5.replaceAll("６", "6");
-        String dt7 = dt6.replaceAll("７", "7");
-        String dt8 = dt7.replaceAll("８", "8");
-
-        return dt8.replaceAll("９", "9");
     }
 
     private boolean hasNotProNumber(final String data, final String key) {

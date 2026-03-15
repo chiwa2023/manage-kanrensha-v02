@@ -13,6 +13,8 @@ import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
 import net.seijishikin.jp.normalize.common_tool.utils.SetTableDataHistoryUtil;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.AddressPostalEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.WkTblPostalCommonEntity;
+import net.seijishikin.jp.normalize.manage.kanrensha.logic.address.registory.WriteLogAddressFormatLogic;
+import net.seijishikin.jp.normalize.manage.kanrensha.repository.AddressPostalRepository;
 
 /**
  * 郵便番号不規則データのうち１種類の範囲データを自動で修正する
@@ -32,6 +34,10 @@ public class CopyPostalCodeByRangeNameLogic {
     @Autowired
     private SetTableDataHistoryUtil setTableDataHistoryUtil;
 
+    /** 正規郵便番号Repository */
+    @Autowired
+    private AddressPostalRepository addressPostalRepository;
+
     /** 住所丁目 */
     private static final String CHOUME_TEXT = "丁目";
 
@@ -40,6 +46,10 @@ public class CopyPostalCodeByRangeNameLogic {
 
     /** から記号 */
     private static final String NAMI_DASH = "〜";
+
+    /** Logger */
+    @Autowired
+    private WriteLogAddressFormatLogic writeLogAddressFormatLogic;
 
     /**
      * 処理を行う
@@ -100,7 +110,8 @@ public class CopyPostalCodeByRangeNameLogic {
 
         String table = "address_rsdt_" + irregularEntity.getLgCode();
         String address = irregularEntity.getAddressName();
-        final int dataAri = 1;
+        final int dataAri = 0;
+        boolean isHosei = false;
         for (int index = startIndex; index <= endIndex; index++) {
 
             String newAddress = this.getNewAddress(address, index, key);
@@ -108,11 +119,26 @@ public class CopyPostalCodeByRangeNameLogic {
             Query query = entityManager.createNativeQuery(sql, Integer.class);
             Integer count = (Integer) query.getResultList().get(0);
 
-            if (dataAri > count) {
+            if (dataAri < count) {
                 list.add(this.createEntity(irregularEntity, newAddress, userDto));
+                isHosei = true;
+
+            } else {
+                writeLogAddressFormatLogic.practice(WriteLogAddressFormatLogic.ERROR,
+                        "範囲変換で郵便番号ファイルにあるがアドレスレジストリにありません", newAddress);
             }
         }
-
+        
+        // 該当郵便番号ですでに存在する同一郵便番号データは履歴とする
+        if(isHosei) {
+            List<AddressPostalEntity> listHistory = addressPostalRepository
+                    .findByPostalcode1AndPostalcode2OrderByAddressNameAsc(irregularEntity.getPostalcode1(),
+                            irregularEntity.getPostalcode2());
+            for (AddressPostalEntity entityPostal : listHistory) {
+                setTableDataHistoryUtil.practiceDelete(userDto, entityPostal);
+                list.add(entityPostal);
+            }
+        }
         return list;
     }
 

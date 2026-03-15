@@ -24,6 +24,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.AddressPostalEntity;
+import net.seijishikin.jp.normalize.manage.kanrensha.entity.AddressPostalIrregularEntity;
+import net.seijishikin.jp.normalize.manage.kanrensha.repository.AddressPostalIrregularRepository;
 import net.seijishikin.jp.normalize.manage.kanrensha.repository.AddressPostalRepository;
 import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateLeastUserForTestUtil;
 
@@ -46,6 +48,11 @@ class PostalCodeCsvOneLineItemWriterTest {
     @Autowired
     private AddressPostalRepository addressPostalRepository;
 
+
+    /** 郵便番号不規則Repository */
+    @Autowired
+    private AddressPostalIrregularRepository addressPostalIrregularRepository;
+
     @Test
     @Tag("TableTruncate")
     void test() throws Exception {
@@ -61,6 +68,17 @@ class PostalCodeCsvOneLineItemWriterTest {
         List<AddressPostalEntity> list = new ArrayList<>();
         list.add(entity00);
 
+        AddressPostalEntity entity01 = new AddressPostalEntity();
+        entity01.setLgCode("965314");
+        entity01.setPostalcode1("253");
+        entity01.setPostalcode2("9162");
+        entity01.setAddressOrg("町字（特殊設定）");
+        entity01.setAddressName("都道府県行政区");
+        entity01.setIsGyoseikuData(true);
+        list.add(entity01);
+
+        
+        
         // Chunkを作成してセット
         Chunk<? extends AddressPostalEntity> items = new Chunk<>(list);
 
@@ -68,7 +86,7 @@ class PostalCodeCsvOneLineItemWriterTest {
         postalCodeCsvOneLineItemWriter.write(items);
 
         List<AddressPostalEntity> listAns = addressPostalRepository.findAll();
-        assertEquals(1, listAns.size());
+        assertEquals(2, listAns.size());
 
         AddressPostalEntity answerEntity00 = listAns.get(0);
 
@@ -78,6 +96,32 @@ class PostalCodeCsvOneLineItemWriterTest {
         assertEquals(entity00.getAddressOrg(), answerEntity00.getAddressOrg());
         assertEquals(entity00.getAddressName(), answerEntity00.getAddressName());
         assertEquals(entity00.getIsGyoseikuData(), answerEntity00.getIsGyoseikuData());
+
+        AddressPostalEntity answerEntity01 = listAns.get(1);
+
+        assertEquals(entity01.getLgCode(), answerEntity01.getLgCode());
+        assertEquals(entity01.getPostalcode1(), answerEntity01.getPostalcode1());
+        assertEquals(entity01.getPostalcode2(), answerEntity01.getPostalcode2());
+        assertEquals(entity01.getAddressOrg(), answerEntity01.getAddressOrg());
+        assertEquals(entity01.getAddressName(), answerEntity01.getAddressName());
+        assertEquals(entity01.getIsGyoseikuData(), answerEntity01.getIsGyoseikuData());
+
+        
+        // TODO （ありの場合は正規と不規則双方に登録する
+
+        
+        List<AddressPostalIrregularEntity> listIrregular = addressPostalIrregularRepository.findAll();
+        assertEquals(1, listIrregular.size());
+
+        AddressPostalIrregularEntity answerEntity10 = listIrregular.get(0);
+
+        
+        assertEquals(entity01.getLgCode(), answerEntity10.getLgCode());
+        assertEquals(entity01.getPostalcode1(), answerEntity10.getPostalcode1());
+        assertEquals(entity01.getPostalcode2(), answerEntity10.getPostalcode2());
+        assertEquals(entity01.getAddressOrg(), answerEntity10.getAddressOrg());
+        assertEquals(entity01.getAddressName(), answerEntity10.getAddressName());
+        
     }
 
     private StepExecution getStepExecution() {

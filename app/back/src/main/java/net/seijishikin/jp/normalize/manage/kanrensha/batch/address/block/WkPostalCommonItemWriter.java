@@ -1,7 +1,5 @@
 package net.seijishikin.jp.normalize.manage.kanrensha.batch.address.block;
 
-import java.util.List;
-
 import org.springframework.batch.core.StepExecution;
 import org.springframework.batch.core.annotation.BeforeStep;
 import org.springframework.batch.item.Chunk;
@@ -13,27 +11,16 @@ import jakarta.persistence.EntityManagerFactory;
 import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
 import net.seijishikin.jp.normalize.common_tool.utils.CreateUserLeastDtoByBatchParamUtil;
 import net.seijishikin.jp.normalize.common_tool.utils.SetTableDataHistoryUtil;
-import net.seijishikin.jp.normalize.manage.kanrensha.entity.AddressPostalEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.WkTblPostalCommonEntity;
-import net.seijishikin.jp.normalize.manage.kanrensha.logic.postal.CheckExistPostalCodeByOtherLogic;
-import net.seijishikin.jp.normalize.manage.kanrensha.repository.AddressPostalRepository;
 import net.seijishikin.jp.normalize.manage.kanrensha.repository.WkTblPostalCommonRepository;
 
 /**
- * 郵便番号不規則データ(その他)有効ItemWriter
+ * 郵便番号ワークテーブルを最新フラグに従って保存するItemWriter
  */
 @Component
-public class SelectPostalCodeOtherItemWriter extends JpaItemWriter<WkTblPostalCommonEntity> {
+public class WkPostalCommonItemWriter extends JpaItemWriter<WkTblPostalCommonEntity> {
 
-    /** その他住所存在確認Logic */
-    @Autowired
-    private CheckExistPostalCodeByOtherLogic checkExistPostalCodeByOtherLogic;
-
-    /** 郵便番号Repository */
-    @Autowired
-    private AddressPostalRepository addressPostalRepository;
-
-    /** 郵便番号作業Repository */
+    /** 郵便番号終生ワークテーブルRespository */
     @Autowired
     private WkTblPostalCommonRepository wkTblPostalCommonRepository;
 
@@ -48,12 +35,13 @@ public class SelectPostalCodeOtherItemWriter extends JpaItemWriter<WkTblPostalCo
     /** ユーザ最低限Dto */
     private LeastUserDto userDto;
 
+
     /**
      * コンストラクタ
      *
      * @param entityManagerFactory EntityManagerFactory
      */
-    public SelectPostalCodeOtherItemWriter(final @Autowired EntityManagerFactory entityManagerFactory) {
+    public WkPostalCommonItemWriter(final @Autowired EntityManagerFactory entityManagerFactory) {
         super();
         super.setEntityManagerFactory(entityManagerFactory);
     }
@@ -76,21 +64,16 @@ public class SelectPostalCodeOtherItemWriter extends JpaItemWriter<WkTblPostalCo
     public void write(final Chunk<? extends WkTblPostalCommonEntity> items) {
 
         for (WkTblPostalCommonEntity entity : items) {
-            // 住居テーブルに共通部分データが存在すれば、データとして有効化
-            List<AddressPostalEntity> list = checkExistPostalCodeByOtherLogic.practice(entity);
-            setTableDataHistoryUtil.practiceInsert(userDto, entity);
-            entity.setIsLatest(false);
-            if (!list.isEmpty()) {
-                // 住居データ参照可能フラグをON
-                for (AddressPostalEntity postalEntity : list) {
-                    postalEntity.setAddressName(entity.getAddressName());
-                    postalEntity.setIsGyoseikuData(true);
-                    setTableDataHistoryUtil.practiceInsert(userDto, postalEntity);
-                }
-                addressPostalRepository.saveAll(list);
-                wkTblPostalCommonRepository.save(entity);
+            if (entity.getIsLatest()) {
+                setTableDataHistoryUtil.practiceInsert(userDto, entity);
+            } else {
+                setTableDataHistoryUtil.practiceDelete(userDto, entity);
             }
         }
+
+        // 編集済みデータを保存するだけ
+        wkTblPostalCommonRepository.saveAllAndFlush(items);
     }
+
 
 }

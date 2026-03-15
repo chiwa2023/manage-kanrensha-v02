@@ -1,5 +1,6 @@
 package net.seijishikin.jp.normalize.manage.kanrensha.batch.address.block;
 
+
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
@@ -7,12 +8,11 @@ import org.springframework.stereotype.Component;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.AddressPostalIrregularEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.WkTblPostalCommonEntity;
 
-
 /**
- * 郵便番号不規則テーブル郵便番号作業テーブル変換Processor
+ * 事業所データワークテーブル変換Processor
  */
 @Component
-public class AddressPostalIrregularWorksProcessor
+public class JigyoushAddressSplitProcessor
         implements ItemProcessor<AddressPostalIrregularEntity, WkTblPostalCommonEntity> {
 
     /**
@@ -22,14 +22,17 @@ public class AddressPostalIrregularWorksProcessor
     public WkTblPostalCommonEntity process(final AddressPostalIrregularEntity item) throws Exception {
 
         WkTblPostalCommonEntity entity = new WkTblPostalCommonEntity();
-
-        // PG上で@Tableアノテーションが重複するエラーが発生するため、実装には反映していないが
-        // AddressPostalWorksEntityはAddressPostalIrregularEntityをextendsしたテーブル
         BeanUtils.copyProperties(item, entity);
-        entity.setIsLatest(false); // 変更できたら不規則は参照しない
-        entity.setWkTblPostalCommonId(0); // auto_increment0明示
-        entity.setIsAddPostal(true); // 最終的には郵便番号(正規)データを追加する
 
+        // 分割可能なデータを格納する
+        entity.setAddressOrg(entity.getAddressName());
+        String[] cell = entity.getAddressBlock().split("　");
+        entity.setAddressName(cell[1]);
+        entity.setAddressBlock(cell[0]);
+
+        // 引き続き使用するので更新だけする
+        entity.setIsLatest(true);
+        
         return entity;
     }
 

@@ -7,21 +7,32 @@ import java.time.LocalDate;
 
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
 
 /**
  * RsdtAddressCsvLineMapper単体テスト
  */
+@AutoConfigureMockMvc
+@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
+@DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
 class RsdtAddressCsvLineMapperTest {
     // CHECKSTYLE:OFF MagicNumber
+
+    /** テスト対象 */
+    @Autowired
+    private RsdtAddressCsvLineMapper rsdtAddressCsvLineMapper;
 
     @Test
     @Tag("TableTruncate")
     void test() throws Exception {
-
-        RsdtAddressCsvLineMapper lineMapper = new RsdtAddressCsvLineMapper();
         String line0 = "011053,0013018,017,011,123,札幌市,豊平区,月寒東五条,十八丁目,aaa,bbb,17,11,99,0,1,1,0,2022-11-19,2048-08-13,0,";
 
-        RsdtAddressCsvDto csvDto0 = lineMapper.mapLine(line0, 0);
+        RsdtAddressCsvDto csvDto0 = rsdtAddressCsvLineMapper.mapLine(line0, 0);
 
         assertEquals("011053", csvDto0.getLgCode());
         assertEquals("0013018", csvDto0.getMachiazaId());
@@ -46,7 +57,7 @@ class RsdtAddressCsvLineMapperTest {
         // 全項目空対応
         String line1 = ",,,,,,,,,,,,,,,,,,,,0,";
 
-        RsdtAddressCsvDto csvDto1 = lineMapper.mapLine(line1, 0);
+        RsdtAddressCsvDto csvDto1 = rsdtAddressCsvLineMapper.mapLine(line1, 0);
 
         assertEquals("", csvDto1.getLgCode());
         assertEquals("", csvDto1.getMachiazaId());

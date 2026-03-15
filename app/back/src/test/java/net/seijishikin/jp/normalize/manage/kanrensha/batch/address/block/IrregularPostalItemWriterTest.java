@@ -76,6 +76,7 @@ class IrregularPostalItemWriterTest {
         AddressPostalIrregularEntity irregularProEntity = addressPostalIrregularRepository.findById(dataId).get();
         assertEquals(true, irregularProEntity.getIsAddPostal());
         assertEquals(true, irregularProEntity.getIsRepairRsdt());
+        assertEquals(worksEntity.getIsLatest(), irregularProEntity.getIsLatest());
     }
 
     private StepExecution getStepExecution() {

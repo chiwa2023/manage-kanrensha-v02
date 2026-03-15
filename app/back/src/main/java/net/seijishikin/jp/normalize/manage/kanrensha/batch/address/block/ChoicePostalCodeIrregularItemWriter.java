@@ -77,6 +77,7 @@ public class ChoicePostalCodeIrregularItemWriter extends JpaItemWriter<WkTblPost
 
         for (WkTblPostalCommonEntity entity : items) {
             setTableDataHistoryUtil.practiceInsert(userDto, entity);
+            entity.setIsLatest(false); // ワークテーブルに登録する場合は終了にする
             // 範囲複写用郵便番号作成を試みて空リストが返ってこなければ作業対象
             List<AddressPostalEntity> list = copyPostalCodeByRangeNameLogic.practice(entity, userDto);
             if (!list.isEmpty()) {
