@@ -15,12 +15,13 @@ import net.seijishikin.jp.normalize.manage.kanrensha.dto.riyousha.RiyoushaPartne
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.RiyoushaPartnerApiMasterEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.riyousha.GetRiyoushaPartnerApiDtoService;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.util.SaveStackTraceService;
+import net.seijishikin.jp.normalize.manage.kanrensha.controller.PathRouteConstants;
 
 /**
  * 利用者運営者取得Controller
  */
 @RestController
-@RequestMapping("/riyousha")
+@RequestMapping(PathRouteConstants.ROOT + "/riyousha")
 public class GetRiyoushaPartnerApiDtoController {
 
     /** 利用者運営者取得Service */

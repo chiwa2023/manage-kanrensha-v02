@@ -11,12 +11,13 @@ import net.seijishikin.jp.normalize.manage.kanrensha.dto.postal.PostalCodeBuildi
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.postal.PostalCodeCapsuleDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.postal.SearchAddressBuildingService;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.postal.SearchAddressFloorPostalService;
+import net.seijishikin.jp.normalize.manage.kanrensha.controller.PathRouteConstants;
 
 /**
  * 住所建物検索Contrroller
  */
 @RestController
-@RequestMapping("/postal-search")
+@RequestMapping(PathRouteConstants.ROOT + "/postal-search")
 public class PostalCodeBuildingController {
 
     /** 住所建物まで検索Service */

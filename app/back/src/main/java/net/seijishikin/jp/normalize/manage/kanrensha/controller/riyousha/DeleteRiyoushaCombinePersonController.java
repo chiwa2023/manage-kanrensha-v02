@@ -14,12 +14,13 @@ import net.seijishikin.jp.normalize.common_tool.dto.FrameworkMessageAndResultDto
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.riyousha.RiyoushaCombinePersonCapsuleDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.riyousha.DeleteRiyoushaCombinePersonService;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.util.SaveStackTraceService;
+import net.seijishikin.jp.normalize.manage.kanrensha.controller.PathRouteConstants;
 
 /**
  * 利用者組織紐づけ個人削除Controller
  */
 @RestController
-@RequestMapping("/riyousha-org")
+@RequestMapping(PathRouteConstants.ROOT + "/riyousha-org")
 public class DeleteRiyoushaCombinePersonController {
 
     /** 利用者組織紐づけ個人削除Service */

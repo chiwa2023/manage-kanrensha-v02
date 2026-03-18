@@ -15,12 +15,13 @@ import net.seijishikin.jp.normalize.manage.kanrensha.dto.riyousha.GetRiyoushaOrg
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.riyousha.RiyoushaOrgDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.riyousha.GetRiyoushaOrgDtoService;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.util.SaveStackTraceService;
+import net.seijishikin.jp.normalize.manage.kanrensha.controller.PathRouteConstants;
 
 /**
  * 利用者組織を組織コードから取得Controller
  */
 @RestController
-@RequestMapping("/riyousha-org")
+@RequestMapping(PathRouteConstants.ROOT + "/riyousha-org")
 public class GetRiyoushaOrgDtoByCodeController {
 
     /** 利用者組織取得Service */

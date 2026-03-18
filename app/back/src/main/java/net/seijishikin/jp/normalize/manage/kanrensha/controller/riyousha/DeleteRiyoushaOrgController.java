@@ -14,12 +14,13 @@ import net.seijishikin.jp.normalize.common_tool.dto.FrameworkMessageAndResultDto
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.riyousha.DeleteRiyoushaOrgCapsuleDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.riyousha.DeleteRiyoushaOrgSevice;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.util.SaveStackTraceService;
+import net.seijishikin.jp.normalize.manage.kanrensha.controller.PathRouteConstants;
 
 /**
  * 利用者組織削除Controller
  */
 @RestController
-@RequestMapping("/riyousha-org")
+@RequestMapping(PathRouteConstants.ROOT + "/riyousha-org")
 public class DeleteRiyoushaOrgController {
 
     /** 利用者組織削除Service */

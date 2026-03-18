@@ -15,12 +15,13 @@ import net.seijishikin.jp.normalize.manage.kanrensha.dto.riyousha.RiyoushaAdminD
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.RiyoushaAdminMasterEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.riyousha.GetRiyoushaAdminDtoService;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.util.SaveStackTraceService;
+import net.seijishikin.jp.normalize.manage.kanrensha.controller.PathRouteConstants;
 
 /**
  * 利用者SE権限取得Controller
  */
 @RestController
-@RequestMapping("/riyousha")
+@RequestMapping(PathRouteConstants.ROOT + "/riyousha")
 public class GetRiyoushaAdminDtoController {
 
     /** 利用者運営者取得Service */

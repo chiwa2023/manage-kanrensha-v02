@@ -14,12 +14,13 @@ import net.seijishikin.jp.normalize.manage.kanrensha.dto.riyousha.SearchRiyousha
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.riyousha.SearchRiyoushaOrgResultDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.riyousha.SearchRiyoushaOrgService;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.util.SaveStackTraceService;
+import net.seijishikin.jp.normalize.manage.kanrensha.controller.PathRouteConstants;
 
 /**
  * 利用者組織検索Controller
  */
 @RestController
-@RequestMapping("/riyousha-org")
+@RequestMapping(PathRouteConstants.ROOT + "/riyousha-org")
 public class SearchRiyoushaOrgController {
 
     /** 利用者組織検索Service */

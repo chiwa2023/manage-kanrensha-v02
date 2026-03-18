@@ -33,6 +33,11 @@ import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateLeastUserForTes
 
 /**
  * InsertAddressAllCityBatchConfiguration全体実行
+ * 
+ * <p>
+ * 本番データ構築用<br>
+ * DBの向き先はテスト専用から本番用に切り替える<br>
+ * </p>
  */
 @SpringJUnitConfig
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
@@ -58,16 +63,9 @@ class InsertAddressAllCityBatchConfigurationAllTest {
 
         jobLauncherTestUtils.setJob(insertAddressAllCity);
         // 本番用データ作成ファイル指定
-        // Path pathRoot = Paths.get(GetCurrentResourcePath.getBackSrcPath(""));
-        // Path pathBase =
-        // Paths.get(pathRoot.getParent().getParent().getParent().toString(),
-        // "/config/file_address/lg_code/");
-        // Path path = Paths.get(pathBase.toString(), "mt_city_all.csv");
-
         Path pathRoot = Paths.get(GetCurrentResourcePath.getBackSrcPath(""));
         Path pathBase = Paths.get(pathRoot.getParent().getParent().getParent().toString(),
-                "/config/file_address/lg_code");
-
+                "/config/file_address/lg_code/");
         Path path = Paths.get(pathBase.toString(), "mt_city_all.csv");
 
         LeastUserDto userDto = CreateLeastUserForTestUtil.practice();

@@ -10,12 +10,13 @@ import org.springframework.web.bind.annotation.RestController;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.postal.PostalCodeCapsuleDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.postal.PostalCodePostalResultDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.postal.SearchAddressPostalService;
+import net.seijishikin.jp.normalize.manage.kanrensha.controller.PathRouteConstants;
 
 /**
  * 住所郵便番号までController
  */
 @RestController
-@RequestMapping("/postal-search")
+@RequestMapping(PathRouteConstants.ROOT + "/postal-search")
 public class PostalCodePostalController {
 
     /** 住所郵便番号まで検索Service */

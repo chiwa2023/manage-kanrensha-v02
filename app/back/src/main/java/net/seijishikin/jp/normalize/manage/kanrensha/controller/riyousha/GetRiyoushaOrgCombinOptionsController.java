@@ -15,12 +15,13 @@ import net.seijishikin.jp.normalize.common_tool.dto.FrameworkCapsuleDto;
 import net.seijishikin.jp.normalize.common_tool.dto.select_options.SelectOptionIntegerDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.riyousha.GetRiyoushaOrgCombinOptionsService;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.util.SaveStackTraceService;
+import net.seijishikin.jp.normalize.manage.kanrensha.controller.PathRouteConstants;
 
 /**
  * 利用者紐づけ組織選択肢取得Controller
  */
 @RestController
-@RequestMapping("/riyousha-org")
+@RequestMapping(PathRouteConstants.ROOT + "/riyousha-org")
 public class GetRiyoushaOrgCombinOptionsController {
 
     /** 利用者紐づけ組織選択肢取得Service */

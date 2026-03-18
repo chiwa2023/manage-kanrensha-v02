@@ -32,6 +32,11 @@ import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateLeastUserForTes
 
 /**
  * WalkDirectoryParcelAddressInsertBatchConfiguration全実行
+ * 
+ * <p>
+ * 本番データ構築用<br>
+ * DBの向き先はテスト専用から本番用に切り替える<br>
+ * </p>
  */
 @SpringJUnitConfig
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
