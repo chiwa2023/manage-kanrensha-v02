@@ -22,6 +22,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import net.seijishikin.jp.normalize.common_tool.utils.GetObjectMapperWithTimeModuleUtil;
+import net.seijishikin.jp.normalize.manage.kanrensha.controller.PathRouteConstants;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.riyousha.RiyoushaCombinePersonCapsuleDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.RiyoushaCombineOrgEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.repository.RiyoushaCombineOrgRepository;
@@ -56,7 +57,7 @@ class DeleteRiyoushaCombinePersonControllerTest {
         RiyoushaCombineOrgEntity entity = riyoushaCombineOrgRepository.findById(selectedId).get();
         capsuleDto.setCombineEntity(entity);
 
-        String path = "/riyousha-org/delete-person";
+        String path = PathRouteConstants.ROOT + "/riyousha-org/delete-person";
 
         ObjectMapper objectMapper = GetObjectMapperWithTimeModuleUtil.practice();
 

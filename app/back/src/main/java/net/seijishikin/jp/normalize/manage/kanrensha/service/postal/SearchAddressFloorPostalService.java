@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
-import net.seijishikin.jp.normalize.common_tool.dto.select_options.SelectOptionStringDto;
+import net.seijishikin.jp.normalize.common_tool.dto.select_options.SelectOptionIntegerDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.postal.PostalCodeBuildingResultDto;
 
 /**
@@ -36,9 +36,9 @@ public class SearchAddressFloorPostalService {
         String sql = "SELECT address_building AS value , address_building AS text" + " FROM address_rsdt_" + lgCode
                 + "  WHERE postalcode1 = '" + postalCode1 + "' AND postalcode2 = '" + postalCode2
                 + "' AND address_building <> '' AND is_latest =1";
-        Query query = entityManager.createNativeQuery(sql, SelectOptionStringDto.class);
+        Query query = entityManager.createNativeQuery(sql, SelectOptionIntegerDto.class);
 
-        List<SelectOptionStringDto> list = (List<SelectOptionStringDto>) query.getResultList();
+        List<SelectOptionIntegerDto> list = (List<SelectOptionIntegerDto>) query.getResultList();
 
         PostalCodeBuildingResultDto resultDto = new PostalCodeBuildingResultDto();
         resultDto.setListOptions(list);

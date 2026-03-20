@@ -54,13 +54,13 @@ public class SearchAddressBlockService {
 
             String name = postalEntity.getAddressName();
 
-            String sql = "SELECT DISTINCT address_block AS value, RIGHT(address_block, CHAR_LENGTH(address_block)-"
+            String sql = "SELECT address_block AS value, RIGHT(address_block, CHAR_LENGTH(address_block)-"
                     + name.length() + ") AS text" + " FROM address_rsdt_" + lgCode + "  WHERE address_block LIKE '"
-                    + name + "%' AND is_latest = 1";
+                    + name + "%' AND address_building = '' AND is_latest = 1";
             Query query = entityManager.createNativeQuery(sql, SelectOptionStringDto.class);
 
             List<SelectOptionStringDto> list = (List<SelectOptionStringDto>) query.getResultList();
-
+            resultDto.setIsGyouseikuData(true);
             resultDto.setListOptions(list);
 
             return resultDto;
@@ -80,6 +80,7 @@ public class SearchAddressBlockService {
 
             PostalCodeBlockResultDto resultDto = new PostalCodeBlockResultDto();
             resultDto.setLgCode(irregularEntity.getLgCode());
+            resultDto.setIsGyouseikuData(false);
             resultDto.setListOptions(list);
 
             return resultDto;

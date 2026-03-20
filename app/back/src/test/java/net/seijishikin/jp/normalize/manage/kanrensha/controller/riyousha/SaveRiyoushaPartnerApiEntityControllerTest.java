@@ -25,6 +25,7 @@ import net.seijishikin.jp.normalize.common_tool.dto.input.InputAccessDto;
 import net.seijishikin.jp.normalize.common_tool.dto.input.InputAddressDto;
 import net.seijishikin.jp.normalize.common_tool.dto.input.InputPersonNameDto;
 import net.seijishikin.jp.normalize.common_tool.utils.GetObjectMapperWithTimeModuleUtil;
+import net.seijishikin.jp.normalize.manage.kanrensha.controller.PathRouteConstants;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.riyousha.SaveRiyoushaPartnerApiCapsuleDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateLeastUserForTestUtil;
 
@@ -58,7 +59,7 @@ class SaveRiyoushaPartnerApiEntityControllerTest {
         capsuleDto.getRiyoushaPartnerApiDto().setInputAddressDto(addressDto);
         capsuleDto.getRiyoushaPartnerApiDto().setInputAccessDto(accessDto);
 
-        String path = "/riyousha/save-partner-api";
+        String path = PathRouteConstants.ROOT + "/riyousha/save-partner-api";
 
         ObjectMapper objectMapper = GetObjectMapperWithTimeModuleUtil.practice();
 

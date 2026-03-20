@@ -1,4 +1,4 @@
-package net.seijishikin.jp.normalize.manage.kanrensha.controller.riyousha;
+package net.seijishikin.jp.normalize.manage.kanrensha.controller.postal;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -23,42 +23,40 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import net.seijishikin.jp.normalize.common_tool.utils.GetObjectMapperWithTimeModuleUtil;
 import net.seijishikin.jp.normalize.manage.kanrensha.controller.PathRouteConstants;
-import net.seijishikin.jp.normalize.manage.kanrensha.entity.RiyoushaManagerMasterEntity;
-import net.seijishikin.jp.normalize.manage.kanrensha.repository.RiyoushaManagerMasterRepository;
+import net.seijishikin.jp.normalize.manage.kanrensha.dto.postal.PostalCodeCapsuleDto;
 
 /**
- * GetRiyoushaManagerDtoController単体テスト
+ * PostalCodeRegistoryCodeController単体テスト
  */
 @SpringJUnitConfig
 @AutoConfigureMockMvc
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
-@Sql("../../service/riyousha/SaveRiyoushaManagerEntityServiceTest.sql")
-class GetRiyoushaManagerDtoControllerTest {
+@Sql("../../service/postal/GetPostalCodeRegistoryCodeServiceTest.sql")
+class PostalCodeRegistoryCodeControllerTest {
+    // CHECKSTYLE:OFF MagicNumber
 
     /** MockMvc */
     @Autowired
     private MockMvc mockMvc;
 
-    /** 利用者運営者マスタRepository */
-    @Autowired
-    private RiyoushaManagerMasterRepository riyoushaManagerMasterRepository;
-
     @Test
     @Tag("TableTruncate")
     @WithMockUser
     void test() throws Exception {
+        PostalCodeCapsuleDto capsuleDto = new PostalCodeCapsuleDto();
+        capsuleDto.setLgCode("011029");
+        capsuleDto.setSelectedRsdtId(324);
 
-        RiyoushaManagerMasterEntity masterEntity = riyoushaManagerMasterRepository.findById(1).get();
-
-        String path = PathRouteConstants.ROOT + "/riyousha/get-manager";
+        String path = PathRouteConstants.ROOT + "/postal-search/rsdt-detail-id";
 
         ObjectMapper objectMapper = GetObjectMapperWithTimeModuleUtil.practice();
 
         assertEquals(HttpStatus.OK.value(), mockMvc // NOPMD LawOfDemeter
-                .perform(post(path).content(objectMapper.writeValueAsString(masterEntity)) //
+                .perform(post(path).content(objectMapper.writeValueAsString(capsuleDto)) //
                         .contentType(MediaType.APPLICATION_JSON_VALUE)) //
                 .andExpect(status().isOk()).andReturn().getResponse().getStatus());
+
     }
 
 }

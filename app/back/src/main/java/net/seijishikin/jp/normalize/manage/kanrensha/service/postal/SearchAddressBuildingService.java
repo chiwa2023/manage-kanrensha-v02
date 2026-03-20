@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
-import net.seijishikin.jp.normalize.common_tool.dto.select_options.SelectOptionStringDto;
+import net.seijishikin.jp.normalize.common_tool.dto.select_options.SelectOptionIntegerDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.postal.PostalCodeBuildingResultDto;
 
 /**
@@ -31,11 +31,11 @@ public class SearchAddressBuildingService {
     public PostalCodeBuildingResultDto practice(final String lgCode, final String value) {
 
         // 行政区住居を検索するの場合、行政区住居を番地までと一致で取得する
-        String sql = "SELECT address_building AS value,address_building AS text" + " FROM address_rsdt_" + lgCode
+        String sql = "SELECT address_rsdt_id AS value,address_building AS text" + " FROM address_rsdt_" + lgCode
                 + "  WHERE address_block = '" + value + "' AND address_building <> '' AND is_latest = 1";
-        Query query = entityManager.createNativeQuery(sql, SelectOptionStringDto.class);
+        Query query = entityManager.createNativeQuery(sql, SelectOptionIntegerDto.class);
 
-        List<SelectOptionStringDto> list = (List<SelectOptionStringDto>) query.getResultList();
+        List<SelectOptionIntegerDto> list = (List<SelectOptionIntegerDto>) query.getResultList();
 
         PostalCodeBuildingResultDto resultDto = new PostalCodeBuildingResultDto();
         resultDto.setListOptions(list);

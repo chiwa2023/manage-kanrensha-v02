@@ -22,6 +22,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import net.seijishikin.jp.normalize.common_tool.utils.GetObjectMapperWithTimeModuleUtil;
+import net.seijishikin.jp.normalize.manage.kanrensha.controller.PathRouteConstants;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.postal.PostalCodeCapsuleDto;
 
 /**
@@ -46,7 +47,7 @@ class PostalCodePostalControllerTest {
         PostalCodeCapsuleDto capsuleDto = new PostalCodeCapsuleDto();
         capsuleDto.setPostal1("001");
         capsuleDto.setPostal2("0015");
-        String path = "/postal-search/postal";
+        String path = PathRouteConstants.ROOT + "/postal-search/postal";
 
         ObjectMapper objectMapper = GetObjectMapperWithTimeModuleUtil.practice();
 

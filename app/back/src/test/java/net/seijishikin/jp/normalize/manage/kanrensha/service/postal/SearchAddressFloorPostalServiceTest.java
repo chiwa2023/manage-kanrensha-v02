@@ -16,7 +16,7 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import org.springframework.transaction.annotation.Transactional;
 
-import net.seijishikin.jp.normalize.common_tool.dto.select_options.SelectOptionStringDto;
+import net.seijishikin.jp.normalize.common_tool.dto.select_options.SelectOptionIntegerDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.postal.PostalCodeBuildingResultDto;
 
 /**
@@ -42,16 +42,16 @@ class SearchAddressFloorPostalServiceTest {
         
         
         PostalCodeBuildingResultDto resultDto0 = searchAddressFloorPostalService.practice("131016", "100","6222");
-        List<SelectOptionStringDto> list0 = resultDto0.getListOptions();
+        List<SelectOptionIntegerDto> list0 = resultDto0.getListOptions();
         assertEquals(3, list0.size());
 
-        SelectOptionStringDto optionDto00 = list0.get(0);
+        SelectOptionIntegerDto optionDto00 = list0.get(0);
         assertEquals("丸の内パシフィックセンチュリープレイス丸の内224号室", optionDto00.getText());
 
-        SelectOptionStringDto optionDto01 = list0.get(1);
+        SelectOptionIntegerDto optionDto01 = list0.get(1);
         assertEquals("丸の内パシフィックセンチュリープレイス丸の内225号室", optionDto01.getText());
 
-        SelectOptionStringDto optionDto02 = list0.get(2);
+        SelectOptionIntegerDto optionDto02 = list0.get(2);
         assertEquals("丸の内パシフィックセンチュリープレイス丸の内226号室", optionDto02.getText());
     }
 

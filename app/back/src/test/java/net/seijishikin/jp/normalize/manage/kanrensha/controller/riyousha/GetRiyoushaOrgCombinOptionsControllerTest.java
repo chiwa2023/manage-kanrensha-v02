@@ -23,6 +23,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import net.seijishikin.jp.normalize.common_tool.dto.FrameworkCapsuleDto;
 import net.seijishikin.jp.normalize.common_tool.utils.GetObjectMapperWithTimeModuleUtil;
+import net.seijishikin.jp.normalize.manage.kanrensha.controller.PathRouteConstants;
 import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateLeastUserForTestUtil;
 
 /**
@@ -47,7 +48,7 @@ class GetRiyoushaOrgCombinOptionsControllerTest {
         FrameworkCapsuleDto capsuleDto = new FrameworkCapsuleDto();
         capsuleDto.setUserDto(CreateLeastUserForTestUtil.practice());
 
-        String path = "/riyousha-org/get-org-options";
+        String path = PathRouteConstants.ROOT + "/riyousha-org/get-org-options";
 
         ObjectMapper objectMapper = GetObjectMapperWithTimeModuleUtil.practice();
 

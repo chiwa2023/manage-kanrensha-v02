@@ -15,6 +15,8 @@ import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import org.springframework.test.web.servlet.MockMvc;
 
+import net.seijishikin.jp.normalize.manage.kanrensha.controller.PathRouteConstants;
+
 /**
  * CreateTableNotExistController単体テスト
  */
@@ -31,7 +33,7 @@ class CreateTableNotExistControllerTest {
     @Test
     void test() throws Exception {
 
-        String path = "/create-table";
+        String path = PathRouteConstants.ROOT + "/create-table";
 
         assertEquals(HttpStatus.OK.value(), mockMvc // NOPMD LawOfDemeter
                 .perform(get(path)).andExpect(status().isOk()).andReturn().getResponse().getStatus());

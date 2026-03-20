@@ -22,6 +22,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import net.seijishikin.jp.normalize.common_tool.utils.GetObjectMapperWithTimeModuleUtil;
+import net.seijishikin.jp.normalize.manage.kanrensha.controller.PathRouteConstants;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.riyousha.SearchRiyoushaManagerCapsuleDto;
 
 /**
@@ -49,7 +50,7 @@ class SearchRiyoushaManagerControllerTest {
         capsuleDto.setSearchNaturalWords("管理者");
         capsuleDto.setPageNumber(0);
 
-        String path = "/riyousha/search-manager";
+        String path = PathRouteConstants.ROOT + "/riyousha/search-manager";
 
         ObjectMapper objectMapper = GetObjectMapperWithTimeModuleUtil.practice();
 

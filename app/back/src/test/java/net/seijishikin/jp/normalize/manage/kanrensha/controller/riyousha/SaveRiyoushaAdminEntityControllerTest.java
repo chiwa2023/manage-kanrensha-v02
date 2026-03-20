@@ -25,6 +25,7 @@ import net.seijishikin.jp.normalize.common_tool.dto.input.InputAccessDto;
 import net.seijishikin.jp.normalize.common_tool.dto.input.InputAddressDto;
 import net.seijishikin.jp.normalize.common_tool.dto.input.InputPersonNameDto;
 import net.seijishikin.jp.normalize.common_tool.utils.GetObjectMapperWithTimeModuleUtil;
+import net.seijishikin.jp.normalize.manage.kanrensha.controller.PathRouteConstants;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.riyousha.SaveRiyoushaAdminCapsuleDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateLeastUserForTestUtil;
 
@@ -59,7 +60,7 @@ class SaveRiyoushaAdminEntityControllerTest {
         capsuleDto.getRiyoushaAdminDto().setInputAddressDto(addressDto);
         capsuleDto.getRiyoushaAdminDto().setInputAccessDto(accessDto);
 
-        String path = "/riyousha/save-admin";
+        String path = PathRouteConstants.ROOT + "/riyousha/save-admin";
 
         ObjectMapper objectMapper = GetObjectMapperWithTimeModuleUtil.practice();
 

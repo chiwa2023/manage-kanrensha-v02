@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.seijishikin.jp.normalize.common_tool.dto.DtoEntityInitialValueInterface;
-import net.seijishikin.jp.normalize.common_tool.dto.select_options.SelectOptionStringDto;
+import net.seijishikin.jp.normalize.common_tool.dto.select_options.SelectOptionIntegerDto;
 
 /**
  * 住所建物選択肢Dto
@@ -19,7 +19,7 @@ public class PostalCodeBuildingResultDto implements Serializable, DtoEntityIniti
     private String lgCode = INIT_STRING;
 
     /** 建物選択肢リスト */
-    private List<SelectOptionStringDto> listOptions = new ArrayList<>();
+    private List<SelectOptionIntegerDto> listOptions = new ArrayList<>();
 
     /**
      * 地方自治体コードを取得する
@@ -44,7 +44,7 @@ public class PostalCodeBuildingResultDto implements Serializable, DtoEntityIniti
      *
      * @return 建物選択肢リスト
      */
-    public List<SelectOptionStringDto> getListOptions() {
+    public List<SelectOptionIntegerDto> getListOptions() {
         return listOptions;
     }
 
@@ -53,7 +53,7 @@ public class PostalCodeBuildingResultDto implements Serializable, DtoEntityIniti
      *
      * @param listOptions 建物選択肢リスト
      */
-    public void setListOptions(final List<SelectOptionStringDto> listOptions) {
+    public void setListOptions(final List<SelectOptionIntegerDto> listOptions) {
         this.listOptions = listOptions;
     }
 

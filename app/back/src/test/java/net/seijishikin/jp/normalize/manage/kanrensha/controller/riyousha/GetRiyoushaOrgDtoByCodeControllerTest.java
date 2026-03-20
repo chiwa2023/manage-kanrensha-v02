@@ -22,6 +22,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import net.seijishikin.jp.normalize.common_tool.utils.GetObjectMapperWithTimeModuleUtil;
+import net.seijishikin.jp.normalize.manage.kanrensha.controller.PathRouteConstants;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.riyousha.GetRiyoushaOrgByCodeCapsuleDto;
 
 /**
@@ -47,7 +48,7 @@ class GetRiyoushaOrgDtoByCodeControllerTest {
         GetRiyoushaOrgByCodeCapsuleDto capsuleDto = new GetRiyoushaOrgByCodeCapsuleDto();
         capsuleDto.setSelectedCode(216);
 
-        String path = "/riyousha-org/get-by-code";
+        String path = PathRouteConstants.ROOT + "/riyousha-org/get-by-code";
 
         ObjectMapper objectMapper = GetObjectMapperWithTimeModuleUtil.practice();
 

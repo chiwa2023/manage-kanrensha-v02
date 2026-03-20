@@ -22,6 +22,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import net.seijishikin.jp.normalize.common_tool.utils.GetObjectMapperWithTimeModuleUtil;
+import net.seijishikin.jp.normalize.manage.kanrensha.controller.PathRouteConstants;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.RiyoushaPartnerApiMasterEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.repository.RiyoushaPartnerApiMasterRepository;
 
@@ -50,7 +51,7 @@ class GetRiyoushaPartnerApiDtoControllerTest {
 
         RiyoushaPartnerApiMasterEntity masterEntity = riyoushaPartnerApiMasterRepository.findById(1).get();
 
-        String path = "/riyousha/get-partner-api";
+        String path = PathRouteConstants.ROOT + "/riyousha/get-partner-api";
 
         ObjectMapper objectMapper = GetObjectMapperWithTimeModuleUtil.practice();
 

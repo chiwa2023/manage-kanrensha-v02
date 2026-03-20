@@ -7,7 +7,7 @@ import net.seijishikin.jp.normalize.common_tool.dto.DtoEntityInitialValueInterfa
 /**
  * 郵便番号検索条件Dto
  */
-public class PostalCodeCapsuleDto implements Serializable,DtoEntityInitialValueInterface { // NOPMD DataClass
+public class PostalCodeCapsuleDto implements Serializable, DtoEntityInitialValueInterface { // NOPMD DataClass
 
     /** Serialize id */
     private static final long serialVersionUID = 1L;
@@ -30,8 +30,8 @@ public class PostalCodeCapsuleDto implements Serializable,DtoEntityInitialValueI
     /** 地方自治体コード */
     private String lgCode = INIT_STRING;
 
-    /** 郵便番号 */
-    private String postalCode = INIT_STRING;
+    /** 住居テーブルId */
+    private Integer selectedRsdtId = INIT_INTEGER;
 
     /**
      * 郵便番号1を取得する
@@ -106,24 +106,6 @@ public class PostalCodeCapsuleDto implements Serializable,DtoEntityInitialValueI
     }
 
     /**
-     * 郵便番号を取得する
-     *
-     * @return 郵便番号
-     */
-    public String getPostalCode() {
-        return postalCode;
-    }
-
-    /**
-     * 郵便番号を設定する
-     *
-     * @param postalCode 郵便番号
-     */
-    public void setPostalCode(final String postalCode) {
-        this.postalCode = postalCode;
-    }
-
-    /**
      * 選択された住所郵便番号までを取得する
      *
      * @return 選択された住所郵便番号まで
@@ -157,6 +139,24 @@ public class PostalCodeCapsuleDto implements Serializable,DtoEntityInitialValueI
      */
     public void setSelectedBlock(final String selectedBlock) {
         this.selectedBlock = selectedBlock;
+    }
+
+    /**
+     * 住居テーブルIdを指定する
+     * 
+     * @return 住居テーブルId
+     */
+    public Integer getSelectedRsdtId() {
+        return selectedRsdtId;
+    }
+
+    /**
+     * 住居テーブルIdを設定する
+     * 
+     * @param selectedRsdtId 住居テーブルId
+     */
+    public void setSelectedRsdtId(final Integer selectedRsdtId) {
+        this.selectedRsdtId = selectedRsdtId;
     }
 
 }

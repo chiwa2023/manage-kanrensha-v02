@@ -22,6 +22,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import net.seijishikin.jp.normalize.common_tool.utils.GetObjectMapperWithTimeModuleUtil;
+import net.seijishikin.jp.normalize.manage.kanrensha.controller.PathRouteConstants;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.RiyoushaAdminMasterEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.repository.RiyoushaAdminMasterRepository;
 
@@ -50,7 +51,7 @@ class GetRiyoushaAdminDtoControllerTest {
 
         RiyoushaAdminMasterEntity masterEntity = riyoushaAdminMasterRepository.findById(1).get();
 
-        String path = "/riyousha/get-admin";
+        String path = PathRouteConstants.ROOT + "/riyousha/get-admin";
 
         ObjectMapper objectMapper = GetObjectMapperWithTimeModuleUtil.practice();
 

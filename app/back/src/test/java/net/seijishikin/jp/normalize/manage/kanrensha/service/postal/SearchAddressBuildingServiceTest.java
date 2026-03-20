@@ -17,7 +17,7 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import org.springframework.transaction.annotation.Transactional;
 
-import net.seijishikin.jp.normalize.common_tool.dto.select_options.SelectOptionStringDto;
+import net.seijishikin.jp.normalize.common_tool.dto.select_options.SelectOptionIntegerDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.postal.PostalCodeBuildingResultDto;
 
 /**
@@ -45,11 +45,11 @@ class SearchAddressBuildingServiceTest {
 
         // 建物欄に設定がある場合
         PostalCodeBuildingResultDto resultDto1 = searchAddressBuildingService.practice("011029", "北十五条西一丁目1番地2号");
-        List<SelectOptionStringDto> list1 = resultDto1.getListOptions();
+        List<SelectOptionIntegerDto> list1 = resultDto1.getListOptions();
         assertEquals(2, list1.size());
-        SelectOptionStringDto optionDto10 = list1.get(0);
+        SelectOptionIntegerDto optionDto10 = list1.get(0);
         assertEquals("AAマンション101号室", optionDto10.getText());
-        SelectOptionStringDto optionDto11 = list1.get(1);
+        SelectOptionIntegerDto optionDto11 = list1.get(1);
         assertEquals("AAマンション102号室", optionDto11.getText());
     }
 
