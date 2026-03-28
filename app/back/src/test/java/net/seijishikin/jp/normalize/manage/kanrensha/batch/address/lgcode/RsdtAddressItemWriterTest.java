@@ -26,7 +26,6 @@ import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.AddressRsdtBaseEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.AddressRsdtTemplateEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.repository.AddressRsdtTemplateRepository;
-import net.seijishikin.jp.normalize.manage.kanrensha.service.util.GetPrefectureLgCodeService;
 import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateLeastUserForTestUtil;
 
 /**
@@ -46,10 +45,6 @@ class RsdtAddressItemWriterTest {
     /** 住居データRepository */
     @Autowired
     private AddressRsdtTemplateRepository addressRsdtTemplateRepository;
-
-    /** 県名コードService */
-    @Autowired
-    private GetPrefectureLgCodeService getPrefectureLgCodeService;
 
     @Test
     @Tag("TableTruncate")
@@ -97,7 +92,7 @@ class RsdtAddressItemWriterTest {
         assertEquals(baseEntity.getRsdt2Id(), entityAnswer.getRsdt2Id());
         assertEquals(baseEntity.getEffectDate(), entityAnswer.getEffectDate());
         assertEquals(baseEntity.getAbolishDate(), entityAnswer.getAbolishDate());
-        assertEquals("北海道" + baseEntity.getAddressBlock(), entityAnswer.getAddressBlock());
+        assertEquals("行政区コードなし:" + baseEntity.getAddressBlock(), entityAnswer.getAddressBlock());
         assertEquals(baseEntity.getAddressBuilding(), entityAnswer.getAddressBuilding());
         assertTrue(entityAnswer.getIsLatest());
 
@@ -110,8 +105,7 @@ class RsdtAddressItemWriterTest {
         JobParameters jobParameters = new JobParametersBuilder() // NOPMD
                 .addLong("userId", (long) userDto.getUserPersonId())
                 .addLong("userCode", (long) userDto.getUserPersonCode())
-                .addString("userName", userDto.getUserPersonName())
-                .addString("pref", getPrefectureLgCodeService.practiceName("01")).toJobParameters();
+                .addString("userName", userDto.getUserPersonName()).toJobParameters();
 
         // 起動引数付きのStepExecutionを作成
         return MetaDataInstanceFactory.createStepExecution(jobParameters);

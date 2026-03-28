@@ -33,6 +33,17 @@ public class SearchAddressBlockService {
     @Autowired
     private EntityManager entityManager;
 
+    /** その他住所検索Service */
+    @Autowired
+    private SearchAddressRsdtOtherService searchAddressRsdtOtherService;
+
+    /** 以下に掲載のない場合住所検索Service */
+    @Autowired
+    private SearchAddressRsdtIkaniKeisaiNashiService searchAddressRsdtIkaniKeisaiNashiService;
+
+    /** 記載なし表記 */
+    private static final String KISAI_NASHI = "以下に掲載がない場合";
+
     /**
      * 処理を行う
      *
@@ -43,10 +54,22 @@ public class SearchAddressBlockService {
     @SuppressWarnings("unchecked")
     public PostalCodeBlockResultDto practice(final Integer tableid, final boolean isGyouseikuData) {
 
-        if (isGyouseikuData) {
+        // 自治体住居を検索する場合、自治体住居を住居の前方一致で取得する
+        AddressPostalEntity postalEntity = addressPostalRepository.findById(tableid).get();
 
-            // 自治体住居を検索する場合、自治体住居を住居の前方一致で取得する
-            AddressPostalEntity postalEntity = addressPostalRepository.findById(tableid).get();
+        String addressOrg = postalEntity.getAddressOrg();
+
+        // 以下に掲載のない場合は別の方法で検索する
+        if (KISAI_NASHI.equals(addressOrg)) {
+            return searchAddressRsdtIkaniKeisaiNashiService.practice(postalEntity);
+        }
+
+        // （その他）に該当する場合は別の方法で検索する
+        if (addressOrg.contains("（その他）")) {
+            return searchAddressRsdtOtherService.practice(postalEntity);
+        }
+
+        if (isGyouseikuData) {
 
             PostalCodeBlockResultDto resultDto = new PostalCodeBlockResultDto();
             String lgCode = postalEntity.getLgCode();
@@ -71,7 +94,7 @@ public class SearchAddressBlockService {
             AddressPostalIrregularEntity irregularEntity = addressPostalIrregularRepository
                     .findById(Math.toIntExact(tableid)).get();
 
-            SelectOptionStringDto dto = new SelectOptionStringDto("","");
+            SelectOptionStringDto dto = new SelectOptionStringDto("", "");
             dto.setValue(irregularEntity.getAddressPostal() + irregularEntity.getAddressBlock());
             dto.setText(irregularEntity.getAddressBlock());
 

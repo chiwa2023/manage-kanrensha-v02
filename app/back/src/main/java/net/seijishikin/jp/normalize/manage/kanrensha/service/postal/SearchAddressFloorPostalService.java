@@ -33,7 +33,7 @@ public class SearchAddressFloorPostalService {
             final String postalCode2) {
 
         // 行政区住居を検索しないの場合、郵便番号で該当データを取得する
-        String sql = "SELECT address_building AS value , address_building AS text" + " FROM address_rsdt_" + lgCode
+        String sql = "SELECT address_rsdt_id AS value , address_building AS text" + " FROM address_rsdt_" + lgCode
                 + "  WHERE postalcode1 = '" + postalCode1 + "' AND postalcode2 = '" + postalCode2
                 + "' AND address_building <> '' AND is_latest =1";
         Query query = entityManager.createNativeQuery(sql, SelectOptionIntegerDto.class);

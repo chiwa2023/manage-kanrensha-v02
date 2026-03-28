@@ -57,12 +57,13 @@ class AddressAllCityItemWriterTest {
 
     @Test
     @Tag("TableTruncate")
-    void testAdd()throws Exception {
+    void testAdd() throws Exception {
 
         // 完全新規
         AddressAllCityEntity entity00 = new AddressAllCityEntity();
         entity00.setLgCode("965314");
-        entity00.setAddressName("テスト県テスト郡");
+        entity00.setPref("テスト県");
+        entity00.setCounty("テスト郡");
         entity00.setAddressNameKana("てすとけんてすとぐん");
         entity00.setEffectDate(LocalDate.of(1948, 7, 29));
         entity00.setAbolishDate(LocalDate.of(2038, 1, 2));
@@ -73,7 +74,8 @@ class AddressAllCityItemWriterTest {
         // 同一内容が存在するのでワークテーブル登録のみ
         AddressAllCityEntity entity01 = new AddressAllCityEntity();
         entity01.setLgCode("36852");
-        entity01.setAddressName("和歌山県実在市");
+        entity01.setPref("和歌山県");
+        entity01.setCity("実在市");
         entity01.setAddressNameKana("わかやまけんじつざいし");
         entity01.setEffectDate(LocalDate.of(1948, 7, 30));
         entity01.setAbolishDate(LocalDate.of(2038, 1, 3));
@@ -83,7 +85,8 @@ class AddressAllCityItemWriterTest {
         // 同コードが複数存在するので今回データを問答無用で最新にする(登録内容は無視)
         AddressAllCityEntity entity02 = new AddressAllCityEntity();
         entity02.setLgCode("69512");
-        entity02.setAddressName("宮崎県架空市");
+        entity02.setPref("宮崎県");
+        entity02.setCity("架空市");
         entity02.setAddressNameKana("みやざきけんかくうし");
         entity02.setEffectDate(LocalDate.of(1948, 7, 29));
         entity02.setAbolishDate(LocalDate.of(2038, 1, 2));
@@ -93,8 +96,10 @@ class AddressAllCityItemWriterTest {
         // (町村合併で湖畔町がなくなるので、なくなる日である廃止日が追加された)
         AddressAllCityEntity entity03 = new AddressAllCityEntity();
         entity03.setLgCode("82763");
-        entity03.setAddressName("山梨県湖畔町");
-        entity03.setAddressNameKana("やまなしけんこはんまち");
+        entity03.setPref("山梨県");
+        entity03.setCounty("実在郡");
+        entity03.setWard("湖畔町");
+        entity03.setAddressNameKana("やまなしけんじつざいぐんこはんまち");
         entity03.setEffectDate(LocalDate.of(1948, 6, 29));
         entity03.setAbolishDate(LocalDate.of(2038, 1, 2));
         list.add(entity03);
@@ -108,7 +113,11 @@ class AddressAllCityItemWriterTest {
         AddressAllCityEntity answerEntity00 = addressAllCityRepository.findById(225).get();
 
         assertEquals(entity00.getLgCode(), answerEntity00.getLgCode());
-        assertEquals(entity00.getAddressName(), answerEntity00.getAddressName());
+        assertEquals(entity00.getPref(), answerEntity00.getPref());
+        assertEquals(entity00.getCounty(), answerEntity00.getCounty());
+        assertEquals(entity00.getCity(), answerEntity00.getCity());
+        assertEquals(entity00.getWard(), answerEntity00.getWard());
+
         assertEquals(entity00.getAddressNameKana(), answerEntity00.getAddressNameKana());
         assertEquals(entity00.getEffectDate(), answerEntity00.getEffectDate());
         assertEquals(entity00.getAbolishDate(), answerEntity00.getAbolishDate());
@@ -116,7 +125,10 @@ class AddressAllCityItemWriterTest {
         AddressAllCityEntity answerEntity02 = addressAllCityRepository.findById(226).get();
 
         assertEquals(entity02.getLgCode(), answerEntity02.getLgCode());
-        assertEquals(entity02.getAddressName(), answerEntity02.getAddressName());
+        assertEquals(entity02.getPref(), answerEntity02.getPref());
+        assertEquals(entity02.getCounty(), answerEntity02.getCounty());
+        assertEquals(entity02.getCity(), answerEntity02.getCity());
+        assertEquals(entity02.getWard(), answerEntity02.getWard());
         assertEquals(entity02.getAddressNameKana(), answerEntity02.getAddressNameKana());
         assertEquals(entity02.getEffectDate(), answerEntity02.getEffectDate());
         assertEquals(entity02.getAbolishDate(), answerEntity02.getAbolishDate());
@@ -124,7 +136,10 @@ class AddressAllCityItemWriterTest {
         AddressAllCityEntity answerEntity03 = addressAllCityRepository.findById(227).get();
 
         assertEquals(entity03.getLgCode(), answerEntity03.getLgCode());
-        assertEquals(entity03.getAddressName(), answerEntity03.getAddressName());
+        assertEquals(entity03.getPref(), answerEntity03.getPref());
+        assertEquals(entity03.getCounty(), answerEntity03.getCounty());
+        assertEquals(entity03.getCity(), answerEntity03.getCity());
+        assertEquals(entity03.getWard(), answerEntity03.getWard());
         assertEquals(entity03.getAddressNameKana(), answerEntity03.getAddressNameKana());
         assertEquals(entity03.getEffectDate(), answerEntity03.getEffectDate());
         assertEquals(entity03.getAbolishDate(), answerEntity03.getAbolishDate());

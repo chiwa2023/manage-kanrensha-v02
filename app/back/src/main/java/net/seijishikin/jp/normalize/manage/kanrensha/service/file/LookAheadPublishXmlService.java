@@ -65,7 +65,7 @@ public class LookAheadPublishXmlService {
 
             // 公式XML読み取り
             XmlMapper xmlMapper = new XmlMapper();
-            xmlMapper.setSerializationInclusion(Include.ALWAYS);
+            xmlMapper.setDefaultPropertyInclusion(Include.ALWAYS);
             xmlMapper.enable(SerializationFeature.INDENT_OUTPUT);
 
             // byteで渡せば基本的には良しなにしてくれそう

@@ -1,5 +1,7 @@
 package net.seijishikin.jp.normalize.manage.kanrensha.batch.address.lgcode;
 
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 
 import org.springframework.batch.core.StepExecution;
@@ -16,7 +18,10 @@ import jakarta.persistence.Query;
 import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
 import net.seijishikin.jp.normalize.common_tool.utils.CreateUserLeastDtoByBatchParamUtil;
 import net.seijishikin.jp.normalize.common_tool.utils.SetTableDataHistoryUtil;
+import net.seijishikin.jp.normalize.manage.kanrensha.entity.AddressAllCityEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.AddressRsdtBaseEntity;
+import net.seijishikin.jp.normalize.manage.kanrensha.repository.AddressAllCityRepository;
+import net.seijishikin.jp.normalize.manage.kanrensha.service.util.WriteLogService;
 
 /**
  * アドレス・ベース・レジストリ住居ItemWriter
@@ -33,6 +38,9 @@ public class RsdtAddressItemWriter extends JpaItemWriter<AddressRsdtBaseEntity> 
     /** シングルクォーテーション */
     private static final String QUOTE_SINGLE = "'";
 
+    /** 空文字 */
+    private static final String EMPTY = "";
+
     /** テーブル履歴設定Util */
     @Autowired
     private SetTableDataHistoryUtil setTableDataHistoryUtil;
@@ -44,8 +52,13 @@ public class RsdtAddressItemWriter extends JpaItemWriter<AddressRsdtBaseEntity> 
     /** ユーザ最低限Dto */
     private LeastUserDto userDto;
 
-    /** 県表示 */
-    private String pref = "";
+    /** バッチ起動条件からユーザ最低限作成Utility */
+    @Autowired
+    private AddressAllCityRepository addressAllCityRepository;
+
+    /** バッチ起動条件からユーザ最低限作成Utility */
+    @Autowired
+    private WriteLogService writeLogService;
 
     /**
      * コンストラクタ
@@ -66,7 +79,6 @@ public class RsdtAddressItemWriter extends JpaItemWriter<AddressRsdtBaseEntity> 
     @BeforeStep
     public void beforeStep(final StepExecution stepExecution) {
         userDto = createUserLeastDtoByBatchParamUtil.practice(stepExecution);
-        pref = stepExecution.getJobParameters().getString("pref");
     }
 
     /**
@@ -75,6 +87,8 @@ public class RsdtAddressItemWriter extends JpaItemWriter<AddressRsdtBaseEntity> 
     @Override
     @Transactional
     public void write(final Chunk<? extends AddressRsdtBaseEntity> items) {
+
+        writeLogService.writeInfo("chunk:" + LocalDateTime.now());
 
         final String blank = "";
         // ローカル専用のトランザクションを設定しそこにJoinせよ、とのこと
@@ -111,7 +125,7 @@ public class RsdtAddressItemWriter extends JpaItemWriter<AddressRsdtBaseEntity> 
                 .append(QUOTE_SINGLE).append(entity.getBlkId()).append(QUOTE_SINGLE).append(COMMA) //
                 .append(QUOTE_SINGLE).append(entity.getRsdtId()).append(QUOTE_SINGLE).append(COMMA) //
                 .append(QUOTE_SINGLE).append(entity.getRsdt2Id()).append(QUOTE_SINGLE).append(COMMA)
-                .append(QUOTE_SINGLE).append(pref).append(entity.getAddressBlock()).append(QUOTE_SINGLE).append(COMMA)
+                .append(QUOTE_SINGLE).append(this.getCity(entity)).append(QUOTE_SINGLE).append(COMMA)
                 .append(QUOTE_SINGLE).append(entity.getAddressBuilding()).append(QUOTE_SINGLE).append(COMMA)
                 .append(QUOTE_SINGLE).append(entity.getEffectDate()).append(QUOTE_SINGLE).append(COMMA);
 
@@ -143,4 +157,37 @@ public class RsdtAddressItemWriter extends JpaItemWriter<AddressRsdtBaseEntity> 
             return 0;
         }
     }
+
+    private String getCity(final AddressRsdtBaseEntity entity) {
+        List<AddressAllCityEntity> list = addressAllCityRepository.findByLgCodeAndIsLatestTrue(entity.getLgCode());
+
+        
+        
+        if (list.isEmpty()) {
+            return "行政区コードなし:" + entity.getAddressBlock();
+        } else {
+            AddressAllCityEntity cityEntity = list.get(0);
+
+            String address = entity.getAddressBlock();
+            
+            if (!EMPTY.equals(cityEntity.getWard()) && address.startsWith(cityEntity.getWard())) {
+                return cityEntity.getPref() + cityEntity.getCounty() + cityEntity.getCity() + entity.getAddressBlock();
+            }
+
+            if (!EMPTY.equals(cityEntity.getCity()) && address.startsWith(cityEntity.getCity())) {
+                return cityEntity.getPref() +cityEntity.getCounty() + entity.getAddressBlock();
+            }
+
+            if (!EMPTY.equals(cityEntity.getCounty()) && address.startsWith(cityEntity.getCounty())) {
+                return cityEntity.getPref() + entity.getAddressBlock();
+            }
+
+            if (address.startsWith(cityEntity.getPref())) {
+                return entity.getAddressBlock();
+            }
+            return "コード不一致:" + entity.getAddressBlock();
+        }
+
+    }
+
 }

@@ -1,4 +1,4 @@
-package net.seijishikin.jp.normalize.manage.kanrensha.batch.address.block;
+package net.seijishikin.jp.normalize.manage.kanrensha.batch.address.block; // NOPMD
 
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.PlatformTransactionManager;
 
+import net.seijishikin.jp.normalize.manage.kanrensha.entity.AddressPostalEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.AddressPostalIrregularEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.WkTblPostalCommonEntity;
 
@@ -51,6 +52,15 @@ public class RepairPostalCodeIrregularBatchConfiguration {
     /** Step名(JigyoushoSplit) */
     public static final String STEP_JIGYOUSHO_SPLIT = FUNCTION_NAME + "JigyoushoSplit" + STEP;
 
+    /** Step名(PostalUpdateNormal) */
+    public static final String STEP_POSTAL_NORMAL = FUNCTION_NAME + "PostalUpdateNormal" + STEP;
+
+    /** Step名(PostalUpdateOther) */
+    public static final String STEP_POSTAL_OTHER = FUNCTION_NAME + "PostalUpdateOther" + STEP;
+
+    /** Step名(FixKeisaiNashi) */
+    public static final String STEP_KEISAI_NASHI = FUNCTION_NAME + "FixKeisaiNashi" + STEP;
+
     /** Step名(History) */
     public static final String STEP_HISTORY1 = FUNCTION_NAME + "History1" + STEP;
     /** Step名(History) */
@@ -61,6 +71,8 @@ public class RepairPostalCodeIrregularBatchConfiguration {
     public static final String STEP_HISTORY4 = FUNCTION_NAME + "History4" + STEP;
     /** Step名(History) */
     public static final String STEP_HISTORY5 = FUNCTION_NAME + "History5" + STEP;
+    /** Step名(History) */
+    public static final String STEP_HISTORY6 = FUNCTION_NAME + "History6" + STEP;
 
     /** Step名(Clean) */
     public static final String STEP_CLEAN = FUNCTION_NAME + "Clean" + STEP;
@@ -74,9 +86,11 @@ public class RepairPostalCodeIrregularBatchConfiguration {
     public static final String STEP_CLEAN4 = FUNCTION_NAME + "Clean4" + STEP;
     /** Step名(Clean) */
     public static final String STEP_CLEAN5 = FUNCTION_NAME + "Clean5" + STEP;
+    /** Step名(Clean) */
+    public static final String STEP_CLEAN6 = FUNCTION_NAME + "Clean6" + STEP;
 
     /** 処理単位数 */
-    private static final int CHUNK_SIZE = 250;
+    private static final int CHUNK_SIZE = 1000;
 
     /* その他は住居に対応データが存在するのを確認して有効にする */
 
@@ -125,6 +139,10 @@ public class RepairPostalCodeIrregularBatchConfiguration {
     @Autowired
     private IrregularPostalItemWriter irregularPostalItemWriter;
 
+    /** 正規郵便番号ItemWriter */
+    @Autowired
+    private NormalPostalItemWriter normalPostalItemWriter;
+
     /** 郵便番号読点分割ItemReader */
     @Autowired
     private SplitToutenOrgItemReader splitToutenOrgItemReader;
@@ -145,10 +163,38 @@ public class RepairPostalCodeIrregularBatchConfiguration {
     @Autowired
     private WkPostalCommonItemWriter wkPostalCommonItemWriter;
 
+    /** 以下に掲載がない場合修復ItemWriter */
+    @Autowired
+    private FixIkaniKeisaiNashiItemReader fixIkaniKeisaiNashiItemReader;
+
+    /** 以下に掲載がない場合修復ItemWriter */
+    @Autowired
+    private FixIkaniKeisaiNashiItemWriter fixIkaniKeisaiNashiItemWriter;
+
+    /** 郵便番号ワークテーブルProcessor */
+    @Autowired
+    private AddressPostalWorksProcessor addressPostalWorksProcessor;
+
+    /** 郵便番号ワークテーブル郵便番号Processor */
+    @Autowired
+    private AddressPostalWorksPostalProcessor addressPostalWorksPostalProcessor;
+
     /* 作業を全Clean(最終ステップ) */
     /** 郵便番号作業全削除Tasklet */
     @Autowired
     private CleanWorksAddressPostalTasklet cleanWorksAddressPostalTasklet;
+
+    /** その他でない通常抽出ItemReader */
+    @Autowired
+    private UpdatePostalCodeNormalItemReader updatePostalCodeNormalItemReader;
+
+    /** その他抽出ItemReader */
+    @Autowired
+    private UpdatePostalCodeOtherItemReader updatePostalCodeOtherItemReader;
+
+    /** 郵便番号更新ItemWriter */
+    @Autowired
+    private UpdateRsdtPostalCodeItemWriter updateRsdtPostalCodeItemWriter;
 
     /**
      * Jobを返却する
@@ -164,16 +210,21 @@ public class RepairPostalCodeIrregularBatchConfiguration {
             @Qualifier(STEP_SINGLE) final Step stepSingle, //
             @Qualifier(STEP_JIGYOUSHO_SPLIT) final Step stepJigyoushoSplit, //
             @Qualifier(STEP_SPLIT_TOUTEN) final Step stepSplitTouten, //
+            @Qualifier(STEP_POSTAL_NORMAL) final Step stepPostalNormal, //
+            @Qualifier(STEP_POSTAL_OTHER) final Step stepPostalOther, //
+            @Qualifier(STEP_KEISAI_NASHI) final Step stepKeisaiNashi, //
             @Qualifier(STEP_HISTORY1) final Step stepHistory1, //
             @Qualifier(STEP_HISTORY2) final Step stepHistory2, //
             @Qualifier(STEP_HISTORY3) final Step stepHistory3, //
             @Qualifier(STEP_HISTORY4) final Step stepHistory4, //
             @Qualifier(STEP_HISTORY5) final Step stepHistory5, //
+            @Qualifier(STEP_HISTORY6) final Step stepHistory6, //
             @Qualifier(STEP_CLEAN1) final Step stepClean1, //
             @Qualifier(STEP_CLEAN2) final Step stepClean2, //
             @Qualifier(STEP_CLEAN3) final Step stepClean3, //
             @Qualifier(STEP_CLEAN4) final Step stepClean4, //
             @Qualifier(STEP_CLEAN5) final Step stepClean5, //
+            @Qualifier(STEP_CLEAN6) final Step stepClean6, //
             @Qualifier(STEP_CLEAN) final Step stepClean //
     ) {
 
@@ -183,6 +234,8 @@ public class RepairPostalCodeIrregularBatchConfiguration {
                 .next(stepRange).next(stepHistory3).next(stepClean3) // 範囲処理
                 .next(stepSingle).next(stepHistory4).next(stepClean4) // 単一地域処理
                 .next(stepJigyoushoSplit).next(stepHistory5).next(stepClean5) // 事業所地域処理
+                .next(stepPostalNormal).next(stepPostalOther) // 郵便番号更新(通常・その他)
+                .next(stepKeisaiNashi).next(stepHistory6).next(stepClean6) // 以下に掲載がない場合修復
                 .end().build();
     }
 
@@ -271,6 +324,55 @@ public class RepairPostalCodeIrregularBatchConfiguration {
     }
 
     /**
+     * StepPostalNormalを返却する
+     *
+     * @param jobRepository      jobRepository
+     * @param transactionManager transactionManager
+     * @return step
+     */
+    @Bean(STEP_POSTAL_NORMAL)
+    protected Step getStepPostalNormal(final JobRepository jobRepository,
+            final PlatformTransactionManager transactionManager) {
+
+        return new StepBuilder(STEP_POSTAL_NORMAL, jobRepository)
+                .<AddressPostalEntity, AddressPostalEntity>chunk(CHUNK_SIZE, transactionManager)
+                .reader(updatePostalCodeNormalItemReader).writer(updateRsdtPostalCodeItemWriter).build();
+    }
+
+    /**
+     * StepPostalOtherを返却する
+     *
+     * @param jobRepository      jobRepository
+     * @param transactionManager transactionManager
+     * @return step
+     */
+    @Bean(STEP_POSTAL_OTHER)
+    protected Step getStepPostalOther(final JobRepository jobRepository,
+            final PlatformTransactionManager transactionManager) {
+
+        return new StepBuilder(STEP_POSTAL_OTHER, jobRepository)
+                .<AddressPostalEntity, AddressPostalEntity>chunk(CHUNK_SIZE, transactionManager)
+                .reader(updatePostalCodeOtherItemReader).writer(updateRsdtPostalCodeItemWriter).build();
+    }
+
+    /**
+     * StepFixKeisaiNashiを返却する
+     *
+     * @param jobRepository      jobRepository
+     * @param transactionManager transactionManager
+     * @return step
+     */
+    @Bean(STEP_KEISAI_NASHI)
+    protected Step getStepFixKeisaiNashi(final JobRepository jobRepository,
+            final PlatformTransactionManager transactionManager) {
+
+        return new StepBuilder(STEP_KEISAI_NASHI, jobRepository)
+                .<AddressPostalEntity, WkTblPostalCommonEntity>chunk(CHUNK_SIZE, transactionManager)
+                .reader(fixIkaniKeisaiNashiItemReader).processor(addressPostalWorksProcessor)
+                .writer(fixIkaniKeisaiNashiItemWriter).build();
+    }
+
+    /**
      * StepHistoryを返却する
      *
      * @param jobRepository      jobRepository
@@ -328,11 +430,11 @@ public class RepairPostalCodeIrregularBatchConfiguration {
      * @param transactionManager transactionManager
      * @return step
      */
-    @Bean(STEP_HISTORY5)
-    protected Step getStepHistory5(final JobRepository jobRepository,
+    @Bean(STEP_HISTORY4)
+    protected Step getStepHistory4(final JobRepository jobRepository,
             final PlatformTransactionManager transactionManager) {
 
-        return new StepBuilder(STEP_HISTORY5, jobRepository)
+        return new StepBuilder(STEP_HISTORY4, jobRepository)
                 .<WkTblPostalCommonEntity, AddressPostalIrregularEntity>chunk(CHUNK_SIZE, transactionManager)
                 .reader(worksPostalItemReader).processor(addressPostalWorksIrregularProcessor)
                 .writer(irregularPostalItemWriter).build();
@@ -345,11 +447,29 @@ public class RepairPostalCodeIrregularBatchConfiguration {
      * @param transactionManager transactionManager
      * @return step
      */
-    @Bean(STEP_HISTORY4)
-    protected Step getStepHistory4(final JobRepository jobRepository,
+    @Bean(STEP_HISTORY5)
+    protected Step getStepHistory5(final JobRepository jobRepository,
             final PlatformTransactionManager transactionManager) {
 
-        return new StepBuilder(STEP_HISTORY4, jobRepository)
+        return new StepBuilder(STEP_HISTORY5, jobRepository)
+                .<WkTblPostalCommonEntity, AddressPostalEntity>chunk(CHUNK_SIZE, transactionManager)
+                .reader(worksPostalItemReader).processor(addressPostalWorksPostalProcessor)
+                .writer(normalPostalItemWriter).build();
+    }
+
+
+    /**
+     * StepHistoryを返却する
+     *
+     * @param jobRepository      jobRepository
+     * @param transactionManager transactionManager
+     * @return step
+     */
+    @Bean(STEP_HISTORY6)
+    protected Step getStepHistory6(final JobRepository jobRepository,
+            final PlatformTransactionManager transactionManager) {
+
+        return new StepBuilder(STEP_HISTORY6, jobRepository)
                 .<WkTblPostalCommonEntity, AddressPostalIrregularEntity>chunk(CHUNK_SIZE, transactionManager)
                 .reader(worksPostalItemReader).processor(addressPostalWorksIrregularProcessor)
                 .writer(irregularPostalItemWriter).build();
@@ -442,6 +562,21 @@ public class RepairPostalCodeIrregularBatchConfiguration {
             final PlatformTransactionManager transactionManager) {
 
         return new StepBuilder(STEP_CLEAN5, jobRepository).tasklet(cleanWorksAddressPostalTasklet, transactionManager)
+                .build();
+    }
+
+    /**
+     * StepCleanを返却する
+     *
+     * @param jobRepository      jobRepository
+     * @param transactionManager transactionManager
+     * @return step
+     */
+    @Bean(STEP_CLEAN6)
+    protected Step getStepClean6(final JobRepository jobRepository,
+            final PlatformTransactionManager transactionManager) {
+
+        return new StepBuilder(STEP_CLEAN6, jobRepository).tasklet(cleanWorksAddressPostalTasklet, transactionManager)
                 .build();
     }
 

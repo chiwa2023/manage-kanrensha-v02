@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.batch.core.StepContribution;
 import org.springframework.batch.core.StepExecution;
+import org.springframework.batch.core.StepExecutionListener;
 import org.springframework.batch.core.annotation.BeforeStep;
 import org.springframework.batch.core.scope.context.ChunkContext;
 import org.springframework.batch.core.step.tasklet.Tasklet;
@@ -22,7 +23,7 @@ import net.seijishikin.jp.normalize.manage.kanrensha.repository.AddressAllCityRe
  * アドレス・ベース・レジストリ住居テーブルを展開するTasklet
  */
 @Component
-public class SabunAddRsdtTableTasklet implements Tasklet {
+public class SabunAddRsdtTableTasklet implements Tasklet, StepExecutionListener {
 
     /** EntityManager */
     @Autowired
@@ -44,6 +45,7 @@ public class SabunAddRsdtTableTasklet implements Tasklet {
      * @param stepExecution stepExecution
      */
     @BeforeStep
+    @Override
     public void beforeStep(final StepExecution stepExecution) {
 
         abolishDate = stepExecution.getJobParameters().getLocalDate("abolishDate");

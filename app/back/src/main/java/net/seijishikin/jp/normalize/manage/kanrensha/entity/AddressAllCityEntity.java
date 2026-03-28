@@ -17,14 +17,13 @@ import net.seijishikin.jp.normalize.common_tool.entity.AllTabeDataHistoryInterfa
  */
 @Entity
 @Table(name = "address_all_city")
-public class AddressAllCityEntity implements Serializable, AllTabeDataHistoryInterface { // NOPMD DataClass
+public class AddressAllCityEntity  implements Serializable,AllTabeDataHistoryInterface{ // NOPMD DataClass
 
     /** Serialize id */
     private static final long serialVersionUID = 1L;
 
     /** テーブルId */
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "address_all_city_id")
     private Integer addressAllCityId = INIT_INTEGER;
 
@@ -92,28 +91,6 @@ public class AddressAllCityEntity implements Serializable, AllTabeDataHistoryInt
         this.isLatest = isLatest;
     }
 
-    /** 住所名 */
-    @Column(name = "address_name")
-    private String addressName = INIT_STRING;
-
-    /**
-     * 住所名を取得する
-     *
-     * @return 住所名
-     */
-    public String getAddressName() {
-        return addressName;
-    }
-
-    /**
-     * 住所名を設定する
-     *
-     * @param addressName 住所名
-     */
-    public void setAddressName(final String addressName) {
-        this.addressName = addressName;
-    }
-
     /** 住所名かな */
     @Column(name = "address_name_kana")
     private String addressNameKana = INIT_STRING;
@@ -134,6 +111,94 @@ public class AddressAllCityEntity implements Serializable, AllTabeDataHistoryInt
      */
     public void setAddressNameKana(final String addressNameKana) {
         this.addressNameKana = addressNameKana;
+    }
+
+    /** 県名称 */
+    @Column(name = "pref")
+    private String pref = INIT_STRING;
+
+    /**
+     * 県名称を取得する
+     *
+     * @return 県名称
+     */
+    public String getPref() {
+        return pref;
+    }
+
+    /**
+     * 県名称を設定する
+     *
+     * @param pref 県名称
+     */
+    public void setPref(final String pref) {
+        this.pref = pref;
+    }
+
+    /** 郡名称 */
+    @Column(name = "county")
+    private String county = INIT_STRING;
+
+    /**
+     * 郡名称を取得する
+     *
+     * @return 郡名称
+     */
+    public String getCounty() {
+        return county;
+    }
+
+    /**
+     * 郡名称を設定する
+     *
+     * @param county 郡名称
+     */
+    public void setCounty(final String county) {
+        this.county = county;
+    }
+
+    /** 市名称 */
+    @Column(name = "city")
+    private String city = INIT_STRING;
+
+    /**
+     * 市名称を取得する
+     *
+     * @return 市名称
+     */
+    public String getCity() {
+        return city;
+    }
+
+    /**
+     * 市名称を設定する
+     *
+     * @param city 市名称
+     */
+    public void setCity(final String city) {
+        this.city = city;
+    }
+
+    /** 特別区名称 */
+    @Column(name = "ward")
+    private String ward = INIT_STRING;
+
+    /**
+     * 特別区名称を取得する
+     *
+     * @return 特別区名称
+     */
+    public String getWard() {
+        return ward;
+    }
+
+    /**
+     * 特別区名称を設定する
+     *
+     * @param ward 特別区名称
+     */
+    public void setWard(final String ward) {
+        this.ward = ward;
     }
 
     /** 適用開始日 */

@@ -89,6 +89,28 @@ public class WkTblPostalCommonEntity implements Serializable, AllTabeDataHistory
         this.addressPostalIrregularId = addressPostalIrregularId;
     }
 
+    /** 修復ログId */
+    @Column(name = "address_postal_repair_log_id")
+    private Integer addressPostalRepairLogId = INIT_INTEGER;
+
+    /**
+     * 修復ログIdを取得する
+     *
+     * @return 修復ログId
+     */
+    public Integer getAddressPostalRepairLogId() {
+        return addressPostalRepairLogId;
+    }
+
+    /**
+     * 修復ログIdを設定する
+     *
+     * @param addressPostalRepairLogId 修復ログId
+     */
+    public void setAddressPostalRepairLogId(final Integer addressPostalRepairLogId) {
+        this.addressPostalRepairLogId = addressPostalRepairLogId;
+    }
+
     /** 郵便番号1 */
     @Column(name = "postalcode1")
     private String postalcode1 = INIT_STRING;
@@ -331,6 +353,50 @@ public class WkTblPostalCommonEntity implements Serializable, AllTabeDataHistory
      */
     public void setIsRepairRsdt(final Boolean isRepairRsdt) {
         this.isRepairRsdt = isRepairRsdt;
+    }
+
+    /** 状態表示 */
+    @Column(name = "status_text")
+    private String statusText = INIT_STRING;
+
+    /**
+     * 状態表示を取得する
+     * 
+     * @return 状態表示
+     */
+    public String getStatusText() {
+        return statusText;
+    }
+
+    /**
+     * 状態表示を設定する
+     * 
+     * @param statusText 状態表示
+     */
+    public void setStatusText(final String statusText) {
+        this.statusText = statusText;
+    }
+
+    /** 修正承認有無 */
+    @Column(name = "is_confirm")
+    private Boolean isConfirm = INIT_BOOLEAN;
+
+    /**
+     * 修正承認有無を取得する
+     *
+     * @return 修正承認有無
+     */
+    public Boolean getIsConfirm() {
+        return isConfirm;
+    }
+
+    /**
+     * 修正承認有無を設定する
+     *
+     * @param isConfirm 修正承認有無
+     */
+    public void setIsConfirm(final Boolean isConfirm) {
+        this.isConfirm = isConfirm;
     }
 
     /** 挿入ユーザId */

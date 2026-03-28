@@ -37,7 +37,7 @@ public class WalkDirectoryRsdtAddressInsertBatchConfiguration {
     public static final String STEP_INSERT_NAME = FUNCTION_NAME + "Insert" + STEP;
 
     /** 処理単位数 */
-    private static final int CHUNK_SIZE = 250;
+    private static final int CHUNK_SIZE = 5000;
 
     /** アドレス・ベース・レジストリ住居CsvItemReader */
     @Autowired

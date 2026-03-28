@@ -27,7 +27,6 @@ import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.BackApplication;
 import net.seijishikin.jp.normalize.manage.kanrensha.batch.address.lgcode.WalkDirectoryRsdtAddressInsertBatchConfiguration;
 import net.seijishikin.jp.normalize.manage.kanrensha.constants.GetCurrentResourcePath;
-import net.seijishikin.jp.normalize.manage.kanrensha.service.util.GetPrefectureLgCodeService;
 import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateLeastUserForTestUtil;
 
 /**
@@ -55,10 +54,6 @@ class WalkDirectoryRsdtAddressInsertBatchConfigurationAllTest {
     @Autowired
     private Job walkDirectoryRsdtAddressInsert;
 
-    /** 県名コードService */
-    @Autowired
-    private GetPrefectureLgCodeService getPrefectureLgCodeService;
-
     @Test
     @Tag("TableTruncate")
     void testExecute() throws Exception {
@@ -81,8 +76,7 @@ class WalkDirectoryRsdtAddressInsertBatchConfigurationAllTest {
                 .addLocalDateTime("executeTime", LocalDateTime.now()).addString("readDirectory", path.toString())
                 .addLong("userId", (long) userDto.getUserPersonId())
                 .addLong("userCode", (long) userDto.getUserPersonCode())
-                .addString("userName", userDto.getUserPersonName())
-                .addString("pref", getPrefectureLgCodeService.practiceName(prefCode)).toJobParameters();
+                .addString("userName", userDto.getUserPersonName()).toJobParameters();
 
         JobExecution jobExecution = jobLauncherTestUtils.launchJob(jobParameters);
         assertEquals("COMPLETED", jobExecution.getExitStatus().getExitCode(), "作業完了Statusが戻ってくる");

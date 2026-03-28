@@ -55,8 +55,11 @@ public class AllCityCsvLineMapper implements LineMapper<AllCityCsvDto> {
         String[] cell = line.split(",");
 
         dto.setLgCode(cell[0]);
-        dto.setAddressName(
-                cell[POS_NAME_PREFCTURE] + cell[POS_NAME_COUNTY] + cell[POS_NAME_CITY] + cell[POS_NAME_WARD]);
+        dto.setPref(cell[POS_NAME_PREFCTURE]);
+        dto.setCounty(cell[POS_NAME_COUNTY]);
+        dto.setCity(cell[POS_NAME_CITY]);
+        dto.setWard(cell[POS_NAME_WARD]);
+
         dto.setAddressNameKana(
                 cell[POS_KANA_PREFCTURE] + cell[POS_KANA_COUNTY] + cell[POS_KANA_CITY] + cell[POS_KANA_WARD]);
 

@@ -23,7 +23,10 @@ class AddressAllCityProcessorTest {
         AddressAllCityProcessor processor = new AddressAllCityProcessor();
 
         AllCityCsvDto item = new AllCityCsvDto();
-        item.setAddressName("住所漢字");
+        item.setPref("住所県");
+        item.setCounty("住所郡");
+        item.setCity("住所市");
+        item.setWard("住所特別区");
         item.setAddressNameKana("住所かな");
         item.setLgCode("12345");
         item.setEffectDate(LocalDate.of(2023, 11, 13));
@@ -31,7 +34,11 @@ class AddressAllCityProcessorTest {
 
         AddressAllCityEntity entity = processor.process(item);
 
-        assertEquals(item.getAddressName(), entity.getAddressName());
+        assertEquals(item.getPref(), entity.getPref());
+        assertEquals(item.getCounty(), entity.getCounty());
+        assertEquals(item.getCity(), entity.getCity());
+        assertEquals(item.getWard(), entity.getWard());
+
         assertEquals(item.getAddressNameKana(), entity.getAddressNameKana());
         assertEquals(item.getLgCode(), entity.getLgCode());
         assertEquals(item.getEffectDate(), entity.getEffectDate());

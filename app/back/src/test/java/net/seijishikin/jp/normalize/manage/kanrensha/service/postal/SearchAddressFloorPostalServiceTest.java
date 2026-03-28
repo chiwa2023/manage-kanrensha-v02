@@ -34,14 +34,12 @@ class SearchAddressFloorPostalServiceTest {
     /** テスト対象 */
     @Autowired
     private SearchAddressFloorPostalService searchAddressFloorPostalService;
-    
-    
+
     @Test
     @Tag("TableTruncate")
     void test() throws Exception {
-        
-        
-        PostalCodeBuildingResultDto resultDto0 = searchAddressFloorPostalService.practice("131016", "100","6222");
+
+        PostalCodeBuildingResultDto resultDto0 = searchAddressFloorPostalService.practice("131016", "100", "6222");
         List<SelectOptionIntegerDto> list0 = resultDto0.getListOptions();
         assertEquals(3, list0.size());
 

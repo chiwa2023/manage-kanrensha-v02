@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component;
 
 import net.seijishikin.jp.normalize.manage.kanrensha.repository.WkTblPostalCommonRepository;
 
-
 /**
  * 処理の終わった作業テーブルを全クリアする
  */

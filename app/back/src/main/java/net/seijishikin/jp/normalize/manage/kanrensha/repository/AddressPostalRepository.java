@@ -43,4 +43,48 @@ public interface AddressPostalRepository extends JpaRepository<AddressPostalEnti
      */
     Page<AddressPostalEntity> findByIsGyoseikuDataAndIsLatestTrue(Boolean isSearch, Pageable pageable);
 
+    /**
+     * その他データを抽出する
+     * 
+     * @param prefCode 地方行政区コード
+     * @param other    検索条件語
+     * @param pageable ページング
+     * @return 検索結果
+     */
+    Page<AddressPostalEntity> findByLgCodeStartingWithAndIsLatestTrueAndAddressOrgContaining(String prefCode,
+            String other, Pageable pageable);
+
+    /**
+     * 住所原文書に特定語が含まれないデータを抽出する
+     * 
+     * @param prefCode 地方行政区コード
+     * @param other    検索条件語
+     * @param pageable ページング
+     * @return 検索結果
+     */
+    Page<AddressPostalEntity> findByLgCodeStartingWithAndIsLatestTrueAndAddressOrgNotContaining(String prefCode,
+            String other, Pageable pageable);
+
+    /**
+     * 住所名が指定語で終わるデータを抽出する
+     * 
+     * @param prefCode 地方行政区コード
+     * @param name     指定後
+     * @param pageable ページング
+     * @return 検索結果
+     */
+    Page<AddressPostalEntity> findByLgCodeStartingWithAndIsLatestTrueAndAddressNameEndingWith(String prefCode,
+            String name, Pageable pageable);
+
+    /**
+     * （が存在、以下に掲載がない場合といった、未修整データを抽出する
+     * 
+     * @param prefCode 地方行政区コード
+     * @param pageable ページング
+     * @return 検索結果
+     */
+    @Query(value = "SELECT * FROM address_postal WHERE lg_code LIKE ?1 AND is_latest = 1 "
+            + "AND ( address_name LIKE '%以下に掲載がない場合'  OR address_name LIKE '%（%' )", nativeQuery = true)
+    Page<AddressPostalEntity> findRepairLog(String prefCode, Pageable pageable);
+
 }

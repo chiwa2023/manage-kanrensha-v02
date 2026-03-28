@@ -140,7 +140,7 @@ public class AddressAllCityItemWriter extends JpaItemWriter<AddressAllCityEntity
     }
 
     private boolean isSame(final AddressAllCityEntity entity, final AddressAllCityEntity entityPre) {
-        if (!entity.getAddressName().equals(entityPre.getAddressName())) {
+        if (!this.getAllName(entity).equals(this.getAllName(entityPre))) {
             return false;
         }
         if (!entity.getAddressNameKana().equals(entityPre.getAddressNameKana())) {
@@ -157,4 +157,11 @@ public class AddressAllCityItemWriter extends JpaItemWriter<AddressAllCityEntity
 
     }
 
+    private String getAllName(final AddressAllCityEntity entity) {
+        StringBuilder builder = new StringBuilder();
+
+        builder.append(entity.getPref()).append(entity.getCounty()).append(entity.getCity()).append(entity.getWard());
+
+        return builder.toString();
+    }
 }
