@@ -53,10 +53,10 @@ public class AddXmlMinMasterBatchConfiguration {
     public static final String JOB_NAME = FUNCTION_NAME + JOB;
 
     /** Step名(企業マスタ登録) */
-    public static final String STEP_CORP_RECORD = FUNCTION_NAME + "KigyouDtRecord" + STEP;
+    public static final String STEP_KIGYOU_RECORD = FUNCTION_NAME + "KigyouDtRecord" + STEP;
 
     /** Step名(企業処理結果を反映) */
-    public static final String STEP_CORP_FIX = FUNCTION_NAME + "KigyouDtFix" + STEP;
+    public static final String STEP_KIGYOU_FIX = FUNCTION_NAME + "KigyouDtFix" + STEP;
 
     /** Step名(個人マスタ登録) */
     public static final String STEP_PERSON_RECORD = FUNCTION_NAME + "PersonRecord" + STEP;
@@ -65,10 +65,10 @@ public class AddXmlMinMasterBatchConfiguration {
     public static final String STEP_PERSON_FIX = FUNCTION_NAME + "PersonFix" + STEP;
 
     /** Step名(政治団体マスタ登録) */
-    public static final String STEP_POLI_ORG_RECORD = FUNCTION_NAME + "SeijidantaiRecord" + STEP;
+    public static final String STEP_SEIJIDANTAI_RECORD = FUNCTION_NAME + "SeijidantaiRecord" + STEP;
 
     /** Step名(政治団体処理結果を反映) */
-    public static final String STEP_POLI_ORG_FIX = FUNCTION_NAME + "SeijidantaiFix" + STEP;
+    public static final String STEP_SEIJIDANTAI_FIX = FUNCTION_NAME + "SeijidantaiFix" + STEP;
 
     /** 処理単位数 */
     private static final int CHUNK_SIZE = 250;
@@ -144,10 +144,10 @@ public class AddXmlMinMasterBatchConfiguration {
     protected Job getJob(final JobRepository jobRepository, // 
             @Qualifier(STEP_PERSON_RECORD) final Step stepPersonRecord,
             @Qualifier(STEP_PERSON_FIX) final Step stepPersonFix,
-            @Qualifier(STEP_CORP_RECORD) final Step stepKigyouDtRecord, // 
-            @Qualifier(STEP_CORP_FIX) final Step stepKigyouDtFix,
-            @Qualifier(STEP_POLI_ORG_RECORD) final Step stepSeijidantaiRecord,
-            @Qualifier(STEP_POLI_ORG_FIX) final Step stepSeijidantaiFix) {
+            @Qualifier(STEP_KIGYOU_RECORD) final Step stepKigyouDtRecord, // 
+            @Qualifier(STEP_KIGYOU_FIX) final Step stepKigyouDtFix,
+            @Qualifier(STEP_SEIJIDANTAI_RECORD) final Step stepSeijidantaiRecord,
+            @Qualifier(STEP_SEIJIDANTAI_FIX) final Step stepSeijidantaiFix) {
 
         return new JobBuilder(JOB_NAME, jobRepository).incrementer(new RunIdIncrementer()).flow(stepPersonRecord)
                 .next(stepPersonFix).next(stepKigyouDtRecord).next(stepKigyouDtFix).next(stepSeijidantaiRecord).next(stepSeijidantaiFix)
@@ -195,11 +195,11 @@ public class AddXmlMinMasterBatchConfiguration {
      * @param transactionManager transactionManager
      * @return step
      */
-    @Bean(STEP_CORP_RECORD)
+    @Bean(STEP_KIGYOU_RECORD)
     protected Step getStepKigyouDtRecord(final JobRepository jobRepository,
             final PlatformTransactionManager transactionManager) {
 
-        return new StepBuilder(STEP_CORP_RECORD, jobRepository)
+        return new StepBuilder(STEP_KIGYOU_RECORD, jobRepository)
                 .<WkTblKanrenshaKigyouDtAddMinEntity, WkTblKanrenshaKigyouDtAddMinEntity>chunk(CHUNK_SIZE, transactionManager)
                 .reader(kanrenshaKigyouDtAddMiniRecordItemReader).writer(kanrenshaKigyouDtAddMiniRecordItemWriter).build();
     }
@@ -211,11 +211,11 @@ public class AddXmlMinMasterBatchConfiguration {
      * @param transactionManager transactionManager
      * @return step
      */
-    @Bean(STEP_CORP_FIX)
+    @Bean(STEP_KIGYOU_FIX)
     protected Step getStepKigyouDtFix(final JobRepository jobRepository,
             final PlatformTransactionManager transactionManager) {
 
-        return new StepBuilder(STEP_CORP_FIX, jobRepository)
+        return new StepBuilder(STEP_KIGYOU_FIX, jobRepository)
                 .<WkTblKanrenshaKigyouDtAddMinResultEntity, WkTblKanrenshaKigyouDtAddMinEntity>chunk(CHUNK_SIZE, transactionManager)
                 .reader(kanrenshaKigyouDtAddMiniWkTblFixItemReader).processor(kanrenshaKigyouDtAddMiniWkTblFixProcessor)
                 .writer(kanrenshaKigyouDtAddMiniWkTblFixItemWriter).build();
@@ -228,11 +228,11 @@ public class AddXmlMinMasterBatchConfiguration {
      * @param transactionManager transactionManager
      * @return step
      */
-    @Bean(STEP_POLI_ORG_RECORD)
+    @Bean(STEP_SEIJIDANTAI_RECORD)
     protected Step getStepSeijidantaiRecord(final JobRepository jobRepository,
             final PlatformTransactionManager transactionManager) {
 
-        return new StepBuilder(STEP_POLI_ORG_RECORD, jobRepository)
+        return new StepBuilder(STEP_SEIJIDANTAI_RECORD, jobRepository)
                 .<WkTblKanrenshaSeijidantaiAddMinEntity, WkTblKanrenshaSeijidantaiAddMinEntity>chunk(CHUNK_SIZE, transactionManager)
                 .reader(kanrenshaSeijidantaiAddMiniRecordItemReader).writer(kanrenshaSeijidantaiAddMiniRecordItemWriter).build();
     }
@@ -244,11 +244,11 @@ public class AddXmlMinMasterBatchConfiguration {
      * @param transactionManager transactionManager
      * @return step
      */
-    @Bean(STEP_POLI_ORG_FIX)
+    @Bean(STEP_SEIJIDANTAI_FIX)
     protected Step getStepSeijidantaiFix(final JobRepository jobRepository,
             final PlatformTransactionManager transactionManager) {
 
-        return new StepBuilder(STEP_POLI_ORG_FIX, jobRepository)
+        return new StepBuilder(STEP_SEIJIDANTAI_FIX, jobRepository)
                 .<WkTblKanrenshaSeijidantaiAddMinResultEntity, WkTblKanrenshaSeijidantaiAddMinEntity>chunk(CHUNK_SIZE,
                         transactionManager)
                 .reader(kanrenshaSeijidantaiAddMiniWkTblFixItemReader).processor(kanrenshaSeijidantaiAddMiniWkTblFixProcessor)

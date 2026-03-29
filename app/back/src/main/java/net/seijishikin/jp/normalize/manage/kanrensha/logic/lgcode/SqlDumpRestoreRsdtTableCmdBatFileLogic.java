@@ -32,27 +32,34 @@ public class SqlDumpRestoreRsdtTableCmdBatFileLogic {
     @SuppressWarnings("unchecked")
     public void practice(final String lgCodePref, final String batDir) throws IOException {
 
-        String sql = "SELECT table_name FROM information_schema.tables WHERE table_schema = 'test_manage_kanrensha' AND table_name LIKE 'address_rsdt_"
-                + lgCodePref + "%' ";
-
-        Query queryCount = entityManager.createNativeQuery(sql, String.class);
-        List<String> listTable = (List<String>) queryCount.getResultList();
-
         List<String> listDump = new ArrayList<>();
         List<String> listRestore = new ArrayList<>();
         listDump.add("cd MysqlインストールDir");
+        listRestore.add("cd MysqlインストールDir");
+        listDump.add("setlocal");
+        listRestore.add("setlocal");
+        listDump.add("set myPass=パスワード");
+        listRestore.add("set myPass=パスワード");
+
+        String sql = "SELECT table_name FROM information_schema.tables WHERE table_schema = 'test_manage_kanrensha' AND table_name LIKE 'address_rsdt_"
+                + lgCodePref + "%' ";
+        Query queryCount = entityManager.createNativeQuery(sql, String.class);
+        List<String> listTable = (List<String>) queryCount.getResultList();
+
         for (String table : listTable) {
-            String fileName = "c:\\temp\\sql\\" + table + ".sql";
-            listDump.add("mysqldump -u root -p test_manage_kanrensha " + table + " > " + fileName);
-            listRestore.add("mysql -u root -p test_manage_kanrensha < " + fileName);
+            String fileName = "c:\\temp\\sql\\" + lgCodePref + "\\" + table + ".sql";
+            listDump.add("mysqldump -u root -p%myPass% manage_kanrensha " + table + " > " + fileName);
+            listRestore.add("mysql -u root -p%myPass% test_manage_kanrensha < " + fileName);
         }
+        listDump.add("endlocal");
+        listRestore.add("endlocal");
         listDump.add("PAUSE");
         listRestore.add("PAUSE");
 
-        Path pathDump = Paths.get(batDir, "rsdt_dump.bat");
+        Path pathDump = Paths.get(batDir, lgCodePref + "rsdt_dump.bat");
         Files.write(pathDump, listDump, Charset.forName("cp932"));
 
-        Path pathRestore = Paths.get(batDir, "rsdt_restore.bat");
+        Path pathRestore = Paths.get(batDir, lgCodePref + "rsdt_restore.bat");
         Files.write(pathRestore, listRestore, Charset.forName("cp932"));
     }
 

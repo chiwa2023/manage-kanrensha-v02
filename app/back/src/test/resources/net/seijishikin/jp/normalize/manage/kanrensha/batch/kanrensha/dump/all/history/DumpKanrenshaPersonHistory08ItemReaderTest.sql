@@ -1,4 +1,4 @@
-TRUNCATE TABLE kanrensha_person_history_40;
+TRUNCATE TABLE kanrensha_person_history_08;
 
 INSERT INTO kanrensha_person_history_08 (
   kanrensha_person_history_id,
