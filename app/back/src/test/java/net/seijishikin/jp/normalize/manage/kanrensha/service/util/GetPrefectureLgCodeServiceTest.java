@@ -28,7 +28,7 @@ class GetPrefectureLgCodeServiceTest {
 
     @Test
     @Tag("TableTruncate")
-    void test() {
+    void test() throws Exception {
 
         // 010006,北海道
         assertEquals(1, getPrefectureLgCodeService.practice("北海道架空市"));

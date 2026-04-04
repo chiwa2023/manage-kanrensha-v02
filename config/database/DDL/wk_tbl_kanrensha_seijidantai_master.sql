@@ -32,7 +32,7 @@ CREATE TABLE `wk_tbl_kanrensha_seijidantai_master` (
   `account_mgr_name` varchar(200) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '会計責任者関連者個人氏名',
   `is_affected` tinyint DEFAULT NULL COMMENT '反映有無',
   `judge_reason` varchar(300) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '判定理由',
-  `is_jhusho_format` tinyint DEFAULT NULL COMMENT '住所整形済',
+  `is_jusho_format` tinyint DEFAULT NULL COMMENT '住所整形済',
   `insert_user_id` int DEFAULT NULL COMMENT '挿入ユーザId',
   `insert_user_code` int DEFAULT NULL COMMENT '挿入ユーザコード',
   `insert_user_name` varchar(200) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '挿入ユーザ名称',

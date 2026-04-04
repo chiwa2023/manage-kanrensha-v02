@@ -13,7 +13,7 @@ class ConvertNumberUtilTest {
 
     @Test
     @Tag("TableTruncate")
-    void test() {
+    void test() throws Exception {
 
         assertThrows(NullPointerException.class, () -> ConvertNumberUtil.practice(null));
 

@@ -53,7 +53,7 @@ class KanrenshaByXmlMinWkTblFixItemWriterTest {
 
     @Test
     @Tag("TableTruncate")
-    void test() {
+    void test() throws Exception {
         List<WkTblMasterAllByXmlEntity> listLoad = wkTblMasterAllByXmlRepository
                 .findByInsertUserCodeAndIsLatestAndIsAffectedAndIsFinish(userDto.getUserPersonCode(),
                         SetTableDataHistoryUtil.INSERT_STATE, true, false, Pageable.unpaged())

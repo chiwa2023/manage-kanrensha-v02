@@ -28,7 +28,7 @@ INSERT INTO `wk_tbl_kanrensha_person_master` (
   `sns_service_name`,
   `sns_account`,
   `is_affected`,
-  `is_jhusho_format`,
+  `is_jusho_format`,
   `judge_reason`,
   `insert_user_id`,
   `insert_user_code`,

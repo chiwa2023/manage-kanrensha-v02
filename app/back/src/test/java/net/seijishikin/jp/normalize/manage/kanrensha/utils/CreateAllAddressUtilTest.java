@@ -12,7 +12,7 @@ class CreateAllAddressUtilTest {
 
     @Test
     @Tag("TableTruncate")
-    void test() {
+    void test() throws Exception {
 
         // すべてnullの時は全角スペース
         assertEquals("　", CreateAllAddressUtil.practice(null, null, null));

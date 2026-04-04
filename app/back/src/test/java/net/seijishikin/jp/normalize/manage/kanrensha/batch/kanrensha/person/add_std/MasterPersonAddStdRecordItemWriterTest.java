@@ -80,7 +80,7 @@ class MasterPersonAddStdRecordItemWriterTest {
 
     @Test
     @Tag("TableTruncate")
-    void test() {
+    void test() throws Exception {
         // CHECKSTYLE:OFF MagicNumber
 
         WkTblKanrenshaPersonMasterEntity entity00 = new WkTblKanrenshaPersonMasterEntity();

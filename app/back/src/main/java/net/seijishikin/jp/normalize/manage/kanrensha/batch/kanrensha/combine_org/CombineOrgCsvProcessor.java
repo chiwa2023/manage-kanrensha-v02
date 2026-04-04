@@ -97,7 +97,7 @@ public class CombineOrgCsvProcessor
 
         // 未入力チェック
         this.checkSetValue(stringBuilder, entity);
-
+        
         // 登録年チェック(front側で生成した場合はチェックをスキップ)
         if (BLANK.equals(entity.getYearArrayText())) {
             if (this.checkSetYear(stringBuilder, entity, yMin, yMax)) {

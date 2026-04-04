@@ -80,7 +80,7 @@ class MasterSeijidantaiAddStdRecordItemWriterTest {
 
     @Test
     @Tag("TableTruncate")
-    void test() {
+    void test() throws Exception {
 
         WkTblKanrenshaSeijidantaiMasterEntity entity00 = new WkTblKanrenshaSeijidantaiMasterEntity();
 

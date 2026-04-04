@@ -73,7 +73,7 @@ class InsertKanrenshaPersonServiceTest {
 
     @Test
     @Tag("TableTruncate") // NOPMD
-    void test() {
+    void test() throws Exception {
 
         final KanrenshaPersonDto kanrenshaPersonDto = new KanrenshaPersonDto();
 

@@ -12,7 +12,7 @@ class ConvertNumberToKansujiUtilTest {
     // CHECKSTYLE:OFF MagicNumber
 
     @Test
-    void test() {
+    void test() throws Exception {
 
         ConvertNumberToKansujiUtil kansujiUtil = new ConvertNumberToKansujiUtil();
 

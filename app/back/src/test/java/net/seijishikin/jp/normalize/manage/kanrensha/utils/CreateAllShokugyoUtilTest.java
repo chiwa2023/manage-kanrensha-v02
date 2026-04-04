@@ -15,7 +15,7 @@ class CreateAllShokugyoUtilTest {
 
     @Test
     @Tag("TableTruncate")
-    void test() {
+    void test() throws Exception {
 
         // entityがnullは実装ミスなので早期発見して実装修正
         assertThrows(IllegalArgumentException.class, () -> CreateAllShokugyoUtil.practice(null));

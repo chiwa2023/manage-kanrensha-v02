@@ -56,7 +56,7 @@ class SaveApprovalAddressServiceTest {
 
     @Test
     @Tag("TableTruncate")
-    void test() {
+    void test() throws Exception {
 
         final List<KanrenshaAddressBaseEntity> list = new ArrayList<>();
 

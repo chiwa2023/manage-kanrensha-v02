@@ -149,7 +149,7 @@ public class MasterSeijidantaiAddStdRecordItemWriter extends JpaItemWriter<WkTbl
         BeanUtils.copyProperties(entityWkTbl, addressEntity);
 
         // TODO 住所整形済は自社サイト独自形式であることが周知しできた時点でcsvにフラグとして追加
-        boolean isEdit = !entityWkTbl.getIsJhushoFormat();
+        boolean isEdit = !entityWkTbl.getIsJushoFormat();
         addressEntity.setIsPostalEdit(isEdit);
         addressEntity.setIsBlockEdit(isEdit);
         addressEntity.setIsBuildingEdit(isEdit);

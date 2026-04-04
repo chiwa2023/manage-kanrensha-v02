@@ -32,7 +32,7 @@ class GetTempFilePathLogicTest {
 
     @Test
     @Tag("TableTruncate")
-    void test() {
+    void test() throws Exception {
 
         final String fileName = "abcde.csv";
         StorageFileDto storageFileDto = getTempFilePathLogic.practice(7, fileName);

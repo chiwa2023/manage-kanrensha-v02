@@ -753,25 +753,25 @@ public class WkTblKanrenshaKigyouDtMasterEntity // NOPMD DataClass
     }
 
     /** 住所整形済 */
-    @Column(name = "is_jhusho_format")
-    private Boolean isJhushoFormat = INIT_BOOLEAN;
+    @Column(name = "is_jusho_format")
+    private Boolean isJushoFormat = INIT_BOOLEAN;
 
     /**
      * 住所整形済を取得する
      * 
      * @return 住所整形済
      */
-    public Boolean getIsJhushoFormat() {
-        return isJhushoFormat;
+    public Boolean getIsJushoFormat() {
+        return isJushoFormat;
     }
 
     /**
      * 住所整形済を設定する
      * 
-     * @param isJhushoFormat 住所整形済
+     * @param isJushoFormat 住所整形済
      */
-    public void setIsJhushoFormat(final Boolean isJhushoFormat) {
-        this.isJhushoFormat = isJhushoFormat;
+    public void setIsJushoFormat(final Boolean isJushoFormat) {
+        this.isJushoFormat = isJushoFormat;
     }
 
     /** 挿入ユーザId */

@@ -49,7 +49,7 @@ class CombineOrgWkTblFixItemWriterTest {
 
     @Test
     @Tag("TableTruncate")
-    void test() {
+    void test() throws Exception {
 
         final int executeId = 211;
         WkTblKanrenshaCombineOrgEntity entityCall = wkTblKanrenshaCombineOrgRepository.findById(executeId).get();

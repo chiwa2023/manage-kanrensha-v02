@@ -33,7 +33,7 @@ INSERT INTO `wk_tbl_kanrensha_seijidantai_master` (
   `account_mgr_code`,
   `account_mgr_name`,
   `is_affected`,
-  `is_jhusho_format`,
+  `is_jusho_format`,
   `judge_reason`,
   `insert_user_id`,
   `insert_user_code`,

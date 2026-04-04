@@ -150,7 +150,7 @@ public class MasterKigyouDtAddStdRecordItemWriter extends JpaItemWriter<WkTblKan
 
         // TODO 住所が自サイト独自形式になっているか？は利用の動向を見ながら再検討
         // 現状はフォーマットされていないのがほとんどなの自動でfalse,周知されたらcsvにフラグを載せてその内容を反映
-        boolean isEdit = !entityWkTbl.getIsJhushoFormat();
+        boolean isEdit = !entityWkTbl.getIsJushoFormat();
         addressEntity.setIsPostalEdit(isEdit);
         addressEntity.setIsBlockEdit(isEdit);
         addressEntity.setIsBuildingEdit(isEdit);

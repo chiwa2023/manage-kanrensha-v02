@@ -33,7 +33,7 @@ INSERT INTO `wk_tbl_kanrensha_kigyou_dt_master` (
   `houjin_sbts`,
   `is_foreign`,
   `is_affected`,
-  `is_jhusho_format`,
+  `is_jusho_format`,
   `judge_reason`,
   `insert_user_id`,
   `insert_user_code`,

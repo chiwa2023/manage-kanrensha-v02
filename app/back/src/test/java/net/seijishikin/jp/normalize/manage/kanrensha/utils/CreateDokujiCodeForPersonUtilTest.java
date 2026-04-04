@@ -17,7 +17,7 @@ class CreateDokujiCodeForPersonUtilTest {
 
     @Test
     @Tag("TableTruncate")
-    void test() {
+    void test() throws Exception {
 
         CreateDokujiCodeForPersonUtil createDokujiCodeForPoliOrgUtil = new CreateDokujiCodeForPersonUtil();
 

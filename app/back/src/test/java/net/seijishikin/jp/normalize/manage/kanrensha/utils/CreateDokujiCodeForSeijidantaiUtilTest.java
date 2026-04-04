@@ -18,7 +18,7 @@ class CreateDokujiCodeForSeijidantaiUtilTest {
 
     @Test
     @Tag("TableTruncate")
-    void test() {
+    void test() throws Exception {
 
         CreateDokujiCodeForSeijidantaiUtil createDokujiCodeForSeijidantaiUtil = new CreateDokujiCodeForSeijidantaiUtil();
 

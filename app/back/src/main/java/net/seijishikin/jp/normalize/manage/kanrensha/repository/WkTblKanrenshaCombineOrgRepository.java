@@ -25,6 +25,20 @@ public interface WkTblKanrenshaCombineOrgRepository extends JpaRepository<WkTblK
     int deleteByInsertUserCode(Integer userCode);
 
     /**
+     * 編集用に検索を行う
+     *
+     * @param userCode   ユーザコード
+     * @param listLatest 検索条件履歴
+     * @param isAffected 検索条件反映行
+     * @param listFinish 検索条件勝利完了
+     * @param pageable   ページング
+     * @return 検索結果
+     */
+    List<WkTblKanrenshaCombineOrgEntity> findByInsertUserCodeAndKanrenshaKbnAndIsLatestInAndIsAffectedInAndIsFinishIn(
+            Integer userCode, Short kasnrenshaKbn, List<Boolean> listLatest, List<Boolean> isAffected,
+            List<Boolean> listFinish, Pageable pageable);
+
+    /**
      * 操作者のコードで検索する
      *
      * @param userCode ユーザコード
@@ -33,6 +47,18 @@ public interface WkTblKanrenshaCombineOrgRepository extends JpaRepository<WkTblK
      */
     Page<WkTblKanrenshaCombineOrgEntity> findByInsertUserCodeAndIsLatestAndIsAffectedAndIsFinish(Integer userCode,
             boolean isLatest, boolean isAffected, boolean isFinish, Pageable pageable);
+
+    /**
+     * 編集用に検索を行う際の該当件数を返却する
+     *
+     * @param userCode   ユーザコード
+     * @param listLatest 検索条件履歴
+     * @param isAffected 検索条件反映行
+     * @param listFinish 検索条件勝利完了
+     * @return 件数
+     */
+    Integer countByInsertUserCodeAndKanrenshaKbnAndIsLatestInAndIsAffectedInAndIsFinishIn(Integer userCode,
+            Short kasnrenshaKbn, List<Boolean> listLatest, List<Boolean> isAffected, List<Boolean> listFinish);
 
     /**
      * 該当ユーザかつ最新データを取得する
