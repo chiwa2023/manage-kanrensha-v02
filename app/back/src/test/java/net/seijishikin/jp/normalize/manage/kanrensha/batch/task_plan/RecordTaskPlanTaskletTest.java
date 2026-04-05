@@ -22,6 +22,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
 import net.seijishikin.jp.normalize.common_tool.utils.CreateUserLeastDtoByBatchParamUtil;
+import net.seijishikin.jp.normalize.manage.kanrensha.constants.TaskInfoConstants;
+import net.seijishikin.jp.normalize.manage.kanrensha.dto.task.TaskPlanInfoDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.year.y2025.TaskPlan2025Entity;
 import net.seijishikin.jp.normalize.manage.kanrensha.logic.year.y2025.InsertTaskPlanY2025Logic;
 import net.seijishikin.jp.normalize.manage.kanrensha.repository.year.y2025.TaskPlan2025Repository;
@@ -34,6 +36,7 @@ import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateLeastUserForTes
 @AutoConfigureMockMvc
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
+@Transactional
 @Sql("SwitchYearInsertTaskPlanServiceTest.sql")
 class RecordTaskPlanTaskletTest {
     // CHECKSTYLE:OFF MagicNumber
@@ -51,15 +54,15 @@ class RecordTaskPlanTaskletTest {
     private TaskPlan2025Repository taskPlan2025Repository;
 
     @Test
-    @Transactional
     void test() throws Exception {
 
         Integer year = 2025;
-        Integer taskCode = 101;
+        Integer taskCode = TaskInfoConstants.SAVE_POSTAL_REPAIR_CSV;
 
         // 指定年度タスク計画を追加
         LeastUserDto userDto = CreateLeastUserForTestUtil.practice();
-        Integer taskId = insertTaskPlanY2025Logic.practice(userDto, taskCode);
+        TaskPlanInfoDto taskDto = insertTaskPlanY2025Logic.practice(userDto, taskCode);
+        Integer taskId = taskDto.getTaskPlanId();
 
         recordTaskPlanTasklet.beforeStep(this.getStepExecution((long) year, (long) taskId));
         recordTaskPlanTasklet.execute(null, null);

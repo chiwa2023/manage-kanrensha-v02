@@ -27,6 +27,7 @@ import net.seijishikin.jp.normalize.manage.kanrensha.batch.kanrensha.seijidantai
 import net.seijishikin.jp.normalize.manage.kanrensha.batch.kanrensha.seijidantai.add_min.KanrenshaSeijidantaiAddMiniWkTblFixItemReader;
 import net.seijishikin.jp.normalize.manage.kanrensha.batch.kanrensha.seijidantai.add_min.KanrenshaSeijidantaiAddMiniWkTblFixItemWriter;
 import net.seijishikin.jp.normalize.manage.kanrensha.batch.kanrensha.seijidantai.add_min.KanrenshaSeijidantaiAddMiniWkTblFixProcessor;
+import net.seijishikin.jp.normalize.manage.kanrensha.batch.task_plan.RecordTaskPlanJobExecutionListner;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.WkTblKanrenshaKigyouDtAddMinEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.WkTblKanrenshaKigyouDtAddMinResultEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.WkTblKanrenshaPersonAddMinEntity;
@@ -133,6 +134,10 @@ public class AddXmlMinMasterBatchConfiguration {
     @Autowired
     private KanrenshaSeijidantaiAddMiniWkTblFixItemWriter kanrenshaSeijidantaiAddMiniWkTblFixItemWriter;
 
+    /** バッチジョブ実行リスナ */
+    @Autowired
+    private RecordTaskPlanJobExecutionListner recordTaskPlanJobExecutionListner;
+
     /**
      * Jobを返却する
      *
@@ -141,16 +146,17 @@ public class AddXmlMinMasterBatchConfiguration {
      * @return Job
      */
     @Bean(JOB_NAME)
-    protected Job getJob(final JobRepository jobRepository, // 
+    protected Job getJob(final JobRepository jobRepository, //
             @Qualifier(STEP_PERSON_RECORD) final Step stepPersonRecord,
             @Qualifier(STEP_PERSON_FIX) final Step stepPersonFix,
-            @Qualifier(STEP_KIGYOU_RECORD) final Step stepKigyouDtRecord, // 
+            @Qualifier(STEP_KIGYOU_RECORD) final Step stepKigyouDtRecord, //
             @Qualifier(STEP_KIGYOU_FIX) final Step stepKigyouDtFix,
             @Qualifier(STEP_SEIJIDANTAI_RECORD) final Step stepSeijidantaiRecord,
             @Qualifier(STEP_SEIJIDANTAI_FIX) final Step stepSeijidantaiFix) {
 
-        return new JobBuilder(JOB_NAME, jobRepository).incrementer(new RunIdIncrementer()).flow(stepPersonRecord)
-                .next(stepPersonFix).next(stepKigyouDtRecord).next(stepKigyouDtFix).next(stepSeijidantaiRecord).next(stepSeijidantaiFix)
+        return new JobBuilder(JOB_NAME, jobRepository).incrementer(new RunIdIncrementer())
+                .listener(recordTaskPlanJobExecutionListner).flow(stepPersonRecord).next(stepPersonFix)
+                .next(stepKigyouDtRecord).next(stepKigyouDtFix).next(stepSeijidantaiRecord).next(stepSeijidantaiFix)
                 .end().build();
     }
 
@@ -166,7 +172,8 @@ public class AddXmlMinMasterBatchConfiguration {
             final PlatformTransactionManager transactionManager) {
 
         return new StepBuilder(STEP_PERSON_RECORD, jobRepository)
-                .<WkTblKanrenshaPersonAddMinEntity, WkTblKanrenshaPersonAddMinEntity>chunk(CHUNK_SIZE, transactionManager)
+                .<WkTblKanrenshaPersonAddMinEntity, WkTblKanrenshaPersonAddMinEntity>chunk(CHUNK_SIZE,
+                        transactionManager)
                 .reader(kanrenshaPersonAddMiniRecordItemReader).writer(kanrenshaPersonAddMiniRecordItemWriter).build();
     }
 
@@ -200,8 +207,10 @@ public class AddXmlMinMasterBatchConfiguration {
             final PlatformTransactionManager transactionManager) {
 
         return new StepBuilder(STEP_KIGYOU_RECORD, jobRepository)
-                .<WkTblKanrenshaKigyouDtAddMinEntity, WkTblKanrenshaKigyouDtAddMinEntity>chunk(CHUNK_SIZE, transactionManager)
-                .reader(kanrenshaKigyouDtAddMiniRecordItemReader).writer(kanrenshaKigyouDtAddMiniRecordItemWriter).build();
+                .<WkTblKanrenshaKigyouDtAddMinEntity, WkTblKanrenshaKigyouDtAddMinEntity>chunk(CHUNK_SIZE,
+                        transactionManager)
+                .reader(kanrenshaKigyouDtAddMiniRecordItemReader).writer(kanrenshaKigyouDtAddMiniRecordItemWriter)
+                .build();
     }
 
     /**
@@ -216,7 +225,8 @@ public class AddXmlMinMasterBatchConfiguration {
             final PlatformTransactionManager transactionManager) {
 
         return new StepBuilder(STEP_KIGYOU_FIX, jobRepository)
-                .<WkTblKanrenshaKigyouDtAddMinResultEntity, WkTblKanrenshaKigyouDtAddMinEntity>chunk(CHUNK_SIZE, transactionManager)
+                .<WkTblKanrenshaKigyouDtAddMinResultEntity, WkTblKanrenshaKigyouDtAddMinEntity>chunk(CHUNK_SIZE,
+                        transactionManager)
                 .reader(kanrenshaKigyouDtAddMiniWkTblFixItemReader).processor(kanrenshaKigyouDtAddMiniWkTblFixProcessor)
                 .writer(kanrenshaKigyouDtAddMiniWkTblFixItemWriter).build();
     }
@@ -233,8 +243,10 @@ public class AddXmlMinMasterBatchConfiguration {
             final PlatformTransactionManager transactionManager) {
 
         return new StepBuilder(STEP_SEIJIDANTAI_RECORD, jobRepository)
-                .<WkTblKanrenshaSeijidantaiAddMinEntity, WkTblKanrenshaSeijidantaiAddMinEntity>chunk(CHUNK_SIZE, transactionManager)
-                .reader(kanrenshaSeijidantaiAddMiniRecordItemReader).writer(kanrenshaSeijidantaiAddMiniRecordItemWriter).build();
+                .<WkTblKanrenshaSeijidantaiAddMinEntity, WkTblKanrenshaSeijidantaiAddMinEntity>chunk(CHUNK_SIZE,
+                        transactionManager)
+                .reader(kanrenshaSeijidantaiAddMiniRecordItemReader).writer(kanrenshaSeijidantaiAddMiniRecordItemWriter)
+                .build();
     }
 
     /**
@@ -251,7 +263,8 @@ public class AddXmlMinMasterBatchConfiguration {
         return new StepBuilder(STEP_SEIJIDANTAI_FIX, jobRepository)
                 .<WkTblKanrenshaSeijidantaiAddMinResultEntity, WkTblKanrenshaSeijidantaiAddMinEntity>chunk(CHUNK_SIZE,
                         transactionManager)
-                .reader(kanrenshaSeijidantaiAddMiniWkTblFixItemReader).processor(kanrenshaSeijidantaiAddMiniWkTblFixProcessor)
+                .reader(kanrenshaSeijidantaiAddMiniWkTblFixItemReader)
+                .processor(kanrenshaSeijidantaiAddMiniWkTblFixProcessor)
                 .writer(kanrenshaSeijidantaiAddMiniWkTblFixItemWriter).build();
     }
 

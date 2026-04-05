@@ -18,7 +18,6 @@ import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -34,7 +33,6 @@ import net.seijishikin.jp.normalize.common_tool.utils.GetObjectMapperWithTimeMod
 @AutoConfigureMockMvc
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
-@Transactional
 @Sql("../../service/regist_bulk_history/RetryBatchHistoryKigyouDtServiceTest.sql")
 class RetryBatchHistoryKigyouDtControllerTest {
 

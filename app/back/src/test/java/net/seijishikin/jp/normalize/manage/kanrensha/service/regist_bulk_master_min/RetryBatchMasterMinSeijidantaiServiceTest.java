@@ -12,9 +12,9 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
-import org.springframework.transaction.annotation.Transactional;
 
 import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
+import net.seijishikin.jp.normalize.manage.kanrensha.dto.task.TaskPlanInfoDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateLeastUserForTestUtil;
 
 /**
@@ -26,18 +26,23 @@ import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateLeastUserForTes
 @DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
 @Sql("RetryBatchMasterMinSeijidantaiServiceTest.sql")
 class RetryBatchMasterMinSeijidantaiServiceTest {
+    // CHECKSTYLE:OFF MagicNumber
 
     /** テスト対象 */
     @Autowired
     private RetryBatchMasterMinSeijidantaiService retryBatchMasterMinSeijidantaiService;
 
     @Test
-    @Transactional
     @Tag("TableTruncate")
     void test() throws Exception {
+        final Integer year = 2026;
+        TaskPlanInfoDto planDto = new TaskPlanInfoDto();
+        planDto.setTaskPlanId(453);
+        planDto.setTaskPlanCode(187);
 
         LeastUserDto userDto = CreateLeastUserForTestUtil.practice();
-        assertDoesNotThrow(() -> retryBatchMasterMinSeijidantaiService.practice(userDto));
+        assertDoesNotThrow(() -> retryBatchMasterMinSeijidantaiService.practice(userDto, year, planDto));
+
     }
 
 }

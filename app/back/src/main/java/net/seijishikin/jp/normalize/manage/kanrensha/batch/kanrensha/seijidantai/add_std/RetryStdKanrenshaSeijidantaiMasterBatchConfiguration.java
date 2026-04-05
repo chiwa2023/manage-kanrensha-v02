@@ -12,9 +12,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.PlatformTransactionManager;
 
+import net.seijishikin.jp.normalize.manage.kanrensha.batch.task_plan.RecordTaskPlanJobExecutionListner;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.WkTblKanrenshaSeijidantaiMasterEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.WkTblKanrenshaSeijidantaiMasterResultEntity;
-
 
 /**
  * 関連者個人標準登録BatchConfig
@@ -63,6 +63,10 @@ public class RetryStdKanrenshaSeijidantaiMasterBatchConfiguration {
     @Autowired
     private MasterSeijidantaiAddStdWkTblFixItemWriter masterSeijidantaiAddStdWkTblFixItemWriter;
 
+    /** バッチジョブ実行リスナ */
+    @Autowired
+    private RecordTaskPlanJobExecutionListner recordTaskPlanJobExecutionListner;
+
     /**
      * Jobを返却する
      *
@@ -74,8 +78,8 @@ public class RetryStdKanrenshaSeijidantaiMasterBatchConfiguration {
     protected Job getJob(final JobRepository jobRepository, @Qualifier(STEP_RECORD) final Step stepRecord,
             @Qualifier(STEP_FIX) final Step stepFix) {
 
-        return new JobBuilder(JOB_NAME, jobRepository).incrementer(new RunIdIncrementer()).flow(stepRecord)
-                .next(stepFix).end().build();
+        return new JobBuilder(JOB_NAME, jobRepository).incrementer(new RunIdIncrementer())
+                .listener(recordTaskPlanJobExecutionListner).flow(stepRecord).next(stepFix).end().build();
     }
 
     /**
@@ -90,9 +94,10 @@ public class RetryStdKanrenshaSeijidantaiMasterBatchConfiguration {
             final PlatformTransactionManager transactionManager) {
 
         return new StepBuilder(STEP_RECORD, jobRepository)
-                .<WkTblKanrenshaSeijidantaiMasterEntity, WkTblKanrenshaSeijidantaiMasterEntity>chunk(CHUNK_SIZE, transactionManager)
-                .reader(masterSeijidantaiAddStdRecordItemReader)
-                .writer(masterSeijidantaiAddStdRecordItemWriter).build();
+                .<WkTblKanrenshaSeijidantaiMasterEntity, WkTblKanrenshaSeijidantaiMasterEntity>chunk(CHUNK_SIZE,
+                        transactionManager)
+                .reader(masterSeijidantaiAddStdRecordItemReader).writer(masterSeijidantaiAddStdRecordItemWriter)
+                .build();
     }
 
     /**
@@ -106,9 +111,9 @@ public class RetryStdKanrenshaSeijidantaiMasterBatchConfiguration {
     protected Step getStepFix(final JobRepository jobRepository, final PlatformTransactionManager transactionManager) {
 
         return new StepBuilder(STEP_FIX, jobRepository)
-                .<WkTblKanrenshaSeijidantaiMasterResultEntity, WkTblKanrenshaSeijidantaiMasterEntity>chunk(CHUNK_SIZE, transactionManager)
-                .reader(masterSeijidantaiAddStdWkTblFixItemReader)
-                .processor(masterSeijidantaiAddStdWkTblFixProcessor)
+                .<WkTblKanrenshaSeijidantaiMasterResultEntity, WkTblKanrenshaSeijidantaiMasterEntity>chunk(CHUNK_SIZE,
+                        transactionManager)
+                .reader(masterSeijidantaiAddStdWkTblFixItemReader).processor(masterSeijidantaiAddStdWkTblFixProcessor)
                 .writer(masterSeijidantaiAddStdWkTblFixItemWriter).build();
     }
 

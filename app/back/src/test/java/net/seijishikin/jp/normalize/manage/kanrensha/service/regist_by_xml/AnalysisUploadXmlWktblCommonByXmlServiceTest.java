@@ -1,11 +1,11 @@
 package net.seijishikin.jp.normalize.manage.kanrensha.service.regist_by_xml;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -22,7 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import net.seijishikin.jp.normalize.manage.kanrensha.constants.GetCurrentResourcePath;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.add_xml.RegistDataByXmlCapsuleDto;
-import net.seijishikin.jp.normalize.manage.kanrensha.dto.storage_file.StorageFileDto;
+import net.seijishikin.jp.normalize.manage.kanrensha.dto.task.TaskPlanWithUseFileDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateLeastUserForTestUtil;
 
 /**
@@ -36,6 +36,7 @@ import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateLeastUserForTes
 @Transactional
 @Sql("AnalysisUploadXmlWktblCommonByXmlServiceTest.sql")
 class AnalysisUploadXmlWktblCommonByXmlServiceTest {
+    // CHECKSTYLE:OFF MagicNumber
 
     /** テスト対象 */
     @Autowired
@@ -65,26 +66,33 @@ class AnalysisUploadXmlWktblCommonByXmlServiceTest {
     @Test
     @Tag("TableTruncate")
     void test() throws Exception {
-        String fileName = "2022_ホリエモン新党_SYUUSI.xml";
+        final String fileName = "2022_ホリエモン新党_SYUUSI.xml";
 
-        Path pathSrc = Paths.get(GetCurrentResourcePath.getBackTestResourcePath(), "/file", fileName);
+        // 読み取りファイルを設定
+        Path readFilePath = Paths.get("190/test/", fileName);
+        Path readFilePathAbs = Paths.get(storageFolder, readFilePath.toString());
 
-        String copyFolder = "temp/test";
-        StorageFileDto storageFileDto = new StorageFileDto();
-        storageFileDto.setSavedDir(copyFolder);
-        storageFileDto.setFileName(fileName);
-
-        Path pathCopy = Paths.get(storageFolder, copyFolder, fileName);
-
-        Files.copy(pathSrc, pathCopy, StandardCopyOption.REPLACE_EXISTING);
+        // サンプルファイルが存在しないときは複写
+        if (!Files.exists(readFilePathAbs)) {
+            Path pathSrc = Paths.get(GetCurrentResourcePath.getBackTestResourcePath(), "/file", fileName);
+            Files.copy(pathSrc, readFilePathAbs);
+        }
+        assertTrue(Files.exists(readFilePathAbs));
 
         RegistDataByXmlCapsuleDto capsuleDto = new RegistDataByXmlCapsuleDto();
         capsuleDto.setUserDto(CreateLeastUserForTestUtil.practice());
-        capsuleDto.getStorageFileDto().setSavedDir(copyFolder);
-        capsuleDto.getStorageFileDto().setFileName(fileName);
+        // capsuleDtoのstarge情報はすでにControllerで利用済であるのでServiceで使用しない
+        // capsuleDto.getStorageFileDto().setSavedDir(readFilePath.toString());
+        // capsuleDto.getStorageFileDto().setFileName(fileName);
+
+        Integer year = 2026;
+        TaskPlanWithUseFileDto planFileDto = new TaskPlanWithUseFileDto();
+        planFileDto.setReadFile(readFilePath);
+        planFileDto.setTaskPlanId(453);
+        planFileDto.setTaskPlanCode(187);
 
         // 非同期処理なのでとりあえず例外にならないのを目視
-        assertDoesNotThrow(() -> analysisUploadXmlWktblCommonByXmlService.practice(capsuleDto));
+        assertDoesNotThrow(() -> analysisUploadXmlWktblCommonByXmlService.practice(year, capsuleDto, planFileDto));
 
     }
 

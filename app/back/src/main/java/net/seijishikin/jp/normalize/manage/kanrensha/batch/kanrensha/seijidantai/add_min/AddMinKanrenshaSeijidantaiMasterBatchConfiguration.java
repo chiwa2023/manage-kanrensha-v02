@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.PlatformTransactionManager;
 
+import net.seijishikin.jp.normalize.manage.kanrensha.batch.task_plan.RecordTaskPlanJobExecutionListner;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.WkTblKanrenshaSeijidantaiAddMinEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.WkTblKanrenshaSeijidantaiAddMinResultEntity;
 
@@ -91,6 +92,10 @@ public class AddMinKanrenshaSeijidantaiMasterBatchConfiguration {
     @Autowired
     private KanrenshaSeijidantaiAddMiniWkTblFixItemWriter kanrenshaSeijidantaiAddMiniWkTblFixItemWriter;
 
+    /** バッチジョブ実行リスナ */
+    @Autowired
+    private RecordTaskPlanJobExecutionListner recordTaskPlanJobExecutionListner;
+
     /**
      * Jobを返却する
      *
@@ -103,8 +108,9 @@ public class AddMinKanrenshaSeijidantaiMasterBatchConfiguration {
             @Qualifier(STEP_CSV) final Step stepCsv, @Qualifier(STEP_SUSPEND) final Step stepSuspend,
             @Qualifier(STEP_RECORD) final Step stepRecord, @Qualifier(STEP_FIX) final Step stepFix) {
 
-        return new JobBuilder(JOB_NAME, jobRepository).incrementer(new RunIdIncrementer()).flow(stepErase).next(stepCsv)
-                .next(stepSuspend).next(stepRecord).next(stepFix).end().build();
+        return new JobBuilder(JOB_NAME, jobRepository).incrementer(new RunIdIncrementer())
+                .listener(recordTaskPlanJobExecutionListner).flow(stepErase).next(stepCsv).next(stepSuspend)
+                .next(stepRecord).next(stepFix).end().build();
     }
 
     /**
@@ -118,8 +124,8 @@ public class AddMinKanrenshaSeijidantaiMasterBatchConfiguration {
     protected Step getStepErase(final JobRepository jobRepository,
             final PlatformTransactionManager transactionManager) {
 
-        return new StepBuilder(STEP_ERASE, jobRepository).tasklet(eraseWkTblKanrenshaSeijidantaiAddMinTasklet, transactionManager)
-                .build();
+        return new StepBuilder(STEP_ERASE, jobRepository)
+                .tasklet(eraseWkTblKanrenshaSeijidantaiAddMinTasklet, transactionManager).build();
     }
 
     /**
@@ -133,7 +139,8 @@ public class AddMinKanrenshaSeijidantaiMasterBatchConfiguration {
     protected Step getStepCsv(final JobRepository jobRepository, final PlatformTransactionManager transactionManager) {
 
         return new StepBuilder(STEP_CSV, jobRepository)
-                .<KanrenshaSeijidantaiAddMiniDto, WkTblKanrenshaSeijidantaiAddMinEntity>chunk(CHUNK_SIZE, transactionManager)
+                .<KanrenshaSeijidantaiAddMiniDto, WkTblKanrenshaSeijidantaiAddMinEntity>chunk(CHUNK_SIZE,
+                        transactionManager)
                 .reader(kanrenshaSeijidantaiAddMiniCsvItemReader).processor(kanrenshaSeijidantaiAddMiniCsvProcessor)
                 .writer(kanrenshaSeijidantaiAddMiniCsvItemWriter).build();
     }
@@ -165,8 +172,10 @@ public class AddMinKanrenshaSeijidantaiMasterBatchConfiguration {
             final PlatformTransactionManager transactionManager) {
 
         return new StepBuilder(STEP_RECORD, jobRepository)
-                .<WkTblKanrenshaSeijidantaiAddMinEntity, WkTblKanrenshaSeijidantaiAddMinEntity>chunk(CHUNK_SIZE, transactionManager)
-                .reader(kanrenshaSeijidantaiAddMiniRecordItemReader).writer(kanrenshaSeijidantaiAddMiniRecordItemWriter).build();
+                .<WkTblKanrenshaSeijidantaiAddMinEntity, WkTblKanrenshaSeijidantaiAddMinEntity>chunk(CHUNK_SIZE,
+                        transactionManager)
+                .reader(kanrenshaSeijidantaiAddMiniRecordItemReader).writer(kanrenshaSeijidantaiAddMiniRecordItemWriter)
+                .build();
     }
 
     /**
@@ -180,8 +189,10 @@ public class AddMinKanrenshaSeijidantaiMasterBatchConfiguration {
     protected Step getStepFix(final JobRepository jobRepository, final PlatformTransactionManager transactionManager) {
 
         return new StepBuilder(STEP_FIX, jobRepository)
-                .<WkTblKanrenshaSeijidantaiAddMinResultEntity, WkTblKanrenshaSeijidantaiAddMinEntity>chunk(CHUNK_SIZE, transactionManager)
-                .reader(kanrenshaSeijidantaiAddMiniWkTblFixItemReader).processor(kanrenshaSeijidantaiAddMiniWkTblFixProcessor)
+                .<WkTblKanrenshaSeijidantaiAddMinResultEntity, WkTblKanrenshaSeijidantaiAddMinEntity>chunk(CHUNK_SIZE,
+                        transactionManager)
+                .reader(kanrenshaSeijidantaiAddMiniWkTblFixItemReader)
+                .processor(kanrenshaSeijidantaiAddMiniWkTblFixProcessor)
                 .writer(kanrenshaSeijidantaiAddMiniWkTblFixItemWriter).build();
     }
 

@@ -8,8 +8,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
+import net.seijishikin.jp.normalize.manage.kanrensha.constants.TaskInfoConstants;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.storage_file.UploadContentCapsuleDto;
-import net.seijishikin.jp.normalize.manage.kanrensha.dto.task.TaskInfoConstants;
 import net.seijishikin.jp.normalize.manage.kanrensha.logic.file.GetAbsolutePathLogic;
 import net.seijishikin.jp.normalize.manage.kanrensha.logic.file.GetStoragePathLogic;
 import net.seijishikin.jp.normalize.manage.kanrensha.logic.file.SaveFileLogic;

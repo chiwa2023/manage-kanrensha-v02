@@ -5,6 +5,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
+import java.time.Year;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
@@ -14,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import net.seijishikin.jp.normalize.manage.kanrensha.logic.file.GetStackTraceFolderLogic;
-
 
 /**
  * StackTrace保存Service
@@ -47,12 +47,23 @@ public class SaveStackTraceService {
         if (Objects.isNull(exception)) {
             throw new IllegalArgumentException("保存しようとしているExceptionがnullです");
         }
+        Integer taskCode = 0;
+        if (!Objects.isNull(taskPlanCode)) {
+            taskCode = taskPlanCode;
+        }
+        Integer tableYear = Year.now().getValue();
+        if (Objects.isNull(taskYear)) {
+            // 発生年が決まっていないときは0にしないと、他のタスク例外と混在してしまう。
+            taskCode = 0;
+        } else {
+            tableYear = taskYear;
+        }
 
         Path path = null;
         try {
             LocalDateTime now = LocalDateTime.now();
 
-            Path dir = getStackTraceFolderLogic.practice(taskYear, taskPlanCode, now);
+            Path dir = getStackTraceFolderLogic.practice(tableYear, taskCode, now);
             Files.createDirectories(dir);
             // ↓↓このサービス固有実装で例外が発生した場合はログが流れることを確認するコード
             // Files.createFile(dir);

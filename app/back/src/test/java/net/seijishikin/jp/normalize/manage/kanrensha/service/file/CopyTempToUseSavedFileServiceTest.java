@@ -22,7 +22,10 @@ import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import org.springframework.transaction.annotation.Transactional;
 
 import net.seijishikin.jp.normalize.manage.kanrensha.constants.GetCurrentResourcePath;
+import net.seijishikin.jp.normalize.manage.kanrensha.constants.TaskInfoConstants;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.storage_file.StorageFileDto;
+import net.seijishikin.jp.normalize.manage.kanrensha.dto.task.TaskPlanWithUseFileDto;
+import net.seijishikin.jp.normalize.manage.kanrensha.entity.year.y2025.TaskPlan2025Entity;
 import net.seijishikin.jp.normalize.manage.kanrensha.repository.year.y2025.SaveFileStorage2025Repository;
 import net.seijishikin.jp.normalize.manage.kanrensha.repository.year.y2025.TaskPlan2025Repository;
 import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateLeastUserForTestUtil;
@@ -90,17 +93,20 @@ class CopyTempToUseSavedFileServiceTest {
 
         Files.copy(pathSrc, pathCopy, StandardCopyOption.REPLACE_EXISTING);
 
-        Path path = copyTempToUseSavedFileService.practice(2025, storageFileDto, CreateLeastUserForTestUtil.practice(),
-                Short.valueOf("205"), 101);
+        TaskPlanWithUseFileDto resutDto = copyTempToUseSavedFileService.practice(2025, storageFileDto,
+                CreateLeastUserForTestUtil.practice(), Short.valueOf("205"), TaskInfoConstants.SAVE_POSTAL_REPAIR_CSV);
 
         // コピー成功
-        assertTrue(Files.exists(path));
+        assertTrue(Files.exists(resutDto.getReadFile()));
 
         // 空の予定テーブル、空のタスクテーブルに何か行が追加されたことだけをチェック
         // 内容は各Serviceで確認する
         assertEquals(1L, saveFileStorage2025Repository.count());
-        assertEquals(1L, taskPlan2025Repository.count());
 
+        TaskPlan2025Entity taskEntity = taskPlan2025Repository.findById(resutDto.getTaskPlanId()).get();
+        assertTrue(taskEntity.getIsLatest());
+        assertTrue(taskEntity.getIsStart());
+        assertEquals(TaskInfoConstants.SAVE_POSTAL_REPAIR_CSV, taskEntity.getTaskInfoCode());
     }
 
 }

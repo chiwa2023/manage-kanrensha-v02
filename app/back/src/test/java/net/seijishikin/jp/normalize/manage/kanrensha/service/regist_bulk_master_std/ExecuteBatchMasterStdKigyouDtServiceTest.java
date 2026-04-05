@@ -21,6 +21,7 @@ import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.constants.GetCurrentResourcePath;
+import net.seijishikin.jp.normalize.manage.kanrensha.dto.task.TaskPlanWithUseFileDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateLeastUserForTestUtil;
 
 /**
@@ -33,6 +34,7 @@ import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateLeastUserForTes
 @ConfigurationProperties(prefix = "net.seijishikin.jp.normalize.kanrensha")
 @Sql("ExecuteBatchMasterStdKigyouDtServiceTest.sql")
 class ExecuteBatchMasterStdKigyouDtServiceTest {
+    // CHECKSTYLE:OFF MagicNumber
 
     /** テスト対象 */
     @Autowired
@@ -61,7 +63,7 @@ class ExecuteBatchMasterStdKigyouDtServiceTest {
 
     @Test
     @Tag("TableTruncate")
-    void test()throws Exception {
+    void test() throws Exception {
 
         final String fileName = "関連者企業団体標準.csv";
         Path readFilePath = Paths.get("190/test/", fileName);
@@ -76,8 +78,14 @@ class ExecuteBatchMasterStdKigyouDtServiceTest {
         }
         assertTrue(Files.exists(readFilePathAbs));
 
+        Integer year = 2026;
+        TaskPlanWithUseFileDto planFileDto = new TaskPlanWithUseFileDto();
+        planFileDto.setReadFile(readFilePath);
+        planFileDto.setTaskPlanId(453);
+        planFileDto.setTaskPlanCode(187);
+
         LeastUserDto userDto = CreateLeastUserForTestUtil.practice();
-        assertDoesNotThrow(() -> executeBatchMasterStdKigyouDtService.practice(readFilePath.toString(), userDto));
+        assertDoesNotThrow(() -> executeBatchMasterStdKigyouDtService.practice(year, userDto, planFileDto));
     }
 
 }

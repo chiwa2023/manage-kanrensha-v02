@@ -26,6 +26,7 @@ import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.BackApplication;
+import net.seijishikin.jp.normalize.manage.kanrensha.batch.task_plan.RecordTaskPlanTasklet;
 import net.seijishikin.jp.normalize.manage.kanrensha.constants.GetCurrentResourcePath;
 import net.seijishikin.jp.normalize.manage.kanrensha.constants.KanrenshaKbnConstants;
 import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateLeastUserForTestUtil;
@@ -40,6 +41,7 @@ import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateLeastUserForTes
 @DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
 @Sql("AddCombineOrgBatchConfigurationTest.sql")
 class AddCombineOrgBatchConfigurationTest {
+    // CHECKSTYLE:OFF MagicNumber
 
     /** テストユーティリティ */
     @Autowired
@@ -74,7 +76,11 @@ class AddCombineOrgBatchConfigurationTest {
                 .addLong("userCode", (long) userDto.getUserPersonCode())
                 .addString("userName", userDto.getUserPersonName()).addString("readFilePath", path.toString())
                 .addString("kanrenshaKbn", String.valueOf(KanrenshaKbnConstants.KIGYOU_DT)) //
-                .addString("yearMin", "2020").addString("yearMax", "2025").toJobParameters();
+                .addString("yearMin", "2020").addString("yearMax", "2025")
+                .addLong(RecordTaskPlanTasklet.KEY_YEAR, (long) 2026) //
+                .addLong(RecordTaskPlanTasklet.KEY_ID, (long) 453) //
+                .addLong(RecordTaskPlanTasklet.KEY_CODE, (long) 187)
+                .toJobParameters();
 
         JobExecution jobExecution = jobLauncherTestUtils.launchJob(jobParameters);
         assertEquals("COMPLETED", jobExecution.getExitStatus().getExitCode(), "作業完了Statusが戻ってくる");

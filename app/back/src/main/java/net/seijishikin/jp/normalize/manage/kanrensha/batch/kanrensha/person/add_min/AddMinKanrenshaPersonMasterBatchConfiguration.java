@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.PlatformTransactionManager;
 
+import net.seijishikin.jp.normalize.manage.kanrensha.batch.task_plan.RecordTaskPlanJobExecutionListner;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.WkTblKanrenshaPersonAddMinEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.WkTblKanrenshaPersonAddMinResultEntity;
 
@@ -91,6 +92,10 @@ public class AddMinKanrenshaPersonMasterBatchConfiguration {
     @Autowired
     private KanrenshaPersonAddMiniWkTblFixItemWriter kanrenshaPersonAddMiniWkTblFixItemWriter;
 
+    /** バッチジョブ実行リスナ */
+    @Autowired
+    private RecordTaskPlanJobExecutionListner recordTaskPlanJobExecutionListner;
+
     /**
      * Jobを返却する
      *
@@ -103,8 +108,9 @@ public class AddMinKanrenshaPersonMasterBatchConfiguration {
             @Qualifier(STEP_CSV) final Step stepCsv, @Qualifier(STEP_SUSPEND) final Step stepSuspend,
             @Qualifier(STEP_RECORD) final Step stepRecord, @Qualifier(STEP_FIX) final Step stepFix) {
 
-        return new JobBuilder(JOB_NAME, jobRepository).incrementer(new RunIdIncrementer()).flow(stepErase).next(stepCsv)
-                .next(stepSuspend).next(stepRecord).next(stepFix).end().build();
+        return new JobBuilder(JOB_NAME, jobRepository).incrementer(new RunIdIncrementer())
+                .listener(recordTaskPlanJobExecutionListner).flow(stepErase).next(stepCsv).next(stepSuspend)
+                .next(stepRecord).next(stepFix).end().build();
     }
 
     /**
@@ -118,8 +124,8 @@ public class AddMinKanrenshaPersonMasterBatchConfiguration {
     protected Step getStepErase(final JobRepository jobRepository,
             final PlatformTransactionManager transactionManager) {
 
-        return new StepBuilder(STEP_ERASE, jobRepository).tasklet(eraseWkTblKanrenshaPersonAddMinTasklet, transactionManager)
-                .build();
+        return new StepBuilder(STEP_ERASE, jobRepository)
+                .tasklet(eraseWkTblKanrenshaPersonAddMinTasklet, transactionManager).build();
     }
 
     /**
@@ -165,7 +171,8 @@ public class AddMinKanrenshaPersonMasterBatchConfiguration {
             final PlatformTransactionManager transactionManager) {
 
         return new StepBuilder(STEP_RECORD, jobRepository)
-                .<WkTblKanrenshaPersonAddMinEntity, WkTblKanrenshaPersonAddMinEntity>chunk(CHUNK_SIZE, transactionManager)
+                .<WkTblKanrenshaPersonAddMinEntity, WkTblKanrenshaPersonAddMinEntity>chunk(CHUNK_SIZE,
+                        transactionManager)
                 .reader(kanrenshaPersonAddMiniRecordItemReader).writer(kanrenshaPersonAddMiniRecordItemWriter).build();
     }
 
@@ -180,7 +187,8 @@ public class AddMinKanrenshaPersonMasterBatchConfiguration {
     protected Step getStepFix(final JobRepository jobRepository, final PlatformTransactionManager transactionManager) {
 
         return new StepBuilder(STEP_FIX, jobRepository)
-                .<WkTblKanrenshaPersonAddMinResultEntity, WkTblKanrenshaPersonAddMinEntity>chunk(CHUNK_SIZE, transactionManager)
+                .<WkTblKanrenshaPersonAddMinResultEntity, WkTblKanrenshaPersonAddMinEntity>chunk(CHUNK_SIZE,
+                        transactionManager)
                 .reader(kanrenshaPersonAddMiniWkTblFixItemReader).processor(kanrenshaPersonAddMiniWkTblFixProcessor)
                 .writer(kanrenshaPersonAddMiniWkTblFixItemWriter).build();
     }

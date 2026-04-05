@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.PlatformTransactionManager;
 
+import net.seijishikin.jp.normalize.manage.kanrensha.batch.task_plan.RecordTaskPlanJobExecutionListner;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.WkTblKanrenshaKigyouDtAddMinEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.WkTblKanrenshaKigyouDtAddMinResultEntity;
 
@@ -62,6 +63,10 @@ public class RetryMinKanrenshaKigyouDtMasterBatchConfiguration {
     @Autowired
     private KanrenshaKigyouDtAddMiniWkTblFixItemWriter kanrenshaKigyouDtAddMiniWkTblFixItemWriter;
 
+    /** バッチジョブ実行リスナ */
+    @Autowired
+    private RecordTaskPlanJobExecutionListner recordTaskPlanJobExecutionListner;
+
     /**
      * Jobを返却する
      *
@@ -73,8 +78,8 @@ public class RetryMinKanrenshaKigyouDtMasterBatchConfiguration {
     protected Job getJob(final JobRepository jobRepository, @Qualifier(STEP_RECORD) final Step stepRecord,
             @Qualifier(STEP_FIX) final Step stepFix) {
 
-        return new JobBuilder(JOB_NAME, jobRepository).incrementer(new RunIdIncrementer()).flow(stepRecord)
-                .next(stepFix).end().build();
+        return new JobBuilder(JOB_NAME, jobRepository).incrementer(new RunIdIncrementer())
+                .listener(recordTaskPlanJobExecutionListner).flow(stepRecord).next(stepFix).end().build();
     }
 
     /**
@@ -89,8 +94,10 @@ public class RetryMinKanrenshaKigyouDtMasterBatchConfiguration {
             final PlatformTransactionManager transactionManager) {
 
         return new StepBuilder(STEP_RECORD, jobRepository)
-                .<WkTblKanrenshaKigyouDtAddMinEntity, WkTblKanrenshaKigyouDtAddMinEntity>chunk(CHUNK_SIZE, transactionManager)
-                .reader(kanrenshaKigyouDtAddMiniRecordItemReader).writer(kanrenshaKigyouDtAddMiniRecordItemWriter).build();
+                .<WkTblKanrenshaKigyouDtAddMinEntity, WkTblKanrenshaKigyouDtAddMinEntity>chunk(CHUNK_SIZE,
+                        transactionManager)
+                .reader(kanrenshaKigyouDtAddMiniRecordItemReader).writer(kanrenshaKigyouDtAddMiniRecordItemWriter)
+                .build();
     }
 
     /**
@@ -104,7 +111,8 @@ public class RetryMinKanrenshaKigyouDtMasterBatchConfiguration {
     protected Step getStepFix(final JobRepository jobRepository, final PlatformTransactionManager transactionManager) {
 
         return new StepBuilder(STEP_FIX, jobRepository)
-                .<WkTblKanrenshaKigyouDtAddMinResultEntity, WkTblKanrenshaKigyouDtAddMinEntity>chunk(CHUNK_SIZE, transactionManager)
+                .<WkTblKanrenshaKigyouDtAddMinResultEntity, WkTblKanrenshaKigyouDtAddMinEntity>chunk(CHUNK_SIZE,
+                        transactionManager)
                 .reader(kanrenshaKigyouDtAddMiniWkTblFixItemReader).processor(kanrenshaKigyouDtAddMiniWkTblFixProcessor)
                 .writer(kanrenshaKigyouDtAddMiniWkTblFixItemWriter).build();
     }

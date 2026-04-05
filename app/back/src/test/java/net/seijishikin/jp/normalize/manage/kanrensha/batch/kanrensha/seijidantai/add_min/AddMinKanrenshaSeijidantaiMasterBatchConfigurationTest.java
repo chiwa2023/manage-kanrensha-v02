@@ -26,6 +26,7 @@ import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.BackApplication;
+import net.seijishikin.jp.normalize.manage.kanrensha.batch.task_plan.RecordTaskPlanTasklet;
 import net.seijishikin.jp.normalize.manage.kanrensha.constants.GetCurrentResourcePath;
 import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateLeastUserForTestUtil;
 
@@ -39,6 +40,7 @@ import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateLeastUserForTes
 @DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
 @Sql("AddMinKanrenshaSeijidantaiMasterBatchConfigurationTest.sql")
 class AddMinKanrenshaSeijidantaiMasterBatchConfigurationTest {
+    // CHECKSTYLE:OFF MagicNumber
 
     /** テストユーティリティ */
     @Autowired
@@ -72,7 +74,9 @@ class AddMinKanrenshaSeijidantaiMasterBatchConfigurationTest {
                 .addLocalDateTime("executeTime", LocalDateTime.now()) //
                 .addString("readFilePath", path.toString()).addLong("userId", (long) userDto.getUserPersonId())
                 .addLong("userCode", (long) userDto.getUserPersonCode())
-                .addString("userName", userDto.getUserPersonName()).toJobParameters();
+                .addString("userName", userDto.getUserPersonName()).addLong(RecordTaskPlanTasklet.KEY_YEAR, (long) 2026) //
+                .addLong(RecordTaskPlanTasklet.KEY_ID, (long) 453) //
+                .addLong(RecordTaskPlanTasklet.KEY_CODE, (long) 187).toJobParameters();
 
         JobExecution jobExecution = jobLauncherTestUtils.launchJob(jobParameters);
         assertEquals("COMPLETED", jobExecution.getExitStatus().getExitCode(), "作業完了Statusが戻ってくる");

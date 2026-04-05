@@ -39,7 +39,8 @@ public class KanrenshaPersonResultProcessor
      * 変換処理を実行する
      */
     @Override
-    public WkTblKanrenshaPersonHistoryResultEntity process(final WkTblKanrenshaPersonHistoryEntity item) throws Exception {
+    public WkTblKanrenshaPersonHistoryResultEntity process(final WkTblKanrenshaPersonHistoryEntity item)
+            throws Exception {
 
         WkTblKanrenshaPersonHistoryResultEntity entity = new WkTblKanrenshaPersonHistoryResultEntity();
         BeanUtils.copyProperties(item, entity);

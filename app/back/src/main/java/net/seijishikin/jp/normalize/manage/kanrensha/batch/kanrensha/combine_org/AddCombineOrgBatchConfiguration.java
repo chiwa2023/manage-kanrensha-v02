@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.PlatformTransactionManager;
 
+import net.seijishikin.jp.normalize.manage.kanrensha.batch.task_plan.RecordTaskPlanJobExecutionListner;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.WkTblKanrenshaCombineOrgEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.WkTblKanrenshaCombineOrgResultEntity;
 
@@ -91,6 +92,10 @@ public class AddCombineOrgBatchConfiguration {
     @Autowired
     private CombineOrgWkTblFixItemWriter combineOrgWkTblFixItemWriter;
 
+    /** バッチジョブ実行リスナ */
+    @Autowired
+    private RecordTaskPlanJobExecutionListner recordTaskPlanJobExecutionListner;
+
     /**
      * Jobを返却する
      *
@@ -103,8 +108,9 @@ public class AddCombineOrgBatchConfiguration {
             @Qualifier(STEP_CSV) final Step stepCsv, @Qualifier(STEP_SUSPEND) final Step stepSuspend,
             @Qualifier(STEP_RECORD) final Step stepRecord, @Qualifier(STEP_FIX) final Step stepFix) {
 
-        return new JobBuilder(JOB_NAME, jobRepository).incrementer(new RunIdIncrementer()).flow(stepErase).next(stepCsv)
-                .next(stepSuspend).next(stepRecord).next(stepFix).end().build();
+        return new JobBuilder(JOB_NAME, jobRepository).incrementer(new RunIdIncrementer())
+                .listener(recordTaskPlanJobExecutionListner).flow(stepErase).next(stepCsv).next(stepSuspend)
+                .next(stepRecord).next(stepFix).end().build();
     }
 
     /**
@@ -180,7 +186,8 @@ public class AddCombineOrgBatchConfiguration {
     protected Step getStepFix(final JobRepository jobRepository, final PlatformTransactionManager transactionManager) {
 
         return new StepBuilder(STEP_FIX, jobRepository)
-                .<WkTblKanrenshaCombineOrgResultEntity, WkTblKanrenshaCombineOrgEntity>chunk(CHUNK_SIZE, transactionManager)
+                .<WkTblKanrenshaCombineOrgResultEntity, WkTblKanrenshaCombineOrgEntity>chunk(CHUNK_SIZE,
+                        transactionManager)
                 .reader(combineOrgWkTblFixItemReader).processor(combineOrgWkTblFixProcessor)
                 .writer(combineOrgWkTblFixItemWriter).build();
     }

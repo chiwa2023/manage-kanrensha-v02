@@ -24,7 +24,6 @@ import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -43,8 +42,7 @@ import net.seijishikin.jp.normalize.common_tool.utils.GetObjectMapperWithTimeMod
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
 @ConfigurationProperties(prefix = "net.seijishikin.jp.normalize.kanrensha")
-@Transactional
-@Sql("../../service/regist_by_xml/ExecuteBatchCombineKigyouDtServiceTest.sql")
+@Sql("../../service/regist_by_xml/AnalysisUploadXmlWktblCommonByXmlServiceTest.sql")
 class AnalysisUploadXmlWktblCommonByXmlControllerTest {
 
     /** MockMvc */
@@ -73,7 +71,6 @@ class AnalysisUploadXmlWktblCommonByXmlControllerTest {
     }
 
     @Test
-    @Transactional
     @Tag("TableTruncate")
     @WithMockUser
     void test() throws Exception {

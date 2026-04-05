@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 
 import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
 import net.seijishikin.jp.normalize.common_tool.utils.CreateUserLeastDtoByBatchParamUtil;
+import net.seijishikin.jp.normalize.manage.kanrensha.service.util.SaveStackTraceService;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.year.SwitchYearUpdateTaskStartAndEndService;
 
 /**
@@ -40,11 +41,21 @@ public class RecordTaskPlanTasklet implements Tasklet, StepExecutionListener {
     /** 起動条件タスク計画コード呼び出しKey */
     public static final String KEY_ID = "taskId";
 
+    /** 起動条件タスク計画コード呼び出しKey */
+    public static final String KEY_CODE = "taskCode";
+
     /** 記録年 */
     private Integer tableYear = 0;
 
-    /** タスク計画コード */
+    /** タスク計画id */
     private Integer taskId = 0;
+
+    /** タスク計画コード */
+    private Integer taskCode = 0;
+
+    /** 例外記録Service */
+    @Autowired
+    private SaveStackTraceService saveStackTraceService;
 
     /**
      * 起動条件を設定する
@@ -62,6 +73,7 @@ public class RecordTaskPlanTasklet implements Tasklet, StepExecutionListener {
         JobParameters parameters = stepExecution.getJobParameters();
         tableYear = Math.toIntExact(parameters.getLong(KEY_YEAR));
         taskId = Math.toIntExact(parameters.getLong(KEY_ID));
+        taskCode = Math.toIntExact(parameters.getLong(KEY_CODE));
     }
 
     /**
@@ -69,12 +81,14 @@ public class RecordTaskPlanTasklet implements Tasklet, StepExecutionListener {
      */
     @Override
     public RepeatStatus execute(final StepContribution contribution, final ChunkContext chunkContext) throws Exception {
-
-        // このタスクレットまでたどり着いた場合、すべてのステップで例外で落ちなかったときになるので処理終了を登録する
-        switchYearUpdateTaskStartAndEndService.practice(userDto, tableYear, taskId, LocalDateTime.now());
-
-        // 処理終了
-        return RepeatStatus.FINISHED;
+        try {
+            // このタスクレットまでたどり着いた場合、すべてのステップで例外で落ちなかったときになるので処理終了を登録する
+            switchYearUpdateTaskStartAndEndService.practice(userDto, tableYear, taskId, LocalDateTime.now());
+            // 処理終了
+            return RepeatStatus.FINISHED;
+        } catch (Exception exception) { // NOPMD 業務的な理由から積極的に許容
+            saveStackTraceService.practice(exception, tableYear, taskCode);
+            throw exception; // 例外が発生したことはbatch_job_executionに記録しないといけないので投げ返し
+        }
     }
-
 }

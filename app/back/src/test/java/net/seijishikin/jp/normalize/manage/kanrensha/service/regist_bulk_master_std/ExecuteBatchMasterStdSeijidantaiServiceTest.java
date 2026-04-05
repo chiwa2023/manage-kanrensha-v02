@@ -21,6 +21,7 @@ import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.constants.GetCurrentResourcePath;
+import net.seijishikin.jp.normalize.manage.kanrensha.dto.task.TaskPlanWithUseFileDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateLeastUserForTestUtil;
 
 /**
@@ -33,6 +34,7 @@ import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateLeastUserForTes
 @ConfigurationProperties(prefix = "net.seijishikin.jp.normalize.kanrensha")
 @Sql("ExecuteBatchMasterStdSeijidantaiServiceTest.sql")
 class ExecuteBatchMasterStdSeijidantaiServiceTest {
+    // CHECKSTYLE:OFF MagicNumber
 
     /** テスト対象 */
     @Autowired
@@ -77,8 +79,14 @@ class ExecuteBatchMasterStdSeijidantaiServiceTest {
         }
         assertTrue(Files.exists(readFilePathAbs));
 
+        Integer year = 2026;
+        TaskPlanWithUseFileDto planFileDto = new TaskPlanWithUseFileDto();
+        planFileDto.setReadFile(readFilePath);
+        planFileDto.setTaskPlanId(453);
+        planFileDto.setTaskPlanCode(187);
+
         LeastUserDto userDto = CreateLeastUserForTestUtil.practice();
-        assertDoesNotThrow(() -> executeBatchMasterStdSeijidantaiService.practice(readFilePath.toString(), userDto));
+        assertDoesNotThrow(() -> executeBatchMasterStdSeijidantaiService.practice(year, userDto, planFileDto));
     }
 
 }

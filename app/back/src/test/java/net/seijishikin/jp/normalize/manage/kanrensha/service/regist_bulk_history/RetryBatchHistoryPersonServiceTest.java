@@ -12,9 +12,9 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
-import org.springframework.transaction.annotation.Transactional;
 
 import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
+import net.seijishikin.jp.normalize.manage.kanrensha.dto.task.TaskPlanInfoDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateLeastUserForTestUtil;
 
 /**
@@ -26,19 +26,22 @@ import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateLeastUserForTes
 @DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
 @Sql("RetryBatchHistoryPersonServiceTest.sql")
 class RetryBatchHistoryPersonServiceTest {
+    // CHECKSTYLE:OFF MagicNumber
 
     /** テスト対象 */
     @Autowired
     private RetryBatchHistoryPersonService retryBatchHistoryPersonService;
 
     @Test
-    @Transactional
     @Tag("TableTruncate")
-    // @Sql({ "sample_wk_tbl_partner_person_history.sql", "delete_hsitory_person.sql" })
     void test() throws Exception {
+        final Integer year = 2026;
+        TaskPlanInfoDto planDto = new TaskPlanInfoDto();
+        planDto.setTaskPlanId(453);
+        planDto.setTaskPlanCode(187);
 
         LeastUserDto userDto = CreateLeastUserForTestUtil.practice();
-        assertDoesNotThrow(() -> retryBatchHistoryPersonService.practice(userDto));
+        assertDoesNotThrow(() -> retryBatchHistoryPersonService.practice(userDto, year, planDto));
     }
 
 }

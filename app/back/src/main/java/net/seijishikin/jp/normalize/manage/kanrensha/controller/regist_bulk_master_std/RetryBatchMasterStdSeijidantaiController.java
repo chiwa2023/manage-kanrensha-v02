@@ -1,5 +1,7 @@
 package net.seijishikin.jp.normalize.manage.kanrensha.controller.regist_bulk_master_std;
 
+import java.time.Year;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -9,8 +11,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.netty.handler.codec.http.HttpResponseStatus;
 import net.seijishikin.jp.normalize.common_tool.dto.FrameworkMessageAndResultDto;
+import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.add_xml.RetryWktblBatchCapsuleDto;
+import net.seijishikin.jp.normalize.manage.kanrensha.dto.task.TaskPlanInfoDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.regist_bulk_master_std.RetryBatchMasterStdSeijidantaiService;
+import net.seijishikin.jp.normalize.manage.kanrensha.service.util.SaveStackTraceService;
+import net.seijishikin.jp.normalize.manage.kanrensha.service.year.SwitchYearInsertTaskPlanService;
+import net.seijishikin.jp.normalize.manage.kanrensha.constants.TaskInfoConstants;
 import net.seijishikin.jp.normalize.manage.kanrensha.controller.PathRouteConstants;
 
 /**
@@ -24,6 +31,14 @@ public class RetryBatchMasterStdSeijidantaiController {
     @Autowired
     private RetryBatchMasterStdSeijidantaiService retryBatchMasterStdSeijidantaiService;
 
+    /** 年切り替えタスク計画挿入Servce */
+    @Autowired
+    private SwitchYearInsertTaskPlanService switchYearInsertTaskPlanService;
+
+    /** 例外記録Service */
+    @Autowired
+    private SaveStackTraceService saveStackTraceService;
+
     /**
      * 処理を行う
      *
@@ -31,14 +46,30 @@ public class RetryBatchMasterStdSeijidantaiController {
      * @return 処理受付レスポンス
      */
     @PostMapping("/retry-poli-org")
-    public ResponseEntity<FrameworkMessageAndResultDto> practice(final @RequestBody RetryWktblBatchCapsuleDto capsuleDto) {
-        
-        FrameworkMessageAndResultDto resultDto = new FrameworkMessageAndResultDto();
-        resultDto.setMessage("処理を開始しました。完了までしばらくお待ちください。");
+    public ResponseEntity<FrameworkMessageAndResultDto> practice(
+            final @RequestBody RetryWktblBatchCapsuleDto capsuleDto) {
 
-        retryBatchMasterStdSeijidantaiService.practice(capsuleDto.getUserDto());
+        // タスク計画挿入時に失敗の可能性を考慮して必要な変数はtryの外で宣言
+        Integer year = Year.now().getValue();
+        LeastUserDto userDto = capsuleDto.getUserDto();
+        Integer taskPlanCode = 0;
+        try {
+            FrameworkMessageAndResultDto resultDto = new FrameworkMessageAndResultDto();
+            resultDto.setMessage("処理を開始しました。完了までしばらくお待ちください。");
 
-        return ResponseEntity.status(HttpResponseStatus.OK.code()).body(resultDto);
+            // 非同期処理はタスク登録をする
+            TaskPlanInfoDto planDto = switchYearInsertTaskPlanService.practice(year, userDto,
+                    TaskInfoConstants.RETRY_SEIJIDANTAI_STD);
+            taskPlanCode = planDto.getTaskPlanCode();
+            
+            retryBatchMasterStdSeijidantaiService.practice(capsuleDto.getUserDto(), year, planDto);
+
+            return ResponseEntity.status(HttpResponseStatus.OK.code()).body(resultDto);
+        } catch (Exception exception) { // NOPMD 業務上の理由で積極的に許容
+            saveStackTraceService.practice(exception, year, taskPlanCode);
+            return ResponseEntity.status(HttpResponseStatus.INTERNAL_SERVER_ERROR.code()).build();
+        }
+
     }
 
 }

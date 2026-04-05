@@ -5,19 +5,18 @@ import java.time.LocalDateTime;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.JobParametersBuilder;
-import org.springframework.batch.core.JobParametersInvalidException;
 import org.springframework.batch.core.launch.JobLauncher;
-import org.springframework.batch.core.repository.JobExecutionAlreadyRunningException;
-import org.springframework.batch.core.repository.JobInstanceAlreadyCompleteException;
-import org.springframework.batch.core.repository.JobRestartException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
+import net.seijishikin.jp.normalize.common_tool.utils.CreateUserLeastDtoByBatchParamUtil;
 import net.seijishikin.jp.normalize.manage.kanrensha.batch.kanrensha.seijidantai.add_std.RetryStdKanrenshaSeijidantaiMasterBatchConfiguration;
-import net.seijishikin.jp.normalize.manage.kanrensha.service.util.WriteLogService;
+import net.seijishikin.jp.normalize.manage.kanrensha.batch.task_plan.RecordTaskPlanTasklet;
+import net.seijishikin.jp.normalize.manage.kanrensha.dto.task.TaskPlanInfoDto;
+import net.seijishikin.jp.normalize.manage.kanrensha.service.util.SaveStackTraceService;
 
 /**
  * Csv読み取り政治団体マスタ標準登録Service
@@ -34,9 +33,9 @@ public class RetryBatchMasterStdSeijidantaiService {
     @Autowired
     private JobLauncher jobLauncher;
 
-    /** ログ書き出しService */
+    /** StackTrace保存Service */
     @Autowired
-    private WriteLogService writeLogService;
+    private SaveStackTraceService saveStackTraceService;
 
     /**
      * 処理を行う
@@ -44,22 +43,26 @@ public class RetryBatchMasterStdSeijidantaiService {
      * @param userDto ユーザDto
      */
     @Async
-    public void practice(final LeastUserDto userDto) {
+    public void practice(final LeastUserDto userDto, final Integer year, final TaskPlanInfoDto planDto) {
 
         JobParameters jobParameters = new JobParametersBuilder(
                 retryStdKanrenshaPoliticalOrganizationMaster.getJobParametersIncrementer().getNext(new JobParameters())) // NOPMD
                 .addLocalDateTime("executeTime", LocalDateTime.now())
-                .addLong("userId", Long.parseLong(userDto.getUserPersonId().toString()))
-                .addLong("userCode", Long.parseLong(userDto.getUserPersonCode().toString()))
-                .addString("userName", userDto.getUserPersonName()).toJobParameters();
+                .addLong(CreateUserLeastDtoByBatchParamUtil.USER_ID_PARAM,
+                        Long.parseLong(userDto.getUserPersonId().toString()))
+                .addLong(CreateUserLeastDtoByBatchParamUtil.USER_CODE_PARAM,
+                        Long.parseLong(userDto.getUserPersonCode().toString()))
+                .addString(CreateUserLeastDtoByBatchParamUtil.USER_NAME_PARAM, userDto.getUserPersonName())
+                .addLong(RecordTaskPlanTasklet.KEY_YEAR, (long) year)
+                .addLong(RecordTaskPlanTasklet.KEY_ID, (long) planDto.getTaskPlanId())
+                .addLong(RecordTaskPlanTasklet.KEY_CODE, (long) planDto.getTaskPlanCode()).toJobParameters();
 
         try {
             jobLauncher.run(retryStdKanrenshaPoliticalOrganizationMaster, jobParameters);
 
-        } catch (JobExecutionAlreadyRunningException | JobRestartException | JobInstanceAlreadyCompleteException
-                | JobParametersInvalidException exception) {
-            // TODO: handle exception
-            writeLogService.practiceError("",exception);
+        } catch (Exception exception) { // NOPMD 業務的な理由から積極的に許容
+            // ここで補足できる例外はバッチ起動に関する例外のみで、バッチ動作に関する例外は別で処理する
+            saveStackTraceService.practice(exception, year, planDto.getTaskPlanCode());
         }
 
     }

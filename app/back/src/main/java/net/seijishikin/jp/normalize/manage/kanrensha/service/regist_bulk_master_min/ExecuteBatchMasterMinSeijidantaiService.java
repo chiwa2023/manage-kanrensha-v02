@@ -7,11 +7,7 @@ import java.time.LocalDateTime;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.JobParametersBuilder;
-import org.springframework.batch.core.JobParametersInvalidException;
 import org.springframework.batch.core.launch.JobLauncher;
-import org.springframework.batch.core.repository.JobExecutionAlreadyRunningException;
-import org.springframework.batch.core.repository.JobInstanceAlreadyCompleteException;
-import org.springframework.batch.core.repository.JobRestartException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -19,8 +15,11 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
+import net.seijishikin.jp.normalize.common_tool.utils.CreateUserLeastDtoByBatchParamUtil;
 import net.seijishikin.jp.normalize.manage.kanrensha.batch.kanrensha.seijidantai.add_min.AddMinKanrenshaSeijidantaiMasterBatchConfiguration;
-import net.seijishikin.jp.normalize.manage.kanrensha.service.util.WriteLogService;
+import net.seijishikin.jp.normalize.manage.kanrensha.batch.task_plan.RecordTaskPlanTasklet;
+import net.seijishikin.jp.normalize.manage.kanrensha.dto.task.TaskPlanWithUseFileDto;
+import net.seijishikin.jp.normalize.manage.kanrensha.service.util.SaveStackTraceService;
 
 /**
  * Csv読み取り政治団体マスタ最小登録Service
@@ -38,9 +37,9 @@ public class ExecuteBatchMasterMinSeijidantaiService {
     @Autowired
     private JobLauncher jobLauncher;
 
-    /** ログ書き出しService */
+    /** Stacktrace保存Service */
     @Autowired
-    private WriteLogService writeLogService;
+    private SaveStackTraceService saveStackTraceService;
 
     /** propertiesからインジェクションされた最上位保存フォルダ絶対パス */
     private String storageFolder;
@@ -66,28 +65,33 @@ public class ExecuteBatchMasterMinSeijidantaiService {
     /**
      * 処理を行う
      *
-     * @param readFilePath 読み取りcsvファイルパス
-     * @param userDto      ユーザDto
+     * @param year        登録年
+     * @param userDto     ユーザ最小限Dto
+     * @param planFileDto タスク計画・使用ファイルDto
      */
     @Async
-    public void practice(final String readFilePath, final LeastUserDto userDto) {
+    public void practice(final Integer year, final LeastUserDto userDto, final TaskPlanWithUseFileDto planFileDto) {
 
-        Path path = Paths.get(storageFolder, readFilePath);
+        Path path = Paths.get(storageFolder, planFileDto.getReadFile().toString()); // NOPMD LowOfDemeter
 
         JobParameters jobParameters = new JobParametersBuilder(
                 addMinKanrenshaSeijidantaiMaster.getJobParametersIncrementer().getNext(new JobParameters())) // NOPMD
                 .addLocalDateTime("executeTime", LocalDateTime.now()).addString("readFilePath", path.toString())
-                .addLong("userId", Long.parseLong(userDto.getUserPersonId().toString()))
-                .addLong("userCode", Long.parseLong(userDto.getUserPersonCode().toString()))
-                .addString("userName", userDto.getUserPersonName()).toJobParameters();
+                .addLong(CreateUserLeastDtoByBatchParamUtil.USER_ID_PARAM,
+                        Long.parseLong(userDto.getUserPersonId().toString()))
+                .addLong(CreateUserLeastDtoByBatchParamUtil.USER_CODE_PARAM,
+                        Long.parseLong(userDto.getUserPersonCode().toString()))
+                .addString(CreateUserLeastDtoByBatchParamUtil.USER_NAME_PARAM, userDto.getUserPersonName())
+                .addLong(RecordTaskPlanTasklet.KEY_YEAR, (long) year)
+                .addLong(RecordTaskPlanTasklet.KEY_ID, (long) planFileDto.getTaskPlanId())
+                .addLong(RecordTaskPlanTasklet.KEY_CODE, (long) planFileDto.getTaskPlanCode()).toJobParameters();
 
         try {
             jobLauncher.run(addMinKanrenshaSeijidantaiMaster, jobParameters);
 
-        } catch (JobExecutionAlreadyRunningException | JobRestartException | JobInstanceAlreadyCompleteException
-                | JobParametersInvalidException exception) {
-            // TODO: handle exception
-            writeLogService.practiceError("",exception);
+        } catch (Exception exception) { // NOPMD 業務的な理由から積極的に許容
+            // ここで補足できる例外はバッチ起動に関する例外のみで、バッチ動作に関する例外は別で処理する
+            saveStackTraceService.practice(exception, year, planFileDto.getTaskPlanCode());
         }
 
     }

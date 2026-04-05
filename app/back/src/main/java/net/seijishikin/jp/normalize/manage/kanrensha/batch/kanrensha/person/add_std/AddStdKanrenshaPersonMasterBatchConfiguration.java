@@ -12,9 +12,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.PlatformTransactionManager;
 
+import net.seijishikin.jp.normalize.manage.kanrensha.batch.task_plan.RecordTaskPlanJobExecutionListner;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.WkTblKanrenshaPersonMasterEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.WkTblKanrenshaPersonMasterResultEntity;
-
 
 /**
  * 関連者個人標準登録BatchConfig
@@ -92,6 +92,10 @@ public class AddStdKanrenshaPersonMasterBatchConfiguration {
     @Autowired
     private MasterPersonAddStdWkTblFixItemWriter masterPersonAddStdWkTblFixItemWriter;
 
+    /** バッチジョブ実行リスナ */
+    @Autowired
+    private RecordTaskPlanJobExecutionListner recordTaskPlanJobExecutionListner;
+
     /**
      * Jobを返却する
      *
@@ -104,8 +108,9 @@ public class AddStdKanrenshaPersonMasterBatchConfiguration {
             @Qualifier(STEP_CSV) final Step stepCsv, @Qualifier(STEP_SUSPEND) final Step stepSuspend,
             @Qualifier(STEP_RECORD) final Step stepRecord, @Qualifier(STEP_FIX) final Step stepFix) {
 
-        return new JobBuilder(JOB_NAME, jobRepository).incrementer(new RunIdIncrementer()).flow(stepErase).next(stepCsv)
-                .next(stepSuspend).next(stepRecord).next(stepFix).end().build();
+        return new JobBuilder(JOB_NAME, jobRepository).incrementer(new RunIdIncrementer())
+                .listener(recordTaskPlanJobExecutionListner).flow(stepErase).next(stepCsv).next(stepSuspend)
+                .next(stepRecord).next(stepFix).end().build();
     }
 
     /**
@@ -166,7 +171,8 @@ public class AddStdKanrenshaPersonMasterBatchConfiguration {
             final PlatformTransactionManager transactionManager) {
 
         return new StepBuilder(STEP_RECORD, jobRepository)
-                .<WkTblKanrenshaPersonMasterEntity, WkTblKanrenshaPersonMasterEntity>chunk(CHUNK_SIZE, transactionManager)
+                .<WkTblKanrenshaPersonMasterEntity, WkTblKanrenshaPersonMasterEntity>chunk(CHUNK_SIZE,
+                        transactionManager)
                 .reader(masterPersonAddStdRecordItemReader).writer(masterPersonAddStdRecordItemWriter).build();
     }
 
@@ -181,7 +187,8 @@ public class AddStdKanrenshaPersonMasterBatchConfiguration {
     protected Step getStepFix(final JobRepository jobRepository, final PlatformTransactionManager transactionManager) {
 
         return new StepBuilder(STEP_FIX, jobRepository)
-                .<WkTblKanrenshaPersonMasterResultEntity, WkTblKanrenshaPersonMasterEntity>chunk(CHUNK_SIZE, transactionManager)
+                .<WkTblKanrenshaPersonMasterResultEntity, WkTblKanrenshaPersonMasterEntity>chunk(CHUNK_SIZE,
+                        transactionManager)
                 .reader(masterPersonAddStdWkTblFixItemReader).processor(masterPersonAddStdWkTblFixProcessor)
                 .writer(masterPersonAddStdWkTblFixItemWriter).build();
     }

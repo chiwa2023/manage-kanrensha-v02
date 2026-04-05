@@ -10,9 +10,56 @@ public class TaskInfoConstants { // NOPMD DataClass
 
     /** 地方自治体コード更新 */
     public static final int SAVE_ADDRESS_BASE_CSV = 151;
-    
+
     /** 関連者XML読み取りバッチ */
     public static final int WKTBL_KANRENSHA_XML = 301;
+    /** 関連者XML読み取り再処理 */
+    public static final int RETRY_KANRENSHA_XML = 302;
+
+    /** 関連者個人標準ファイル登録 */
+    public static final int FILE_PERSON_STD = 351;
+    /** 関連者企業団体標準再分類 */
+    public static final int FILE_KIGYOU_STD = 352;
+    /** 関連者政治団体標準再分類 */
+    public static final int FILE_SEIJIDANTAI_STD = 353;
+    /** 関連者個人最小再分類 */
+    public static final int FILE_PERSON_MIN = 354;
+    /** 関連者企業団体最小再分類 */
+    public static final int FILE_KIGYOU_MIN = 355;
+    /** 関連者政治団体最小再分類 */
+    public static final int FILE_SEIJIDANTAI_MIN = 356;
+    /** 関連者個人履歴再分類 */
+    public static final int FILE_PERSON_HISTORY = 357;
+    /** 関連者企業団体履歴再分類 */
+    public static final int FILE_KIGYOU_HISTORY = 358;
+    /** 関連者政治団体履歴再分類 */
+    public static final int FILE_SEIJIDANTAI_HISTORY = 359;
+
+    /** 関連者個人標準再分類 */
+    public static final int RETRY_PERSON_STD = 361;
+    /** 関連者企業団体標準再分類 */
+    public static final int RETRY_KIGYOU_STD = 362;
+    /** 関連者政治団体標準再分類 */
+    public static final int RETRY_SEIJIDANTAI_STD = 363;
+    /** 関連者個人最小再分類 */
+    public static final int RETRY_PERSON_MIN = 364;
+    /** 関連者企業団体最小再分類 */
+    public static final int RETRY_KIGYOU_MIN = 365;
+    /** 関連者政治団体最小再分類 */
+    public static final int RETRY_SEIJIDANTAI_MIN = 366;
+    /** 関連者個人履歴再分類 */
+    public static final int RETRY_PERSON_HISTORY = 367;
+    /** 関連者企業団体履歴再分類 */
+    public static final int RETRY_KIGYOU_HISTORY = 368;
+    /** 関連者政治団体履歴再分類 */
+    public static final int RETRY_SEIJIDANTAI_HISTORY = 369;
+
+    /** 関連者紐づけ企業 */
+    public static final int COMBINE_KIGYOU = 370;
+    /** 関連者紐づけ政治団体 */
+    public static final int COMBINE_SEIJIDANTAI = 371;
+    /** 関連者紐づけ再処理 */
+    public static final int COMBINE_RETRY = 372;
 
     /** SE権限推薦 */
     public static final int PROMOTE_ADMIN = 901;

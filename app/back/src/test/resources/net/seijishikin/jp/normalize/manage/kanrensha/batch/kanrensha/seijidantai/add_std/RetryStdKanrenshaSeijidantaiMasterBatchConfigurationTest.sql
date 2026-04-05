@@ -45,3 +45,12 @@ INSERT INTO `wk_tbl_kanrensha_seijidantai_master` (
 (7003, 7003, 1, 0, '公明党', '東京都新宿区南元町17', '代表M', 'A1', '10003', '160-0016', '新宿区南元町', '17', '160', '0016', '131041', '0003', '0003', '0003', '0003', '03', '5395', '3333', 'komei@example.com', 'http://www.komei.or.jp/', 'LINE', '@komei_official', 'コウメイトウ', 'D013', 'A003', '会計責任者3', 0,1,  '判定理由', 1, 190, 'gemini-user', NOW()),
 (7004, 7004, 0, 0, '日本共産党', '東京都渋谷区千駄ケ谷4-26-7', '委員長N', 'A1', '10004', '151-0051', '渋谷区千駄ケ谷', '4-26-7', '151', '0051', '131131', '0004', '0004', '0004', '0004', '03', '3403', '4444', 'jcp@example.com', 'http://www.jcp.or.jp/', 'YouTube', 'jcptube', 'ニホンキョウサントウ', 'D014', 'A004', '会計責任者4', 1,1,  '正)', 1, 190, 'gemini-user', NOW()),
 (7005, 7005, 1, 0, '日本維新の会', '大阪府大阪市北区天神橋2丁目北1-21', '代表O', 'A1', '10005', '530-0041', '大阪市北区天神橋', '2丁目北1-21', '530', '0041', '271271', '0005', '0005', '0005', '0005', '06', '6362', '5555', 'ishin@example.com', 'http://o-ishin.jp/', 'Twitter', '@osaka_ishin', 'ニホンイシンノカイ', 'D015', 'A005', '会計責任者5', 1,1,  '正)', 1, 191, 'gemini-user', NOW());
+
+DELETE FROM `task_plan_2026`;
+ALTER TABLE `task_plan_2026` auto_increment = 0;
+
+INSERT INTO `task_plan_2026` (`task_plan_id`,`task_plan_code`,`task_info_code`,`task_plan_name`,`table_year`,`is_latest`,`is_start`,`is_finished`,`is_suspended`,`start_datetime`,`end_dateimte`,`role_list`,`transfer_pass`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`)
+  VALUES 
+    (453,187,24,'タスク名称1',2026,1,1,0,0,'1990-07-24 23:34:56','1947-07-29 00:00:00','manager','pass',213,190,'ユーザ','2026-4-05 12:34:56',231,190,'ユーザ','1947-07-28 23:59:59')
+   ,(459,187,24,'タスク名称1',2025,1,1,0,0,'1990-07-24 23:34:56','1947-07-29 00:00:00','manager','pass',213,190,'ユーザ','2026-4-05 12:34:56',231,190,'ユーザ','1947-07-28 23:59:59')
+

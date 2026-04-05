@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.logic.year.y2025.UpdateTaskStartAndEndY2025Logic;
@@ -36,9 +37,9 @@ public class SwitchYearUpdateTaskStartAndEndService {
      * @param endTime    終了時間
      * @return 処理後最新Id
      */
+    @Transactional
     public Integer practice(final LeastUserDto userDto, final Integer year, final Integer taskPlanId,
             final LocalDateTime endTime) {
-
         switch (year) {
             case YEAR_2025:
                 return updateTaskStartAndEndY2025Logic.practice(userDto, taskPlanId, endTime);

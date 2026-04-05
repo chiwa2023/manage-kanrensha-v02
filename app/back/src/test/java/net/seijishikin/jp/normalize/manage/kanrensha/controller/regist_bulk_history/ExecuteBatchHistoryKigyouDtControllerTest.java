@@ -24,7 +24,6 @@ import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -41,7 +40,6 @@ import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateLeastUserForTes
 @AutoConfigureMockMvc
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
-@Transactional
 @Sql("../../service/regist_bulk_history/ExecuteBatchHistoryKigyouDtServiceTest.sql")
 @ConfigurationProperties(prefix = "net.seijishikin.jp.normalize.kanrensha")
 class ExecuteBatchHistoryKigyouDtControllerTest {

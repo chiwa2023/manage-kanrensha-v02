@@ -112,7 +112,7 @@ public class TaskPlan2025Entity // NOPMD DataClass
         this.taskPlanName = taskPlanName;
     }
 
-    /**  */
+    /** 登録年 */
     @Column(name = "table_year")
     private Integer tableYear = INIT_INTEGER;
 

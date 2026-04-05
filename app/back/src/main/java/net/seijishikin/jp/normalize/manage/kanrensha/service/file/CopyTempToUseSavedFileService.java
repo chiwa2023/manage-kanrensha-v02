@@ -5,16 +5,19 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.storage_file.StorageFileDto;
+import net.seijishikin.jp.normalize.manage.kanrensha.dto.task.TaskPlanInfoDto;
+import net.seijishikin.jp.normalize.manage.kanrensha.dto.task.TaskPlanWithUseFileDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.logic.file.GetStoragePathLogic;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.year.SwitchYearInsertSaveStorageService;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.year.SwitchYearInsertTaskPlanService;
-
 
 /**
  * アップロード仮保存ファイルから正式保存記録を残すService
@@ -67,9 +70,10 @@ public class CopyTempToUseSavedFileService {
      * @return 正規登録ファイルパス
      * @throws IOException ファイル保存例外
      */
-    public Path practice(final int year, final StorageFileDto fileDto, final LeastUserDto userDto,
+    @Transactional
+    public TaskPlanWithUseFileDto practice(final int year, final StorageFileDto fileDto, final LeastUserDto userDto,
             final Short fileType, final int taskConstants) throws IOException {
-        
+
         // 仮ファイルから本ファイルに複写
         Path pathTempFull = Paths.get(storageFolder, fileDto.getSavedDir(), fileDto.getFileName());
         Path pathSavedFull = Paths.get(storageFolder, getStoragePathLogic.practice(userDto).toString(),
@@ -78,9 +82,14 @@ public class CopyTempToUseSavedFileService {
 
         // ファイルが保存出来たら保存場所を記録しスケジュールに登録
         switchYearInsertSaveStorageService.practice(year, userDto, pathSavedFull, fileType);
-        switchYearInsertTaskPlanService.practice(year, userDto, taskConstants);
 
-        return path;
+        TaskPlanInfoDto planDto = switchYearInsertTaskPlanService.practice(year, userDto, taskConstants);
+
+        TaskPlanWithUseFileDto resulDto = new TaskPlanWithUseFileDto();
+        BeanUtils.copyProperties(planDto, resulDto);
+        resulDto.setReadFile(path);
+
+        return resulDto;
     }
 
 }

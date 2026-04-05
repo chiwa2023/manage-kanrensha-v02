@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.PlatformTransactionManager;
 
+import net.seijishikin.jp.normalize.manage.kanrensha.batch.task_plan.RecordTaskPlanJobExecutionListner;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.WkTblKanrenshaPersonHistoryEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.WkTblKanrenshaPersonHistoryResultEntity;
 
@@ -66,6 +67,10 @@ public class RetryKanrenshaPersonHistoryBatchConfiguration {
     @Autowired
     private KanrenshaPersonWkTblFixProcessor kanrenshaPersonWkTblFixProcessor;
 
+    /** バッチジョブ実行リスナ */
+    @Autowired
+    private RecordTaskPlanJobExecutionListner recordTaskPlanJobExecutionListner;
+
     /**
      * Jobを返却する
      *
@@ -77,8 +82,8 @@ public class RetryKanrenshaPersonHistoryBatchConfiguration {
     protected Job getJob(final JobRepository jobRepository, @Qualifier(STEP_JUDGE) final Step stepJudge,
             @Qualifier(STEP_FIX) final Step stepFix) {
 
-        return new JobBuilder(JOB_NAME, jobRepository).incrementer(new RunIdIncrementer()).flow(stepJudge).next(stepFix)
-                .end().build();
+        return new JobBuilder(JOB_NAME, jobRepository).incrementer(new RunIdIncrementer())
+                .listener(recordTaskPlanJobExecutionListner).flow(stepJudge).next(stepFix).end().build();
     }
 
     /**
@@ -93,7 +98,8 @@ public class RetryKanrenshaPersonHistoryBatchConfiguration {
             final PlatformTransactionManager transactionManager) {
 
         return new StepBuilder(STEP_JUDGE, jobRepository)
-                .<WkTblKanrenshaPersonHistoryEntity, WkTblKanrenshaPersonHistoryResultEntity>chunk(CHUNK_SIZE, transactionManager)
+                .<WkTblKanrenshaPersonHistoryEntity, WkTblKanrenshaPersonHistoryResultEntity>chunk(CHUNK_SIZE,
+                        transactionManager)
                 .reader(kanrenshaPersonResultItemReader).processor(kanrenshaPersonResultProcessor)
                 .writer(kanrenshaPersonResultItemWriter).build();
     }
@@ -109,7 +115,8 @@ public class RetryKanrenshaPersonHistoryBatchConfiguration {
     protected Step getStepFix(final JobRepository jobRepository, final PlatformTransactionManager transactionManager) {
 
         return new StepBuilder(STEP_FIX, jobRepository)
-                .<WkTblKanrenshaPersonHistoryResultEntity, WkTblKanrenshaPersonHistoryEntity>chunk(CHUNK_SIZE, transactionManager)
+                .<WkTblKanrenshaPersonHistoryResultEntity, WkTblKanrenshaPersonHistoryEntity>chunk(CHUNK_SIZE,
+                        transactionManager)
                 .reader(kanrenshaPersonWkTblFixItemReader).processor(kanrenshaPersonWkTblFixProcessor)
                 .writer(kanrenshaPersonWkTblFixItemWriter).build();
     }

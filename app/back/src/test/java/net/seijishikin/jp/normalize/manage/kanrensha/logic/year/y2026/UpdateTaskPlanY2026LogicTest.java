@@ -18,6 +18,7 @@ import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import org.springframework.transaction.annotation.Transactional;
 
 import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
+import net.seijishikin.jp.normalize.manage.kanrensha.dto.task.TaskPlanInfoDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.year.y2026.TaskPlan2026Entity;
 import net.seijishikin.jp.normalize.manage.kanrensha.repository.year.y2026.TaskPlan2026Repository;
 import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateLeastUserForTestUtil;
@@ -29,8 +30,8 @@ import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateLeastUserForTes
 @AutoConfigureMockMvc
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
-@Sql("InsertTaskPlanY2026LogicTest.sql")
 @Transactional
+@Sql("InsertTaskPlanY2026LogicTest.sql")
 class UpdateTaskPlanY2026LogicTest {
     // CHECKSTYLE:OFF MagicNumber
 
@@ -51,7 +52,8 @@ class UpdateTaskPlanY2026LogicTest {
 
         Integer taskCode = 101;
         LeastUserDto userDto = CreateLeastUserForTestUtil.practice();
-        Integer newId = insertTaskPlanY2026Logic.practice(userDto, taskCode);
+        TaskPlanInfoDto planDto = insertTaskPlanY2026Logic.practice(userDto, taskCode);
+        Integer newId = planDto.getTaskPlanId();
 
         LocalDateTime datetime = LocalDateTime.of(2022, 12, 5, 12, 34, 56);
         Boolean isFinished = true;

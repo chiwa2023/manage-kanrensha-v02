@@ -38,7 +38,7 @@ import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateLeastUserForTes
 @AutoConfigureMockMvc
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
-//@Transactional
+@Transactional
 @Sql("KanrenshaPersonWkTblFixItemWriterTest.sql")
 class KanrenshaPersonWkTblFixItemWriterTest {
     // CHECKSTYLE:OFF MagicNumber

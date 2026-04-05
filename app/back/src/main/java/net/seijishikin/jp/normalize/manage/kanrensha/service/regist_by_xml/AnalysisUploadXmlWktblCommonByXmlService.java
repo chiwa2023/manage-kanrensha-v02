@@ -1,10 +1,12 @@
-package net.seijishikin.jp.normalize.manage.kanrensha.service.regist_by_xml;
+package net.seijishikin.jp.normalize.manage.kanrensha.service.regist_by_xml; // NOPMD
 
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.time.LocalDateTime;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,7 +19,7 @@ import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 
 import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.add_xml.RegistDataByXmlCapsuleDto;
-import net.seijishikin.jp.normalize.manage.kanrensha.dto.storage_file.StorageFileDto;
+import net.seijishikin.jp.normalize.manage.kanrensha.dto.task.TaskPlanWithUseFileDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.logic.add_xml.InsertWktblXmlByPublishBikouLogic;
 import net.seijishikin.jp.normalize.manage.kanrensha.logic.add_xml.InsertWktblXmlByPublishKanrenshaDonateLogic;
 import net.seijishikin.jp.normalize.manage.kanrensha.logic.add_xml.InsertWktblXmlByPublishKanrenshaPoliPartyLogic;
@@ -27,24 +29,22 @@ import net.seijishikin.jp.normalize.manage.kanrensha.logic.add_xml.MoveWktblXmlT
 import net.seijishikin.jp.normalize.manage.kanrensha.logic.add_xml.SuspendDuplicateWkTblXmlBikoLogic;
 import net.seijishikin.jp.normalize.manage.kanrensha.logic.add_xml.SuspendDuplicateWkTblXmlDecideKanrenshaLogic;
 import net.seijishikin.jp.normalize.manage.kanrensha.logic.add_xml.SuspendDuplicateWkTblXmlNameAdddressLogic;
-import net.seijishikin.jp.normalize.manage.kanrensha.logic.file.GetAbsolutePathLogic;
 import net.seijishikin.jp.normalize.manage.kanrensha.repository.WkTblMasterAllByXmlRepository;
-import net.seijishikin.jp.normalize.manage.kanrensha.service.util.WriteLogService;
+import net.seijishikin.jp.normalize.manage.kanrensha.service.util.SaveStackTraceService;
+import net.seijishikin.jp.normalize.manage.kanrensha.service.year.SwitchYearTaskFailureService;
+import net.seijishikin.jp.normalize.manage.kanrensha.service.year.SwitchYearTaskSuccessService;
 import net.seijishikin.jp.normalize.shuushi_doc.v05.dto.AllBookShushiV05Dto;
 
 /**
  * アップロード済XMLファイル解析ワークテーブル複写Service
  */
 @Service
+@ConfigurationProperties(prefix = "net.seijishikin.jp.normalize.kanrensha")
 public class AnalysisUploadXmlWktblCommonByXmlService {
 
     /** XMLから最小マスタ登録ワークテーブルRepository */
     @Autowired
     private WkTblMasterAllByXmlRepository wkTblMasterAllByXmlRepository;
-
-    /** 絶対パス取得Logic */
-    @Autowired
-    private GetAbsolutePathLogic getAbsolutePathLogic;
 
     /** 関連者備考1項目だけワークテーブル挿入Logic */
     @Autowired
@@ -82,9 +82,38 @@ public class AnalysisUploadXmlWktblCommonByXmlService {
     @Autowired
     private MoveWktblXmlToMasterMinLogic moveWktblXmlToMasterMinLogic;
 
-    /** ログ書き出しService */
+    /** Stacktrace保存Service */
     @Autowired
-    private WriteLogService writeLogService;
+    private SaveStackTraceService saveStackTraceService;
+
+    /** タスク計画年切替保存Service */
+    @Autowired
+    private SwitchYearTaskSuccessService switchYearTaskSuccessService;
+
+    /** タスク計画年切替保存Service */
+    @Autowired
+    private SwitchYearTaskFailureService switchYearTaskFailureService;
+
+    /** propertiesからインジェクションされた最上位保存フォルダ絶対パス */
+    private String storageFolder;
+
+    /**
+     * 最上位保存フォルダ絶対パスを取得する
+     *
+     * @return 最上位保存フォルダ絶対パス
+     */
+    public String getStorageFolder() {
+        return storageFolder;
+    }
+
+    /**
+     * 最上位保存フォルダ絶対パスを設定する
+     *
+     * @param storageFolder 最上位保存フォルダ絶対パス
+     */
+    public void setStorageFolder(final String storageFolder) {
+        this.storageFolder = storageFolder;
+    }
 
     /**
      * 処理を行う
@@ -93,23 +122,27 @@ public class AnalysisUploadXmlWktblCommonByXmlService {
      */
     @Async
     @Transactional
-    public void practice(final RegistDataByXmlCapsuleDto capsuleDto) {
-
-        // TODO アップロード仮保存から本保存に複写
+    public void practice(final Integer year, final RegistDataByXmlCapsuleDto capsuleDto,
+            final TaskPlanWithUseFileDto planFileDto) {
 
         // 公式XML読み取り
         XmlMapper xmlMapper = new XmlMapper();
         xmlMapper.setDefaultPropertyInclusion(Include.ALWAYS);
         xmlMapper.enable(SerializationFeature.INDENT_OUTPUT);
 
-        StorageFileDto fileDto = capsuleDto.getStorageFileDto();
-        Path path = getAbsolutePathLogic.practice(fileDto.getSavedDir(), fileDto.getFileName());
+        // capsuleDtoのstarge情報はすでにControllerで本番ファイル移行時に利用し、
+        // 御用済であるのでであるのでServiceで使用しない
+        Path path = Paths.get(storageFolder, planFileDto.getReadFile().toString()); // NOPMD LowOfDemeter
 
+        int tableYear = year;
+        int taskId = planFileDto.getTaskPlanId();
+        int taskCode = planFileDto.getTaskPlanCode();
+
+        LocalDateTime endDatetime = LocalDateTime.now();
+        LeastUserDto userDto = capsuleDto.getUserDto();
         try {
             AllBookShushiV05Dto allBookDto = xmlMapper.readValue(Files.readAllBytes(path), new TypeReference<>() {
             });
-
-            LeastUserDto userDto = capsuleDto.getUserDto();
 
             // ワークテーブル初期化
             wkTblMasterAllByXmlRepository.deleteByInsertUserCode(userDto.getUserPersonCode());
@@ -164,10 +197,15 @@ public class AnalysisUploadXmlWktblCommonByXmlService {
             // 関連者区分が決定しているデータは各ワークテーブルに移管
             moveWktblXmlToMasterMinLogic.practce(userDto);
 
-        } catch (IOException e) {
-            // TODO: handle exception
-            // ログ記載
-            writeLogService.practiceError("", e);
+            // すべて作業が完了したら作業終了でタスク計画をマーク
+            switchYearTaskSuccessService.practice(tableYear, userDto, taskId, endDatetime);
+
+        } catch (Exception exception) { // NOPMD 業務的な理由から積極的に許容
+
+            saveStackTraceService.practice(exception, year, planFileDto.getTaskPlanCode());
+            // 例外発生時はタスク計画失敗を登録
+            switchYearTaskFailureService.practice(tableYear, userDto, taskId, taskCode, endDatetime);
+
         }
     }
 }

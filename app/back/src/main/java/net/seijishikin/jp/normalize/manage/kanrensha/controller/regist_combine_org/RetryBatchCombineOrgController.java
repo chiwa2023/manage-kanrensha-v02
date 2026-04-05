@@ -1,5 +1,7 @@
 package net.seijishikin.jp.normalize.manage.kanrensha.controller.regist_combine_org;
 
+import java.time.Year;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -10,7 +12,10 @@ import org.springframework.web.bind.annotation.RestController;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import net.seijishikin.jp.normalize.common_tool.dto.FrameworkMessageAndResultDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.add_xml.RetryWktblBatchCapsuleDto;
+import net.seijishikin.jp.normalize.manage.kanrensha.dto.task.TaskPlanInfoDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.regist_combine_org.RetryBatchCombineOrgService;
+import net.seijishikin.jp.normalize.manage.kanrensha.service.year.SwitchYearInsertTaskPlanService;
+import net.seijishikin.jp.normalize.manage.kanrensha.constants.TaskInfoConstants;
 import net.seijishikin.jp.normalize.manage.kanrensha.controller.PathRouteConstants;
 
 /**
@@ -23,6 +28,10 @@ public class RetryBatchCombineOrgController {
     /** ワークテーブル編集後再試行XML最小マスタServce */
     @Autowired
     private RetryBatchCombineOrgService retryBatchCombineKigyouDtService;
+
+    /** 年切り替えタスク計画挿入Servce */
+    @Autowired
+    private SwitchYearInsertTaskPlanService switchYearInsertTaskPlanService;
 
     /**
      * 処理を行う
@@ -37,8 +46,11 @@ public class RetryBatchCombineOrgController {
         FrameworkMessageAndResultDto resultDto = new FrameworkMessageAndResultDto();
         resultDto.setMessage("処理を開始しました。完了までしばらくお待ちください。");
 
-        retryBatchCombineKigyouDtService.practice(capsuleDto.getUserDto());
-        
+        Integer year = Year.now().getValue();
+        TaskPlanInfoDto planDto = switchYearInsertTaskPlanService.practice(year, capsuleDto.getUserDto(),
+                TaskInfoConstants.COMBINE_RETRY);
+        retryBatchCombineKigyouDtService.practice(capsuleDto.getUserDto(), year, planDto);
+
         return ResponseEntity.status(HttpResponseStatus.OK.code()).body(resultDto);
     }
 

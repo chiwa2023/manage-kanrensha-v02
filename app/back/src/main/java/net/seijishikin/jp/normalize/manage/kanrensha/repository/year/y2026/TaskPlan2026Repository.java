@@ -41,4 +41,12 @@ public interface TaskPlan2026Repository extends JpaRepository<TaskPlan2026Entity
      * @return 最新リスト(基本的に1件)
      */
     List<TaskPlan2026Entity> findByTaskPlanCodeAndIsLatest(Integer taskCode, Boolean isLatest);
+
+    /**
+     * 同一コードリストを取得する
+     * 
+     * @param taskCode タスクコード
+     * @return 検索結果
+     */
+    List<TaskPlan2026Entity> findByTaskPlanCode(Integer taskCode);
 }

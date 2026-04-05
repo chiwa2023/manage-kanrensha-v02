@@ -16,6 +16,7 @@ import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import org.springframework.transaction.annotation.Transactional;
 
 import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
+import net.seijishikin.jp.normalize.manage.kanrensha.dto.task.TaskPlanInfoDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.year.y2026.TaskPlan2026Entity;
 import net.seijishikin.jp.normalize.manage.kanrensha.repository.year.y2026.TaskPlan2026Repository;
 import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateLeastUserForTestUtil;
@@ -45,9 +46,9 @@ class InsertTaskPlanY2026LogicTest {
 
         Integer taskCode = 101;
         LeastUserDto userDto = CreateLeastUserForTestUtil.practice();
-        Integer newId = insertTaskPlanY2026Logic.practice(userDto, taskCode);
+        TaskPlanInfoDto planDto = insertTaskPlanY2026Logic.practice(userDto, taskCode);
 
-        TaskPlan2026Entity entity = taskPlan2026Repository.findById(newId).get();
+        TaskPlan2026Entity entity = taskPlan2026Repository.findById(planDto.getTaskPlanId()).get();
 
         assertEquals(false, entity.getIsFinished());
         assertEquals(true, entity.getIsLatest());

@@ -17,6 +17,8 @@ import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import org.springframework.transaction.annotation.Transactional;
 
 import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
+import net.seijishikin.jp.normalize.manage.kanrensha.constants.TaskInfoConstants;
+import net.seijishikin.jp.normalize.manage.kanrensha.dto.task.TaskPlanInfoDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.year.y2025.TaskPlan2025Entity;
 import net.seijishikin.jp.normalize.manage.kanrensha.repository.year.y2025.TaskPlan2025Repository;
 import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateLeastUserForTestUtil;
@@ -28,8 +30,8 @@ import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateLeastUserForTes
 @AutoConfigureMockMvc
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
-@Sql("InsertTaskPlanY2025LogicTest.sql")
 @Transactional
+@Sql("InsertTaskPlanY2025LogicTest.sql")
 class InsertTaskPlanY2025LogicTest {
     // CHECKSTYLE:OFF MagicNumber
 
@@ -45,11 +47,11 @@ class InsertTaskPlanY2025LogicTest {
     @Tag("TableTruncate")
     void test() throws Exception {
 
-        Integer taskCode = 101;
+        Integer taskCode = TaskInfoConstants.SAVE_POSTAL_REPAIR_CSV;
         LeastUserDto userDto = CreateLeastUserForTestUtil.practice();
-        Integer newId = insertTaskPlanY2025Logic.practice(userDto, taskCode);
+        TaskPlanInfoDto dto = insertTaskPlanY2025Logic.practice(userDto, taskCode);
 
-        TaskPlan2025Entity entity = taskPlan2025Repository.findById(newId).get();
+        TaskPlan2025Entity entity = taskPlan2025Repository.findById(dto.getTaskPlanId()).get();
 
         assertEquals(false, entity.getIsFinished());
         assertEquals(true, entity.getIsLatest());

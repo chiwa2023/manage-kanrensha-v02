@@ -1,7 +1,6 @@
 package net.seijishikin.jp.normalize.manage.kanrensha.controller.regist_bulk_history;
 
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.time.Year;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -14,8 +13,12 @@ import io.netty.handler.codec.http.HttpResponseStatus;
 import net.seijishikin.jp.normalize.common_tool.dto.FrameworkMessageAndResultDto;
 import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.kanrensha.RegistDataByCsvFileCapsuleDto;
-import net.seijishikin.jp.normalize.manage.kanrensha.dto.storage_file.StorageFileDto;
+import net.seijishikin.jp.normalize.manage.kanrensha.dto.task.TaskPlanWithUseFileDto;
+import net.seijishikin.jp.normalize.manage.kanrensha.service.file.CopyTempToUseSavedFileService;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.regist_bulk_history.ExecuteBatchHistoryKigyouDtService;
+import net.seijishikin.jp.normalize.manage.kanrensha.service.util.SaveStackTraceService;
+import net.seijishikin.jp.normalize.manage.kanrensha.constants.FileTypeConstants;
+import net.seijishikin.jp.normalize.manage.kanrensha.constants.TaskInfoConstants;
 import net.seijishikin.jp.normalize.manage.kanrensha.controller.PathRouteConstants;
 
 /**
@@ -29,9 +32,13 @@ public class ExecuteBatchHistoryKigyouDtController {
     @Autowired
     private ExecuteBatchHistoryKigyouDtService executeBatchHistoryKigyouDtService;
 
-    //    /** 仮ファイル本登録Service */
-    //    @Autowired
-    //    private CopyTempToUseSavedFileService copyTempToUseSavedFileService;
+    /** 年切り替えタスク計画挿入Servce */
+    @Autowired
+    private CopyTempToUseSavedFileService copyTempToUseSavedFileService;
+
+    /** StackTrace保存Service */
+    @Autowired
+    private SaveStackTraceService saveStackTraceService;
 
     /**
      * 処理を行う
@@ -43,32 +50,26 @@ public class ExecuteBatchHistoryKigyouDtController {
     public ResponseEntity<FrameworkMessageAndResultDto> practice(
             final @RequestBody RegistDataByCsvFileCapsuleDto capsuleDto) {
 
-        // TODO ファイルタイプとタスク種類は決定次第修正する
-        // int year = LocalDate.now().getYear();
-        // Short fileType = Short.valueOf("205");
-        // int taskConstants = 1;
+        Integer year = Year.now().getValue();
+        LeastUserDto userDto = capsuleDto.getUserDto();
+        Integer taskPlanCode = 0;
         try {
-            StorageFileDto fileDto = capsuleDto.getStorageFileDto();
-            LeastUserDto userDto = capsuleDto.getUserDto();
-
-            // copyTempToUseSavedFileService.practice(year, fileDto, userDto, fileType,
-            // taskConstants);
-
-            Path path = Paths.get(fileDto.getSavedDir(), fileDto.getFileName());
-            executeBatchHistoryKigyouDtService.practice(path.toString(), userDto);
-        } catch (Exception exception) { // NOPMD
-
             FrameworkMessageAndResultDto resultDto = new FrameworkMessageAndResultDto();
-            resultDto.setIsFailure(true);
-            resultDto.setMessage("ファイルが正常に登録できませんでした。");
+            resultDto.setMessage("処理を開始しました。完了までしばらくお待ちください。");
 
-            return ResponseEntity.status(HttpResponseStatus.NO_CONTENT.code()).body(resultDto);
+            TaskPlanWithUseFileDto planFileDto = copyTempToUseSavedFileService.practice(year,
+                    capsuleDto.getStorageFileDto(), userDto, FileTypeConstants.FILE_TYPE,
+                    TaskInfoConstants.FILE_KIGYOU_HISTORY);
+            taskPlanCode = planFileDto.getTaskPlanCode();
+
+            executeBatchHistoryKigyouDtService.practice(year, userDto, planFileDto);
+
+            return ResponseEntity.status(HttpResponseStatus.OK.code()).body(resultDto);
+        } catch (Exception exception) { // NOPMD 業務上の理由で積極的に許容
+            saveStackTraceService.practice(exception, year, taskPlanCode);
+            return ResponseEntity.status(HttpResponseStatus.INTERNAL_SERVER_ERROR.code()).build();
         }
 
-        FrameworkMessageAndResultDto resultDto = new FrameworkMessageAndResultDto();
-        resultDto.setMessage("処理を開始しました。完了までしばらくお待ちください。");
-
-        return ResponseEntity.status(HttpResponseStatus.OK.code()).body(resultDto);
     }
 
 }
