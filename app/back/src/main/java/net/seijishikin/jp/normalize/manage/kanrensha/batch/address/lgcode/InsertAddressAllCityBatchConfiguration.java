@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.PlatformTransactionManager;
 
-import net.seijishikin.jp.normalize.manage.kanrensha.batch.task_plan.RecordTaskPlanTasklet;
+import net.seijishikin.jp.normalize.manage.kanrensha.batch.task_plan.RecordTaskPlanJobExecutionListner;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.AddressAllCityEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.AddressCityDeleteEntity;
 
@@ -39,8 +39,6 @@ public class InsertAddressAllCityBatchConfiguration {
 
     /** Step名 */
     public static final String STEP_DELETE_CODE = FUNCTION_NAME + "Delete" + STEP;
-    /** Step名 */
-    public static final String STEP_TASK_PLAN_SUCCESS = FUNCTION_NAME + "TaskPlanSuccess" + STEP;
 
     /** 処理単位数 */
     private static final int CHUNK_SIZE = 250;
@@ -69,9 +67,9 @@ public class InsertAddressAllCityBatchConfiguration {
     @Autowired
     private AllCityWkTblItemWriter allCityWkTblItemWriter;
 
-    /** タスク計画成功Tasklet */
+    /** ジョブ実行リスナ(タスク計画記録) */
     @Autowired
-    private RecordTaskPlanTasklet recordTaskPlanTasklet;
+    private RecordTaskPlanJobExecutionListner recordTaskPlanJobExecutionListner;
 
     /**
      * Jobを返却する
@@ -82,11 +80,10 @@ public class InsertAddressAllCityBatchConfiguration {
      */
     @Bean(JOB_NAME)
     protected Job getJob(final JobRepository jobRepository, @Qualifier(STEP_INSERT_NAME) final Step stepInsert,
-            @Qualifier(STEP_DELETE_CODE) final Step stepDelete,
-            @Qualifier(STEP_TASK_PLAN_SUCCESS) final Step stepTaskPlan) {
+            @Qualifier(STEP_DELETE_CODE) final Step stepDelete) {
 
-        return new JobBuilder(JOB_NAME, jobRepository).incrementer(new RunIdIncrementer()).flow(stepInsert)
-                .next(stepDelete).next(stepTaskPlan).end().build();
+        return new JobBuilder(JOB_NAME, jobRepository).incrementer(new RunIdIncrementer())
+                .listener(recordTaskPlanJobExecutionListner).flow(stepInsert).next(stepDelete).end().build();
     }
 
     /**
@@ -120,20 +117,4 @@ public class InsertAddressAllCityBatchConfiguration {
                 .<AddressAllCityEntity, AddressCityDeleteEntity>chunk(CHUNK_SIZE, transactionManager)
                 .reader(allCityWkTblItemReader).processor(allCityWkTblProcessor).writer(allCityWkTblItemWriter).build();
     }
-
-    /**
-     * StepTaskPlanを返却する
-     *
-     * @param jobRepository      jobRepository
-     * @param transactionManager transactionManager
-     * @return step
-     */
-    @Bean(STEP_TASK_PLAN_SUCCESS)
-    protected Step getStepPlanSuccess(final JobRepository jobRepository,
-            final PlatformTransactionManager transactionManager) {
-
-        return new StepBuilder(STEP_INSERT_NAME, jobRepository).tasklet(recordTaskPlanTasklet, transactionManager)
-                .build();
-    }
-
 }

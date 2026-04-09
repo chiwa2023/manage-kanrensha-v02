@@ -24,7 +24,7 @@ import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.BackApplication;
-import net.seijishikin.jp.normalize.manage.kanrensha.batch.task_plan.RecordTaskPlanTasklet;
+import net.seijishikin.jp.normalize.manage.kanrensha.batch.task_plan.RecordTaskPlanJobExecutionListner;
 import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateLeastUserForTestUtil;
 
 /**
@@ -69,9 +69,9 @@ class RetryKanrenshaKigyouDtHistoryBatchConfigurationTest {
                 .addLong("userId", (long) userDto.getUserPersonId())
                 .addLong("userCode", (long) userDto.getUserPersonCode())
                 .addString("userName", userDto.getUserPersonName()) //
-                .addLong(RecordTaskPlanTasklet.KEY_YEAR, (long) 2026) //
-                .addLong(RecordTaskPlanTasklet.KEY_ID, (long) 453) //
-                .addLong(RecordTaskPlanTasklet.KEY_CODE, (long) 187)
+                .addLong(RecordTaskPlanJobExecutionListner.KEY_YEAR, (long) 2026) //
+                .addLong(RecordTaskPlanJobExecutionListner.KEY_ID, (long) 453) //
+                .addLong(RecordTaskPlanJobExecutionListner.KEY_CODE, (long) 187)
                 .toJobParameters();
 
         JobExecution jobExecution = jobLauncherTestUtils.launchJob(jobParameters);

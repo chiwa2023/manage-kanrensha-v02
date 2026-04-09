@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.PlatformTransactionManager;
 
+import net.seijishikin.jp.normalize.manage.kanrensha.batch.task_plan.RecordTaskPlanJobExecutionListner;
 import net.seijishikin.jp.normalize.manage.kanrensha.batch.zip.CompressZipFileTasklet;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.lgcode.KanrenshaPersonHistory01Entity;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.lgcode.KanrenshaPersonHistory02Entity;
@@ -476,6 +477,10 @@ public class DumpKanrenshaPersonHistoryBatchConfiguration {
     @Autowired
     private DumpKanrenshaPersonHistory99ItemWriter dumpKanrenshaPersonHistory99ItemWriter;
 
+    /** バッチジョブ実行リスナ */
+    @Autowired
+    private RecordTaskPlanJobExecutionListner recordTaskPlanJobExecutionListner;
+
     /**
      * Jobを返却する
      *
@@ -510,17 +515,18 @@ public class DumpKanrenshaPersonHistoryBatchConfiguration {
             @Qualifier(STEP_OUTPUT46) final Step stepOutput46, @Qualifier(STEP_OUTPUT47) final Step stepOutput47,
             @Qualifier(STEP_OUTPUT99) final Step stepOutput99, @Qualifier(STEP_COMPRESS) final Step stepCompress) {
 
-        return new JobBuilder(JOB_NAME, jobRepository).incrementer(new RunIdIncrementer()).flow(stepOutput01)
-                .next(stepOutput02).next(stepOutput03).next(stepOutput04).next(stepOutput05).next(stepOutput06)
-                .next(stepOutput07).next(stepOutput08).next(stepOutput09).next(stepOutput10).next(stepOutput11)
-                .next(stepOutput12).next(stepOutput13).next(stepOutput14).next(stepOutput15).next(stepOutput16)
-                .next(stepOutput17).next(stepOutput18).next(stepOutput19).next(stepOutput20).next(stepOutput21)
-                .next(stepOutput22).next(stepOutput23).next(stepOutput24).next(stepOutput25).next(stepOutput26)
-                .next(stepOutput27).next(stepOutput28).next(stepOutput29).next(stepOutput30).next(stepOutput31)
-                .next(stepOutput32).next(stepOutput33).next(stepOutput34).next(stepOutput35).next(stepOutput36)
-                .next(stepOutput37).next(stepOutput38).next(stepOutput39).next(stepOutput40).next(stepOutput41)
-                .next(stepOutput42).next(stepOutput43).next(stepOutput44).next(stepOutput45).next(stepOutput46)
-                .next(stepOutput47).next(stepOutput99).next(stepCompress).end().build();
+        return new JobBuilder(JOB_NAME, jobRepository).incrementer(new RunIdIncrementer())
+                .listener(recordTaskPlanJobExecutionListner).flow(stepOutput01).next(stepOutput02).next(stepOutput03)
+                .next(stepOutput04).next(stepOutput05).next(stepOutput06).next(stepOutput07).next(stepOutput08)
+                .next(stepOutput09).next(stepOutput10).next(stepOutput11).next(stepOutput12).next(stepOutput13)
+                .next(stepOutput14).next(stepOutput15).next(stepOutput16).next(stepOutput17).next(stepOutput18)
+                .next(stepOutput19).next(stepOutput20).next(stepOutput21).next(stepOutput22).next(stepOutput23)
+                .next(stepOutput24).next(stepOutput25).next(stepOutput26).next(stepOutput27).next(stepOutput28)
+                .next(stepOutput29).next(stepOutput30).next(stepOutput31).next(stepOutput32).next(stepOutput33)
+                .next(stepOutput34).next(stepOutput35).next(stepOutput36).next(stepOutput37).next(stepOutput38)
+                .next(stepOutput39).next(stepOutput40).next(stepOutput41).next(stepOutput42).next(stepOutput43)
+                .next(stepOutput44).next(stepOutput45).next(stepOutput46).next(stepOutput47).next(stepOutput99)
+                .next(stepCompress).end().build();
     }
 
     /**
@@ -1209,6 +1215,5 @@ public class DumpKanrenshaPersonHistoryBatchConfiguration {
         return new StepBuilder(STEP_COMPRESS, jobRepository).tasklet(compressZipFileTasklet, transactionManager)
                 .build();
     }
-
 
 }

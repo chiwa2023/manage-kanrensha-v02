@@ -25,6 +25,7 @@ import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import org.springframework.transaction.annotation.Transactional;
 
 import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
+import net.seijishikin.jp.normalize.common_tool.utils.CreateUserLeastDtoByBatchParamUtil;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.AddressPostalEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.WkTblPostalCommonEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.repository.AddressPostalRepository;
@@ -104,9 +105,12 @@ class SelectPostalCodeSingleAddressItemWriterTest {
         LeastUserDto userDto = CreateLeastUserForTestUtil.practice();
 
         JobParameters jobParameters = new JobParametersBuilder() // NOPMD
-                .addLong("userId", (long) userDto.getUserPersonId())
-                .addLong("userCode", (long) userDto.getUserPersonCode())
-                .addString("userName", userDto.getUserPersonName()).toJobParameters();
+                .addLong(CreateUserLeastDtoByBatchParamUtil.USER_ID_PARAM,
+                        Long.parseLong(userDto.getUserPersonId().toString()))
+                .addLong(CreateUserLeastDtoByBatchParamUtil.USER_CODE_PARAM,
+                        Long.parseLong(userDto.getUserPersonCode().toString()))
+                .addString(CreateUserLeastDtoByBatchParamUtil.USER_NAME_PARAM, userDto.getUserPersonName())
+                .toJobParameters();
 
         // 起動引数付きのStepExecutionを作成
         return MetaDataInstanceFactory.createStepExecution(jobParameters);

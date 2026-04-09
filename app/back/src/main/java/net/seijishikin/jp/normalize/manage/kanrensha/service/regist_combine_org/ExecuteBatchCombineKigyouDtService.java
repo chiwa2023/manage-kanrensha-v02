@@ -16,7 +16,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import net.seijishikin.jp.normalize.manage.kanrensha.batch.kanrensha.combine_org.AddCombineOrgBatchConfiguration;
-import net.seijishikin.jp.normalize.manage.kanrensha.batch.task_plan.RecordTaskPlanTasklet;
+import net.seijishikin.jp.normalize.manage.kanrensha.batch.task_plan.RecordTaskPlanJobExecutionListner;
 import net.seijishikin.jp.normalize.manage.kanrensha.constants.KanrenshaKbnConstants;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.task.TaskPlanWithUseFileDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.logic.year.GetCombineYearListLogic;
@@ -95,9 +95,9 @@ public class ExecuteBatchCombineKigyouDtService {
                     .addString("kanrenshaKbn", String.valueOf(KanrenshaKbnConstants.KIGYOU_DT))
                     .addString("yearMin", String.valueOf(listYear.getFirst()))
                     .addString("yearMax", String.valueOf(listYear.getLast()))
-                    .addLong(RecordTaskPlanTasklet.KEY_YEAR, (long) year)
-                    .addLong(RecordTaskPlanTasklet.KEY_ID, (long) planFileDto.getTaskPlanId())
-                    .addLong(RecordTaskPlanTasklet.KEY_CODE, (long) planFileDto.getTaskPlanCode()).toJobParameters();
+                    .addLong(RecordTaskPlanJobExecutionListner.KEY_YEAR, (long) year)
+                    .addLong(RecordTaskPlanJobExecutionListner.KEY_ID, (long) planFileDto.getTaskPlanId())
+                    .addLong(RecordTaskPlanJobExecutionListner.KEY_CODE, (long) planFileDto.getTaskPlanCode()).toJobParameters();
 
             jobLauncher.run(addCombineOrg, jobParameters);
 

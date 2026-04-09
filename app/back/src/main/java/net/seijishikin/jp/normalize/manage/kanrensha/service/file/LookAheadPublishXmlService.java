@@ -5,7 +5,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
@@ -28,7 +27,6 @@ import net.seijishikin.jp.normalize.shuushi_doc.v05.dto.Sheet070100CoverOrganiza
  * アップロードされたXMLファイル文書種類先読みService
  */
 @Service
-@ConfigurationProperties(prefix = "mitei.mitei.political.balancesheet.manage.kanrensha")
 public class LookAheadPublishXmlService {
 
     /** 一時ファイルパス取得Logic */

@@ -14,16 +14,15 @@ import org.springframework.transaction.PlatformTransactionManager;
 
 import net.seijishikin.jp.normalize.manage.kanrensha.batch.kanrensha.dump.all.master.DumpMasterPersonItemWriter;
 import net.seijishikin.jp.normalize.manage.kanrensha.batch.kanrensha.dump.all.master.DumpMasterPersonProcessor;
+import net.seijishikin.jp.normalize.manage.kanrensha.batch.task_plan.RecordTaskPlanJobExecutionListner;
 import net.seijishikin.jp.normalize.manage.kanrensha.batch.kanrensha.dump.all.master.DumpKanrenshaPersonMasterDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.KanrenshaPersonMasterEntity;
-
 
 /**
  * 関連者個人マスタ差分Csv出力BatchConfiguration
  */
 @Configuration
 public class DumpSabunMasterPersonBatchConfiguration {
-
 
     /** 機能名 */
     private static final String FUNCTION_NAME = "dumpSabunMasterPerson";
@@ -55,6 +54,10 @@ public class DumpSabunMasterPersonBatchConfiguration {
     @Autowired
     private DumpMasterPersonItemWriter dumpMasterPersonItemWriter;
 
+    /** バッチジョブ実行リスナ */
+    @Autowired
+    private RecordTaskPlanJobExecutionListner recordTaskPlanJobExecutionListner;
+
     /**
      * Jobを返却する
      *
@@ -65,7 +68,8 @@ public class DumpSabunMasterPersonBatchConfiguration {
     @Bean(JOB_NAME)
     protected Job getJob(final JobRepository jobRepository, @Qualifier(STEP_DUMP) final Step stepDump) {
 
-        return new JobBuilder(JOB_NAME, jobRepository).incrementer(new RunIdIncrementer()).flow(stepDump).end().build();
+        return new JobBuilder(JOB_NAME, jobRepository).incrementer(new RunIdIncrementer())
+                .listener(recordTaskPlanJobExecutionListner).flow(stepDump).end().build();
     }
 
     /**
@@ -83,6 +87,5 @@ public class DumpSabunMasterPersonBatchConfiguration {
                 .reader(dumpSabunMasterPersonItemReader).processor(dumpMasterPersonProcessor)
                 .writer(dumpMasterPersonItemWriter).build();
     }
-
 
 }

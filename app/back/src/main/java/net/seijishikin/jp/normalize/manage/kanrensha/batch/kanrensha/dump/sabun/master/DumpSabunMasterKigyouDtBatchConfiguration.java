@@ -15,8 +15,8 @@ import org.springframework.transaction.PlatformTransactionManager;
 import net.seijishikin.jp.normalize.manage.kanrensha.batch.kanrensha.dump.all.master.DumpKanrenshaKigyouDtMasterDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.batch.kanrensha.dump.all.master.DumpMasterKigyouDtItemWriter;
 import net.seijishikin.jp.normalize.manage.kanrensha.batch.kanrensha.dump.all.master.DumpMasterKigyouDtProcessor;
+import net.seijishikin.jp.normalize.manage.kanrensha.batch.task_plan.RecordTaskPlanJobExecutionListner;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.KanrenshaKigyouDtMasterEntity;
-
 
 /**
  * 関連者企業・団体マスタ差分Csv出力BatchConfiguration
@@ -54,6 +54,10 @@ public class DumpSabunMasterKigyouDtBatchConfiguration {
     @Autowired
     private DumpMasterKigyouDtItemWriter dumpMasterKigyouDtItemWriter;
 
+    /** バッチジョブ実行リスナ */
+    @Autowired
+    private RecordTaskPlanJobExecutionListner recordTaskPlanJobExecutionListner;
+
     /**
      * Jobを返却する
      *
@@ -64,7 +68,8 @@ public class DumpSabunMasterKigyouDtBatchConfiguration {
     @Bean(JOB_NAME)
     protected Job getJob(final JobRepository jobRepository, @Qualifier(STEP_DUMP) final Step stepDump) {
 
-        return new JobBuilder(JOB_NAME, jobRepository).incrementer(new RunIdIncrementer()).flow(stepDump).end().build();
+        return new JobBuilder(JOB_NAME, jobRepository).incrementer(new RunIdIncrementer())
+                .listener(recordTaskPlanJobExecutionListner).flow(stepDump).end().build();
     }
 
     /**

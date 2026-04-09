@@ -44,7 +44,6 @@ class RetryBatchMasterMinSeijidantaiControllerTest {
     @Tag("TableTruncate")
     @WithMockUser
     void test() throws Exception {
-        // TODO 再確認
         RetryWktblBatchCapsuleDto capsuleDto = new RetryWktblBatchCapsuleDto();
         capsuleDto.setUserDto(CreateLeastUserForTestUtil.practice());
 

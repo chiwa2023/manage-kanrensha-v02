@@ -1,0 +1,1227 @@
+-- 企業団体履歴
+DELETE FROM `kanrensha_kigyou_dt_history_01`;
+DELETE FROM `kanrensha_kigyou_dt_history_02`;
+DELETE FROM `kanrensha_kigyou_dt_history_03`;
+DELETE FROM `kanrensha_kigyou_dt_history_04`;
+DELETE FROM `kanrensha_kigyou_dt_history_05`;
+DELETE FROM `kanrensha_kigyou_dt_history_06`;
+DELETE FROM `kanrensha_kigyou_dt_history_07`;
+DELETE FROM `kanrensha_kigyou_dt_history_08`;
+DELETE FROM `kanrensha_kigyou_dt_history_09`;
+DELETE FROM `kanrensha_kigyou_dt_history_10`;
+DELETE FROM `kanrensha_kigyou_dt_history_11`;
+DELETE FROM `kanrensha_kigyou_dt_history_12`;
+DELETE FROM `kanrensha_kigyou_dt_history_13`;
+DELETE FROM `kanrensha_kigyou_dt_history_14`;
+DELETE FROM `kanrensha_kigyou_dt_history_15`;
+DELETE FROM `kanrensha_kigyou_dt_history_16`;
+DELETE FROM `kanrensha_kigyou_dt_history_17`;
+DELETE FROM `kanrensha_kigyou_dt_history_18`;
+DELETE FROM `kanrensha_kigyou_dt_history_19`;
+DELETE FROM `kanrensha_kigyou_dt_history_20`;
+DELETE FROM `kanrensha_kigyou_dt_history_21`;
+DELETE FROM `kanrensha_kigyou_dt_history_22`;
+DELETE FROM `kanrensha_kigyou_dt_history_23`;
+DELETE FROM `kanrensha_kigyou_dt_history_24`;
+DELETE FROM `kanrensha_kigyou_dt_history_25`;
+DELETE FROM `kanrensha_kigyou_dt_history_26`;
+DELETE FROM `kanrensha_kigyou_dt_history_27`;
+DELETE FROM `kanrensha_kigyou_dt_history_28`;
+DELETE FROM `kanrensha_kigyou_dt_history_29`;
+DELETE FROM `kanrensha_kigyou_dt_history_30`;
+DELETE FROM `kanrensha_kigyou_dt_history_31`;
+DELETE FROM `kanrensha_kigyou_dt_history_32`;
+DELETE FROM `kanrensha_kigyou_dt_history_33`;
+DELETE FROM `kanrensha_kigyou_dt_history_34`;
+DELETE FROM `kanrensha_kigyou_dt_history_35`;
+DELETE FROM `kanrensha_kigyou_dt_history_36`;
+DELETE FROM `kanrensha_kigyou_dt_history_37`;
+DELETE FROM `kanrensha_kigyou_dt_history_38`;
+DELETE FROM `kanrensha_kigyou_dt_history_39`;
+DELETE FROM `kanrensha_kigyou_dt_history_40`;
+DELETE FROM `kanrensha_kigyou_dt_history_41`;
+DELETE FROM `kanrensha_kigyou_dt_history_42`;
+DELETE FROM `kanrensha_kigyou_dt_history_43`;
+DELETE FROM `kanrensha_kigyou_dt_history_44`;
+DELETE FROM `kanrensha_kigyou_dt_history_45`;
+DELETE FROM `kanrensha_kigyou_dt_history_46`;
+DELETE FROM `kanrensha_kigyou_dt_history_47`;
+DELETE FROM `kanrensha_kigyou_dt_history_99`;
+
+ALTER TABLE `kanrensha_kigyou_dt_history_01` auto_increment = 0;
+ALTER TABLE `kanrensha_kigyou_dt_history_02` auto_increment = 0;
+ALTER TABLE `kanrensha_kigyou_dt_history_03` auto_increment = 0;
+ALTER TABLE `kanrensha_kigyou_dt_history_04` auto_increment = 0;
+ALTER TABLE `kanrensha_kigyou_dt_history_05` auto_increment = 0;
+ALTER TABLE `kanrensha_kigyou_dt_history_06` auto_increment = 0;
+ALTER TABLE `kanrensha_kigyou_dt_history_07` auto_increment = 0;
+ALTER TABLE `kanrensha_kigyou_dt_history_08` auto_increment = 0;
+ALTER TABLE `kanrensha_kigyou_dt_history_09` auto_increment = 0;
+ALTER TABLE `kanrensha_kigyou_dt_history_10` auto_increment = 0;
+ALTER TABLE `kanrensha_kigyou_dt_history_11` auto_increment = 0;
+ALTER TABLE `kanrensha_kigyou_dt_history_12` auto_increment = 0;
+ALTER TABLE `kanrensha_kigyou_dt_history_13` auto_increment = 0;
+ALTER TABLE `kanrensha_kigyou_dt_history_14` auto_increment = 0;
+ALTER TABLE `kanrensha_kigyou_dt_history_15` auto_increment = 0;
+ALTER TABLE `kanrensha_kigyou_dt_history_16` auto_increment = 0;
+ALTER TABLE `kanrensha_kigyou_dt_history_17` auto_increment = 0;
+ALTER TABLE `kanrensha_kigyou_dt_history_18` auto_increment = 0;
+ALTER TABLE `kanrensha_kigyou_dt_history_19` auto_increment = 0;
+ALTER TABLE `kanrensha_kigyou_dt_history_20` auto_increment = 0;
+ALTER TABLE `kanrensha_kigyou_dt_history_21` auto_increment = 0;
+ALTER TABLE `kanrensha_kigyou_dt_history_22` auto_increment = 0;
+ALTER TABLE `kanrensha_kigyou_dt_history_23` auto_increment = 0;
+ALTER TABLE `kanrensha_kigyou_dt_history_24` auto_increment = 0;
+ALTER TABLE `kanrensha_kigyou_dt_history_25` auto_increment = 0;
+ALTER TABLE `kanrensha_kigyou_dt_history_26` auto_increment = 0;
+ALTER TABLE `kanrensha_kigyou_dt_history_27` auto_increment = 0;
+ALTER TABLE `kanrensha_kigyou_dt_history_28` auto_increment = 0;
+ALTER TABLE `kanrensha_kigyou_dt_history_29` auto_increment = 0;
+ALTER TABLE `kanrensha_kigyou_dt_history_30` auto_increment = 0;
+ALTER TABLE `kanrensha_kigyou_dt_history_31` auto_increment = 0;
+ALTER TABLE `kanrensha_kigyou_dt_history_32` auto_increment = 0;
+ALTER TABLE `kanrensha_kigyou_dt_history_33` auto_increment = 0;
+ALTER TABLE `kanrensha_kigyou_dt_history_34` auto_increment = 0;
+ALTER TABLE `kanrensha_kigyou_dt_history_35` auto_increment = 0;
+ALTER TABLE `kanrensha_kigyou_dt_history_36` auto_increment = 0;
+ALTER TABLE `kanrensha_kigyou_dt_history_37` auto_increment = 0;
+ALTER TABLE `kanrensha_kigyou_dt_history_38` auto_increment = 0;
+ALTER TABLE `kanrensha_kigyou_dt_history_39` auto_increment = 0;
+ALTER TABLE `kanrensha_kigyou_dt_history_40` auto_increment = 0;
+ALTER TABLE `kanrensha_kigyou_dt_history_41` auto_increment = 0;
+ALTER TABLE `kanrensha_kigyou_dt_history_42` auto_increment = 0;
+ALTER TABLE `kanrensha_kigyou_dt_history_43` auto_increment = 0;
+ALTER TABLE `kanrensha_kigyou_dt_history_44` auto_increment = 0;
+ALTER TABLE `kanrensha_kigyou_dt_history_45` auto_increment = 0;
+ALTER TABLE `kanrensha_kigyou_dt_history_46` auto_increment = 0;
+ALTER TABLE `kanrensha_kigyou_dt_history_47` auto_increment = 0;
+ALTER TABLE `kanrensha_kigyou_dt_history_99` auto_increment = 0;
+
+INSERT INTO `kanrensha_kigyou_dt_history_01` (`kanrensha_kigyou_dt_history_id`,`kigyou_dt_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`) VALUES
+  (414,'1-2345-67-890123-4567890',1,'01ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2022-12-05 12:34:56',1,1,'1','1948-07-28 00:00:00')
+, (415,'1-2345-67-890123-4567890',1,'01ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2024-09-18 12:34:56',1,1,'1','1948-07-28 00:00:00')
+, (416,'1-2345-67-890123-4567890',0,'01ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2024-03-12 12:34:56',1,1,'1','1948-07-28 00:00:00');
+
+INSERT INTO `kanrensha_kigyou_dt_history_02` (`kanrensha_kigyou_dt_history_id`,`kigyou_dt_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`) VALUES
+  (414,'1-2345-67-890123-4567890',1,'02ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2022-12-05 12:34:56',1,1,'1','1948-07-28 00:00:00')
+, (415,'1-2345-67-890123-4567890',1,'02ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2024-09-18 12:34:56',1,1,'1','1948-07-28 00:00:00')
+, (416,'1-2345-67-890123-4567890',0,'02ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2024-03-12 12:34:56',1,1,'1','1948-07-28 00:00:00');
+
+INSERT INTO `kanrensha_kigyou_dt_history_03` (`kanrensha_kigyou_dt_history_id`,`kigyou_dt_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`) VALUES
+  (414,'1-2345-67-890123-4567890',1,'03ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2022-12-05 12:34:56',1,1,'1','1948-07-28 00:00:00')
+, (415,'1-2345-67-890123-4567890',1,'03ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2024-09-18 12:34:56',1,1,'1','1948-07-28 00:00:00')
+, (416,'1-2345-67-890123-4567890',0,'03ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2024-03-12 12:34:56',1,1,'1','1948-07-28 00:00:00');
+
+INSERT INTO `kanrensha_kigyou_dt_history_04` (`kanrensha_kigyou_dt_history_id`,`kigyou_dt_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`) VALUES
+  (414,'1-2345-67-890123-4567890',1,'04ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2022-12-05 12:34:56',1,1,'1','1948-07-28 00:00:00')
+, (415,'1-2345-67-890123-4567890',1,'04ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2024-09-18 12:34:56',1,1,'1','1948-07-28 00:00:00')
+, (416,'1-2345-67-890123-4567890',0,'04ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2024-03-12 12:34:56',1,1,'1','1948-07-28 00:00:00');
+
+INSERT INTO `kanrensha_kigyou_dt_history_05` (`kanrensha_kigyou_dt_history_id`,`kigyou_dt_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`) VALUES
+  (414,'1-2345-67-890123-4567890',1,'05ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2022-12-05 12:34:56',1,1,'1','1948-07-28 00:00:00')
+, (415,'1-2345-67-890123-4567890',1,'05ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2024-09-18 12:34:56',1,1,'1','1948-07-28 00:00:00')
+, (416,'1-2345-67-890123-4567890',0,'05ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2024-03-12 12:34:56',1,1,'1','1948-07-28 00:00:00');
+
+INSERT INTO `kanrensha_kigyou_dt_history_06` (`kanrensha_kigyou_dt_history_id`,`kigyou_dt_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`) VALUES
+  (414,'1-2345-67-890123-4567890',1,'06ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2022-12-05 12:34:56',1,1,'1','1948-07-28 00:00:00')
+, (415,'1-2345-67-890123-4567890',1,'06ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2024-09-18 12:34:56',1,1,'1','1948-07-28 00:00:00')
+, (416,'1-2345-67-890123-4567890',0,'06ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2024-03-12 12:34:56',1,1,'1','1948-07-28 00:00:00');
+
+INSERT INTO `kanrensha_kigyou_dt_history_07` (`kanrensha_kigyou_dt_history_id`,`kigyou_dt_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`) VALUES
+  (414,'1-2345-67-890123-4567890',1,'07ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2022-12-05 12:34:56',1,1,'1','1948-07-28 00:00:00')
+, (415,'1-2345-67-890123-4567890',1,'07ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2024-09-18 12:34:56',1,1,'1','1948-07-28 00:00:00')
+, (416,'1-2345-67-890123-4567890',0,'07ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2024-03-12 12:34:56',1,1,'1','1948-07-28 00:00:00');
+
+INSERT INTO `kanrensha_kigyou_dt_history_08` (`kanrensha_kigyou_dt_history_id`,`kigyou_dt_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`) VALUES
+  (414,'1-2345-67-890123-4567890',1,'08ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2022-12-05 12:34:56',1,1,'1','1948-07-28 00:00:00')
+, (415,'1-2345-67-890123-4567890',1,'08ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2024-09-18 12:34:56',1,1,'1','1948-07-28 00:00:00')
+, (416,'1-2345-67-890123-4567890',0,'08ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2024-03-12 12:34:56',1,1,'1','1948-07-28 00:00:00');
+
+INSERT INTO `kanrensha_kigyou_dt_history_09` (`kanrensha_kigyou_dt_history_id`,`kigyou_dt_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`) VALUES
+  (414,'1-2345-67-890123-4567890',1,'09ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2022-12-05 12:34:56',1,1,'1','1948-07-28 00:00:00')
+, (415,'1-2345-67-890123-4567890',1,'09ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2024-09-18 12:34:56',1,1,'1','1948-07-28 00:00:00')
+, (416,'1-2345-67-890123-4567890',0,'09ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2024-03-12 12:34:56',1,1,'1','1948-07-28 00:00:00');
+
+INSERT INTO `kanrensha_kigyou_dt_history_10` (`kanrensha_kigyou_dt_history_id`,`kigyou_dt_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`) VALUES
+  (414,'1-2345-67-890123-4567890',1,'10ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2022-12-05 12:34:56',1,1,'1','1948-07-28 00:00:00')
+, (415,'1-2345-67-890123-4567890',1,'10ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2024-09-18 12:34:56',1,1,'1','1948-07-28 00:00:00')
+, (416,'1-2345-67-890123-4567890',0,'10ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2024-03-12 12:34:56',1,1,'1','1948-07-28 00:00:00');
+
+INSERT INTO `kanrensha_kigyou_dt_history_11` (`kanrensha_kigyou_dt_history_id`,`kigyou_dt_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`) VALUES
+  (414,'1-2345-67-890123-4567890',1,'11ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2022-12-05 12:34:56',1,1,'1','1948-07-28 00:00:00')
+, (415,'1-2345-67-890123-4567890',1,'11ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2024-09-18 12:34:56',1,1,'1','1948-07-28 00:00:00')
+, (416,'1-2345-67-890123-4567890',0,'11ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2024-03-12 12:34:56',1,1,'1','1948-07-28 00:00:00');
+
+INSERT INTO `kanrensha_kigyou_dt_history_12` (`kanrensha_kigyou_dt_history_id`,`kigyou_dt_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`) VALUES
+  (414,'1-2345-67-890123-4567890',1,'12ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2022-12-05 12:34:56',1,1,'1','1948-07-28 00:00:00')
+, (415,'1-2345-67-890123-4567890',1,'12ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2024-09-18 12:34:56',1,1,'1','1948-07-28 00:00:00')
+, (416,'1-2345-67-890123-4567890',0,'12ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2024-03-12 12:34:56',1,1,'1','1948-07-28 00:00:00');
+
+INSERT INTO `kanrensha_kigyou_dt_history_13` (`kanrensha_kigyou_dt_history_id`,`kigyou_dt_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`) VALUES
+  (414,'1-2345-67-890123-4567890',1,'13ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2022-12-05 12:34:56',1,1,'1','1948-07-28 00:00:00')
+, (415,'1-2345-67-890123-4567890',1,'13ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2024-09-18 12:34:56',1,1,'1','1948-07-28 00:00:00')
+, (416,'1-2345-67-890123-4567890',0,'13ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2024-03-12 12:34:56',1,1,'1','1948-07-28 00:00:00');
+
+INSERT INTO `kanrensha_kigyou_dt_history_14` (`kanrensha_kigyou_dt_history_id`,`kigyou_dt_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`) VALUES
+  (414,'1-2345-67-890123-4567890',1,'14ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2022-12-05 12:34:56',1,1,'1','1948-07-28 00:00:00')
+, (415,'1-2345-67-890123-4567890',1,'14ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2024-09-18 12:34:56',1,1,'1','1948-07-28 00:00:00')
+, (416,'1-2345-67-890123-4567890',0,'14ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2024-03-12 12:34:56',1,1,'1','1948-07-28 00:00:00');
+
+INSERT INTO `kanrensha_kigyou_dt_history_15` (`kanrensha_kigyou_dt_history_id`,`kigyou_dt_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`) VALUES
+  (414,'1-2345-67-890123-4567890',1,'15ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2022-12-05 12:34:56',1,1,'1','1948-07-28 00:00:00')
+, (415,'1-2345-67-890123-4567890',1,'15ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2024-09-18 12:34:56',1,1,'1','1948-07-28 00:00:00')
+, (416,'1-2345-67-890123-4567890',0,'15ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2024-03-12 12:34:56',1,1,'1','1948-07-28 00:00:00');
+
+INSERT INTO `kanrensha_kigyou_dt_history_16` (`kanrensha_kigyou_dt_history_id`,`kigyou_dt_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`) VALUES
+  (414,'1-2345-67-890123-4567890',1,'16ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2022-12-05 12:34:56',1,1,'1','1948-07-28 00:00:00')
+, (415,'1-2345-67-890123-4567890',1,'16ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2024-09-18 12:34:56',1,1,'1','1948-07-28 00:00:00')
+, (416,'1-2345-67-890123-4567890',0,'16ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2024-03-12 12:34:56',1,1,'1','1948-07-28 00:00:00');
+
+INSERT INTO `kanrensha_kigyou_dt_history_17` (`kanrensha_kigyou_dt_history_id`,`kigyou_dt_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`) VALUES
+  (414,'1-2345-67-890123-4567890',1,'17ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2022-12-05 12:34:56',1,1,'1','1948-07-28 00:00:00')
+, (415,'1-2345-67-890123-4567890',1,'17ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2024-09-18 12:34:56',1,1,'1','1948-07-28 00:00:00')
+, (416,'1-2345-67-890123-4567890',0,'17ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2024-03-12 12:34:56',1,1,'1','1948-07-28 00:00:00');
+
+INSERT INTO `kanrensha_kigyou_dt_history_18` (`kanrensha_kigyou_dt_history_id`,`kigyou_dt_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`) VALUES
+  (414,'1-2345-67-890123-4567890',1,'18ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2022-12-05 12:34:56',1,1,'1','1948-07-28 00:00:00')
+, (415,'1-2345-67-890123-4567890',1,'18ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2024-09-18 12:34:56',1,1,'1','1948-07-28 00:00:00')
+, (416,'1-2345-67-890123-4567890',0,'18ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2024-03-12 12:34:56',1,1,'1','1948-07-28 00:00:00');
+
+INSERT INTO `kanrensha_kigyou_dt_history_19` (`kanrensha_kigyou_dt_history_id`,`kigyou_dt_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`) VALUES
+  (414,'1-2345-67-890123-4567890',1,'19ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2022-12-05 12:34:56',1,1,'1','1948-07-28 00:00:00')
+, (415,'1-2345-67-890123-4567890',1,'19ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2024-09-18 12:34:56',1,1,'1','1948-07-28 00:00:00')
+, (416,'1-2345-67-890123-4567890',0,'19ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2024-03-12 12:34:56',1,1,'1','1948-07-28 00:00:00');
+
+INSERT INTO `kanrensha_kigyou_dt_history_20` (`kanrensha_kigyou_dt_history_id`,`kigyou_dt_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`) VALUES
+  (414,'1-2345-67-890123-4567890',1,'20ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2022-12-05 12:34:56',1,1,'1','1948-07-28 00:00:00')
+, (415,'1-2345-67-890123-4567890',1,'20ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2024-09-18 12:34:56',1,1,'1','1948-07-28 00:00:00')
+, (416,'1-2345-67-890123-4567890',0,'20ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2024-03-12 12:34:56',1,1,'1','1948-07-28 00:00:00');
+
+INSERT INTO `kanrensha_kigyou_dt_history_21` (`kanrensha_kigyou_dt_history_id`,`kigyou_dt_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`) VALUES
+  (414,'1-2345-67-890123-4567890',1,'21ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2022-12-05 12:34:56',1,1,'1','1948-07-28 00:00:00')
+, (415,'1-2345-67-890123-4567890',1,'21ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2024-09-18 12:34:56',1,1,'1','1948-07-28 00:00:00')
+, (416,'1-2345-67-890123-4567890',0,'21ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2024-03-12 12:34:56',1,1,'1','1948-07-28 00:00:00');
+
+INSERT INTO `kanrensha_kigyou_dt_history_22` (`kanrensha_kigyou_dt_history_id`,`kigyou_dt_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`) VALUES
+  (414,'1-2345-67-890123-4567890',1,'22ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2022-12-05 12:34:56',1,1,'1','1948-07-28 00:00:00')
+, (415,'1-2345-67-890123-4567890',1,'22ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2024-09-18 12:34:56',1,1,'1','1948-07-28 00:00:00')
+, (416,'1-2345-67-890123-4567890',0,'22ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2024-03-12 12:34:56',1,1,'1','1948-07-28 00:00:00');
+
+INSERT INTO `kanrensha_kigyou_dt_history_23` (`kanrensha_kigyou_dt_history_id`,`kigyou_dt_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`) VALUES
+  (414,'1-2345-67-890123-4567890',1,'23ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2022-12-05 12:34:56',1,1,'1','1948-07-28 00:00:00')
+, (415,'1-2345-67-890123-4567890',1,'23ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2024-09-18 12:34:56',1,1,'1','1948-07-28 00:00:00')
+, (416,'1-2345-67-890123-4567890',0,'23ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2024-03-12 12:34:56',1,1,'1','1948-07-28 00:00:00');
+
+INSERT INTO `kanrensha_kigyou_dt_history_24` (`kanrensha_kigyou_dt_history_id`,`kigyou_dt_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`) VALUES
+  (414,'1-2345-67-890123-4567890',1,'24ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2022-12-05 12:34:56',1,1,'1','1948-07-28 00:00:00')
+, (415,'1-2345-67-890123-4567890',1,'24ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2024-09-18 12:34:56',1,1,'1','1948-07-28 00:00:00')
+, (416,'1-2345-67-890123-4567890',0,'24ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2024-03-12 12:34:56',1,1,'1','1948-07-28 00:00:00');
+
+INSERT INTO `kanrensha_kigyou_dt_history_25` (`kanrensha_kigyou_dt_history_id`,`kigyou_dt_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`) VALUES
+  (414,'1-2345-67-890123-4567890',1,'25ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2022-12-05 12:34:56',1,1,'1','1948-07-28 00:00:00')
+, (415,'1-2345-67-890123-4567890',1,'25ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2024-09-18 12:34:56',1,1,'1','1948-07-28 00:00:00')
+, (416,'1-2345-67-890123-4567890',0,'25ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2024-03-12 12:34:56',1,1,'1','1948-07-28 00:00:00');
+
+INSERT INTO `kanrensha_kigyou_dt_history_26` (`kanrensha_kigyou_dt_history_id`,`kigyou_dt_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`) VALUES
+  (414,'1-2345-67-890123-4567890',1,'26ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2022-12-05 12:34:56',1,1,'1','1948-07-28 00:00:00')
+, (415,'1-2345-67-890123-4567890',1,'26ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2024-09-18 12:34:56',1,1,'1','1948-07-28 00:00:00')
+, (416,'1-2345-67-890123-4567890',0,'26ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2024-03-12 12:34:56',1,1,'1','1948-07-28 00:00:00');
+
+INSERT INTO `kanrensha_kigyou_dt_history_27` (`kanrensha_kigyou_dt_history_id`,`kigyou_dt_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`) VALUES
+  (414,'1-2345-67-890123-4567890',1,'27ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2022-12-05 12:34:56',1,1,'1','1948-07-28 00:00:00')
+, (415,'1-2345-67-890123-4567890',1,'27ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2024-09-18 12:34:56',1,1,'1','1948-07-28 00:00:00')
+, (416,'1-2345-67-890123-4567890',0,'27ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2024-03-12 12:34:56',1,1,'1','1948-07-28 00:00:00');
+
+INSERT INTO `kanrensha_kigyou_dt_history_28` (`kanrensha_kigyou_dt_history_id`,`kigyou_dt_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`) VALUES
+  (414,'1-2345-67-890123-4567890',1,'28ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2022-12-05 12:34:56',1,1,'1','1948-07-28 00:00:00')
+, (415,'1-2345-67-890123-4567890',1,'28ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2024-09-18 12:34:56',1,1,'1','1948-07-28 00:00:00')
+, (416,'1-2345-67-890123-4567890',0,'28ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2024-03-12 12:34:56',1,1,'1','1948-07-28 00:00:00');
+
+INSERT INTO `kanrensha_kigyou_dt_history_29` (`kanrensha_kigyou_dt_history_id`,`kigyou_dt_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`) VALUES
+  (414,'1-2345-67-890123-4567890',1,'29ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2022-12-05 12:34:56',1,1,'1','1948-07-28 00:00:00')
+, (415,'1-2345-67-890123-4567890',1,'29ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2024-09-18 12:34:56',1,1,'1','1948-07-28 00:00:00')
+, (416,'1-2345-67-890123-4567890',0,'29ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2024-03-12 12:34:56',1,1,'1','1948-07-28 00:00:00');
+
+INSERT INTO `kanrensha_kigyou_dt_history_30` (`kanrensha_kigyou_dt_history_id`,`kigyou_dt_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`) VALUES
+  (414,'1-2345-67-890123-4567890',1,'30ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2022-12-05 12:34:56',1,1,'1','1948-07-28 00:00:00')
+, (415,'1-2345-67-890123-4567890',1,'30ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2024-09-18 12:34:56',1,1,'1','1948-07-28 00:00:00')
+, (416,'1-2345-67-890123-4567890',0,'30ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2024-03-12 12:34:56',1,1,'1','1948-07-28 00:00:00');
+
+INSERT INTO `kanrensha_kigyou_dt_history_31` (`kanrensha_kigyou_dt_history_id`,`kigyou_dt_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`) VALUES
+  (414,'1-2345-67-890123-4567890',1,'31ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2022-12-05 12:34:56',1,1,'1','1948-07-28 00:00:00')
+, (415,'1-2345-67-890123-4567890',1,'31ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2024-09-18 12:34:56',1,1,'1','1948-07-28 00:00:00')
+, (416,'1-2345-67-890123-4567890',0,'31ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2024-03-12 12:34:56',1,1,'1','1948-07-28 00:00:00');
+
+INSERT INTO `kanrensha_kigyou_dt_history_32` (`kanrensha_kigyou_dt_history_id`,`kigyou_dt_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`) VALUES
+  (414,'1-2345-67-890123-4567890',1,'32ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2022-12-05 12:34:56',1,1,'1','1948-07-28 00:00:00')
+, (415,'1-2345-67-890123-4567890',1,'32ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2024-09-18 12:34:56',1,1,'1','1948-07-28 00:00:00')
+, (416,'1-2345-67-890123-4567890',0,'32ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2024-03-12 12:34:56',1,1,'1','1948-07-28 00:00:00');
+
+INSERT INTO `kanrensha_kigyou_dt_history_33` (`kanrensha_kigyou_dt_history_id`,`kigyou_dt_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`) VALUES
+  (414,'1-2345-67-890123-4567890',1,'33ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2022-12-05 12:34:56',1,1,'1','1948-07-28 00:00:00')
+, (415,'1-2345-67-890123-4567890',1,'33ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2024-09-18 12:34:56',1,1,'1','1948-07-28 00:00:00')
+, (416,'1-2345-67-890123-4567890',0,'33ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2024-03-12 12:34:56',1,1,'1','1948-07-28 00:00:00');
+
+INSERT INTO `kanrensha_kigyou_dt_history_34` (`kanrensha_kigyou_dt_history_id`,`kigyou_dt_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`) VALUES
+  (414,'1-2345-67-890123-4567890',1,'34ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2022-12-05 12:34:56',1,1,'1','1948-07-28 00:00:00')
+, (415,'1-2345-67-890123-4567890',1,'34ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2024-09-18 12:34:56',1,1,'1','1948-07-28 00:00:00')
+, (416,'1-2345-67-890123-4567890',0,'34ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2024-03-12 12:34:56',1,1,'1','1948-07-28 00:00:00');
+
+INSERT INTO `kanrensha_kigyou_dt_history_35` (`kanrensha_kigyou_dt_history_id`,`kigyou_dt_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`) VALUES
+  (414,'1-2345-67-890123-4567890',1,'35ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2022-12-05 12:34:56',1,1,'1','1948-07-28 00:00:00')
+, (415,'1-2345-67-890123-4567890',1,'35ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2024-09-18 12:34:56',1,1,'1','1948-07-28 00:00:00')
+, (416,'1-2345-67-890123-4567890',0,'35ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2024-03-12 12:34:56',1,1,'1','1948-07-28 00:00:00');
+
+INSERT INTO `kanrensha_kigyou_dt_history_36` (`kanrensha_kigyou_dt_history_id`,`kigyou_dt_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`) VALUES
+  (414,'1-2345-67-890123-4567890',1,'36ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2022-12-05 12:34:56',1,1,'1','1948-07-28 00:00:00')
+, (415,'1-2345-67-890123-4567890',1,'36ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2024-09-18 12:34:56',1,1,'1','1948-07-28 00:00:00')
+, (416,'1-2345-67-890123-4567890',0,'36ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2024-03-12 12:34:56',1,1,'1','1948-07-28 00:00:00');
+
+INSERT INTO `kanrensha_kigyou_dt_history_37` (`kanrensha_kigyou_dt_history_id`,`kigyou_dt_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`) VALUES
+  (414,'1-2345-67-890123-4567890',1,'37ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2022-12-05 12:34:56',1,1,'1','1948-07-28 00:00:00')
+, (415,'1-2345-67-890123-4567890',1,'37ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2024-09-18 12:34:56',1,1,'1','1948-07-28 00:00:00')
+, (416,'1-2345-67-890123-4567890',0,'37ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2024-03-12 12:34:56',1,1,'1','1948-07-28 00:00:00');
+
+INSERT INTO `kanrensha_kigyou_dt_history_38` (`kanrensha_kigyou_dt_history_id`,`kigyou_dt_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`) VALUES
+  (414,'1-2345-67-890123-4567890',1,'38ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2022-12-05 12:34:56',1,1,'1','1948-07-28 00:00:00')
+, (415,'1-2345-67-890123-4567890',1,'38ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2024-09-18 12:34:56',1,1,'1','1948-07-28 00:00:00')
+, (416,'1-2345-67-890123-4567890',0,'38ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2024-03-12 12:34:56',1,1,'1','1948-07-28 00:00:00');
+
+INSERT INTO `kanrensha_kigyou_dt_history_39` (`kanrensha_kigyou_dt_history_id`,`kigyou_dt_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`) VALUES
+  (414,'1-2345-67-890123-4567890',1,'39ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2022-12-05 12:34:56',1,1,'1','1948-07-28 00:00:00')
+, (415,'1-2345-67-890123-4567890',1,'39ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2024-09-18 12:34:56',1,1,'1','1948-07-28 00:00:00')
+, (416,'1-2345-67-890123-4567890',0,'39ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2024-03-12 12:34:56',1,1,'1','1948-07-28 00:00:00');
+
+INSERT INTO `kanrensha_kigyou_dt_history_40` (`kanrensha_kigyou_dt_history_id`,`kigyou_dt_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`) VALUES
+  (414,'1-2345-67-890123-4567890',1,'40ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2022-12-05 12:34:56',1,1,'1','1948-07-28 00:00:00')
+, (415,'1-2345-67-890123-4567890',1,'40ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2024-09-18 12:34:56',1,1,'1','1948-07-28 00:00:00')
+, (416,'1-2345-67-890123-4567890',0,'40ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2024-03-12 12:34:56',1,1,'1','1948-07-28 00:00:00');
+
+INSERT INTO `kanrensha_kigyou_dt_history_41` (`kanrensha_kigyou_dt_history_id`,`kigyou_dt_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`) VALUES
+  (414,'1-2345-67-890123-4567890',1,'41ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2022-12-05 12:34:56',1,1,'1','1948-07-28 00:00:00')
+, (415,'1-2345-67-890123-4567890',1,'41ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2024-09-18 12:34:56',1,1,'1','1948-07-28 00:00:00')
+, (416,'1-2345-67-890123-4567890',0,'41ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2024-03-12 12:34:56',1,1,'1','1948-07-28 00:00:00');
+
+INSERT INTO `kanrensha_kigyou_dt_history_42` (`kanrensha_kigyou_dt_history_id`,`kigyou_dt_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`) VALUES
+  (414,'1-2345-67-890123-4567890',1,'42ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2022-12-05 12:34:56',1,1,'1','1948-07-28 00:00:00')
+, (415,'1-2345-67-890123-4567890',1,'42ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2024-09-18 12:34:56',1,1,'1','1948-07-28 00:00:00')
+, (416,'1-2345-67-890123-4567890',0,'42ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2024-03-12 12:34:56',1,1,'1','1948-07-28 00:00:00');
+
+INSERT INTO `kanrensha_kigyou_dt_history_43` (`kanrensha_kigyou_dt_history_id`,`kigyou_dt_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`) VALUES
+  (414,'1-2345-67-890123-4567890',1,'43ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2022-12-05 12:34:56',1,1,'1','1948-07-28 00:00:00')
+, (415,'1-2345-67-890123-4567890',1,'43ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2024-09-18 12:34:56',1,1,'1','1948-07-28 00:00:00')
+, (416,'1-2345-67-890123-4567890',0,'43ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2024-03-12 12:34:56',1,1,'1','1948-07-28 00:00:00');
+
+INSERT INTO `kanrensha_kigyou_dt_history_44` (`kanrensha_kigyou_dt_history_id`,`kigyou_dt_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`) VALUES
+  (414,'1-2345-67-890123-4567890',1,'44ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2022-12-05 12:34:56',1,1,'1','1948-07-28 00:00:00')
+, (415,'1-2345-67-890123-4567890',1,'45ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2024-09-18 12:34:56',1,1,'1','1948-07-28 00:00:00')
+, (416,'1-2345-67-890123-4567890',0,'45ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2024-03-12 12:34:56',1,1,'1','1948-07-28 00:00:00');
+
+INSERT INTO `kanrensha_kigyou_dt_history_45` (`kanrensha_kigyou_dt_history_id`,`kigyou_dt_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`) VALUES
+  (414,'1-2345-67-890123-4567890',1,'45ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2022-12-05 12:34:56',1,1,'1','1948-07-28 00:00:00')
+, (415,'1-2345-67-890123-4567890',1,'45ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2024-09-18 12:34:56',1,1,'1','1948-07-28 00:00:00')
+, (416,'1-2345-67-890123-4567890',0,'45ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2024-03-12 12:34:56',1,1,'1','1948-07-28 00:00:00');
+
+INSERT INTO `kanrensha_kigyou_dt_history_46` (`kanrensha_kigyou_dt_history_id`,`kigyou_dt_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`) VALUES
+  (414,'1-2345-67-890123-4567890',1,'46ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2022-12-05 12:34:56',1,1,'1','1948-07-28 00:00:00')
+, (415,'1-2345-67-890123-4567890',1,'46ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2024-09-18 12:34:56',1,1,'1','1948-07-28 00:00:00')
+, (416,'1-2345-67-890123-4567890',0,'46ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2024-03-12 12:34:56',1,1,'1','1948-07-28 00:00:00');
+
+INSERT INTO `kanrensha_kigyou_dt_history_47` (`kanrensha_kigyou_dt_history_id`,`kigyou_dt_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`) VALUES
+  (414,'1-2345-67-890123-4567890',1,'47ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2022-12-05 12:34:56',1,1,'1','1948-07-28 00:00:00')
+, (415,'1-2345-67-890123-4567890',1,'47ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2024-09-18 12:34:56',1,1,'1','1948-07-28 00:00:00')
+, (416,'1-2345-67-890123-4567890',0,'47ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2024-03-12 12:34:56',1,1,'1','1948-07-28 00:00:00');
+
+INSERT INTO `kanrensha_kigyou_dt_history_99` (`kanrensha_kigyou_dt_history_id`,`kigyou_dt_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`) VALUES
+  (414,'1-2345-67-890123-4567890',1,'99ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2022-12-05 12:34:56',1,1,'1','1948-07-28 00:00:00')
+, (415,'1-2345-67-890123-4567890',1,'99ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2024-09-18 12:34:56',1,1,'1','1948-07-28 00:00:00')
+, (416,'1-2345-67-890123-4567890',0,'99ぼったくり企業','和歌山県架空市山麓町','代表者　太郎','1-2345-67-890123-0101019',200,190,'ユーザ','2024-03-12 12:34:56',1,1,'1','1948-07-28 00:00:00')
+;
+
+DELETE FROM `kanrensha_person_history_01`;
+DELETE FROM `kanrensha_person_history_02`;
+DELETE FROM `kanrensha_person_history_03`;
+DELETE FROM `kanrensha_person_history_04`;
+DELETE FROM `kanrensha_person_history_05`;
+DELETE FROM `kanrensha_person_history_06`;
+DELETE FROM `kanrensha_person_history_07`;
+DELETE FROM `kanrensha_person_history_08`;
+DELETE FROM `kanrensha_person_history_09`;
+DELETE FROM `kanrensha_person_history_10`;
+DELETE FROM `kanrensha_person_history_11`;
+DELETE FROM `kanrensha_person_history_12`;
+DELETE FROM `kanrensha_person_history_13`;
+DELETE FROM `kanrensha_person_history_14`;
+DELETE FROM `kanrensha_person_history_15`;
+DELETE FROM `kanrensha_person_history_16`;
+DELETE FROM `kanrensha_person_history_17`;
+DELETE FROM `kanrensha_person_history_18`;
+DELETE FROM `kanrensha_person_history_19`;
+DELETE FROM `kanrensha_person_history_20`;
+DELETE FROM `kanrensha_person_history_21`;
+DELETE FROM `kanrensha_person_history_22`;
+DELETE FROM `kanrensha_person_history_23`;
+DELETE FROM `kanrensha_person_history_24`;
+DELETE FROM `kanrensha_person_history_25`;
+DELETE FROM `kanrensha_person_history_26`;
+DELETE FROM `kanrensha_person_history_27`;
+DELETE FROM `kanrensha_person_history_28`;
+DELETE FROM `kanrensha_person_history_29`;
+DELETE FROM `kanrensha_person_history_30`;
+DELETE FROM `kanrensha_person_history_31`;
+DELETE FROM `kanrensha_person_history_32`;
+DELETE FROM `kanrensha_person_history_33`;
+DELETE FROM `kanrensha_person_history_34`;
+DELETE FROM `kanrensha_person_history_35`;
+DELETE FROM `kanrensha_person_history_36`;
+DELETE FROM `kanrensha_person_history_37`;
+DELETE FROM `kanrensha_person_history_38`;
+DELETE FROM `kanrensha_person_history_39`;
+DELETE FROM `kanrensha_person_history_40`;
+DELETE FROM `kanrensha_person_history_41`;
+DELETE FROM `kanrensha_person_history_42`;
+DELETE FROM `kanrensha_person_history_43`;
+DELETE FROM `kanrensha_person_history_44`;
+DELETE FROM `kanrensha_person_history_45`;
+DELETE FROM `kanrensha_person_history_46`;
+DELETE FROM `kanrensha_person_history_47`;
+DELETE FROM `kanrensha_person_history_99`;
+
+ALTER TABLE `kanrensha_person_history_01` auto_increment = 0;
+ALTER TABLE `kanrensha_person_history_02` auto_increment = 0;
+ALTER TABLE `kanrensha_person_history_03` auto_increment = 0;
+ALTER TABLE `kanrensha_person_history_04` auto_increment = 0;
+ALTER TABLE `kanrensha_person_history_05` auto_increment = 0;
+ALTER TABLE `kanrensha_person_history_06` auto_increment = 0;
+ALTER TABLE `kanrensha_person_history_07` auto_increment = 0;
+ALTER TABLE `kanrensha_person_history_08` auto_increment = 0;
+ALTER TABLE `kanrensha_person_history_09` auto_increment = 0;
+ALTER TABLE `kanrensha_person_history_10` auto_increment = 0;
+ALTER TABLE `kanrensha_person_history_11` auto_increment = 0;
+ALTER TABLE `kanrensha_person_history_12` auto_increment = 0;
+ALTER TABLE `kanrensha_person_history_13` auto_increment = 0;
+ALTER TABLE `kanrensha_person_history_14` auto_increment = 0;
+ALTER TABLE `kanrensha_person_history_15` auto_increment = 0;
+ALTER TABLE `kanrensha_person_history_16` auto_increment = 0;
+ALTER TABLE `kanrensha_person_history_17` auto_increment = 0;
+ALTER TABLE `kanrensha_person_history_18` auto_increment = 0;
+ALTER TABLE `kanrensha_person_history_19` auto_increment = 0;
+ALTER TABLE `kanrensha_person_history_20` auto_increment = 0;
+ALTER TABLE `kanrensha_person_history_21` auto_increment = 0;
+ALTER TABLE `kanrensha_person_history_22` auto_increment = 0;
+ALTER TABLE `kanrensha_person_history_23` auto_increment = 0;
+ALTER TABLE `kanrensha_person_history_24` auto_increment = 0;
+ALTER TABLE `kanrensha_person_history_25` auto_increment = 0;
+ALTER TABLE `kanrensha_person_history_26` auto_increment = 0;
+ALTER TABLE `kanrensha_person_history_27` auto_increment = 0;
+ALTER TABLE `kanrensha_person_history_28` auto_increment = 0;
+ALTER TABLE `kanrensha_person_history_29` auto_increment = 0;
+ALTER TABLE `kanrensha_person_history_30` auto_increment = 0;
+ALTER TABLE `kanrensha_person_history_31` auto_increment = 0;
+ALTER TABLE `kanrensha_person_history_32` auto_increment = 0;
+ALTER TABLE `kanrensha_person_history_33` auto_increment = 0;
+ALTER TABLE `kanrensha_person_history_34` auto_increment = 0;
+ALTER TABLE `kanrensha_person_history_35` auto_increment = 0;
+ALTER TABLE `kanrensha_person_history_36` auto_increment = 0;
+ALTER TABLE `kanrensha_person_history_37` auto_increment = 0;
+ALTER TABLE `kanrensha_person_history_38` auto_increment = 0;
+ALTER TABLE `kanrensha_person_history_39` auto_increment = 0;
+ALTER TABLE `kanrensha_person_history_40` auto_increment = 0;
+ALTER TABLE `kanrensha_person_history_41` auto_increment = 0;
+ALTER TABLE `kanrensha_person_history_42` auto_increment = 0;
+ALTER TABLE `kanrensha_person_history_43` auto_increment = 0;
+ALTER TABLE `kanrensha_person_history_44` auto_increment = 0;
+ALTER TABLE `kanrensha_person_history_45` auto_increment = 0;
+ALTER TABLE `kanrensha_person_history_46` auto_increment = 0;
+ALTER TABLE `kanrensha_person_history_47` auto_increment = 0;
+ALTER TABLE `kanrensha_person_history_99` auto_increment = 0;
+
+
+
+INSERT INTO `kanrensha_person_history_01` (`kanrensha_person_history_id`,`person_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`person_shokugyou`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`) 
+   VALUES 
+  (745,'2-2345-67-890123-4567890',1,'01テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2022-09-27 12:00:00',NULL,NULL,NULL,NULL)
+ ,(746,'2-2345-67-890123-4567890',1,'01テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2024-11-20 12:00:00',NULL,NULL,NULL,NULL)
+ ,(747,'2-2345-67-890123-4567890',0,'01テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2023-11-20 12:00:00',NULL,NULL,NULL,NULL)
+ ;
+
+INSERT INTO `kanrensha_person_history_02` (`kanrensha_person_history_id`,`person_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`person_shokugyou`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`) 
+   VALUES 
+  (745,'2-2345-67-890123-4567890',1,'02テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2022-09-27 12:00:00',NULL,NULL,NULL,NULL)
+ ,(746,'2-2345-67-890123-4567890',1,'02テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2024-11-20 12:00:00',NULL,NULL,NULL,NULL)
+ ,(747,'2-2345-67-890123-4567890',0,'02テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2023-11-20 12:00:00',NULL,NULL,NULL,NULL)
+ ;
+ 
+INSERT INTO `kanrensha_person_history_03` (`kanrensha_person_history_id`,`person_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`person_shokugyou`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`) 
+   VALUES 
+  (745,'2-2345-67-890123-4567890',1,'03テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2022-09-27 12:00:00',NULL,NULL,NULL,NULL)
+ ,(746,'2-2345-67-890123-4567890',1,'03テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2024-11-20 12:00:00',NULL,NULL,NULL,NULL)
+ ,(747,'2-2345-67-890123-4567890',0,'03テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2023-11-20 12:00:00',NULL,NULL,NULL,NULL)
+ ;
+ 
+INSERT INTO `kanrensha_person_history_04` (`kanrensha_person_history_id`,`person_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`person_shokugyou`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`) 
+   VALUES 
+  (745,'2-2345-67-890123-4567890',1,'04テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2022-09-27 12:00:00',NULL,NULL,NULL,NULL)
+ ,(746,'2-2345-67-890123-4567890',1,'04テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2024-11-20 12:00:00',NULL,NULL,NULL,NULL)
+ ,(747,'2-2345-67-890123-4567890',0,'04テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2023-11-20 12:00:00',NULL,NULL,NULL,NULL)
+ ;
+ 
+INSERT INTO `kanrensha_person_history_05` (`kanrensha_person_history_id`,`person_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`person_shokugyou`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`) 
+   VALUES 
+  (745,'2-2345-67-890123-4567890',1,'05テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2022-09-27 12:00:00',NULL,NULL,NULL,NULL)
+ ,(746,'2-2345-67-890123-4567890',1,'05テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2024-11-20 12:00:00',NULL,NULL,NULL,NULL)
+ ,(747,'2-2345-67-890123-4567890',0,'05テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2023-11-20 12:00:00',NULL,NULL,NULL,NULL)
+ ;
+ 
+INSERT INTO `kanrensha_person_history_06` (`kanrensha_person_history_id`,`person_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`person_shokugyou`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`) 
+   VALUES 
+  (745,'2-2345-67-890123-4567890',1,'06テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2022-09-27 12:00:00',NULL,NULL,NULL,NULL)
+ ,(746,'2-2345-67-890123-4567890',1,'06テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2024-11-20 12:00:00',NULL,NULL,NULL,NULL)
+ ,(747,'2-2345-67-890123-4567890',0,'06テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2023-11-20 12:00:00',NULL,NULL,NULL,NULL)
+ ;
+ 
+INSERT INTO `kanrensha_person_history_07` (`kanrensha_person_history_id`,`person_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`person_shokugyou`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`) 
+   VALUES 
+  (745,'2-2345-67-890123-4567890',1,'07テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2022-09-27 12:00:00',NULL,NULL,NULL,NULL)
+ ,(746,'2-2345-67-890123-4567890',1,'07テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2024-11-20 12:00:00',NULL,NULL,NULL,NULL)
+ ,(747,'2-2345-67-890123-4567890',0,'07テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2023-11-20 12:00:00',NULL,NULL,NULL,NULL)
+ ;
+ 
+INSERT INTO `kanrensha_person_history_08` (`kanrensha_person_history_id`,`person_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`person_shokugyou`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`) 
+   VALUES 
+  (745,'2-2345-67-890123-4567890',1,'08テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2022-09-27 12:00:00',NULL,NULL,NULL,NULL)
+ ,(746,'2-2345-67-890123-4567890',1,'08テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2024-11-20 12:00:00',NULL,NULL,NULL,NULL)
+ ,(747,'2-2345-67-890123-4567890',0,'08テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2023-11-20 12:00:00',NULL,NULL,NULL,NULL)
+ ;
+ 
+INSERT INTO `kanrensha_person_history_09` (`kanrensha_person_history_id`,`person_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`person_shokugyou`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`) 
+   VALUES 
+  (745,'2-2345-67-890123-4567890',1,'09テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2022-09-27 12:00:00',NULL,NULL,NULL,NULL)
+ ,(746,'2-2345-67-890123-4567890',1,'09テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2024-11-20 12:00:00',NULL,NULL,NULL,NULL)
+ ,(747,'2-2345-67-890123-4567890',0,'09テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2023-11-20 12:00:00',NULL,NULL,NULL,NULL)
+ ;
+ 
+INSERT INTO `kanrensha_person_history_10` (`kanrensha_person_history_id`,`person_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`person_shokugyou`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`) 
+   VALUES 
+  (745,'2-2345-67-890123-4567890',1,'10テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2022-09-27 12:00:00',NULL,NULL,NULL,NULL)
+ ,(746,'2-2345-67-890123-4567890',1,'10テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2024-11-20 12:00:00',NULL,NULL,NULL,NULL)
+ ,(747,'2-2345-67-890123-4567890',0,'10テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2023-11-20 12:00:00',NULL,NULL,NULL,NULL)
+ ;
+ 
+INSERT INTO `kanrensha_person_history_11` (`kanrensha_person_history_id`,`person_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`person_shokugyou`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`) 
+   VALUES 
+  (745,'2-2345-67-890123-4567890',1,'11テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2022-09-27 12:00:00',NULL,NULL,NULL,NULL)
+ ,(746,'2-2345-67-890123-4567890',1,'11テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2024-11-20 12:00:00',NULL,NULL,NULL,NULL)
+ ,(747,'2-2345-67-890123-4567890',0,'11テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2023-11-20 12:00:00',NULL,NULL,NULL,NULL)
+ ;
+ 
+INSERT INTO `kanrensha_person_history_12` (`kanrensha_person_history_id`,`person_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`person_shokugyou`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`) 
+   VALUES 
+  (745,'2-2345-67-890123-4567890',1,'12テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2022-09-27 12:00:00',NULL,NULL,NULL,NULL)
+ ,(746,'2-2345-67-890123-4567890',1,'12テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2024-11-20 12:00:00',NULL,NULL,NULL,NULL)
+ ,(747,'2-2345-67-890123-4567890',0,'12テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2023-11-20 12:00:00',NULL,NULL,NULL,NULL)
+ ;
+ 
+INSERT INTO `kanrensha_person_history_13` (`kanrensha_person_history_id`,`person_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`person_shokugyou`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`) 
+   VALUES 
+  (745,'2-2345-67-890123-4567890',1,'13テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2022-09-27 12:00:00',NULL,NULL,NULL,NULL)
+ ,(746,'2-2345-67-890123-4567890',1,'13テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2024-11-20 12:00:00',NULL,NULL,NULL,NULL)
+ ,(747,'2-2345-67-890123-4567890',0,'13テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2023-11-20 12:00:00',NULL,NULL,NULL,NULL)
+ ;
+ 
+INSERT INTO `kanrensha_person_history_14` (`kanrensha_person_history_id`,`person_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`person_shokugyou`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`) 
+   VALUES 
+  (745,'2-2345-67-890123-4567890',1,'14テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2022-09-27 12:00:00',NULL,NULL,NULL,NULL)
+ ,(746,'2-2345-67-890123-4567890',1,'14テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2024-11-20 12:00:00',NULL,NULL,NULL,NULL)
+ ,(747,'2-2345-67-890123-4567890',0,'14テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2023-11-20 12:00:00',NULL,NULL,NULL,NULL)
+ ;
+ 
+INSERT INTO `kanrensha_person_history_15` (`kanrensha_person_history_id`,`person_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`person_shokugyou`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`) 
+   VALUES 
+  (745,'2-2345-67-890123-4567890',1,'15テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2022-09-27 12:00:00',NULL,NULL,NULL,NULL)
+ ,(746,'2-2345-67-890123-4567890',1,'15テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2024-11-20 12:00:00',NULL,NULL,NULL,NULL)
+ ,(747,'2-2345-67-890123-4567890',0,'15テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2023-11-20 12:00:00',NULL,NULL,NULL,NULL)
+ ;
+ 
+INSERT INTO `kanrensha_person_history_16` (`kanrensha_person_history_id`,`person_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`person_shokugyou`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`) 
+   VALUES 
+  (745,'2-2345-67-890123-4567890',1,'16テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2022-09-27 12:00:00',NULL,NULL,NULL,NULL)
+ ,(746,'2-2345-67-890123-4567890',1,'16テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2024-11-20 12:00:00',NULL,NULL,NULL,NULL)
+ ,(747,'2-2345-67-890123-4567890',0,'16テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2023-11-20 12:00:00',NULL,NULL,NULL,NULL)
+ ;
+ 
+INSERT INTO `kanrensha_person_history_17` (`kanrensha_person_history_id`,`person_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`person_shokugyou`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`) 
+   VALUES 
+  (745,'2-2345-67-890123-4567890',1,'17テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2022-09-27 12:00:00',NULL,NULL,NULL,NULL)
+ ,(746,'2-2345-67-890123-4567890',1,'17テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2024-11-20 12:00:00',NULL,NULL,NULL,NULL)
+ ,(747,'2-2345-67-890123-4567890',0,'17テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2023-11-20 12:00:00',NULL,NULL,NULL,NULL)
+ ;
+ 
+INSERT INTO `kanrensha_person_history_18` (`kanrensha_person_history_id`,`person_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`person_shokugyou`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`) 
+   VALUES 
+  (745,'2-2345-67-890123-4567890',1,'18テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2022-09-27 12:00:00',NULL,NULL,NULL,NULL)
+ ,(746,'2-2345-67-890123-4567890',1,'18テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2024-11-20 12:00:00',NULL,NULL,NULL,NULL)
+ ,(747,'2-2345-67-890123-4567890',0,'18テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2023-11-20 12:00:00',NULL,NULL,NULL,NULL)
+ ;
+ 
+INSERT INTO `kanrensha_person_history_19` (`kanrensha_person_history_id`,`person_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`person_shokugyou`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`) 
+   VALUES 
+  (745,'2-2345-67-890123-4567890',1,'19テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2022-09-27 12:00:00',NULL,NULL,NULL,NULL)
+ ,(746,'2-2345-67-890123-4567890',1,'19テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2024-11-20 12:00:00',NULL,NULL,NULL,NULL)
+ ,(747,'2-2345-67-890123-4567890',0,'19テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2023-11-20 12:00:00',NULL,NULL,NULL,NULL)
+ ;
+ 
+INSERT INTO `kanrensha_person_history_20` (`kanrensha_person_history_id`,`person_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`person_shokugyou`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`) 
+   VALUES 
+  (745,'2-2345-67-890123-4567890',1,'20テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2022-09-27 12:00:00',NULL,NULL,NULL,NULL)
+ ,(746,'2-2345-67-890123-4567890',1,'20テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2024-11-20 12:00:00',NULL,NULL,NULL,NULL)
+ ,(747,'2-2345-67-890123-4567890',0,'20テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2023-11-20 12:00:00',NULL,NULL,NULL,NULL)
+ ;
+ 
+INSERT INTO `kanrensha_person_history_21` (`kanrensha_person_history_id`,`person_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`person_shokugyou`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`) 
+   VALUES 
+  (745,'2-2345-67-890123-4567890',1,'21テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2022-09-27 12:00:00',NULL,NULL,NULL,NULL)
+ ,(746,'2-2345-67-890123-4567890',1,'21テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2024-11-20 12:00:00',NULL,NULL,NULL,NULL)
+ ,(747,'2-2345-67-890123-4567890',0,'21テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2023-11-20 12:00:00',NULL,NULL,NULL,NULL)
+ ;
+ 
+INSERT INTO `kanrensha_person_history_22` (`kanrensha_person_history_id`,`person_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`person_shokugyou`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`) 
+   VALUES 
+  (745,'2-2345-67-890123-4567890',1,'22テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2022-09-27 12:00:00',NULL,NULL,NULL,NULL)
+ ,(746,'2-2345-67-890123-4567890',1,'22テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2024-11-20 12:00:00',NULL,NULL,NULL,NULL)
+ ,(747,'2-2345-67-890123-4567890',0,'22テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2023-11-20 12:00:00',NULL,NULL,NULL,NULL)
+ ;
+ 
+INSERT INTO `kanrensha_person_history_23` (`kanrensha_person_history_id`,`person_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`person_shokugyou`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`) 
+   VALUES 
+  (745,'2-2345-67-890123-4567890',1,'23テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2022-09-27 12:00:00',NULL,NULL,NULL,NULL)
+ ,(746,'2-2345-67-890123-4567890',1,'23テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2024-11-20 12:00:00',NULL,NULL,NULL,NULL)
+ ,(747,'2-2345-67-890123-4567890',0,'23テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2023-11-20 12:00:00',NULL,NULL,NULL,NULL)
+ ;
+ 
+INSERT INTO `kanrensha_person_history_24` (`kanrensha_person_history_id`,`person_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`person_shokugyou`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`) 
+   VALUES 
+  (745,'2-2345-67-890123-4567890',1,'24テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2022-09-27 12:00:00',NULL,NULL,NULL,NULL)
+ ,(746,'2-2345-67-890123-4567890',1,'24テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2024-11-20 12:00:00',NULL,NULL,NULL,NULL)
+ ,(747,'2-2345-67-890123-4567890',0,'24テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2023-11-20 12:00:00',NULL,NULL,NULL,NULL)
+ ;
+ 
+INSERT INTO `kanrensha_person_history_25` (`kanrensha_person_history_id`,`person_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`person_shokugyou`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`) 
+   VALUES 
+  (745,'2-2345-67-890123-4567890',1,'25テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2022-09-27 12:00:00',NULL,NULL,NULL,NULL)
+ ,(746,'2-2345-67-890123-4567890',1,'25テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2024-11-20 12:00:00',NULL,NULL,NULL,NULL)
+ ,(747,'2-2345-67-890123-4567890',0,'25テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2023-11-20 12:00:00',NULL,NULL,NULL,NULL)
+ ;
+ 
+INSERT INTO `kanrensha_person_history_26` (`kanrensha_person_history_id`,`person_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`person_shokugyou`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`) 
+   VALUES 
+  (745,'2-2345-67-890123-4567890',1,'26テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2022-09-27 12:00:00',NULL,NULL,NULL,NULL)
+ ,(746,'2-2345-67-890123-4567890',1,'26テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2024-11-20 12:00:00',NULL,NULL,NULL,NULL)
+ ,(747,'2-2345-67-890123-4567890',0,'26テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2023-11-20 12:00:00',NULL,NULL,NULL,NULL)
+ ;
+ 
+INSERT INTO `kanrensha_person_history_27` (`kanrensha_person_history_id`,`person_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`person_shokugyou`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`) 
+   VALUES 
+  (745,'2-2345-67-890123-4567890',1,'27テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2022-09-27 12:00:00',NULL,NULL,NULL,NULL)
+ ,(746,'2-2345-67-890123-4567890',1,'27テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2024-11-20 12:00:00',NULL,NULL,NULL,NULL)
+ ,(747,'2-2345-67-890123-4567890',0,'27テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2023-11-20 12:00:00',NULL,NULL,NULL,NULL)
+ ;
+
+ INSERT INTO `kanrensha_person_history_28` (`kanrensha_person_history_id`,`person_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`person_shokugyou`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`) 
+   VALUES 
+  (745,'2-2345-67-890123-4567890',1,'28テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2022-09-27 12:00:00',NULL,NULL,NULL,NULL)
+ ,(746,'2-2345-67-890123-4567890',1,'28テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2024-11-20 12:00:00',NULL,NULL,NULL,NULL)
+ ,(747,'2-2345-67-890123-4567890',0,'28テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2023-11-20 12:00:00',NULL,NULL,NULL,NULL)
+ ;
+
+INSERT INTO `kanrensha_person_history_29` (`kanrensha_person_history_id`,`person_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`person_shokugyou`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`) 
+   VALUES 
+  (745,'2-2345-67-890123-4567890',1,'29テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2022-09-27 12:00:00',NULL,NULL,NULL,NULL)
+ ,(746,'2-2345-67-890123-4567890',1,'29テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2024-11-20 12:00:00',NULL,NULL,NULL,NULL)
+ ,(747,'2-2345-67-890123-4567890',0,'29テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2023-11-20 12:00:00',NULL,NULL,NULL,NULL)
+ ;
+ 
+INSERT INTO `kanrensha_person_history_30` (`kanrensha_person_history_id`,`person_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`person_shokugyou`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`) 
+   VALUES 
+  (745,'2-2345-67-890123-4567890',1,'30テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2022-09-27 12:00:00',NULL,NULL,NULL,NULL)
+ ,(746,'2-2345-67-890123-4567890',1,'30テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2024-11-20 12:00:00',NULL,NULL,NULL,NULL)
+ ,(747,'2-2345-67-890123-4567890',0,'30テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2023-11-20 12:00:00',NULL,NULL,NULL,NULL)
+ ;
+
+ INSERT INTO `kanrensha_person_history_31` (`kanrensha_person_history_id`,`person_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`person_shokugyou`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`) 
+   VALUES 
+  (745,'2-2345-67-890123-4567890',1,'31テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2022-09-27 12:00:00',NULL,NULL,NULL,NULL)
+ ,(746,'2-2345-67-890123-4567890',1,'31テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2024-11-20 12:00:00',NULL,NULL,NULL,NULL)
+ ,(747,'2-2345-67-890123-4567890',0,'31テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2023-11-20 12:00:00',NULL,NULL,NULL,NULL)
+ ;
+
+INSERT INTO `kanrensha_person_history_32` (`kanrensha_person_history_id`,`person_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`person_shokugyou`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`) 
+   VALUES 
+  (745,'2-2345-67-890123-4567890',1,'32テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2022-09-27 12:00:00',NULL,NULL,NULL,NULL)
+ ,(746,'2-2345-67-890123-4567890',1,'32テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2024-11-20 12:00:00',NULL,NULL,NULL,NULL)
+ ,(747,'2-2345-67-890123-4567890',0,'32テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2023-11-20 12:00:00',NULL,NULL,NULL,NULL)
+ ;
+ 
+INSERT INTO `kanrensha_person_history_33` (`kanrensha_person_history_id`,`person_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`person_shokugyou`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`) 
+   VALUES 
+  (745,'2-2345-67-890123-4567890',1,'33テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2022-09-27 12:00:00',NULL,NULL,NULL,NULL)
+ ,(746,'2-2345-67-890123-4567890',1,'33テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2024-11-20 12:00:00',NULL,NULL,NULL,NULL)
+ ,(747,'2-2345-67-890123-4567890',0,'33テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2023-11-20 12:00:00',NULL,NULL,NULL,NULL)
+ ;
+ 
+INSERT INTO `kanrensha_person_history_34` (`kanrensha_person_history_id`,`person_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`person_shokugyou`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`) 
+   VALUES 
+  (745,'2-2345-67-890123-4567890',1,'34テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2022-09-27 12:00:00',NULL,NULL,NULL,NULL)
+ ,(746,'2-2345-67-890123-4567890',1,'34テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2024-11-20 12:00:00',NULL,NULL,NULL,NULL)
+ ,(747,'2-2345-67-890123-4567890',0,'34テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2023-11-20 12:00:00',NULL,NULL,NULL,NULL)
+ ;
+ 
+INSERT INTO `kanrensha_person_history_35` (`kanrensha_person_history_id`,`person_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`person_shokugyou`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`) 
+   VALUES 
+  (745,'2-2345-67-890123-4567890',1,'35テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2022-09-27 12:00:00',NULL,NULL,NULL,NULL)
+ ,(746,'2-2345-67-890123-4567890',1,'35テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2024-11-20 12:00:00',NULL,NULL,NULL,NULL)
+ ,(747,'2-2345-67-890123-4567890',0,'35テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2023-11-20 12:00:00',NULL,NULL,NULL,NULL)
+ ;
+ 
+INSERT INTO `kanrensha_person_history_36` (`kanrensha_person_history_id`,`person_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`person_shokugyou`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`) 
+   VALUES 
+  (745,'2-2345-67-890123-4567890',1,'36テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2022-09-27 12:00:00',NULL,NULL,NULL,NULL)
+ ,(746,'2-2345-67-890123-4567890',1,'36テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2024-11-20 12:00:00',NULL,NULL,NULL,NULL)
+ ,(747,'2-2345-67-890123-4567890',0,'36テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2023-11-20 12:00:00',NULL,NULL,NULL,NULL)
+ ;
+ 
+INSERT INTO `kanrensha_person_history_37` (`kanrensha_person_history_id`,`person_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`person_shokugyou`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`) 
+   VALUES 
+  (745,'2-2345-67-890123-4567890',1,'37テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2022-09-27 12:00:00',NULL,NULL,NULL,NULL)
+ ,(746,'2-2345-67-890123-4567890',1,'37テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2024-11-20 12:00:00',NULL,NULL,NULL,NULL)
+ ,(747,'2-2345-67-890123-4567890',0,'37テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2023-11-20 12:00:00',NULL,NULL,NULL,NULL)
+ ;
+ 
+INSERT INTO `kanrensha_person_history_38` (`kanrensha_person_history_id`,`person_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`person_shokugyou`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`) 
+   VALUES 
+  (745,'2-2345-67-890123-4567890',1,'38テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2022-09-27 12:00:00',NULL,NULL,NULL,NULL)
+ ,(746,'2-2345-67-890123-4567890',1,'38テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2024-11-20 12:00:00',NULL,NULL,NULL,NULL)
+ ,(747,'2-2345-67-890123-4567890',0,'38テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2023-11-20 12:00:00',NULL,NULL,NULL,NULL)
+ ;
+ 
+INSERT INTO `kanrensha_person_history_39` (`kanrensha_person_history_id`,`person_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`person_shokugyou`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`) 
+   VALUES 
+  (745,'2-2345-67-890123-4567890',1,'39テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2022-09-27 12:00:00',NULL,NULL,NULL,NULL)
+ ,(746,'2-2345-67-890123-4567890',1,'39テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2024-11-20 12:00:00',NULL,NULL,NULL,NULL)
+ ,(747,'2-2345-67-890123-4567890',0,'39テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2023-11-20 12:00:00',NULL,NULL,NULL,NULL)
+ ;
+ 
+INSERT INTO `kanrensha_person_history_40` (`kanrensha_person_history_id`,`person_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`person_shokugyou`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`) 
+   VALUES 
+  (745,'2-2345-67-890123-4567890',1,'40テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2022-09-27 12:00:00',NULL,NULL,NULL,NULL)
+ ,(746,'2-2345-67-890123-4567890',1,'40テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2024-11-20 12:00:00',NULL,NULL,NULL,NULL)
+ ,(747,'2-2345-67-890123-4567890',0,'40テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2023-11-20 12:00:00',NULL,NULL,NULL,NULL)
+ ;
+
+INSERT INTO `kanrensha_person_history_41` (`kanrensha_person_history_id`,`person_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`person_shokugyou`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`) 
+   VALUES 
+  (745,'2-2345-67-890123-4567890',1,'41テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2022-09-27 12:00:00',NULL,NULL,NULL,NULL)
+ ,(746,'2-2345-67-890123-4567890',1,'41テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2024-11-20 12:00:00',NULL,NULL,NULL,NULL)
+ ,(747,'2-2345-67-890123-4567890',0,'41テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2023-11-20 12:00:00',NULL,NULL,NULL,NULL)
+ ;
+
+ 
+ INSERT INTO `kanrensha_person_history_42` (`kanrensha_person_history_id`,`person_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`person_shokugyou`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`) 
+   VALUES 
+  (745,'2-2345-67-890123-4567890',1,'42テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2022-09-27 12:00:00',NULL,NULL,NULL,NULL)
+ ,(746,'2-2345-67-890123-4567890',1,'42テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2024-11-20 12:00:00',NULL,NULL,NULL,NULL)
+ ,(747,'2-2345-67-890123-4567890',0,'42テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2023-11-20 12:00:00',NULL,NULL,NULL,NULL)
+ ;
+
+INSERT INTO `kanrensha_person_history_43` (`kanrensha_person_history_id`,`person_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`person_shokugyou`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`) 
+   VALUES 
+  (745,'2-2345-67-890123-4567890',1,'43テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2022-09-27 12:00:00',NULL,NULL,NULL,NULL)
+ ,(746,'2-2345-67-890123-4567890',1,'43テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2024-11-20 12:00:00',NULL,NULL,NULL,NULL)
+ ,(747,'2-2345-67-890123-4567890',0,'43テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2023-11-20 12:00:00',NULL,NULL,NULL,NULL)
+ ;
+ 
+INSERT INTO `kanrensha_person_history_44` (`kanrensha_person_history_id`,`person_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`person_shokugyou`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`) 
+   VALUES 
+  (745,'2-2345-67-890123-4567890',1,'44テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2022-09-27 12:00:00',NULL,NULL,NULL,NULL)
+ ,(746,'2-2345-67-890123-4567890',1,'44テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2024-11-20 12:00:00',NULL,NULL,NULL,NULL)
+ ,(747,'2-2345-67-890123-4567890',0,'44テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2023-11-20 12:00:00',NULL,NULL,NULL,NULL)
+ ;
+ 
+INSERT INTO `kanrensha_person_history_45` (`kanrensha_person_history_id`,`person_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`person_shokugyou`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`) 
+   VALUES 
+  (745,'2-2345-67-890123-4567890',1,'45テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2022-09-27 12:00:00',NULL,NULL,NULL,NULL)
+ ,(746,'2-2345-67-890123-4567890',1,'45テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2024-11-20 12:00:00',NULL,NULL,NULL,NULL)
+ ,(747,'2-2345-67-890123-4567890',0,'45テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2023-11-20 12:00:00',NULL,NULL,NULL,NULL)
+ ;
+ 
+INSERT INTO `kanrensha_person_history_46` (`kanrensha_person_history_id`,`person_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`person_shokugyou`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`) 
+   VALUES 
+  (745,'2-2345-67-890123-4567890',1,'46テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2022-09-27 12:00:00',NULL,NULL,NULL,NULL)
+ ,(746,'2-2345-67-890123-4567890',1,'46テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2024-11-20 12:00:00',NULL,NULL,NULL,NULL)
+ ,(747,'2-2345-67-890123-4567890',0,'46テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2023-11-20 12:00:00',NULL,NULL,NULL,NULL)
+ ;
+ 
+INSERT INTO `kanrensha_person_history_47` (`kanrensha_person_history_id`,`person_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`person_shokugyou`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`) 
+   VALUES 
+  (745,'2-2345-67-890123-4567890',1,'47テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2022-09-27 12:00:00',NULL,NULL,NULL,NULL)
+ ,(746,'2-2345-67-890123-4567890',1,'47テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2024-11-20 12:00:00',NULL,NULL,NULL,NULL)
+ ,(747,'2-2345-67-890123-4567890',0,'47テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2023-11-20 12:00:00',NULL,NULL,NULL,NULL)
+ ;
+ 
+INSERT INTO `kanrensha_person_history_99` (`kanrensha_person_history_id`,`person_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`person_shokugyou`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`) 
+   VALUES 
+  (745,'2-2345-67-890123-4567890',1,'99テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2022-09-27 12:00:00',NULL,NULL,NULL,NULL)
+ ,(746,'2-2345-67-890123-4567890',1,'99テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2024-11-20 12:00:00',NULL,NULL,NULL,NULL)
+ ,(747,'2-2345-67-890123-4567890',0,'99テスト　太郎','福岡県架空市山麓町','無職','テスト　太郎福岡県架空市山麓町無職',1,1,'テストユーザー','2023-11-20 12:00:00',NULL,NULL,NULL,NULL)
+ ;
+ 
+DELETE FROM `kanrensha_seijidantai_history_01`;
+DELETE FROM `kanrensha_seijidantai_history_02`;
+DELETE FROM `kanrensha_seijidantai_history_03`;
+DELETE FROM `kanrensha_seijidantai_history_04`;
+DELETE FROM `kanrensha_seijidantai_history_05`;
+DELETE FROM `kanrensha_seijidantai_history_06`;
+DELETE FROM `kanrensha_seijidantai_history_07`;
+DELETE FROM `kanrensha_seijidantai_history_08`;
+DELETE FROM `kanrensha_seijidantai_history_09`;
+DELETE FROM `kanrensha_seijidantai_history_10`;
+DELETE FROM `kanrensha_seijidantai_history_11`;
+DELETE FROM `kanrensha_seijidantai_history_12`;
+DELETE FROM `kanrensha_seijidantai_history_13`;
+DELETE FROM `kanrensha_seijidantai_history_14`;
+DELETE FROM `kanrensha_seijidantai_history_15`;
+DELETE FROM `kanrensha_seijidantai_history_16`;
+DELETE FROM `kanrensha_seijidantai_history_17`;
+DELETE FROM `kanrensha_seijidantai_history_18`;
+DELETE FROM `kanrensha_seijidantai_history_19`;
+DELETE FROM `kanrensha_seijidantai_history_20`;
+DELETE FROM `kanrensha_seijidantai_history_21`;
+DELETE FROM `kanrensha_seijidantai_history_22`;
+DELETE FROM `kanrensha_seijidantai_history_23`;
+DELETE FROM `kanrensha_seijidantai_history_24`;
+DELETE FROM `kanrensha_seijidantai_history_25`;
+DELETE FROM `kanrensha_seijidantai_history_26`;
+DELETE FROM `kanrensha_seijidantai_history_27`;
+DELETE FROM `kanrensha_seijidantai_history_28`;
+DELETE FROM `kanrensha_seijidantai_history_29`;
+DELETE FROM `kanrensha_seijidantai_history_30`;
+DELETE FROM `kanrensha_seijidantai_history_31`;
+DELETE FROM `kanrensha_seijidantai_history_32`;
+DELETE FROM `kanrensha_seijidantai_history_33`;
+DELETE FROM `kanrensha_seijidantai_history_34`;
+DELETE FROM `kanrensha_seijidantai_history_35`;
+DELETE FROM `kanrensha_seijidantai_history_36`;
+DELETE FROM `kanrensha_seijidantai_history_37`;
+DELETE FROM `kanrensha_seijidantai_history_38`;
+DELETE FROM `kanrensha_seijidantai_history_39`;
+DELETE FROM `kanrensha_seijidantai_history_40`;
+DELETE FROM `kanrensha_seijidantai_history_41`;
+DELETE FROM `kanrensha_seijidantai_history_42`;
+DELETE FROM `kanrensha_seijidantai_history_43`;
+DELETE FROM `kanrensha_seijidantai_history_44`;
+DELETE FROM `kanrensha_seijidantai_history_45`;
+DELETE FROM `kanrensha_seijidantai_history_46`;
+DELETE FROM `kanrensha_seijidantai_history_47`;
+DELETE FROM `kanrensha_seijidantai_history_99`;
+
+ALTER TABLE `kanrensha_seijidantai_history_01` auto_increment = 0;
+ALTER TABLE `kanrensha_seijidantai_history_02` auto_increment = 0;
+ALTER TABLE `kanrensha_seijidantai_history_03` auto_increment = 0;
+ALTER TABLE `kanrensha_seijidantai_history_04` auto_increment = 0;
+ALTER TABLE `kanrensha_seijidantai_history_05` auto_increment = 0;
+ALTER TABLE `kanrensha_seijidantai_history_06` auto_increment = 0;
+ALTER TABLE `kanrensha_seijidantai_history_07` auto_increment = 0;
+ALTER TABLE `kanrensha_seijidantai_history_08` auto_increment = 0;
+ALTER TABLE `kanrensha_seijidantai_history_09` auto_increment = 0;
+ALTER TABLE `kanrensha_seijidantai_history_10` auto_increment = 0;
+ALTER TABLE `kanrensha_seijidantai_history_11` auto_increment = 0;
+ALTER TABLE `kanrensha_seijidantai_history_12` auto_increment = 0;
+ALTER TABLE `kanrensha_seijidantai_history_13` auto_increment = 0;
+ALTER TABLE `kanrensha_seijidantai_history_14` auto_increment = 0;
+ALTER TABLE `kanrensha_seijidantai_history_15` auto_increment = 0;
+ALTER TABLE `kanrensha_seijidantai_history_16` auto_increment = 0;
+ALTER TABLE `kanrensha_seijidantai_history_17` auto_increment = 0;
+ALTER TABLE `kanrensha_seijidantai_history_18` auto_increment = 0;
+ALTER TABLE `kanrensha_seijidantai_history_19` auto_increment = 0;
+ALTER TABLE `kanrensha_seijidantai_history_20` auto_increment = 0;
+ALTER TABLE `kanrensha_seijidantai_history_21` auto_increment = 0;
+ALTER TABLE `kanrensha_seijidantai_history_22` auto_increment = 0;
+ALTER TABLE `kanrensha_seijidantai_history_23` auto_increment = 0;
+ALTER TABLE `kanrensha_seijidantai_history_24` auto_increment = 0;
+ALTER TABLE `kanrensha_seijidantai_history_25` auto_increment = 0;
+ALTER TABLE `kanrensha_seijidantai_history_26` auto_increment = 0;
+ALTER TABLE `kanrensha_seijidantai_history_27` auto_increment = 0;
+ALTER TABLE `kanrensha_seijidantai_history_28` auto_increment = 0;
+ALTER TABLE `kanrensha_seijidantai_history_29` auto_increment = 0;
+ALTER TABLE `kanrensha_seijidantai_history_30` auto_increment = 0;
+ALTER TABLE `kanrensha_seijidantai_history_31` auto_increment = 0;
+ALTER TABLE `kanrensha_seijidantai_history_32` auto_increment = 0;
+ALTER TABLE `kanrensha_seijidantai_history_33` auto_increment = 0;
+ALTER TABLE `kanrensha_seijidantai_history_34` auto_increment = 0;
+ALTER TABLE `kanrensha_seijidantai_history_35` auto_increment = 0;
+ALTER TABLE `kanrensha_seijidantai_history_36` auto_increment = 0;
+ALTER TABLE `kanrensha_seijidantai_history_37` auto_increment = 0;
+ALTER TABLE `kanrensha_seijidantai_history_38` auto_increment = 0;
+ALTER TABLE `kanrensha_seijidantai_history_39` auto_increment = 0;
+ALTER TABLE `kanrensha_seijidantai_history_40` auto_increment = 0;
+ALTER TABLE `kanrensha_seijidantai_history_41` auto_increment = 0;
+ALTER TABLE `kanrensha_seijidantai_history_42` auto_increment = 0;
+ALTER TABLE `kanrensha_seijidantai_history_43` auto_increment = 0;
+ALTER TABLE `kanrensha_seijidantai_history_44` auto_increment = 0;
+ALTER TABLE `kanrensha_seijidantai_history_45` auto_increment = 0;
+ALTER TABLE `kanrensha_seijidantai_history_46` auto_increment = 0;
+ALTER TABLE `kanrensha_seijidantai_history_47` auto_increment = 0;
+ALTER TABLE `kanrensha_seijidantai_history_99` auto_increment = 0;
+
+
+
+INSERT INTO `kanrensha_seijidantai_history_01` (`kanrensha_seijidantai_history_id`,`seijidantai_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`)
+   VALUES 
+     (638,'3-1310-12-345678-1234567',1,'01テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2022-12-13 12:00:00',NULL,NULL,NULL,NULL)
+   , (639,'3-1310-12-345678-1234567',1,'01テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2024-08-13 12:00:00',NULL,NULL,NULL,NULL)
+   , (640,'3-1310-12-345678-1234567',0,'01テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2023-12-13 12:00:00',NULL,NULL,NULL,NULL)
+   ;
+
+
+INSERT INTO `kanrensha_seijidantai_history_02` (`kanrensha_seijidantai_history_id`,`seijidantai_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`)
+   VALUES 
+     (638,'3-1310-12-345678-1234567',1,'02テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2022-12-13 12:00:00',NULL,NULL,NULL,NULL)
+   , (639,'3-1310-12-345678-1234567',1,'02テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2024-08-13 12:00:00',NULL,NULL,NULL,NULL)
+   , (640,'3-1310-12-345678-1234567',0,'02テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2023-12-13 12:00:00',NULL,NULL,NULL,NULL)
+   ;
+
+   INSERT INTO `kanrensha_seijidantai_history_03` (`kanrensha_seijidantai_history_id`,`seijidantai_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`)
+   VALUES 
+     (638,'3-1310-12-345678-1234567',1,'03テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2022-12-13 12:00:00',NULL,NULL,NULL,NULL)
+   , (639,'3-1310-12-345678-1234567',1,'03テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2024-08-13 12:00:00',NULL,NULL,NULL,NULL)
+   , (640,'3-1310-12-345678-1234567',0,'03テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2023-12-13 12:00:00',NULL,NULL,NULL,NULL)
+   ;
+
+   INSERT INTO `kanrensha_seijidantai_history_04` (`kanrensha_seijidantai_history_id`,`seijidantai_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`)
+   VALUES 
+     (638,'3-1310-12-345678-1234567',1,'04テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2022-12-13 12:00:00',NULL,NULL,NULL,NULL)
+   , (639,'3-1310-12-345678-1234567',1,'04テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2024-08-13 12:00:00',NULL,NULL,NULL,NULL)
+   , (640,'3-1310-12-345678-1234567',0,'04テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2023-12-13 12:00:00',NULL,NULL,NULL,NULL)
+   ;
+
+   INSERT INTO `kanrensha_seijidantai_history_05` (`kanrensha_seijidantai_history_id`,`seijidantai_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`)
+   VALUES 
+     (638,'3-1310-12-345678-1234567',1,'05テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2022-12-13 12:00:00',NULL,NULL,NULL,NULL)
+   , (639,'3-1310-12-345678-1234567',1,'05テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2024-08-13 12:00:00',NULL,NULL,NULL,NULL)
+   , (640,'3-1310-12-345678-1234567',0,'05テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2023-12-13 12:00:00',NULL,NULL,NULL,NULL)
+   ;
+
+   INSERT INTO `kanrensha_seijidantai_history_06` (`kanrensha_seijidantai_history_id`,`seijidantai_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`)
+   VALUES 
+     (638,'3-1310-12-345678-1234567',1,'06テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2022-12-13 12:00:00',NULL,NULL,NULL,NULL)
+   , (639,'3-1310-12-345678-1234567',1,'06テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2024-08-13 12:00:00',NULL,NULL,NULL,NULL)
+   , (640,'3-1310-12-345678-1234567',0,'06テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2023-12-13 12:00:00',NULL,NULL,NULL,NULL)
+   ;
+
+   INSERT INTO `kanrensha_seijidantai_history_07` (`kanrensha_seijidantai_history_id`,`seijidantai_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`)
+   VALUES 
+     (638,'3-1310-12-345678-1234567',1,'07テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2022-12-13 12:00:00',NULL,NULL,NULL,NULL)
+   , (639,'3-1310-12-345678-1234567',1,'07テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2024-08-13 12:00:00',NULL,NULL,NULL,NULL)
+   , (640,'3-1310-12-345678-1234567',0,'07テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2023-12-13 12:00:00',NULL,NULL,NULL,NULL)
+   ;
+
+   INSERT INTO `kanrensha_seijidantai_history_08` (`kanrensha_seijidantai_history_id`,`seijidantai_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`)
+   VALUES 
+     (638,'3-1310-12-345678-1234567',1,'08テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2022-12-13 12:00:00',NULL,NULL,NULL,NULL)
+   , (639,'3-1310-12-345678-1234567',1,'08テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2024-08-13 12:00:00',NULL,NULL,NULL,NULL)
+   , (640,'3-1310-12-345678-1234567',0,'08テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2023-12-13 12:00:00',NULL,NULL,NULL,NULL)
+   ;
+
+   INSERT INTO `kanrensha_seijidantai_history_09` (`kanrensha_seijidantai_history_id`,`seijidantai_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`)
+   VALUES 
+     (638,'3-1310-12-345678-1234567',1,'09テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2022-12-13 12:00:00',NULL,NULL,NULL,NULL)
+   , (639,'3-1310-12-345678-1234567',1,'09テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2024-08-13 12:00:00',NULL,NULL,NULL,NULL)
+   , (640,'3-1310-12-345678-1234567',0,'09テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2023-12-13 12:00:00',NULL,NULL,NULL,NULL)
+   ;
+
+   INSERT INTO `kanrensha_seijidantai_history_10` (`kanrensha_seijidantai_history_id`,`seijidantai_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`)
+   VALUES 
+     (638,'3-1310-12-345678-1234567',1,'10テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2022-12-13 12:00:00',NULL,NULL,NULL,NULL)
+   , (639,'3-1310-12-345678-1234567',1,'10テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2024-08-13 12:00:00',NULL,NULL,NULL,NULL)
+   , (640,'3-1310-12-345678-1234567',0,'10テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2023-12-13 12:00:00',NULL,NULL,NULL,NULL)
+   ;
+
+   INSERT INTO `kanrensha_seijidantai_history_11` (`kanrensha_seijidantai_history_id`,`seijidantai_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`)
+   VALUES 
+     (638,'3-1310-12-345678-1234567',1,'11テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2022-12-13 12:00:00',NULL,NULL,NULL,NULL)
+   , (639,'3-1310-12-345678-1234567',1,'11テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2024-08-13 12:00:00',NULL,NULL,NULL,NULL)
+   , (640,'3-1310-12-345678-1234567',0,'11テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2023-12-13 12:00:00',NULL,NULL,NULL,NULL)
+   ;
+
+   INSERT INTO `kanrensha_seijidantai_history_12` (`kanrensha_seijidantai_history_id`,`seijidantai_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`)
+   VALUES 
+     (638,'3-1310-12-345678-1234567',1,'12テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2022-12-13 12:00:00',NULL,NULL,NULL,NULL)
+   , (639,'3-1310-12-345678-1234567',1,'12テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2024-08-13 12:00:00',NULL,NULL,NULL,NULL)
+   , (640,'3-1310-12-345678-1234567',0,'12テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2023-12-13 12:00:00',NULL,NULL,NULL,NULL)
+   ;
+
+   INSERT INTO `kanrensha_seijidantai_history_13` (`kanrensha_seijidantai_history_id`,`seijidantai_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`)
+   VALUES 
+     (638,'3-1310-12-345678-1234567',1,'13テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2022-12-13 12:00:00',NULL,NULL,NULL,NULL)
+   , (639,'3-1310-12-345678-1234567',1,'13テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2024-08-13 12:00:00',NULL,NULL,NULL,NULL)
+   , (640,'3-1310-12-345678-1234567',0,'13テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2023-12-13 12:00:00',NULL,NULL,NULL,NULL)
+   ;
+
+   INSERT INTO `kanrensha_seijidantai_history_14` (`kanrensha_seijidantai_history_id`,`seijidantai_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`)
+   VALUES 
+     (638,'3-1310-12-345678-1234567',1,'14テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2022-12-13 12:00:00',NULL,NULL,NULL,NULL)
+   , (639,'3-1310-12-345678-1234567',1,'14テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2024-08-13 12:00:00',NULL,NULL,NULL,NULL)
+   , (640,'3-1310-12-345678-1234567',0,'14テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2023-12-13 12:00:00',NULL,NULL,NULL,NULL)
+   ;
+
+   INSERT INTO `kanrensha_seijidantai_history_15` (`kanrensha_seijidantai_history_id`,`seijidantai_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`)
+   VALUES 
+     (638,'3-1310-12-345678-1234567',1,'15テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2022-12-13 12:00:00',NULL,NULL,NULL,NULL)
+   , (639,'3-1310-12-345678-1234567',1,'15テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2024-08-13 12:00:00',NULL,NULL,NULL,NULL)
+   , (640,'3-1310-12-345678-1234567',0,'15テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2023-12-13 12:00:00',NULL,NULL,NULL,NULL)
+   ;
+
+   INSERT INTO `kanrensha_seijidantai_history_16` (`kanrensha_seijidantai_history_id`,`seijidantai_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`)
+   VALUES 
+     (638,'3-1310-12-345678-1234567',1,'16テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2022-12-13 12:00:00',NULL,NULL,NULL,NULL)
+   , (639,'3-1310-12-345678-1234567',1,'16テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2024-08-13 12:00:00',NULL,NULL,NULL,NULL)
+   , (640,'3-1310-12-345678-1234567',0,'16テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2023-12-13 12:00:00',NULL,NULL,NULL,NULL)
+   ;
+
+   INSERT INTO `kanrensha_seijidantai_history_17` (`kanrensha_seijidantai_history_id`,`seijidantai_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`)
+   VALUES 
+     (638,'3-1310-12-345678-1234567',1,'17テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2022-12-13 12:00:00',NULL,NULL,NULL,NULL)
+   , (639,'3-1310-12-345678-1234567',1,'17テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2024-08-13 12:00:00',NULL,NULL,NULL,NULL)
+   , (640,'3-1310-12-345678-1234567',0,'17テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2023-12-13 12:00:00',NULL,NULL,NULL,NULL)
+   ;
+
+   INSERT INTO `kanrensha_seijidantai_history_18` (`kanrensha_seijidantai_history_id`,`seijidantai_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`)
+   VALUES 
+     (638,'3-1310-12-345678-1234567',1,'18テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2022-12-13 12:00:00',NULL,NULL,NULL,NULL)
+   , (639,'3-1310-12-345678-1234567',1,'18テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2024-08-13 12:00:00',NULL,NULL,NULL,NULL)
+   , (640,'3-1310-12-345678-1234567',0,'18テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2023-12-13 12:00:00',NULL,NULL,NULL,NULL)
+   ;
+
+   INSERT INTO `kanrensha_seijidantai_history_19` (`kanrensha_seijidantai_history_id`,`seijidantai_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`)
+   VALUES 
+     (638,'3-1310-12-345678-1234567',1,'19テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2022-12-13 12:00:00',NULL,NULL,NULL,NULL)
+   , (639,'3-1310-12-345678-1234567',1,'19テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2024-08-13 12:00:00',NULL,NULL,NULL,NULL)
+   , (640,'3-1310-12-345678-1234567',0,'19テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2023-12-13 12:00:00',NULL,NULL,NULL,NULL)
+   ;
+
+   INSERT INTO `kanrensha_seijidantai_history_20` (`kanrensha_seijidantai_history_id`,`seijidantai_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`)
+   VALUES 
+     (638,'3-1310-12-345678-1234567',1,'20テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2022-12-13 12:00:00',NULL,NULL,NULL,NULL)
+   , (639,'3-1310-12-345678-1234567',1,'20テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2024-08-13 12:00:00',NULL,NULL,NULL,NULL)
+   , (640,'3-1310-12-345678-1234567',0,'20テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2023-12-13 12:00:00',NULL,NULL,NULL,NULL)
+   ;
+
+   INSERT INTO `kanrensha_seijidantai_history_21` (`kanrensha_seijidantai_history_id`,`seijidantai_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`)
+   VALUES 
+     (638,'3-1310-12-345678-1234567',1,'21テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2022-12-13 12:00:00',NULL,NULL,NULL,NULL)
+   , (639,'3-1310-12-345678-1234567',1,'21テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2024-08-13 12:00:00',NULL,NULL,NULL,NULL)
+   , (640,'3-1310-12-345678-1234567',0,'21テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2023-12-13 12:00:00',NULL,NULL,NULL,NULL)
+   ;
+
+   INSERT INTO `kanrensha_seijidantai_history_22` (`kanrensha_seijidantai_history_id`,`seijidantai_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`)
+   VALUES 
+     (638,'3-1310-12-345678-1234567',1,'22テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2022-12-13 12:00:00',NULL,NULL,NULL,NULL)
+   , (639,'3-1310-12-345678-1234567',1,'22テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2024-08-13 12:00:00',NULL,NULL,NULL,NULL)
+   , (640,'3-1310-12-345678-1234567',0,'22テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2023-12-13 12:00:00',NULL,NULL,NULL,NULL)
+   ;
+
+   INSERT INTO `kanrensha_seijidantai_history_23` (`kanrensha_seijidantai_history_id`,`seijidantai_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`)
+   VALUES 
+     (638,'3-1310-12-345678-1234567',1,'23テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2022-12-13 12:00:00',NULL,NULL,NULL,NULL)
+   , (639,'3-1310-12-345678-1234567',1,'23テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2024-08-13 12:00:00',NULL,NULL,NULL,NULL)
+   , (640,'3-1310-12-345678-1234567',0,'23テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2023-12-13 12:00:00',NULL,NULL,NULL,NULL)
+   ;
+
+   INSERT INTO `kanrensha_seijidantai_history_24` (`kanrensha_seijidantai_history_id`,`seijidantai_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`)
+   VALUES 
+     (638,'3-1310-12-345678-1234567',1,'24テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2022-12-13 12:00:00',NULL,NULL,NULL,NULL)
+   , (639,'3-1310-12-345678-1234567',1,'24テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2024-08-13 12:00:00',NULL,NULL,NULL,NULL)
+   , (640,'3-1310-12-345678-1234567',0,'24テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2023-12-13 12:00:00',NULL,NULL,NULL,NULL)
+   ;
+
+   INSERT INTO `kanrensha_seijidantai_history_25` (`kanrensha_seijidantai_history_id`,`seijidantai_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`)
+   VALUES 
+     (638,'3-1310-12-345678-1234567',1,'25テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2022-12-13 12:00:00',NULL,NULL,NULL,NULL)
+   , (639,'3-1310-12-345678-1234567',1,'25テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2024-08-13 12:00:00',NULL,NULL,NULL,NULL)
+   , (640,'3-1310-12-345678-1234567',0,'25テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2023-12-13 12:00:00',NULL,NULL,NULL,NULL)
+   ;
+
+   INSERT INTO `kanrensha_seijidantai_history_26` (`kanrensha_seijidantai_history_id`,`seijidantai_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`)
+   VALUES 
+     (638,'3-1310-12-345678-1234567',1,'26テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2022-12-13 12:00:00',NULL,NULL,NULL,NULL)
+   , (639,'3-1310-12-345678-1234567',1,'26テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2024-08-13 12:00:00',NULL,NULL,NULL,NULL)
+   , (640,'3-1310-12-345678-1234567',0,'26テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2023-12-13 12:00:00',NULL,NULL,NULL,NULL)
+   ;
+
+   INSERT INTO `kanrensha_seijidantai_history_27` (`kanrensha_seijidantai_history_id`,`seijidantai_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`)
+   VALUES 
+     (638,'3-1310-12-345678-1234567',1,'27テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2022-12-13 12:00:00',NULL,NULL,NULL,NULL)
+   , (639,'3-1310-12-345678-1234567',1,'27テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2024-08-13 12:00:00',NULL,NULL,NULL,NULL)
+   , (640,'3-1310-12-345678-1234567',0,'27テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2023-12-13 12:00:00',NULL,NULL,NULL,NULL)
+   ;
+
+   INSERT INTO `kanrensha_seijidantai_history_28` (`kanrensha_seijidantai_history_id`,`seijidantai_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`)
+   VALUES 
+     (638,'3-1310-12-345678-1234567',1,'28テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2022-12-13 12:00:00',NULL,NULL,NULL,NULL)
+   , (639,'3-1310-12-345678-1234567',1,'28テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2024-08-13 12:00:00',NULL,NULL,NULL,NULL)
+   , (640,'3-1310-12-345678-1234567',0,'28テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2023-12-13 12:00:00',NULL,NULL,NULL,NULL)
+   ;
+
+   INSERT INTO `kanrensha_seijidantai_history_29` (`kanrensha_seijidantai_history_id`,`seijidantai_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`)
+   VALUES 
+     (638,'3-1310-12-345678-1234567',1,'29テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2022-12-13 12:00:00',NULL,NULL,NULL,NULL)
+   , (639,'3-1310-12-345678-1234567',1,'29テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2024-08-13 12:00:00',NULL,NULL,NULL,NULL)
+   , (640,'3-1310-12-345678-1234567',0,'29テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2023-12-13 12:00:00',NULL,NULL,NULL,NULL)
+   ;
+
+   INSERT INTO `kanrensha_seijidantai_history_30` (`kanrensha_seijidantai_history_id`,`seijidantai_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`)
+   VALUES 
+     (638,'3-1310-12-345678-1234567',1,'30テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2022-12-13 12:00:00',NULL,NULL,NULL,NULL)
+   , (639,'3-1310-12-345678-1234567',1,'30テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2024-08-13 12:00:00',NULL,NULL,NULL,NULL)
+   , (640,'3-1310-12-345678-1234567',0,'30テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2023-12-13 12:00:00',NULL,NULL,NULL,NULL)
+   ;
+
+   INSERT INTO `kanrensha_seijidantai_history_31` (`kanrensha_seijidantai_history_id`,`seijidantai_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`)
+   VALUES 
+     (638,'3-1310-12-345678-1234567',1,'31テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2022-12-13 12:00:00',NULL,NULL,NULL,NULL)
+   , (639,'3-1310-12-345678-1234567',1,'31テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2024-08-13 12:00:00',NULL,NULL,NULL,NULL)
+   , (640,'3-1310-12-345678-1234567',0,'31テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2023-12-13 12:00:00',NULL,NULL,NULL,NULL)
+   ;
+   
+   INSERT INTO `kanrensha_seijidantai_history_32` (`kanrensha_seijidantai_history_id`,`seijidantai_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`)
+   VALUES 
+     (638,'3-1310-12-345678-1234567',1,'32テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2022-12-13 12:00:00',NULL,NULL,NULL,NULL)
+   , (639,'3-1310-12-345678-1234567',1,'32テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2024-08-13 12:00:00',NULL,NULL,NULL,NULL)
+   , (640,'3-1310-12-345678-1234567',0,'32テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2023-12-13 12:00:00',NULL,NULL,NULL,NULL)
+   ;
+
+   INSERT INTO `kanrensha_seijidantai_history_33` (`kanrensha_seijidantai_history_id`,`seijidantai_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`)
+   VALUES 
+     (638,'3-1310-12-345678-1234567',1,'33テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2022-12-13 12:00:00',NULL,NULL,NULL,NULL)
+   , (639,'3-1310-12-345678-1234567',1,'33テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2024-08-13 12:00:00',NULL,NULL,NULL,NULL)
+   , (640,'3-1310-12-345678-1234567',0,'33テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2023-12-13 12:00:00',NULL,NULL,NULL,NULL)
+   ;
+
+   INSERT INTO `kanrensha_seijidantai_history_34` (`kanrensha_seijidantai_history_id`,`seijidantai_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`)
+   VALUES 
+     (638,'3-1310-12-345678-1234567',1,'34テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2022-12-13 12:00:00',NULL,NULL,NULL,NULL)
+   , (639,'3-1310-12-345678-1234567',1,'34テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2024-08-13 12:00:00',NULL,NULL,NULL,NULL)
+   , (640,'3-1310-12-345678-1234567',0,'34テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2023-12-13 12:00:00',NULL,NULL,NULL,NULL)
+   ;
+
+   INSERT INTO `kanrensha_seijidantai_history_35` (`kanrensha_seijidantai_history_id`,`seijidantai_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`)
+   VALUES 
+     (638,'3-1310-12-345678-1234567',1,'35テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2022-12-13 12:00:00',NULL,NULL,NULL,NULL)
+   , (639,'3-1310-12-345678-1234567',1,'35テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2024-08-13 12:00:00',NULL,NULL,NULL,NULL)
+   , (640,'3-1310-12-345678-1234567',0,'35テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2023-12-13 12:00:00',NULL,NULL,NULL,NULL)
+   ;
+
+   INSERT INTO `kanrensha_seijidantai_history_36` (`kanrensha_seijidantai_history_id`,`seijidantai_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`)
+   VALUES 
+     (638,'3-1310-12-345678-1234567',1,'36テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2022-12-13 12:00:00',NULL,NULL,NULL,NULL)
+   , (639,'3-1310-12-345678-1234567',1,'36テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2024-08-13 12:00:00',NULL,NULL,NULL,NULL)
+   , (640,'3-1310-12-345678-1234567',0,'36テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2023-12-13 12:00:00',NULL,NULL,NULL,NULL)
+   ;
+
+   INSERT INTO `kanrensha_seijidantai_history_37` (`kanrensha_seijidantai_history_id`,`seijidantai_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`)
+   VALUES 
+     (638,'3-1310-12-345678-1234567',1,'37テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2022-12-13 12:00:00',NULL,NULL,NULL,NULL)
+   , (639,'3-1310-12-345678-1234567',1,'37テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2024-08-13 12:00:00',NULL,NULL,NULL,NULL)
+   , (640,'3-1310-12-345678-1234567',0,'37テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2023-12-13 12:00:00',NULL,NULL,NULL,NULL)
+   ;
+
+   INSERT INTO `kanrensha_seijidantai_history_38` (`kanrensha_seijidantai_history_id`,`seijidantai_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`)
+   VALUES 
+     (638,'3-1310-12-345678-1234567',1,'38テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2022-12-13 12:00:00',NULL,NULL,NULL,NULL)
+   , (639,'3-1310-12-345678-1234567',1,'38テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2024-08-13 12:00:00',NULL,NULL,NULL,NULL)
+   , (640,'3-1310-12-345678-1234567',0,'38テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2023-12-13 12:00:00',NULL,NULL,NULL,NULL)
+   ;
+
+   INSERT INTO `kanrensha_seijidantai_history_39` (`kanrensha_seijidantai_history_id`,`seijidantai_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`)
+   VALUES 
+     (638,'3-1310-12-345678-1234567',1,'39テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2022-12-13 12:00:00',NULL,NULL,NULL,NULL)
+   , (639,'3-1310-12-345678-1234567',1,'39テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2024-08-13 12:00:00',NULL,NULL,NULL,NULL)
+   , (640,'3-1310-12-345678-1234567',0,'39テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2023-12-13 12:00:00',NULL,NULL,NULL,NULL)
+   ;
+
+   INSERT INTO `kanrensha_seijidantai_history_40` (`kanrensha_seijidantai_history_id`,`seijidantai_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`)
+   VALUES 
+     (638,'3-1310-12-345678-1234567',1,'40テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2022-12-13 12:00:00',NULL,NULL,NULL,NULL)
+   , (639,'3-1310-12-345678-1234567',1,'40テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2024-08-13 12:00:00',NULL,NULL,NULL,NULL)
+   , (640,'3-1310-12-345678-1234567',0,'40テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2023-12-13 12:00:00',NULL,NULL,NULL,NULL)
+   ;
+
+   INSERT INTO `kanrensha_seijidantai_history_41` (`kanrensha_seijidantai_history_id`,`seijidantai_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`)
+   VALUES 
+     (638,'3-1310-12-345678-1234567',1,'41テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2022-12-13 12:00:00',NULL,NULL,NULL,NULL)
+   , (639,'3-1310-12-345678-1234567',1,'41テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2024-08-13 12:00:00',NULL,NULL,NULL,NULL)
+   , (640,'3-1310-12-345678-1234567',0,'41テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2023-12-13 12:00:00',NULL,NULL,NULL,NULL)
+   ;
+
+   INSERT INTO `kanrensha_seijidantai_history_42` (`kanrensha_seijidantai_history_id`,`seijidantai_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`)
+   VALUES 
+     (638,'3-1310-12-345678-1234567',1,'42テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2022-12-13 12:00:00',NULL,NULL,NULL,NULL)
+   , (639,'3-1310-12-345678-1234567',1,'42テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2024-08-13 12:00:00',NULL,NULL,NULL,NULL)
+   , (640,'3-1310-12-345678-1234567',0,'42テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2023-12-13 12:00:00',NULL,NULL,NULL,NULL)
+   ;
+
+   INSERT INTO `kanrensha_seijidantai_history_43` (`kanrensha_seijidantai_history_id`,`seijidantai_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`)
+   VALUES 
+     (638,'3-1310-12-345678-1234567',1,'43テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2022-12-13 12:00:00',NULL,NULL,NULL,NULL)
+   , (639,'3-1310-12-345678-1234567',1,'43テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2024-08-13 12:00:00',NULL,NULL,NULL,NULL)
+   , (640,'3-1310-12-345678-1234567',0,'43テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2023-12-13 12:00:00',NULL,NULL,NULL,NULL)
+   ;
+
+   INSERT INTO `kanrensha_seijidantai_history_44` (`kanrensha_seijidantai_history_id`,`seijidantai_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`)
+   VALUES 
+     (638,'3-1310-12-345678-1234567',1,'44テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2022-12-13 12:00:00',NULL,NULL,NULL,NULL)
+   , (639,'3-1310-12-345678-1234567',1,'44テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2024-08-13 12:00:00',NULL,NULL,NULL,NULL)
+   , (640,'3-1310-12-345678-1234567',0,'44テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2023-12-13 12:00:00',NULL,NULL,NULL,NULL)
+   ;
+
+   INSERT INTO `kanrensha_seijidantai_history_45` (`kanrensha_seijidantai_history_id`,`seijidantai_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`)
+   VALUES 
+     (638,'3-1310-12-345678-1234567',1,'45テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2022-12-13 12:00:00',NULL,NULL,NULL,NULL)
+   , (639,'3-1310-12-345678-1234567',1,'45テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2024-08-13 12:00:00',NULL,NULL,NULL,NULL)
+   , (640,'3-1310-12-345678-1234567',0,'45テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2023-12-13 12:00:00',NULL,NULL,NULL,NULL)
+   ;
+
+   INSERT INTO `kanrensha_seijidantai_history_46` (`kanrensha_seijidantai_history_id`,`seijidantai_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`)
+   VALUES 
+     (638,'3-1310-12-345678-1234567',1,'46テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2022-12-13 12:00:00',NULL,NULL,NULL,NULL)
+   , (639,'3-1310-12-345678-1234567',1,'46テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2024-08-13 12:00:00',NULL,NULL,NULL,NULL)
+   , (640,'3-1310-12-345678-1234567',0,'46テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2023-12-13 12:00:00',NULL,NULL,NULL,NULL)
+   ;
+
+   INSERT INTO `kanrensha_seijidantai_history_47` (`kanrensha_seijidantai_history_id`,`seijidantai_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`)
+   VALUES 
+     (638,'3-1310-12-345678-1234567',1,'47テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2022-12-13 12:00:00',NULL,NULL,NULL,NULL)
+   , (639,'3-1310-12-345678-1234567',1,'47テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2024-08-13 12:00:00',NULL,NULL,NULL,NULL)
+   , (640,'3-1310-12-345678-1234567',0,'47テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2023-12-13 12:00:00',NULL,NULL,NULL,NULL)
+   ;
+
+   INSERT INTO `kanrensha_seijidantai_history_99` (`kanrensha_seijidantai_history_id`,`seijidantai_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`)
+   VALUES 
+     (638,'3-1310-12-345678-1234567',1,'99テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2022-12-13 12:00:00',NULL,NULL,NULL,NULL)
+   , (639,'3-1310-12-345678-1234567',1,'99テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2024-08-13 12:00:00',NULL,NULL,NULL,NULL)
+   , (640,'3-1310-12-345678-1234567',0,'99テスト政治団体','東京都架空市架空町','代表者A',NULL,'テスト政治団体東京都架空市架空町代表者A',1,1,'テストユーザー','2023-12-13 12:00:00',NULL,NULL,NULL,NULL)
+   ;
+
+   
+DELETE FROM `task_plan_2026`;
+ALTER TABLE `task_plan_2026` auto_increment = 0;
+
+DELETE FROM `task_info`;
+ALTER TABLE `task_info` auto_increment = 0;
+INSERT INTO `task_info` (`task_info_id`,`task_info_code`,`task_info_name`,`is_latest`,`role_list`,`message_template`,`transfer_pass`,`param_query`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`) 
+  VALUES 
+  (136,317,'サンプルタスク情報',1,'admin,manager','メッセージ','pageUrl','123=4',198,190,'ユーザ','2022-12-05 12:34:56',0,0,'ユーザ','1948-07-28 00:00:00')
+  ,(137,318,'サンプルタスク情報',1,'admin,manager','メッセージ','pageUrl','123=4',198,190,'ユーザ','2022-12-05 12:34:56',0,0,'ユーザ','1948-07-28 00:00:00')
+  ,(138,319,'サンプルタスク情報',1,'admin,manager','メッセージ','pageUrl','123=4',198,190,'ユーザ','2022-12-05 12:34:56',0,0,'ユーザ','1948-07-28 00:00:00')
+  ;
+ 

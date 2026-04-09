@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.PlatformTransactionManager;
 
+import net.seijishikin.jp.normalize.manage.kanrensha.batch.task_plan.RecordTaskPlanJobExecutionListner;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.KanrenshaSeijidantaiMasterEntity;
 
 /**
@@ -52,6 +53,10 @@ public class DumpMasterSeijidantaiBatchConfiguration {
     @Autowired
     private DumpMasterSeijidantaiItemWriter dumpMasterSeijidantaiItemWriter;
 
+    /** バッチジョブ実行リスナ */
+    @Autowired
+    private RecordTaskPlanJobExecutionListner recordTaskPlanJobExecutionListner;
+
     /**
      * Jobを返却する
      *
@@ -62,7 +67,8 @@ public class DumpMasterSeijidantaiBatchConfiguration {
     @Bean(JOB_NAME)
     protected Job getJob(final JobRepository jobRepository, @Qualifier(STEP_DUMP) final Step stepDump) {
 
-        return new JobBuilder(JOB_NAME, jobRepository).incrementer(new RunIdIncrementer()).flow(stepDump).end().build();
+        return new JobBuilder(JOB_NAME, jobRepository).incrementer(new RunIdIncrementer())
+                .listener(recordTaskPlanJobExecutionListner).flow(stepDump).end().build();
     }
 
     /**
@@ -76,7 +82,8 @@ public class DumpMasterSeijidantaiBatchConfiguration {
     protected Step getStepDump(final JobRepository jobRepository, final PlatformTransactionManager transactionManager) {
 
         return new StepBuilder(STEP_DUMP, jobRepository)
-                .<KanrenshaSeijidantaiMasterEntity, DumpKanrenshaSeijidantaiMasterDto>chunk(CHUNK_SIZE, transactionManager)
+                .<KanrenshaSeijidantaiMasterEntity, DumpKanrenshaSeijidantaiMasterDto>chunk(CHUNK_SIZE,
+                        transactionManager)
                 .reader(dumpMasterSeijidantaiItemReader).processor(dumpMasterSeijidantaiProcessor)
                 .writer(dumpMasterSeijidantaiItemWriter).build();
     }

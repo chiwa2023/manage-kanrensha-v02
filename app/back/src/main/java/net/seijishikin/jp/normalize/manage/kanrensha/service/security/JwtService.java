@@ -19,7 +19,7 @@ import org.springframework.stereotype.Service;
 import net.seijishikin.jp.normalize.manage.kanrensha.config.JwtConfig;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.sequrity.JwtTokenDto;
 
-//import mitei.mitei.political.balancesheet.manage.kanrensha.config.JwtConfig;
+//import net.seijishikin.jp.normalize.manage.kanrensha.config.JwtConfig;
 
 /**
  * JWTサービス

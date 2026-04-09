@@ -26,7 +26,7 @@ import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.BackApplication;
-import net.seijishikin.jp.normalize.manage.kanrensha.batch.task_plan.RecordTaskPlanTasklet;
+import net.seijishikin.jp.normalize.manage.kanrensha.batch.task_plan.RecordTaskPlanJobExecutionListner;
 import net.seijishikin.jp.normalize.manage.kanrensha.constants.GetCurrentResourcePath;
 import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateLeastUserForTestUtil;
 
@@ -79,8 +79,11 @@ class InsertAddressAllCityBatchConfigurationTest {
                 .addLocalDateTime("executeTime", LocalDateTime.now()).addString("readFilePath", path.toString())
                 .addLong("userId", (long) userDto.getUserPersonId())
                 .addLong("userCode", (long) userDto.getUserPersonCode())
-                .addString("userName", userDto.getUserPersonName()).addLong(RecordTaskPlanTasklet.KEY_YEAR, 2026L) //
-                .addLong(RecordTaskPlanTasklet.KEY_ID, 453L).toJobParameters();
+                .addString("userName", userDto.getUserPersonName())
+                .addLong(RecordTaskPlanJobExecutionListner.KEY_YEAR, 2026L) //
+                .addLong(RecordTaskPlanJobExecutionListner.KEY_ID, 453L)
+                .addLong(RecordTaskPlanJobExecutionListner.KEY_CODE, 187L)
+                .toJobParameters();
 
         JobExecution jobExecution = jobLauncherTestUtils.launchJob(jobParameters);
         assertEquals("COMPLETED", jobExecution.getExitStatus().getExitCode(), "作業完了Statusが戻ってくる");

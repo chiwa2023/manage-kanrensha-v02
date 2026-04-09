@@ -14,6 +14,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 
 import net.seijishikin.jp.normalize.manage.kanrensha.batch.kanrensha.dump.all.min.DumpMinSeijidantaiItemWriter;
 import net.seijishikin.jp.normalize.manage.kanrensha.batch.kanrensha.dump.sabun.master.DumpSabunMasterSeijidantaiItemReader;
+import net.seijishikin.jp.normalize.manage.kanrensha.batch.task_plan.RecordTaskPlanJobExecutionListner;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.KanrenshaSeijidantaiMasterEntity;
 
 /**
@@ -50,6 +51,10 @@ public class DumpSabunMinSeijidantaiBatchConfiguration {
     @Autowired
     private DumpMinSeijidantaiItemWriter dumpMinSeijidantaiItemWriter;
 
+    /** バッチジョブ実行リスナ */
+    @Autowired
+    private RecordTaskPlanJobExecutionListner recordTaskPlanJobExecutionListner;
+
     /**
      * Jobを返却する
      *
@@ -60,7 +65,8 @@ public class DumpSabunMinSeijidantaiBatchConfiguration {
     @Bean(JOB_NAME)
     protected Job getJob(final JobRepository jobRepository, @Qualifier(STEP_DUMP) final Step stepDump) {
 
-        return new JobBuilder(JOB_NAME, jobRepository).incrementer(new RunIdIncrementer()).flow(stepDump).end().build();
+        return new JobBuilder(JOB_NAME, jobRepository).incrementer(new RunIdIncrementer())
+                .listener(recordTaskPlanJobExecutionListner).flow(stepDump).end().build();
     }
 
     /**
@@ -74,9 +80,9 @@ public class DumpSabunMinSeijidantaiBatchConfiguration {
     protected Step getStepDump(final JobRepository jobRepository, final PlatformTransactionManager transactionManager) {
 
         return new StepBuilder(STEP_DUMP, jobRepository)
-                .<KanrenshaSeijidantaiMasterEntity, KanrenshaSeijidantaiMasterEntity>chunk(CHUNK_SIZE, transactionManager)
-                .reader(dumpSabunMasterSeijidantaiItemReader)
-                .writer(dumpMinSeijidantaiItemWriter).build();
+                .<KanrenshaSeijidantaiMasterEntity, KanrenshaSeijidantaiMasterEntity>chunk(CHUNK_SIZE,
+                        transactionManager)
+                .reader(dumpSabunMasterSeijidantaiItemReader).writer(dumpMinSeijidantaiItemWriter).build();
     }
 
 }

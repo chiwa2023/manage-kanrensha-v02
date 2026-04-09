@@ -16,6 +16,44 @@ public class TaskInfoConstants { // NOPMD DataClass
     /** 関連者XML読み取り再処理 */
     public static final int RETRY_KANRENSHA_XML = 302;
 
+    /** 関連者標準ダンプ個人 */
+    public static final int DUMP_STD_PERSON = 311;
+    /** 関連者標準ダンプ企業 */
+    public static final int DUMP_STD_KIGYOU = 312;
+    /** 関連者標準ダンプ政治団体 */
+    public static final int DUMP_STD_SEIJIDANTAI = 313;
+    /** 関連者最小ダンプ個人 */
+    public static final int DUMP_MIN_PERSON = 314;
+    /** 関連者最小ダンプ企業 */
+    public static final int DUMP_MIN_KIGYOU = 315;
+    /** 関連者最小ダンプ政治団体 */
+    public static final int DUMP_MIN_SEIJIDANTAI = 316;
+    /** 関連者履歴ダンプ個人 */
+    public static final int DUMP_HISTORY_PERSON = 317;
+    /** 関連者履歴ダンプ企業 */
+    public static final int DUMP_HISTORY_KIGYOU = 318;
+    /** 関連者履歴ダンプ政治団体 */
+    public static final int DUMP_HISTORY_SEIJIDANTAI = 319;
+
+    /** 関連者標準ダンプ差分個人 */
+    public static final int DUMP_STD_SABUN_PERSON = 321;
+    /** 関連者標準ダンプ差分企業 */
+    public static final int DUMP_STD_SABUN_KIGYOU = 322;
+    /** 関連者標準ダンプ差分政治団体 */
+    public static final int DUMP_STD_SABUN_SEIJIDANTAI = 323;
+    /** 関連者最小ダンプ差分個人 */
+    public static final int DUMP_MIN_SABUN_PERSON = 324;
+    /** 関連者最小ダンプ差分企業 */
+    public static final int DUMP_MIN_SABUN_KIGYOU = 325;
+    /** 関連者最小ダンプ差分政治団体 */
+    public static final int DUMP_MIN_SABUN_SEIJIDANTAI = 326;
+    /** 関連者履歴ダンプ差分個人 */
+    public static final int DUMP_HISTORY_SABUN_PERSON = 327;
+    /** 関連者履歴ダンプ差分企業 */
+    public static final int DUMP_HISTORY_SABUN_KIGYOU = 328;
+    /** 関連者履歴ダンプ差分政治団体 */
+    public static final int DUMP_HISTORY_SABUN_SEIJIDANTAI = 329;
+
     /** 関連者個人標準ファイル登録 */
     public static final int FILE_PERSON_STD = 351;
     /** 関連者企業団体標準再分類 */

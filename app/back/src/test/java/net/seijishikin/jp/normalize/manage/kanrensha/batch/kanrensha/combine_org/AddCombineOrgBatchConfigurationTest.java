@@ -26,7 +26,7 @@ import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.BackApplication;
-import net.seijishikin.jp.normalize.manage.kanrensha.batch.task_plan.RecordTaskPlanTasklet;
+import net.seijishikin.jp.normalize.manage.kanrensha.batch.task_plan.RecordTaskPlanJobExecutionListner;
 import net.seijishikin.jp.normalize.manage.kanrensha.constants.GetCurrentResourcePath;
 import net.seijishikin.jp.normalize.manage.kanrensha.constants.KanrenshaKbnConstants;
 import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateLeastUserForTestUtil;
@@ -77,9 +77,9 @@ class AddCombineOrgBatchConfigurationTest {
                 .addString("userName", userDto.getUserPersonName()).addString("readFilePath", path.toString())
                 .addString("kanrenshaKbn", String.valueOf(KanrenshaKbnConstants.KIGYOU_DT)) //
                 .addString("yearMin", "2020").addString("yearMax", "2025")
-                .addLong(RecordTaskPlanTasklet.KEY_YEAR, (long) 2026) //
-                .addLong(RecordTaskPlanTasklet.KEY_ID, (long) 453) //
-                .addLong(RecordTaskPlanTasklet.KEY_CODE, (long) 187)
+                .addLong(RecordTaskPlanJobExecutionListner.KEY_YEAR, (long) 2026) //
+                .addLong(RecordTaskPlanJobExecutionListner.KEY_ID, (long) 453) //
+                .addLong(RecordTaskPlanJobExecutionListner.KEY_CODE, (long) 187)
                 .toJobParameters();
 
         JobExecution jobExecution = jobLauncherTestUtils.launchJob(jobParameters);

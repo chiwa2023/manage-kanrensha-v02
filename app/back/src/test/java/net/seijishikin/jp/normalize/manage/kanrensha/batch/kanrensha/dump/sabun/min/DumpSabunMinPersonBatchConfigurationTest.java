@@ -24,7 +24,11 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
+import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
+import net.seijishikin.jp.normalize.common_tool.utils.CreateUserLeastDtoByBatchParamUtil;
 import net.seijishikin.jp.normalize.manage.kanrensha.BackApplication;
+import net.seijishikin.jp.normalize.manage.kanrensha.batch.task_plan.RecordTaskPlanJobExecutionListner;
+import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateLeastUserForTestUtil;
 
 /**
  * DumpSabunMinPersonBatchConfiguration単体テスト
@@ -80,6 +84,8 @@ class DumpSabunMinPersonBatchConfigurationTest {
     @Tag("TableTruncate")
     void testExecute() throws Exception {
 
+        LeastUserDto userDto = CreateLeastUserForTestUtil.practice();
+
         jobLauncherTestUtils.setJob(dumpSabunMinPersonBatchConfiguration);
 
         JobParameters jobParameters = new JobParametersBuilder(
@@ -88,7 +94,12 @@ class DumpSabunMinPersonBatchConfigurationTest {
                 .addLocalDateTime("datetimeStart", LocalDateTime.of(2024, 1, 1, 0, 0, 0))
                 .addLocalDateTime("datetimeEnd", LocalDateTime.of(2025, 1, 1, 0, 0, 0))
                 .addString("writeFilePath", Paths.get(storageFolder, "sabun_master_min_person.csv").toString())
-                .toJobParameters();
+                .addLong(CreateUserLeastDtoByBatchParamUtil.USER_ID_PARAM, (long) userDto.getUserPersonId())
+                .addLong(CreateUserLeastDtoByBatchParamUtil.USER_CODE_PARAM, (long) userDto.getUserPersonCode())
+                .addString(CreateUserLeastDtoByBatchParamUtil.USER_NAME_PARAM, userDto.getUserPersonName())
+                .addLong(RecordTaskPlanJobExecutionListner.KEY_YEAR, (long) 2026) //
+                .addLong(RecordTaskPlanJobExecutionListner.KEY_ID, (long) 453) //
+                .addLong(RecordTaskPlanJobExecutionListner.KEY_CODE, (long) 187).toJobParameters();
 
         JobExecution jobExecution = jobLauncherTestUtils.launchJob(jobParameters);
         assertEquals("COMPLETED", jobExecution.getExitStatus().getExitCode(), "作業完了Statusが戻ってくる");

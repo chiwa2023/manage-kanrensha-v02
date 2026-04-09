@@ -14,8 +14,8 @@ import org.springframework.transaction.PlatformTransactionManager;
 
 import net.seijishikin.jp.normalize.manage.kanrensha.batch.kanrensha.dump.all.min.DumpMinPersonItemWriter;
 import net.seijishikin.jp.normalize.manage.kanrensha.batch.kanrensha.dump.sabun.master.DumpSabunMasterPersonItemReader;
+import net.seijishikin.jp.normalize.manage.kanrensha.batch.task_plan.RecordTaskPlanJobExecutionListner;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.KanrenshaPersonMasterEntity;
-
 
 /**
  * 関連者企業・団体マスタCsv出力BatchConfiguration
@@ -51,6 +51,10 @@ public class DumpSabunMinPersonBatchConfiguration {
     @Autowired
     private DumpMinPersonItemWriter dumpMinPersonItemWriter;
 
+    /** バッチジョブ実行リスナ */
+    @Autowired
+    private RecordTaskPlanJobExecutionListner recordTaskPlanJobExecutionListner;
+
     /**
      * Jobを返却する
      *
@@ -61,7 +65,8 @@ public class DumpSabunMinPersonBatchConfiguration {
     @Bean(JOB_NAME)
     protected Job getJob(final JobRepository jobRepository, @Qualifier(STEP_DUMP) final Step stepDump) {
 
-        return new JobBuilder(JOB_NAME, jobRepository).incrementer(new RunIdIncrementer()).flow(stepDump).end().build();
+        return new JobBuilder(JOB_NAME, jobRepository).incrementer(new RunIdIncrementer())
+                .listener(recordTaskPlanJobExecutionListner).flow(stepDump).end().build();
     }
 
     /**
@@ -76,8 +81,7 @@ public class DumpSabunMinPersonBatchConfiguration {
 
         return new StepBuilder(STEP_DUMP, jobRepository)
                 .<KanrenshaPersonMasterEntity, KanrenshaPersonMasterEntity>chunk(CHUNK_SIZE, transactionManager)
-                .reader(dumpSabunMasterPersonItemReader)
-                .writer(dumpMinPersonItemWriter).build();
+                .reader(dumpSabunMasterPersonItemReader).writer(dumpMinPersonItemWriter).build();
     }
 
 }

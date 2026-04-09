@@ -23,6 +23,7 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
+import net.seijishikin.jp.normalize.common_tool.utils.CreateUserLeastDtoByBatchParamUtil;
 import net.seijishikin.jp.normalize.manage.kanrensha.BackApplication;
 import net.seijishikin.jp.normalize.manage.kanrensha.batch.address.block.PickupManualWorksBatchConfiguration;
 import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateLeastUserForTestUtil;
@@ -59,9 +60,12 @@ class PickupManualWorksBatchConfigurationAllTest {
                 pickupManualWorksBatchConfiguration.getJobParametersIncrementer().getNext(new JobParameters())) // NOPMD
                 .addLocalDateTime("executeTime", LocalDateTime.now()) //
                 .addString("lgCodePref", "01") //
-                .addLong("userId", (long) userDto.getUserPersonId())
-                .addLong("userCode", (long) userDto.getUserPersonCode())
-                .addString("userName", userDto.getUserPersonName()).toJobParameters();
+                .addLong(CreateUserLeastDtoByBatchParamUtil.USER_ID_PARAM,
+                        Long.parseLong(userDto.getUserPersonId().toString()))
+                .addLong(CreateUserLeastDtoByBatchParamUtil.USER_CODE_PARAM,
+                        Long.parseLong(userDto.getUserPersonCode().toString()))
+                .addString(CreateUserLeastDtoByBatchParamUtil.USER_NAME_PARAM, userDto.getUserPersonName())
+                .toJobParameters();
 
         JobExecution jobExecution = jobLauncherTestUtils.launchJob(jobParameters);
         assertEquals("COMPLETED", jobExecution.getExitStatus().getExitCode(), "作業完了Statusが戻ってくる");

@@ -24,7 +24,11 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
+import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
+import net.seijishikin.jp.normalize.common_tool.utils.CreateUserLeastDtoByBatchParamUtil;
 import net.seijishikin.jp.normalize.manage.kanrensha.BackApplication;
+import net.seijishikin.jp.normalize.manage.kanrensha.batch.task_plan.RecordTaskPlanJobExecutionListner;
+import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateLeastUserForTestUtil;
 
 /**
  * DumpSabunKanrenshaKigyouDtHistoryBatchConfiguration単体テスト
@@ -80,12 +84,15 @@ class DumpSabunKanrenshaKigyouDtHistoryBatchConfigurationTest {
     @Tag("TableTruncate")
     void testExecute() throws Exception {
 
+        LeastUserDto userDto = CreateLeastUserForTestUtil.practice();
+
         jobLauncherTestUtils.setJob(dumpSabunKanrenshaKigyouDtHistoryBatchConfiguration);
 
         final String folder = "/sabun_kigyou_dt_history";
 
-        JobParameters jobParameters = new JobParametersBuilder(
-                dumpSabunKanrenshaKigyouDtHistoryBatchConfiguration.getJobParametersIncrementer().getNext(new JobParameters())) // NOPMD
+        JobParameters jobParameters = new JobParametersBuilder( //
+                dumpSabunKanrenshaKigyouDtHistoryBatchConfiguration // NOPMD Law Demeter
+                        .getJobParametersIncrementer().getNext(new JobParameters()))
                 .addLocalDateTime("executeTime", LocalDateTime.now()) //
                 .addString("srcPath", Paths.get(storageFolder, folder).toString())
                 .addLocalDateTime("datetimeStart", LocalDateTime.of(2024, 1, 1, 0, 0, 0))
@@ -186,7 +193,12 @@ class DumpSabunKanrenshaKigyouDtHistoryBatchConfigurationTest {
                         Paths.get(storageFolder, folder, "sabun_kigyou_dt_history_47.csv").toString())
                 .addString("writeFilePath99",
                         Paths.get(storageFolder, folder, "sabun_kigyou_dt_history_99.csv").toString())
-                .toJobParameters();
+                .addLong(CreateUserLeastDtoByBatchParamUtil.USER_ID_PARAM, (long) userDto.getUserPersonId())
+                .addLong(CreateUserLeastDtoByBatchParamUtil.USER_CODE_PARAM, (long) userDto.getUserPersonCode())
+                .addString(CreateUserLeastDtoByBatchParamUtil.USER_NAME_PARAM, userDto.getUserPersonName())
+                .addLong(RecordTaskPlanJobExecutionListner.KEY_YEAR, (long) 2026) //
+                .addLong(RecordTaskPlanJobExecutionListner.KEY_ID, (long) 453) //
+                .addLong(RecordTaskPlanJobExecutionListner.KEY_CODE, (long) 187).toJobParameters();
 
         JobExecution jobExecution = jobLauncherTestUtils.launchJob(jobParameters);
         assertEquals("COMPLETED", jobExecution.getExitStatus().getExitCode(), "作業完了Statusが戻ってくる");

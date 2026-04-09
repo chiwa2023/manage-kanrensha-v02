@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
 import net.seijishikin.jp.normalize.common_tool.utils.CreateUserLeastDtoByBatchParamUtil;
 import net.seijishikin.jp.normalize.manage.kanrensha.batch.kanrensha.seijidantai.add_std.RetryStdKanrenshaSeijidantaiMasterBatchConfiguration;
-import net.seijishikin.jp.normalize.manage.kanrensha.batch.task_plan.RecordTaskPlanTasklet;
+import net.seijishikin.jp.normalize.manage.kanrensha.batch.task_plan.RecordTaskPlanJobExecutionListner;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.task.TaskPlanInfoDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.util.SaveStackTraceService;
 
@@ -53,9 +53,9 @@ public class RetryBatchMasterStdSeijidantaiService {
                 .addLong(CreateUserLeastDtoByBatchParamUtil.USER_CODE_PARAM,
                         Long.parseLong(userDto.getUserPersonCode().toString()))
                 .addString(CreateUserLeastDtoByBatchParamUtil.USER_NAME_PARAM, userDto.getUserPersonName())
-                .addLong(RecordTaskPlanTasklet.KEY_YEAR, (long) year)
-                .addLong(RecordTaskPlanTasklet.KEY_ID, (long) planDto.getTaskPlanId())
-                .addLong(RecordTaskPlanTasklet.KEY_CODE, (long) planDto.getTaskPlanCode()).toJobParameters();
+                .addLong(RecordTaskPlanJobExecutionListner.KEY_YEAR, (long) year)
+                .addLong(RecordTaskPlanJobExecutionListner.KEY_ID, (long) planDto.getTaskPlanId())
+                .addLong(RecordTaskPlanJobExecutionListner.KEY_CODE, (long) planDto.getTaskPlanCode()).toJobParameters();
 
         try {
             jobLauncher.run(retryStdKanrenshaPoliticalOrganizationMaster, jobParameters);
