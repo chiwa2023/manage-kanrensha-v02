@@ -46,14 +46,13 @@ public class SearchRiyoushaAllController {
             SearchRiyoushaAllResultDto resultDto = searchRiyoushaAllService.practice(capsuleDto);
 
             final Integer zero = 0;
-            // すべての検索で検索結果が取得できないときはNO_CONTENT
             if (zero.equals(resultDto.getSearchRiyoushaAdminResultDto().getAllCount())
                     && zero.equals(resultDto.getSearchRiyoushaManagerResultDto().getAllCount())
                     && zero.equals(resultDto.getSearchRiyoushaPartnerApiResultDto().getAllCount())) {
 
                 resultDto.setIsFailure(true);
                 resultDto.setMessage(FrameworkMessageAndResultDto.MESSAGE_NO_CONTENT);
-                return ResponseEntity.status(HttpResponseStatus.NO_CONTENT.code()).body(resultDto);
+                return ResponseEntity.status(HttpResponseStatus.ACCEPTED.code()).body(resultDto);
             } else {
                 return ResponseEntity.status(HttpResponseStatus.OK.code()).body(resultDto);
             }

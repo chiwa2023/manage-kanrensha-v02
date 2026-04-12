@@ -66,7 +66,7 @@ public class TrialAccessController {
             for (StackTraceElement element : exception.getStackTrace()) {
                 builderException.append(element.toString()).append(KAIGYOU);
             }
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(builderException.toString());
+            return ResponseEntity.status(HttpStatus.ACCEPTED).body(builderException.toString());
         }
 
         return ResponseEntity.status(HttpStatus.OK).body(builder.toString());

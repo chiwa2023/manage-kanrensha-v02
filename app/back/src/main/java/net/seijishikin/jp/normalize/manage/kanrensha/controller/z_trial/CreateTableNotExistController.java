@@ -30,7 +30,7 @@ public class CreateTableNotExistController {
         try {
             createTableNotExistService.practice();
         } catch (Exception e) { // NOPMD GeneralException
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).body("作成作業を起動できませんでした");
+            return ResponseEntity.status(HttpStatus.ACCEPTED).body("作成作業を起動できませんでした");
         }
 
         return ResponseEntity.status(HttpStatus.OK).body("作業を開始しています。終了までお待ちください");

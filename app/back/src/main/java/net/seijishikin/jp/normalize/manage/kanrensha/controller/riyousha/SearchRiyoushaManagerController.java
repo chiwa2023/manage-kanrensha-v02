@@ -49,7 +49,7 @@ public class SearchRiyoushaManagerController {
             if (zero.equals(resultDto.getAllCount())) {
                 resultDto.setIsFailure(true);
                 resultDto.setMessage(FrameworkMessageAndResultDto.MESSAGE_NO_CONTENT);
-                return ResponseEntity.status(HttpResponseStatus.NO_CONTENT.code()).body(resultDto);
+                return ResponseEntity.status(HttpResponseStatus.ACCEPTED.code()).body(resultDto);
             } else {
                 return ResponseEntity.status(HttpResponseStatus.OK.code()).body(resultDto);
             }

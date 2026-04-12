@@ -45,7 +45,7 @@ public class RegistAddByXmTableListController {
                 if (0 == entityAns.getWkTblMasterAllByXmlId()) {
                     resultDto.setIsFailure(true);
                     resultDto.setMessage("途中で処理が中断されました");
-                    return ResponseEntity.status(HttpResponseStatus.NO_CONTENT.code()).body(resultDto);
+                    return ResponseEntity.status(HttpResponseStatus.ACCEPTED.code()).body(resultDto);
                 }
             }
         }

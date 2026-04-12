@@ -46,7 +46,7 @@ public class GetRiyoushaAdminDtoController {
             if (zero.equals(managerDto.getRiyoushaAdminMasterId())) {
                 managerDto.setIsFailure(true);
                 managerDto.setMessage(FrameworkMessageAndResultDto.MESSAGE_NO_CONTENT);
-                return ResponseEntity.status(HttpResponseStatus.NO_CONTENT.code()).body(managerDto);
+                return ResponseEntity.status(HttpResponseStatus.ACCEPTED.code()).body(managerDto);
             } else {
                 return ResponseEntity.status(HttpResponseStatus.OK.code()).body(managerDto);
             }

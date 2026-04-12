@@ -42,7 +42,7 @@ public class RegistCombineOrganizationController {
         if (0 == newId) {
             resultDto.setIsFailure(true);
             resultDto.setMessage("更新できませんでした");
-            return ResponseEntity.status(HttpResponseStatus.NO_CONTENT.code()).body(resultDto);
+            return ResponseEntity.status(HttpResponseStatus.ACCEPTED.code()).body(resultDto);
         } else {
             resultDto.setMessage("正常に登録できました");
             resultDto.setWkTblKanrenshaCombineOrgEntity(entity);
