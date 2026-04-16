@@ -1,0 +1,21 @@
+CREATE TABLE `riyousha_manager_master` (
+  `riyousha_manager_master_id` int NOT NULL AUTO_INCREMENT COMMENT 'テーブルId',
+  `riyousha_manager_master_code` int DEFAULT NULL COMMENT '利用者運営者コード',
+  `riyousha_person_property_id` int DEFAULT NULL COMMENT '利用者個人属性id',
+  `riyousha_person_property_code` int DEFAULT NULL COMMENT '利用者個人属性コード',
+  `is_latest` tinyint DEFAULT NULL COMMENT '最新フラグ',
+  `all_name` varchar(100) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '姓名',
+  `all_name_kana` varchar(100) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '姓名かな',
+  `address_all` varchar(100) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '住所全体',
+  `search_text` text COLLATE utf8mb4_bin COMMENT '全文検索用カラム',
+  `insert_user_id` int DEFAULT NULL COMMENT '挿入ユーザId',
+  `insert_user_code` int DEFAULT NULL COMMENT '挿入ユーザコード',
+  `insert_user_name` varchar(100) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '挿入ユーザ名称',
+  `insert_timestamp` datetime DEFAULT NULL COMMENT '挿入日時',
+  `delete_user_id` int DEFAULT NULL COMMENT '無効ユーザId',
+  `delete_user_code` int DEFAULT NULL COMMENT '無効ユーザコード',
+  `delete_user_name` varchar(100) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '無効ユーザ名称',
+  `delete_timestamp` datetime DEFAULT NULL COMMENT '無効日時',
+  PRIMARY KEY (`riyousha_manager_master_id`),
+  FULLTEXT KEY `search_text_index` (`search_text`) /*!50100 WITH PARSER `ngram` */ 
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;

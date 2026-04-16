@@ -53,7 +53,7 @@ class GetAbsolutePathLogicTest {
 
     @Test
     @Tag("TableTruncate")
-    void test() {
+    void test() throws Exception {
 
         Path path = getAbsolutePathLogic.practice("temp/07", "aaa.xml");
         assertEquals(Paths.get(storageFolder, "temp/07", "aaa.xml").toString(), path.toString());

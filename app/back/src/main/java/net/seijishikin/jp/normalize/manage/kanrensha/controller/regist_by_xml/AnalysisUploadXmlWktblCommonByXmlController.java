@@ -1,0 +1,75 @@
+package net.seijishikin.jp.normalize.manage.kanrensha.controller.regist_by_xml;
+
+import java.time.Year;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import io.netty.handler.codec.http.HttpResponseStatus;
+import net.seijishikin.jp.normalize.common_tool.dto.FrameworkMessageAndResultDto;
+import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
+import net.seijishikin.jp.normalize.manage.kanrensha.dto.add_xml.RegistDataByXmlCapsuleDto;
+import net.seijishikin.jp.normalize.manage.kanrensha.dto.task.TaskPlanWithUseFileDto;
+import net.seijishikin.jp.normalize.manage.kanrensha.service.file.CopyTempToUseSavedFileService;
+import net.seijishikin.jp.normalize.manage.kanrensha.service.regist_by_xml.AnalysisUploadXmlWktblCommonByXmlService;
+import net.seijishikin.jp.normalize.manage.kanrensha.service.util.SaveStackTraceService;
+import net.seijishikin.jp.normalize.manage.kanrensha.constants.FileTypeConstants;
+import net.seijishikin.jp.normalize.manage.kanrensha.constants.TaskInfoConstants;
+import net.seijishikin.jp.normalize.manage.kanrensha.controller.PathRouteConstants;
+
+/**
+ * アップロード済XMLファイル解析ワークテーブル複写Controller
+ */
+@RestController
+@RequestMapping(PathRouteConstants.ROOT + "/analysis-xml")
+public class AnalysisUploadXmlWktblCommonByXmlController {
+
+    /** アップロード済XMLファイル解析ワークテーブル複写Service */
+    @Autowired
+    private AnalysisUploadXmlWktblCommonByXmlService analysisUploadXmlWktblCommonByXmlService;
+
+    /** 年切り替えタスク計画挿入Servce */
+    @Autowired
+    private CopyTempToUseSavedFileService copyTempToUseSavedFileService;
+
+    /** StackTrace保存Service */
+    @Autowired
+    private SaveStackTraceService saveStackTraceService;
+
+    /**
+     * 処理を行う
+     *
+     * @return レスポンス
+     */
+    @PostMapping("/execute")
+    public ResponseEntity<FrameworkMessageAndResultDto> practice(
+            @RequestBody final RegistDataByXmlCapsuleDto capsuleDto) {
+
+        Integer year = Year.now().getValue();
+        LeastUserDto userDto = capsuleDto.getUserDto();
+        Integer taskPlanCode = 0;
+        try {
+            FrameworkMessageAndResultDto resultDto = new FrameworkMessageAndResultDto();
+            resultDto.setMessage("処理を開始しました。完了までしばらくお待ちください。");
+
+            TaskPlanWithUseFileDto planFileDto = copyTempToUseSavedFileService.practice(year,
+                    capsuleDto.getStorageFileDto(), userDto, FileTypeConstants.FILE_TYPE,
+                    TaskInfoConstants.WKTBL_KANRENSHA_XML);
+            taskPlanCode = planFileDto.getTaskPlanCode();
+
+            analysisUploadXmlWktblCommonByXmlService.practice(year, capsuleDto, planFileDto);
+
+            return ResponseEntity.status(HttpResponseStatus.OK.code()).body(resultDto);
+
+        } catch (Exception exception) { // NOPMD 業務上の理由で積極的に許容
+            saveStackTraceService.practice(exception, year, taskPlanCode);
+            return ResponseEntity.status(HttpResponseStatus.INTERNAL_SERVER_ERROR.code()).build();
+        }
+
+    }
+
+}

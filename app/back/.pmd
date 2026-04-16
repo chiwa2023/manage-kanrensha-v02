@@ -169,10 +169,6 @@
             <ruleset>Error Prone</ruleset>
         </rule>
         <rule>
-            <name>AvoidDmlStatementsInLoops</name>
-            <ruleset>Performance</ruleset>
-        </rule>
-        <rule>
             <name>AvoidDollarSigns</name>
             <ruleset>Code Style</ruleset>
         </rule>
@@ -269,14 +265,6 @@
             <ruleset>Design</ruleset>
         </rule>
         <rule>
-            <name>AvoidSoqlInLoops</name>
-            <ruleset>Performance</ruleset>
-        </rule>
-        <rule>
-            <name>AvoidSoslInLoops</name>
-            <ruleset>Performance</ruleset>
-        </rule>
-        <rule>
             <name>AvoidStringBufferField</name>
             <ruleset>Best Practices</ruleset>
         </rule>
@@ -335,10 +323,6 @@
         <rule>
             <name>BigIntegerInstantiation</name>
             <ruleset>Performance</ruleset>
-        </rule>
-        <rule>
-            <name>BooleanGetMethodName</name>
-            <ruleset>Code Style</ruleset>
         </rule>
         <rule>
             <name>BrokenNullCheck</name>
@@ -477,10 +461,6 @@
             <ruleset>Best Practices</ruleset>
         </rule>
         <rule>
-            <name>DefaultLabelNotLastInSwitchStmt</name>
-            <ruleset>Best Practices</ruleset>
-        </rule>
-        <rule>
             <name>DetachedTestCase</name>
             <ruleset>Error Prone</ruleset>
         </rule>
@@ -557,10 +537,6 @@
             <ruleset>Error Prone</ruleset>
         </rule>
         <rule>
-            <name>EmptyFinallyBlock</name>
-            <ruleset>Error Prone</ruleset>
-        </rule>
-        <rule>
             <name>EmptyForeachStmt</name>
             <ruleset>Error Prone</ruleset>
         </rule>
@@ -569,31 +545,11 @@
             <ruleset>Error Prone</ruleset>
         </rule>
         <rule>
-            <name>EmptyInitializer</name>
-            <ruleset>Error Prone</ruleset>
-        </rule>
-        <rule>
             <name>EmptyMethodInAbstractClassShouldBeAbstract</name>
             <ruleset>Code Style</ruleset>
         </rule>
         <rule>
             <name>EmptyStatementBlock</name>
-            <ruleset>Error Prone</ruleset>
-        </rule>
-        <rule>
-            <name>EmptyStatementNotInLoop</name>
-            <ruleset>Error Prone</ruleset>
-        </rule>
-        <rule>
-            <name>EmptySwitchStatements</name>
-            <ruleset>Error Prone</ruleset>
-        </rule>
-        <rule>
-            <name>EmptySynchronizedBlock</name>
-            <ruleset>Error Prone</ruleset>
-        </rule>
-        <rule>
-            <name>EmptyTryBlock</name>
             <ruleset>Error Prone</ruleset>
         </rule>
         <rule>
@@ -658,14 +614,6 @@
         </rule>
         <rule>
             <name>ExtendsObject</name>
-            <ruleset>Code Style</ruleset>
-        </rule>
-        <rule>
-            <name>FieldDeclarationsShouldBeAtStart</name>
-            <ruleset>Code Style</ruleset>
-        </rule>
-        <rule>
-            <name>FieldDeclarationsShouldBeAtStartOfClass</name>
             <ruleset>Code Style</ruleset>
         </rule>
         <rule>
@@ -789,10 +737,6 @@
             <ruleset>Performance</ruleset>
         </rule>
         <rule>
-            <name>InnaccurateNumericLiteral</name>
-            <ruleset>Error Prone</ruleset>
-        </rule>
-        <rule>
             <name>InsecureCryptoIv</name>
             <ruleset>Security</ruleset>
         </rule>
@@ -825,23 +769,7 @@
             <ruleset>Best Practices</ruleset>
         </rule>
         <rule>
-            <name>JUnit4TestShouldUseAfterAnnotation</name>
-            <ruleset>Best Practices</ruleset>
-        </rule>
-        <rule>
-            <name>JUnit4TestShouldUseBeforeAnnotation</name>
-            <ruleset>Best Practices</ruleset>
-        </rule>
-        <rule>
-            <name>JUnit4TestShouldUseTestAnnotation</name>
-            <ruleset>Best Practices</ruleset>
-        </rule>
-        <rule>
             <name>JUnit5TestShouldBePackagePrivate</name>
-            <ruleset>Best Practices</ruleset>
-        </rule>
-        <rule>
-            <name>JUnitAssertionsShouldIncludeMessage</name>
             <ruleset>Best Practices</ruleset>
         </rule>
         <rule>
@@ -851,10 +779,6 @@
         <rule>
             <name>JUnitStaticSuite</name>
             <ruleset>Error Prone</ruleset>
-        </rule>
-        <rule>
-            <name>JUnitTestsShouldIncludeAssert</name>
-            <ruleset>Best Practices</ruleset>
         </rule>
         <rule>
             <name>JUnitUseExpected</name>
@@ -1003,10 +927,6 @@
         <rule>
             <name>NoLongScripts</name>
             <ruleset>Design</ruleset>
-        </rule>
-        <rule>
-            <name>NonCaseLabelInSwitchStatement</name>
-            <ruleset>Error Prone</ruleset>
         </rule>
         <rule>
             <name>NonSerializableClass</name>
@@ -1217,10 +1137,6 @@
             <ruleset>Design</ruleset>
         </rule>
         <rule>
-            <name>SwitchStmtsShouldHaveDefault</name>
-            <ruleset>Best Practices</ruleset>
-        </rule>
-        <rule>
             <name>SystemPrintln</name>
             <ruleset>Best Practices</ruleset>
         </rule>
@@ -1235,10 +1151,6 @@
         <rule>
             <name>TomKytesDespair</name>
             <ruleset>Best Practices</ruleset>
-        </rule>
-        <rule>
-            <name>TooFewBranchesForASwitchStatement</name>
-            <ruleset>Performance</ruleset>
         </rule>
         <rule>
             <name>TooManyFields</name>

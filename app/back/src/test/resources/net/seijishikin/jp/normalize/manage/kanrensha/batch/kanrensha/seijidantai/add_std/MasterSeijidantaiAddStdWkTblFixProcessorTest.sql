@@ -1,0 +1,42 @@
+TRUNCATE TABLE `wk_tbl_kanrensha_seijidantai_master`;
+ALTER TABLE `wk_tbl_kanrensha_seijidantai_master` AUTO_INCREMENT = 1;
+
+INSERT INTO `wk_tbl_kanrensha_seijidantai_master` (
+  `wk_tbl_kanrensha_seijidantai_master_id`,
+  `wk_tbl_kanrensha_seijidantai_master_code`,
+  `is_latest`,
+  `is_finish`,
+  `kanrensha_name`,
+  `all_address`,
+  `seijidantai_delegate`,
+  `dantai_kbn`,
+  `poli_org_no`,
+  `address_postal`,
+  `address_block`,
+  `address_building`,
+  `postalcode1`,
+  `postalcode2`,
+  `lg_code`,
+  `machiaza_id`,
+  `blk_id`,
+  `rsdt_id`,
+  `rsdt2_id`,
+  `phon1`,
+  `phon2`,
+  `phon3`,
+  `email`,
+  `my_portal_url`,
+  `sns_service_name`,
+  `sns_account`,
+  `org_name_kana`,
+  `org_delegate_code`,
+  `account_mgr_code`,
+  `account_mgr_name`,
+  `is_affected`,
+  `judge_reason`,
+  `insert_user_id`,
+  `insert_user_code`,
+  `insert_user_name`,
+  `insert_timestamp`
+) VALUES
+(7001, 7001, 1, 0, '自由民主党', '東京都千代田区永田町1-11-23', '総裁K', 'A1', '10001', '100-8910', '千代田区永田町', '1-11-23', '100', '8910', '131016', '0001', '0001', '0001', '0001', '03', '3595', '1111', 'ldp@example.com', 'http://www.jimin.jp/', 'Twitter', '@jimin_koho', 'ジユウミンシュトウ', 'D011', 'A001', '会計責任者1', 1, '正)', 1, 190, 'gemini-user', NOW());

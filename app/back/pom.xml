@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.5.7</version>
+		<version>3.5.13</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>net.seijishikin.jp.normalize.manage.kanrensha</groupId>
@@ -49,6 +49,10 @@
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
 		<dependency>
@@ -76,6 +80,16 @@
 			<artifactId>spring-security-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-webflux</artifactId>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+		</dependency>
 
 		<!-- 初回、下記2つのjarをmaven参照ディレクトリに複写するため、下記をコメントアウトし、
 		mvnw clean installしたのち 再度コメント外して有効化する必要がある -->
@@ -83,13 +97,14 @@
 		<!--　政治資金関係XML読み書き -->
 		<dependency>
 			<groupId>net.seijishikin.jp.normalize.manage.kanrensha.lib</groupId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>0.5.0-SNAPSHOT</version>
 			<artifactId>published_document</artifactId>
 		</dependency>
-		
+
 		<!--　このプロジェクト共通Tool  -->
 		<dependency>
-			<groupId>net.seijishikin.jp.normalize.manage.kanrensha.lib.common_tool</groupId>
+			<groupId>
+				net.seijishikin.jp.normalize.manage.kanrensha.lib.common_tool</groupId>
 			<version>0.0.1-SNAPSHOT</version>
 			<artifactId>common_tool</artifactId>
 		</dependency>
@@ -121,7 +136,7 @@
 						</goals>
 						<configuration>
 							<file>
-								${basedir}/lib/published_document-0.0.1-SNAPSHOT.jar</file>
+								${basedir}/lib/published_document-0.5.0-SNAPSHOT.jar</file>
 							<groupId>
 								net.seijishikin.jp.normalize.manage.kanrensha.lib</groupId>
 							<artifactId>published_document</artifactId>

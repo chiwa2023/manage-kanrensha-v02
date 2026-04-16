@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import net.seijishikin.jp.normalize.manage.kanrensha.logic.file.GetAbsolutePathLogic;
 import net.seijishikin.jp.normalize.manage.kanrensha.repository.SampleTableRepository;
+import net.seijishikin.jp.normalize.manage.kanrensha.controller.PathRouteConstants;
 
 /**
  * 機能疎通確認Controller
@@ -31,7 +32,7 @@ public class TrialAccessController {
      *
      * @return 表示文字列
      */
-    @GetMapping("/trial-access")
+    @GetMapping(PathRouteConstants.ROOT + "/trial-access")
     public ResponseEntity<String> practice() {
 
         final String BLANK = "";
@@ -65,7 +66,7 @@ public class TrialAccessController {
             for (StackTraceElement element : exception.getStackTrace()) {
                 builderException.append(element.toString()).append(KAIGYOU);
             }
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(builderException.toString());
+            return ResponseEntity.status(HttpStatus.ACCEPTED).body(builderException.toString());
         }
 
         return ResponseEntity.status(HttpStatus.OK).body(builder.toString());

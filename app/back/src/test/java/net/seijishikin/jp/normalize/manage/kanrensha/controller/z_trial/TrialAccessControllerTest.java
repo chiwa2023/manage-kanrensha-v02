@@ -1,6 +1,6 @@
 package net.seijishikin.jp.normalize.manage.kanrensha.controller.z_trial;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -14,6 +14,8 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import org.springframework.test.web.servlet.MockMvc;
+
+import net.seijishikin.jp.normalize.manage.kanrensha.controller.PathRouteConstants;
 
 /**
  * TrialAccessController単体テスト
@@ -31,7 +33,7 @@ class TrialAccessControllerTest {
     @Test
     void test() throws Exception {
         
-        String path = "/trial-access";
+        String path = PathRouteConstants.ROOT + "/trial-access";
 
         assertEquals(HttpStatus.OK.value(), mockMvc // NOPMD LawOfDemeter
                 .perform(get(path)).andExpect(status().isOk()).andReturn().getResponse().getStatus());

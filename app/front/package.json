@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "seijishikin-jp-normalize": "file:lib/seijishikin-jp-normalize-0.0.0.tgz",
-    "seijishikin-jp-normalize_common-tool": "file:lib/seijishikin-jp-normalize_common-tool-0.0.0.tgz",
+    "seijishikin-jp-normalize_common-tool": "file:lib/seijishikin-jp-normalize_common-tool-0.0.1.tgz",
     "vue": "^3.5.22"
   },
   "devDependencies": {

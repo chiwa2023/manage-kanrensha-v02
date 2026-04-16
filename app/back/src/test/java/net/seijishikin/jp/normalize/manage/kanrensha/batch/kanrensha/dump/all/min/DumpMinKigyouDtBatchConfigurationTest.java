@@ -1,0 +1,107 @@
+package net.seijishikin.jp.normalize.manage.kanrensha.batch.kanrensha.dump.all.min;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import java.nio.file.Paths;
+import java.time.LocalDateTime;
+
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
+import org.springframework.batch.core.Job;
+import org.springframework.batch.core.JobExecution;
+import org.springframework.batch.core.JobParameters;
+import org.springframework.batch.core.JobParametersBuilder;
+import org.springframework.batch.test.JobLauncherTestUtils;
+import org.springframework.batch.test.context.SpringBatchTest;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.jdbc.Sql;
+import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
+
+import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
+import net.seijishikin.jp.normalize.common_tool.utils.CreateUserLeastDtoByBatchParamUtil;
+import net.seijishikin.jp.normalize.manage.kanrensha.BackApplication;
+import net.seijishikin.jp.normalize.manage.kanrensha.batch.task_plan.RecordTaskPlanJobExecutionListner;
+import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateLeastUserForTestUtil;
+
+/**
+ * DumpMinKigyouDtBatchConfiguration単体テスト
+ */
+@SpringJUnitConfig
+@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
+@SpringBatchTest
+@ContextConfiguration(classes = BackApplication.class) // 全体起動
+@DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
+@Sql("DumpMinKigyouDtBatchConfigurationTest.sql")
+@ConfigurationProperties(prefix = "net.seijishikin.jp.normalize.kanrensha")
+class DumpMinKigyouDtBatchConfigurationTest {
+    // CHECKSTYLE:OFF MagicNumber
+
+    /** propertiesからインジェクションされた最上位保存フォルダ絶対パス */
+    private String storageFolder;
+
+    /**
+     * 最上位保存フォルダ絶対パスを取得する
+     *
+     * @return 最上位保存フォルダ絶対パス
+     */
+    public String getStorageFolder() {
+        return storageFolder;
+    }
+
+    /**
+     * 最上位保存フォルダ絶対パスを設定する
+     *
+     * @param storageFolder 最上位保存フォルダ絶対パス
+     */
+    public void setStorageFolder(final String storageFolder) {
+        this.storageFolder = storageFolder;
+    }
+
+    /** テストユーティリティ */
+    @Autowired
+    private JobLauncherTestUtils jobLauncherTestUtils;
+
+    /** 起動をするJob */
+    @Qualifier(DumpMinKigyouDtBatchConfiguration.JOB_NAME)
+    @Autowired
+    private Job dumpMinKigyouDtBatchConfiguration;
+
+    @Test
+    @Tag("TableTruncate")
+    void testJob() {
+        assertEquals(DumpMinKigyouDtBatchConfiguration.JOB_NAME, dumpMinKigyouDtBatchConfiguration.getName(),
+                "Job名が一致");
+    }
+
+    @Test
+    @Tag("TableTruncate")
+    void testExecute() throws Exception {
+
+        LeastUserDto userDto = CreateLeastUserForTestUtil.practice();
+
+        jobLauncherTestUtils.setJob(dumpMinKigyouDtBatchConfiguration);
+
+        JobParameters jobParameters = new JobParametersBuilder(
+                dumpMinKigyouDtBatchConfiguration.getJobParametersIncrementer().getNext(new JobParameters())) // NOPMD
+                .addLocalDateTime("executeTime", LocalDateTime.now()) //
+                .addLocalDateTime("datetimeEnd", LocalDateTime.of(2024, 1, 1, 0, 0, 0))
+                .addString("writeFilePath", Paths.get(storageFolder, "kigyou_dt_min.csv").toString())
+                .addLong(CreateUserLeastDtoByBatchParamUtil.USER_ID_PARAM, (long) userDto.getUserPersonId())
+                .addLong(CreateUserLeastDtoByBatchParamUtil.USER_CODE_PARAM, (long) userDto.getUserPersonCode())
+                .addString(CreateUserLeastDtoByBatchParamUtil.USER_NAME_PARAM, userDto.getUserPersonName())
+                .addLong(RecordTaskPlanJobExecutionListner.KEY_YEAR, (long) 2026) //
+                .addLong(RecordTaskPlanJobExecutionListner.KEY_ID, (long) 453) //
+                .addLong(RecordTaskPlanJobExecutionListner.KEY_CODE, (long) 187).toJobParameters();
+
+        JobExecution jobExecution = jobLauncherTestUtils.launchJob(jobParameters);
+        assertEquals("COMPLETED", jobExecution.getExitStatus().getExitCode(), "作業完了Statusが戻ってくる");
+    }
+
+}
