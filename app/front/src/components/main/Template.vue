@@ -12,7 +12,9 @@ import {
 
 // よく使う定数
 const BLANK: string = "";
-//const INIT_NUMBER: number = 0;
+const INIT_NUMBER: number = 0;
+const INIT_BOOLEAN: boolean = false;
+const SEARCH_LIMIT: number = 20;
 // const SERVER_STATUS_OK: number = 200;
 // const SERVER_STATUS_ERROR: number = 400;
 // メッセージ表示定数
@@ -22,9 +24,9 @@ const title: Ref<string> = ref(BLANK);
 const message: Ref<string> = ref(BLANK);
 
 // Paging
-const pageNumber: Ref<number> = ref(6); // Mock data
-const allCount: Ref<number> = ref(123); // Mock data
-const limit: Ref<number> = ref(10); // Mock data
+const pageNumber: Ref<number> = ref(INIT_NUMBER);
+const allCount: Ref<number> = ref(INIT_NUMBER);
+const limit: Ref<number> = ref(SEARCH_LIMIT);
 
 // ラジオボタン入力サンプル
 const radioInputData: Ref<string> = ref("");
@@ -38,30 +40,30 @@ const viewStatus1: Ref<string> = ref(showContentA);
 const viewStatus2: Ref<string> = ref(showContentA);
 
 // 法人検索
-const isCorpSearch: Ref<boolean> = ref(false);
+const isKigyouDtSearch: Ref<boolean> = ref(INIT_BOOLEAN);
 const houjinNo:Ref<string> = ref(BLANK);
 const houjinName:Ref<string> = ref(BLANK);
 
-function onRaiseCorpNoSearch() {
-    isCorpSearch.value = true;
+function onRaiseKigyouDtNoSearch() {
+    isKigyouDtSearch.value = true;
 }
 
 /**
 * 法人番号キャンセル選択なし
 */
-function recieveCancelCorpNo() {
+function recieveCancelKigyouDtNo() {
     // 非表示
-    isCorpSearch.value = false;
+    isKigyouDtSearch.value = false;
 }
 
 /**
 * 法人番号選択データ受信
 */
-function recieveCorpNoInterface(sendDto:HoujinNoDtoInterface) {
+function recieveKigyouDtNoInterface(sendDto:HoujinNoDtoInterface) {
     houjinNo.value = sendDto.houjinNo;
     houjinName.value = sendDto.houjinName;    
     // 非表示
-    isCorpSearch.value = false;
+    isKigyouDtSearch.value = false;
 }
 
 function recievePagingNumber(selecteddNumber: number) {
@@ -163,7 +165,7 @@ const inputShokugyouDto: Ref<InputShokugyouDtoInterface> = ref(new InputShokugyo
             <div class="right-area">
                 コード：<input type="text" v-model="houjinNo" class="short-input" :disabled="true">
                 名：<input type="text" v-model="houjinName" class="name-input left-space" :disabled="true"></input>
-                <button class="left-space" @click="onRaiseCorpNoSearch">検索</button>
+                <button class="left-space" @click="onRaiseKigyouDtNoSearch">検索</button>
             </div>
         </div>
 
@@ -351,11 +353,11 @@ const inputShokugyouDto: Ref<InputShokugyouDtoInterface> = ref(new InputShokugyo
 
     </div>
     <!-- 検索コンポーネント -->
-    <div v-if="isCorpSearch" class="overBackground"></div>
-    <div v-if="isCorpSearch">
+    <div v-if="isKigyouDtSearch" class="overBackground"></div>
+    <div v-if="isKigyouDtSearch">
         <div class="overComponent">
-            <SearchHoujinNo v-if="isCorpSearch" @send-cancel-houjin-no="recieveCancelCorpNo"
-                @send-houjin-no-interface="recieveCorpNoInterface"></SearchHoujinNo>
+            <SearchHoujinNo v-if="isKigyouDtSearch" @send-cancel-houjin-no="recieveCancelKigyouDtNo"
+                @send-houjin-no-interface="recieveKigyouDtNoInterface"></SearchHoujinNo>
         </div>
     </div>
 

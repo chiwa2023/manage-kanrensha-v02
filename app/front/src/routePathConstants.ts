@@ -17,7 +17,7 @@ export default class RoutePathConstants {
 
     /** SE権限メニュー */
     static readonly PAGE_MENU_ADMIN: string = this.BASE_PATH + "/menu-admin";
-    /** 管理者メニュー */
+    /** 運営者メニュー */
     static readonly PAGE_MENU_MANAGER: string = this.BASE_PATH + "/menu-manager";
     /** APIユーザメニュー */
     static readonly PAGE_MENU_PARTNER_API: string = this.BASE_PATH + "/menu-partner-api";
@@ -26,142 +26,123 @@ export default class RoutePathConstants {
 
 
 
+    /** 利用者運営者編集メニュー */
+    static readonly PAGE_EDIT_RIYOUSHA_MANAGER: string = this.BASE_PATH + "/edit-riyousha-manager";
+    /** 利用者APIユーザ編集メニュー */
+    static readonly PAGE_EDIT_RIYOUSHA_PARTNER: string = this.BASE_PATH + "/edit-riyousha-partner";
+
+    /** 利用者組織更新メニュー */
+    static readonly PAGE_REGIST_RIYOUSHA_ORG: string = this.BASE_PATH + "/regist-riyousha-org";
 
 
 
-
-        /** 利用者検索 */
+    /** 利用者検索 */
     static readonly PAGE_RIYOUSHA_SEARCH: string = this.BASE_PATH + "/riyousha-search";
 
 
-    // /** 全ユーザ共通メニュー */
-    // static readonly PAGE_MENU_ALL_USER: string = this.BASE_PATH + "/menu-user-all";
+    /** 郵便番号建物入力 */
+    static readonly PAGE_POSTAL_BUILDING: string = this.BASE_PATH + "/postal-code-building";
+    /** 郵便番号編集 */
+    static readonly PAGE_POSTAL_EDIT: string = this.BASE_PATH + "/postal-code-edit";
+    /** 郵便番号差分 */
+    static readonly PAGE_POSTAL_SABUN: string = this.BASE_PATH + "/postal-code-sabun";
 
-    // /** 郵便番号建物入力 */
-    // static readonly PAGE_POSTAL_BUILDING: string = this.BASE_PATH + "/postal-code-building";
-    // /** 郵便番号編集 */
-    // static readonly PAGE_POSTAL_EDIT: string = this.BASE_PATH + "/postal-code-edit";
-    // /** 郵便番号差分 */
-    // static readonly PAGE_POSTAL_SABUN: string = this.BASE_PATH + "/postal-code-sabun";
+    /** アドレス・ベース・レジストリ編集 */
+    static readonly PAGE_ADDRESS_REGI_EDIT: string = this.BASE_PATH + "/address-registry-edit";
+    /** アドレス・ベース・レジストリ差分 */
+    static readonly PAGE_ADDRESS_REGI_SABUN: string = this.BASE_PATH + "/address-registry-sabun";
+    /** 地方自治体コード差分 */
+    static readonly PAGE_LGCODE_SABUN: string = this.BASE_PATH + "/lgcode-sabun";
 
-    // /** アドレス・ベース・レジストリ編集 */
-    // static readonly PAGE_ADDRESS_REGI_EDIT: string = this.BASE_PATH + "/address-registry-edit";
-    // /** アドレス・ベース・レジストリ差分 */
-    // static readonly PAGE_ADDRESS_REGI_SABUN: string = this.BASE_PATH + "/address=registry-sabun";
+    /** 関連者企業・団体履歴一括登録 */
+    static readonly PAGE_REGI_BULK_HISTORY_KIGYOU: string = this.BASE_PATH + "/bulk-history-kigyou";
+    /** 関連者個人履歴一括登録 */
+    static readonly PAGE_REGI_BULK_HISTORY_PERSON: string = this.BASE_PATH + "/bulk-history-person";
+    /** 関連者政治団体履歴一括登録 */
+    static readonly PAGE_REGI_BULK_HISTORY_POLI_ORG: string = this.BASE_PATH + "/bulk-history-seijidantai";
 
-    // /** 関連者企業・団体履歴一括登録 */
-    // static readonly PAGE_REGI_BULK_HISTORY_CORP: string = this.BASE_PATH + "/bulk-history-corp";
-    // /** 関連者個人履歴一括登録 */
-    // static readonly PAGE_REGI_BULK_HISTORY_PERSON: string = this.BASE_PATH + "/bulk-history-person";
-    // /** 関連者政治団体履歴一括登録 */
-    // static readonly PAGE_REGI_BULK_HISTORY_POLI_ORG: string = this.BASE_PATH + "/bulk-history-poli-org";
-
-    // /** 関連者企業・団体マスタ一括登録 */
-    // static readonly PAGE_REGI_BULK_MASTER_CORP: string = this.BASE_PATH + "/bulk-master-corp";
-    // /** 関連者個人マスタ一括登録 */
-    // static readonly PAGE_REGI_BULK_MASTER_PERSON: string = this.BASE_PATH + "/bulk-master-person";
-    // /** 関連者政治団体マスタ一括登録 */
-    // static readonly PAGE_REGI_BULK_MASTER_POLI_ORG: string = this.BASE_PATH + "/bulk-master-poli-org";
-
-    // /** 関連者マスタ一ダンプ(指定期間まで) */
-    // static readonly PAGE_DUMP_MASTER: string = this.BASE_PATH + "/dump-master";
-    // /** 関連者履歴一ダンプ(指定期間まで) */
-    // static readonly PAGE_DUMP_HISTORY: string = this.BASE_PATH + "/dump-history";
-    // /** 関連者マスタ一標準ダンプ(指定期間まで) */
-    // static readonly PAGE_DUMP_MASTER_STD: string = this.BASE_PATH + "/dump-master-std";
-
-    // /** 関連者マスタ一差分ダンプ */
-    // static readonly PAGE_DUMP_SABUN_MASTER: string = this.BASE_PATH + "/dump-sabun-master";
-    // /** 関連者履歴一差分ダンプ */
-    // static readonly PAGE_DUMP_SABUN_HISTORY: string = this.BASE_PATH + "/dump-sabun-history";
-    // /** 関連者マスタ一(標準)差分ダンプ */
-    // static readonly PAGE_DUMP_SABUN_MASTER_STD: string = this.BASE_PATH + "/dump-sabun-master-std";
-
-    // /** 関連者XML編集登録 */
-    // static readonly PAGE_ADD_XML: string = this.BASE_PATH + "/add-by-xml";
-
-    // /** 関連者マスタ標準データダウンロード */
-    // static readonly PAGE_DOWNLOAD_MASTER_STD: string = this.BASE_PATH + "/download-master-std";
-    // /** 関連者最小標準データダウンロード */
-    // static readonly PAGE_DOWNLOAD_MASTER_MIN: string = this.BASE_PATH + "/download-master-min";
-    // /** 関連者履歴データダウンロード */
-    // static readonly PAGE_DOWNLOAD_HISTORY: string = this.BASE_PATH + "/download-history";
-
-    // /** 関連者マスタ標準データ差分ダウンロード */
-    // static readonly PAGE_DOWNLOAD_SABUN_MASTER_STD: string = this.BASE_PATH + "/sabun-master-std";
-    // /** 関連者最小標準データ差分ダウンロード */
-    // static readonly PAGE_DOWNLOAD_SABUN_MASTER_MIN: string = this.BASE_PATH + "/sabun-master-min";
-    // /** 関連者履歴データ差分ダウンロード */
-    // static readonly PAGE_DOWNLOAD_SABUN_HISTORY: string = this.BASE_PATH + "/sabun-history";
+    /** 関連者企業・団体マスタ一括登録 */
+    static readonly PAGE_REGI_BULK_MASTER_KIGYOU: string = this.BASE_PATH + "/bulk-master-kigyou";
+    /** 関連者個人マスタ一括登録 */
+    static readonly PAGE_REGI_BULK_MASTER_PERSON: string = this.BASE_PATH + "/bulk-master-person";
+    /** 関連者政治団体マスタ一括登録 */
+    static readonly PAGE_REGI_BULK_MASTER_POLI_ORG: string = this.BASE_PATH + "/bulk-master-seijidantai";
 
     // /** 関連者個人－企業／団体紐づけ登録 */
-    // static readonly PAGE_REGI_COMBINE_CORP: string = this.BASE_PATH + "/combine-corp";
+    // static readonly PAGE_REGI_COMBINE_KIGYOU: string = this.BASE_PATH + "/combine-kigyou";
 
     // /** 関連者個人－企業／団体紐づけ登録 */
-    // static readonly PAGE_REGI_COMBINE_POLI_ORG: string = this.BASE_PATH + "/combine-poli-org";
+    // static readonly PAGE_REGI_COMBINE_POLI_ORG: string = this.BASE_PATH + "/combine-seijidantai";
 
-    // /** 管理者による関連者管理 */
+    /** 関連者マスタ一ダンプ(指定期間まで) */
+    static readonly PAGE_DUMP_MASTER: string = this.BASE_PATH + "/dump-master";
+    /** 関連者履歴一ダンプ(指定期間まで) */
+    static readonly PAGE_DUMP_HISTORY: string = this.BASE_PATH + "/dump-history";
+    /** 関連者マスタ一標準ダンプ(指定期間まで) */
+    static readonly PAGE_DUMP_MASTER_STD: string = this.BASE_PATH + "/dump-master-std";
+
+    /** 関連者マスタ一差分ダンプ */
+    static readonly PAGE_DUMP_SABUN_MASTER: string = this.BASE_PATH + "/dump-sabun-master";
+    /** 関連者履歴一差分ダンプ */
+    static readonly PAGE_DUMP_SABUN_HISTORY: string = this.BASE_PATH + "/dump-sabun-history";
+    /** 関連者マスタ一(標準)差分ダンプ */
+    static readonly PAGE_DUMP_SABUN_MASTER_STD: string = this.BASE_PATH + "/dump-sabun-master-std";
+
+    /** 関連者XML編集登録 */
+    static readonly PAGE_ADD_XML: string = this.BASE_PATH + "/add-by-xml";
+
+    /** 関連者マスタ標準データダウンロード */
+    static readonly PAGE_DOWNLOAD_MASTER_STD: string = this.BASE_PATH + "/download-master-std";
+    /** 関連者最小標準データダウンロード */
+    static readonly PAGE_DOWNLOAD_MASTER_MIN: string = this.BASE_PATH + "/download-master-min";
+    /** 関連者履歴データダウンロード */
+    static readonly PAGE_DOWNLOAD_HISTORY: string = this.BASE_PATH + "/download-history";
+
+    /** 関連者マスタ標準データ差分ダウンロード */
+    static readonly PAGE_DOWNLOAD_SABUN_MASTER_STD: string = this.BASE_PATH + "/download-sabun-master-std";
+    /** 関連者最小標準データ差分ダウンロード */
+    static readonly PAGE_DOWNLOAD_SABUN_MASTER_MIN: string = this.BASE_PATH + "/download-sabun-master-min";
+    /** 関連者履歴データ差分ダウンロード */
+    static readonly PAGE_DOWNLOAD_SABUN_HISTORY: string = this.BASE_PATH + "/download-sabun-history";
+
+    /** 作業内容承認 */
+    static readonly PAGE_WORKS_APPROVAL: string = this.BASE_PATH + "/works-approval";
+
+    /** 利用者組織登録(SE検索) */
+    static readonly PAGE_SEARCH_RIYOUSHA_ORG: string = this.BASE_PATH + "/search-riyousha-org-regist";
+
+    /** 利用者組織登録編集(所属組織) */
+    static readonly PAGE_RIYOUSHA_ORG_EDIT: string = this.BASE_PATH + "/riyousha-org-edit";
+
+    /** 利用者組織編集(他者) */
+    // static readonly PAGE_RIYOUSHA_ORG_EDIT: string = this.BASE_PATH + "/riyousha-org-regist";
+
+    /** 利用者組織個人招待 */
+
+    /** 利用者組織個人承認 */
+
+    /** 予約実行 */
+    static readonly PAGE_TIMER_YOTEI: string = this.BASE_PATH + "/timer-yotei";
+
+
+
+
+
+
+
+    // /** 運営者による関連者管理 */
     // static readonly PAGE_REGI_PARTNER_MANAGE: string = this.BASE_PATH + "/partner-manage";
 
     // /** 本人による関連者編集 */
     // static readonly PAGE_REGI_PARTNER_EDIT: string = this.BASE_PATH + "/partner-edit";
 
-    // /** 作業内容承認 */
-    // static readonly PAGE_WORKS_APPROVAL: string = this.BASE_PATH + "/works-approval";
-
-    // /** 管理者による利用者検索編集 */
+    // /** 運営者による利用者検索編集 */
     // static readonly PAGE_SEARCH_RIYOUSHA: string = this.BASE_PATH + "/search-riyousha";
 
-    // /** 新規追加メニュー */
-    // static readonly PAGE_ADD_ACCOUNT: string = this.BASE_PATH + "/add-account";
-    // /** アクセスコード送信 */
-    // static readonly PAGE_SEND_ACCESS_CODE: string = this.BASE_PATH + "/send-access-code";
-    // /** ユーザの種類変更 */
-    // static readonly PAGE_SWITCH_USER_KBN: string = this.BASE_PATH + "/switch-user-kbn";
-    // /** 関連者編集 */
-    // static readonly PAGE_INPUT_KANRENSHA: string = this.BASE_PATH + "/input-kanrensha";
-    // /** APIユーザ編集 */
-    // static readonly PAGE_INPUT_COMRADE: string = this.BASE_PATH + "/input-comrade";
-    // /** 運営者編集 */
-    // static readonly PAGE_INPUT_MANAGER: string = this.BASE_PATH + "/input-manager";
 
-    // /** 運営者組織個人紐づけ */
-    // static readonly PAGE_COMBINE_MANAGER: string = this.BASE_PATH + "/combine-manager";
-    // /** APIユーザ組織個人紐づけ */
-    // static readonly PAGE_COMBINE_COMRADE: string = this.BASE_PATH + "/combine-comrade";
 
-    // /** ユーザ変更 */
-    // static readonly PAGE_USER_CHANGE: string = this.BASE_PATH + "/user/change";
-    // /** ユーザ削除 */
-    // static readonly PAGE_USER_DELETE: string = this.BASE_PATH + "/user/delete";
-    // /** ユーザ編集 */
-    // static readonly PAGE_USER_EDIT: string = this.BASE_PATH + "/user/edit";
-    // /** ユーザ権限変更 */
-    // static readonly PAGE_CHANGE_ROLE: string = this.BASE_PATH + "/user/change-role";
-    // /** 運営者を管理者に格上げ */
-    // static readonly PAGE_PROMOTE_ROLE: string = this.BASE_PATH + "/user/promote-role";
-    // /** ユーザパスワード更新 */
-    // static readonly PAGE_REFLESH_PASSWORD: string = this.BASE_PATH + "/user/reflesh-password";
-    // /** ユーザ退会 */
-    // static readonly PAGE_USER_WITHDRAW: string = this.BASE_PATH + "/user/withdraw";
 
-    // /** APIユーザ編集 */
-    // static readonly PAGE_EDIT_COMRADE: string = this.BASE_PATH + "/edit-comrade";
-    // /** 運営者編集 */
-    // static readonly PAGE_EDIT_MANAGER: string = this.BASE_PATH + "/edit-manager";
 
-    // /** APIユーザ組織に個人を招待 */
-    // static readonly PAGE_INVITE_COMRADE_PERSON: string = this.BASE_PATH + "/invite-comrade";
-    // /** APIユーザ組織に招待を個人が承認 */
-    // static readonly PAGE_ACCEPT_COMRADE_PERSON: string = this.BASE_PATH + "/accept-comrade";
-
-    // /** 運営者組織に個人を招待 */
-    // static readonly PAGE_INVITE_MANAGER_PERSON: string = this.BASE_PATH + "/invite-manager";
-    // /** 運営者組織に招待を個人が承認 */
-    // static readonly PAGE_ACCEPT_MANAGER_PERSON: string = this.BASE_PATH + "/accept-manager";
-
-    // /** タスク計画検索 */
-    // static readonly PAGE_SEARCH_TASK_PLAN: string = this.BASE_PATH + "/search-task-plan";
 
 
     /** 開発テンプレート(共通ツール) */

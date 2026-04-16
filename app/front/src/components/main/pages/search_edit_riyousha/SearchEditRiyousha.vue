@@ -1,11 +1,11 @@
 ﻿<script setup lang="ts">
 import { ref, type Ref } from 'vue';
 import MockAdminInfo from '../../../test/common/user_info/MockAdminInfo.vue';
-// import UserRoleConstants from '../../dto/user/userRoleConstants';
-// import { LeastUserDto, type LeastUserDtoInterface } from '../../dto/user/leastUserDto';
-// import type RiyoushaManagerInterface from '../../entity/riyoushaManagerEntity';
-// import RiyoushaManagerEntity from '../../entity/riyoushaManagerEntity';
-import {  InputPersonNameDto, ViewInputPersonName, type InputPersonNameDtoInterface, } from 'seijishikin-jp-normalize_common-tool';
+import { type LeastUserDtoInterface } from '../../dto/user/leastUserDto';
+import { getLoginUser } from '../../utils/getLoginUser';
+import {  PagingControl,  } from 'seijishikin-jp-normalize_common-tool';
+import RiyoushaManagerEdit from '../../common/riyousha_edit/RiyoushaManagerEdit.vue';
+import RiyoushaPartnerApiEdit from '../../common/riyousha_edit/RiyoushaPartnerApiEdit.vue';
 //import { ComponentCatalog, InputPersonNameDto, ViewInputPersonName, type InputPersonNameDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 
 // import type RiyoushaComradeInterface from '../../../entity/riyoushaComradeEntity';
@@ -62,7 +62,7 @@ import {  InputPersonNameDto, ViewInputPersonName, type InputPersonNameDtoInterf
 
 // function onEditManager(id: number) {
 //     viewStatus.value = UserRoleConstants.ROLE_MANAGER;
-    //inputManagerEntity.value = resultDto.value.listManager.filter((e) => id === e.riyoushaManagerId)[0];
+//inputManagerEntity.value = resultDto.value.listManager.filter((e) => id === e.riyoushaManagerId)[0];
 // }
 
 // function onEditAdmin(id: number) {
@@ -108,11 +108,34 @@ import {  InputPersonNameDto, ViewInputPersonName, type InputPersonNameDtoInterf
 // inputPersonNameDto.value.allNameKana = "aaa";
 // inputPersonNameDto.value.allName = "bbb";
 
+
+
+
+// ユーザ呼び出し
+const userDto: Ref<LeastUserDtoInterface> = ref(getLoginUser());
+
+
+// コンテンツ
+const showContentA: string = "a";
+const showContentB: string = "b";
+const showContentC: string = "c";
+const viewStatus2: Ref<string> = ref(showContentA);
+
+// Paging
+const pageNumber: Ref<number> = ref(6); // Mock data
+const allCount: Ref<number> = ref(123); // Mock data
+const limit: Ref<number> = ref(10); // Mock data
+
+function recievePagingNumber(selecteddNumber: number) {
+    pageNumber.value = selecteddNumber;
+    alert("ページ情報受信");
+}
+
 </script>
 <template>
     <div class="container">
-        <!-- SEページ -->
-        <MockAdminInfo></MockAdminInfo>
+        <!-- SE権限 -->
+        <MockAdminInfo :user-dto="userDto"></MockAdminInfo>
 
         <h1>利用者検索</h1> <br>
 
@@ -125,7 +148,7 @@ import {  InputPersonNameDto, ViewInputPersonName, type InputPersonNameDtoInterf
             <div class="right-area">
                 <input type="checkbox">API接続者</input>
                 <input type="checkbox">運営者</input>
-                <input type="checkbox">管理者</input>
+                <input type="checkbox">SE権限</input>
             </div>
         </div>
         <div class="one-line">
@@ -139,107 +162,104 @@ import {  InputPersonNameDto, ViewInputPersonName, type InputPersonNameDtoInterf
 
         <h3 class="accent-h3">検索結果</h3>
 
-        <h4>API接続者</h4>
-        <!-- ページング(API接続者)
-        <PagingControl :all-count="allCount" :limit="limit" :page-number="pageNumber"></PagingControl>
-         -->
-        <table>
-            <tbody>
-                <tr>
-                    <th>個人／組織</th>
-                    <th>姓名・名称</th>
-                    <th>&nbsp;</th>
-                </tr>
-                <!-- 
+        <div class="one-line">
+
+            <span>表示検索結果：</span>
+            <input type="radio" v-model="viewStatus2" :value=showContentA class="left-space">API接続ユーザ({{
+                allCount }}件)</input>
+            <input type="radio" v-model="viewStatus2" :value=showContentB class="left-space">運営者({{ allCount
+            }}件)</input>
+            <input type="radio" v-model="viewStatus2" :value=showContentC class="left-space">SE権限({{
+                allCount }}件)</input>
+        </div>
+
+        <div class="one-line">
+            <div v-if="showContentA === viewStatus2">
+                <h4>API接続者</h4>
+                <!-- ページング(API接続者)         -->
+                <PagingControl :all-count="allCount" :limit="limit" :page-number="pageNumber" @send-paging-number="recievePagingNumber"></PagingControl>
+
+                <table>
+                    <tbody>
+                        <tr>
+                            <th>個人／組織</th>
+                            <th>姓名・名称</th>
+                            <th>&nbsp;</th>
+                        </tr>
+                        <!-- 
             <tr v-for="entity of resultDto.listComrade" :key="entity.riyoushaComradeId">
                 <td>{{ getOrgLabel(entity.isNotOrg) }}</td>
                 <td>({{ entity.riyoushaComradeCode }}) <br> {{ entity.riyoushaComradeName }}</td>
                 <td><button @click="onEditComrade(entity.riyoushaComradeId)">編集</button></td>
             </tr>
             -->
-            </tbody>
-        </table>
-        <!-- ページング(API接続者)
-        <PagingControl :all-count="allCount" :limit="limit" :page-number="pageNumber"></PagingControl>
- -->
+                    </tbody>
+                </table>
+                <!-- ページング(API接続者) -->
+                <PagingControl :all-count="allCount" :limit="limit" :page-number="pageNumber" @send-paging-number="recievePagingNumber"></PagingControl>
 
-        <hr>
-        <h4>運営者</h4>
-        <!-- ページング(運営者)
-        <PagingControl :all-count="allCount" :limit="limit" :page-number="pageNumber"></PagingControl>
- -->
-        <table>
-            <tbody>
-                <tr>
-                    <th>個人／組織</th>
-                    <th>姓名・名称</th>
-                    <th>&nbsp;</th>
-                </tr>
-                <!-- 
+                <!-- API接続ユーザ編集 TODO 実際には検索結果の編集ボタンを押して表示-->
+                <RiyoushaPartnerApiEdit :user-dto="userDto"></RiyoushaPartnerApiEdit>
+
+            </div>
+            <div v-if="showContentB === viewStatus2">
+                <h4>運営者</h4>
+                <!-- ページング(運営者) -->
+                <PagingControl :all-count="allCount" :limit="limit" :page-number="pageNumber" @send-paging-number="recievePagingNumber"></PagingControl>
+
+                <table>
+                    <tbody>
+                        <tr>
+                            <th>個人／組織</th>
+                            <th>姓名・名称</th>
+                            <th>&nbsp;</th>
+                        </tr>
+                        <!-- 
             <tr v-for="entity of resultDto.listManager" :key="entity.riyoushaManagerId">
                 <td>{{ getOrgLabel(entity.isNotOrg) }}</td>
                 <td>({{ entity.riyoushaManagerCode }}) <br> {{ entity.riyoushaManagerName }}</td>
                 <td><button @click="onEditManager(entity.riyoushaManagerId)">編集</button></td>
             </tr>
             -->
-            </tbody>
-        </table>
-        <!-- ページング(運営者)
-        <PagingControl :all-count="allCount" :limit="limit" :page-number="pageNumber"></PagingControl>
- -->
-        <hr>
+                    </tbody>
+                </table>
+                <!-- ページング(運営者) -->
+                <PagingControl :all-count="allCount" :limit="limit" :page-number="pageNumber" @send-paging-number="recievePagingNumber"></PagingControl>
 
-        <h4>管理者</h4>
-        <!-- ページング(管理者)
-        <PagingControl :all-count="allCount" :limit="limit" :page-number="pageNumber"></PagingControl>
-         -->
-        <table>
-            <tbody>
-                <tr>
-                    <th>個人／組織</th>
-                    <th>姓名・名称</th>
-                    <th>&nbsp;</th>
-                </tr>
-                <!-- 
+                <!-- 運営者編集 TODO 実際には検索結果の編集ボタンを押して表示-->
+                <RiyoushaManagerEdit :user-dto="userDto"></RiyoushaManagerEdit>
+
+            </div>
+            <div v-if="showContentC === viewStatus2">
+                <h4>SE権限</h4>
+                <!-- ページング(SE権限)         -->
+                <PagingControl :all-count="allCount" :limit="limit" :page-number="pageNumber" @send-paging-number="recievePagingNumber"></PagingControl>
+
+                <table>
+                    <tbody>
+                        <tr>
+                            <th>個人／組織</th>
+                            <th>姓名・名称</th>
+                            <th>&nbsp;</th>
+                        </tr>
+                        <!-- 
             <tr v-for="entity of resultDto.listAdmin" :key="entity.riyoushaAdminId">
                 <td>{{ getOrgLabel(entity.isNotOrg) }}</td>
                 <td>({{ entity.riyoushaAdminCode }}) <br> {{ entity.riyoushaAdminName }}</td>
                 <td><button @click="onEditAdmin(entity.riyoushaAdminId)">編集</button></td>
             </tr>
             -->
-            </tbody>
-        </table>
-        <!-- ページング(管理者) -->
-        <!-- <PagingControl :all-count="allCount" :limit="limit" :page-number="pageNumber"></PagingControl> -->
+                    </tbody>
+                </table>
+                <!-- ページング(SE権限) -->
+                <PagingControl :all-count="allCount" :limit="limit" :page-number="pageNumber" @send-paging-number="recievePagingNumber"></PagingControl>
 
+                <!-- 管理者編集 TODO -->
+                <RiyoushaManagerEdit :user-dto="userDto"></RiyoushaManagerEdit>
 
-        <!-- APIユーザ編集
-    <div v-if="viewStatus === UserRoleConstants.ROLE_COMRADE">
-        <RiyoushaComradeEdit :base-entity="inputComradeEntity" :is-edit-new="isNew" :is-combine-user="isCombineUser"
-            :user-dto="userDto"></RiyoushaComradeEdit>
-    </div>
- -->
-
-        <!-- 運営者編集
-                 <button @click="onEditManager(1)">仮ボタン</button>
-        <div v-if="viewStatus === UserRoleConstants.ROLE_MANAGER">
-            <RiyoushaManagerEdit :base-entity="inputManagerEntity" :is-edit-new="isNew" :is-combine-user="isCombineUser"
-                :user-dto="userDto"></RiyoushaManagerEdit>
+            </div>
         </div>
- -->
 
-        <!-- <ViewInputPersonName :edit-dto="inputPersonNameDto"></ViewInputPersonName> -->
- 
-        <!--
-        <ComponentCatalog></ComponentCatalog>
- -->
-
-        <!-- 管理者編集
-    <div v-if="viewStatus === UserRoleConstants.ROLE_ADMIN">
-        <RiyoushaAdminEdit :base-entity="inputAdminEntity" :is-edit-new="isNew" :is-combine-user="isCombineUser"
-            :user-dto="userDto"></RiyoushaAdminEdit>
-    </div>
-     -->
         <div class="footer">
             <button class="footer-button">メニューに戻る</button>
         </div>

@@ -1,4 +1,12 @@
 ﻿<script setup lang="ts">
+import { ref, type Ref } from 'vue';
+import {
+    InputAccessDto, InputAddressDto, InputPersonNameDto, MockViewInputAddress, ViewInputAccess,
+    ViewInputPersonName,
+    type InputAccessDtoInterface, type InputAddressDtoInterface,
+    type InputPersonNameDtoInterface
+} from 'seijishikin-jp-normalize_common-tool';
+
 // import type UserPersonLeastInterface from '../../../dto/user/userPersonLeastDto';
 // import type RiyoushaManagerDtoInterface from '../../../dto/riyousha/riyoushaManagerDto';
 // import RiyoushaManagerDto from '../../../dto/riyousha/riyoushaManagerDto';
@@ -85,82 +93,34 @@
 //     inputManagerDto.value.inputAddressDto = sendDto;
 // }
 
-function onCancel() {
-    // TODO 管理者など上位権限で下位権限コンポーネントを使用している場合の処理
-    alert("キャンセル");
-    //router.push(RoutePathConstants.PAGE_MENU_MANAGER);
-}
-
-function onSave() {
-
-    alert("保存");
-
-    //     const capsuleDto: SaveRiyoushaManagerCapsuleInterface = new SaveRiyoushaManagerCapsuleDto();
-    //     capsuleDto.riyoushaManagerDto = inputManagerDto.value;
-    //     capsuleDto.userPersonLeastDto = props.userDto;
-
-    //     getAuthorizedPromiseArea().then(token => {
-    //         const url = "http://localhost:6080/user-riyousha/save-manager";
-    //         const method = "POST";
-    //         const body = JSON.stringify(capsuleDto);
-    //         const headers = {
-    //             'Accept': 'application/json',
-    //             'Content-Type': 'application/json',
-    //             'X-AUTH-TOKEN': 'Bearer ' + token
-    //         };
-    //         fetch(url, { method, headers, body })
-    //             .then(async (response) => {
-    //                 const resultDto: FrameworkMessageAndResultInterface = await response.json();
-    //                 alert(resultDto.message);
-    //                 if (isRecordOrg.value) {
-    //                     // 組織登録 
-    //                     router.push(RoutePathConstants.PAGE_COMBINE_MANAGER);
-    //                 } else {
-    //                     // 引き続き組織を登録しない場合はメニューに戻る
-    //                     router.push(RoutePathConstants.PAGE_MENU_MANAGER);
-    //                 }
-    //             })
-    //             .catch((error) => { alert(error); });
-    //     });
-}
+const tempInputPersonName: Ref<InputPersonNameDtoInterface> = ref(new InputPersonNameDto());
+const tempAddress: Ref<InputAddressDtoInterface> = ref(new InputAddressDto());
+const tempAccess: Ref<InputAccessDtoInterface> = ref(new InputAccessDto());
 
 </script>
 <template>
-    <h1>利用者運営者編集</h1>
 
-    <!-- 
-    <div class="left-area">
-        個人／団体
-    </div>
-    <div class="right-area">
-        <span><input type="radio" v-model="inputManagerDto.isNotOrg" :value="true" :disabled="true">個人</span>
-        <span class="left-space"><input type="radio" v-model="inputManagerDto.isNotOrg" :value="false" :disabled="true">
-            団体</span>
-        <div v-if="props.isEditNew">
-            <br>
-            <input v-model="isRecordOrg" type="checkbox">次のページで自分の所属団体を別に登録したい場合はチェックを入れる
+    <h3 class="accent-h3">情報入力</h3><br>
+
+    <!-- TODO 他人が編集する可能性があるので別ページに移転
+    <div class="one-line">
+        <div class="left-area">
+            Bearer
+        </div>
+        <div class="right-area">
+            <input type="url">
         </div>
     </div>
-    <div class="clear-both"><br></div>
     -->
 
-    <!-- 名称
-    <div v-if="inputManagerDto.isNotOrg">
-    </div>
-    <div v-else>
-         団体名称入力
-        <InputOrgName :edit-dto="inputManagerDto.inputOrgNameDto" :is-raise-edit-view="true"
-            @send-input-person-name-interface="recieveInputOrgNameInterface"></InputOrgName>
-    </div>
-    <div class="clear-both"><br></div>
- -->
+    <!-- 個人姓名入力 -->
+    <ViewInputPersonName :edit-dto="tempInputPersonName"></ViewInputPersonName>
 
-    <hr>
+    <!-- 住所入力 -->
+    <MockViewInputAddress :edit-dto="tempAddress"></MockViewInputAddress>
 
-    <div class="footer">
-        <button @click="onCancel" class="footer-button">キャンセル</button>
-        <button @click="onSave" class="footer-button left-space">送信</button>
-    </div>
+    <!-- 連絡先入力 -->
+    <ViewInputAccess :edit-dto="tempAccess"></ViewInputAccess>
 
 </template>
 <style scoped></style>
