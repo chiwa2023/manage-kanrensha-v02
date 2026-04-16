@@ -173,9 +173,7 @@ function onShowDetail(id: number) {
             entityEdit.value = structuredClone(toRaw(tmpEntity));
             entityPre.value = structuredClone(toRaw(tmpEntity));
         }
-
     }
-
 }
 </script>
 <template>

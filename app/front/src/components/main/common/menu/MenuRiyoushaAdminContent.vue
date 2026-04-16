@@ -47,6 +47,11 @@ import RoutePathConstants from '../../../../routePathConstants';
             <RouterLink :to="RoutePathConstants.PAGE_DUMP_SABUN_MASTER_STD" class="menu-item">関連者マスタ標準csv差分ダンプ
             </RouterLink><br>
         </div>
+
+        <div class="menu-section">
+            <h4>予定実行編集</h4>
+            <RouterLink :to="RoutePathConstants.PAGE_TIMER_YOTEI" class="menu-item">一覧・編集 </RouterLink><br>
+        </div>
     </div>
 
     <div class="menu-container">

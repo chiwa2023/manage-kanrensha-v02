@@ -121,6 +121,8 @@ export default class RoutePathConstants {
 
     /** 利用者組織個人承認 */
 
+    /** 予約実行 */
+    static readonly PAGE_TIMER_YOTEI: string = this.BASE_PATH + "/timer-yotei";
 
 
 

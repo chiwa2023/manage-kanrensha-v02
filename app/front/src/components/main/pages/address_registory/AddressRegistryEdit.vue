@@ -1,5 +1,5 @@
 ﻿<script setup lang="ts">
-import { EditAddress, PagingControl, type AddressRsdtTemplateDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
+import { PagingControl, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import { ref, type Ref } from 'vue';
 import MockManagerInfo from '../../../test/common/user_info/MockManagerInfo.vue';
 import { getLoginUser } from '../../utils/getLoginUser';
@@ -165,7 +165,7 @@ function recieveCancelInputAddress() {
 
 const storedId: Ref<number> = ref(INIT_NUMBER);
 
-function recieveInputAddressInterface(dto: AddressRsdtTemplateDtoInterface) {
+function recieveInputAddressInterface(dto: AddressRsdtTemplateEntityInterface) {
 
     const tempEntity: AddressRsdtTemplateEntityInterface | undefined =
         resultDtoRsdt.value.listRsdt.filter((e) => storedId.value === e.addressRsdtId)[0];

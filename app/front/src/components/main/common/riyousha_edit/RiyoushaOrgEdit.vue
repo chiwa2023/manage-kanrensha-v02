@@ -1,5 +1,5 @@
 ﻿<script setup lang="ts">
-import { InputAccessDto, InputAddressDto, InputOrgNameDto, ViewInputAccess, ViewInputAddress, ViewInputOrgName, type InputAccessDtoInterface, type InputAddressDtoInterface, type InputOrgNameDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
+import { InputAccessDto, InputAddressDto, InputOrgNameDto, ViewInputAccess, MockViewInputAddress, ViewInputOrgName, type InputAccessDtoInterface, type InputAddressDtoInterface, type InputOrgNameDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import { onBeforeMount, ref, type Ref, watch } from 'vue';
 import mockGetOrgName from '../../../test/pages/regist_riyousha_org/mockGetOrgName';
 import mockGetAddress from '../../../test/pages/regist_riyousha_org/mockGetAddress';
@@ -7,7 +7,7 @@ import mockGetAccess from '../../../test/pages/regist_riyousha_org/mockGetAccess
 import RoutePathConstants from '../../../../routePathConstants';
 import type { RiyoushaCombineOrgEntityInterface } from '../../entity/riyoushaCombineOrgEntity';
 import RiyoushaKbnConstants from '../../dto/riyousha/riyoushaKbnConstants';
-import mockGetRiyoushaCOmbinePersonList from '../../../test/common/riyousha/mockGetRiyoushaCOmbinePersonList';
+import mockGetRiyoushaCOmbinePersonList from '../../../test/common/riyousha/mockGetRiyoushaCombinePersonList';
 
 //props,emit
 const props = defineProps<{ userDto: LeastUserDtoInterface, selectedId: number }>();

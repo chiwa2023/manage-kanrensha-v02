@@ -1,5 +1,5 @@
 ﻿import { createRouter, createWebHistory } from "vue-router";
-import  RoutePathConstants  from "./routePathConstants";
+import RoutePathConstants from "./routePathConstants";
 
 const routes = [
     // トップ
@@ -64,7 +64,7 @@ const routes = [
     { path: RoutePathConstants.PAGE_DOWNLOAD_SABUN_MASTER_MIN, name: "DownloadSabunMasterMin", component: () => import("./components/main/pages/download_sabun/DownloadSabunMasterMin.vue") },
     { path: RoutePathConstants.PAGE_DOWNLOAD_SABUN_HISTORY, name: "DownloadSabunHistory", component: () => import("./components/main/pages/download_sabun/DownloadSabunHistory.vue") },
 
-        // 郵便番号編集
+    // 郵便番号編集
     { path: RoutePathConstants.PAGE_POSTAL_BUILDING, name: "PostalCodeBuilding", component: () => import("./components/main/pages/address_postal/PostalCodeBuilding.vue") },
     { path: RoutePathConstants.PAGE_POSTAL_EDIT, name: "PostalCodeEdit", component: () => import("./components/main/pages/address_postal/PostalCodeEdit.vue") },
     { path: RoutePathConstants.PAGE_POSTAL_SABUN, name: "PostalCodeSabun", component: () => import("./components/main/pages/address_postal/PostalCodeSabun.vue") },
@@ -74,9 +74,11 @@ const routes = [
     { path: RoutePathConstants.PAGE_ADDRESS_REGI_SABUN, name: "AddressRegistrySabun", component: () => import("./components/main/pages/address_registory/AddressRegistrySabun.vue") },
     { path: RoutePathConstants.PAGE_LGCODE_SABUN, name: "LgCodeSabun", component: () => import("./components/main/pages/address_registory/LgCodeSabun.vue") },
 
-        // 入力内容承認
+    // 入力内容承認
     { path: RoutePathConstants.PAGE_WORKS_APPROVAL, name: "WorksApproval", component: () => import("./components/main/pages/works_approval/WorksApproval.vue") },
 
+    // 予約実行
+    { path: RoutePathConstants.PAGE_TIMER_YOTEI, name: "SearchTimerYotei", component: () => import("./components/main/pages/yotei_timer/SearchTimerYotei.vue") },
 
 
 ];
