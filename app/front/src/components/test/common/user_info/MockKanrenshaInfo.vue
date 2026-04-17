@@ -1,6 +1,6 @@
 ﻿<script setup lang="ts">
 import { ref, type Ref } from 'vue';
-import type { LeastUserDtoInterface } from '../../../main/dto/user/leastUserDto';
+import { type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import { MessageConstants, MessageView } from 'seijishikin-jp-normalize_common-tool';
 import router from '../../../../router';
 import RoutePathConstants from '../../../../routePathConstants';

@@ -66,14 +66,13 @@ function onCancel() {
     {{ vRole }}
     <p>
         <RouterLink :to=personEditUrl>個人情報編集</RouterLink><br>
-        <a href="#">パスワード更新</a><br>
-        <a href="#">権限追加・変更</a><br>
-        <br>
-        <a href="#">退会</a><br>
+        <RouterLink :to=RoutePathConstants.PAGE_USER_EDIT>個人名・権限編集</RouterLink><br>
+        <RouterLink :to=RoutePathConstants.PAGE_REFRESH_PASSWORD>パスワード更新</RouterLink><br>
         <br>
         <RouterLink :to=RoutePathConstants.PAGE_LOGOUT>ログアウト</RouterLink><br>
-
     </p>
+    <hr>
+    <RouterLink :to=RoutePathConstants.PAGE_USER_WITHDRAW>退会</RouterLink><br>
     <div class="footer_sub">
         <button @click="onCancel" class="footer-button">閉じる</button>
     </div>

@@ -180,23 +180,23 @@ public class TaskInfoEntity // NOPMD DataClass
         this.transferPass = transferPass;
     }
 
-    /** SNS同一識別コード */
+    /** 遷移時引数 */
     @Column(name = "param_query")
     private String paramQuery = INIT_STRING;
 
     /**
-     * SNS同一識別コードを取得する
+     * 遷移時引数
      *
-     * @return SNS同一識別コード
+     * @return 遷移時引数
      */
     public String getParamQuery() {
         return paramQuery;
     }
 
     /**
-     * SNS同一識別コードを設定する
+     * 遷移時引数
      *
-     * @param paramQuery SNS同一識別コード
+     * @param paramQuery 遷移時引数
      */
     public void setParamQuery(final String paramQuery) {
         this.paramQuery = paramQuery;

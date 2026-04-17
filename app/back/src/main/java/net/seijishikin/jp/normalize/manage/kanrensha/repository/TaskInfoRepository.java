@@ -26,9 +26,7 @@ public interface TaskInfoRepository extends JpaRepository<TaskInfoEntity, Intege
      * タスクコードが同一(かつ最新)のデータを取得する
      *
      * @param taskCode タスクコード
-     * @param isLatest 最新該否
      * @return 検索結果
      */
-    List<TaskInfoEntity> findByTaskInfoCodeAndIsLatest(Integer taskCode, boolean isLatest);
-
+    List<TaskInfoEntity> findByTaskInfoCodeAndIsLatestTrue(Integer taskCode);
 }

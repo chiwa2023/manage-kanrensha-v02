@@ -1,6 +1,8 @@
 package net.seijishikin.jp.normalize.manage.kanrensha.controller.regist_combine_org;
 
+import java.time.LocalDateTime;
 import java.time.Year;
+import java.util.TreeMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import net.seijishikin.jp.normalize.common_tool.dto.FrameworkMessageAndResultDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.add_xml.RetryWktblBatchCapsuleDto;
+import net.seijishikin.jp.normalize.manage.kanrensha.dto.task.InsertTaskPlanResultDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.task.TaskPlanInfoDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.regist_combine_org.RetryBatchCombineOrgService;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.year.SwitchYearInsertTaskPlanService;
@@ -46,9 +49,10 @@ public class RetryBatchCombineOrgController {
         FrameworkMessageAndResultDto resultDto = new FrameworkMessageAndResultDto();
         resultDto.setMessage("処理を開始しました。完了までしばらくお待ちください。");
 
-        Integer year = Year.now().getValue();
-        TaskPlanInfoDto planDto = switchYearInsertTaskPlanService.practice(year, capsuleDto.getUserDto(),
-                TaskInfoConstants.COMBINE_RETRY);
+        LocalDateTime dateTimeStart = LocalDateTime.now();
+        Integer year = dateTimeStart.getYear();
+        InsertTaskPlanResultDto planDto = switchYearInsertTaskPlanService.practice(capsuleDto.getUserDto(),dateTimeStart,
+                TaskInfoConstants.COMBINE_RETRY,new TreeMap<String, String>());
         retryBatchCombineKigyouDtService.practice(capsuleDto.getUserDto(), year, planDto);
 
         return ResponseEntity.status(HttpResponseStatus.OK.code()).body(resultDto);

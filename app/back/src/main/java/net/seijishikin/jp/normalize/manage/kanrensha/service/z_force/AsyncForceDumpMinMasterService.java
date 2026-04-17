@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import net.seijishikin.jp.normalize.manage.kanrensha.constants.MasterCsvFileNameConstants;
 import net.seijishikin.jp.normalize.manage.kanrensha.constants.MasterCsvFileNameConstants.MasterMin;
+import net.seijishikin.jp.normalize.manage.kanrensha.dto.task.InsertTaskPlanResultDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.task.TaskPlanInfoDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.z_force.ForceDumpCapsuleDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.logic.file.CompressZipPointedFileLogic;
@@ -51,8 +52,8 @@ public class AsyncForceDumpMinMasterService {
      * @param capsuleDto 処理条件Dto
      */
     @Async
-    public void practice(final Integer year, final TaskPlanInfoDto planDto1, final TaskPlanInfoDto planDto2,
-            final TaskPlanInfoDto planDto3, final ForceDumpCapsuleDto capsuleDto) {
+    public void practice(final Integer year, final InsertTaskPlanResultDto planDto1, final InsertTaskPlanResultDto planDto2,
+            final InsertTaskPlanResultDto planDto3, final ForceDumpCapsuleDto capsuleDto) {
 
         LocalDate endDate = capsuleDto.getDateEnd();
 

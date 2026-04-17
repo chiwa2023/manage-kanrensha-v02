@@ -16,7 +16,8 @@
   --role-admin-color: #FF0000;
   --role-manager-color: #0000FF;
   --role-apiuser-color: #008000;
-  --role-kanrensha-color: #FFA500;
+  --role-kanrensha-color: darkkhaki;
+  --role-all-color: gold;
 
   /* Font */
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
@@ -64,6 +65,7 @@ h1 {
   display: flex;
   align-items: center;
   margin-bottom: 1rem;
+  margin-left: 1.5rem;
   width: 100%;
 }
 
@@ -371,14 +373,6 @@ td.table-column-select-row {
 }
 
 /* ユーザrole別制御コンポーネント */
-.user-role-container_admin {
-  background-color: var(--role-admin-color);
-  padding-left: 0.7%;
-  z-index: 2;
-}
-
-
-/* ユーザrole別制御コンポーネント */
 .user-role-container-admin {
   background-color: var(--role-admin-color);
   padding-left: 0.7%;
@@ -406,13 +400,20 @@ td.table-column-select-row {
   z-index: 2;
 }
 
-
+/* ユーザrole別制御コンポーネント */
+.user-role-container-all {
+  background-color: var(--role-all-color);
+  padding-left: 0.7%;
+  z-index: 2;
+}
 
 .user-role-content {
   background-color: white;
+  display: flex;
   z-index: 2;
   padding-left: 1.3%;
   opacity: 1;
+  align-items: center;
   text-align: right;
   overflow: auto;
   /* to contain floats */
@@ -422,19 +423,45 @@ td.table-column-select-row {
   float: left;
 }
 
+.user-role-task {
+  float: left;
+  text-align: left;
+  width: 50%;
+}
+
 .user-role-menu-wrapper {
   padding-right: 2.5%;
   display: inline-block;
   white-space: nowrap;
+  vertical-align: center;
+  margin-left: auto;
+}
+
+.user-role-title:first-child {
+  flex-basis: 150px;
+  flex-shrink: 0;
+  text-align: left;
 }
 
 .user-role-icon-container {
   float: right;
 }
 
+.user-role-transfer-button {
+  font-size: 0.9em;
+}
+
+.user-role-transfer-button {
+  margin-top: 0.7em;
+}
+
 .user-role-icon {
   width: 80px;
   height: 80px;
+}
+
+.user-role-text {
+  font-weight: bold;
 }
 
 .msgbox-warning {
@@ -457,119 +484,119 @@ td.table-column-select-row {
 }
 
 .message-dialog {
-    background-color: white;
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    overflow: hidden;
-    /* Ensures border-radius applies to children */
+  background-color: white;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+  /* Ensures border-radius applies to children */
 }
 
 .message-dialog-title {
-    padding: 1rem;
-    font-weight: bold;
-    color: white;
-    font-size: 1.1em;
-    /* Background color will come from levelClass */
+  padding: 1rem;
+  font-weight: bold;
+  color: white;
+  font-size: 1.1em;
+  /* Background color will come from levelClass */
 }
 
 .msgbox-info.message-dialog-title {
-    background-color: var(--primary-color);
+  background-color: var(--primary-color);
 }
 
 .msgbox-warning.message-dialog-title {
-    background-color: var(--warning-color);
-    color: var(--text-color);
+  background-color: var(--warning-color);
+  color: var(--text-color);
 }
 
 .msgbox-error.message-dialog-title {
-    background-color: var(--role-admin-color);
+  background-color: var(--role-admin-color);
 }
 
 .message-dialog-content {
-    padding: 1rem;
-    font-size: 1.1em;
+  padding: 1rem;
+  font-size: 1.1em;
 }
 
 .message-dialog-buttons {
-    display: flex;
-    justify-content: flex-end;
-    padding: 1rem;
-    border-top: 1px solid var(--border-color);
-    background-color: var(--secondary-color);
+  display: flex;
+  justify-content: flex-end;
+  padding: 1rem;
+  border-top: 1px solid var(--border-color);
+  background-color: var(--secondary-color);
 }
 
 .primary-button {
-    background-color: var(--primary-color);
-    color: white;
+  background-color: var(--primary-color);
+  color: white;
 }
 
 /* New Toast Styles */
 .toast-message {
-    position: fixed;
-    left: 50%;
-    transform: translateX(-50%);
-    bottom: -100px;
-    /* Initial off-screen position */
-    padding: 1rem 1.5rem;
-    border-radius: 8px;
-    z-index: 40;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    text-align: center;
-    min-width: 350px;
-    max-width: 600px;
-    animation: toast-animation 4s ease-in-out forwards;
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: -100px;
+  /* Initial off-screen position */
+  padding: 1rem 1.5rem;
+  border-radius: 8px;
+  z-index: 40;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  text-align: center;
+  min-width: 350px;
+  max-width: 600px;
+  animation: toast-animation 4s ease-in-out forwards;
 }
 
 .toast-message strong {
-    font-size: 1.2em;
+  font-size: 1.2em;
 }
 
 .toast-message p {
-    margin: 0.5rem 0 0;
-    font-size: 1.2em;
+  margin: 0.5rem 0 0;
+  font-size: 1.2em;
 }
 
 .toast-message.msgbox-info {
-    background-color: var(--success-color);
-    color: var(--text-color);
-    border: 1px solid #c3e6cb;
+  background-color: var(--success-color);
+  color: var(--text-color);
+  border: 1px solid #c3e6cb;
 }
 
 .toast-message.msgbox-warning {
-    background-color: var(--warning-color);
-    color: var(--text-color);
+  background-color: var(--warning-color);
+  color: var(--text-color);
 }
 
 .toast-message.msgbox-error {
-    background-color: var(--role-admin-color);
-    color: white;
+  background-color: var(--role-admin-color);
+  color: white;
 }
 
 @keyframes toast-animation {
-    0% {
-        bottom: -100px;
-        /* Start off-screen bottom */
-        opacity: 0;
-    }
+  0% {
+    bottom: -100px;
+    /* Start off-screen bottom */
+    opacity: 0;
+  }
 
-    10% {
-        bottom: 33.33%;
-        /* Stop at 1/3 from bottom */
-        opacity: 1;
-    }
+  10% {
+    bottom: 33.33%;
+    /* Stop at 1/3 from bottom */
+    opacity: 1;
+  }
 
-    90% {
-        bottom: 33.33%;
-        /* Stay at 1/3 from bottom */
-        opacity: 1;
-    }
+  90% {
+    bottom: 33.33%;
+    /* Stay at 1/3 from bottom */
+    opacity: 1;
+  }
 
-    100% {
-        bottom: -100px;
-        /* Disappear off-screen bottom */
-        opacity: 0;
-    }
+  100% {
+    bottom: -100px;
+    /* Disappear off-screen bottom */
+    opacity: 0;
+  }
 }
 
 /* Menu Layout */

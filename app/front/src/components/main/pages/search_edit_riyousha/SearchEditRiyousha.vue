@@ -1,11 +1,18 @@
 ﻿<script setup lang="ts">
 import { ref, type Ref } from 'vue';
 import MockAdminInfo from '../../../test/common/user_info/MockAdminInfo.vue';
-import { type LeastUserDtoInterface } from '../../dto/user/leastUserDto';
-import { getLoginUser } from '../../utils/getLoginUser';
-import {  PagingControl,  } from 'seijishikin-jp-normalize_common-tool';
+import { PagingControl, } from 'seijishikin-jp-normalize_common-tool';
 import RiyoushaManagerEdit from '../../common/riyousha_edit/RiyoushaManagerEdit.vue';
 import RiyoushaPartnerApiEdit from '../../common/riyousha_edit/RiyoushaPartnerApiEdit.vue';
+import AdminInfo from '../../common/user_info/AdminInfo.vue';
+import type { LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
+import { getLoginUser } from '../../utils/getLoginUser';
+
+// import UserRoleConstants from '../../dto/user/userRoleConstants';
+// import { LeastUserDto, type LeastUserDtoInterface } from '../../dto/user/leastUserDto';
+// import type RiyoushaManagerInterface from '../../entity/riyoushaManagerEntity';
+// import RiyoushaManagerEntity from '../../entity/riyoushaManagerEntity';
+//import {  InputPersonNameDto, ViewInputPersonName, type InputPersonNameDtoInterface, } from 'seijishikin-jp-normalize_common-tool';
 //import { ComponentCatalog, InputPersonNameDto, ViewInputPersonName, type InputPersonNameDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 
 // import type RiyoushaComradeInterface from '../../../entity/riyoushaComradeEntity';
@@ -34,13 +41,9 @@ import RiyoushaPartnerApiEdit from '../../common/riyousha_edit/RiyoushaPartnerAp
 // // back側アクセス
 // const urlBack: string = RoutePathConstants.DOMAIN_BACK + RoutePathConstants.PATH_BACK;
 
-// // ユーザメニューで取得したユーザを保持
-// const sessionStorage = window["sessionStorage"];
-// const userDtoText: string | null = sessionStorage.getItem("userDto");
-// const userDto: Ref<LeastUserDtoInterface> = ref(new LeastUserDto());
-// if (userDtoText !== null) {
-//     userDto.value = JSON.parse(userDtoText);
-// }
+// ユーザ呼び出し
+const userDto: Ref<LeastUserDtoInterface> = ref(getLoginUser());
+
 
 // // 入力用変数
 // const viewStatus: Ref<string> = ref("");
@@ -109,12 +112,6 @@ import RiyoushaPartnerApiEdit from '../../common/riyousha_edit/RiyoushaPartnerAp
 // inputPersonNameDto.value.allName = "bbb";
 
 
-
-
-// ユーザ呼び出し
-const userDto: Ref<LeastUserDtoInterface> = ref(getLoginUser());
-
-
 // コンテンツ
 const showContentA: string = "a";
 const showContentB: string = "b";
@@ -134,8 +131,8 @@ function recievePagingNumber(selecteddNumber: number) {
 </script>
 <template>
     <div class="container">
-        <!-- SE権限 -->
-        <MockAdminInfo :user-dto="userDto"></MockAdminInfo>
+        <!-- SEページ -->
+        <AdminInfo :user-dto="userDto"></AdminInfo>
 
         <h1>利用者検索</h1> <br>
 
@@ -177,7 +174,8 @@ function recievePagingNumber(selecteddNumber: number) {
             <div v-if="showContentA === viewStatus2">
                 <h4>API接続者</h4>
                 <!-- ページング(API接続者)         -->
-                <PagingControl :all-count="allCount" :limit="limit" :page-number="pageNumber" @send-paging-number="recievePagingNumber"></PagingControl>
+                <PagingControl :all-count="allCount" :limit="limit" :page-number="pageNumber"
+                    @send-paging-number="recievePagingNumber"></PagingControl>
 
                 <table>
                     <tbody>
@@ -196,7 +194,8 @@ function recievePagingNumber(selecteddNumber: number) {
                     </tbody>
                 </table>
                 <!-- ページング(API接続者) -->
-                <PagingControl :all-count="allCount" :limit="limit" :page-number="pageNumber" @send-paging-number="recievePagingNumber"></PagingControl>
+                <PagingControl :all-count="allCount" :limit="limit" :page-number="pageNumber"
+                    @send-paging-number="recievePagingNumber"></PagingControl>
 
                 <!-- API接続ユーザ編集 TODO 実際には検索結果の編集ボタンを押して表示-->
                 <RiyoushaPartnerApiEdit :user-dto="userDto"></RiyoushaPartnerApiEdit>
@@ -205,7 +204,8 @@ function recievePagingNumber(selecteddNumber: number) {
             <div v-if="showContentB === viewStatus2">
                 <h4>運営者</h4>
                 <!-- ページング(運営者) -->
-                <PagingControl :all-count="allCount" :limit="limit" :page-number="pageNumber" @send-paging-number="recievePagingNumber"></PagingControl>
+                <PagingControl :all-count="allCount" :limit="limit" :page-number="pageNumber"
+                    @send-paging-number="recievePagingNumber"></PagingControl>
 
                 <table>
                     <tbody>
@@ -224,7 +224,8 @@ function recievePagingNumber(selecteddNumber: number) {
                     </tbody>
                 </table>
                 <!-- ページング(運営者) -->
-                <PagingControl :all-count="allCount" :limit="limit" :page-number="pageNumber" @send-paging-number="recievePagingNumber"></PagingControl>
+                <PagingControl :all-count="allCount" :limit="limit" :page-number="pageNumber"
+                    @send-paging-number="recievePagingNumber"></PagingControl>
 
                 <!-- 運営者編集 TODO 実際には検索結果の編集ボタンを押して表示-->
                 <RiyoushaManagerEdit :user-dto="userDto"></RiyoushaManagerEdit>
@@ -233,7 +234,8 @@ function recievePagingNumber(selecteddNumber: number) {
             <div v-if="showContentC === viewStatus2">
                 <h4>SE権限</h4>
                 <!-- ページング(SE権限)         -->
-                <PagingControl :all-count="allCount" :limit="limit" :page-number="pageNumber" @send-paging-number="recievePagingNumber"></PagingControl>
+                <PagingControl :all-count="allCount" :limit="limit" :page-number="pageNumber"
+                    @send-paging-number="recievePagingNumber"></PagingControl>
 
                 <table>
                     <tbody>
@@ -252,18 +254,32 @@ function recievePagingNumber(selecteddNumber: number) {
                     </tbody>
                 </table>
                 <!-- ページング(SE権限) -->
-                <PagingControl :all-count="allCount" :limit="limit" :page-number="pageNumber" @send-paging-number="recievePagingNumber"></PagingControl>
+                <PagingControl :all-count="allCount" :limit="limit" :page-number="pageNumber"
+                    @send-paging-number="recievePagingNumber"></PagingControl>
 
                 <!-- 管理者編集 TODO -->
                 <RiyoushaManagerEdit :user-dto="userDto"></RiyoushaManagerEdit>
 
             </div>
-        </div>
+            <!-- APIパートナー編集
+    <div v-if="viewStatus === UserRoleConstants.ROLE_COMRADE">
+        <RiyoushaComradeEdit :base-entity="inputComradeEntity" :is-edit-new="isNew" :is-combine-user="isCombineUser"
+            :user-dto="userDto"></RiyoushaComradeEdit>
+    </div>
+ -->
 
-        <div class="footer">
-            <button class="footer-button">メニューに戻る</button>
+            <!-- 運営者編集
+                 <button @click="onEditManager(1)">仮ボタン</button>
+        <div v-if="viewStatus === UserRoleConstants.ROLE_MANAGER">
+            <RiyoushaManagerEdit :base-entity="inputManagerEntity" :is-edit-new="isNew" :is-combine-user="isCombineUser"
+                :user-dto="userDto"></RiyoushaManagerEdit>
         </div>
+ -->
 
+            <div class="footer">
+                <button class="footer-button">メニューに戻る</button>
+            </div>
+        </div>
     </div>
 </template>
 <style scoped>

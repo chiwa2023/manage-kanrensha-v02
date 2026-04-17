@@ -30,6 +30,9 @@ import RoutePathConstants from '../../../../routePathConstants';
             <a href="#" class="menu-item">退会</a><br>
             <!--
     <RouterLink :to=RoutePathConstants.PAGE_REFLESH_PASSWORD>パスワード更新</RouterLink><br>
+    <a href="#">メニューサンプル関連者</a><br>
+
+    <RouterLink :to=RoutePathConstants.PAGE_REFRESH_PASSWORD>パスワード更新</RouterLink><br>
     <RouterLink :to=RoutePathConstants.PAGE_USER_EDIT>ユーザ編集</RouterLink><br>
     <RouterLink :to=RoutePathConstants.PAGE_CHANGE_ROLE>権限変更</RouterLink><br>
     <RouterLink :to=RoutePathConstants.PAGE_USER_WITHDRAW>退会</RouterLink><br>
@@ -44,6 +47,10 @@ import RoutePathConstants from '../../../../routePathConstants';
             <RouterLink :to="RoutePathConstants.PAGE_LOGOUT" class="menu-item">ログアウト</RouterLink>
         </div>
     </div>
+
+     <RouterLink :to=RoutePathConstants.PAGE_MENU_KANRENSHA>ページで見る</RouterLink><br>
+
+     <RouterLink :to="RoutePathConstants.PAGE_LOGOUT">ログアウト</RouterLink><br>
 
 </template>
 <style scoped></style>

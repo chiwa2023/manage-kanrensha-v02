@@ -40,6 +40,7 @@ public class SwitchYearUpdateTaskStartAndEndService {
     @Transactional
     public Integer practice(final LeastUserDto userDto, final Integer year, final Integer taskPlanId,
             final LocalDateTime endTime) {
+
         switch (year) {
             case YEAR_2025:
                 return updateTaskStartAndEndY2025Logic.practice(userDto, taskPlanId, endTime);

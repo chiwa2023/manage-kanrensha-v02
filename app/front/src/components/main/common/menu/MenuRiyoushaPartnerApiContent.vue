@@ -24,6 +24,8 @@ import RoutePathConstants from '../../../../routePathConstants';
         </div>
     </div>
 
+    <RouterLink :to=RoutePathConstants.PAGE_PARTNER_TOKEN_REPLACE>長期トークン(再)発行</RouterLink><br>
+
     <div class="menu-container">
         <div class="menu-section">
             <h4 class="menu-title">本人情報編集</h4>
@@ -37,6 +39,11 @@ import RoutePathConstants from '../../../../routePathConstants';
             <RouterLink :to="RoutePathConstants.PAGE_LOGOUT" class="menu-item">ログアウト</RouterLink>
         </div>
     </div>
+    <RouterLink :to=RoutePathConstants.PAGE_LOGIN>ログインページ</RouterLink><br>
+
+    <RouterLink :to=RoutePathConstants.PAGE_MENU_PARTNER_API>ページで見る</RouterLink><br>
+
+    <RouterLink :to="RoutePathConstants.PAGE_LOGOUT">ログアウト</RouterLink><br>
 
 </template>
 <style scoped></style>

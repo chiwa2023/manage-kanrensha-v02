@@ -1,9 +1,9 @@
 ﻿<script setup lang="ts">
-import MockAdminInfo from '../../../test/common/user_info/MockAdminInfo.vue';
 import MenuRiyoushaAdminContent from '../../common/menu/MenuRiyoushaAdminContent.vue';
-import { type LeastUserDtoInterface } from '../../dto/user/leastUserDto';
+import { type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import { ref, type Ref } from 'vue';
 import { getLoginUser } from '../../utils/getLoginUser';
+import AdminInfo from '../../common/user_info/AdminInfo.vue';
 
 // よく使う定数
 // const BLANK: string = "";
@@ -22,7 +22,7 @@ const userDto: Ref<LeastUserDtoInterface> = ref(getLoginUser());
 </script>
 <template>
     <!-- SE権限 -->
-    <MockAdminInfo :user-dto="userDto"></MockAdminInfo>
+    <AdminInfo :user-dto="userDto"></AdminInfo>
 
     <h1>SE権限用メニュー</h1><br>
     <MenuRiyoushaAdminContent></MenuRiyoushaAdminContent>

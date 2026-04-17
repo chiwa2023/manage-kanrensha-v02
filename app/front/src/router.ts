@@ -12,14 +12,15 @@ const routes = [
 
     // 利用者SEメニュー
     { path: RoutePathConstants.PAGE_MENU_ADMIN, name: "MenuRiyoushaAdminBase", component: () => import("./components/main/pages/menu/MenuRiyoushaAdminBase.vue") },
+
     // 利用者運営者メニュー
     { path: RoutePathConstants.PAGE_MENU_MANAGER, name: "MenuRiyoushaManagerBase", component: () => import("./components/main/pages/menu/MenuRiyoushaManagerBase.vue") },
-    // 利用者APIユーザメニュー
+
+    // APIパートナーメニュー
     { path: RoutePathConstants.PAGE_MENU_PARTNER_API, name: "MenuRiyoushaPartnerApiBase", component: () => import("./components/main/pages/menu/MenuRiyoushaPartnerApiBase.vue") },
 
     // 関連者メニュー
     { path: RoutePathConstants.PAGE_MENU_KANRENSHA, name: "MenuKanrenshaBase", component: () => import("./components/main/pages/menu/MenuKanrenshaBase.vue") },
-
 
     // 利用者組織登録編集
     { path: RoutePathConstants.PAGE_REGIST_RIYOUSHA_ORG, name: "RegistRiyoushaOrg", component: () => import("./components/main/pages/regist_riyousha_org/RegistRiyoushaOrg.vue") },
@@ -28,6 +29,17 @@ const routes = [
     // 利用者APIユーザ編集
     { path: RoutePathConstants.PAGE_EDIT_RIYOUSHA_PARTNER, name: "EditRiyoushaPartnerApi", component: () => import("./components/main/pages/edit_riyousha/EditRiyoushaPartnerApi.vue") },
     { path: RoutePathConstants.PAGE_SEARCH_RIYOUSHA_ORG, name: "SearchRiyoushaOrg", component: () => import("./components/main/pages/regist_riyousha_org/SearchRiyoushaOrg.vue") },
+
+    // 新規アカウント作成
+    { path: RoutePathConstants.PAGE_ADD_ACCOUNT, name: "AddAccountMenu", component: () => import("./components/main/pages/add_account/AddAccountMenu.vue") },
+    { path: RoutePathConstants.PAGE_SEND_ACCESS_CODE, name: "SendAccessCode", component: () => import("./components/main/pages/add_account/SendAccessCode.vue") },
+    { path: RoutePathConstants.PAGE_SWITCH_USER_KBN, name: "SwitchNewUserKbn", component: () => import("./components/main/pages/add_account/SwitchNewUserKbn.vue") },
+
+    // 関連者・利用者追加
+    { path: RoutePathConstants.PAGE_INSERT_KANRENSHA, name: "InsertKanrensha", component: () => import("./components/main/pages/add_account/InsertKanrensha.vue") },
+    { path: RoutePathConstants.PAGE_INSERT_PARTNER_API, name: "InsertRiyoushaPartner", component: () => import("./components/main/pages/add_account/InsertRiyoushaPartner.vue") },
+    { path: RoutePathConstants.PAGE_INSERT_MANAGER, name: "InsertRiyoushaManager", component: () => import("./components/main/pages/add_account/InsertRiyoushaManager.vue") },
+
 
     // 利用者検索
     { path: RoutePathConstants.PAGE_RIYOUSHA_SEARCH, name: "SearchEditRiyousha", component: () => import("./components/main/pages/search_edit_riyousha/SearchEditRiyousha.vue") },
@@ -80,6 +92,21 @@ const routes = [
     // 予約実行
     { path: RoutePathConstants.PAGE_TIMER_YOTEI, name: "SearchTimerYotei", component: () => import("./components/main/pages/yotei_timer/SearchTimerYotei.vue") },
 
+    // ユーザ編集
+    { path: RoutePathConstants.PAGE_REFRESH_PASSWORD, name: "RefreshPassword", component: () => import("./components/main/pages/user_edit/RefreshPassword.vue") },
+    { path: RoutePathConstants.PAGE_RESET_PASSWORD, name: "ResetPassword", component: () => import("./components/main/pages/user_edit/ResetPassword.vue") },
+    { path: RoutePathConstants.PAGE_USER_EDIT, name: "EditUser", component: () => import("./components/main/pages/user_edit/EditUser.vue") },
+    { path: RoutePathConstants.PAGE_USER_WITHDRAW, name: "WithdrawUser", component: () => import("./components/main/pages/user_edit/WithdrawUser.vue") },
+    { path: RoutePathConstants.PAGE_USER_CHANGE, name: "ChangeUser", component: () => import("./components/main/pages/user_edit/ChangeUser.vue") },
+
+    { path: RoutePathConstants.PAGE_ADMIN_PROMOTE, name: "AdminRolePromote", component: () => import("./components/main/pages/user_edit/AdminRolePromote.vue") },
+    { path: RoutePathConstants.PAGE_ADMIN_ACCEPT, name: "AdminRoleAccept", component: () => import("./components/main/pages/user_edit/AdminRoleAccept.vue") },
+
+    // トークン置き換え
+    { path: RoutePathConstants.PAGE_PARTNER_TOKEN_REPLACE, name: "ReplacePartnerApiToken", component: () => import("./components/main/pages/user_edit/ReplacePartnerApiToken.vue") },
+
+    // タスク計画
+    { path: RoutePathConstants.PAGE_SEARCH_TASK_PLAN, name: "SearchTaskPlan", component: () => import("./components/main/pages/search_task_plan/SearchTaskPlan.vue") },
 
 ];
 

@@ -19,8 +19,6 @@ import org.springframework.stereotype.Service;
 import net.seijishikin.jp.normalize.manage.kanrensha.config.JwtConfig;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.sequrity.JwtTokenDto;
 
-//import net.seijishikin.jp.normalize.manage.kanrensha.config.JwtConfig;
-
 /**
  * JWTサービス
  */

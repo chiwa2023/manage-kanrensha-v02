@@ -67,7 +67,7 @@ public class FileUploadServcie {
         // TODO 書証区分を決定次第指定する
         switchYearInsertSaveStorageService.practice(year, userDto, fullPath, Short.valueOf("205"));
         // TODO タスク情報の入れ方を決定する
-        switchYearInsertTaskPlanService.practice(year, userDto, TaskInfoConstants.SAVE_POSTAL_REPAIR_CSV);
+        //switchYearInsertTaskPlanService.practice( userDto, TaskInfoConstants.SAVE_POSTAL_REPAIR_CSV,null);
         
         return fullPath;
     }

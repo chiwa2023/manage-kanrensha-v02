@@ -1,6 +1,9 @@
 package net.seijishikin.jp.normalize.manage.kanrensha.controller.z_force;
 
+import java.time.LocalDateTime;
 import java.time.Year;
+import java.util.Map;
+import java.util.TreeMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import net.seijishikin.jp.normalize.common_tool.dto.FrameworkMessageAndResultDto;
 import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
+import net.seijishikin.jp.normalize.manage.kanrensha.dto.task.InsertTaskPlanResultDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.task.TaskPlanInfoDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.z_force.ForceDumpCapsuleDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.util.SaveStackTraceService;
@@ -47,7 +51,8 @@ public class ForceDumpStdMasterController {
     @PostMapping("/execute")
     public ResponseEntity<FrameworkMessageAndResultDto> practice(final @RequestBody ForceDumpCapsuleDto capsuleDto) {
 
-        Integer year = Year.now().getValue();
+        LocalDateTime dateTimeStart = LocalDateTime.now();
+        Integer year = dateTimeStart.getYear();
         LeastUserDto userDto = capsuleDto.getUserDto();
         Integer taskPlanCode = 0;
         try {
@@ -62,15 +67,18 @@ public class ForceDumpStdMasterController {
             }
 
             // 非同期処理はタスク登録をする
-            TaskPlanInfoDto planDto1 = switchYearInsertTaskPlanService.practice(year, userDto,
-                    TaskInfoConstants.DUMP_STD_PERSON);
+            
+            Map<String, String> mapParam = new TreeMap<>();
+
+            InsertTaskPlanResultDto planDto1 = switchYearInsertTaskPlanService.practice(userDto,dateTimeStart,
+                    TaskInfoConstants.DUMP_STD_PERSON,mapParam);
             taskPlanCode = planDto1.getTaskPlanCode();
 
-            TaskPlanInfoDto planDto2 = switchYearInsertTaskPlanService.practice(year, userDto,
-                    TaskInfoConstants.DUMP_STD_KIGYOU);
+            InsertTaskPlanResultDto planDto2 = switchYearInsertTaskPlanService.practice( userDto,dateTimeStart,
+                    TaskInfoConstants.DUMP_STD_KIGYOU,mapParam);
 
-            TaskPlanInfoDto planDto3 = switchYearInsertTaskPlanService.practice(year, userDto,
-                    TaskInfoConstants.DUMP_STD_SEIJIDANTAI);
+            InsertTaskPlanResultDto planDto3 = switchYearInsertTaskPlanService.practice( userDto,dateTimeStart,
+                    TaskInfoConstants.DUMP_STD_SEIJIDANTAI,mapParam);
 
             asyncForceDumpStdMasterService.practice(year, planDto1, planDto2, planDto3, capsuleDto);
 

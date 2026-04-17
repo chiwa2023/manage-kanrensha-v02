@@ -15,6 +15,7 @@ import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
 import net.seijishikin.jp.normalize.common_tool.utils.CreateUserLeastDtoByBatchParamUtil;
 import net.seijishikin.jp.normalize.manage.kanrensha.batch.kanrensha.combine_org.RetryCombineOrgBatchConfiguration;
 import net.seijishikin.jp.normalize.manage.kanrensha.batch.task_plan.RecordTaskPlanJobExecutionListner;
+import net.seijishikin.jp.normalize.manage.kanrensha.dto.task.InsertTaskPlanResultDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.task.TaskPlanInfoDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.util.SaveStackTraceService;
 
@@ -43,7 +44,7 @@ public class RetryBatchCombineOrgService {
      * @param userDto ユーザDto
      */
     @Async
-    public void practice(final LeastUserDto userDto, final Integer year, final TaskPlanInfoDto planDto) {
+    public void practice(final LeastUserDto userDto, final Integer year, final InsertTaskPlanResultDto planDto) {
 
         JobParameters jobParameters = new JobParametersBuilder(
                 retryCombineOrg.getJobParametersIncrementer().getNext(new JobParameters())) // NOPMD

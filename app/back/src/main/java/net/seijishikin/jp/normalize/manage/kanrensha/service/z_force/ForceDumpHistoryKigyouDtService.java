@@ -19,6 +19,7 @@ import net.seijishikin.jp.normalize.common_tool.utils.CreateUserLeastDtoByBatchP
 import net.seijishikin.jp.normalize.manage.kanrensha.batch.kanrensha.dump.all.history.DumpKanrenshaKigyouDtHistoryBatchConfiguration;
 import net.seijishikin.jp.normalize.manage.kanrensha.batch.task_plan.RecordTaskPlanJobExecutionListner;
 import net.seijishikin.jp.normalize.manage.kanrensha.constants.GetCurrentResourcePath;
+import net.seijishikin.jp.normalize.manage.kanrensha.dto.task.InsertTaskPlanResultDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.task.TaskPlanInfoDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.util.SaveStackTraceService;
 
@@ -68,7 +69,7 @@ public class ForceDumpHistoryKigyouDtService {
      *
      * @param endDate 抽出終了時間
      */
-    public void practice(final Integer year, final TaskPlanInfoDto planDto, final LocalDate endDate,
+    public void practice(final Integer year, final InsertTaskPlanResultDto planDto, final LocalDate endDate,
             final LeastUserDto userDto) {
 
         final String pathSaved = Paths.get(GetCurrentResourcePath.getBackSrcPath("")).getParent().getParent()

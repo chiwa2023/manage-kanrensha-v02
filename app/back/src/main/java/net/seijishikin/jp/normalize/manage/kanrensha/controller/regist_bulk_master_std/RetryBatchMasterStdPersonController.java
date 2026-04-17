@@ -1,6 +1,8 @@
 package net.seijishikin.jp.normalize.manage.kanrensha.controller.regist_bulk_master_std;
 
+import java.time.LocalDateTime;
 import java.time.Year;
+import java.util.TreeMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +15,7 @@ import io.netty.handler.codec.http.HttpResponseStatus;
 import net.seijishikin.jp.normalize.common_tool.dto.FrameworkMessageAndResultDto;
 import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.add_xml.RetryWktblBatchCapsuleDto;
+import net.seijishikin.jp.normalize.manage.kanrensha.dto.task.InsertTaskPlanResultDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.task.TaskPlanInfoDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.regist_bulk_master_std.RetryBatchMasterStdPersonService;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.util.SaveStackTraceService;
@@ -50,7 +53,8 @@ public class RetryBatchMasterStdPersonController {
             final @RequestBody RetryWktblBatchCapsuleDto capsuleDto) {
 
         // タスク計画挿入時に失敗の可能性を考慮して必要な変数はtryの外で宣言
-        Integer year = Year.now().getValue();
+        LocalDateTime dateTimeStart = LocalDateTime.now();
+        Integer year = dateTimeStart.getYear();
         LeastUserDto userDto = capsuleDto.getUserDto();
         Integer taskPlanCode = 0;
         try {
@@ -58,8 +62,8 @@ public class RetryBatchMasterStdPersonController {
             resultDto.setMessage("処理を開始しました。完了までしばらくお待ちください。");
 
             // 非同期処理はタスク登録をする
-            TaskPlanInfoDto planDto = switchYearInsertTaskPlanService.practice(year, userDto,
-                    TaskInfoConstants.RETRY_PERSON_STD);
+            InsertTaskPlanResultDto planDto = switchYearInsertTaskPlanService.practice( userDto,dateTimeStart,
+                    TaskInfoConstants.RETRY_PERSON_STD,new TreeMap<String, String>());
             taskPlanCode = planDto.getTaskPlanCode();
 
             retryBatchMasterStdPersonService.practice(capsuleDto.getUserDto(), year, planDto);

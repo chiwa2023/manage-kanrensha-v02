@@ -1,9 +1,13 @@
 package net.seijishikin.jp.normalize.manage.kanrensha.service.year;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import java.time.LocalDateTime;
 
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -16,11 +20,8 @@ import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import org.springframework.transaction.annotation.Transactional;
 
 import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
-import net.seijishikin.jp.normalize.manage.kanrensha.constants.TaskInfoConstants;
-import net.seijishikin.jp.normalize.manage.kanrensha.dto.task.TaskPlanInfoDto;
-import net.seijishikin.jp.normalize.manage.kanrensha.entity.year.y2025.TaskPlan2025Entity;
-import net.seijishikin.jp.normalize.manage.kanrensha.logic.year.y2025.InsertTaskPlanY2025Logic;
-import net.seijishikin.jp.normalize.manage.kanrensha.repository.year.y2025.TaskPlan2025Repository;
+import net.seijishikin.jp.normalize.manage.kanrensha.entity.year.y2026.TaskPlan2026Entity;
+import net.seijishikin.jp.normalize.manage.kanrensha.repository.year.y2026.TaskPlan2026Repository;
 import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateLeastUserForTestUtil;
 
 /**
@@ -35,44 +36,40 @@ import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateLeastUserForTes
 class SwitchYearUpdateTaskStartAndEndServiceTest {
     // CHECKSTYLE:OFF MagicNumber
 
-    /**　テスト対象 */
+    /** テスト対象 */
     @Autowired
     private SwitchYearUpdateTaskStartAndEndService switchYearUpdateTaskStartAndEndService;
 
-    /** タスク挿入Logic(2025) */
+    /** タスク計画Repository(2026) */
     @Autowired
-    private InsertTaskPlanY2025Logic insertTaskPlanY2025Logic;
+    private TaskPlan2026Repository taskPlan2026Repository;
 
-    /** タスク計画Repository(2025) */
-    @Autowired
-    private TaskPlan2025Repository taskPlan2025Repository;
-
-    
     @Test
-    void test() {
-        
-        Integer taskCode = TaskInfoConstants.SAVE_POSTAL_REPAIR_CSV;
+    @Tag("TableTruncate")
+    void test() throws Exception {
+
         LeastUserDto userDto = CreateLeastUserForTestUtil.practice();
-        TaskPlanInfoDto dto = insertTaskPlanY2025Logic.practice(userDto, taskCode);
-        Integer newId = dto.getTaskPlanId();
+        LocalDateTime endTime = LocalDateTime.of(2028, 3, 21, 12, 34, 56); // あえて終了年を登録テーブルと異なる値にしている
 
-        LocalDateTime datetime = LocalDateTime.of(2022, 12, 5, 12, 34, 56);
-        Integer updateId = switchYearUpdateTaskStartAndEndService.practice(userDto, 2025, newId, datetime);
+        final Integer loadId = 203;
+        Integer savedId = switchYearUpdateTaskStartAndEndService.practice(userDto, 2026, loadId, endTime);
+        // 履歴が積みあがっていること
+        assertNotEquals(loadId, savedId);
 
-        TaskPlan2025Entity deleteEntity = taskPlan2025Repository.findById(newId).get();
+        TaskPlan2026Entity entityPre = taskPlan2026Repository.findById(loadId).get();
+        // 過去データに未使用フラグ以外の変更はないこと
+        assertFalse(entityPre.getIsLatest());
+        assertFalse(entityPre.getIsStart());
+        assertFalse(entityPre.getIsFinished());
 
-        assertEquals(newId, deleteEntity.getTaskPlanId());
-        assertEquals(false, deleteEntity.getIsLatest());
-
-        TaskPlan2025Entity updateEntity = taskPlan2025Repository.findById(updateId).get();
-        assertEquals(updateId, updateEntity.getTaskPlanId());
-        assertEquals(updateEntity.getTaskPlanCode(), updateEntity.getTaskPlanCode());
-        assertEquals(updateEntity.getTaskInfoCode(), updateEntity.getTaskInfoCode());
-        assertEquals(datetime, updateEntity.getEndDateimte());
-        Boolean isFinished = true;
-        assertEquals(isFinished, updateEntity.getIsFinished());
-        assertEquals(!isFinished, updateEntity.getIsSuspended());
-        assertEquals(true, updateEntity.getIsLatest());
+        TaskPlan2026Entity entityPro = taskPlan2026Repository.findById(savedId).get();
+        assertEquals(entityPre.getTaskPlanCode(), entityPro.getTaskPlanCode()); // 同じコード
+        // 積み上げた履歴は終了履歴であること
+        assertTrue(entityPro.getIsLatest());
+        assertTrue(entityPro.getIsFinished());
+        assertTrue(entityPro.getIsStart());
+        assertEquals(endTime, entityPro.getStartDatetime());
+        assertEquals(endTime, entityPro.getEndDateimte());
     }
 
 }

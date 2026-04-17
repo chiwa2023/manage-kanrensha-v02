@@ -1,9 +1,9 @@
 ﻿<script setup lang="ts">
-import MockKanrenshaInfo from '../../../test/common/user_info/MockKanrenshaInfo.vue';
 import MenuKanrenshaContent from '../../common/menu/MenuKanrenshaContent.vue';
-import { type LeastUserDtoInterface } from '../../dto/user/leastUserDto';
+import { type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import { ref, type Ref } from 'vue';
 import { getLoginUser } from '../../utils/getLoginUser';
+import KanrenshaInfo from '../../common/user_info/KanrenshaInfo.vue';
 
 //仮
 // よく使う定数
@@ -23,7 +23,7 @@ const userDto: Ref<LeastUserDtoInterface> = ref(getLoginUser());
 </script>
 <template>
     <!-- 関連者 -->
-    <MockKanrenshaInfo :user-dto="userDto"></MockKanrenshaInfo>
+    <KanrenshaInfo :user-dto="userDto"></KanrenshaInfo>
 
     <h1>関連者用メニュー</h1><br>
     <MenuKanrenshaContent></MenuKanrenshaContent>

@@ -19,12 +19,24 @@ export default class RoutePathConstants {
     static readonly PAGE_MENU_ADMIN: string = this.BASE_PATH + "/menu-admin";
     /** 運営者メニュー */
     static readonly PAGE_MENU_MANAGER: string = this.BASE_PATH + "/menu-manager";
-    /** APIユーザメニュー */
+    /** APIパートナーメニュー */
     static readonly PAGE_MENU_PARTNER_API: string = this.BASE_PATH + "/menu-partner-api";
     /** 関連者メニュー */
     static readonly PAGE_MENU_KANRENSHA: string = this.BASE_PATH + "/menu-kanrensha";
 
+    /** 新規追加メニュー */
+    static readonly PAGE_ADD_ACCOUNT: string = this.BASE_PATH + "/add-account";
+    /** アクセスコード送信 */
+    static readonly PAGE_SEND_ACCESS_CODE: string = this.BASE_PATH + "/send-access-code";
+    /** ユーザの種類変更 */
+    static readonly PAGE_SWITCH_USER_KBN: string = this.BASE_PATH + "/switch-user-kbn";
 
+    /** 関連者追加 */
+    static readonly PAGE_INSERT_KANRENSHA: string = this.BASE_PATH + "/insert-kanrensha";
+    /** APIパートナー追加 */
+    static readonly PAGE_INSERT_PARTNER_API: string = this.BASE_PATH + "/insert-partner";
+    /** 運営者追加 */
+    static readonly PAGE_INSERT_MANAGER: string = this.BASE_PATH + "/insert-manager";
 
     /** 利用者運営者編集メニュー */
     static readonly PAGE_EDIT_RIYOUSHA_MANAGER: string = this.BASE_PATH + "/edit-riyousha-manager";
@@ -34,7 +46,24 @@ export default class RoutePathConstants {
     /** 利用者組織更新メニュー */
     static readonly PAGE_REGIST_RIYOUSHA_ORG: string = this.BASE_PATH + "/regist-riyousha-org";
 
+    /** ユーザパスワード更新 */
+    static readonly PAGE_REFRESH_PASSWORD: string = this.BASE_PATH + "/user/refresh-password";
+    /** ユーザパスワードリセット */
+    static readonly PAGE_RESET_PASSWORD: string = this.BASE_PATH + "/user/reset-password";
+    /** ユーザ自身を編集 */
+    static readonly PAGE_USER_EDIT: string = this.BASE_PATH + "/user/edit";
+    /** ユーザ退会 */
+    static readonly PAGE_USER_WITHDRAW: string = this.BASE_PATH + "/user/withdraw";
+    /** 他者ユーザを編集 */
+    static readonly PAGE_USER_CHANGE: string = this.BASE_PATH + "/user/change";
+    /** SE権限追加推薦 */
+    static readonly PAGE_ADMIN_PROMOTE: string = this.BASE_PATH + "/user/admin-promote";
+    /** SE権限追加認否 */
+    static readonly PAGE_ADMIN_ACCEPT: string = this.BASE_PATH + "/user/admin-accept";
 
+
+    /** APIパートナーTokenおきかえ */
+    static readonly PAGE_PARTNER_TOKEN_REPLACE: string = this.BASE_PATH + "/partner-api/token-replace";
 
     /** 利用者検索 */
     static readonly PAGE_RIYOUSHA_SEARCH: string = this.BASE_PATH + "/riyousha-search";
@@ -124,26 +153,41 @@ export default class RoutePathConstants {
     /** 予約実行 */
     static readonly PAGE_TIMER_YOTEI: string = this.BASE_PATH + "/timer-yotei";
 
-
-
-
-
-
-
     // /** 運営者による関連者管理 */
     // static readonly PAGE_REGI_PARTNER_MANAGE: string = this.BASE_PATH + "/partner-manage";
 
     // /** 本人による関連者編集 */
     // static readonly PAGE_REGI_PARTNER_EDIT: string = this.BASE_PATH + "/partner-edit";
 
+    // /** 作業内容承認 */
+    // static readonly PAGE_WORKS_APPROVAL: string = this.BASE_PATH + "/works-approval";
+
     // /** 運営者による利用者検索編集 */
     // static readonly PAGE_SEARCH_RIYOUSHA: string = this.BASE_PATH + "/search-riyousha";
 
+    // /** 運営者組織個人紐づけ */
+    // static readonly PAGE_COMBINE_MANAGER: string = this.BASE_PATH + "/combine-manager";
+    // /** APIパートナー組織個人紐づけ */
+    // static readonly PAGE_COMBINE_COMRADE: string = this.BASE_PATH + "/combine-comrade";
 
 
+    // /** APIパートナー編集 */
+    // static readonly PAGE_EDIT_COMRADE: string = this.BASE_PATH + "/edit-comrade";
+    // /** 運営者編集 */
+    // static readonly PAGE_EDIT_MANAGER: string = this.BASE_PATH + "/edit-manager";
 
+    // /** APIパートナー組織に個人を招待 */
+    // static readonly PAGE_INVITE_COMRADE_PERSON: string = this.BASE_PATH + "/invite-comrade";
+    // /** APIパートナー組織に招待を個人が承認 */
+    // static readonly PAGE_ACCEPT_COMRADE_PERSON: string = this.BASE_PATH + "/accept-comrade";
 
+    // /** 運営者組織に個人を招待 */
+    // static readonly PAGE_INVITE_MANAGER_PERSON: string = this.BASE_PATH + "/invite-manager";
+    // /** 運営者組織に招待を個人が承認 */
+    // static readonly PAGE_ACCEPT_MANAGER_PERSON: string = this.BASE_PATH + "/accept-manager";
 
+    /** タスク計画検索 */
+    static readonly PAGE_SEARCH_TASK_PLAN: string = this.BASE_PATH + "/search-task-plan";
 
     /** 開発テンプレート(共通ツール) */
     static readonly PAGE_DEVELOP_TEMPLATE: string = this.BASE_PATH + "/develop-template";

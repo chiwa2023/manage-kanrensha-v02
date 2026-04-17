@@ -2,6 +2,7 @@ package net.seijishikin.jp.normalize.manage.kanrensha.logic.year.y2025;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -47,19 +48,22 @@ class InsertTaskPlanY2025LogicTest {
     @Tag("TableTruncate")
     void test() throws Exception {
 
-        Integer taskCode = TaskInfoConstants.SAVE_POSTAL_REPAIR_CSV;
-        LeastUserDto userDto = CreateLeastUserForTestUtil.practice();
-        TaskPlanInfoDto dto = insertTaskPlanY2025Logic.practice(userDto, taskCode);
-
-        TaskPlan2025Entity entity = taskPlan2025Repository.findById(dto.getTaskPlanId()).get();
-
-        assertEquals(false, entity.getIsFinished());
-        assertEquals(true, entity.getIsLatest());
-        assertEquals("admin,manager", entity.getRoleList());
-        assertEquals("pageUrl", entity.getTransferPass());
-        assertEquals("郵便番号差分修正", entity.getTaskPlanName());
-
-        assertThrows(EmptyResultDataAccessException.class, () -> insertTaskPlanY2025Logic.practice(userDto, 622));
+//        Integer taskCode = TaskInfoConstants.SAVE_POSTAL_REPAIR_CSV;
+//        LeastUserDto userDto = CreateLeastUserForTestUtil.practice();
+//        TaskPlanInfoDto dto = insertTaskPlanY2025Logic.practice(userDto, taskCode);
+//
+//        TaskPlan2025Entity entity = taskPlan2025Repository.findById(dto.getTaskPlanId()).get();
+//
+//        assertEquals(false, entity.getIsFinished());
+//        assertEquals(true, entity.getIsLatest());
+//        assertEquals("admin,manager", entity.getRoleList());
+//        assertEquals("pageUrl", entity.getTransferPass());
+//        assertEquals("郵便番号差分修正", entity.getTaskPlanName());
+//
+//        assertThrows(EmptyResultDataAccessException.class, () -> insertTaskPlanY2025Logic.practice(userDto, 622));
+//        
+        
+        fail();
     }
 
 }

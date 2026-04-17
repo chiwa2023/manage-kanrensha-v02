@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.storage_file.StorageFileDto;
+import net.seijishikin.jp.normalize.manage.kanrensha.dto.task.InsertTaskPlanResultDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.task.TaskPlanInfoDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.task.TaskPlanWithUseFileDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.logic.file.GetStoragePathLogic;
@@ -83,7 +84,7 @@ public class CopyTempToUseSavedFileService {
         // ファイルが保存出来たら保存場所を記録しスケジュールに登録
         switchYearInsertSaveStorageService.practice(year, userDto, pathSavedFull, fileType);
 
-        TaskPlanInfoDto planDto = switchYearInsertTaskPlanService.practice(year, userDto, taskConstants);
+        InsertTaskPlanResultDto planDto = switchYearInsertTaskPlanService.practice(userDto,null ,null,null);
 
         TaskPlanWithUseFileDto resulDto = new TaskPlanWithUseFileDto();
         BeanUtils.copyProperties(planDto, resulDto);

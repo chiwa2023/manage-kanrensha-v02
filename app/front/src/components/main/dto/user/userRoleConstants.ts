@@ -1,12 +1,33 @@
 export default class UserRoleConstants {
 
+    /** (関連者)選択なし */
+    static readonly NONE: string = "";
+
+    /** SE権限 */
+    static readonly ADMIN: string = "admin";
+
+    /** 運営者権限 */
+    static readonly MANAGER: string = "manager";
+
+    /** APIパートナー権限 */
+    static readonly PARTNER_API: string = "partner_api";
+
+    /** 関連者個人権限 */
+    static readonly KANRENSHA_PERSON: string = "kanrensha_person";
+
+    /** 関連者企業・団体権限 */
+    static readonly KANRENSHA_KIGYOU_DT: string = "kanrensha_kigyou_dt";
+
+    /** 関連者政治団体権限 */
+    static readonly KANRENSHA_SEIJIDANTAI: string = "kanrensha_seijidantai";
+
     /** SE権限 */
     static readonly ROLE_ADMIN: string = "ROLE_admin";
 
     /** 運営者権限 */
     static readonly ROLE_MANAGER: string = "ROLE_manager";
 
-    /** APIユーザ権限 */
+    /** APIパートナー権限 */
     static readonly ROLE_PARTNER_API: string = "ROLE_partner_api";
 
     /** 関連者個人権限 */
@@ -24,8 +45,8 @@ export default class UserRoleConstants {
     /** 運営者権限表示テキスト */
     static readonly ROLE_MANAGER_TEXT: string = "運営者";
 
-    /** APIユーザ権限表示テキスト */
-    static readonly ROLE_PARTNER_API_TEXT: string = "APIユーザ";
+    /** APIパートナー権限表示テキスト */
+    static readonly ROLE_PARTNER_API_TEXT: string = "APIパートナー";
 
     /** 関連者個人権限表示テキスト */
     static readonly ROLE_KANRENSHA_PERSON_TEXT: string = "関連者個人";

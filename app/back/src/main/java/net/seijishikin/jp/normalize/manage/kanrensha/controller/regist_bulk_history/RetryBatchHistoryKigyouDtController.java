@@ -1,6 +1,8 @@
 package net.seijishikin.jp.normalize.manage.kanrensha.controller.regist_bulk_history;
 
+import java.time.LocalDateTime;
 import java.time.Year;
+import java.util.TreeMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +15,7 @@ import io.netty.handler.codec.http.HttpResponseStatus;
 import net.seijishikin.jp.normalize.common_tool.dto.FrameworkMessageAndResultDto;
 import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.add_xml.RetryWktblBatchCapsuleDto;
+import net.seijishikin.jp.normalize.manage.kanrensha.dto.task.InsertTaskPlanResultDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.task.TaskPlanInfoDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.regist_bulk_history.RetryBatchHistoryKigyouDtService;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.util.SaveStackTraceService;
@@ -50,13 +53,14 @@ public class RetryBatchHistoryKigyouDtController {
             final @RequestBody RetryWktblBatchCapsuleDto capsuleDto) {
 
         // タスク計画挿入時に失敗の可能性を考慮して必要な変数はtryの外で宣言
-        Integer year = Year.now().getValue();
+        LocalDateTime dateTimeStart = LocalDateTime.now();
+        Integer year = dateTimeStart.getYear();
         LeastUserDto userDto = capsuleDto.getUserDto();
         Integer taskPlanCode = 0;
         try {
             // 非同期処理はタスク登録をする
-            TaskPlanInfoDto planDto = switchYearInsertTaskPlanService.practice(year, userDto,
-                    TaskInfoConstants.RETRY_KIGYOU_HISTORY);
+            InsertTaskPlanResultDto planDto = switchYearInsertTaskPlanService.practice( userDto,dateTimeStart,
+                    TaskInfoConstants.RETRY_KIGYOU_HISTORY,new TreeMap<String, String>());
             taskPlanCode = planDto.getTaskPlanCode();
 
             FrameworkMessageAndResultDto resultDto = new FrameworkMessageAndResultDto();

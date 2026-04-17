@@ -14,6 +14,7 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
+import net.seijishikin.jp.normalize.manage.kanrensha.dto.task.InsertTaskPlanResultDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.task.TaskPlanInfoDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateLeastUserForTestUtil;
 
@@ -36,7 +37,7 @@ class RetryBatchHistoryKigyouDtServiceTest {
     @Tag("TableTruncate")
     void test() throws Exception {
         final Integer year = 2026;
-        TaskPlanInfoDto planDto = new TaskPlanInfoDto();
+        InsertTaskPlanResultDto planDto = new InsertTaskPlanResultDto();
         planDto.setTaskPlanId(453);
         planDto.setTaskPlanCode(187);
 
@@ -49,7 +50,7 @@ class RetryBatchHistoryKigyouDtServiceTest {
     void testBatchError() throws Exception {
         // バッチパラメータが正常でない場合はここで例外処理をする
         // バッチ内部例外は別で処理をする
-        TaskPlanInfoDto planDto = new TaskPlanInfoDto();
+        InsertTaskPlanResultDto planDto = new InsertTaskPlanResultDto();
         planDto.setTaskPlanId(424);
         planDto.setTaskPlanCode(7);
 

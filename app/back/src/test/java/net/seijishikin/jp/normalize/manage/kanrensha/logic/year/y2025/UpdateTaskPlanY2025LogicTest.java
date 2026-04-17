@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.time.LocalDateTime;
+import java.util.TreeMap;
 
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -19,6 +20,7 @@ import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import org.springframework.transaction.annotation.Transactional;
 
 import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
+import net.seijishikin.jp.normalize.manage.kanrensha.dto.task.InsertTaskPlanResultDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.task.TaskPlanInfoDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.year.y2025.TaskPlan2025Entity;
 import net.seijishikin.jp.normalize.manage.kanrensha.repository.year.y2025.TaskPlan2025Repository;
@@ -54,7 +56,10 @@ class UpdateTaskPlanY2025LogicTest {
 
         Integer taskCode = 101;
         LeastUserDto userDto = CreateLeastUserForTestUtil.practice();
-        TaskPlanInfoDto dto = insertTaskPlanY2025Logic.practice(userDto, taskCode);
+        LocalDateTime datetimeStart = LocalDateTime.of(2021, 1, 5, 11, 22, 33);
+
+        InsertTaskPlanResultDto dto = insertTaskPlanY2025Logic.practice(userDto, datetimeStart, taskCode,
+                new TreeMap<String, String>());
         Integer newId = dto.getTaskPlanId();
 
         LocalDateTime datetime = LocalDateTime.of(2022, 12, 5, 12, 34, 56);

@@ -16,8 +16,11 @@ import RoutePathConstants from '../../../../routePathConstants';
 </script>
 <template>
     <h4>SE権限メニュー</h4>
+    <RouterLink :to=RoutePathConstants.PAGE_USER_CHANGE>他者ユーザ変更</RouterLink><br>
+    <RouterLink :to=RoutePathConstants.PAGE_ADMIN_PROMOTE>管理者からSE権限へ引き上げ</RouterLink><br>
+
+
     <!--
-    <RouterLink :to=RoutePathConstants.PAGE_USER_DELETE>ユーザ削除</RouterLink><br>
     <RouterLink :to=RoutePathConstants.PAGE_USER_CHANGE>ユーザ編集</RouterLink><br>
     <RouterLink :to=RoutePathConstants.PAGE_PROMOTE_ROLE>運営者からSE権限へ引き上げ</RouterLink><br>
     <RouterLink :to=RoutePathConstants.PAGE_REGI_PARTNER_MANAGE>関連者管理</RouterLink><br>
@@ -60,6 +63,9 @@ import RoutePathConstants from '../../../../routePathConstants';
             <RouterLink :to="RoutePathConstants.PAGE_LOGOUT" class="menu-item">ログアウト</RouterLink>
         </div>
     </div>
+    <RouterLink :to=RoutePathConstants.PAGE_MENU_ADMIN>ページで見る</RouterLink><br>
+
+    <RouterLink :to="RoutePathConstants.PAGE_LOGOUT">ログアウト</RouterLink><br>
 
 </template>
 <style scoped></style>

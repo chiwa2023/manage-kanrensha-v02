@@ -16,6 +16,7 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
+import net.seijishikin.jp.normalize.manage.kanrensha.dto.task.InsertTaskPlanResultDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.task.TaskPlanInfoDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateLeastUserForTestUtil;
 
@@ -39,7 +40,7 @@ class ForceSabunDumpStdMasterPersonServiceTest {
     void test() {
 
         final Integer year = 2026;
-        TaskPlanInfoDto planDto = new TaskPlanInfoDto();
+        InsertTaskPlanResultDto planDto = new InsertTaskPlanResultDto();
         planDto.setTaskPlanId(453);
         planDto.setTaskPlanCode(187);
 
