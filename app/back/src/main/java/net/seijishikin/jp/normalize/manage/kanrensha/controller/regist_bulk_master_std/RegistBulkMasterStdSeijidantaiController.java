@@ -31,7 +31,7 @@ public class RegistBulkMasterStdSeijidantaiController {
      * @param capsuleDto 編集内容Dto
      * @return 追加されたId
      */
-    @PostMapping("/update-poli-org")
+    @PostMapping("/update-seijidantai")
     public ResponseEntity<UpdateWkTblStdSeijidantaiResultDto> practice(
             final @RequestBody UpdateWkTblStdSeijidantaiCapsuleDto capsuleDto) {
 

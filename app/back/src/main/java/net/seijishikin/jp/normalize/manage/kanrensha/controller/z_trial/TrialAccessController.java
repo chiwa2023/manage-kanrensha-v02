@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 import net.seijishikin.jp.normalize.manage.kanrensha.controller.PathRouteConstants;
 import net.seijishikin.jp.normalize.manage.kanrensha.logic.file.GetAbsolutePathLogic;
 import net.seijishikin.jp.normalize.manage.kanrensha.repository.SampleTableRepository;
-import net.seijishikin.jp.normalize.manage.kanrensha.controller.PathRouteConstants;
 
 /**
  * 機能疎通確認Controller
@@ -35,7 +34,7 @@ public class TrialAccessController {
      *
      * @return 表示文字列
      */
-    @GetMapping(PathRouteConstants.ROOT + "/trial-access")
+    @GetMapping("/trial-access")
     public ResponseEntity<String> practice() {
 
         final String BLANK = "";

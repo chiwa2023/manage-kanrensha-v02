@@ -4,7 +4,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.time.LocalDateTime;
-import java.util.TreeMap;
 
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -20,9 +19,10 @@ import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import org.springframework.transaction.annotation.Transactional;
 
 import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
+import net.seijishikin.jp.normalize.manage.kanrensha.constants.TaskInfoConstants;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.task.InsertTaskPlanResultDto;
-import net.seijishikin.jp.normalize.manage.kanrensha.dto.task.TaskPlanInfoDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.year.y2025.TaskPlan2025Entity;
+import net.seijishikin.jp.normalize.manage.kanrensha.logic.task_plan.CreateQueryParamDummyUtil;
 import net.seijishikin.jp.normalize.manage.kanrensha.repository.year.y2025.TaskPlan2025Repository;
 import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateLeastUserForTestUtil;
 
@@ -54,15 +54,15 @@ class UpdateTaskPlanY2025LogicTest {
     @Tag("TableTruncate")
     void test() throws Exception {
 
-        Integer taskCode = 101;
+        Integer taskCode = TaskInfoConstants.SAVE_POSTAL_REPAIR_CSV;
         LeastUserDto userDto = CreateLeastUserForTestUtil.practice();
-        LocalDateTime datetimeStart = LocalDateTime.of(2021, 1, 5, 11, 22, 33);
+        LocalDateTime datetimeStart = LocalDateTime.of(2025, 1, 5, 11, 22, 33);
 
         InsertTaskPlanResultDto dto = insertTaskPlanY2025Logic.practice(userDto, datetimeStart, taskCode,
-                new TreeMap<String, String>());
+                CreateQueryParamDummyUtil.practice());
         Integer newId = dto.getTaskPlanId();
 
-        LocalDateTime datetime = LocalDateTime.of(2022, 12, 5, 12, 34, 56);
+        LocalDateTime datetime = LocalDateTime.of(2026, 12, 5, 12, 34, 56);
         Boolean isFinished = true;
         Integer updateId = updateTaskPlanY2025Logic.practice(userDto, newId, datetime, isFinished);
 

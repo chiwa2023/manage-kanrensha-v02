@@ -30,7 +30,7 @@ public class SearchCombineKigyouDtController {
      * @param capsuleDto 検索条件
      * @return 検索結果
      */
-    @PostMapping("/search-kigyouDt")
+    @PostMapping("/search-kigyoudt")
     public ResponseEntity<SearchWkTblCombineOrgPagingResultDto> practice(
             final @RequestBody SearchWkTbPagingCapsuleDto capsuleDto) {
 

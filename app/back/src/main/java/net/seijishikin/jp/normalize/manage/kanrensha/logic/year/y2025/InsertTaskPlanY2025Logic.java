@@ -13,7 +13,6 @@ import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
 import net.seijishikin.jp.normalize.common_tool.entity.AllTabeDataHistoryInterface;
 import net.seijishikin.jp.normalize.common_tool.utils.SetTableDataHistoryUtil;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.task.InsertTaskPlanResultDto;
-import net.seijishikin.jp.normalize.manage.kanrensha.dto.task.TaskPlanInfoDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.TaskInfoEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.year.y2025.TaskPlan2025Entity;
 import net.seijishikin.jp.normalize.manage.kanrensha.logic.task_plan.ConvertQueryParamLogic;
@@ -99,6 +98,7 @@ public class InsertTaskPlanY2025Logic {
         resultDto.setTaskYear(savedEntity.getTableYear());
         resultDto.setTaskPlanId(savedEntity.getTaskPlanId());
         resultDto.setTaskInfoCode(savedEntity.getTaskInfoCode());
+        resultDto.setTaskPlanCode(savedEntity.getTaskPlanCode());
         resultDto.setTaskPlanName(savedEntity.getTaskPlanName());
         resultDto.setTransferPass(savedEntity.getTransferPass());
         resultDto.setParamQuery(taskInfoEntity.getParamQuery());

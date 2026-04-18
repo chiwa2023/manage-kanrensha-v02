@@ -9,6 +9,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Service;
 
@@ -16,11 +17,8 @@ import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.send_message.MailDataDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.send_message.SendMaileResultDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.task.InsertTaskPlanResultDto;
-import net.seijishikin.jp.normalize.manage.kanrensha.dto.task.TaskPlanInfoDto;
-import net.seijishikin.jp.normalize.manage.kanrensha.entity.TaskInfoEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.UserPersonEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.logic.send_message.SendMailUserLogic;
-import net.seijishikin.jp.normalize.manage.kanrensha.repository.TaskInfoRepository;
 import net.seijishikin.jp.normalize.manage.kanrensha.repository.UserPersonRepository;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.util.SaveStackTraceService;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.year.SwitchYearInsertTaskPlanService;
@@ -57,10 +55,6 @@ public class InsertTaskPlanService {
         this.flgSendAlert = flgSendAlert;
     }
 
-    /** タスク情報Repository */
-    @Autowired
-    private TaskInfoRepository taskInfoRepository;
-
     /** ユーザ個人Repository */
     @Autowired
     private UserPersonRepository userPersonRepository;
@@ -91,28 +85,24 @@ public class InsertTaskPlanService {
     public InsertTaskPlanResultDto practice(final LeastUserDto userDto, final LocalDateTime createDatetime,
             final Integer taskInfoCode, final Map<String, String> mapParam) {
 
-        // タスク計画が挿入処理
         // タスク計画が挿入できなかったとしても本筋の処理ができていれば、処理としてまぁOKなので処理継続
         InsertTaskPlanResultDto resultDto = new InsertTaskPlanResultDto();
-//        List<TaskInfoEntity> litTaskInfo = taskInfoRepository.findByTaskInfoCodeAndIsLatestTrue(taskInfoCode);
-//        if (litTaskInfo.isEmpty()) {
-//            resultDto.setIsFailure(true);
-//            resultDto.setMessage("タスク計画が取得できませんでした");
-//            return resultDto;
-//        }
-//
-//        TaskInfoEntity taskInfoEntity = litTaskInfo.get(0);
 
         Integer savedId;
         try {
-            resultDto = switchYearInsertTaskPlanInsertService.practice(userDto, createDatetime, taskInfoCode,
-                    mapParam);
+            resultDto = switchYearInsertTaskPlanInsertService.practice(userDto, createDatetime, taskInfoCode, mapParam);
+
             savedId = resultDto.getTaskPlanId();
             if (0 == savedId) {
                 resultDto.setIsFailure(true);
                 resultDto.setMessage("タスク計画が登録できませんでした");
                 return resultDto;
             }
+        } catch (EmptyResultDataAccessException exception) {
+            resultDto.setIsFailure(true);
+            resultDto.setMessage(exception.getMessage());
+            return resultDto;
+
         } catch (IllegalArgumentException exception) {
             resultDto.setIsFailure(true);
             resultDto.setMessage("タスク計画が登録できませんでした");
@@ -147,7 +137,6 @@ public class InsertTaskPlanService {
 
                 return resultDto;
             }
-
         }
 
         return resultDto;

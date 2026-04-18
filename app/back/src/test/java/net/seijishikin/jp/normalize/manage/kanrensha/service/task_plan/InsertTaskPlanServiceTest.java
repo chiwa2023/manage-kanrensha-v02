@@ -24,6 +24,7 @@ import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
 import net.seijishikin.jp.normalize.common_tool.entity.AllTabeDataHistoryInterface;
 import net.seijishikin.jp.normalize.manage.kanrensha.constants.TaskInfoConstants;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.year.y2026.TaskPlan2026Entity;
+import net.seijishikin.jp.normalize.manage.kanrensha.logic.task_plan.CreateQueryParamDummyUtil;
 import net.seijishikin.jp.normalize.manage.kanrensha.repository.year.y2026.TaskPlan2026Repository;
 import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateLeastUserForTestUtil;
 
@@ -54,7 +55,7 @@ class InsertTaskPlanServiceTest {
         LeastUserDto userDto = CreateLeastUserForTestUtil.practice();
         LocalDateTime createDatetime = LocalDateTime.of(2026, 12, 5, 12, 34, 56);
         FrameworkMessageAndResultDto resultDto = insertTaskPlanService.practice(userDto, createDatetime,
-                TaskInfoConstants.PROMOTE_ADMIN, null);
+                TaskInfoConstants.PROMOTE_ADMIN, CreateQueryParamDummyUtil.practice());
         assertFalse(resultDto.getIsFailure());
 
         List<TaskPlan2026Entity> listPlan = taskPlan2026Repository.findAll();
@@ -69,7 +70,7 @@ class InsertTaskPlanServiceTest {
         assertEquals(createDatetime, planEntity.getStartDatetime());
         assertEquals(AllTabeDataHistoryInterface.INIT_TIMESTAMP, planEntity.getEndDateimte());
         assertEquals(false, planEntity.getIsFinished());
-        assertEquals(false, planEntity.getIsStart());
+        assertEquals(true, planEntity.getIsStart());
         assertEquals(false, planEntity.getIsSuspended());
         assertEquals("admin,manager", planEntity.getRoleList());
         assertEquals("pageUrl", planEntity.getTransferPass());
@@ -82,7 +83,7 @@ class InsertTaskPlanServiceTest {
         LocalDateTime createDatetime = LocalDateTime.of(2026, 12, 5, 12, 34, 56);
         FrameworkMessageAndResultDto resultDto = insertTaskPlanService.practice(userDto, createDatetime, 646, null);
         assertTrue(resultDto.getIsFailure());
-        assertEquals("タスク計画が取得できませんでした", resultDto.getMessage());
+        assertEquals("指定されたタスク情報が存在しません(646)", resultDto.getMessage());
     }
 
     @Test

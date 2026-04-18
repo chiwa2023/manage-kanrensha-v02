@@ -30,7 +30,7 @@ public class SearchCombineSeijidantaiController {
      * @param capsuleDto 検索条件
      * @return 検索結果
      */
-    @PostMapping("/search-poli-org")
+    @PostMapping("/search-seijidantai")
     public ResponseEntity<SearchWkTblCombineOrgPagingResultDto> practice(
             final @RequestBody SearchWkTbPagingCapsuleDto capsuleDto) {
 

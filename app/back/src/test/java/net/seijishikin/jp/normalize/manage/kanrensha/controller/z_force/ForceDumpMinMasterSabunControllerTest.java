@@ -148,11 +148,11 @@ class ForceDumpMinMasterSabunControllerTest {
 
         String path = PathRouteConstants.ROOT +"/dump-master-min-sabun/execute";
 
-        // 作業実施しない(204)
-        assertEquals(HttpStatus.NO_CONTENT.value(), mockMvc // NOPMD LawOfDemeter
+        // 作業実施しない(202)
+        assertEquals(HttpStatus.ACCEPTED.value(), mockMvc // NOPMD LawOfDemeter
                 .perform(post(path).content(objectMapper.writeValueAsString(capsuleDto)) // リクエストボディを指定
                         .contentType(MediaType.APPLICATION_JSON_VALUE)) // Content Typeを指定
-                .andExpect(status().isNoContent()).andReturn().getResponse().getStatus());
+                .andExpect(status().isAccepted()).andReturn().getResponse().getStatus());
     }
 
 }

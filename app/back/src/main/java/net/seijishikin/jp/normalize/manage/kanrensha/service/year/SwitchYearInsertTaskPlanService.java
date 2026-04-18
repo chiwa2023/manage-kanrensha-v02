@@ -1,22 +1,15 @@
 package net.seijishikin.jp.normalize.manage.kanrensha.service.year;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
-import net.seijishikin.jp.normalize.manage.kanrensha.dto.task.TaskPlanInfoDto;
-
 import java.time.LocalDateTime;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
-import net.seijishikin.jp.normalize.manage.kanrensha.dto.task.InsertTaskPlanResultDto;
-import net.seijishikin.jp.normalize.manage.kanrensha.entity.TaskInfoEntity;
 
+import net.seijishikin.jp.normalize.manage.kanrensha.dto.task.InsertTaskPlanResultDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.logic.year.y2025.InsertTaskPlanY2025Logic;
 import net.seijishikin.jp.normalize.manage.kanrensha.logic.year.y2026.InsertTaskPlanY2026Logic;
 
@@ -41,11 +34,12 @@ public class SwitchYearInsertTaskPlanService {
     /**
      * 処理を行う
      *
-     * @param userDto        ユーザ最小限Dto
-     * @param startDatetime  タスク開始時間
-     * @param taskInfoEntity タスク情報Entity
+     * @param userDto       ユーザ最小限Dto
+     * @param startDatetime タスク開始時間
+     * @param taskPlanCode  タスク情報コード
      * @return 追加Id
      */
+    @Transactional
     public InsertTaskPlanResultDto practice(final LeastUserDto userDto, final LocalDateTime startDatetime,
             final Integer taskPlanCode, final Map<String, String> mapParam) {
 

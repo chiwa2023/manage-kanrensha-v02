@@ -1,7 +1,7 @@
 package net.seijishikin.jp.normalize.manage.kanrensha.controller.regist_by_xml;
 
 import java.time.LocalDateTime;
-import java.time.Year;
+import java.util.Map;
 import java.util.TreeMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +16,6 @@ import net.seijishikin.jp.normalize.common_tool.dto.FrameworkMessageAndResultDto
 import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.add_xml.RetryWktblBatchCapsuleDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.task.InsertTaskPlanResultDto;
-import net.seijishikin.jp.normalize.manage.kanrensha.dto.task.TaskPlanInfoDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.regist_by_xml.RetryBatchAddByXmlService;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.util.SaveStackTraceService;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.year.SwitchYearInsertTaskPlanService;
@@ -62,8 +61,12 @@ public class RetryBatchAddByXmlController {
             resultDto.setMessage("処理を開始しました。完了までしばらくお待ちください。");
 
             // 非同期処理はタスク登録をする
-            InsertTaskPlanResultDto planDto = switchYearInsertTaskPlanService.practice( userDto,dateTimeStart,
-                    TaskInfoConstants.RETRY_KANRENSHA_XML,new TreeMap<String, String>());
+
+            // TODO Queryはfront連結後決定
+            Map<String, String> mapParam = new TreeMap<>();
+
+            InsertTaskPlanResultDto planDto = switchYearInsertTaskPlanService.practice(userDto, dateTimeStart,
+                    TaskInfoConstants.RETRY_KANRENSHA_XML, mapParam);
             taskPlanCode = planDto.getTaskPlanCode();
 
             retryBatchAddByXmlService.practice(capsuleDto.getUserDto(), year, planDto);

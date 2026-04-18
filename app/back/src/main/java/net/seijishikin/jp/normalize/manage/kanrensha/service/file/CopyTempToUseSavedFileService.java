@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
+import java.util.Map;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,11 +16,10 @@ import org.springframework.transaction.annotation.Transactional;
 import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.storage_file.StorageFileDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.task.InsertTaskPlanResultDto;
-import net.seijishikin.jp.normalize.manage.kanrensha.dto.task.TaskPlanInfoDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.task.TaskPlanWithUseFileDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.logic.file.GetStoragePathLogic;
+import net.seijishikin.jp.normalize.manage.kanrensha.service.task_plan.InsertTaskPlanService;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.year.SwitchYearInsertSaveStorageService;
-import net.seijishikin.jp.normalize.manage.kanrensha.service.year.SwitchYearInsertTaskPlanService;
 
 /**
  * アップロード仮保存ファイルから正式保存記録を残すService
@@ -33,7 +34,7 @@ public class CopyTempToUseSavedFileService {
 
     /** タスク計画(年管理)Service */
     @Autowired
-    private SwitchYearInsertTaskPlanService switchYearInsertTaskPlanService;
+    private InsertTaskPlanService insertTaskPlanService;
 
     /** 保存フォルダ作成Logic */
     @Autowired
@@ -63,7 +64,7 @@ public class CopyTempToUseSavedFileService {
     /**
      * 処理を行う
      *
-     * @param year          登録年
+     * @param dateTimeStart 作業開始日時
      * @param fileDto       tempファイル
      * @param userDto       ユーザ最小限Dto
      * @param fileType      ファイルタイプ
@@ -72,23 +73,26 @@ public class CopyTempToUseSavedFileService {
      * @throws IOException ファイル保存例外
      */
     @Transactional
-    public TaskPlanWithUseFileDto practice(final int year, final StorageFileDto fileDto, final LeastUserDto userDto,
-            final Short fileType, final int taskConstants) throws IOException {
+    public TaskPlanWithUseFileDto practice(final LocalDateTime dateTimeStart, final StorageFileDto fileDto,
+            final LeastUserDto userDto, final Short fileType, final int taskConstants,
+            final Map<String, String> mapQuery) throws IOException {
 
         // 仮ファイルから本ファイルに複写
         Path pathTempFull = Paths.get(storageFolder, fileDto.getSavedDir(), fileDto.getFileName());
         Path pathSavedFull = Paths.get(storageFolder, getStoragePathLogic.practice(userDto).toString(),
                 fileDto.getFileName());
-        Path path = Files.copy(pathTempFull, pathSavedFull);
+        final Path path = Files.copy(pathTempFull, pathSavedFull);
 
         // ファイルが保存出来たら保存場所を記録しスケジュールに登録
-        switchYearInsertSaveStorageService.practice(year, userDto, pathSavedFull, fileType);
+        switchYearInsertSaveStorageService.practice(dateTimeStart.getYear(), userDto, pathSavedFull, fileType);
 
-        InsertTaskPlanResultDto planDto = switchYearInsertTaskPlanService.practice(userDto,null ,null,null);
+        InsertTaskPlanResultDto planDto = insertTaskPlanService.practice(userDto, dateTimeStart, taskConstants,
+                mapQuery);
 
         TaskPlanWithUseFileDto resulDto = new TaskPlanWithUseFileDto();
         BeanUtils.copyProperties(planDto, resulDto);
         resulDto.setReadFile(path);
+        resulDto.setTaskPlanCode(planDto.getTaskPlanCode());
 
         return resulDto;
     }

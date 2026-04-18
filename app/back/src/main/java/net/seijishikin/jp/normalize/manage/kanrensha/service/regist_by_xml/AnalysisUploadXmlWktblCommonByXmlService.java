@@ -1,12 +1,9 @@
 package net.seijishikin.jp.normalize.manage.kanrensha.service.regist_by_xml; // NOPMD
 
 import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.time.LocalDateTime;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,7 +36,6 @@ import net.seijishikin.jp.normalize.shuushi_doc.v05.dto.AllBookShushiV05Dto;
  * アップロード済XMLファイル解析ワークテーブル複写Service
  */
 @Service
-@ConfigurationProperties(prefix = "net.seijishikin.jp.normalize.kanrensha")
 public class AnalysisUploadXmlWktblCommonByXmlService {
 
     /** XMLから最小マスタ登録ワークテーブルRepository */
@@ -94,27 +90,6 @@ public class AnalysisUploadXmlWktblCommonByXmlService {
     @Autowired
     private SwitchYearTaskFailureService switchYearTaskFailureService;
 
-    /** propertiesからインジェクションされた最上位保存フォルダ絶対パス */
-    private String storageFolder;
-
-    /**
-     * 最上位保存フォルダ絶対パスを取得する
-     *
-     * @return 最上位保存フォルダ絶対パス
-     */
-    public String getStorageFolder() {
-        return storageFolder;
-    }
-
-    /**
-     * 最上位保存フォルダ絶対パスを設定する
-     *
-     * @param storageFolder 最上位保存フォルダ絶対パス
-     */
-    public void setStorageFolder(final String storageFolder) {
-        this.storageFolder = storageFolder;
-    }
-
     /**
      * 処理を行う
      *
@@ -132,7 +107,6 @@ public class AnalysisUploadXmlWktblCommonByXmlService {
 
         // capsuleDtoのstarge情報はすでにControllerで本番ファイル移行時に利用し、
         // 御用済であるのでであるのでServiceで使用しない
-        Path path = Paths.get(storageFolder, planFileDto.getReadFile().toString()); // NOPMD LowOfDemeter
 
         int tableYear = year;
         int taskId = planFileDto.getTaskPlanId();
@@ -141,8 +115,9 @@ public class AnalysisUploadXmlWktblCommonByXmlService {
         LocalDateTime endDatetime = LocalDateTime.now();
         LeastUserDto userDto = capsuleDto.getUserDto();
         try {
-            AllBookShushiV05Dto allBookDto = xmlMapper.readValue(Files.readAllBytes(path), new TypeReference<>() {
-            });
+            AllBookShushiV05Dto allBookDto = xmlMapper.readValue(Files.readAllBytes(planFileDto.getReadFile()),
+                    new TypeReference<>() {
+                    });
 
             // ワークテーブル初期化
             wkTblMasterAllByXmlRepository.deleteByInsertUserCode(userDto.getUserPersonCode());

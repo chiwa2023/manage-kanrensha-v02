@@ -1,6 +1,8 @@
 package net.seijishikin.jp.normalize.manage.kanrensha.controller.regist_bulk_master_std;
 
-import java.time.Year;
+import java.time.LocalDateTime;
+import java.util.Map;
+import java.util.TreeMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -46,11 +48,12 @@ public class ExecuteBatchMasterStdSeijidantaiController {
      * @param capsuleDto Csv登録バッチ起動条件Dto
      * @return 処理受付レスポンス
      */
-    @PostMapping("/execute-poli-org")
+    @PostMapping("/execute-seijidantai")
     public ResponseEntity<FrameworkMessageAndResultDto> practice(
             final @RequestBody RegistDataByCsvFileCapsuleDto capsuleDto) {
 
-        Integer year = Year.now().getValue();
+        LocalDateTime dateTimeStart = LocalDateTime.now();
+        Integer year = dateTimeStart.getYear();
         LeastUserDto userDto = capsuleDto.getUserDto();
         Integer taskPlanCode = 0;
         try {
@@ -58,9 +61,12 @@ public class ExecuteBatchMasterStdSeijidantaiController {
             FrameworkMessageAndResultDto resultDto = new FrameworkMessageAndResultDto();
             resultDto.setMessage("処理を開始しました。完了までしばらくお待ちください。");
 
-            TaskPlanWithUseFileDto planFileDto = copyTempToUseSavedFileService.practice(year,
+            // TODO Queryはfront連結後決定
+            Map<String, String> mapParam = new TreeMap<>();
+
+            TaskPlanWithUseFileDto planFileDto = copyTempToUseSavedFileService.practice(dateTimeStart,
                     capsuleDto.getStorageFileDto(), userDto, FileTypeConstants.FILE_TYPE,
-                    TaskInfoConstants.FILE_SEIJIDANTAI_STD);
+                    TaskInfoConstants.FILE_SEIJIDANTAI_STD, mapParam);
             taskPlanCode = planFileDto.getTaskPlanCode();
 
             executeBatchMasterStdSeijidantaiService.practice(year, capsuleDto.getUserDto(), planFileDto);

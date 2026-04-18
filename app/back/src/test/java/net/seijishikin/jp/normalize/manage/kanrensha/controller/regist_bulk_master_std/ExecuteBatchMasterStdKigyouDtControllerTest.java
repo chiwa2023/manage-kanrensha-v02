@@ -95,7 +95,7 @@ class ExecuteBatchMasterStdKigyouDtControllerTest {
 
         ObjectMapper objectMapper = GetObjectMapperWithTimeModuleUtil.practice();
 
-        String path = PathRouteConstants.ROOT + "/regist-bulk-master-std/execute-kigyouDt";
+        String path = PathRouteConstants.ROOT + "/regist-bulk-master-std/execute-kigyoudt";
 
         // サーバステータスがOK(200)
         assertEquals(HttpStatus.OK.value(), mockMvc // NOPMD LawOfDemeter

@@ -96,7 +96,7 @@ class ExecuteBatchMasterStdSeijidantaiControllerTest {
 
         ObjectMapper objectMapper = GetObjectMapperWithTimeModuleUtil.practice();
 
-        String path = PathRouteConstants.ROOT + "/regist-bulk-master-std/execute-poli-org";
+        String path = PathRouteConstants.ROOT + "/regist-bulk-master-std/execute-seijidantai";
 
         // サーバステータスがOK(200)
         assertEquals(HttpStatus.OK.value(), mockMvc // NOPMD LawOfDemeter

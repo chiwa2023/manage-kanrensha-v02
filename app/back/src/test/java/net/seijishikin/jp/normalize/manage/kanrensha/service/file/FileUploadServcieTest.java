@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
 import java.util.Base64;
 
 import org.junit.jupiter.api.Tag;
@@ -24,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 import net.seijishikin.jp.normalize.manage.kanrensha.constants.GetCurrentResourcePath;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.storage_file.UploadContentCapsuleDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.storage_file.UploadFileDto;
+import net.seijishikin.jp.normalize.manage.kanrensha.logic.task_plan.CreateQueryParamDummyUtil;
 import net.seijishikin.jp.normalize.manage.kanrensha.repository.year.y2025.SaveFileStorage2025Repository;
 import net.seijishikin.jp.normalize.manage.kanrensha.repository.year.y2025.TaskPlan2025Repository;
 import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateLeastUserForTestUtil;
@@ -36,7 +38,7 @@ import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateLeastUserForTes
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
 @Transactional
-@Sql("CopyTempToUseSavedFileServiceTest.sql")
+@Sql("FileUploadServcieTest.sql")
 @ConfigurationProperties(prefix = "net.seijishikin.jp.normalize.kanrensha")
 class FileUploadServcieTest {
     // CHECKSTYLE:OFF MagicNumber
@@ -71,7 +73,9 @@ class FileUploadServcieTest {
         uploadFileDto.setFileContent(Base64.getEncoder().encodeToString(bytes));
         capsuleDto.setUploadFileDto(uploadFileDto);
 
-        Path pathSaved = fileUploadServcie.practice(2025, capsuleDto);
+        LocalDateTime dateTimeStart = LocalDateTime.of(2025, 7, 26, 12, 22, 56);
+
+        Path pathSaved = fileUploadServcie.practice(dateTimeStart, capsuleDto, CreateQueryParamDummyUtil.practice());
 
         // コピー成功
         assertTrue(Files.exists(pathSaved));

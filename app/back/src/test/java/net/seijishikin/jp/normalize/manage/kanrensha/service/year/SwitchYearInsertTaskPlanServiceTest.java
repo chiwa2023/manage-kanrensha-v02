@@ -1,12 +1,8 @@
 package net.seijishikin.jp.normalize.manage.kanrensha.service.year;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.fail;
 
 import java.time.LocalDateTime;
-import java.util.Map;
-import java.util.TreeMap;
 
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -20,11 +16,12 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import org.springframework.transaction.annotation.Transactional;
 
+import net.seijishikin.jp.normalize.common_tool.dto.DtoEntityInitialValueInterface;
 import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
-import net.seijishikin.jp.normalize.common_tool.entity.AllTabeDataHistoryInterface;
+import net.seijishikin.jp.normalize.manage.kanrensha.constants.TaskInfoConstants;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.task.InsertTaskPlanResultDto;
-import net.seijishikin.jp.normalize.manage.kanrensha.entity.TaskInfoEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.year.y2026.TaskPlan2026Entity;
+import net.seijishikin.jp.normalize.manage.kanrensha.logic.task_plan.CreateQueryParamDummyUtil;
 import net.seijishikin.jp.normalize.manage.kanrensha.repository.year.y2026.TaskPlan2026Repository;
 import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateLeastUserForTestUtil;
 
@@ -52,47 +49,27 @@ class SwitchYearInsertTaskPlanServiceTest {
     @Tag("TableTruncate")
     void test2026() {
 
-//        LeastUserDto usertDto = CreateLeastUserForTestUtil.practice();
-//
-//        TaskInfoEntity taskInfoEntity = new TaskInfoEntity();
-//        taskInfoEntity.setTaskInfoId(123);
-//        taskInfoEntity.setTaskInfoCode(75);
-//        taskInfoEntity.setTaskInfoName("タスク名称");
-//        taskInfoEntity.setRoleList("manager");
-//        // taskInfoEntity.setMessageTemplate(null);
-//        taskInfoEntity.setParamQuery("asd,zxc");
-//        taskInfoEntity.setTransferPass("http://localhost:6180/manage-kanrensha/edit-page");
-//
-//        LocalDateTime createTime = LocalDateTime.of(2026, 12, 5, 12, 34, 56);
-//        Map<String, String> map = new TreeMap<>();
-//        map.put("asd", "123");
-//        map.put("zxc", "456");
-//
-//        InsertTaskPlanResultDto resultDto = switchYearInsertTaskPlanService.practice(usertDto, createTime,
-//                taskInfoEntity, map);
-//        assertEquals(2026, resultDto.getTaskYear());
-//
-//        Integer savedId = resultDto.getTaskPlanId();
-//        assertNotEquals(0, savedId); // 0でなければ登録成功
-//
-//        TaskPlan2026Entity planEntity = taskPlan2026Repository.findById(savedId).get();
-//
-//        assertEquals(createTime.getYear(), planEntity.getTableYear());
-//        assertEquals(188, planEntity.getTaskPlanCode());
-//        assertEquals("タスク名称", planEntity.getTaskPlanName());
-//        assertEquals(taskInfoEntity.getTaskInfoCode(), planEntity.getTaskInfoCode());
-//
-//        assertEquals(createTime, planEntity.getStartDatetime());
-//        assertEquals(AllTabeDataHistoryInterface.INIT_TIMESTAMP, planEntity.getEndDateimte());
-//        assertEquals(false, planEntity.getIsFinished());
-//        assertEquals(false, planEntity.getIsStart());
-//        assertEquals(false, planEntity.getIsSuspended());
-//        assertEquals(taskInfoEntity.getRoleList(), planEntity.getRoleList());
-//
-//        assertEquals("http://localhost:6180/manage-kanrensha/edit-page?asd=123&zxc=456", planEntity.getTransferPass());
-//        
-        
-        fail();
+        final Integer taskCode = TaskInfoConstants.SAVE_POSTAL_REPAIR_CSV;
+        LeastUserDto userDto = CreateLeastUserForTestUtil.practice();
+        LocalDateTime dateTimeStart = LocalDateTime.of(2026, 12, 13, 11, 22, 33);
+
+        InsertTaskPlanResultDto dto = switchYearInsertTaskPlanService.practice(userDto, dateTimeStart, taskCode,
+                CreateQueryParamDummyUtil.practice());
+
+        TaskPlan2026Entity entity = taskPlan2026Repository.findById(dto.getTaskPlanId()).get();
+
+        assertEquals(true, entity.getIsLatest());
+
+        assertEquals(dateTimeStart.getYear(), entity.getTableYear());
+        assertEquals(taskCode, entity.getTaskInfoCode());
+        assertEquals("郵便番号差分修正", entity.getTaskPlanName());
+        assertEquals(dateTimeStart, entity.getStartDatetime());
+        assertEquals(DtoEntityInitialValueInterface.INIT_TIMESTAMP, entity.getEndDateimte());
+        assertEquals(true, entity.getIsStart());
+        assertEquals(false, entity.getIsSuspended());
+        assertEquals(false, entity.getIsFinished());
+        assertEquals("admin,manager", entity.getRoleList());
+        assertEquals("http://localhost:6180/kanrensha-manage/edit-page?asd=123&zxc=456", entity.getTransferPass());
     }
 
 }

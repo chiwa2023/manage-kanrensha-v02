@@ -16,7 +16,6 @@ import net.seijishikin.jp.normalize.common_tool.utils.CreateUserLeastDtoByBatchP
 import net.seijishikin.jp.normalize.manage.kanrensha.batch.kanrensha.kigyou_dt.history.RetryKanrenshaKigyouDtHistoryBatchConfiguration;
 import net.seijishikin.jp.normalize.manage.kanrensha.batch.task_plan.RecordTaskPlanJobExecutionListner;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.task.InsertTaskPlanResultDto;
-import net.seijishikin.jp.normalize.manage.kanrensha.dto.task.TaskPlanInfoDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.util.SaveStackTraceService;
 
 /**
@@ -59,7 +58,8 @@ public class RetryBatchHistoryKigyouDtService {
                     .addString(CreateUserLeastDtoByBatchParamUtil.USER_NAME_PARAM, userDto.getUserPersonName())
                     .addLong(RecordTaskPlanJobExecutionListner.KEY_YEAR, (long) year)
                     .addLong(RecordTaskPlanJobExecutionListner.KEY_ID, (long) planDto.getTaskPlanId())
-                    .addLong(RecordTaskPlanJobExecutionListner.KEY_CODE, (long) planDto.getTaskPlanCode()).toJobParameters();
+                    .addLong(RecordTaskPlanJobExecutionListner.KEY_CODE, (long) planDto.getTaskPlanCode())
+                    .toJobParameters();
 
             jobLauncher.run(retryKanrenshaKigyouDtHistory, jobParameters);
 

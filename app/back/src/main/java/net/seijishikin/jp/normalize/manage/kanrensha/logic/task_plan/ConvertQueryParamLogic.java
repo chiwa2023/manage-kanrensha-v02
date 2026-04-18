@@ -14,10 +14,10 @@ public class ConvertQueryParamLogic {
     /** マップのキーsplitter */
     public static final String SPLITTER = ",";
 
-    /** マップのキーsplitter */
+    /** 空白文字 */
     private static final String BLANK = "";
 
-    /** マップのキーsplitter */
+    /** 想定パラメータ不存在 */
     private static final String ERROR_MESSAGE = "タスク情報でパラメータが必要ですが、データがありません";
 
     /**

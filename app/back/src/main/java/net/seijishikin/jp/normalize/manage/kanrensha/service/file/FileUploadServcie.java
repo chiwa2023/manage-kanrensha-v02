@@ -2,6 +2,8 @@ package net.seijishikin.jp.normalize.manage.kanrensha.service.file;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.time.LocalDateTime;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,10 +18,8 @@ import net.seijishikin.jp.normalize.manage.kanrensha.logic.file.SaveFileLogic;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.year.SwitchYearInsertSaveStorageService;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.year.SwitchYearInsertTaskPlanService;
 
-
 /**
- * ファイルアップロードService
- * アップロードされたファイルを、ユーザが保存したものとして、正式の形で直接保存する。
+ * ファイルアップロードService アップロードされたファイルを、ユーザが保存したものとして、正式の形で直接保存する。
  * 関連者ではファイルを頭出して、そのあと処理をするのでほとんど使う機会のない想定
  */
 @Service
@@ -48,27 +48,31 @@ public class FileUploadServcie {
     /**
      * 処理を行う
      *
-     * @param year    処理年
-     * @param capsuleDto アップロードファイルDto
+     * @param dateTimeStrat 処理開始日時
+     * @param capsuleDto    アップロードファイルDto
      * @throws IOException ファイル書き込み例外
      */
     @Transactional
-    public Path practice(final int year, final UploadContentCapsuleDto capsuleDto) throws IOException {
+    public Path practice(final LocalDateTime dateTimeStrat, final UploadContentCapsuleDto capsuleDto,
+            final Map<String, String> mapQuery) throws IOException {
 
         LeastUserDto userDto = capsuleDto.getUserDto();
-        
+
         Path childPath = getStoragePathLogic.practice(userDto);
-        
-        Path fullPath = getAbsolutePathLogic.practice(childPath.toString(),capsuleDto.getUploadFileDto().getFileName());
-        
+
+        Path fullPath = getAbsolutePathLogic.practice(childPath.toString(),
+                capsuleDto.getUploadFileDto().getFileName());
+
         // ファイルを保存する
         saveFileLogic.practice(fullPath, capsuleDto.getUploadFileDto().getFileContent());
 
         // TODO 書証区分を決定次第指定する
-        switchYearInsertSaveStorageService.practice(year, userDto, fullPath, Short.valueOf("205"));
+        switchYearInsertSaveStorageService.practice(dateTimeStrat.getYear(), userDto, fullPath, Short.valueOf("205"));
+
         // TODO タスク情報の入れ方を決定する
-        //switchYearInsertTaskPlanService.practice( userDto, TaskInfoConstants.SAVE_POSTAL_REPAIR_CSV,null);
-        
+        switchYearInsertTaskPlanService.practice(userDto, dateTimeStrat, TaskInfoConstants.SAVE_POSTAL_REPAIR_CSV,
+                mapQuery);
+
         return fullPath;
     }
 

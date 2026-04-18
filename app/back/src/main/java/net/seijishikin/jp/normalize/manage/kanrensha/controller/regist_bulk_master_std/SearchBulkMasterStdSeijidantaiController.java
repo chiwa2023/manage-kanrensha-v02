@@ -29,7 +29,7 @@ public class SearchBulkMasterStdSeijidantaiController {
      * @param capsuleDto 検索条件Dto
      * @return 検索結果
      */
-    @PostMapping("/search-poli-org")
+    @PostMapping("/search-seijidantai")
     public ResponseEntity<SearchWkTblStdSeijidantaiPagingResultDto> practice(
             final @RequestBody SearchWkTbPagingCapsuleDto capsuleDto) {
         return ResponseEntity.ok(searchBulkMasterStdSeijidantaiService.practice(capsuleDto));

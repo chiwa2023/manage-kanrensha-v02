@@ -7,6 +7,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.time.LocalDateTime;
 
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -26,6 +27,7 @@ import net.seijishikin.jp.normalize.manage.kanrensha.constants.TaskInfoConstants
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.storage_file.StorageFileDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.task.TaskPlanWithUseFileDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.year.y2025.TaskPlan2025Entity;
+import net.seijishikin.jp.normalize.manage.kanrensha.logic.task_plan.CreateQueryParamDummyUtil;
 import net.seijishikin.jp.normalize.manage.kanrensha.repository.year.y2025.SaveFileStorage2025Repository;
 import net.seijishikin.jp.normalize.manage.kanrensha.repository.year.y2025.TaskPlan2025Repository;
 import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateLeastUserForTestUtil;
@@ -93,8 +95,11 @@ class CopyTempToUseSavedFileServiceTest {
 
         Files.copy(pathSrc, pathCopy, StandardCopyOption.REPLACE_EXISTING);
 
-        TaskPlanWithUseFileDto resutDto = copyTempToUseSavedFileService.practice(2025, storageFileDto,
-                CreateLeastUserForTestUtil.practice(), Short.valueOf("205"), TaskInfoConstants.SAVE_POSTAL_REPAIR_CSV);
+        LocalDateTime dateTimeStart = LocalDateTime.of(2025, 1, 22, 23, 22, 21);
+
+        TaskPlanWithUseFileDto resutDto = copyTempToUseSavedFileService.practice(dateTimeStart, storageFileDto,
+                CreateLeastUserForTestUtil.practice(), Short.valueOf("205"), TaskInfoConstants.SAVE_POSTAL_REPAIR_CSV,
+                CreateQueryParamDummyUtil.practice());
 
         // コピー成功
         assertTrue(Files.exists(resutDto.getReadFile()));

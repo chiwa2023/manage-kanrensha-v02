@@ -13,7 +13,6 @@ import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
 import net.seijishikin.jp.normalize.common_tool.entity.AllTabeDataHistoryInterface;
 import net.seijishikin.jp.normalize.common_tool.utils.SetTableDataHistoryUtil;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.task.InsertTaskPlanResultDto;
-import net.seijishikin.jp.normalize.manage.kanrensha.dto.task.TaskPlanInfoDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.TaskInfoEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.year.y2026.TaskPlan2026Entity;
 import net.seijishikin.jp.normalize.manage.kanrensha.logic.task_plan.ConvertQueryParamLogic;
@@ -48,10 +47,10 @@ public class InsertTaskPlanY2026Logic {
     /**
      * 処理を行う
      * 
-     * @param userDto        ユーザ最小限Dto
-     * @param startDatetime  タスク開始時間
-     * @param taskInfoCode タスク情報Entity
-     * @param mapParam       queryパラメータMap
+     * @param userDto       ユーザ最小限Dto
+     * @param startDatetime タスク開始時間
+     * @param taskInfoCode  タスク情報Entity
+     * @param mapParam      queryパラメータMap
      * @return 追加Id
      */
     public InsertTaskPlanResultDto practice(final LeastUserDto userDto, final LocalDateTime startDatetime,
@@ -98,6 +97,7 @@ public class InsertTaskPlanY2026Logic {
         InsertTaskPlanResultDto resultDto = new InsertTaskPlanResultDto();
         resultDto.setTaskYear(savedEntity.getTableYear());
         resultDto.setTaskPlanId(savedEntity.getTaskPlanId());
+        resultDto.setTaskPlanCode(savedEntity.getTaskPlanCode());
         resultDto.setTaskInfoCode(savedEntity.getTaskInfoCode());
         resultDto.setTaskPlanName(savedEntity.getTaskPlanName());
         resultDto.setTransferPass(savedEntity.getTransferPass());

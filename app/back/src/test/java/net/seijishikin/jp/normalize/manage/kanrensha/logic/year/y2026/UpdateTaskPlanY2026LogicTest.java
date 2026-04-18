@@ -4,7 +4,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.time.LocalDateTime;
-import java.util.TreeMap;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,8 +19,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.task.InsertTaskPlanResultDto;
-import net.seijishikin.jp.normalize.manage.kanrensha.dto.task.TaskPlanInfoDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.year.y2026.TaskPlan2026Entity;
+import net.seijishikin.jp.normalize.manage.kanrensha.logic.task_plan.CreateQueryParamDummyUtil;
 import net.seijishikin.jp.normalize.manage.kanrensha.repository.year.y2026.TaskPlan2026Repository;
 import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateLeastUserForTestUtil;
 
@@ -54,12 +53,12 @@ class UpdateTaskPlanY2026LogicTest {
 
         Integer taskCode = 101;
         LeastUserDto userDto = CreateLeastUserForTestUtil.practice();
-        LocalDateTime datetimeStart = LocalDateTime.of(2021, 7, 9, 11, 22, 33);
+        LocalDateTime datetimeStart = LocalDateTime.of(2026, 7, 9, 11, 22, 33);
         InsertTaskPlanResultDto planDto = insertTaskPlanY2026Logic.practice(userDto, datetimeStart, taskCode,
-                new TreeMap<String, String>());
+                CreateQueryParamDummyUtil.practice());
         Integer newId = planDto.getTaskPlanId();
 
-        LocalDateTime datetime = LocalDateTime.of(2022, 12, 5, 12, 34, 56);
+        LocalDateTime datetime = LocalDateTime.of(2027, 12, 5, 12, 34, 56);
         Boolean isFinished = true;
         Integer updateId = updateTaskPlanY2026Logic.practice(userDto, newId, datetime, isFinished);
 
