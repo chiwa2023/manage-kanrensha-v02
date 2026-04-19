@@ -2,12 +2,12 @@
 import { InputAddressDto, InputBuildingAddress, MessageConstants, MessageView, PagingControl, type InputAddressDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import { onBeforeMount, ref, type Ref } from 'vue';
 import { getLoginUser } from '../../utils/getLoginUser';
-import MockManagerInfo from '../../../test/common/user_info/MockManagerInfo.vue';
 import { SearchPostalIllegularResultDto, type SearchPostalIllegularResultDtoInterface } from '../../dto/address_postal/searchPostalIllegularResultDto';
 import mockGetIllegularItem from '../../../test/pages/address_postal/mock/mockGetIllegularItem';
 import { GetDetailPostalIllegularResultDto, type GetDetailPostalIllegularResultDtoInterface } from '../../dto/address_postal/getDetailPostalIllegularResultDto';
 import { PostalIrregularItemDto, type PostalIrregularItemDtoInterface } from '../../dto/address_postal/postalIrregularItemDto';
 import mockGetIllegularAddress from '../../../test/pages/address_postal/mock/mockGetIllegularAddress';
+import ManagerInfo from '../../common/user_info/ManagerInfo.vue';
 
 
 // よく使う定数
@@ -221,7 +221,7 @@ function recieveSubmit(button: string) {
 </script>
 <template>
     <!-- 管理者メニュー兼チェック -->
-    <MockManagerInfo :user-dto="userDto"></MockManagerInfo>
+    <ManagerInfo :user-dto="userDto"></ManagerInfo>
 
     <h1>フロア郵便番号追加</h1>
 

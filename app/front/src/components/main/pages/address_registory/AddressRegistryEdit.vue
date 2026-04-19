@@ -1,7 +1,6 @@
 ﻿<script setup lang="ts">
 import { PagingControl, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import { ref, type Ref } from 'vue';
-import MockManagerInfo from '../../../test/common/user_info/MockManagerInfo.vue';
 import { getLoginUser } from '../../utils/getLoginUser';
 import { SearchAddressRegistoryResultDto, type SearchAddressRegistoryResultDtoInterface } from '../../dto/address_registory/searchAddressRegistoryResultDto';
 import mockGetAddressRsdtList from '../../../test/pages/address_resgistory/mock/mockGetAddressRsdtList';
@@ -9,6 +8,7 @@ import { AddressRsdtTemplateEntity, type AddressRsdtTemplateEntityInterface } fr
 import { SearchLocalGovernmentCapsuleDto, type SearchLocalGovernmentCapsuleDtoInterface } from '../../dto/address_registory/searchLocalGovernmentCapsuleDto';
 import { SearchLocalGovernmentResultDto, type SearchLocalGovernmentResultDtoInterface } from '../../dto/address_registory/searchLocalGovernmentResultDto';
 import mockGetLgList from '../../../test/pages/address_resgistory/mock/mockGetLgList';
+import ManagerInfo from '../../common/user_info/ManagerInfo.vue';
 
 
 // よく使う定数
@@ -200,7 +200,7 @@ function recievePagingNumberLgcode() {
 </script>
 <template>
     <!-- 管理者メニュー兼チェック -->
-    <MockManagerInfo :user-dto="userDto"></MockManagerInfo>
+    <ManagerInfo :user-dto="userDto"></ManagerInfo>
 
     <h1>アドレスベースレジストリ編集</h1>
 

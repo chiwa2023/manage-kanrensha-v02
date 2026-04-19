@@ -81,9 +81,12 @@ public class LookAheadPublishXmlService {
             resultDto.setDantaiName(coverDto.getDantaiName01());
             resultDto.setHoukokuNen(coverDto.getHoukokuNen());
             resultDto.setMessage("政治資金収支報告書V5が正常に読み込みできました");
+            return resultDto;
+        } else {
+            resultDto.setIsFailure(true);
+            resultDto.setMessage("ファイルを正常に保存できませんでした");
+            return resultDto;
         }
-
-        return resultDto;
     }
 
 }

@@ -1,5 +1,4 @@
-import { FrameworkPagingDto, type FrameworkPagingDtoInterface } from "seijishikin-jp-normalize_common-tool";
-import { LeastUserDto, type LeastUserDtoInterface } from "../user/leastUserDto";
+import { FrameworkPagingDto, LeastUserDto, type FrameworkPagingDtoInterface, type LeastUserDtoInterface } from "seijishikin-jp-normalize_common-tool";
 
 interface SearchWkTblPagingCapsuleDtoInterface extends FrameworkPagingDtoInterface {
 

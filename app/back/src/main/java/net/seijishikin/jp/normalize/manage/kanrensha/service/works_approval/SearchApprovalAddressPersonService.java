@@ -11,18 +11,17 @@ import org.springframework.stereotype.Service;
 
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.works_approval.SearchApprovalAddressResultDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.works_approval.SearchWorksApprovalCapsuleDto;
-import net.seijishikin.jp.normalize.manage.kanrensha.repository.KanrenshaSeijidantaiAddressRepository;
-
+import net.seijishikin.jp.normalize.manage.kanrensha.repository.KanrenshaPersonAddressRepository;
 
 /**
- * 作業承認住所検索Service
+ * 作業承認個人住所検索Service
  */
 @Service
-public class SearchApprovalAddressService {
+public class SearchApprovalAddressPersonService {
 
-    /** 関連者政治団体住所Repository */
+    /** 関連者個人住所Repository */
     @Autowired
-    private KanrenshaSeijidantaiAddressRepository kanrenshaSeijidantaiAddressRepository;
+    private KanrenshaPersonAddressRepository kanrenshaPersonAddressRepository;
 
     /**
      * 処理を行う
@@ -45,7 +44,7 @@ public class SearchApprovalAddressService {
         LocalDateTime end = LocalDateTime.of(capsuleDto.getEndDate(), LocalTime.MAX);
         // 全件数が0件の時は該当の件数を取得
         if (0 == capsuleDto.getAllCount()) {
-            count = kanrenshaSeijidantaiAddressRepository.countIsEditData(start, end, listIsEdit);
+            count = kanrenshaPersonAddressRepository.countIsEditData(start, end, listIsEdit);
         }
 
         SearchApprovalAddressResultDto resultDto = new SearchApprovalAddressResultDto();
@@ -64,8 +63,7 @@ public class SearchApprovalAddressService {
 
         // 内容をページングを考慮して取得
         Pageable pageable = Pageable.ofSize(resultDto.getLimit()).withPage(resultDto.getPageNumber());
-        resultDto.setListAddress(
-                kanrenshaSeijidantaiAddressRepository.findIsEditData(start, end, listIsEdit, pageable));
+        resultDto.setListAddress(kanrenshaPersonAddressRepository.findIsEditData(start, end, listIsEdit, pageable));
 
         return resultDto;
     }

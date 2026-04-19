@@ -1,8 +1,7 @@
 ﻿<script setup lang="ts">
 import { ref, toRaw, type Ref } from 'vue';
-import type { LeastUserDtoInterface } from '../../dto/user/leastUserDto';
 import { getLoginUser } from '../../utils/getLoginUser';
-import { convertDatetimeText, InputDatetime, PagingControl } from 'seijishikin-jp-normalize_common-tool';
+import { convertDatetimeText, InputDatetime, PagingControl, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import { SearchTimerYoteiResultDto, type SearchTimerYoteiResultDtoInterface } from '../../dto/yoyaku_timer/searchTimerYoteiResultDto';
 import { SearchTimerYoteiCapsuleDto, type SearchTimerYoteiCapsuleDtoInterface } from '../../dto/yoyaku_timer/searchTimerYoteiCapsuleDto';
 import { type MultiSelectOptionNumberDtoInterface } from '../../dto/select_options/multiSelectOptionsNumberDto';

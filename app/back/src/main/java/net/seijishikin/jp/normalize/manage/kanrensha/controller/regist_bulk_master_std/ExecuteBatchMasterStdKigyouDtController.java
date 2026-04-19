@@ -48,7 +48,7 @@ public class ExecuteBatchMasterStdKigyouDtController {
      * @param capsuleDto Csv登録バッチ起動条件Dto
      * @return 処理受付レスポンス
      */
-    @PostMapping("/execute-kigyoudt")
+    @PostMapping("/execute-kigyou-dt")
     public ResponseEntity<FrameworkMessageAndResultDto> practice(
             final @RequestBody RegistDataByCsvFileCapsuleDto capsuleDto) {
 

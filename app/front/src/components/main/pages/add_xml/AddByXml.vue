@@ -1,7 +1,5 @@
 ﻿<script setup lang="ts">
 import { ref, useTemplateRef, type Ref } from 'vue';
-import MockManagerInfo from '../../../test/common/user_info/MockManagerInfo.vue';
-import type { LeastUserDtoInterface } from '../../dto/user/leastUserDto';
 import { getLoginUser } from '../../utils/getLoginUser';
 import KanrenshaKbnConstants from '../../dto/kanrensha/kanrenshaKbnConstants';
 import SeijidantaiDantaiKbnConstants from '../../dto/kanrensha/seijidantaiDantaiKbnConstants';
@@ -14,9 +12,10 @@ import EditWkTblMinPerson from '../../common/wktbl_edit_min/EditWkTblMinPerson.v
 import EditWkTblMinKigyouDt from '../../common/wktbl_edit_min/EditWkTblMinKigyouDt.vue';
 import EditWkTblMinSeijidantai from '../../common/wktbl_edit_min/EditWkTblMinSeijidantai.vue';
 import getMockRegistByXmlList from './mock/getMockRegistByXmlList';
-import { FrameworkCapsuleDto, PagingControl, type FrameworkCapsuleDtoInterface } from 'seijishikin-jp-normalize_common-tool';
+import { FrameworkCapsuleDto, PagingControl, type FrameworkCapsuleDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import { UpdateWkTblAddByXmlTableListCapsuleDto, type UpdateWkTblAddByXmlTableListCapsuleDtoInterface } from '../../dto/add_xml/updateWkTblAddByXmlTableListCapsuleDto';
 import { UpdateWkTblAddByXmlCapsuleDto, type UpdateWkTblAddByXmlCapsuleDtoInterface } from '../../dto/add_xml/updateWkTblAddByXmlCapsuleDto';
+import ManagerInfo from '../../common/user_info/ManagerInfo.vue';
 
 // ユーザ呼び出し
 const userDto: Ref<LeastUserDtoInterface> = ref(getLoginUser());
@@ -29,7 +28,7 @@ const INIT_NUMBER: number = 0;
 const SEARCH_LIMIT: number = 20;
 
 // back側アクセス
-// const urlBack: string = RoutePathConstants.DOMAIN_BACK + RoutePathConstants.PATH_BACK;
+// const urlBack: string = RoutePathConstants.DOMAIN + RoutePathConstants.BASE_PATH;
 
 // 関連者区分定数
 const kanrenshaKbnNoSelect: number = KanrenshaKbnConstants.NO_SELECT;
@@ -273,7 +272,7 @@ function recievePagingNumber(selecteddNumber: number) {
 <template>
 
     <!-- 管理者メニュー兼チェック -->
-    <MockManagerInfo :user-dto="userDto"></MockManagerInfo>
+    <ManagerInfo :user-dto="userDto"></ManagerInfo>
 
     <h1>政治資金収支報告書XMLより関連者登録</h1>
 
@@ -435,7 +434,7 @@ function recievePagingNumber(selecteddNumber: number) {
                                 <option :value=seijidantaiKbnNoSelect> </option>
                                 <option :value=seijidantaiKbnSeitou>{{
                                     SeijidantaiDantaiKbnConstants.getLabel(seijidantaiKbnSeitou)
-                                    }}</option>
+                                }}</option>
                                 <option :value=seijidantaiKbnSeitouShibu>{{
                                     SeijidantaiDantaiKbnConstants.getLabel(seijidantaiKbnSeitouShibu) }}</option>
                                 <option :value=seijidantaiKbnSeijishikin>{{
@@ -444,7 +443,7 @@ function recievePagingNumber(selecteddNumber: number) {
                                     SeijidantaiDantaiKbnConstants.getLabel(seijidantaiKbn18Jou2KouDantai) }}</option>
                                 <option :value=seijidantaiKbnSonota>{{
                                     SeijidantaiDantaiKbnConstants.getLabel(seijidantaiKbnSonota)
-                                    }}</option>
+                                }}</option>
                                 <option :value=seijidantaiKbnSonotaShibu>{{
                                     SeijidantaiDantaiKbnConstants.getLabel(seijidantaiKbnSonotaShibu) }}</option>
                             </select>

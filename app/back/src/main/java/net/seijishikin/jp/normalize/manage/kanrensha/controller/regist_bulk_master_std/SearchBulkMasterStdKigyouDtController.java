@@ -29,7 +29,7 @@ public class SearchBulkMasterStdKigyouDtController {
      * @param capsuleDto 検索条件Dto
      * @return 検索結果
      */
-    @PostMapping("/search-kigyoudt")
+    @PostMapping("/search-kigyou-dt")
     public ResponseEntity<SearchWkTblStdKigyouDtPagingResultDto> practice(
             final @RequestBody SearchWkTbPagingCapsuleDto capsuleDto) {
 

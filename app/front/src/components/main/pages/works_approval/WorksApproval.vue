@@ -1,13 +1,12 @@
 ﻿<script setup lang="ts">
 import { ref, type Ref } from 'vue';
-import MockManagerInfo from '../../../test/common/user_info/MockManagerInfo.vue';
 import { getLoginUser } from '../../utils/getLoginUser';
 import { type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import ApprovalPersonAddress from '../../common/works_approval/ApprovalPersonAddress.vue';
 import ApprovalPersonShokugyou from '../../common/works_approval/ApprovalPersonShokugyou.vue';
 import ApprovalSeijidantaiAddress from '../../common/works_approval/ApprovalSeijidantaiAddress.vue';
 import ApprovalKigyouDtAddress from '../../common/works_approval/ApprovalKigyouDtAddress.vue';
-
+import ManagerInfo from '../../common/user_info/ManagerInfo.vue';
 
 // ユーザ呼び出し
 const userDto: Ref<LeastUserDtoInterface> = ref(getLoginUser());
@@ -16,37 +15,12 @@ const viewStatus: Ref<string> = ref("1");
 
 //初期表示日時
 const yesterday: Date = new Date();
-yesterday.setDate(yesterday.getDate() - 1);
+yesterday.setDate(yesterday.getDate() - 28);
 
-// function onSearch() {
-//     switch (viewStatus.value) {
-//         case "1":
-//             listPersonAdsdress.value = mockGetPersonApprovalAddressList();
-//             listPersonShokugyou.value = mockGetPersonApprovaShokugyouList();
-//             // listCorp.value = [];
-//             // listPoliOrg.value = [];
-//             break;
-
-//         case "2":
-//             // listCorp.value = mockGetCorpApprovalList();
-//             // listPerson.value = [];
-//             // listPoliOrg.value = [];
-//             break;
-
-//         case "3":
-//             // listPerson.value = [];
-//             // listPoliOrg.value = mockGetPoliOrgNoApprovalList();
-//             // listCorp.value = [];
-//             // listPerson.value = [];
-//             break;
-//         default:
-//             break;
-//     }
-// }
 </script>
 <template>
     <!-- 管理者メニュー兼チェック -->
-    <MockManagerInfo :user-dto="userDto"></MockManagerInfo>
+    <ManagerInfo :user-dto="userDto"></ManagerInfo>
 
     <h1>登録内容承認</h1>
 
@@ -64,28 +38,25 @@ yesterday.setDate(yesterday.getDate() - 1);
 
     <!-- 個人職業承認 -->
     <div v-if="viewStatus == '1'">
-        <ApprovalPersonAddress></ApprovalPersonAddress>
+        <ApprovalPersonAddress :user-dto="userDto"></ApprovalPersonAddress>
     </div>
 
     <!-- 企業団体住所承認 -->
     <div v-if="viewStatus == '2'">
-        <ApprovalKigyouDtAddress></ApprovalKigyouDtAddress>
+        <ApprovalKigyouDtAddress :user-dto="userDto"></ApprovalKigyouDtAddress>
     </div>
 
     <!--政治団体住所承認 -->
     <div v-if="viewStatus == '3'">
-        <ApprovalSeijidantaiAddress></ApprovalSeijidantaiAddress>
+        <ApprovalSeijidantaiAddress :user-dto="userDto"></ApprovalSeijidantaiAddress>
     </div>
 
     <!-- 個人職業承認 -->
     <div v-if="viewStatus == '4'">
-        <ApprovalPersonShokugyou></ApprovalPersonShokugyou>
+        <ApprovalPersonShokugyou :user-dto="userDto"></ApprovalPersonShokugyou>
     </div>
 
     <!--
-    
-
-
 
     <div class="one-line">
         <div class="left-area">

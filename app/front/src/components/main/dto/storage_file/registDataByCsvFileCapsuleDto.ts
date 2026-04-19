@@ -1,28 +1,21 @@
-import { LeastUserDto, type LeastUserDtoInterface } from "../user/leastUserDto";
+import { FrameworkCapsuleDto, type FrameworkCapsuleDtoInterface } from "seijishikin-jp-normalize_common-tool";
 import { StorageFileDto, type StorageFileDtoInterface } from "./storageFileDto";
 
-interface RegistDataByCsvFileCapsuleDtoInterface {
-
-    /** ユーザ最低限Dto */
-    userDto: LeastUserDtoInterface;
+interface RegistDataByCsvFileCapsuleDtoInterface extends FrameworkCapsuleDtoInterface {
 
     /** ストレージ保存ファイルDto */
     storageFileDto: StorageFileDtoInterface;
 }
 
-class RegistDataByCsvFileCapsuleDto implements RegistDataByCsvFileCapsuleDtoInterface {
-
-    /** ユーザ最低限Dto */
-    userDto: LeastUserDtoInterface;
+class RegistDataByCsvFileCapsuleDto extends FrameworkCapsuleDto implements RegistDataByCsvFileCapsuleDtoInterface {
 
     /** ストレージ保存ファイルDto */
     storageFileDto: StorageFileDtoInterface;
 
     constructor() {
+        super();
 
-        this.userDto = new LeastUserDto();
         this.storageFileDto = new StorageFileDto();
-
     }
 
 }

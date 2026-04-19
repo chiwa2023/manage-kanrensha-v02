@@ -1,10 +1,9 @@
 ﻿<script setup lang="ts">
 import { ref, toRaw, type Ref } from 'vue';
-import type { LeastUserDtoInterface } from '../../dto/user/leastUserDto';
 import { SearchWkTblPagingCapsuleDto, type SearchWkTblPagingCapsuleDtoInterface } from '../../dto/add_xml/searchWkTbPagingCapsuleDto';
 import { WkTblKanrenshaKigyouDtAddMinEntity, type WkTblKanrenshaKigyouDtAddMinEntityInterface } from '../../entity/wkTblKanrenshaKigyouDtAddMinEntity';
 import { UpdateWkTblMinKigyouDtCapsuleDto, type UpdateWkTblMinKigyouDtCapsuleDtoInterface } from '../../dto/wktbl_min/updateWkTblMinKigyouDtCapsuleDto';
-import { PagingControl } from 'seijishikin-jp-normalize_common-tool';
+import { PagingControl, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import { SearchWkTblMinKigyouDtPagingResultDto, type SearchWkTblMinKigyouDtPagingResultDtoInterface } from '../../dto/wktbl_min/searchWkTblMinKigyouDtPagingResultDto';
 import getMockWkTblKigyouDtList from './mock/getMockWkTblKigyouDtList';
 
@@ -20,7 +19,7 @@ const INIT_BOOLEAN: boolean = false;
 const SEARCH_LIMIT: number = 20;
 
 // back側アクセス
-//const urlBack: string = RoutePathConstants.DOMAIN_BACK + RoutePathConstants.PATH_BACK;
+// const urlBack: string = RoutePathConstants.DOMAIN + RoutePathConstants.BASE_PATH;
 
 // Paging
 const pageNumber: Ref<number> = ref(INIT_NUMBER);

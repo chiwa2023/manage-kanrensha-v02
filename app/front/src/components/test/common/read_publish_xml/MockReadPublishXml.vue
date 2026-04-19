@@ -1,15 +1,15 @@
 ﻿<script setup lang="ts">
 import { ref, type Ref } from 'vue';
-import type { LeastUserDtoInterface } from '../../../main/dto/user/leastUserDto';
 import { UploadContentCapsuleDto, type UploadContentCapsuleDtoInterface } from '../../../main/dto/storage_file/uploadContentCapsuleDto';
 import { LookAheadPublishXmlResultDto, type LookAheadPublishXmlResultDtoInterface } from '../../../main/dto/storage_file/lookAheadPublishXmlResultDto';
+import type { LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 
 //props,emit
 const props = defineProps<{ userDto: LeastUserDtoInterface }>()
 const emits = defineEmits(["sendStorageFileInterface"]);
 
 // back側アクセス
-//const urlBack: string = RoutePathConstants.DOMAIN_BACK + RoutePathConstants.PATH_BACK;
+// const urlBack: string = RoutePathConstants.DOMAIN + RoutePathConstants.BASE_PATH;
 
 // 文字コード
 const capsuleDto: Ref<UploadContentCapsuleDtoInterface> = ref(new UploadContentCapsuleDto());

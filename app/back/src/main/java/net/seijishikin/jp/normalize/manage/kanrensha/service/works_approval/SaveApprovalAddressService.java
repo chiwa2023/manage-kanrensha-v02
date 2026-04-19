@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.constants.KanrenshaKbnConstants;
@@ -37,11 +38,13 @@ public class SaveApprovalAddressService {
      * @param userDto     ユーザ最小限Dto
      * @return 更新行数
      */
+    @Transactional
     public Integer practice(final List<KanrenshaAddressBaseEntity> listAddress, final LeastUserDto userDto) {
 
         int updateCount = 0;
 
         for (KanrenshaAddressBaseEntity entity : listAddress) {
+            System.out.println("==loop" + entity.getKanrenshaKbn());
 
             switch (entity.getKanrenshaKbn()) {
 

@@ -2,9 +2,9 @@
 import type { LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import { ref, type Ref } from 'vue';
 import { getLoginUser } from '../../utils/getLoginUser';
-import MockManagerInfo from '../../../test/common/user_info/MockManagerInfo.vue';
 import MockReadCsv from '../../../test/common/read_csv/MockReadCsv.vue';
 import type { StorageFileDtoInterface } from '../../dto/storage_file/storageFileDto';
+import ManagerInfo from '../../common/user_info/ManagerInfo.vue';
 // import ManagerInfo from '../../common/user_info/ManagerInfo.vue';
 
 // ユーザ呼び出し
@@ -51,7 +51,7 @@ function onSave() {
 </script>
 <template>
     <!-- 管理者メニュー兼チェック -->
-    <MockManagerInfo :user-dto="userDto"></MockManagerInfo>
+    <ManagerInfo :user-dto="userDto"></ManagerInfo>
 
     <h1>郵便番号差分修正</h1><br>
 
@@ -60,7 +60,7 @@ function onSave() {
     <MockReadCsv @send-storage-file-interface="recieveStorageFileAdd" :user-dto="userDto"></MockReadCsv>
 
     <hr>
-    
+
     <!-- 削除ファイル用 -->
     <h3 class="accent-h3">削除ファイル選択</h3>
     <!-- csv読み出し10行 -->

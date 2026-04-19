@@ -1,14 +1,13 @@
 ﻿<script setup lang="ts">
 import { computed, ref, type ComputedRef, type Ref } from 'vue';
-import type { LeastUserDtoInterface } from '../../dto/user/leastUserDto';
 import { getLoginUser } from '../../utils/getLoginUser';
-import MockManagerInfo from '../../../test/common/user_info/MockManagerInfo.vue';
 import { RegistDataByCsvFileCapsuleDto, type RegistDataByCsvFileCapsuleDtoInterface } from '../../dto/storage_file/registDataByCsvFileCapsuleDto';
-import { FrameworkCapsuleDto, type FrameworkCapsuleDtoInterface } from 'seijishikin-jp-normalize_common-tool';
+import { FrameworkCapsuleDto, type FrameworkCapsuleDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import type { StorageFileDtoInterface } from '../../dto/storage_file/storageFileDto';
 import MockReadCsv from '../../../test/common/read_csv/MockReadCsv.vue';
 import EditWkTblStdPerson from '../../common/wktbl_edit_std/EditWkTblStdPerson.vue';
 import EditWkTblMinPerson from '../../common/wktbl_edit_min/EditWkTblMinPerson.vue';
+import ManagerInfo from '../../common/user_info/ManagerInfo.vue';
 
 
 const INIT_BOOLEAN: boolean = false;
@@ -17,7 +16,7 @@ const INIT_BOOLEAN: boolean = false;
 const userDto: Ref<LeastUserDtoInterface> = ref(getLoginUser());
 
 // back側アクセス
-//const urlBack: string = RoutePathConstants.DOMAIN_BACK + RoutePathConstants.PATH_BACK;
+// const urlBack: string = RoutePathConstants.DOMAIN + RoutePathConstants.BASE_PATH;
 
 // サンプル表示
 const templateViewButtonText: ComputedRef<String> = computed(() => isVisibleTemplate.value ? "CSVサンプルを隠す" : "CSVサンプルを表示する");
@@ -107,7 +106,7 @@ function onBatchByFile() {
 </script>
 <template>
     <!-- 管理者メニュー兼チェック -->
-    <MockManagerInfo :user-dto="userDto"></MockManagerInfo>
+    <ManagerInfo :user-dto="userDto"></ManagerInfo>
 
     <h1>関連者個人マスタ一括登録</h1>
 

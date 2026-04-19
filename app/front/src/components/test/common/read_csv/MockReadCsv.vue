@@ -1,8 +1,7 @@
 ﻿<script setup lang="ts">
 import { ref, type Ref } from 'vue';
-import type { LeastUserDtoInterface } from '../../../main/dto/user/leastUserDto';
 import { UploadContentCapsuleDto, type UploadContentCapsuleDtoInterface } from '../../../main/dto/storage_file/uploadContentCapsuleDto';
-import { MessageConstants } from 'seijishikin-jp-normalize_common-tool';
+import { MessageConstants, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import mockCreateTableData from './mockCreateTableData';
 
 //props,emit

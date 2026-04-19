@@ -1,7 +1,6 @@
 ﻿<script setup lang="ts">
 import { ref, toRaw, type Ref } from 'vue';
-import type { LeastUserDtoInterface } from '../../dto/user/leastUserDto';
-import { PagingControl } from 'seijishikin-jp-normalize_common-tool';
+import { PagingControl, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import { SearchWkTblPagingCapsuleDto, type SearchWkTblPagingCapsuleDtoInterface } from '../../dto/add_xml/searchWkTbPagingCapsuleDto';
 import { SearchWkTblStdKigyouDtPagingResultDto, type SearchWkTblStdKigyouDtPagingResultDtoInterface } from '../../dto/wktbl_std/searchWkTblStdKigyouDtPagingResultDto';
 import { WkTblKanrenshaKigyouDtMasterEntity, type WkTblKanrenshaKigyouDtMasterEntityInterface } from '../../entity/wkTblKanrenshaKigyouDtMasterEntity';
@@ -25,7 +24,7 @@ const allCount: Ref<number> = ref(INIT_NUMBER);
 const limit: Ref<number> = ref(SEARCH_LIMIT);
 
 // back側アクセス
-// const urlBack: string = RoutePathConstants.DOMAIN_BACK + RoutePathConstants.PATH_BACK;
+// const urlBack: string = RoutePathConstants.DOMAIN + RoutePathConstants.BASE_PATH;
 
 const kigyouDtCapsuleDto: Ref<SearchWkTblPagingCapsuleDtoInterface> = ref(new SearchWkTblPagingCapsuleDto());
 kigyouDtCapsuleDto.value.userDto = props.userDto;

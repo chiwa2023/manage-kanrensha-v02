@@ -1,6 +1,5 @@
 ﻿<script setup lang="ts">
 import { ref, type Ref } from 'vue';
-import MockAdminInfo from '../../../test/common/user_info/MockAdminInfo.vue';
 import { PagingControl, } from 'seijishikin-jp-normalize_common-tool';
 import RiyoushaManagerEdit from '../../common/riyousha_edit/RiyoushaManagerEdit.vue';
 import RiyoushaPartnerApiEdit from '../../common/riyousha_edit/RiyoushaPartnerApiEdit.vue';
@@ -9,7 +8,6 @@ import type { LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool
 import { getLoginUser } from '../../utils/getLoginUser';
 
 // import UserRoleConstants from '../../dto/user/userRoleConstants';
-// import { LeastUserDto, type LeastUserDtoInterface } from '../../dto/user/leastUserDto';
 // import type RiyoushaManagerInterface from '../../entity/riyoushaManagerEntity';
 // import RiyoushaManagerEntity from '../../entity/riyoushaManagerEntity';
 //import {  InputPersonNameDto, ViewInputPersonName, type InputPersonNameDtoInterface, } from 'seijishikin-jp-normalize_common-tool';
@@ -39,7 +37,7 @@ import { getLoginUser } from '../../utils/getLoginUser';
 // const SERVER_STATUS_ERROR: number = 400;
 
 // // back側アクセス
-// const urlBack: string = RoutePathConstants.DOMAIN_BACK + RoutePathConstants.PATH_BACK;
+// const urlBack: string = RoutePathConstants.DOMAIN + RoutePathConstants.BASE_PATH;
 
 // ユーザ呼び出し
 const userDto: Ref<LeastUserDtoInterface> = ref(getLoginUser());

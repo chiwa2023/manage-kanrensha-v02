@@ -1,8 +1,8 @@
 ﻿<script setup lang="ts">
 import { ref, type Ref } from 'vue';
-import MockManagerInfo from '../../../test/common/user_info/MockManagerInfo.vue';
-import type { LeastUserDtoInterface } from '../../dto/user/leastUserDto';
 import { getLoginUser } from '../../utils/getLoginUser';
+import type { LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
+import ManagerInfo from '../../common/user_info/ManagerInfo.vue';
 
 // ユーザ呼び出し
 const userDto: Ref<LeastUserDtoInterface> = ref(getLoginUser());
@@ -17,7 +17,7 @@ function onCancel() {
 </script>
 <template>
     <!-- 管理者メニュー兼チェック -->
-    <MockManagerInfo :user-dto="userDto"></MockManagerInfo>
+    <ManagerInfo :user-dto="userDto"></ManagerInfo>
 
     <h1>関連者マスタ標準データダウンロード(差分)</h1>
 

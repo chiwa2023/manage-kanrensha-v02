@@ -47,7 +47,7 @@ public class RetryBatchMasterMinKigyouDtController {
      * @param capsuleDto 編集後再試行条件Dto
      * @return 処理結果レスポンス
      */
-    @PostMapping("/retry-kigyoudt")
+    @PostMapping("/retry-kigyou-dt")
     public ResponseEntity<FrameworkMessageAndResultDto> practice(
             final @RequestBody RetryWktblBatchCapsuleDto capsuleDto) {
 

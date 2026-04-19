@@ -41,8 +41,8 @@ const viewStatus2: Ref<string> = ref(showContentA);
 
 // 法人検索
 const isKigyouDtSearch: Ref<boolean> = ref(INIT_BOOLEAN);
-const houjinNo:Ref<string> = ref(BLANK);
-const houjinName:Ref<string> = ref(BLANK);
+const houjinNo: Ref<string> = ref(BLANK);
+const houjinName: Ref<string> = ref(BLANK);
 
 function onRaiseKigyouDtNoSearch() {
     isKigyouDtSearch.value = true;
@@ -59,9 +59,9 @@ function recieveCancelKigyouDtNo() {
 /**
 * 法人番号選択データ受信
 */
-function recieveKigyouDtNoInterface(sendDto:HoujinNoDtoInterface) {
+function recieveKigyouDtNoInterface(sendDto: HoujinNoDtoInterface) {
     houjinNo.value = sendDto.houjinNo;
-    houjinName.value = sendDto.houjinName;    
+    houjinName.value = sendDto.houjinName;
     // 非表示
     isKigyouDtSearch.value = false;
 }
@@ -114,6 +114,7 @@ const inputAddressDto: Ref<InputAddressDtoInterface> = ref(new InputAddressDto()
 const inputAddressDtoShort: Ref<InputAddressDtoInterface> = ref(new InputAddressDto());
 const inputShokugyouDto: Ref<InputShokugyouDtoInterface> = ref(new InputShokugyouDto());
 
+const longToken:Ref<string> = ref(BLANK);
 </script>
 <template>
     <div class="container">
@@ -341,7 +342,7 @@ const inputShokugyouDto: Ref<InputShokugyouDtoInterface> = ref(new InputShokugyo
         <MockViewInputAddressShort :edit-dto="inputAddressDtoShort"></MockViewInputAddressShort>
 
         <!-- 連絡先 -->
-        <ViewInputAccess :edit-dto="inputAccessDto"></ViewInputAccess>
+        <ViewInputAccess :edit-dto="inputAccessDto" :long-token="longToken"></ViewInputAccess>
 
         <!-- 職業 -->
         <ViewInputShokugyou :edit-dto="inputShokugyouDto"></ViewInputShokugyou>

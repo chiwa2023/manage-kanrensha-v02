@@ -1,22 +1,35 @@
 ﻿<script setup lang="ts">
 import { computed, ref, type ComputedRef, type Ref } from 'vue';
-import type { LeastUserDtoInterface } from '../../dto/user/leastUserDto';
-import MockManagerInfo from '../../../test/common/user_info/MockManagerInfo.vue';
-import type { StorageFileDtoInterface } from '../../dto/storage_file/storageFileDto';
+import { StorageFileDto, type StorageFileDtoInterface } from '../../dto/storage_file/storageFileDto';
 import { RegistDataByCsvFileCapsuleDto, type RegistDataByCsvFileCapsuleDtoInterface } from '../../dto/storage_file/registDataByCsvFileCapsuleDto';
-import { FrameworkCapsuleDto, type FrameworkCapsuleDtoInterface } from 'seijishikin-jp-normalize_common-tool';
+import { FrameworkCapsuleDto, MessageConstants, type FrameworkCapsuleDtoInterface, type FrameworkMessageAndResultDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import EditWkTblHistoryKigyouDt from '../../common/wktbl_edit_history/EditWkTblHistoryKigyouDt.vue';
 import { getLoginUser } from '../../utils/getLoginUser';
-import MockReadCsv from '../../../test/common/read_csv/MockReadCsv.vue';
+import ManagerInfo from '../../common/user_info/ManagerInfo.vue';
+import ReadCsv from '../../common/read_csv/ReadCsv.vue';
+import getAuthorizedPromiseArea from '../../dto/login/getAuthorizedPromiseArea';
+import RoutePathConstants from '../../../../routePathConstants';
+import { AccessTokenNotFoundError, TokenRefreshError } from '../../dto/login/errors';
 
+// よく使う定数
+const BLANK: string = "";
+// const INIT_NUMBER: number = 0;
 const INIT_BOOLEAN: boolean = false;
+//const SEARCH_LIMIT: number = 20;
+// const SERVER_STATUS_OK: number = 200;
+// const SERVER_STATUS_ERROR: number = 400;
+
+// メッセージボックス表示定数
+const infoLevel: Ref<number> = ref(MessageConstants.LEVEL_NONE);
+const messageType: Ref<number> = ref(MessageConstants.VIEW_NONE);
+const title: Ref<string> = ref(BLANK);
+const message: Ref<string> = ref(BLANK);
 
 // back側アクセス
-// const urlBack: string = RoutePathConstants.DOMAIN_BACK + RoutePathConstants.PATH_BACK;
+const urlBack: string = RoutePathConstants.DOMAIN + RoutePathConstants.BASE_PATH;
 
 // ユーザ呼び出し
 const userDto: Ref<LeastUserDtoInterface> = ref(getLoginUser());
-
 
 // サンプル表示
 const templateViewButtonText: ComputedRef<String> = computed(() => isVisibleTemplate.value ? "CSVサンプルを隠す" : "CSVサンプルを表示する");
@@ -25,53 +38,112 @@ function viewSample() {
     isVisibleTemplate.value = !isVisibleTemplate.value;
 }
 
-
 function onCancel() {
     history.back();
 }
 
 function onSave() {
     alert("実行");
-    // getAuthorizedPromiseArea().then(token => {
-    //     const url = urlBack + "/regist-bulk-history/retry-kigyou-dt";
-    //     const method = "POST";
-    //     const body = JSON.stringify(retryCapsuleDto.value);
-    //     const headers = {
-    //         'Accept': 'application/json',
-    //         'Content-Type': 'application/json',
-    //         'X-AUTH-TOKEN': 'Bearer ' + token
-    //     };
-    //     fetch(url, { method, headers, body })
-    //         .then(async (response) => {
-    //             const resultDto: FrameworkMessageAndResultInterface = await response.json();
-    //             alert(resultDto.message);
-    //         })
-    //         .catch((error) => { alert(error); });
-    // });
+    getAuthorizedPromiseArea().then(token => {
+        const url = urlBack + "/regist-bulk-history/retry-kigyou-dt";
+        const method = "POST";
+        const body = JSON.stringify(retryCapsuleDto.value);
+        const headers = {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'X-AUTH-TOKEN': 'Bearer ' + token
+        };
+        fetch(url, { method, headers, body })
+            .then(async (response) => {
+                const resultDto: FrameworkMessageAndResultDtoInterface = await response.json();
+                alert(resultDto.message);
+            })
+            .catch((error) => {
+                alert(error);
+                infoLevel.value = MessageConstants.LEVEL_ERROR;
+                messageType.value = MessageConstants.VIEW_OK;
+                title.value = "システムエラーが発生しました";
+                message.value = "システム管理者にお問い合わせください";
+                return;
+
+            });
+    }).catch((e) => {
+        infoLevel.value = MessageConstants.LEVEL_ERROR;
+        messageType.value = MessageConstants.VIEW_OK;
+
+        if (e instanceof AccessTokenNotFoundError) {
+            // トークン保持ができていない場合
+            title.value = "現在トークンが存在しません";
+            message.value = e.message;
+            return;
+        }
+        if (e instanceof TokenRefreshError) {
+            // 取得に失敗している場合
+            title.value = "有効期限まじかのトークンを再取得できませんでした";
+            message.value = e.message;
+            return;
+        }
+        title.value = "システムエラーが発生しました";
+        message.value = "システム管理者にお問い合わせください";
+        return;
+    });
 }
 
 function onBatchByFile() {
     alert("実行");
-    // getAuthorizedPromiseArea().then(token => {
-    //     const url = urlBack + "/regist-bulk-history/execute-kigyou-dt";
-    //     const method = "POST";
-    //     const body = JSON.stringify(capsuleDto.value);
-    //     const headers = {
-    //         'Accept': 'application/json',
-    //         'Content-Type': 'application/json',
-    //         'X-AUTH-TOKEN': 'Bearer ' + token
-    //     };
-    //     fetch(url, { method, headers, body })
-    //         .then(async (response) => {
-    //             const resultDto: FrameworkMessageAndResultInterface = await response.json();
-    //             alert(resultDto.message);
-    //             // 処理が成功したら再登録できないようにアップロードファイル情報を初期化
-    //             if (response.status === 200) {
-    //                 capsuleDto.value.storageFileDto = new StorageFileDto();
-    //             }
-    //         })
-    //         .catch((error) => { alert(error); });
-    // });
+    getAuthorizedPromiseArea().then(token => {
+        const url = urlBack + "/regist-bulk-history/execute-kigyou-dt";
+        const method = "POST";
+        const body = JSON.stringify(capsuleDto.value);
+        const headers = {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'X-AUTH-TOKEN': 'Bearer ' + token
+        };
+        fetch(url, { method, headers, body })
+            .then(async (response) => {
+                const resultDto: FrameworkMessageAndResultDtoInterface = await response.json();
+                title.value = "企業団体履歴CSV一括登録";
+                message.value = resultDto.message;
+                // 処理が成功したら再登録できないようにアップロードファイル情報を初期化
+                if (resultDto.isFailure) {
+                    infoLevel.value = MessageConstants.LEVEL_WARNING;
+                    messageType.value = MessageConstants.VIEW_OK;
+                } else {
+                    capsuleDto.value.storageFileDto = new StorageFileDto();
+                    infoLevel.value = MessageConstants.LEVEL_INFO;
+                    messageType.value = MessageConstants.VIEW_TOAST;
+                }
+            })
+            .catch((error) => {
+                alert(error);
+                infoLevel.value = MessageConstants.LEVEL_ERROR;
+                messageType.value = MessageConstants.VIEW_OK;
+                title.value = "システムエラーが発生しました";
+                message.value = "システム管理者にお問い合わせください";
+                return;
+
+            });
+    }).catch((e) => {
+        infoLevel.value = MessageConstants.LEVEL_ERROR;
+        messageType.value = MessageConstants.VIEW_OK;
+
+        if (e instanceof AccessTokenNotFoundError) {
+            // トークン保持ができていない場合
+            title.value = "現在トークンが存在しません";
+            message.value = e.message;
+            return;
+        }
+        if (e instanceof TokenRefreshError) {
+            // 取得に失敗している場合
+            title.value = "有効期限まじかのトークンを再取得できませんでした";
+            message.value = e.message;
+            return;
+        }
+        title.value = "システムエラーが発生しました";
+        message.value = "システム管理者にお問い合わせください";
+        return;
+    });
 }
 
 // ファイルからバッチ起動条件
@@ -90,13 +162,12 @@ function recieveStorageFileInterface(storageFileDto: StorageFileDtoInterface) {
 </script>
 <template>
     <!-- 管理者メニュー兼チェック -->
-    <MockManagerInfo :user-dto="userDto"></MockManagerInfo>
+    <ManagerInfo :user-dto="userDto"></ManagerInfo>
 
     <h1>関連者企業・団体履歴一括登録</h1>
 
-    <!-- csv読み出し10行  -->
-    <MockReadCsv @send-storage-file-interface="recieveStorageFileInterface" :user-dto="userDto"></MockReadCsv>
-
+    <!-- csv読み出し10行 -->
+    <ReadCsv @send-storage-file-interface="recieveStorageFileInterface" :user-dto="userDto"></ReadCsv>
 
     <div class="one-line">
         <button @click="onBatchByFile">頭出ししたcsvファイルで一括処理</button>

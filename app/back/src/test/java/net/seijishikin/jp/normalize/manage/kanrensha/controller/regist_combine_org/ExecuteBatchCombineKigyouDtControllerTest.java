@@ -96,7 +96,7 @@ class ExecuteBatchCombineKigyouDtControllerTest {
 
         ObjectMapper objectMapper = GetObjectMapperWithTimeModuleUtil.practice();
 
-        String path = PathRouteConstants.ROOT + "/regist-combine/execute-kigyoudt";
+        String path = PathRouteConstants.ROOT + "/regist-combine/execute-kigyou-dt";
 
         // サーバステータスがOK(200)
         assertEquals(HttpStatus.OK.value(), mockMvc // NOPMD LawOfDemeter

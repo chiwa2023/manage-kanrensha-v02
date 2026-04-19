@@ -1,12 +1,12 @@
 ﻿<script setup lang="ts">
 import { ref, watch, type Ref } from 'vue';
 import { ForceDumpCapsuleDto, type ForceDumpCapsuleDtoInterface } from '../../dto/z_force_dump/forceDumpCapsuleDto';
-import type { LeastUserDtoInterface } from '../../dto/user/leastUserDto';
 import { getLoginUser } from '../../utils/getLoginUser';
 import MockAdminInfo from '../../../test/common/user_info/MockAdminInfo.vue';
+import type { LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 
 // back側アクセス
-//const urlBack: string = RoutePathConstants.DOMAIN_BACK + RoutePathConstants.PATH_BACK;
+// const urlBack: string = RoutePathConstants.DOMAIN + RoutePathConstants.BASE_PATH;
 
 // ユーザ呼び出し
 const userDto: Ref<LeastUserDtoInterface> = ref(getLoginUser());

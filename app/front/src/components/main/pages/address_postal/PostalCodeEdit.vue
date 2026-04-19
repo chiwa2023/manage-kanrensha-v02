@@ -2,11 +2,11 @@
 import { MessageConstants, MessageView, PagingControl, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import { ref, toRaw, type Ref } from 'vue';
 import { getLoginUser } from '../../utils/getLoginUser';
-import MockManagerInfo from '../../../test/common/user_info/MockManagerInfo.vue';
 import { SearchPostalCodeCapsuleDto, type SearchPostalCodeCapsuleDtoInterface } from '../../dto/address_postal/searchPostalCodeCapsuleDto';
 import { SearchPostalCodeResultDto, type SearchPostalCodeResultDtoInterface } from '../../dto/address_postal/searchPostalCodeResultDto';
 import { AddressPostalEntity, type AddressPostalEntityInterface } from '../../entity/addressPostalEntity';
 import mockGetPostalCodeList from '../../../test/pages/address_postal/mock/mockGetPostalCodeList';
+import ManagerInfo from '../../common/user_info/ManagerInfo.vue';
 
 // よく使う定数
 const BLANK: string = "";
@@ -178,7 +178,7 @@ function onShowDetail(id: number) {
 </script>
 <template>
     <!-- 管理者メニュー兼チェック -->
-    <MockManagerInfo :user-dto="userDto"></MockManagerInfo>
+    <ManagerInfo :user-dto="userDto"></ManagerInfo>
 
     <h1>郵便番号編集</h1>
 

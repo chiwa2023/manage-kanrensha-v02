@@ -1,10 +1,10 @@
 ﻿<script setup lang="ts">
 import { onBeforeMount, ref, type Ref } from 'vue';
-import MockManagerInfo from '../../../test/common/user_info/MockManagerInfo.vue';
-import type { LeastUserDtoInterface } from '../../dto/user/leastUserDto';
 import { getLoginUser } from '../../utils/getLoginUser';
 import RiyoushaOrgEdit from '../../common/riyousha_edit/RiyoushaOrgEdit.vue';
 import { SelectOptionNumberDto, type SelectOptionNumberDtoInterface } from '../../dto/select_options/selectOptionNumberDto';
+import type { LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
+import ManagerInfo from '../../common/user_info/ManagerInfo.vue';
 
 //仮
 // よく使う定数
@@ -44,8 +44,8 @@ function recieveCancelRiyoushaOrg() {
 
 </script>
 <template>
-    <!-- 運営者権限 -->
-    <MockManagerInfo :user-dto="userDto"></MockManagerInfo>
+    <!-- 管理者メニュー兼チェック -->
+    <ManagerInfo :user-dto="userDto"></ManagerInfo>
 
     <h1>利用者組織登録・編集</h1><br>
 

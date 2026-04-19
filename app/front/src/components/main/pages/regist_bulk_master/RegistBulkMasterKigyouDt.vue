@@ -1,19 +1,18 @@
 ﻿<script setup lang="ts">
 import { computed, ref, type ComputedRef, type Ref } from 'vue';
-import type { LeastUserDtoInterface } from '../../dto/user/leastUserDto';
 import { getLoginUser } from '../../utils/getLoginUser';
-import MockManagerInfo from '../../../test/common/user_info/MockManagerInfo.vue';
-import { FrameworkCapsuleDto, type FrameworkCapsuleDtoInterface } from 'seijishikin-jp-normalize_common-tool';
+import { FrameworkCapsuleDto, type FrameworkCapsuleDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import { RegistDataByCsvFileCapsuleDto, type RegistDataByCsvFileCapsuleDtoInterface } from '../../dto/storage_file/registDataByCsvFileCapsuleDto';
 import type { StorageFileDtoInterface } from '../../dto/storage_file/storageFileDto';
 import MockReadCsv from '../../../test/common/read_csv/MockReadCsv.vue';
 import EditWkTblMinKigyouDt from '../../common/wktbl_edit_min/EditWkTblMinKigyouDt.vue';
 import EditWkTblStdKigyouDt from '../../common/wktbl_edit_std/EditWkTblStdKigyouDt.vue';
+import ManagerInfo from '../../common/user_info/ManagerInfo.vue';
 
 const INIT_BOOLEAN: boolean = false;
 
 // back側アクセス
-//const urlBack: string = RoutePathConstants.DOMAIN_BACK + RoutePathConstants.PATH_BACK;
+// const urlBack: string = RoutePathConstants.DOMAIN + RoutePathConstants.BASE_PATH;
 
 // ユーザ呼び出し
 const userDto: Ref<LeastUserDtoInterface> = ref(getLoginUser());
@@ -103,7 +102,7 @@ function onBatchByFile() {
 </script>
 <template>
     <!-- 管理者メニュー兼チェック -->
-    <MockManagerInfo :user-dto="userDto"></MockManagerInfo>
+    <ManagerInfo :user-dto="userDto"></ManagerInfo>
 
     <h1>関連者企業・団体マスタ一括登録</h1>
     <div class="one-line">

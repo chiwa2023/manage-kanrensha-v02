@@ -31,7 +31,7 @@ public class RegistBulkMasterMinKigyouDtController {
      * @param capsuleDto 編集内容Dto
      * @return 追加されたId
      */
-    @PostMapping("/update-kigyoudt")
+    @PostMapping("/update-kigyou-dt")
     public ResponseEntity<UpdateWkTblMinKigyouDtResultDto> practice(
             final @RequestBody UpdateWkTblMinKigyouDtCapsuleDto capsuleDto) {
 

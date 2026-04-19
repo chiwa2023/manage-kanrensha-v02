@@ -1,4 +1,4 @@
-import { LeastUserDto, type LeastUserDtoInterface } from "../user/leastUserDto";
+import { LeastUserDto, type LeastUserDtoInterface } from "seijishikin-jp-normalize_common-tool";
 import { UploadFileDto, type UploadFileDtoInterface } from "./uploadFileDto";
 
 interface UploadContentCapsuleDtoInterface {

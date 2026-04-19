@@ -1,7 +1,6 @@
 ﻿<script setup lang="ts">
 import { ref, toRaw, type Ref } from 'vue';
-import type { LeastUserDtoInterface } from '../../dto/user/leastUserDto';
-import { PagingControl } from 'seijishikin-jp-normalize_common-tool';
+import { PagingControl, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import { SearchWkTblPagingCapsuleDto, type SearchWkTblPagingCapsuleDtoInterface } from '../../dto/add_xml/searchWkTbPagingCapsuleDto';
 import { SearchWkTblHistorySeijidantaiPagingResultDto, type SearchWkTblHistorySeijidantaiPagingResultDtoInterface } from '../../dto/wktbl_history/searchWkTblHistorySeijidantaiPagingResultDto';
 import { WkTblKanrenshaSeijidantaiHistoryEntity, type WkTblKanrenshaSeijidantaiHistoryEntityInterface } from '../../entity/wkTblKanrenshaSeijidantaiHistoryEntity';
@@ -9,7 +8,7 @@ import { UpdateWkTblHistorySeijidantaiCapsuleDto, type UpdateWkTblHistorySeijida
 import getMockWkTblSeijidantaiList from './mock/getMockWkTblSeijidantaiList';
 
 // back側アクセス
-// const urlBack: string = RoutePathConstants.DOMAIN_BACK + RoutePathConstants.PATH_BACK;
+// const urlBack: string = RoutePathConstants.DOMAIN + RoutePathConstants.BASE_PATH;
 
 //props,emit
 const props = defineProps<{ userDto: LeastUserDtoInterface }>()

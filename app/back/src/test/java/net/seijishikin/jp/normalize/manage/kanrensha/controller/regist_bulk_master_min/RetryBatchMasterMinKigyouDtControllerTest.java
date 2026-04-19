@@ -50,7 +50,7 @@ class RetryBatchMasterMinKigyouDtControllerTest {
 
         ObjectMapper objectMapper = GetObjectMapperWithTimeModuleUtil.practice();
 
-        String path = PathRouteConstants.ROOT + "/regist-bulk-master-min/retry-kigyoudt";
+        String path = PathRouteConstants.ROOT + "/regist-bulk-master-min/retry-kigyou-dt";
 
         // サーバステータスがOK(200)
         assertEquals(HttpStatus.OK.value(), mockMvc // NOPMD LawOfDemeter
