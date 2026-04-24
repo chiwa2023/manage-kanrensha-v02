@@ -3,6 +3,7 @@ import { ref, type Ref } from 'vue';
 import type { StorageFileDtoInterface } from '../../dto/storage_file/storageFileDto';
 import type { LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import { getLoginUser } from '../../utils/getLoginUser';
+import ReadCsv from '../../common/read_csv/ReadCsv.vue';
 
 //仮
 // よく使う定数
@@ -45,7 +46,8 @@ function onSave() {
 
     <!-- 住居ファイル用 -->
     <h3>地方自治体コードファイル選択</h3>
-    <MockReadCsv @send-storage-file-interface="recieveStorageFile" :user-dto="userDto"></MockReadCsv>
+    <!-- csv読み出し10行 -->
+    <ReadCsv @send-storage-file-interface="recieveStorageFile" :user-dto="userDto"></ReadCsv>
 
     <div class="footer">
         <button @click="onCancel" class="footer-button">キャンセル</button>

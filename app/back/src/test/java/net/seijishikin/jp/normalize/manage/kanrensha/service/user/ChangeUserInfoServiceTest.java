@@ -23,8 +23,8 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import org.springframework.transaction.annotation.Transactional;
 
-import net.seijishikin.jp.normalize.common_tool.dto.FrameworkCapsuleDto;
 import net.seijishikin.jp.normalize.common_tool.dto.FrameworkMessageAndResultDto;
+import net.seijishikin.jp.normalize.manage.kanrensha.dto.user.EditUserPersonCapsuleDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.UserPersonEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.UserRoleEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.repository.UserPersonRepository;
@@ -68,13 +68,15 @@ class ChangeUserInfoServiceTest {
         Authentication auth = new UsernamePasswordAuthenticationToken(mail, password, testUser.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(auth);
 
-        FrameworkCapsuleDto capsuleDto = new FrameworkCapsuleDto();
+        EditUserPersonCapsuleDto capsuleDto = new EditUserPersonCapsuleDto();
         capsuleDto.getUserDto().setUserPersonId(82);
         capsuleDto.getUserDto().setUserPersonCode(83);
         final String name = "abcdefg";
         capsuleDto.getUserDto().setUserPersonName(name);
         final String role = "kigyou_dt";
         capsuleDto.getUserDto().getListRoles().add(role);
+        capsuleDto.setIsAlertTaskEnd(true);
+        capsuleDto.setIsAlertTaskStart(true);
 
         FrameworkMessageAndResultDto resultDto = changeUserInfoService.practice(capsuleDto);
         assertFalse(resultDto.getIsFailure());
@@ -91,6 +93,8 @@ class ChangeUserInfoServiceTest {
         assertEquals(email, entityNew.getEmail());
         assertEquals(name, entityNew.getUserPersonName());
         assertEquals(81, entityNew.getInsertUserId());
+        assertEquals(true, entityNew.getIsAlertTaskStart());
+        assertEquals(true, entityNew.getIsAlertTaskEnd());
 
         List<UserRoleEntity> listRole = userRoleRepository.findAll();
         assertEquals(3, listRole.size());
@@ -105,7 +109,7 @@ class ChangeUserInfoServiceTest {
     @Test
     @Tag("TableTruncate")
     void testWrongLoginUser() throws Exception {
-        FrameworkCapsuleDto capsuleDto = new FrameworkCapsuleDto();
+        EditUserPersonCapsuleDto capsuleDto = new EditUserPersonCapsuleDto();
         capsuleDto.getUserDto().setUserPersonId(82);
         capsuleDto.getUserDto().setUserPersonCode(83);
         capsuleDto.getUserDto().setUserPersonName("abcdefg");
@@ -120,7 +124,7 @@ class ChangeUserInfoServiceTest {
     @Test
     @Tag("TableTruncate")
     void testWrongEditUser() throws Exception {
-        FrameworkCapsuleDto capsuleDto = new FrameworkCapsuleDto();
+        EditUserPersonCapsuleDto capsuleDto = new EditUserPersonCapsuleDto();
         capsuleDto.getUserDto().setUserPersonId(2469);
         capsuleDto.getUserDto().setUserPersonCode(2489);
         capsuleDto.getUserDto().setUserPersonName("abcdefg");

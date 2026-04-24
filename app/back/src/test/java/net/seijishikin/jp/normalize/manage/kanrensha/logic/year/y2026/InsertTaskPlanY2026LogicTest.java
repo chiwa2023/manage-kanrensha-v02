@@ -81,6 +81,17 @@ class InsertTaskPlanY2026LogicTest {
 
         assertThrows(EmptyResultDataAccessException.class,
                 () -> insertTaskPlanY2026Logic.practice(userDto, dateTimeStart, 622, map));
+        
+        
+        assertEquals(entity.getTaskInfoCode(), dto.getTaskInfoCode());
+        assertEquals(entity.getTaskPlanCode(), dto.getTaskPlanCode());
+        assertEquals(entity.getTaskPlanId(), dto.getTaskPlanId());
+        assertEquals(entity.getTaskPlanName(), dto.getTaskPlanName());
+        assertEquals(entity.getTableYear(), dto.getTaskYear());
+        assertEquals(entity.getTransferPass(), dto.getTransferPass());
+        //assertEquals("admin,manager", dto.getMessageTemplate());
+        //assertEquals(, dto.getParamQuery());
+
     }
 
 }

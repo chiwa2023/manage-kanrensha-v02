@@ -1,4 +1,6 @@
-interface SearchTimerYoteiCapsuleDtoInterface {
+import { FrameworkPagingDto, type FrameworkPagingDtoInterface } from "seijishikin-jp-normalize_common-tool";
+
+interface SearchTimerYoteiCapsuleDtoInterface extends FrameworkPagingDtoInterface {
     /** 予定区分リスト */
     listYoteiKbn: number[];
 
@@ -9,7 +11,7 @@ interface SearchTimerYoteiCapsuleDtoInterface {
     endDateTime: Date;
 }
 
-class SearchTimerYoteiCapsuleDto implements SearchTimerYoteiCapsuleDtoInterface {
+class SearchTimerYoteiCapsuleDto extends FrameworkPagingDto implements SearchTimerYoteiCapsuleDtoInterface {
     /** 予定区分リスト */
     listYoteiKbn: number[];
 
@@ -20,6 +22,8 @@ class SearchTimerYoteiCapsuleDto implements SearchTimerYoteiCapsuleDtoInterface 
     endDateTime: Date;
 
     constructor() {
+        super();
+        
         this.listYoteiKbn = [];
         this.startDateTime = new Date();
         this.endDateTime = new Date();

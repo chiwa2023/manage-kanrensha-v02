@@ -53,6 +53,9 @@ class GetUserLeastByIdServiceTest {
         List<String> listRole = userDto.getListRoles();
         assertEquals(1, listRole.size());
         assertEquals("manager", listRole.get(0));
+        assertEquals(true, resultDto.getIsAlertTaskStart());
+        assertEquals(true, resultDto.getIsAlertTaskEnd());
+
     }
 
     @Test

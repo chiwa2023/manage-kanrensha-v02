@@ -2,9 +2,9 @@
 import type { LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import { ref, type Ref } from 'vue';
 import { getLoginUser } from '../../utils/getLoginUser';
-import MockReadCsv from '../../../test/common/read_csv/MockReadCsv.vue';
 import type { StorageFileDtoInterface } from '../../dto/storage_file/storageFileDto';
 import ManagerInfo from '../../common/user_info/ManagerInfo.vue';
+import ReadCsv from '../../common/read_csv/ReadCsv.vue';
 // import ManagerInfo from '../../common/user_info/ManagerInfo.vue';
 
 // ユーザ呼び出し
@@ -57,14 +57,14 @@ function onSave() {
 
     <h3 class="accent-h3">追加ファイル選択</h3>
     <!-- csv読み出し10行 -->
-    <MockReadCsv @send-storage-file-interface="recieveStorageFileAdd" :user-dto="userDto"></MockReadCsv>
+    <ReadCsv @send-storage-file-interface="recieveStorageFileAdd" :user-dto="userDto"></ReadCsv>
 
     <hr>
 
     <!-- 削除ファイル用 -->
     <h3 class="accent-h3">削除ファイル選択</h3>
     <!-- csv読み出し10行 -->
-    <MockReadCsv @send-storage-file-interface="recieveStorageFileDelete" :user-dto="userDto"></MockReadCsv>
+    <ReadCsv @send-storage-file-interface="recieveStorageFileDelete" :user-dto="userDto"></ReadCsv>
 
     <div class="footer">
         <button @click="onCancel" class="footer-button">キャンセル</button>

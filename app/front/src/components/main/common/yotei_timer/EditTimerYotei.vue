@@ -1,44 +1,107 @@
 ﻿<script setup lang="ts">
-import { InputDatetime, type LeastUserDtoInterface, InputDatetimeAndNull } from 'seijishikin-jp-normalize_common-tool';
+import { InputDatetime, type LeastUserDtoInterface, InputDatetimeAndNull, MessageConstants, MessageView, type FrameworkMessageAndResultDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import { TimerYoteiEntity, type TimerYoteiEntityInterface } from '../../entity/timerYoteiEntity';
-import { onBeforeMount, ref, toRaw, watch, type Ref } from 'vue';
-
-//仮
-// よく使う定数
-// const BLANK: string = "";
-const INIT_NUMBER: number = 0;
-// const SERVER_STATUS_OK: number = 200;
-// const SERVER_STATUS_ERROR: number = 400;
-// const SEARCH_LIMIT: number = 20;
-// メッセージボックス表示定数
-//const infoLevel: Ref<number> = ref(MessageConstants.LEVEL_NONE);
-//const messageType: Ref<number> = ref(MessageConstants.VIEW_NONE);
-//const title: Ref<string> = ref(BLANK);
-//const message: Ref<string> = ref(BLANK);
+import { onMounted, ref, toRaw, watch, type Ref } from 'vue';
+import { EditTimerYoteiCapsuleDto, type EditTimerYoteiCapsuleDtoInterface } from '../../dto/yoyaku_timer/editTimerYoteiCapsuleDto';
+import getAuthorizedPromiseArea from '../../dto/login/getAuthorizedPromiseArea';
+import { AccessTokenNotFoundError, TokenRefreshError } from '../../dto/login/errors';
+import RoutePathConstants from '../../../../routePathConstants';
 
 //props,emit
 const props = defineProps<{ userDto: LeastUserDtoInterface, timerYoyakuEntity: TimerYoteiEntityInterface }>()
 const emits = defineEmits(["sendTimerYoyakuInterface", "sendCancelTimerYoyaku"]);
 
+//仮
+// よく使う定数
+const BLANK: string = "";
+const INIT_NUMBER: number = 0;
+const SERVER_STATUS_OK: number = 200;
+// const SERVER_STATUS_ERROR: number = 400;
+// const SEARCH_LIMIT: number = 20;
+// メッセージボックス表示定数
+const infoLevel: Ref<number> = ref(MessageConstants.LEVEL_NONE);
+const messageType: Ref<number> = ref(MessageConstants.VIEW_NONE);
+const title: Ref<string> = ref(BLANK);
+const message: Ref<string> = ref(BLANK);
+
+// back側アクセス
+const urlBack: string = RoutePathConstants.DOMAIN + RoutePathConstants.BASE_PATH;
+
 const editEntity: Ref<TimerYoteiEntityInterface> = ref(new TimerYoteiEntity());
 const editEntityBackup: Ref<TimerYoteiEntityInterface> = ref(new TimerYoteiEntity());
 
-
-onBeforeMount(() => {
+onMounted(() => {
     editEntity.value = structuredClone(toRaw(props.timerYoyakuEntity));
-    editEntityBackup.value = structuredClone(toRaw(editEntity.value));
+    editEntityBackup.value = structuredClone(toRaw(props.timerYoyakuEntity));
 });
-watch(props.timerYoyakuEntity, () => {
+watch(props, () => {
     editEntity.value = structuredClone(toRaw(props.timerYoyakuEntity));
-    editEntityBackup.value = structuredClone(toRaw(editEntity.value));
+    editEntityBackup.value = structuredClone(toRaw(props.timerYoyakuEntity));
 });
-
 
 function onCancel() {
     emits("sendCancelTimerYoyaku");
 }
+
+
+let actionState: number = INIT_NUMBER;
 function onSave() {
-    emits("sendTimerYoyakuInterface", editEntity.value);
+    const capsuleDto: EditTimerYoteiCapsuleDtoInterface = new EditTimerYoteiCapsuleDto();
+    capsuleDto.userDto = props.userDto;
+    capsuleDto.timerYoteiEntity = editEntity.value;
+
+    getAuthorizedPromiseArea().then(token => {
+        const url = urlBack + "/timer-yotei/update";
+        const method = "POST";
+        const body = JSON.stringify(capsuleDto);
+        const headers = {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'X-AUTH-TOKEN': 'Bearer ' + token
+        };
+        fetch(url, { method, headers, body })
+            .then(async (response) => {
+                const resultDtoSave: FrameworkMessageAndResultDtoInterface = await response.json();
+                title.value = "予約実行変更";
+                message.value = resultDtoSave.message;
+                if (resultDtoSave.isFailure) {
+                    infoLevel.value = MessageConstants.LEVEL_WARNING;
+                    messageType.value = MessageConstants.VIEW_OK;
+                    return;
+                } else {
+                    infoLevel.value = MessageConstants.LEVEL_INFO;
+                    messageType.value = MessageConstants.VIEW_TOAST;
+                    actionState = SERVER_STATUS_OK;
+                    return;
+                }
+            })
+            .catch((error) => {
+                alert(error);
+                infoLevel.value = MessageConstants.LEVEL_ERROR;
+                messageType.value = MessageConstants.VIEW_OK;
+                title.value = "作業承認登録";
+                message.value = "システムエラーが発生しました。システム管理者にお問い合わせください";
+            });
+    }).catch((e) => {
+        infoLevel.value = MessageConstants.LEVEL_ERROR;
+        messageType.value = MessageConstants.VIEW_OK;
+
+        if (e instanceof AccessTokenNotFoundError) {
+            // トークン保持ができていない場合
+            title.value = "現在トークンが存在しません";
+            message.value = e.message;
+            return;
+        }
+        if (e instanceof TokenRefreshError) {
+            // 取得に失敗している場合
+            title.value = "有効期限まじかのトークンを再取得できませんでした";
+            message.value = e.message;
+            return;
+        }
+        title.value = "システムエラーが発生しました";
+        message.value = "システム管理者にお問い合わせください";
+        return;
+    });
 }
 
 function onSetNext() {
@@ -90,7 +153,6 @@ function onSetNext() {
     }
 }
 function onChageDate(date: Date | null, index: number) {
-    alert(date);
     switch (index) {
         case 1:
             editEntity.value.nextTimestamp = date;
@@ -117,6 +179,16 @@ function addPeriod(src: Date | null, entity: TimerYoteiEntityInterface): Date | 
     src.setSeconds(0);
 
     return src;
+}
+function recieveSubmit(button: string) {
+    console.log(button); // 警告除け
+
+    infoLevel.value = 0;
+    messageType.value = 0;
+
+    if (SERVER_STATUS_OK === actionState) {
+        emits("sendTimerYoyakuInterface", editEntity.value);
+    }
 }
 </script>
 <template>
@@ -228,6 +300,13 @@ function addPeriod(src: Date | null, entity: TimerYoteiEntityInterface): Date | 
     <div class="footer">
         <button @click="onCancel" class="footer-button">キャンセル</button>
         <button @click="onSave" class="footer-button left-space">送信</button>
+    </div>
+
+    <!-- メッセージ表示 -->
+    <div class="overMessage" v-if="messageType !== MessageConstants.VIEW_NONE">
+        <MessageView :info-level="infoLevel" :message-type="messageType" :title="title" :message="message"
+            @send-submit="recieveSubmit">
+        </MessageView>
     </div>
 
 </template>

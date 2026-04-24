@@ -108,6 +108,8 @@ const routes = [
     // タスク計画
     { path: RoutePathConstants.PAGE_SEARCH_TASK_PLAN, name: "SearchTaskPlan", component: () => import("./components/main/pages/search_task_plan/SearchTaskPlan.vue") },
 
+    // タスク情報
+    { path: RoutePathConstants.PAGE_SEARCH_TASK_INFO, name: "SearchTaskInfo", component: () => import("./components/main/pages/task_info/SearchTaskInfo.vue") },
 ];
 
 const router = createRouter({

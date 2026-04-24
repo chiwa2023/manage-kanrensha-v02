@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import net.seijishikin.jp.normalize.common_tool.dto.FrameworkCapsuleDto;
 import net.seijishikin.jp.normalize.common_tool.dto.FrameworkMessageAndResultDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.controller.PathRouteConstants;
+import net.seijishikin.jp.normalize.manage.kanrensha.dto.user.EditUserPersonCapsuleDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.user.ChangeUserInfoService;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.util.SaveStackTraceService;
 
@@ -38,7 +38,8 @@ public class ChangeUserInfoController {
      * @return 処理結果Dto
      */
     @PostMapping("/change")
-    public ResponseEntity<FrameworkMessageAndResultDto> practice(@RequestBody final FrameworkCapsuleDto capsuleDto) {
+    public ResponseEntity<FrameworkMessageAndResultDto> practice(
+            @RequestBody final EditUserPersonCapsuleDto capsuleDto) {
         try {
 
             FrameworkMessageAndResultDto resultDto = changeUserInfoService.practice(capsuleDto);

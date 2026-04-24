@@ -35,4 +35,45 @@ public class GetUserDtoResultDto extends FrameworkMessageAndResultDto // NOPMD D
         this.userDto = userDto;
     }
 
+    /** タスク開始通知有無 */
+    private Boolean isAlertTaskStart = INIT_BOOLEAN;
+
+    /**
+     * タスク開始通知有無を取得する
+     *
+     * @return タスク開始通知有無
+     */
+    public Boolean getIsAlertTaskStart() {
+        return isAlertTaskStart;
+    }
+
+    /**
+     * タスク開始通知有無を設定する
+     *
+     * @param isAlertTaskStart タスク開始通知有無
+     */
+    public void setIsAlertTaskStart(final Boolean isAlertTaskStart) {
+        this.isAlertTaskStart = isAlertTaskStart;
+    }
+
+    /** タスク終了通知有無 */
+    private Boolean isAlertTaskEnd = INIT_BOOLEAN;
+
+    /**
+     * タスク終了通知有無を取得する
+     *
+     * @return タスク終了通知有無
+     */
+    public Boolean getIsAlertTaskEnd() {
+        return isAlertTaskEnd;
+    }
+
+    /**
+     * タスク終了通知有無を設定する
+     *
+     * @param isAlertTaskEnd タスク終了通知有無
+     */
+    public void setIsAlertTaskEnd(final Boolean isAlertTaskEnd) {
+        this.isAlertTaskEnd = isAlertTaskEnd;
+    }
 }

@@ -22,7 +22,7 @@ const props = defineProps<{ userDto: LeastUserDtoInterface }>();
 // よく使う定数
 const BLANK: string = "";
 const INIT_NUMBER: number = 0;
-// const SERVER_STATUS_OK: number = 200;
+const SERVER_STATUS_OK: number = 200;
 // const SERVER_STATUS_ERROR: number = 400;
 // メッセージ表示定数
 const infoLevel: Ref<number> = ref(MessageConstants.LEVEL_NONE);
@@ -85,7 +85,7 @@ const optionsView: ComputedRef<SelectOptionStringDtoInterface[]> = computed(() =
 const selectedTask: Ref<string> = ref("");
 const switchYear: Ref<string> = ref("");
 const tansferDisabled: ComputedRef<boolean> = computed(() => BLANK === selectedTask.value);
-
+let actionStatus = INIT_NUMBER;
 onBeforeMount(async () => {
     // ログインと権限チェック
     if (INIT_NUMBER === props.userDto.userPersonId || !props.userDto.listRoles.includes(UserRoleConstants.ROLE_ADMIN)) {
@@ -121,6 +121,7 @@ onBeforeMount(async () => {
                             title.value = "未処理タスク確認";
                             message.value = "未処理タスクは存在しませんでした";
                             notCompletedTaskInfo.notCompleteTaskDto.isRefreshed = true; // 毎回更新しにいかないように
+                            actionStatus = SERVER_STATUS_OK;
                         } else {
                             notCompletedTaskInfo.notCompleteTaskDto = resultDtoTask.value;
                             optionsThisYear.value = convertTaskToOption(resultDtoTask.value.listThisYear);
@@ -129,27 +130,32 @@ onBeforeMount(async () => {
                         }
                     })
                     .catch((e) => {
-                        if (e instanceof AccessTokenNotFoundError) {
-                            // トークン保持ができていない場合
-                            infoLevel.value = MessageConstants.LEVEL_ERROR;
-                            messageType.value = MessageConstants.VIEW_OK;
-                            title.value = "現在トークンが存在しません";
-                            message.value = e.message;
-                            return;
-                        }
-                        if (e instanceof TokenRefreshError) {
-                            // 取得に失敗している場合
-                            infoLevel.value = MessageConstants.LEVEL_ERROR;
-                            messageType.value = MessageConstants.VIEW_OK;
-                            title.value = "有効期限まじかのトークンを再取得できませんでした";
-                            message.value = e.message;
-                            return;
-                        }
                         infoLevel.value = MessageConstants.LEVEL_ERROR;
                         messageType.value = MessageConstants.VIEW_OK;
                         title.value = "システムエラーが発生しました";
-                        message.value = "システム管理者にお問い合わせください";
+                        message.value = e.message;
                     });
+            }).catch((e) => {
+                if (e instanceof AccessTokenNotFoundError) {
+                    // トークン保持ができていない場合
+                    infoLevel.value = MessageConstants.LEVEL_ERROR;
+                    messageType.value = MessageConstants.VIEW_OK;
+                    title.value = "現在トークンが存在しません";
+                    message.value = e.message;
+                    return;
+                }
+                if (e instanceof TokenRefreshError) {
+                    // 取得に失敗している場合
+                    infoLevel.value = MessageConstants.LEVEL_ERROR;
+                    messageType.value = MessageConstants.VIEW_OK;
+                    title.value = "有効期限まじかのトークンを再取得できませんでした";
+                    message.value = e.message;
+                    return;
+                }
+                infoLevel.value = MessageConstants.LEVEL_ERROR;
+                messageType.value = MessageConstants.VIEW_OK;
+                title.value = "システムエラーが発生しました";
+                message.value = "システム管理者にお問い合わせください";
             });
         } else {
             optionsThisYear.value = convertTaskToOption(notCompletedTaskInfo.notCompleteTaskDto.listThisYear);
@@ -169,7 +175,12 @@ function recieveSubmit(button: string) {
     // 非表示
     infoLevel.value = 0;
     messageType.value = 0;
-    router.push(RoutePathConstants.PAGE_LOGOUT);
+
+    // 正常アクセスができないときはログアウトする
+    if (SERVER_STATUS_OK !== actionStatus) {
+        router.push(RoutePathConstants.PAGE_LOGOUT);
+    }
+    actionStatus = INIT_NUMBER;
 }
 
 // タスク表示
@@ -183,7 +194,7 @@ function recieveCancelShowTask() {
 
 function onTransfer() {
     // ページ遷移
-    router.push(RoutePathConstants.BASE_PATH+selectedTask.value);
+    router.push(RoutePathConstants.BASE_PATH + selectedTask.value);
 }
 
 </script>

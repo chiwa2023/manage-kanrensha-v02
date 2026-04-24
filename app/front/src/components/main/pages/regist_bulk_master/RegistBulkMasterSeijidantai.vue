@@ -4,10 +4,10 @@ import { getLoginUser } from '../../utils/getLoginUser';
 import { RegistDataByCsvFileCapsuleDto, type RegistDataByCsvFileCapsuleDtoInterface } from '../../dto/storage_file/registDataByCsvFileCapsuleDto';
 import { FrameworkCapsuleDto, type FrameworkCapsuleDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import type { StorageFileDtoInterface } from '../../dto/storage_file/storageFileDto';
-import MockReadCsv from '../../../test/common/read_csv/MockReadCsv.vue';
 import EditWkTblMinSeijidantai from '../../common/wktbl_edit_min/EditWkTblMinSeijidantai.vue';
 import EditWkTblStdSeijidantai from '../../common/wktbl_edit_std/EditWkTblStdSeijidantai.vue';
 import ManagerInfo from '../../common/user_info/ManagerInfo.vue';
+import ReadCsv from '../../common/read_csv/ReadCsv.vue';
 
 
 const INIT_BOOLEAN: boolean = false;
@@ -119,7 +119,7 @@ function onBatchByFile() {
     </div>
 
     <!-- csv読み出し10行 -->
-    <MockReadCsv @send-storage-file-interface="recieveStorageFileInterface" :user-dto="userDto"></MockReadCsv>
+    <ReadCsv @send-storage-file-interface="recieveStorageFileInterface" :user-dto="userDto"></ReadCsv>
 
     <div class="one-line">
         <button @click="onBatchByFile">頭出ししたcsvファイルで一括処理</button>
@@ -247,7 +247,8 @@ function onBatchByFile() {
                             <th class="explain">必須</th>
                             <th class="explain">必須</th>
                             <th class="explain">任意</th>
-                            <th class="explain">必須<br>政党:01、政党支部:02、政治資金団体:03<br>18条2項1規定団体:04、その他の政治団体:05、その他の政治団体支部:06</th>
+                            <th class="explain">必須<br>政党:01、政党支部:02、政治資金団体:03<br>18条2項1規定団体:04、その他の政治団体:05、その他の政治団体支部:06
+                            </th>
                             <th class="explain">任意<br>30文字まで</th>
                             <th class="explain">必須</th>
                             <th class="explain">必須</th>
@@ -447,10 +448,12 @@ function onBatchByFile() {
     overflow-x: auto;
     white-space: nowrap;
 }
+
 table {
     border-style: solid;
     border-width: 1px;
 }
+
 table.std {
     border-style: solid;
     border-width: 1px;

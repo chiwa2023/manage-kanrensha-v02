@@ -26,9 +26,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import net.seijishikin.jp.normalize.common_tool.dto.FrameworkCapsuleDto;
 import net.seijishikin.jp.normalize.common_tool.utils.GetObjectMapperWithTimeModuleUtil;
 import net.seijishikin.jp.normalize.manage.kanrensha.controller.PathRouteConstants;
+import net.seijishikin.jp.normalize.manage.kanrensha.dto.user.EditUserPersonCapsuleDto;
 
 /**
  * ChangeUserInfoController単体テスト
@@ -60,13 +60,15 @@ class ChangeUserInfoControllerTest {
         Authentication auth = new UsernamePasswordAuthenticationToken(mail, password, testUser.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(auth);
 
-        FrameworkCapsuleDto capsuleDto = new FrameworkCapsuleDto();
+        EditUserPersonCapsuleDto capsuleDto = new EditUserPersonCapsuleDto();
         capsuleDto.getUserDto().setUserPersonId(82);
         capsuleDto.getUserDto().setUserPersonCode(83);
         final String name = "abcdefg";
         capsuleDto.getUserDto().setUserPersonName(name);
         final String role = "kigyou_dt";
         capsuleDto.getUserDto().getListRoles().add(role);
+        capsuleDto.setIsAlertTaskStart(true);
+        capsuleDto.setIsAlertTaskEnd(true);
 
         ObjectMapper objectMapper = GetObjectMapperWithTimeModuleUtil.practice();
 

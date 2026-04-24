@@ -23,7 +23,7 @@ const urlBack: string = RoutePathConstants.DOMAIN + RoutePathConstants.BASE_PATH
 
 // よく使う定数
 const BLANK: string = "";
-// const INIT_NUMBER: number = 0;
+const INIT_NUMBER: number = 0;
 const SEARCH_LIMIT: number = 20;
 const SERVER_STATUS_OK: number = 200;
 // const SERVER_STATUS_ERROR: number = 400;
@@ -33,9 +33,9 @@ const messageType: Ref<number> = ref(MessageConstants.VIEW_NONE);
 const title: Ref<string> = ref(BLANK);
 const message: Ref<string> = ref(BLANK);
 // Paging
-const pageNumber: Ref<number> = ref(0); // Mock data
-const allCount: Ref<number> = ref(0); // Mock data
-const limit: Ref<number> = ref(SEARCH_LIMIT); // Mock data
+const pageNumber: Ref<number> = ref(INIT_NUMBER);
+const allCount: Ref<number> = ref(INIT_NUMBER);
+const limit: Ref<number> = ref(SEARCH_LIMIT);
 
 
 // タスク検索条件

@@ -2,8 +2,8 @@
 import { ref, watch, type Ref } from 'vue';
 import { getLoginUser } from '../../utils/getLoginUser';
 import { ForceDumpCapsuleDto, type ForceDumpCapsuleDtoInterface } from '../../dto/z_force_dump/forceDumpCapsuleDto';
-import MockAdminInfo from '../../../test/common/user_info/MockAdminInfo.vue';
 import type { LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
+import AdminInfo from '../../common/user_info/AdminInfo.vue';
 
 // ユーザ呼び出し
 const userDto: Ref<LeastUserDtoInterface> = ref(getLoginUser());
@@ -66,7 +66,7 @@ function onSave() {
 </script>
 <template>
     <!-- SE権限 -->
-    <MockAdminInfo :user-dto="userDto"></MockAdminInfo>
+    <AdminInfo :user-dto="userDto"></AdminInfo>
 
     <h1>関連者履歴強制csvダンプ</h1>
     

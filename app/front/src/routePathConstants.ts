@@ -9,7 +9,7 @@ export default class RoutePathConstants {
     /** ログインページ */
     static readonly PAGE_LOGIN: string = this.BASE_PATH + "/";
 
-    /** ログインページ */
+    /** ログアウトページ */
     static readonly PAGE_LOGOUT: string = this.BASE_PATH + "/logout";
 
     // /** 開発台紙 */
@@ -188,6 +188,9 @@ export default class RoutePathConstants {
 
     /** タスク計画検索 */
     static readonly PAGE_SEARCH_TASK_PLAN: string = this.BASE_PATH + "/search-task-plan";
+
+    /** タスク情報検索 */
+    static readonly PAGE_SEARCH_TASK_INFO: string = this.BASE_PATH + "/search-task-info";
 
     /** 開発テンプレート(共通ツール) */
     static readonly PAGE_DEVELOP_TEMPLATE: string = this.BASE_PATH + "/develop-template";

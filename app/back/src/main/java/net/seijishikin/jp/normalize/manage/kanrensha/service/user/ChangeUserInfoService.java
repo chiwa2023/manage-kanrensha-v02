@@ -11,10 +11,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import net.seijishikin.jp.normalize.common_tool.dto.FrameworkCapsuleDto;
 import net.seijishikin.jp.normalize.common_tool.dto.FrameworkMessageAndResultDto;
 import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
 import net.seijishikin.jp.normalize.common_tool.utils.SetTableDataHistoryUtil;
+import net.seijishikin.jp.normalize.manage.kanrensha.dto.user.EditUserPersonCapsuleDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.UserPersonEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.UserRoleEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.repository.UserPersonRepository;
@@ -45,7 +45,7 @@ public class ChangeUserInfoService {
      * @return 処理結果
      */
     @Transactional
-    public FrameworkMessageAndResultDto practice(final FrameworkCapsuleDto capsuleDto) {
+    public FrameworkMessageAndResultDto practice(final EditUserPersonCapsuleDto capsuleDto) {
 
         FrameworkMessageAndResultDto resultDto = new FrameworkMessageAndResultDto();
 
@@ -75,6 +75,9 @@ public class ChangeUserInfoService {
         // 新規Entityを設定
         String newName = capsuleDto.getUserDto().getUserPersonName();
         newPersonEntity.setUserPersonName(newName);
+        newPersonEntity.setIsAlertTaskStart(capsuleDto.getIsAlertTaskStart());
+        newPersonEntity.setIsAlertTaskEnd(capsuleDto.getIsAlertTaskEnd());
+        
         setTableDataHistoryUtil.practiceInsert(operatorUserDto, newPersonEntity);
         newPersonEntity.setUserPersonId(0); // auto iuncrement明記
 

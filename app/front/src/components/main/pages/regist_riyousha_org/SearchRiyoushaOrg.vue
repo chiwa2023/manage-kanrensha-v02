@@ -5,7 +5,7 @@ import { PagingControl, type LeastUserDtoInterface } from 'seijishikin-jp-normal
 import { getLoginUser } from '../../utils/getLoginUser';
 import type { RiyoushaOrgMasterEntityInterface } from '../../entity/riyoushaOrgMasterEntity';
 import mockGetRiyoushaOrgMasterList from '../../../test/pages/regist_riyousha_org/mockGetRiyoushaOrgMasterList';
-import MockAdminInfo from '../../../test/common/user_info/MockAdminInfo.vue';
+import AdminInfo from '../../common/user_info/AdminInfo.vue';
 
 //仮
 // よく使う定数
@@ -62,8 +62,8 @@ function recievePagingNumber(selecteddNumber: number) {
 
 </script>
 <template>
-    <!-- ユーザ情報 -->
-    <MockAdminInfo :user-dto="userDto"></MockAdminInfo>
+    <!-- SE権限 -->
+    <AdminInfo :user-dto="userDto"></AdminInfo>
 
     <h1>利用者組織検索</h1>
 

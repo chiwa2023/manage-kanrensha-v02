@@ -15,47 +15,46 @@ import RoutePathConstants from '../../../../routePathConstants';
 
 </script>
 <template>
-    <h4>SE権限メニュー</h4>
-    <RouterLink :to=RoutePathConstants.PAGE_USER_CHANGE>他者ユーザ変更</RouterLink><br>
-    <RouterLink :to=RoutePathConstants.PAGE_ADMIN_PROMOTE>管理者からSE権限へ引き上げ</RouterLink><br>
-
-
-    <!--
-    <RouterLink :to=RoutePathConstants.PAGE_USER_CHANGE>ユーザ編集</RouterLink><br>
-    <RouterLink :to=RoutePathConstants.PAGE_PROMOTE_ROLE>運営者からSE権限へ引き上げ</RouterLink><br>
-    <RouterLink :to=RoutePathConstants.PAGE_REGI_PARTNER_MANAGE>関連者管理</RouterLink><br>
-    <RouterLink :to=RoutePathConstants.PAGE_WORKS_APPROVAL>作業内容承認</RouterLink><br>
- -->
-
 
     <div class="menu-container">
         <div class="menu-section">
-            <h4>利用者管理</h4>
-            <RouterLink class="menu-item" :to=RoutePathConstants.PAGE_RIYOUSHA_SEARCH>利用者検索／編集</RouterLink><br>
-            <RouterLink class="menu-item" :to=RoutePathConstants.PAGE_SEARCH_RIYOUSHA_ORG>利用者組織検索／編集</RouterLink><br>
-        </div>
-
-        <div class="menu-section">
-            <h4>ダンプcsv処理</h4>
-            <RouterLink :to="RoutePathConstants.PAGE_DUMP_MASTER" class="menu-item">関連者マスタcsvダンプ(指定期間まで)</RouterLink>
-            <br>
-            <RouterLink :to="RoutePathConstants.PAGE_DUMP_HISTORY" class="menu-item">関連者履歴csvダンプ(指定期間まで)</RouterLink>
-            <br>
-            <RouterLink :to="RoutePathConstants.PAGE_DUMP_MASTER_STD" class="menu-item">関連者マスタ標準csvダンプ(指定期間まで)
-            </RouterLink><br>
-            <RouterLink :to="RoutePathConstants.PAGE_DUMP_SABUN_MASTER" class="menu-item">関連者マスタcsv差分ダンプ</RouterLink>
-            <br>
-            <RouterLink :to="RoutePathConstants.PAGE_DUMP_SABUN_HISTORY" class="menu-item">関連者履歴csv差分ダンプ</RouterLink>
-            <br>
-            <RouterLink :to="RoutePathConstants.PAGE_DUMP_SABUN_MASTER_STD" class="menu-item">関連者マスタ標準csv差分ダンプ
-            </RouterLink><br>
-        </div>
-
-        <div class="menu-section">
-            <h4>予定実行編集</h4>
-            <RouterLink :to="RoutePathConstants.PAGE_TIMER_YOTEI" class="menu-item">一覧・編集 </RouterLink><br>
+            <h4 class="menu-title">利用者管理</h4>
+            <RouterLink class="menu-item" :to=RoutePathConstants.PAGE_RIYOUSHA_SEARCH>利用者検索／編集</RouterLink>
+            <RouterLink class="menu-item" :to=RoutePathConstants.PAGE_SEARCH_RIYOUSHA_ORG>利用者組織検索／編集</RouterLink>
         </div>
     </div>
+
+    <div class="menu-container">
+        <div class="menu-section">
+            <h4 class="menu-title">ダンプcsv処理</h4>
+            <RouterLink :to="RoutePathConstants.PAGE_DUMP_MASTER" class="menu-item">関連者マスタcsvダンプ(指定期間まで)</RouterLink>
+            <RouterLink :to="RoutePathConstants.PAGE_DUMP_HISTORY" class="menu-item">関連者履歴csvダンプ(指定期間まで)</RouterLink>
+            <RouterLink :to="RoutePathConstants.PAGE_DUMP_MASTER_STD" class="menu-item">関連者マスタ標準csvダンプ(指定期間まで)
+            </RouterLink>
+            <RouterLink :to="RoutePathConstants.PAGE_DUMP_SABUN_MASTER" class="menu-item">関連者マスタcsv差分ダンプ</RouterLink>
+            <RouterLink :to="RoutePathConstants.PAGE_DUMP_SABUN_HISTORY" class="menu-item">関連者履歴csv差分ダンプ</RouterLink>
+            <RouterLink :to="RoutePathConstants.PAGE_DUMP_SABUN_MASTER_STD" class="menu-item">関連者マスタ標準csv差分ダンプ
+            </RouterLink>
+        </div>
+    </div>
+
+    <div class="menu-container">
+        <div class="menu-section">
+            <h4 class="menu-title">タスク設定</h4>
+            <RouterLink :to="RoutePathConstants.PAGE_SEARCH_TASK_INFO" class="menu-item">タスク情報一覧・編集 </RouterLink>
+            <RouterLink :to="RoutePathConstants.PAGE_TIMER_YOTEI" class="menu-item">予定実行一覧・編集 </RouterLink>
+        </div>
+    </div>
+
+    <div class="menu-container">
+        <div class="menu-section">
+            <h4 class="menu-title">SE権限メニュー</h4>
+            <RouterLink class="menu-item" :to=RoutePathConstants.PAGE_USER_CHANGE>他者ユーザ変更</RouterLink>
+            <RouterLink class="menu-item" :to=RoutePathConstants.PAGE_ADMIN_PROMOTE>管理者からSE権限へ引き上げ</RouterLink>
+        </div>
+    </div>
+
+    <RouterLink :to=RoutePathConstants.PAGE_MENU_ADMIN>ページで見る</RouterLink><br>
 
     <div class="menu-container">
         <div class="menu-section">
@@ -63,9 +62,6 @@ import RoutePathConstants from '../../../../routePathConstants';
             <RouterLink :to="RoutePathConstants.PAGE_LOGOUT" class="menu-item">ログアウト</RouterLink>
         </div>
     </div>
-    <RouterLink :to=RoutePathConstants.PAGE_MENU_ADMIN>ページで見る</RouterLink><br>
-
-    <RouterLink :to="RoutePathConstants.PAGE_LOGOUT">ログアウト</RouterLink><br>
 
 </template>
 <style scoped></style>

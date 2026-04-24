@@ -4,10 +4,10 @@ import { getLoginUser } from '../../utils/getLoginUser';
 import { RegistDataByCsvFileCapsuleDto, type RegistDataByCsvFileCapsuleDtoInterface } from '../../dto/storage_file/registDataByCsvFileCapsuleDto';
 import { FrameworkCapsuleDto, type FrameworkCapsuleDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import type { StorageFileDtoInterface } from '../../dto/storage_file/storageFileDto';
-import MockReadCsv from '../../../test/common/read_csv/MockReadCsv.vue';
 import EditWkTblStdPerson from '../../common/wktbl_edit_std/EditWkTblStdPerson.vue';
 import EditWkTblMinPerson from '../../common/wktbl_edit_min/EditWkTblMinPerson.vue';
 import ManagerInfo from '../../common/user_info/ManagerInfo.vue';
+import ReadCsv from '../../common/read_csv/ReadCsv.vue';
 
 
 const INIT_BOOLEAN: boolean = false;
@@ -122,7 +122,7 @@ function onBatchByFile() {
     </div>
 
     <!-- csv読み出し10行 -->
-    <MockReadCsv @send-storage-file-interface="recieveStorageFileInterface" :user-dto="userDto"></MockReadCsv>
+    <ReadCsv @send-storage-file-interface="recieveStorageFileInterface" :user-dto="userDto"></ReadCsv>
 
     <div class="one-line">
         <button @click="onBatchByFile">頭出ししたcsvファイルで一括処理</button>

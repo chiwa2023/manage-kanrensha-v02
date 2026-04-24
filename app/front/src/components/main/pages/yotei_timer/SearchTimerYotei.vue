@@ -1,28 +1,34 @@
 ﻿<script setup lang="ts">
 import { ref, toRaw, type Ref } from 'vue';
 import { getLoginUser } from '../../utils/getLoginUser';
-import { convertDatetimeText, InputDatetime, PagingControl, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
+import { convertDatetimeText, InputDatetime, MessageConstants, MessageView, PagingControl, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import { SearchTimerYoteiResultDto, type SearchTimerYoteiResultDtoInterface } from '../../dto/yoyaku_timer/searchTimerYoteiResultDto';
 import { SearchTimerYoteiCapsuleDto, type SearchTimerYoteiCapsuleDtoInterface } from '../../dto/yoyaku_timer/searchTimerYoteiCapsuleDto';
 import { type MultiSelectOptionNumberDtoInterface } from '../../dto/select_options/multiSelectOptionsNumberDto';
 import createYoteiKbnList from '../../dto/yoyaku_timer/createYoteiKbnList';
-import mockGetTimerYoteiList from '../../../test/pages/yoyaku_timer/mockGetTimerYoteiList';
 import getBooleanText from '../../utils/getBooleanText';
-import EditTimerYoyaku from '../../common/yotei_timer/EditTimerYotei.vue';
 import { TimerYoteiEntity, type TimerYoteiEntityInterface } from '../../entity/timerYoteiEntity';
+import AdminInfo from '../../common/user_info/AdminInfo.vue';
+import getAuthorizedPromiseArea from '../../dto/login/getAuthorizedPromiseArea';
+import RoutePathConstants from '../../../../routePathConstants';
+import { AccessTokenNotFoundError, TokenRefreshError } from '../../dto/login/errors';
+import EditTimerYotei from '../../common/yotei_timer/EditTimerYotei.vue';
 
 //仮
 // よく使う定数
-// const BLANK: string = "";
+const BLANK: string = "";
 const INIT_NUMBER: number = 0;
 // const SERVER_STATUS_OK: number = 200;
 // const SERVER_STATUS_ERROR: number = 400;
 const SEARCH_LIMIT: number = 20;
 // メッセージボックス表示定数
-//const infoLevel: Ref<number> = ref(MessageConstants.LEVEL_NONE);
-//const messageType: Ref<number> = ref(MessageConstants.VIEW_NONE);
-//const title: Ref<string> = ref(BLANK);
-//const message: Ref<string> = ref(BLANK);
+const infoLevel: Ref<number> = ref(MessageConstants.LEVEL_NONE);
+const messageType: Ref<number> = ref(MessageConstants.VIEW_NONE);
+const title: Ref<string> = ref(BLANK);
+const message: Ref<string> = ref(BLANK);
+
+// back側アクセス
+const urlBack: string = RoutePathConstants.DOMAIN + RoutePathConstants.BASE_PATH;
 
 // ユーザ呼び出し
 const userDto: Ref<LeastUserDtoInterface> = ref(getLoginUser());
@@ -58,10 +64,65 @@ function onSearch() {
             }
         }
     }
-    resultDto.value.listEntity = mockGetTimerYoteiList();
-    resultDto.value.allCount = resultDto.value.listEntity.length;
-    pageNumber.value = 2;
-    allCount.value = resultDto.value.allCount;
+    // resultDto.value.listEntity = mockGetTimerYoteiList();
+    // resultDto.value.allCount = resultDto.value.listEntity.length;
+    // pageNumber.value = 2;
+    // allCount.value = resultDto.value.allCount;
+
+    capsuleDto.value.allCount = allCount.value;
+    capsuleDto.value.limit = limit.value;
+    capsuleDto.value.pageNumber = pageNumber.value;
+
+    getAuthorizedPromiseArea().then(token => {
+        const url = urlBack + "/timer-yotei/search";
+        const method = "POST";
+        const body = JSON.stringify(capsuleDto.value);
+        const headers = {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'X-AUTH-TOKEN': 'Bearer ' + token
+        };
+        fetch(url, { method, headers, body })
+            .then(async (response) => {
+                resultDto.value = await response.json();
+                if (0 == resultDto.value.listEntity.length) {
+                    infoLevel.value = MessageConstants.LEVEL_INFO;
+                    messageType.value = MessageConstants.VIEW_TOAST;
+                    title.value = "予約実行検索";
+                    message.value = "検索結果が0件でした";
+                }
+                allCount.value = resultDto.value.allCount;
+                limit.value = resultDto.value.limit;
+                pageNumber.value = resultDto.value.pageNumber;
+            })
+            .catch((error) => {
+                alert(error);
+                infoLevel.value = MessageConstants.LEVEL_ERROR;
+                messageType.value = MessageConstants.VIEW_OK;
+                title.value = "システムエラーが発生しました";
+                message.value = "システム管理者にお問い合わせください";
+            });
+    }).catch((e) => {
+        infoLevel.value = MessageConstants.LEVEL_ERROR;
+        messageType.value = MessageConstants.VIEW_OK;
+
+        if (e instanceof AccessTokenNotFoundError) {
+            // トークン保持ができていない場合
+            title.value = "現在トークンが存在しません";
+            message.value = e.message;
+            return;
+        }
+        if (e instanceof TokenRefreshError) {
+            // 取得に失敗している場合
+            title.value = "有効期限まじかのトークンを再取得できませんでした";
+            message.value = e.message;
+            return;
+        }
+        title.value = "システムエラーが発生しました";
+        message.value = "システム管理者にお問い合わせください";
+        return;
+    });
+
 }
 
 const isYoyakuEdit: Ref<Boolean> = ref(false);
@@ -72,9 +133,10 @@ function onEdit(editId: number) {
         timerYoyakuEntity.value = resultDto.value.listEntity.filter((e) => editId === e.timerYoteiId)[0] as TimerYoteiEntityInterface;
         editYoyakId.value = editId;
         timerYoyakuEntityBackup.value = structuredClone(toRaw(timerYoyakuEntity.value));
+        isYoyakuEdit.value = true;
+    } else {
+        alert("取得できませんでした");
     }
-
-    isYoyakuEdit.value = true;
 }
 
 function recieveCancelTimerYoyaku() {
@@ -102,16 +164,20 @@ function recieveTimerYoyakuInterface(entity: TimerYoteiEntityInterface) {
         tempEntity.dayPointed = entity.dayPointed;
         tempEntity.hourPointed = entity.hourPointed;
     }
-
     isYoyakuEdit.value = false;
+}
+
+function recieveSubmit(button: string) {
+    console.log(button); // 警告除け
+    infoLevel.value = 0;
+    messageType.value = 0;
 }
 </script>
 <template>
     <!-- SE権限 -->
-    <MockAdminInfo :user-dto="userDto"></MockAdminInfo>
+    <AdminInfo :user-dto="userDto"></AdminInfo>
 
     <h1>予約実行</h1><br>
-
 
     <h3 class="accent-h3">検索条件</h3>
 
@@ -165,7 +231,6 @@ function recieveTimerYoyakuInterface(entity: TimerYoteiEntityInterface) {
                     <th>繰り返し</th>
                     <th>中断</th>
                     <th>&nbsp;</th>
-                    <th>&nbsp;</th>
                 </tr>
                 <tr v-for="entity of resultDto.listEntity" :key="entity.timerYoteiId">
                     <td>{{ entity.yoyakuTaskKbn }}<br>
@@ -176,7 +241,6 @@ function recieveTimerYoyakuInterface(entity: TimerYoteiEntityInterface) {
                     <td>{{ getBooleanText(entity.isRepeat) }}</td>
                     <td>{{ getBooleanText(entity.isPause) }}</td>
                     <td><button @click="onEdit(entity.timerYoteiId)">編集</button></td>
-                    <td><button>削除</button></td>
                 </tr>
             </tbody>
         </table>
@@ -185,18 +249,23 @@ function recieveTimerYoyakuInterface(entity: TimerYoteiEntityInterface) {
     <PagingControl :all-count="allCount" :limit="limit" :page-number="pageNumber"
         @send-paging-number="recievePagingNumber"></PagingControl>
 
-
     <div class="footer">
         <button class="footer-button">メニューに戻る</button>
     </div>
 
     <div v-if="isYoyakuEdit" class="overBackground"></div>
     <div class="overComponent" v-if="isYoyakuEdit">
-        <EditTimerYoyaku :user-dto="userDto" :timer-yoyaku-entity="timerYoyakuEntity"
+        <EditTimerYotei :user-dto="userDto" :timer-yoyaku-entity="timerYoyakuEntity"
             @send-cancel-timer-yoyaku="recieveCancelTimerYoyaku"
-            @send-timer-yoyaku-interface="recieveTimerYoyakuInterface"></EditTimerYoyaku>
+            @send-timer-yoyaku-interface="recieveTimerYoyakuInterface"></EditTimerYotei>
     </div>
 
+    <!-- メッセージ表示 -->
+    <div class="overMessage" v-if="messageType !== MessageConstants.VIEW_NONE">
+        <MessageView :info-level="infoLevel" :message-type="messageType" :title="title" :message="message"
+            @send-submit="recieveSubmit">
+        </MessageView>
+    </div>
 
 </template>
 <style scoped>

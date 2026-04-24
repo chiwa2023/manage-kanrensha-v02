@@ -3,10 +3,10 @@ import { computed, ref, type ComputedRef, type Ref } from 'vue';
 import EditWkTblHistoryPerson from '../../common/wktbl_edit_history/EditWkTblHistoryPerson.vue';
 import { getLoginUser } from '../../utils/getLoginUser';
 import type { StorageFileDtoInterface } from '../../dto/storage_file/storageFileDto';
-import MockReadCsv from '../../../test/common/read_csv/MockReadCsv.vue';
 import { RegistDataByCsvFileCapsuleDto, type RegistDataByCsvFileCapsuleDtoInterface } from '../../dto/storage_file/registDataByCsvFileCapsuleDto';
 import { FrameworkCapsuleDto, type FrameworkCapsuleDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import ManagerInfo from '../../common/user_info/ManagerInfo.vue';
+import ReadCsv from '../../common/read_csv/ReadCsv.vue';
 
 const INIT_BOOLEAN: boolean = false;
 
@@ -89,9 +89,8 @@ function recieveStorageFileInterface(storageFileDto: StorageFileDtoInterface) {
 
 
     <h1>関連者個人履歴一括登録</h1>
-
     <!-- csv読み出し10行 -->
-    <MockReadCsv @send-storage-file-interface="recieveStorageFileInterface" :user-dto="userDto"></MockReadCsv>
+    <ReadCsv @send-storage-file-interface="recieveStorageFileInterface" :user-dto="userDto"></ReadCsv>
 
     <div class="one-line">
         <button @click="onBatchByFile">頭出ししたcsvファイルで一括処理</button>

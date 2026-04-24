@@ -102,7 +102,7 @@ public class InsertTaskPlanY2025Logic {
         resultDto.setTaskPlanName(savedEntity.getTaskPlanName());
         resultDto.setTransferPass(savedEntity.getTransferPass());
         resultDto.setParamQuery(taskInfoEntity.getParamQuery());
-        resultDto.setMessageTemplate(taskInfoEntity.getMessageTemplate());
+        resultDto.setMessageTemplate(taskInfoEntity.getMessageStart());
 
         return resultDto;
     }

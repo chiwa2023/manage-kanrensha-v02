@@ -5,6 +5,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import net.seijishikin.jp.normalize.common_tool.dto.FrameworkMessageAndResultDto;
 import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.user.GetUserDtoResultDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.UserPersonEntity;
@@ -38,7 +39,7 @@ public class GetUserLeastByIdService {
         GetUserDtoResultDto resultDto = new GetUserDtoResultDto();
         if (optionalOperator.isEmpty()) {
             resultDto.setIsFailure(true);
-            resultDto.setMessage("編集対象が取得できませんでした");
+            resultDto.setMessage(FrameworkMessageAndResultDto.MESSAGE_NO_CONTENT);
             return resultDto;
         }
 
@@ -51,7 +52,9 @@ public class GetUserLeastByIdService {
         userDto.setListRoles(userRoleRepository.findLatestRoleByMail(entityOperator.getEmail()));
 
         resultDto.setUserDto(userDto);
-        resultDto.setMessage("編集対象が取得できました");
+        resultDto.setIsAlertTaskStart(entityOperator.getIsAlertTaskStart());
+        resultDto.setIsAlertTaskEnd(entityOperator.getIsAlertTaskEnd());
+        resultDto.setMessage(FrameworkMessageAndResultDto.MESSAGE_EXPECTED);
 
         return resultDto;
     }

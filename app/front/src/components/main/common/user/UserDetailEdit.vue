@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import { onBeforeMount, ref, type Ref } from 'vue';
 import UserRoleConstants from '../../dto/user/userRoleConstants';
-import { FrameworkCapsuleDto, LeastUserDto, MessageConstants, MessageView, type FrameworkCapsuleDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
+import { MessageConstants, MessageView, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import getAuthorizedPromiseArea from '../../dto/login/getAuthorizedPromiseArea';
 import RoutePathConstants from '../../../../routePathConstants';
 import { GetUserDtoCapsuleDto, type GetUserDtoCapsuleDtoInterface } from '../../dto/user/getUserDtoCapsuleDto';
 import type { GetUserDtoResultDtoInterface } from '../../dto/user/getUserDtoResultDto';
 import { AccessTokenNotFoundError, TokenRefreshError } from '../../dto/login/errors';
+import { EditUserPersonCapsuleDto, type EditUserPersonCapsuleDtoInterface } from '../../dto/user/editUserPersonCapsuleDto';
 
 // props,emits
 const props = defineProps<{ editUserId: number, userDto: LeastUserDtoInterface }>()
@@ -15,8 +16,8 @@ const emits = defineEmits(["sendCancelEditUser", "sendEditUserInterface"]);
 //仮
 // よく使う定数
 const BLANK: string = "";
-// const INIT_NUMBER: number = 0;
-// const SERVER_STATUS_OK: number = 200;
+const INIT_NUMBER: number = 0;
+const SERVER_STATUS_OK: number = 200;
 // const SERVER_STATUS_ERROR: number = 400;
 // メッセージボックス表示定数
 const infoLevel: Ref<number> = ref(MessageConstants.LEVEL_NONE);
@@ -28,7 +29,7 @@ const message: Ref<string> = ref(BLANK);
 const urlBack: string = RoutePathConstants.DOMAIN + RoutePathConstants.BASE_PATH;
 
 // 表示用変数
-const editUserDto: Ref<LeastUserDtoInterface> = ref(new LeastUserDto());
+const editUserDto: Ref<EditUserPersonCapsuleDtoInterface> = ref(new EditUserPersonCapsuleDto());
 const hasRoleManager: Ref<boolean> = ref(false);
 const hasRolePartnerApi: Ref<boolean> = ref(false);
 
@@ -60,23 +61,25 @@ onBeforeMount(() => {
                     message.value = resultDto.message;
                     return;
                 } else {
-                    editUserDto.value = resultDto.userDto;
+                    editUserDto.value.userDto = resultDto.userDto;
+                    editUserDto.value.isAlertTaskStart = resultDto.isAlertTaskStart;
+                    editUserDto.value.isAlertTaskEnd = resultDto.isAlertTaskEnd;
                     // 利用者権限設定
-                    if (editUserDto.value.listRoles.includes(UserRoleConstants.MANAGER)) {
+                    if (editUserDto.value.userDto.listRoles.includes(UserRoleConstants.MANAGER)) {
                         hasRoleManager.value = true;
                     }
-                    if (editUserDto.value.listRoles.includes(UserRoleConstants.PARTNER_API)) {
+                    if (editUserDto.value.userDto.listRoles.includes(UserRoleConstants.PARTNER_API)) {
                         hasRolePartnerApi.value = true;
                     }
                     // 関連者者権限設定
-                    if (editUserDto.value.listRoles.includes(UserRoleConstants.KANRENSHA_PERSON)) {
+                    if (editUserDto.value.userDto.listRoles.includes(UserRoleConstants.KANRENSHA_PERSON)) {
                         kanrenshaRole.value = UserRoleConstants.KANRENSHA_PERSON;
                     }
-                    if (editUserDto.value.listRoles.includes(UserRoleConstants.KANRENSHA_KIGYOU_DT)) {
+                    if (editUserDto.value.userDto.listRoles.includes(UserRoleConstants.KANRENSHA_KIGYOU_DT)) {
                         kanrenshaRole.value = UserRoleConstants.KANRENSHA_KIGYOU_DT;
                         disabledKanrensha.value = true;
                     }
-                    if (editUserDto.value.listRoles.includes(UserRoleConstants.KANRENSHA_SEIJIDANTAI)) {
+                    if (editUserDto.value.userDto.listRoles.includes(UserRoleConstants.KANRENSHA_SEIJIDANTAI)) {
                         kanrenshaRole.value = UserRoleConstants.KANRENSHA_SEIJIDANTAI;
                         disabledKanrensha.value = true;
                     }
@@ -109,17 +112,13 @@ onBeforeMount(() => {
 
 });
 
-
+let actionStatus: number = INIT_NUMBER;
 function onSave() {
-
-    const capsuleDto: FrameworkCapsuleDtoInterface = new FrameworkCapsuleDto();
-    capsuleDto.userDto = editUserDto.value;
-
     // 更新実行
     getAuthorizedPromiseArea().then(token => {
         const url = urlBack + "/edit-user/change";
         const method = "POST";
-        const body = JSON.stringify(capsuleDto);
+        const body = JSON.stringify(editUserDto.value);
         const headers = {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
@@ -139,6 +138,8 @@ function onSave() {
                     infoLevel.value = MessageConstants.LEVEL_INFO;
                     messageType.value = MessageConstants.VIEW_TOAST;
                     message.value = "ユーザ更新処理が正常にできました";
+                    actionStatus = SERVER_STATUS_OK;
+                    return;
                 }
             })
             .catch((e) => {
@@ -162,6 +163,7 @@ function onSave() {
                 messageType.value = MessageConstants.VIEW_OK;
                 title.value = "システムエラーが発生しました";
                 message.value = "システム管理者にお問い合わせください";
+                return;
             });
     });
 }
@@ -171,12 +173,13 @@ function onCancel() {
 }
 
 function recieveSubmit(button: string) {
-
-    if (button === "ユーザ更新処理") {
+    console.log(button);
+    if (SERVER_STATUS_OK === actionStatus) {
         emits("sendEditUserInterface");
     }
     infoLevel.value = 0;
     messageType.value = 0;
+    actionStatus = INIT_NUMBER;
 }
 </script>
 <template>
@@ -187,7 +190,7 @@ function recieveSubmit(button: string) {
             識別コード
         </div>
         <div class="right-area">
-            {{ editUserDto.userPersonCode }}
+            {{ editUserDto.userDto.userPersonCode }}
         </div>
     </div>
 
@@ -196,7 +199,7 @@ function recieveSubmit(button: string) {
             ユーザ名
         </div>
         <div class="right-area">
-            <input type="text" v-model="editUserDto.userPersonName">
+            <input type="text" v-model="editUserDto.userDto.userPersonName">
         </div>
     </div>
 
@@ -223,6 +226,18 @@ function recieveSubmit(button: string) {
                 class="left-space" disabled="true">企業／団体
             <input type="radio" id="role" v-model="kanrenshaRole" :value=UserRoleConstants.KANRENSHA_SEIJIDANTAI
                 class="left-space" disabled="true">政治団体
+        </div>
+    </div>
+
+    <div class="one-line">
+        <div class="left-area">
+            関連者
+        </div>
+        <div class="right-area">
+            <div class="form-group-vertical">
+                <div><input type="checkbox" v-model="editUserDto.isAlertTaskStart">タスク開始通知を送信する</input></div>
+                <div><input type="checkbox" v-model="editUserDto.isAlertTaskEnd">タスク終了通知を送信する</input></div>
+            </div>
         </div>
     </div>
 

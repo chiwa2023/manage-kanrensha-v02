@@ -158,7 +158,6 @@ function onDelete(selectedId: number) {
 // ユーザ検索と選択
 const selectedUserId: Ref<number> = ref(0);
 
-
 function recieveCancelEditUser() {
     isViewEdit.value = false;
 }
@@ -168,9 +167,6 @@ function recieveEditUserInterface() {
     // 更新後に最新データ取得
     onSearch();
 }
-
-
-
 
 function onCancel() {
     router.push(RoutePathConstants.PAGE_LOGIN);
@@ -320,7 +316,7 @@ function recievePagingNumber(selecteddNumber: number) {
     <div v-if="isViewEdit" class="overComponent">
         <UserDetailEdit :user-dto="userDto" :edit-user-id="selectedUserId"
             @send-cancel-edit-user="recieveCancelEditUser" @send-edit-user-interface="recieveEditUserInterface">
-        </UserDetailEdit>
+        </UserDetailEdit>ユーザ情報編集
     </div>
 
     <!-- メッセージ表示 -->

@@ -77,6 +77,16 @@ class InsertTaskPlanY2025LogicTest {
         assertEquals("admin,manager", entity.getRoleList());
         assertEquals("http://localhost:6180/kanrensha-manage/edit-page?asd=123&zxc=456", entity.getTransferPass());
 
+        
+        assertEquals(entity.getTaskInfoCode(), dto.getTaskInfoCode());
+        assertEquals(entity.getTaskPlanCode(), dto.getTaskPlanCode());
+        assertEquals(entity.getTaskPlanId(), dto.getTaskPlanId());
+        assertEquals(entity.getTaskPlanName(), dto.getTaskPlanName());
+        assertEquals(entity.getTableYear(), dto.getTaskYear());
+        assertEquals(entity.getTransferPass(), dto.getTransferPass());
+        //assertEquals("admin,manager", dto.getMessageTemplate());
+        //assertEquals(, dto.getParamQuery());
+        
         assertThrows(EmptyResultDataAccessException.class,
                 () -> insertTaskPlanY2025Logic.practice(userDto, dateTimeStart, 622, map));
     }

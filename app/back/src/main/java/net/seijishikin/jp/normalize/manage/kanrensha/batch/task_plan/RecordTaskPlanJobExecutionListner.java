@@ -72,6 +72,10 @@ public class RecordTaskPlanJobExecutionListner implements JobExecutionListener {
                     saveStackTraceService.practice((Exception) throwable, tableYear, taskCode);
                 }
             }
+            
+            // メール送信
+            
+            
         } catch (Exception exception) { // NOPMD 業務的な理由から積極的に許容
             saveStackTraceService.practice(exception, Year.now().getValue(), 0);
         }
