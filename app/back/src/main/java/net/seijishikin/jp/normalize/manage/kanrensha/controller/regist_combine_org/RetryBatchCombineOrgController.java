@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import io.netty.handler.codec.http.HttpResponseStatus;
+import org.springframework.http.HttpStatus;
 import net.seijishikin.jp.normalize.common_tool.dto.FrameworkMessageAndResultDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.add_xml.RetryWktblBatchCapsuleDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.task.InsertTaskPlanResultDto;
@@ -59,7 +59,7 @@ public class RetryBatchCombineOrgController {
                 dateTimeStart, TaskInfoConstants.COMBINE_RETRY, mapParam);
         retryBatchCombineKigyouDtService.practice(capsuleDto.getUserDto(), year, planDto);
 
-        return ResponseEntity.status(HttpResponseStatus.OK.code()).body(resultDto);
+        return ResponseEntity.status(HttpStatus.OK).body(resultDto);
     }
 
 }

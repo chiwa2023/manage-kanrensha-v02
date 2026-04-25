@@ -12,24 +12,31 @@ import EditWkTblMinPerson from '../../common/wktbl_edit_min/EditWkTblMinPerson.v
 import EditWkTblMinKigyouDt from '../../common/wktbl_edit_min/EditWkTblMinKigyouDt.vue';
 import EditWkTblMinSeijidantai from '../../common/wktbl_edit_min/EditWkTblMinSeijidantai.vue';
 import getMockRegistByXmlList from './mock/getMockRegistByXmlList';
-import { FrameworkCapsuleDto, PagingControl, type FrameworkCapsuleDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
+import { FrameworkCapsuleDto, MessageConstants, MessageView, PagingControl, type FrameworkCapsuleDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import { UpdateWkTblAddByXmlTableListCapsuleDto, type UpdateWkTblAddByXmlTableListCapsuleDtoInterface } from '../../dto/add_xml/updateWkTblAddByXmlTableListCapsuleDto';
 import { UpdateWkTblAddByXmlCapsuleDto, type UpdateWkTblAddByXmlCapsuleDtoInterface } from '../../dto/add_xml/updateWkTblAddByXmlCapsuleDto';
 import ManagerInfo from '../../common/user_info/ManagerInfo.vue';
 import ReadPublishXml from '../../common/read_publish_xml/ReadPublishXml.vue';
+import RoutePathConstants from '../../../../routePathConstants';
 
 // ユーザ呼び出し
 const userDto: Ref<LeastUserDtoInterface> = ref(getLoginUser());
 
 // よく使う定数
-// const BLANK: string = "";
+const BLANK: string = "";
 const INIT_NUMBER: number = 0;
 // const SERVER_STATUS_OK: number = 200;
 // const SERVER_STATUS_ERROR: number = 400;
 const SEARCH_LIMIT: number = 20;
 
+// メッセージボックス表示定数
+const infoLevel: Ref<number> = ref(MessageConstants.LEVEL_NONE);
+const messageType: Ref<number> = ref(MessageConstants.VIEW_NONE);
+const title: Ref<string> = ref(BLANK);
+const message: Ref<string> = ref(BLANK);
+
 // back側アクセス
-// const urlBack: string = RoutePathConstants.DOMAIN + RoutePathConstants.BASE_PATH;
+const urlBack: string = RoutePathConstants.DOMAIN + RoutePathConstants.BASE_PATH;
 
 // 関連者区分定数
 const kanrenshaKbnNoSelect: number = KanrenshaKbnConstants.NO_SELECT;
@@ -476,6 +483,13 @@ function recievePagingNumber(selecteddNumber: number) {
     <div class="footer">
         <button @click="onCancel" class="footer-button">キャンセル</button>
         <button @click="onSave" class="footer-button left-space">送信</button>
+    </div>
+
+    <!-- メッセージ表示 -->
+    <div class="overMessage" v-if="messageType !== MessageConstants.VIEW_NONE">
+        <MessageView :info-level="infoLevel" :message-type="messageType" :title="title" :message="message"
+            @send-submit="recieveSubmit">
+        </MessageView>
     </div>
 
 </template>

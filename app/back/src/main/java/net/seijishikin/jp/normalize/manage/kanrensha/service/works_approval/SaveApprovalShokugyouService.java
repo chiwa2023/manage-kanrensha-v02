@@ -113,12 +113,6 @@ public class SaveApprovalShokugyouService {
             // 変更があった場合は履歴に変更したEntityを戻す
             KanrenshaPersonPropertyEntity entityChange = new KanrenshaPersonPropertyEntity();
             BeanUtils.copyProperties(previousEntity, entityChange);
-            
-            System.out.println("削除履歴に変更前" + previousEntity.getDeleteTimestamp());
-            System.out.println("削除履歴に変更前" + entityChange.getDeleteTimestamp());
-            
-            System.out.println("削除履歴に変更前" + (DELETE_LIMIT_TIMESTAMP.isBefore(entityChange.getDeleteTimestamp())));
-                       
             setTableDataHistoryUtil.practiceDelete(userDto, entityChange);
             return entityChange;
         }

@@ -45,7 +45,7 @@ public class SearchApprovalAddressKigyouDtController {
             resultDto.setResultDtoAddress(searchApprovalAddressKigyouDtService.practice(capsuleDto));
 
             return ResponseEntity.status(HttpStatus.OK).body(resultDto);
-        } catch (Exception exception) {
+        } catch (Exception exception) { // NOPMD 業務的な理由から積極的に許容
             stackTraceService.practice(exception, Year.now().getValue(), 0);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }

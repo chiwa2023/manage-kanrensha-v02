@@ -155,7 +155,7 @@ function recieveSubmit(button: string) {
     </div>
 
     <h3>読み取り結果(最初の10行)</h3>
-    <div class="one-line">
+    <div class="one-line-scroll">
         <table>
             <tbody>
                 <tr v-for="row, index of tableData" :key="index">

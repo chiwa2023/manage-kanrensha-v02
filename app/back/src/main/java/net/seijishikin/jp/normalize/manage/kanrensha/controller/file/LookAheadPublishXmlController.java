@@ -68,7 +68,7 @@ public class LookAheadPublishXmlController {
             resultDto.setIsFailure(true);
             resultDto.setMessage("ファイルが正常に保存できませんでした");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(resultDto);
-        } catch (Exception exception) {
+        } catch (Exception exception) {  // NOPMD 業務的な理由から積極的に許容
             saveStackTraceService.practice(exception, year, 0);
             resultDto.setIsFailure(true);
             resultDto.setMessage("なにがしかの例外が発生しました");

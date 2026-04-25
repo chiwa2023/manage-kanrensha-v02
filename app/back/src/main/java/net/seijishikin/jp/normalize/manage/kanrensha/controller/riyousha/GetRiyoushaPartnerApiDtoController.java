@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import io.netty.handler.codec.http.HttpResponseStatus;
+import org.springframework.http.HttpStatus;
 import net.seijishikin.jp.normalize.common_tool.dto.FrameworkMessageAndResultDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.riyousha.RiyoushaPartnerApiDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.RiyoushaPartnerApiMasterEntity;
@@ -41,23 +41,25 @@ public class GetRiyoushaPartnerApiDtoController {
     @PostMapping("/get-partner-api")
     public ResponseEntity<RiyoushaPartnerApiDto> practice(
             @RequestBody final RiyoushaPartnerApiMasterEntity masterEntity) {
+        
+        RiyoushaPartnerApiDto managerDto;
         try {
-            RiyoushaPartnerApiDto managerDto = getRiyoushaPartnerApiDtoService.practice(masterEntity);
+            managerDto = getRiyoushaPartnerApiDtoService.practice(masterEntity);
             final Integer zero = 0;
             if (zero.equals(managerDto.getRiyoushaPartnerApiMasterId())) {
                 managerDto.setIsFailure(true);
                 managerDto.setMessage(FrameworkMessageAndResultDto.MESSAGE_NO_CONTENT);
-                return ResponseEntity.status(HttpResponseStatus.ACCEPTED.code()).body(managerDto);
+                return ResponseEntity.status(HttpStatus.ACCEPTED).body(managerDto);
             } else {
-                return ResponseEntity.status(HttpResponseStatus.OK.code()).body(managerDto);
+                return ResponseEntity.status(HttpStatus.OK).body(managerDto);
             }
         } catch (Exception exception) { // NOPMD AvoidCatchGenericException
             // 例外を保存してエラー発生を伝達
             saveStackTraceService.practice(exception, Year.now().getValue(), 0);
-            RiyoushaPartnerApiDto managerDto = new RiyoushaPartnerApiDto();
+            managerDto = new RiyoushaPartnerApiDto();
             managerDto.setIsFailure(true);
             managerDto.setMessage(FrameworkMessageAndResultDto.MESSAGE_INTERNAL_ERROR);
-            return ResponseEntity.status(HttpResponseStatus.INTERNAL_SERVER_ERROR.code()).body(managerDto);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(managerDto);
         }
     }
 

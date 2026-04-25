@@ -66,7 +66,7 @@ public class LookAheadCsvFileController {
             resultDto.setIsFailure(true);
             resultDto.setMessage("csv解析が正常にできませんでした");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(resultDto);
-        } catch (Exception exception) {
+        } catch (Exception exception) { // NOPMD 業務的な理由から積極的に許容
             saveStackTraceService.practice(exception, year, 0);
             resultDto.setIsFailure(true);
             resultDto.setMessage("予測できない例外発生しました");

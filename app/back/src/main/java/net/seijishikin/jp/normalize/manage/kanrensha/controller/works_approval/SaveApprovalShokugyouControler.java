@@ -41,8 +41,8 @@ public class SaveApprovalShokugyouControler {
     public ResponseEntity<FrameworkMessageAndResultDto> practice(
             final @RequestBody SaveWorksApprovalCapsuleDto capsuleDto) {
 
+        FrameworkMessageAndResultDto resultDto = new FrameworkMessageAndResultDto();
         try {
-            FrameworkMessageAndResultDto resultDto = new FrameworkMessageAndResultDto();
             if (0 == saveApprovalShokugyouService.practice(capsuleDto.getListShokugyou(), capsuleDto.getUserDto())) {
                 resultDto.setMessage("データ更新が0件でした");
                 resultDto.setIsFailure(true);
@@ -52,9 +52,11 @@ public class SaveApprovalShokugyouControler {
                 return ResponseEntity.status(HttpStatus.OK).body(resultDto);
             }
 
-        } catch (Exception exception) {
+        } catch (Exception exception) { // NOPMD 業務的な理由から積極的に許容
             stackTraceService.practice(exception, Year.now().getValue(), 0);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            resultDto.setIsFailure(true);
+            resultDto.setMessage(exception.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(resultDto);
         }
 
     }

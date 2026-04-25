@@ -30,6 +30,9 @@ import net.seijishikin.jp.normalize.manage.kanrensha.entity.KanrenshaPersonPrope
 import net.seijishikin.jp.normalize.manage.kanrensha.repository.KanrenshaPersonPropertyRepository;
 import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateLeastUserForTestUtil;
 
+/**
+ * SaveApprovalShokugyouControler単体テスト
+ */
 @SpringJUnitConfig
 @AutoConfigureMockMvc
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
@@ -52,7 +55,7 @@ class SaveApprovalShokugyouControlerTest {
 
         SaveWorksApprovalCapsuleDto capsuleDto = new SaveWorksApprovalCapsuleDto();
         capsuleDto.setUserDto(CreateLeastUserForTestUtil.practice());
-        
+
         List<KanrenshaPersonPropertyEntity> listShokugyou = kanrenshaPersonPropertyRepository.findAll();
 
         final String newGyoushu = "小売";
@@ -63,9 +66,9 @@ class SaveApprovalShokugyouControlerTest {
 
         listShokugyou.get(2).setShokugyouUserWrite("素浪人");
         listShokugyou.get(2).setKigyouDtNo("9988");
-        
+
         capsuleDto.setListShokugyou(listShokugyou);
-        
+
         ObjectMapper objectMapper = GetObjectMapperWithTimeModuleUtil.practice();
 
         String path = PathRouteConstants.ROOT + "/works-approval/save-shokugyou";

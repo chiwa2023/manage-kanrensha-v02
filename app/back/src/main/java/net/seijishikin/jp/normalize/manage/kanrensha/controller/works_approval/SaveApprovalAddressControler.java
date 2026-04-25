@@ -41,11 +41,11 @@ public class SaveApprovalAddressControler {
     public ResponseEntity<FrameworkMessageAndResultDto> practice(
             final @RequestBody SaveWorksApprovalCapsuleDto capsuleDto) {
 
+        FrameworkMessageAndResultDto resultDto = new FrameworkMessageAndResultDto();
         try {
             Integer addressCount = saveApprovalAddressService.practice(capsuleDto.getListAddress(),
                     capsuleDto.getUserDto());
 
-            FrameworkMessageAndResultDto resultDto = new FrameworkMessageAndResultDto();
             if (0 == addressCount) {
                 resultDto.setIsFailure(true);
                 resultDto.setMessage("更新件数が0件でした");
@@ -55,9 +55,11 @@ public class SaveApprovalAddressControler {
                 return ResponseEntity.status(HttpStatus.OK).body(resultDto);
             }
 
-        } catch (Exception exception) {
+        } catch (Exception exception) { // NOPMD 業務的な理由から積極的に許容
             stackTraceService.practice(exception, Year.now().getValue(), 0);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            resultDto.setIsFailure(true);
+            resultDto.setMessage(exception.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(resultDto);
         }
     }
 

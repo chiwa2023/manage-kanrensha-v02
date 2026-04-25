@@ -1,25 +1,33 @@
 ﻿<script setup lang="ts">
-import { ref, toRaw, type Ref } from 'vue';
+import { computed, ref, toRaw, type ComputedRef, type Ref } from 'vue';
 import { SearchWkTblPagingCapsuleDto, type SearchWkTblPagingCapsuleDtoInterface } from '../../dto/add_xml/searchWkTbPagingCapsuleDto';
 import { WkTblKanrenshaKigyouDtAddMinEntity, type WkTblKanrenshaKigyouDtAddMinEntityInterface } from '../../entity/wkTblKanrenshaKigyouDtAddMinEntity';
 import { UpdateWkTblMinKigyouDtCapsuleDto, type UpdateWkTblMinKigyouDtCapsuleDtoInterface } from '../../dto/wktbl_min/updateWkTblMinKigyouDtCapsuleDto';
-import { PagingControl, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
+import { MessageConstants, MessageView, PagingControl, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import { SearchWkTblMinKigyouDtPagingResultDto, type SearchWkTblMinKigyouDtPagingResultDtoInterface } from '../../dto/wktbl_min/searchWkTblMinKigyouDtPagingResultDto';
-import getMockWkTblKigyouDtList from './mock/getMockWkTblKigyouDtList';
+import getAuthorizedPromiseArea from '../../dto/login/getAuthorizedPromiseArea';
+import RoutePathConstants from '../../../../routePathConstants';
+import { AccessTokenNotFoundError, TokenRefreshError } from '../../dto/login/errors';
+import type { UpdateWkTblMinKigyouDtResultDtoInterface } from '../../dto/wktbl_min/updateWkTblMinKigyouDtResultDto';
 
 //props,emit
 const props = defineProps<{ userDto: LeastUserDtoInterface }>()
 
 // よく使う定数
-// const BLANK: string = "";
+const BLANK: string = "";
 const INIT_NUMBER: number = 0;
 const INIT_BOOLEAN: boolean = false;
 // const SERVER_STATUS_OK: number = 200;
 // const SERVER_STATUS_ERROR: number = 400;
 const SEARCH_LIMIT: number = 20;
+// メッセージボックス表示定数
+const infoLevel: Ref<number> = ref(MessageConstants.LEVEL_NONE);
+const messageType: Ref<number> = ref(MessageConstants.VIEW_NONE);
+const title: Ref<string> = ref(BLANK);
+const message: Ref<string> = ref(BLANK);
 
 // back側アクセス
-// const urlBack: string = RoutePathConstants.DOMAIN + RoutePathConstants.BASE_PATH;
+const urlBack: string = RoutePathConstants.DOMAIN + RoutePathConstants.BASE_PATH;
 
 // Paging
 const pageNumber: Ref<number> = ref(INIT_NUMBER);
@@ -37,24 +45,61 @@ const kigyouDtResultDto: Ref<SearchWkTblMinKigyouDtPagingResultDtoInterface> = r
 
 function onSearchKigyouDt() {
 
-    kigyouDtResultDto.value.listWktblKigyouDt = getMockWkTblKigyouDtList();
-    allCount.value = kigyouDtResultDto.value.listWktblKigyouDt.length;
-    // getAuthorizedPromiseArea().then(token => {
-    //     const url = urlBack + "/regist-bulk-master-min/search-kigyouDt";
-    //     const method = "POST";
-    //     const body = JSON.stringify(kigyouDtCapsuleDto.value);
-    //     const headers = {
-    //         'Accept': 'application/json',
-    //         'Content-Type': 'application/json',
-    //         'X-AUTH-TOKEN': 'Bearer ' + token
-    //     };
-    //     fetch(url, { method, headers, body })
-    //         .then(async (response) => {
-    //             kigyouDtResultDto.value = await response.json();
-    //             pageOptionKigyouDt.value = getPagingOption(kigyouDtResultDto.value);
-    //         })
-    //         .catch((error) => { alert(error); });
-    // });
+    kigyouDtCapsuleDto.value.allCount = allCount.value;
+    kigyouDtCapsuleDto.value.limit = limit.value;
+    kigyouDtCapsuleDto.value.pageNumber = pageNumber.value;
+
+    getAuthorizedPromiseArea().then(token => {
+        const url = urlBack + "/regist-bulk-master-min/search-kigyou-dt";
+        const method = "POST";
+        const body = JSON.stringify(kigyouDtCapsuleDto.value);
+        const headers = {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'X-AUTH-TOKEN': 'Bearer ' + token
+        };
+        fetch(url, { method, headers, body })
+            .then(async (response) => {
+                kigyouDtResultDto.value = await response.json();
+                if (0 == kigyouDtResultDto.value.listWktblKigyouDt.length) {
+                    infoLevel.value = MessageConstants.LEVEL_INFO;
+                    messageType.value = MessageConstants.VIEW_TOAST;
+                    title.value = "タスク情報検索";
+                    message.value = "検索結果が0件でした";
+                }
+                allCount.value = kigyouDtResultDto.value.allCount;
+                limit.value = kigyouDtResultDto.value.limit;
+                pageNumber.value = kigyouDtResultDto.value.pageNumber;
+            })
+            .catch((error) => {
+                alert(error);
+                infoLevel.value = MessageConstants.LEVEL_ERROR;
+                messageType.value = MessageConstants.VIEW_OK;
+                title.value = "タスク情報検索";
+                message.value = "システムエラーが発生しました。システム管理者にお問い合わせください";
+            });
+    }).catch((e) => {
+        infoLevel.value = MessageConstants.LEVEL_ERROR;
+        messageType.value = MessageConstants.VIEW_OK;
+
+        if (e instanceof AccessTokenNotFoundError) {
+            // トークン保持ができていない場合
+            title.value = "現在トークンが存在しません";
+            message.value = e.message;
+            return;
+        }
+        if (e instanceof TokenRefreshError) {
+            // 取得に失敗している場合
+            title.value = "有効期限まじかのトークンを再取得できませんでした";
+            message.value = e.message;
+            return;
+        }
+        title.value = "システムエラーが発生しました";
+        message.value = "システム管理者にお問い合わせください";
+        return;
+    });
+
+
 }
 
 // 編集用
@@ -63,12 +108,14 @@ const entityEdit: Ref<WkTblKanrenshaKigyouDtAddMinEntityInterface> = ref(new WkT
 const editCapsuleDto: Ref<UpdateWkTblMinKigyouDtCapsuleDtoInterface> = ref(new UpdateWkTblMinKigyouDtCapsuleDto());
 editCapsuleDto.value.userDto = props.userDto;
 
+const findIndex: Ref<number> = ref(INIT_NUMBER);
 function onEditData(editId: number) {
     // 指定されたデータを呼び出し(編集決定時には置き換えするので配列indexが必要)
-    const findIndex: number = kigyouDtResultDto.value.listWktblKigyouDt.findIndex(
+    const tempIndex: number = kigyouDtResultDto.value.listWktblKigyouDt.findIndex(
         (e) => e.wkTblKanrenshaKigyouDtAddMinId === editId);
-    if (findIndex !== undefined && kigyouDtResultDto.value.listWktblKigyouDt[findIndex] !== undefined) {
-        entityEdit.value = structuredClone(toRaw(kigyouDtResultDto.value.listWktblKigyouDt[findIndex]));
+    if (tempIndex !== undefined && kigyouDtResultDto.value.listWktblKigyouDt[tempIndex] !== undefined) {
+        entityEdit.value = structuredClone(toRaw(kigyouDtResultDto.value.listWktblKigyouDt[tempIndex]));
+        findIndex.value = tempIndex;
     }
 
     isEditData.value = true;
@@ -78,28 +125,57 @@ function onEditUpdate() {
     // 編集中のEntityを編集のためにBack側に受け渡し
     editCapsuleDto.value.wkTblKanrenshaKigyouDtAddMinEntity = entityEdit.value;
 
-    // getAuthorizedPromiseArea().then(token => {
-    //     const url = urlBack + "/regist-bulk-master-min/update-kigyouDt";
-    //     const method = "POST";
-    //     const body = JSON.stringify(editCapsuleDto.value);
-    //     const headers = {
-    //         'Accept': 'application/json',
-    //         'Content-Type': 'application/json',
-    //         'X-AUTH-TOKEN': 'Bearer ' + token
-    //     };
-    //     fetch(url, { method, headers, body })
-    //         .then(async (response) => {
-    //             if (response.status < 400) {
-    //                 const resultDto: UpdateWkTblMinKigyouDtResultInterface = await response.json();
-    //                 alert(resultDto.message);
-    //                 if (response.status === 200) {
-    //                     // 再表示
-    //                     onSearchKigyouDt();
-    //                 }
-    //             }
-    //         })
-    //         .catch((error) => { alert(error); });
-    // });
+    title.value = "関連者企業団体マスタ最小ワークテーブル更新";
+    getAuthorizedPromiseArea().then(token => {
+        const url = urlBack + "/regist-bulk-master-min/update-kigyou-dt";
+        const method = "POST";
+        const body = JSON.stringify(editCapsuleDto.value);
+        const headers = {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'X-AUTH-TOKEN': 'Bearer ' + token
+        };
+        fetch(url, { method, headers, body })
+            .then(async (response) => {
+                const resultDto: UpdateWkTblMinKigyouDtResultDtoInterface = await response.json();
+                message.value = resultDto.message;
+                if (resultDto.isFailure) {
+                    infoLevel.value = MessageConstants.LEVEL_WARNING;
+                    messageType.value = MessageConstants.VIEW_OK;
+                    return;
+                } else {
+                    infoLevel.value = MessageConstants.LEVEL_INFO;
+                    messageType.value = MessageConstants.VIEW_TOAST;
+                    isEditData.value = false;
+                    return;
+                }
+            })
+            .catch((error) => {
+                alert(error);
+                infoLevel.value = MessageConstants.LEVEL_ERROR;
+                messageType.value = MessageConstants.VIEW_OK;
+                message.value = "システムエラーが発生しました。システム管理者にお問い合わせください";
+            });
+    }).catch((e) => {
+        infoLevel.value = MessageConstants.LEVEL_ERROR;
+        messageType.value = MessageConstants.VIEW_OK;
+
+        if (e instanceof AccessTokenNotFoundError) {
+            // トークン保持ができていない場合
+            title.value = "現在トークンが存在しません";
+            message.value = e.message;
+            return;
+        }
+        if (e instanceof TokenRefreshError) {
+            // 取得に失敗している場合
+            title.value = "有効期限まじかのトークンを再取得できませんでした";
+            message.value = e.message;
+            return;
+        }
+        title.value = "システムエラーが発生しました";
+        message.value = "システム管理者にお問い合わせください";
+        return;
+    });
 
     // 編集コンポーネントを閉じる
     isEditData.value = false;
@@ -112,11 +188,16 @@ function onEditClose() {
 // 編集画面データ更新禁止
 const listEditProhibit: string[] = [];
 listEditProhibit.push("正常終了");
-function isEdit(): boolean {
-    return listEditProhibit.includes(entityEdit.value.judgeReason);
-}
+const onSaveClassName: ComputedRef<string> = computed(() => {
+    if (listEditProhibit.includes(entityEdit.value.judgeReason)) {
+        return "footer-button-disable";
+    } else {
+        return "footer-button";
+    }
+});
 
 const notUseText: string = "使用しないに変更;";
+const onHideDisabled: ComputedRef<boolean> = computed(() => listEditProhibit.includes(entityEdit.value.judgeReason));
 function onHideData() {
     entityEdit.value.judgeReason = notUseText;
     entityEdit.value.isAffected = false;
@@ -133,6 +214,12 @@ function recievePagingNumber(selecteddNumber: number) {
 defineExpose({
     onSearchKigyouDt,
 });
+
+function recieveSubmit(button: string) {
+    console.log(button); // 警告除け
+    infoLevel.value = 0;
+    messageType.value = 0;
+}
 </script>
 <template>
     <h3>関連者企業／団体検索条件</h3>
@@ -161,7 +248,7 @@ defineExpose({
     <!-- ページング -->
     <PagingControl :all-count="allCount" :limit="limit" :page-number="pageNumber"
         @send-paging-number="recievePagingNumber"></PagingControl>
-    <div class="one-line">
+    <div class="one-line-scroll">
         <table>
             <tbody>
                 <tr>
@@ -203,7 +290,7 @@ defineExpose({
                 </div>
                 <div class="right-area">
                     <input type="checkbox" v-model="entityEdit.isAffected">反映あり<button @click="onHideData"
-                        class="left-space">このデータを使用しない</button>
+                        class="left-space" :disabled="onHideDisabled">このデータを使用しない</button>
                     <br>※データが重複していると反映該否が動かせないことがあります
                 </div>
             </div>
@@ -253,17 +340,19 @@ defineExpose({
                 </div>
             </div>
 
-            <div class="one-line">
-                <div class="left-area">
-                    &nbsp;
-                </div>
-                <div class="right-area">
-                    <button @click="onEditClose">閉じる</button><button class="left-space" @click="onEditUpdate()"
-                        :disabled="isEdit()">更新</button>
-                </div>
+            <div class="footer">
+                <button @click="onEditClose" class="footer-button">キャンセル</button>
+                <button @click="onEditUpdate" class="left-space" :class="onSaveClassName">送信</button>
             </div>
 
         </div>
+    </div>
+
+    <!-- メッセージ表示 -->
+    <div class="overMessage" v-if="messageType !== MessageConstants.VIEW_NONE">
+        <MessageView :info-level="infoLevel" :message-type="messageType" :title="title" :message="message"
+            @send-submit="recieveSubmit">
+        </MessageView>
     </div>
 </template>
 <style scoped>

@@ -1,4 +1,4 @@
-package net.seijishikin.jp.normalize.manage.kanrensha.controller.works_approval;
+package net.seijishikin.jp.normalize.manage.kanrensha.controller.works_approval; // NOPMD HighImport
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;

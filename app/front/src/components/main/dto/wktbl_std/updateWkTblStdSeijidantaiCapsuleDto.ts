@@ -4,7 +4,7 @@ import { type FrameworkCapsuleDtoInterface ,FrameworkCapsuleDto } from "seijishi
 interface UpdateWkTblStdSeijidantaiCapsuleDtoInterface extends FrameworkCapsuleDtoInterface {
 
     /** 編集対象Entity */
-    wkTblMasterSeijidantaiEntity: WkTblKanrenshaSeijidantaiMasterEntityInterface;
+    wkTblKanrenshaSeijidantaiMasterEntity: WkTblKanrenshaSeijidantaiMasterEntityInterface;
 
 }
 /**
@@ -15,11 +15,11 @@ class UpdateWkTblStdSeijidantaiCapsuleDto extends FrameworkCapsuleDto
 
 
     /** 編集対象Entity */
-    wkTblMasterSeijidantaiEntity: WkTblKanrenshaSeijidantaiMasterEntityInterface;
+    wkTblKanrenshaSeijidantaiMasterEntity: WkTblKanrenshaSeijidantaiMasterEntityInterface;
 
     constructor() {
         super();
-        this.wkTblMasterSeijidantaiEntity = new WkTblKanrenshaSeijidantaiMasterEntity();
+        this.wkTblKanrenshaSeijidantaiMasterEntity = new WkTblKanrenshaSeijidantaiMasterEntity();
     }
 }
 

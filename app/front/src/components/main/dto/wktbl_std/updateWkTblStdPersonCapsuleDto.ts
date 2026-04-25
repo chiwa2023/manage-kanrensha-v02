@@ -4,7 +4,7 @@ import { type FrameworkCapsuleDtoInterface ,FrameworkCapsuleDto } from "seijishi
 interface UpdateWkTblStdPersonCapsuleDtoInterface extends FrameworkCapsuleDtoInterface {
 
     /** 編集対象Entity */
-    wkTblMasterPersonEntity: WkTblKanrenshaPersonMasterEntityInterface;
+    wkTblKanrenshaPersonMasterEntity: WkTblKanrenshaPersonMasterEntityInterface;
 
 }
 
@@ -15,10 +15,10 @@ class UpdateWkTblStdPersonCapsuleDto extends FrameworkCapsuleDto
     implements UpdateWkTblStdPersonCapsuleDtoInterface {
 
     /** 編集対象Entity */
-    wkTblMasterPersonEntity: WkTblKanrenshaPersonMasterEntityInterface;
+    wkTblKanrenshaPersonMasterEntity: WkTblKanrenshaPersonMasterEntityInterface;
     constructor() {
         super();
-        this.wkTblMasterPersonEntity = new WkTblKanrenshaPersonMasterEntity();
+        this.wkTblKanrenshaPersonMasterEntity = new WkTblKanrenshaPersonMasterEntity();
     }
 }
 

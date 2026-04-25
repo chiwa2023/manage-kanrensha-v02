@@ -44,7 +44,6 @@ public class SaveApprovalAddressService {
         int updateCount = 0;
 
         for (KanrenshaAddressBaseEntity entity : listAddress) {
-            System.out.println("==loop" + entity.getKanrenshaKbn());
 
             switch (entity.getKanrenshaKbn()) {
 

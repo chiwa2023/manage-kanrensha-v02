@@ -10,7 +10,8 @@ import net.seijishikin.jp.normalize.manage.kanrensha.entity.TaskInfoEntity;
 /**
  * タスク情報検索結果Dto
  */
-public class SearchTaskInfoResultDto implements PagingIntegerDtoInterface, Serializable {
+public class SearchTaskInfoResultDto // NOPMD DataClass
+        implements PagingIntegerDtoInterface, Serializable {
 
     /** Serialize id */
     private static final long serialVersionUID = 1L;

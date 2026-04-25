@@ -41,10 +41,11 @@ public class AcceptUserAdminController {
     public ResponseEntity<FrameworkMessageAndResultDto> practice(
             final @RequestBody AcceptUserAdminCapsuleDto capsuleDto) {
         LocalDateTime now = LocalDateTime.now();
+        
+        FrameworkMessageAndResultDto resultDto = new FrameworkMessageAndResultDto();
         try {
             Integer savedCount = acceptUserAdminService.practice(capsuleDto, now);
 
-            FrameworkMessageAndResultDto resultDto = new FrameworkMessageAndResultDto();
             if (0 == savedCount) {
                 resultDto.setIsFailure(true);
                 resultDto.setMessage("保存できませんでした");
@@ -56,7 +57,9 @@ public class AcceptUserAdminController {
 
         } catch (Exception exception) { // NOPMD 業務上の理由で積極的許容
             stackTraceService.practice(exception, now.getYear(), 0);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            resultDto.setIsFailure(true);
+            resultDto.setMessage(exception.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(resultDto);
         }
     }
 

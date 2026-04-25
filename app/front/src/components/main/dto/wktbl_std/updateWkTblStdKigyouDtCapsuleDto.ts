@@ -1,10 +1,10 @@
 import { WkTblKanrenshaKigyouDtMasterEntity, type WkTblKanrenshaKigyouDtMasterEntityInterface } from "../../entity/wkTblKanrenshaKigyouDtMasterEntity";
-import { type FrameworkCapsuleDtoInterface ,FrameworkCapsuleDto } from "seijishikin-jp-normalize_common-tool";
+import { type FrameworkCapsuleDtoInterface, FrameworkCapsuleDto } from "seijishikin-jp-normalize_common-tool";
 
 interface UpdateWkTblStdKigyouDtCapsuleDtoInterface extends FrameworkCapsuleDtoInterface {
 
-        /** 編集対象Entity */
-    wkTblMasterKigyouDtEntity: WkTblKanrenshaKigyouDtMasterEntityInterface;
+    /** 編集対象Entity */
+    wkTblKanrenshaKigyouDtMasterEntity: WkTblKanrenshaKigyouDtMasterEntityInterface;
 
 }
 
@@ -15,11 +15,11 @@ class UpdateWkTblStdKigyouDtCapsuleDto extends FrameworkCapsuleDto
     implements UpdateWkTblStdKigyouDtCapsuleDtoInterface {
 
     /** 編集対象Entity */
-    wkTblMasterKigyouDtEntity: WkTblKanrenshaKigyouDtMasterEntityInterface;
+    wkTblKanrenshaKigyouDtMasterEntity: WkTblKanrenshaKigyouDtMasterEntityInterface;
 
     constructor() {
         super();
-        this.wkTblMasterKigyouDtEntity = new WkTblKanrenshaKigyouDtMasterEntity();
+        this.wkTblKanrenshaKigyouDtMasterEntity = new WkTblKanrenshaKigyouDtMasterEntity();
     }
 }
 

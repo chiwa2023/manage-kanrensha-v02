@@ -82,7 +82,6 @@ onBeforeMount(async () => {
                 };
                 fetch(url, { method, headers, body })
                     .then(async (response) => {
-
                         resultDtoTask.value = await response.json();
                         if (resultDtoTask.value.listThisYear.length === 0 && resultDtoTask.value.listLastYear.length === 0) {
                             infoLevel.value = MessageConstants.LEVEL_INFO;

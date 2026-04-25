@@ -1,25 +1,33 @@
 ﻿<script setup lang="ts">
-import { ref, toRaw, type Ref } from 'vue';
-import { PagingControl, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
+import { computed, ref, toRaw, type ComputedRef, type Ref } from 'vue';
+import { MessageConstants, MessageView, PagingControl, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import { SearchWkTblPagingCapsuleDto, type SearchWkTblPagingCapsuleDtoInterface } from '../../dto/add_xml/searchWkTbPagingCapsuleDto';
 import { SearchWkTblHistorySeijidantaiPagingResultDto, type SearchWkTblHistorySeijidantaiPagingResultDtoInterface } from '../../dto/wktbl_history/searchWkTblHistorySeijidantaiPagingResultDto';
 import { WkTblKanrenshaSeijidantaiHistoryEntity, type WkTblKanrenshaSeijidantaiHistoryEntityInterface } from '../../entity/wkTblKanrenshaSeijidantaiHistoryEntity';
 import { UpdateWkTblHistorySeijidantaiCapsuleDto, type UpdateWkTblHistorySeijidantaiCapsuleDtoInterface } from '../../dto/wktbl_history/updateWkTblHistorySeijidantaiCapsuleDto';
-import getMockWkTblSeijidantaiList from './mock/getMockWkTblSeijidantaiList';
-
-// back側アクセス
-// const urlBack: string = RoutePathConstants.DOMAIN + RoutePathConstants.BASE_PATH;
+import RoutePathConstants from '../../../../routePathConstants';
+import getAuthorizedPromiseArea from '../../dto/login/getAuthorizedPromiseArea';
+import { AccessTokenNotFoundError, TokenRefreshError } from '../../dto/login/errors';
+import type { UpdateWkTblHistorySeijidantaiResultDtoInterface } from '../../dto/wktbl_history/updateWkTblHistorySeijidantaiResultDto';
 
 //props,emit
 const props = defineProps<{ userDto: LeastUserDtoInterface }>()
 
 // よく使う定数
-// const BLANK: string = "";
+const BLANK: string = "";
 const INIT_NUMBER: number = 0;
 const INIT_BOOLEAN: boolean = false;
 // const SERVER_STATUS_OK: number = 200;
 // const SERVER_STATUS_ERROR: number = 400;
 const SEARCH_LIMIT: number = 20;
+// メッセージボックス表示定数
+const infoLevel: Ref<number> = ref(MessageConstants.LEVEL_NONE);
+const messageType: Ref<number> = ref(MessageConstants.VIEW_NONE);
+const title: Ref<string> = ref(BLANK);
+const message: Ref<string> = ref(BLANK);
+
+// back側アクセス
+const urlBack: string = RoutePathConstants.DOMAIN + RoutePathConstants.BASE_PATH;
 
 const seijidantaiCapsuleDto: Ref<SearchWkTblPagingCapsuleDtoInterface> = ref(new SearchWkTblPagingCapsuleDto());
 seijidantaiCapsuleDto.value.userDto = props.userDto;
@@ -37,24 +45,62 @@ const seijidantaiResultDto: Ref<SearchWkTblHistorySeijidantaiPagingResultDtoInte
 
 function onSearchSeijidantai() {
 
-    seijidantaiResultDto.value.listWktblSeijidantai = getMockWkTblSeijidantaiList();
-    allCount.value = seijidantaiResultDto.value.listWktblSeijidantai.length;
-    // getAuthorizedPromiseArea().then(token => {
-    //     const url = urlBack + "/regist-bulk-history/search-poli-org";
-    //     const method = "POST";
-    //     const body = JSON.stringify(seijidantaiCapsuleDto.value);
-    //     const headers = {
-    //         'Accept': 'application/json',
-    //         'Content-Type': 'application/json',
-    //         'X-AUTH-TOKEN': 'Bearer ' + token
-    //     };
-    //     fetch(url, { method, headers, body })
-    //         .then(async (response) => {
-    //             seijidantaiResultDto.value = await response.json();
-    //             pageOptionSeijidantai.value = getPagingOption(seijidantaiResultDto.value);
-    //         })
-    //         .catch((error) => { alert(error); });
-    // });
+    // seijidantaiResultDto.value.listWktblSeijidantai = getMockWkTblSeijidantaiList();
+    // allCount.value = seijidantaiResultDto.value.listWktblSeijidantai.length;
+
+    seijidantaiCapsuleDto.value.allCount = allCount.value;
+    seijidantaiCapsuleDto.value.limit = limit.value;
+    seijidantaiCapsuleDto.value.pageNumber = pageNumber.value;
+
+    getAuthorizedPromiseArea().then(token => {
+        const url = urlBack + "/regist-bulk-history/search-seijidantai";
+        const method = "POST";
+        const body = JSON.stringify(seijidantaiCapsuleDto.value);
+        const headers = {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'X-AUTH-TOKEN': 'Bearer ' + token
+        };
+        fetch(url, { method, headers, body })
+            .then(async (response) => {
+                seijidantaiResultDto.value = await response.json();
+                if (0 == seijidantaiResultDto.value.listWktblSeijidantai.length) {
+                    infoLevel.value = MessageConstants.LEVEL_INFO;
+                    messageType.value = MessageConstants.VIEW_TOAST;
+                    title.value = "タスク情報検索";
+                    message.value = "検索結果が0件でした";
+                }
+                allCount.value = seijidantaiResultDto.value.allCount;
+                limit.value = seijidantaiResultDto.value.limit;
+                pageNumber.value = seijidantaiResultDto.value.pageNumber;
+            })
+            .catch((error) => {
+                alert(error);
+                infoLevel.value = MessageConstants.LEVEL_ERROR;
+                messageType.value = MessageConstants.VIEW_OK;
+                title.value = "タスク情報検索";
+                message.value = "システムエラーが発生しました。システム管理者にお問い合わせください";
+            });
+    }).catch((e) => {
+        infoLevel.value = MessageConstants.LEVEL_ERROR;
+        messageType.value = MessageConstants.VIEW_OK;
+
+        if (e instanceof AccessTokenNotFoundError) {
+            // トークン保持ができていない場合
+            title.value = "現在トークンが存在しません";
+            message.value = e.message;
+            return;
+        }
+        if (e instanceof TokenRefreshError) {
+            // 取得に失敗している場合
+            title.value = "有効期限まじかのトークンを再取得できませんでした";
+            message.value = e.message;
+            return;
+        }
+        title.value = "システムエラーが発生しました";
+        message.value = "システム管理者にお問い合わせください";
+        return;
+    });
 
 }
 
@@ -64,11 +110,13 @@ const entityEdit: Ref<WkTblKanrenshaSeijidantaiHistoryEntityInterface> = ref(new
 const editCapsuleDto: Ref<UpdateWkTblHistorySeijidantaiCapsuleDtoInterface> = ref(new UpdateWkTblHistorySeijidantaiCapsuleDto());
 editCapsuleDto.value.userDto = props.userDto;
 
+const findIndex: Ref<number> = ref(INIT_NUMBER);
 function onEditData(editId: number) {
     // 指定されたデータを呼び出し(編集決定時には置き換えするので配列indexが必要)
-    const findIndex: number = seijidantaiResultDto.value.listWktblSeijidantai.findIndex((e) => e.wkKanrenshaSeijidantaiHistoryId === editId);
-    if (findIndex !== undefined && seijidantaiResultDto.value.listWktblSeijidantai[findIndex] !== undefined) {
-        entityEdit.value = structuredClone(toRaw(seijidantaiResultDto.value.listWktblSeijidantai[findIndex]));
+    const tempIndex: number = seijidantaiResultDto.value.listWktblSeijidantai.findIndex((e) => e.wkKanrenshaSeijidantaiHistoryId === editId);
+    if (tempIndex !== undefined && seijidantaiResultDto.value.listWktblSeijidantai[tempIndex] !== undefined) {
+        entityEdit.value = structuredClone(toRaw(seijidantaiResultDto.value.listWktblSeijidantai[tempIndex]));
+        findIndex.value = tempIndex;
     }
     isEditData.value = true;
 }
@@ -76,29 +124,58 @@ function onEditUpdate() {
     // 編集中のEntityを編集のためにBack側に受け渡し
     editCapsuleDto.value.wkTblKanrenshaSeijidantaiHistoryEntity = entityEdit.value;
 
-    // getAuthorizedPromiseArea().then(token => {
-    //     const url = urlBack + "/regist-bulk-history/update-poli-org";
-    //     const method = "POST";
-    //     const body = JSON.stringify(editCapsuleDto.value);
-    //     const headers = {
-    //         'Accept': 'application/json',
-    //         'Content-Type': 'application/json',
-    //         'X-AUTH-TOKEN': 'Bearer ' + token
-    //     };
-    //     fetch(url, { method, headers, body })
-    //         .then(async (response) => {
-    //             if (response.status < 400) {
-    //                 // TODO 処理内容
-    //                 const resultDto: UpdateWkTblHistorySeijidantaiResultInterface = await response.json();
-    //                 alert(resultDto.message);
-    //                 if (response.status === 200) {
-    //                     // 再表示
-    //                     onSearchSeijidantai();
-    //                 }
-    //             }
-    //         })
-    //         .catch((error) => { alert(error); });
-    // });
+    title.value = "関連者企業団体履歴ワークテーブル更新";
+    getAuthorizedPromiseArea().then(token => {
+        const url = urlBack + "/regist-bulk-history/update-seijidantai";
+        const method = "POST";
+        const body = JSON.stringify(editCapsuleDto.value);
+        const headers = {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'X-AUTH-TOKEN': 'Bearer ' + token
+        };
+        fetch(url, { method, headers, body })
+            .then(async (response) => {
+                const resultDto: UpdateWkTblHistorySeijidantaiResultDtoInterface = await response.json();
+                message.value = resultDto.message;
+                if (resultDto.isFailure) {
+                    infoLevel.value = MessageConstants.LEVEL_WARNING;
+                    messageType.value = MessageConstants.VIEW_OK;
+                    return;
+                } else {
+                    infoLevel.value = MessageConstants.LEVEL_INFO;
+                    messageType.value = MessageConstants.VIEW_TOAST;
+                    isEditData.value = false;
+                    // 更新したので検索
+                    onSearchSeijidantai();
+                }
+            })
+            .catch((error) => {
+                alert(error);
+                infoLevel.value = MessageConstants.LEVEL_ERROR;
+                messageType.value = MessageConstants.VIEW_OK;
+                message.value = "システムエラーが発生しました。システム管理者にお問い合わせください";
+            });
+    }).catch((e) => {
+        infoLevel.value = MessageConstants.LEVEL_ERROR;
+        messageType.value = MessageConstants.VIEW_OK;
+
+        if (e instanceof AccessTokenNotFoundError) {
+            // トークン保持ができていない場合
+            title.value = "現在トークンが存在しません";
+            message.value = e.message;
+            return;
+        }
+        if (e instanceof TokenRefreshError) {
+            // 取得に失敗している場合
+            title.value = "有効期限まじかのトークンを再取得できませんでした";
+            message.value = e.message;
+            return;
+        }
+        title.value = "システムエラーが発生しました";
+        message.value = "システム管理者にお問い合わせください";
+        return;
+    });
 
     // 編集コンポーネントを閉じる
     isEditData.value = false;
@@ -111,9 +188,13 @@ function onEditClose() {
 // 編集画面データ更新禁止
 const listEditProhibit: string[] = [];
 listEditProhibit.push("正常終了");
-function isEdit(): boolean {
-    return listEditProhibit.includes(entityEdit.value.judgeReason);
-}
+const onSaveClassName: ComputedRef<string> = computed(() => {
+    if (listEditProhibit.includes(entityEdit.value.judgeReason)) {
+        return "footer-button-disable";
+    } else {
+        return "footer-button";
+    }
+});
 
 const notUseText: string = "使用しないに変更;";
 function onHideData() {
@@ -126,6 +207,12 @@ function onHideData() {
 function recievePagingNumber(selecteddNumber: number) {
     pageNumber.value = selecteddNumber;
     alert("ページ情報受信");
+}
+
+function recieveSubmit(button: string) {
+    console.log(button); // 警告除け
+    infoLevel.value = 0;
+    messageType.value = 0;
 }
 </script>
 <template>
@@ -253,19 +340,19 @@ function recievePagingNumber(selecteddNumber: number) {
                 </div>
             </div>
 
-
-            <div class="one-line">
-                <div class="left-area">
-                    &nbsp;
-                </div>
-                <div class="right-area">
-                    <button @click="onEditClose">閉じる</button><button class="left-space" @click="onEditUpdate()"
-                        :disabled="isEdit()">更新</button>
-                </div>
+            <div class="footer">
+                <button @click="onEditClose" class="footer-button">キャンセル</button>
+                <button @click="onEditUpdate" class="left-space" :class="onSaveClassName">送信</button>
             </div>
 
         </div>
     </div>
 
+    <!-- メッセージ表示 -->
+    <div class="overMessage" v-if="messageType !== MessageConstants.VIEW_NONE">
+        <MessageView :info-level="infoLevel" :message-type="messageType" :title="title" :message="message"
+            @send-submit="recieveSubmit">
+        </MessageView>
+    </div>
 </template>
 <style scoped></style>

@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import io.netty.handler.codec.http.HttpResponseStatus;
+import org.springframework.http.HttpStatus;
 import net.seijishikin.jp.normalize.common_tool.dto.FrameworkMessageAndResultDto;
 import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.kanrensha.RegistDataByCsvFileCapsuleDto;
@@ -56,9 +56,9 @@ public class ExecuteBatchMasterStdSeijidantaiController {
         Integer year = dateTimeStart.getYear();
         LeastUserDto userDto = capsuleDto.getUserDto();
         Integer taskPlanCode = 0;
+        FrameworkMessageAndResultDto resultDto = new FrameworkMessageAndResultDto();
         try {
 
-            FrameworkMessageAndResultDto resultDto = new FrameworkMessageAndResultDto();
             resultDto.setMessage("処理を開始しました。完了までしばらくお待ちください。");
 
             // TODO Queryはfront連結後決定
@@ -71,11 +71,13 @@ public class ExecuteBatchMasterStdSeijidantaiController {
 
             executeBatchMasterStdSeijidantaiService.practice(year, capsuleDto.getUserDto(), planFileDto);
 
-            return ResponseEntity.status(HttpResponseStatus.OK.code()).body(resultDto);
+            return ResponseEntity.status(HttpStatus.OK).body(resultDto);
 
         } catch (Exception exception) { // NOPMD 業務上の理由で積極的に許容
             saveStackTraceService.practice(exception, year, taskPlanCode);
-            return ResponseEntity.status(HttpResponseStatus.INTERNAL_SERVER_ERROR.code()).build();
+            resultDto.setIsFailure(true);
+            resultDto.setMessage(exception.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(resultDto);
         }
     }
 

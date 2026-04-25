@@ -39,7 +39,7 @@ public class RegistBulkMasterStdKigyouDtService {
      */
     @Transactional
     public WkTblKanrenshaKigyouDtMasterEntity practice(final UpdateWkTblStdKigyouDtCapsuleDto capsuleDto) {
-
+        
         WkTblKanrenshaKigyouDtMasterEntity entityInput = capsuleDto.getWkTblKanrenshaKigyouDtMasterEntity();
 
         Optional<WkTblKanrenshaKigyouDtMasterEntity> optional = wkTblKanrenshaKigyouDtMasterRepository

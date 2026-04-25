@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import io.netty.handler.codec.http.HttpResponseStatus;
+import org.springframework.http.HttpStatus;
 import net.seijishikin.jp.normalize.common_tool.dto.FrameworkMessageAndResultDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.riyousha.SaveRiyoushaPartnerApiCapsuleDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.riyousha.SaveRiyoushaPartnerApiEntityService;
@@ -47,18 +47,18 @@ public class SaveRiyoushaPartnerApiEntityController {
             if (zero.equals(saveRiyoushaPartnerApiEntityService.practice(capsuleDto))) {
                 resultDto.setIsFailure(true);
                 resultDto.setMessage(FrameworkMessageAndResultDto.MESSAGE_NO_RECORD);
-                return ResponseEntity.status(HttpResponseStatus.NO_CONTENT.code()).body(resultDto);
+                return ResponseEntity.status(HttpStatus.NO_CONTENT).body(resultDto);
 
             } else {
                 resultDto.setMessage(FrameworkMessageAndResultDto.MESSAGE_EXPECTED);
-                return ResponseEntity.status(HttpResponseStatus.OK.code()).body(resultDto);
+                return ResponseEntity.status(HttpStatus.OK).body(resultDto);
             }
         } catch (Exception exception) { // NOPMD AvoidCatchGenericException
             // 例外を保存してエラー発生を伝達
             saveStackTraceService.practice(exception, Year.now().getValue(), 0);
             resultDto.setIsFailure(true);
             resultDto.setMessage(FrameworkMessageAndResultDto.MESSAGE_INTERNAL_ERROR);
-            return ResponseEntity.status(HttpResponseStatus.INTERNAL_SERVER_ERROR.code()).body(resultDto);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(resultDto);
         }
     }
 

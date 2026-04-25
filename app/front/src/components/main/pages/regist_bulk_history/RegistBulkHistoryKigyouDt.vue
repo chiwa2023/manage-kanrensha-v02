@@ -2,7 +2,7 @@
 import { computed, ref, type ComputedRef, type Ref } from 'vue';
 import { StorageFileDto, type StorageFileDtoInterface } from '../../dto/storage_file/storageFileDto';
 import { RegistDataByCsvFileCapsuleDto, type RegistDataByCsvFileCapsuleDtoInterface } from '../../dto/storage_file/registDataByCsvFileCapsuleDto';
-import { FrameworkCapsuleDto, MessageConstants, type FrameworkCapsuleDtoInterface, type FrameworkMessageAndResultDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
+import { FrameworkCapsuleDto, MessageConstants, MessageView, type FrameworkCapsuleDtoInterface, type FrameworkMessageAndResultDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import EditWkTblHistoryKigyouDt from '../../common/wktbl_edit_history/EditWkTblHistoryKigyouDt.vue';
 import { getLoginUser } from '../../utils/getLoginUser';
 import ManagerInfo from '../../common/user_info/ManagerInfo.vue';
@@ -38,12 +38,21 @@ function viewSample() {
     isVisibleTemplate.value = !isVisibleTemplate.value;
 }
 
+// ファイルからバッチ起動条件
+const capsuleDto: Ref<RegistDataByCsvFileCapsuleDtoInterface> = ref(new RegistDataByCsvFileCapsuleDto());
+capsuleDto.value.userDto = userDto.value;
+
+// 再処理起動条件(ユーザ)
+const retryCapsuleDto: Ref<FrameworkCapsuleDtoInterface> = ref(new FrameworkCapsuleDto());
+retryCapsuleDto.value.userDto = userDto.value;
+
 function onCancel() {
     history.back();
 }
 
 function onSave() {
     alert("実行");
+    title.value = "関連者企業団体履歴一括処理再処理";
     getAuthorizedPromiseArea().then(token => {
         const url = urlBack + "/regist-bulk-history/retry-kigyou-dt";
         const method = "POST";
@@ -56,13 +65,23 @@ function onSave() {
         fetch(url, { method, headers, body })
             .then(async (response) => {
                 const resultDto: FrameworkMessageAndResultDtoInterface = await response.json();
+                if (resultDto.isFailure) {
+                    infoLevel.value = MessageConstants.LEVEL_ERROR;
+                    messageType.value = MessageConstants.VIEW_OK;
+                    message.value = resultDto.message;
+                    return;
+                } else {
+                    infoLevel.value = MessageConstants.LEVEL_INFO;
+                    messageType.value = MessageConstants.VIEW_TOAST;
+                    message.value = resultDto.message;
+                    return;
+                }
                 alert(resultDto.message);
             })
             .catch((error) => {
                 alert(error);
                 infoLevel.value = MessageConstants.LEVEL_ERROR;
                 messageType.value = MessageConstants.VIEW_OK;
-                title.value = "システムエラーが発生しました";
                 message.value = "システム管理者にお問い合わせください";
                 return;
 
@@ -90,7 +109,7 @@ function onSave() {
 }
 
 function onBatchByFile() {
-    alert("実行");
+    title.value = "関連者企業団体履歴CSV一括登録";
     getAuthorizedPromiseArea().then(token => {
         const url = urlBack + "/regist-bulk-history/execute-kigyou-dt";
         const method = "POST";
@@ -103,7 +122,6 @@ function onBatchByFile() {
         fetch(url, { method, headers, body })
             .then(async (response) => {
                 const resultDto: FrameworkMessageAndResultDtoInterface = await response.json();
-                title.value = "企業団体履歴CSV一括登録";
                 message.value = resultDto.message;
                 // 処理が成功したら再登録できないようにアップロードファイル情報を初期化
                 if (resultDto.isFailure) {
@@ -119,10 +137,8 @@ function onBatchByFile() {
                 alert(error);
                 infoLevel.value = MessageConstants.LEVEL_ERROR;
                 messageType.value = MessageConstants.VIEW_OK;
-                title.value = "システムエラーが発生しました";
                 message.value = "システム管理者にお問い合わせください";
                 return;
-
             });
     }).catch((e) => {
         infoLevel.value = MessageConstants.LEVEL_ERROR;
@@ -146,19 +162,17 @@ function onBatchByFile() {
     });
 }
 
-// ファイルからバッチ起動条件
-const capsuleDto: Ref<RegistDataByCsvFileCapsuleDtoInterface> = ref(new RegistDataByCsvFileCapsuleDto());
-capsuleDto.value.userDto = userDto.value;
-
-// 再処理起動条件(ユーザ)
-const retryCapsuleDto: Ref<FrameworkCapsuleDtoInterface> = ref(new FrameworkCapsuleDto());
-retryCapsuleDto.value.userDto = userDto.value;
 
 // ファイル保全情報受信
 function recieveStorageFileInterface(storageFileDto: StorageFileDtoInterface) {
     capsuleDto.value.storageFileDto = storageFileDto;
 }
 
+function recieveSubmit(button: string) {
+    console.log(button); // 警告除け
+    infoLevel.value = 0;
+    messageType.value = 0;
+}
 </script>
 <template>
     <!-- 管理者メニュー兼チェック -->
@@ -250,6 +264,13 @@ function recieveStorageFileInterface(storageFileDto: StorageFileDtoInterface) {
     <div class="footer">
         <button @click="onCancel" class="footer-button">キャンセル</button>
         <button @click="onSave" class="footer-button left-space">送信</button>
+    </div>
+
+    <!-- メッセージ表示 -->
+    <div class="overMessage" v-if="messageType !== MessageConstants.VIEW_NONE">
+        <MessageView :info-level="infoLevel" :message-type="messageType" :title="title" :message="message"
+            @send-submit="recieveSubmit">
+        </MessageView>
     </div>
 
 </template>

@@ -14,7 +14,7 @@ import net.seijishikin.jp.normalize.manage.kanrensha.dto.riyousha.RiyoushaManage
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.RiyoushaManagerMasterEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.riyousha.GetRiyoushaManagerDtoService;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.util.SaveStackTraceService;
-import io.netty.handler.codec.http.HttpResponseStatus;
+import org.springframework.http.HttpStatus;
 import net.seijishikin.jp.normalize.manage.kanrensha.controller.PathRouteConstants;
 
 /**
@@ -40,23 +40,25 @@ public class GetRiyoushaManagerDtoController {
      */
     @PostMapping("/get-manager")
     public ResponseEntity<RiyoushaManagerDto> practice(@RequestBody final RiyoushaManagerMasterEntity masterEntity) {
+
+        RiyoushaManagerDto managerDto;
         try {
-            RiyoushaManagerDto managerDto = getRiyoushaManagerDtoService.practice(masterEntity);
+            managerDto = getRiyoushaManagerDtoService.practice(masterEntity);
             final Integer zero = 0;
             if (zero.equals(managerDto.getRiyoushaManagerMasterId())) {
                 managerDto.setIsFailure(true);
                 managerDto.setMessage(FrameworkMessageAndResultDto.MESSAGE_NO_CONTENT);
-                return ResponseEntity.status(HttpResponseStatus.ACCEPTED.code()).body(managerDto);
+                return ResponseEntity.status(HttpStatus.ACCEPTED).body(managerDto);
             } else {
-                return ResponseEntity.status(HttpResponseStatus.OK.code()).body(managerDto);
+                return ResponseEntity.status(HttpStatus.OK).body(managerDto);
             }
-        } catch (Exception exception) {  // NOPMD AvoidCatchGenericException
+        } catch (Exception exception) { // NOPMD AvoidCatchGenericException
             // 例外を保存してエラー発生を伝達
             saveStackTraceService.practice(exception, Year.now().getValue(), 0);
-            RiyoushaManagerDto managerDto = new RiyoushaManagerDto();
+            managerDto = new RiyoushaManagerDto();
             managerDto.setIsFailure(true);
             managerDto.setMessage(FrameworkMessageAndResultDto.MESSAGE_INTERNAL_ERROR);
-            return ResponseEntity.status(HttpResponseStatus.INTERNAL_SERVER_ERROR.code()).body(managerDto);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(managerDto);
         }
     }
 }

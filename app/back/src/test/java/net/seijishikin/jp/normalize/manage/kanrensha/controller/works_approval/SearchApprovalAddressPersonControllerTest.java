@@ -28,6 +28,9 @@ import net.seijishikin.jp.normalize.common_tool.utils.GetObjectMapperWithTimeMod
 import net.seijishikin.jp.normalize.manage.kanrensha.controller.PathRouteConstants;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.works_approval.SearchWorksApprovalCapsuleDto;
 
+/**
+ * SearchApprovalAddressPersonController単体テスト
+ */
 @SpringJUnitConfig
 @AutoConfigureMockMvc
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)

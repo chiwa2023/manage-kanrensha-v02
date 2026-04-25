@@ -40,8 +40,9 @@ public class GetPromoteAdminController {
     @PostMapping("/get")
     public ResponseEntity<GetPromoteAdminResultDto> practice(final @RequestBody FrameworkCapsuleDto capsuleDto) {
 
+        GetPromoteAdminResultDto resultDto;
         try {
-            GetPromoteAdminResultDto resultDto = getPromoteAdminService.practice(capsuleDto.getUserDto());
+            resultDto = getPromoteAdminService.practice(capsuleDto.getUserDto());
             if (resultDto.getIsFailure()) {
                 return ResponseEntity.status(HttpStatus.ACCEPTED).body(resultDto);
             } else {
@@ -51,7 +52,11 @@ public class GetPromoteAdminController {
         } catch (Exception exception) { // NOPMD 業務上の理由で積極的許容
             saveStackTraceService.practice(exception, LocalDate.now().getYear(), 0);
 
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            resultDto = new GetPromoteAdminResultDto();
+            resultDto.setIsFailure(true);
+            resultDto.setMessage(exception.getMessage());
+
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(resultDto);
         }
 
     }

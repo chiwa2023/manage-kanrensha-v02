@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import io.netty.handler.codec.http.HttpResponseStatus;
+import org.springframework.http.HttpStatus;
 import net.seijishikin.jp.normalize.common_tool.dto.FrameworkMessageAndResultDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.riyousha.GetRiyoushaOrgByCodeCapsuleDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.riyousha.RiyoushaOrgDto;
@@ -41,19 +41,23 @@ public class GetRiyoushaOrgDtoByCodeController {
     @PostMapping("/get-by-code")
     public ResponseEntity<RiyoushaOrgDto> practice(@RequestBody final GetRiyoushaOrgByCodeCapsuleDto capsuleDto) {
 
+        RiyoushaOrgDto resultDto;
         try {
-            RiyoushaOrgDto dto = getRiyoushaOrgDtoService.practiceByCode(capsuleDto);
+            resultDto = getRiyoushaOrgDtoService.practiceByCode(capsuleDto);
             final Integer zero = 0;
-            if (zero.equals(dto.getRiyoushaOrgMasterId())) {
-                dto.setIsFailure(true);
-                dto.setMessage(FrameworkMessageAndResultDto.MESSAGE_NO_CONTENT);
-                return ResponseEntity.status(HttpResponseStatus.ACCEPTED.code()).body(dto);
+            if (zero.equals(resultDto.getRiyoushaOrgMasterId())) {
+                resultDto.setIsFailure(true);
+                resultDto.setMessage(FrameworkMessageAndResultDto.MESSAGE_NO_CONTENT);
+                return ResponseEntity.status(HttpStatus.ACCEPTED).body(resultDto);
             } else {
-                return ResponseEntity.status(HttpResponseStatus.OK.code()).body(dto);
+                return ResponseEntity.status(HttpStatus.OK).body(resultDto);
             }
         } catch (Exception exception) { // NOPMD 業務上の理由で積極的許容
             saveStackTraceService.practice(exception, Year.now().getValue(), 0);
-            return ResponseEntity.status(HttpResponseStatus.INTERNAL_SERVER_ERROR.code()).build();
+            resultDto = new RiyoushaOrgDto();
+            resultDto.setIsFailure(true);
+            resultDto.setMessage(exception.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(resultDto);
         }
     }
 

@@ -179,10 +179,11 @@ onBeforeMount(() => {
         capsuleDto.value.startDate.setHours(0);
         capsuleDto.value.startDate.setMinutes(0);
         capsuleDto.value.startDate.setSeconds(0);
-
         capsuleDto.value.startDate.setHours(9, 0, 0, 0);
+
         capsuleDto.value.endDate = new Date((year) + "-12-31");
-        capsuleDto.value.endDate.setHours(32, 59, 59, 0);
+        capsuleDto.value.endDate.setHours(23, 59, 59, 0);
+        capsuleDto.value.flgFinished = 0;
 
         onSearch();
     }

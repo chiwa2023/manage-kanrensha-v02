@@ -61,7 +61,7 @@ function onCancel() {
     </div>
 
     <div class="footer">
-        <button @click="onCancel" class="footer-button">キャンセル</button>
+        <button @click="onCancel" class="footer-button">閉じる</button>
     </div>
 
 </template>

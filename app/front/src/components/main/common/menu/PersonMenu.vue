@@ -64,17 +64,19 @@ function onCancel() {
 </script>
 <template>
     {{ vRole }}
-    <p>
-        <RouterLink :to=personEditUrl>個人情報編集</RouterLink><br>
-        <RouterLink :to=RoutePathConstants.PAGE_USER_EDIT>個人名・権限編集</RouterLink><br>
-        <RouterLink :to=RoutePathConstants.PAGE_REFRESH_PASSWORD>パスワード更新</RouterLink><br>
-        <br>
-        <RouterLink :to=RoutePathConstants.PAGE_LOGOUT>ログアウト</RouterLink><br>
-    </p>
-    <hr>
-    <RouterLink :to=RoutePathConstants.PAGE_USER_WITHDRAW>退会</RouterLink><br>
-    <div class="footer_sub">
-        <button @click="onCancel" class="footer-button">閉じる</button>
+
+    <div style="overflow-y: scroll">
+        <RouterLink :to="RoutePathConstants.PAGE_SEARCH_TASK_PLAN" class="menu-item">タスク計画検索</RouterLink>
+        <RouterLink class="menu-item" :to=personEditUrl>個人情報編集</RouterLink>
+        <RouterLink class="menu-item" :to=RoutePathConstants.PAGE_USER_EDIT>個人名・権限編集</RouterLink>
+        <RouterLink class="menu-item" :to=RoutePathConstants.PAGE_REFRESH_PASSWORD>パスワード更新</RouterLink>
+        <RouterLink :to="RoutePathConstants.PAGE_LOGOUT" class="menu-item">ログアウト</RouterLink>
+        <RouterLink :to="RoutePathConstants.PAGE_USER_WITHDRAW" class="menu-item">退会</RouterLink>
+
+        <div class="footer_sub">
+            <button @click="onCancel" class="footer-button">閉じる</button>
+        </div>
     </div>
+
 </template>
 <style scoped></style>

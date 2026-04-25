@@ -69,10 +69,6 @@ h1 {
   width: 100%;
 }
 
-.one-line-scroll {
-  overflow-x: scroll;
-}
-
 .left-area {
   flex-basis: 180px;
   /* Fixed width for labels */
@@ -274,6 +270,14 @@ button.footer-button {
   color: white;
   border: solid --primary-color;
   cursor: pointer;
+}
+
+button.footer-button-disable {
+  min-width: 120px;
+  background-color: #e0e0e0;
+  color: #888888;
+  border: 1px solid #cccccc;
+  cursor: not-allowed;
 }
 
 button.footer-button:hover {
@@ -633,4 +637,10 @@ td.table-column-select-row {
 .menu-item:hover {
   background-color: var(--secondary-color);
   color: var(--primary-color);
+}
+
+.one-line-scroll {
+    width: 100%;
+    overflow-x: auto;
+    white-space: nowrap;
 }
