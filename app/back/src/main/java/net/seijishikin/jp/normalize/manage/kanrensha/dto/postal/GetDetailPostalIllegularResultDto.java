@@ -16,9 +16,6 @@ public class GetDetailPostalIllegularResultDto // NOPMD DataClass
     /** Serialize id */
     private static final long serialVersionUID = 1L;
 
-    /** 初期データ(Integer) */
-    private static final Integer INIT_Integer = 0;
-
     /** 郵便番号不規則リスト */
     private List<AddressPostalIrregularEntity> listIrregular = new ArrayList<>();
 
@@ -41,13 +38,13 @@ public class GetDetailPostalIllegularResultDto // NOPMD DataClass
     }
 
     /** 全件数 */
-    private Integer allCount = INIT_Integer;
+    private Integer allCount = INIT_INTEGER;
 
     /** 抽出件数 */
-    private Integer limit = INIT_Integer;
+    private Integer limit = INIT_INTEGER;
 
     /** ページ番号 */
-    private Integer pageNumber = INIT_Integer;
+    private Integer pageNumber = INIT_INTEGER;
 
     /**
      * 全件数を取得する

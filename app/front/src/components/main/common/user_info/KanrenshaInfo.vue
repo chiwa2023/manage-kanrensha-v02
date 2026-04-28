@@ -234,7 +234,7 @@ function onTransfer() {
                 </div>
             </div>
             <div class="left-space user-role-icon-container" @click="viewPersonMenu">
-                <img src="#" class="user-role-icon">
+                <img src="/kanrensha_seijidantai.png" class="user-role-icon">
             </div>
         </div>
     </div>

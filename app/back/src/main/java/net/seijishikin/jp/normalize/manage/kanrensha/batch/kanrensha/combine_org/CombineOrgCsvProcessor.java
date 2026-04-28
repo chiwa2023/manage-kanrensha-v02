@@ -115,11 +115,10 @@ public class CombineOrgCsvProcessor
                     String text = builder.toString();
                     entity.setYearArrayText(text.substring(0, text.length() - 1));
                 }
+            }else {
+                entity.setYearArrayText(BLANK); // 最初の指定時はよかったのに、編集時にダメにした場合の対策
             }
-
-        } else {
-            entity.setYearArrayText(BLANK); // 最初の指定時はよかったのに、編集時にダメにした場合の対策
-        }
+        } 
 
         // 作成予定の各年のテーブルについてチェックを行う
         if (!BLANK.equals(entity.getYearArrayText())) {

@@ -50,7 +50,7 @@ public class ReplacePartnerApiRefreshTokenController {
                 resultDto = new PartnerApiTokenResultDto();
                 resultDto.setIsFailure(true);
                 resultDto.setMessage("トークンが発行できませんでした");
-                return ResponseEntity.status(HttpStatus.NO_CONTENT).body(resultDto);
+                return ResponseEntity.status(HttpStatus.ACCEPTED).body(resultDto);
             } else {
 
                 return ResponseEntity.status(HttpStatus.OK).body(resultDto);

@@ -62,30 +62,6 @@ function onCancel() {
 }
 
 function onSave() {
-    alert("バッチ起動");
-    // let url = "";
-    // getAuthorizedPromiseArea().then(token => {
-    //     if (isVisibleFormat.value === formatMin) {
-    //         url = urlBack + "/regist-bulk-master-min/retry-seijidantai";
-    //     }
-    //     if (isVisibleFormat.value === formatStd) {
-    //         url = urlBack + "/regist-bulk-master-std/retry-seijidantai";
-    //     }
-
-    //     const method = "POST";
-    //     const body = JSON.stringify(retryCapsuleDto.value);
-    //     const headers = {
-    //         'Accept': 'application/json',
-    //         'Content-Type': 'application/json',
-    //         'X-AUTH-TOKEN': 'Bearer ' + token
-    //     };
-    //     fetch(url, { method, headers, body })
-    //         .then(async (response) => {
-    //             const resultDto: FrameworkMessageAndResultInterface = await response.json();
-    //             alert(resultDto.message);
-    //         })
-    //         .catch((error) => { alert(error); });
-    // });
 
     let url = "";
     title.value = "関連者政治団体マスタ一括処理再処理";
@@ -117,7 +93,6 @@ function onSave() {
                     message.value = resultDto.message;
                     return;
                 }
-                alert(resultDto.message);
             })
             .catch((error) => {
                 alert(error);
@@ -152,30 +127,6 @@ function onSave() {
 }
 
 function onBatchByFile() {
-    alert("バッチ起動");
-    // let url = "";
-    // getAuthorizedPromiseArea().then(token => {
-    //     // 最小と標準で接続先切り替え(起動条件のパラメータ内容は変わらない)
-    //     if (isVisibleFormat.value === formatMin) {
-    //         url = urlBack + "/regist-bulk-master-min/execute-seijidantai";
-    //     }
-    //     if (isVisibleFormat.value === formatStd) {
-    //         url = urlBack + "/regist-bulk-master-std/execute-seijidantai";
-    //     }
-    //     const method = "POST";
-    //     const body = JSON.stringify(capsuleDto.value);
-    //     const headers = {
-    //         'Accept': 'application/json',
-    //         'Content-Type': 'application/json',
-    //         'X-AUTH-TOKEN': 'Bearer ' + token
-    //     };
-    //     fetch(url, { method, headers, body })
-    //         .then(async (response) => {
-    //             const resultDto: FrameworkMessageAndResultInterface = await response.json();
-    //             alert(resultDto.message);
-    //         })
-    //         .catch((error) => { alert(error); });
-    // });
 
     let url = "";
     title.value = "政治団体マスタCSV一括登録";

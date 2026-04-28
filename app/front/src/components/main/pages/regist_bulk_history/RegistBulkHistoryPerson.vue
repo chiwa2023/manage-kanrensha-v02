@@ -77,7 +77,6 @@ function onSave() {
                     message.value = resultDto.message;
                     return;
                 }
-                alert(resultDto.message);
             })
             .catch((error) => {
                 alert(error);

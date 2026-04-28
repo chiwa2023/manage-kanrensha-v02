@@ -59,36 +59,10 @@ function recieveStorageFileInterface(storageFileDto: StorageFileDtoInterface) {
 }
 
 function onCancel() {
-    alert("キャンセル");
     history.back();
 }
 
-
 function onSave() {
-
-    //let url = "";
-    // getAuthorizedPromiseArea().then(token => {
-    //     if (isVisibleFormat.value === formatMin) {
-    //         url = urlBack + "/regist-bulk-master-min/retry-person";
-    //     }
-    //     if (isVisibleFormat.value === formatStd) {
-    //         url = urlBack + "/regist-bulk-master-std/retry-person";
-    //     }
-
-    //     const method = "POST";
-    //     const body = JSON.stringify(retryCapsuleDto.value);
-    //     const headers = {
-    //         'Accept': 'application/json',
-    //         'Content-Type': 'application/json',
-    //         'X-AUTH-TOKEN': 'Bearer ' + token
-    //     };
-    //     fetch(url, { method, headers, body })
-    //         .then(async (response) => {
-    //             const resultDto: FrameworkMessageAndResultInterface = await response.json();
-    //             alert(resultDto.message);
-    //         })
-    //         .catch((error) => { alert(error); });
-    // });
 
     let url = "";
     title.value = "関連者個人履歴一括処理再処理";
@@ -155,30 +129,6 @@ function onSave() {
 }
 
 function onBatchByFile() {
-    alert("バッチ処理");
-    //let url = "";
-    // getAuthorizedPromiseArea().then(token => {
-    //     // 最小と標準で接続先切り替え(起動条件のパラメータ内容は変わらない)
-    //     if (isVisibleFormat.value === formatMin) {
-    //         url = urlBack + "/regist-bulk-master-min/execute-person";
-    //     }
-    //     if (isVisibleFormat.value === formatStd) {
-    //         url = urlBack + "/regist-bulk-master-std/execute-person";
-    //     }
-    //     const method = "POST";
-    //     const body = JSON.stringify(capsuleDto.value);
-    //     const headers = {
-    //         'Accept': 'application/json',
-    //         'Content-Type': 'application/json',
-    //         'X-AUTH-TOKEN': 'Bearer ' + token
-    //     };
-    //     fetch(url, { method, headers, body })
-    //         .then(async (response) => {
-    //             const resultDto: FrameworkMessageAndResultInterface = await response.json();
-    //             alert(resultDto.message);
-    //         })
-    //         .catch((error) => { alert(error); });
-    // });
 
     let url = "";
     title.value = "個人マスタCSV一括登録";

@@ -43,6 +43,9 @@ public class RegistCombineOrganizationController {
     public ResponseEntity<UpdateWkTblCombineOrgResultDto> practice(
             final @RequestBody UpdateWkTblCombineOrgCapsuleDto capsuleDto) {
 
+        
+        System.out.print("======更新" + capsuleDto.getWkTblKanrenshaCombineOrgEntity().getYearArrayText());
+        
         UpdateWkTblCombineOrgResultDto resultDto = new UpdateWkTblCombineOrgResultDto();
         try {
             WkTblKanrenshaCombineOrgEntity entity = registCombineOrganizationService.practice(capsuleDto);

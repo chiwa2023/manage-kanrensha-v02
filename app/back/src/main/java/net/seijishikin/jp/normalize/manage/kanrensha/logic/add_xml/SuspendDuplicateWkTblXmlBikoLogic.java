@@ -37,7 +37,7 @@ public class SuspendDuplicateWkTblXmlBikoLogic {
     public SuspendDuplicateWkTblXmlBikoLogic() {
         listYoushikiKbn.add((int)ShuushiDocV5YoushikiKbnConstants.KIKANSHI);
         listYoushikiKbn.add((int)ShuushiDocV5YoushikiKbnConstants.SHAKUNYUKIN);
-        listYoushikiKbn.add((int)ShuushiDocV5YoushikiKbnConstants.KOUFUKIN);
+        listYoushikiKbn.add((int)ShuushiDocV5YoushikiKbnConstants.SHUUNYU_SONOTA);
     }
 
     /**

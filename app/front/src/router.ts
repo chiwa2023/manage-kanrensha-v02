@@ -40,7 +40,6 @@ const routes = [
     { path: RoutePathConstants.PAGE_INSERT_PARTNER_API, name: "InsertRiyoushaPartner", component: () => import("./components/main/pages/add_account/InsertRiyoushaPartner.vue") },
     { path: RoutePathConstants.PAGE_INSERT_MANAGER, name: "InsertRiyoushaManager", component: () => import("./components/main/pages/add_account/InsertRiyoushaManager.vue") },
 
-
     // 利用者検索
     { path: RoutePathConstants.PAGE_RIYOUSHA_SEARCH, name: "SearchEditRiyousha", component: () => import("./components/main/pages/search_edit_riyousha/SearchEditRiyousha.vue") },
 
@@ -53,6 +52,10 @@ const routes = [
     { path: RoutePathConstants.PAGE_REGI_BULK_HISTORY_KIGYOU, name: "RegistBulkHistoryKigyou", component: () => import("./components/main/pages/regist_bulk_history/RegistBulkHistoryKigyouDt.vue") },
     { path: RoutePathConstants.PAGE_REGI_BULK_HISTORY_PERSON, name: "RegistBulkHistoryPerson", component: () => import("./components/main/pages/regist_bulk_history/RegistBulkHistoryPerson.vue") },
     { path: RoutePathConstants.PAGE_REGI_BULK_HISTORY_POLI_ORG, name: "RegistBulkHistorySeijidantai", component: () => import("./components/main/pages/regist_bulk_history/RegistBulkHistorySeijidantai.vue") },
+
+    // 関連者組織紐づけ一括登録
+    { path: RoutePathConstants.PAGE_REGI_BULK_COMBINE_KIGYOU, name: "RegistCombineKigyouDt", component: () => import("./components/main/pages/regist_bulk_combine_org/RegistCombineKigyouDt.vue") },
+    { path: RoutePathConstants.PAGE_REGI_BULK_COMBINE_SEIJIDANTAI, name: "RegistCombineSeijidantai", component: () => import("./components/main/pages/regist_bulk_combine_org/RegistCombineSeijidantai.vue") },
 
     // 強制処理CSVダンプ
     { path: RoutePathConstants.PAGE_DUMP_MASTER, name: "ForceDumpMaster", component: () => import("./components/main/pages/z_force_dump/ForceDumpMaster.vue") },
@@ -75,6 +78,12 @@ const routes = [
     { path: RoutePathConstants.PAGE_DOWNLOAD_SABUN_MASTER_STD, name: "DownloadSabunMasterStd", component: () => import("./components/main/pages/download_sabun/DownloadSabunMasterStd.vue") },
     { path: RoutePathConstants.PAGE_DOWNLOAD_SABUN_MASTER_MIN, name: "DownloadSabunMasterMin", component: () => import("./components/main/pages/download_sabun/DownloadSabunMasterMin.vue") },
     { path: RoutePathConstants.PAGE_DOWNLOAD_SABUN_HISTORY, name: "DownloadSabunHistory", component: () => import("./components/main/pages/download_sabun/DownloadSabunHistory.vue") },
+
+    // 関連者管理
+    { path: RoutePathConstants.PAGE_KANRENSHA_MANAGE, name: "KanrenshaManage", component: () => import("./components/main/pages/manage_kanrensha/KanrenshaManage.vue") },
+
+    // 関連者本人編集
+    { path: RoutePathConstants.PAGE_KANRENSHA_EDIT, name: "KanrenshaEdit", component: () => import("./components/main/pages/edit_kanrensha/KanrenshaEdit.vue") },
 
     // 郵便番号編集
     { path: RoutePathConstants.PAGE_POSTAL_BUILDING, name: "PostalCodeBuilding", component: () => import("./components/main/pages/address_postal/PostalCodeBuilding.vue") },

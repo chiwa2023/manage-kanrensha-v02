@@ -37,12 +37,19 @@ import RoutePathConstants from '../../../../routePathConstants';
             <RouterLink :to="RoutePathConstants.PAGE_REGI_BULK_MASTER_KIGYOU" class="menu-item">企業・団体マスタ登録</RouterLink>
             <RouterLink :to="RoutePathConstants.PAGE_REGI_BULK_MASTER_PERSON" class="menu-item">個人マスタ登録</RouterLink>
             <RouterLink :to="RoutePathConstants.PAGE_REGI_BULK_MASTER_POLI_ORG" class="menu-item">政治団体マスタ登録</RouterLink>
+            <RouterLink :to="RoutePathConstants.PAGE_REGI_BULK_COMBINE_KIGYOU" class="menu-item">関連者個人企業・団体紐づけ登録</RouterLink>
+            <RouterLink :to="RoutePathConstants.PAGE_REGI_BULK_COMBINE_SEIJIDANTAI" class="menu-item">関連者個人政治団体紐づけ登録</RouterLink>
             <RouterLink :to="RoutePathConstants.PAGE_WORKS_APPROVAL" class="menu-item">作業内容承認</RouterLink>
         </div>
 
         <div class="menu-section">
             <h4 class="menu-title">関連者XMLから一括登録</h4>
             <RouterLink :to="RoutePathConstants.PAGE_ADD_XML" class="menu-item">関連者XMLから一括登録</RouterLink>
+        </div>
+
+        <div class="menu-section">
+            <h4 class="menu-title">関連者管理(新規・編集・削除)</h4>
+            <RouterLink :to="RoutePathConstants.PAGE_KANRENSHA_MANAGE" class="menu-item">関連者管理</RouterLink>
         </div>
 
         <div class="menu-section">

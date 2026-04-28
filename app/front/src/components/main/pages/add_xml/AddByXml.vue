@@ -7,17 +7,18 @@ import { SearchWkTblPagingCapsuleDto, type SearchWkTblPagingCapsuleDtoInterface 
 import { SearchWkTblAddByXmlPagingResultDto, type SearchWkTblAddByXmlPagingResultDtoInterface } from '../../dto/add_xml/searchWkTblAddByXmlPagingResultDto';
 import { RegistDataByXmlCapsuleDto, type RegistDataByXmlCapsuleDtoInterface } from '../../dto/add_xml/registDataByXmlCapsuleDto';
 import type { StorageFileDtoInterface } from '../../dto/storage_file/storageFileDto';
-import MockReadPublishXml from '../../../test/common/read_publish_xml/MockReadPublishXml.vue';
 import EditWkTblMinPerson from '../../common/wktbl_edit_min/EditWkTblMinPerson.vue';
 import EditWkTblMinKigyouDt from '../../common/wktbl_edit_min/EditWkTblMinKigyouDt.vue';
 import EditWkTblMinSeijidantai from '../../common/wktbl_edit_min/EditWkTblMinSeijidantai.vue';
-import getMockRegistByXmlList from './mock/getMockRegistByXmlList';
-import { FrameworkCapsuleDto, MessageConstants, MessageView, PagingControl, type FrameworkCapsuleDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
+import { FrameworkCapsuleDto, MessageConstants, MessageView, PagingControl, type FrameworkCapsuleDtoInterface, type FrameworkMessageAndResultDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import { UpdateWkTblAddByXmlTableListCapsuleDto, type UpdateWkTblAddByXmlTableListCapsuleDtoInterface } from '../../dto/add_xml/updateWkTblAddByXmlTableListCapsuleDto';
 import { UpdateWkTblAddByXmlCapsuleDto, type UpdateWkTblAddByXmlCapsuleDtoInterface } from '../../dto/add_xml/updateWkTblAddByXmlCapsuleDto';
 import ManagerInfo from '../../common/user_info/ManagerInfo.vue';
 import ReadPublishXml from '../../common/read_publish_xml/ReadPublishXml.vue';
 import RoutePathConstants from '../../../../routePathConstants';
+import getAuthorizedPromiseArea from '../../dto/login/getAuthorizedPromiseArea';
+import { AccessTokenNotFoundError, TokenRefreshError } from '../../dto/login/errors';
+import type { UpdateWkTblAddByXmlResultDtoInterface } from '../../dto/add_xml/updateWkTblAddByXmlResultDto';
 
 // ユーザ呼び出し
 const userDto: Ref<LeastUserDtoInterface> = ref(getLoginUser());
@@ -85,50 +86,115 @@ function recieveStorageFileInterface(storageFileDto: StorageFileDtoInterface) {
 
 // XMLファイルを解析しその結果をワークテーブルに保存
 function onSaveWkTbl() {
-    alert("動作1");
-    // getAuthorizedPromiseArea().then(token => {
-    //     const url = urlBack + "/analysis-xml/execute";
-    //     const method = "POST";
-    //     const body = JSON.stringify(capsuleDto.value);
-    //     const headers = {
-    //         'Accept': 'application/json',
-    //         'Content-Type': 'application/json',
-    //         'X-AUTH-TOKEN': 'Bearer ' + token
-    //     };
-    //     fetch(url, { method, headers, body })
-    //         .then(async (response) => {
-    //             const resultDto: FrameworkMessageAndResultInterface = await response.json();
-    //             alert(resultDto.message);
-    //             // 処理が成功したら再登録できないようにアップロードファイル情報を初期化
-    //             if (response.status === 200) {
-    //                 capsuleDto.value.storageFileDto = new StorageFileDto();
-    //             }
-    //         })
-    //         .catch((error) => { alert(error); });
-    // });
+
+    title.value = "XMLワークテーブル登録処理";
+    getAuthorizedPromiseArea().then(token => {
+        const url = urlBack + "/analysis-xml/execute";
+        const method = "POST";
+        const body = JSON.stringify(capsuleDto.value);
+        const headers = {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'X-AUTH-TOKEN': 'Bearer ' + token
+        };
+        fetch(url, { method, headers, body })
+            .then(async (response) => {
+                const resultDto: FrameworkMessageAndResultDtoInterface = await response.json();
+                if (resultDto.isFailure) {
+                    infoLevel.value = MessageConstants.LEVEL_ERROR;
+                    messageType.value = MessageConstants.VIEW_OK;
+                    message.value = resultDto.message;
+                    return;
+                } else {
+                    infoLevel.value = MessageConstants.LEVEL_INFO;
+                    messageType.value = MessageConstants.VIEW_TOAST;
+                    message.value = resultDto.message;
+                    return;
+                }
+                alert(resultDto.message);
+            })
+            .catch((error) => {
+                alert(error);
+                infoLevel.value = MessageConstants.LEVEL_ERROR;
+                messageType.value = MessageConstants.VIEW_OK;
+                message.value = "システム管理者にお問い合わせください";
+                return;
+
+            });
+    }).catch((e) => {
+        infoLevel.value = MessageConstants.LEVEL_ERROR;
+        messageType.value = MessageConstants.VIEW_OK;
+
+        if (e instanceof AccessTokenNotFoundError) {
+            // トークン保持ができていない場合
+            title.value = "現在トークンが存在しません";
+            message.value = e.message;
+            return;
+        }
+        if (e instanceof TokenRefreshError) {
+            // 取得に失敗している場合
+            title.value = "有効期限まじかのトークンを再取得できませんでした";
+            message.value = e.message;
+            return;
+        }
+        title.value = "システムエラーが発生しました";
+        message.value = "システム管理者にお問い合わせください";
+        return;
+    });
 }
 
 // 作業内容検索
 function onSearchAll() {
-    byXmlResultDto.value.listXmlEntity = getMockRegistByXmlList();
-    allCount.value = byXmlResultDto.value.listXmlEntity.length;
 
-    // getAuthorizedPromiseArea().then(token => {
-    //     const url = urlBack + "/regist-by-xml/search";
-    //     const method = "POST";
-    //     const body = JSON.stringify(byXmlCapsuleDto.value);
-    //     const headers = {
-    //         'Accept': 'application/json',
-    //         'Content-Type': 'application/json',
-    //         'X-AUTH-TOKEN': 'Bearer ' + token
-    //     };
-    //     fetch(url, { method, headers, body })
-    //         .then(async (response) => {
-    //             byXmlResultDto.value = await response.json();
-    //             pageOptionAll.value = getPagingOption(byXmlResultDto.value);
-    //         })
-    //         .catch((error) => { alert(error); });
-    // });
+    byXmlCapsuleDto.value.allCount = allCount.value;
+    byXmlCapsuleDto.value.limit = limit.value;
+    byXmlCapsuleDto.value.pageNumber = pageNumber.value;
+
+    title.value = "XMLワークテーブル検索処理";
+    getAuthorizedPromiseArea().then(token => {
+        const url = urlBack + "/regist-by-xml/search";
+        const method = "POST";
+        const body = JSON.stringify(byXmlCapsuleDto.value);
+        const headers = {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'X-AUTH-TOKEN': 'Bearer ' + token
+        };
+        fetch(url, { method, headers, body })
+            .then(async (response) => {
+                byXmlResultDto.value = await response.json();
+                allCount.value = byXmlResultDto.value.allCount;
+                limit.value = byXmlResultDto.value.limit;
+                pageNumber.value = byXmlResultDto.value.pageNumber;
+            })
+            .catch((error) => {
+                alert(error);
+                infoLevel.value = MessageConstants.LEVEL_ERROR;
+                messageType.value = MessageConstants.VIEW_OK;
+                message.value = "システム管理者にお問い合わせください";
+                return;
+
+            });
+    }).catch((e) => {
+        infoLevel.value = MessageConstants.LEVEL_ERROR;
+        messageType.value = MessageConstants.VIEW_OK;
+
+        if (e instanceof AccessTokenNotFoundError) {
+            // トークン保持ができていない場合
+            title.value = "現在トークンが存在しません";
+            message.value = e.message;
+            return;
+        }
+        if (e instanceof TokenRefreshError) {
+            // 取得に失敗している場合
+            title.value = "有効期限まじかのトークンを再取得できませんでした";
+            message.value = e.message;
+            return;
+        }
+        title.value = "システムエラーが発生しました";
+        message.value = "システム管理者にお問い合わせください";
+        return;
+    });
 
     // 各テーブルの検索を行う
     refEditWkTblMinKigyouDt.value?.onSearchKigyouDt();
@@ -159,7 +225,6 @@ nameAddressList.push(4);
 // 分類編集内容保存
 const notUseText: string = "使用しないに変更;";
 function onSaveBunrui(editId: number) {
-    alert("動作4");
     const findIndex: number = byXmlResultDto.value.listXmlEntity.findIndex((e) => e.wkTblMasterAllByXmlId === editId);
     if (findIndex !== undefined && byXmlResultDto.value.listXmlEntity[findIndex] !== undefined) {
         editCapsuleDto.value.wkTblMasterAllByXmlEntity = byXmlResultDto.value.listXmlEntity[findIndex];
@@ -171,37 +236,57 @@ function onSaveBunrui(editId: number) {
         }
     }
 
+    title.value = "ワークテーブル個別編集保存処理";
+    getAuthorizedPromiseArea().then(token => {
+        const url = urlBack + "/regist-by-xml/update";
+        const method = "POST";
+        const body = JSON.stringify(editCapsuleDto.value);
+        const headers = {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'X-AUTH-TOKEN': 'Bearer ' + token
+        };
+        fetch(url, { method, headers, body })
+            .then(async (response) => {
+                const resultDto: UpdateWkTblAddByXmlResultDtoInterface = await response.json();
+                // 正常に更新できた時だけ既存のリストと入れ替え
+                byXmlResultDto.value.listXmlEntity.splice(findIndex, 1, resultDto.wkTblMasterAllByXmlEntity);
+                // 再表示
+                onSearchAll();
+            })
+            .catch((error) => {
+                alert(error);
+                infoLevel.value = MessageConstants.LEVEL_ERROR;
+                messageType.value = MessageConstants.VIEW_OK;
+                message.value = "システム管理者にお問い合わせください";
+                return;
 
-    // getAuthorizedPromiseArea().then(token => {
-    //     const url = urlBack + "/regist-by-xml/update";
-    //     const method = "POST";
-    //     const body = JSON.stringify(editCapsuleDto.value);
-    //     const headers = {
-    //         'Accept': 'application/json',
-    //         'Content-Type': 'application/json',
-    //         'X-AUTH-TOKEN': 'Bearer ' + token
-    //     };
-    //     fetch(url, { method, headers, body })
-    //         .then(async (response) => {
-    //             if (response.status < 400) {
-    //                 const resultDto: UpdateWkTblAddByXmlResultInterface = await response.json();
-    //                 if (response.status === 200) {
-    //                     // 正常に更新できた時だけ既存のリストと入れ替え
-    //                     // byXmlResultDto.value.listXmlEntity.splice(findIndex, 1, resultDto.wkTblMasterAllByXmlEntity);
-    //                     alert(resultDto.message);
-    //                     // 再表示
-    //                     onSearchAll();
-    //                 }
-    //             }
-    //         })
-    //         .catch((error) => { alert(error); });
-    // });
+            });
+    }).catch((e) => {
+        infoLevel.value = MessageConstants.LEVEL_ERROR;
+        messageType.value = MessageConstants.VIEW_OK;
+
+        if (e instanceof AccessTokenNotFoundError) {
+            // トークン保持ができていない場合
+            title.value = "現在トークンが存在しません";
+            message.value = e.message;
+            return;
+        }
+        if (e instanceof TokenRefreshError) {
+            // 取得に失敗している場合
+            title.value = "有効期限まじかのトークンを再取得できませんでした";
+            message.value = e.message;
+            return;
+        }
+        title.value = "システムエラーが発生しました";
+        message.value = "システム管理者にお問い合わせください";
+        return;
+    });
 
 }
 
 // 表示中データ全更新
 function onSaveTableList() {
-    alert("動作5");
 
     // 編集条件を作成
     const editListCapsuleDto: UpdateWkTblAddByXmlTableListCapsuleDtoInterface = new UpdateWkTblAddByXmlTableListCapsuleDto();
@@ -216,26 +301,56 @@ function onSaveTableList() {
     }
     editListCapsuleDto.listWkTblByXml = byXmlResultDto.value.listXmlEntity;
 
-    // getAuthorizedPromiseArea().then(token => {
-    //     const url = urlBack + "/regist-by-xml/update-list";
-    //     const method = "POST";
-    //     const body = JSON.stringify(editListCapsuleDto);
-    //     const headers = {
-    //         'Accept': 'application/json',
-    //         'Content-Type': 'application/json',
-    //         'X-AUTH-TOKEN': 'Bearer ' + token
-    //     };
-    //     fetch(url, { method, headers, body })
-    //         .then(async (response) => {
-    //             if (response.status < 400) {
-    //                 const resultDto: FrameworkMessageAndResultInterface = await response.json();
-    //                 alert(resultDto.message);
-    //                 // 再表示
-    //                 onSearchAll();
-    //             }
-    //         })
-    //         .catch((error) => { alert(error); });
-    // });
+    title.value = "ワークテーブル一括リスト編集保存処理";
+    getAuthorizedPromiseArea().then(token => {
+        const url = urlBack + "/regist-by-xml/update-list";
+        const method = "POST";
+        const body = JSON.stringify(editListCapsuleDto);
+        const headers = {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'X-AUTH-TOKEN': 'Bearer ' + token
+        };
+        fetch(url, { method, headers, body })
+            .then(async (response) => {
+                const resultDto: FrameworkMessageAndResultDtoInterface = await response.json();
+
+                infoLevel.value = MessageConstants.LEVEL_INFO;
+                messageType.value = MessageConstants.VIEW_TOAST;
+                message.value = resultDto.message;
+                // 再表示
+                onSearchAll();
+            })
+            .catch((error) => {
+                alert(error);
+                infoLevel.value = MessageConstants.LEVEL_ERROR;
+                messageType.value = MessageConstants.VIEW_OK;
+                message.value = "システム管理者にお問い合わせください";
+                return;
+
+            });
+    }).catch((e) => {
+        infoLevel.value = MessageConstants.LEVEL_ERROR;
+        messageType.value = MessageConstants.VIEW_OK;
+
+        if (e instanceof AccessTokenNotFoundError) {
+            // トークン保持ができていない場合
+            title.value = "現在トークンが存在しません";
+            message.value = e.message;
+            return;
+        }
+        if (e instanceof TokenRefreshError) {
+            // 取得に失敗している場合
+            title.value = "有効期限まじかのトークンを再取得できませんでした";
+            message.value = e.message;
+            return;
+        }
+        title.value = "システムエラーが発生しました";
+        message.value = "システム管理者にお問い合わせください";
+        return;
+    });
+
+
 }
 
 function onCancel() {
@@ -249,32 +364,70 @@ retryCapsuleDto.value.userDto = userDto.value;
 
 // 個人・企業団体・政治団体一括最小マスタ登録処理
 function onSave() {
-    alert("動作3");
-    // getAuthorizedPromiseArea().then(token => {
-    //     const url = urlBack + "/regist-by-xml/retry";
-    //     const method = "POST";
-    //     const body = JSON.stringify(retryCapsuleDto.value);
-    //     const headers = {
-    //         'Accept': 'application/json',
-    //         'Content-Type': 'application/json',
-    //         'X-AUTH-TOKEN': 'Bearer ' + token
-    //     };
-    //     fetch(url, { method, headers, body })
-    //         .then(async (response) => {
-    //             const resultDto: FrameworkMessageAndResultInterface = await response.json();
-    //             alert(resultDto.message);
-    //             // 再表示
-    //             onSearchAll();
-    //         })
-    //         .catch((error) => { alert(error); });
-    // });
-    // // 再表示
-    // onSearchAll();
+
+    title.value = "ワークテーブル分類編集後再処理";
+    getAuthorizedPromiseArea().then(token => {
+        const url = urlBack + "/regist-by-xml/retry";
+        const method = "POST";
+        const body = JSON.stringify(retryCapsuleDto.value);
+        const headers = {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'X-AUTH-TOKEN': 'Bearer ' + token
+        };
+        fetch(url, { method, headers, body })
+            .then(async (response) => {
+                const resultDto: FrameworkMessageAndResultDtoInterface = await response.json();
+
+                infoLevel.value = MessageConstants.LEVEL_INFO;
+                messageType.value = MessageConstants.VIEW_TOAST;
+                message.value = resultDto.message;
+                // バッチ処理なので再表示はしない
+                return;
+            })
+            .catch((error) => {
+                alert(error);
+                infoLevel.value = MessageConstants.LEVEL_ERROR;
+                messageType.value = MessageConstants.VIEW_OK;
+                message.value = "システム管理者にお問い合わせください";
+                return;
+
+            });
+    }).catch((e) => {
+        infoLevel.value = MessageConstants.LEVEL_ERROR;
+        messageType.value = MessageConstants.VIEW_OK;
+
+        if (e instanceof AccessTokenNotFoundError) {
+            // トークン保持ができていない場合
+            title.value = "現在トークンが存在しません";
+            message.value = e.message;
+            return;
+        }
+        if (e instanceof TokenRefreshError) {
+            // 取得に失敗している場合
+            title.value = "有効期限まじかのトークンを再取得できませんでした";
+            message.value = e.message;
+            return;
+        }
+        title.value = "システムエラーが発生しました";
+        message.value = "システム管理者にお問い合わせください";
+        return;
+    });
+
+
+
 }
 
 function recievePagingNumber(selecteddNumber: number) {
     pageNumber.value = selecteddNumber;
-    alert("ページ情報受信");
+    // 再表示
+    onSearchAll();
+}
+
+function recieveSubmit(button: string) {
+    console.log(button); // 警告除け
+    infoLevel.value = 0;
+    messageType.value = 0;
 }
 </script>
 <template>
@@ -442,7 +595,7 @@ function recievePagingNumber(selecteddNumber: number) {
                                 <option :value=seijidantaiKbnNoSelect> </option>
                                 <option :value=seijidantaiKbnSeitou>{{
                                     SeijidantaiDantaiKbnConstants.getLabel(seijidantaiKbnSeitou)
-                                    }}</option>
+                                }}</option>
                                 <option :value=seijidantaiKbnSeitouShibu>{{
                                     SeijidantaiDantaiKbnConstants.getLabel(seijidantaiKbnSeitouShibu) }}</option>
                                 <option :value=seijidantaiKbnSeijishikin>{{
@@ -451,7 +604,7 @@ function recievePagingNumber(selecteddNumber: number) {
                                     SeijidantaiDantaiKbnConstants.getLabel(seijidantaiKbn18Jou2KouDantai) }}</option>
                                 <option :value=seijidantaiKbnSonota>{{
                                     SeijidantaiDantaiKbnConstants.getLabel(seijidantaiKbnSonota)
-                                    }}</option>
+                                }}</option>
                                 <option :value=seijidantaiKbnSonotaShibu>{{
                                     SeijidantaiDantaiKbnConstants.getLabel(seijidantaiKbnSonotaShibu) }}</option>
                             </select>

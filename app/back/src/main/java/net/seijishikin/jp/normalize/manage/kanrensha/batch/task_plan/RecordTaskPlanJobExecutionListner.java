@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 
 import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
 import net.seijishikin.jp.normalize.common_tool.utils.CreateUserLeastDtoByBatchParamUtil;
+import net.seijishikin.jp.normalize.manage.kanrensha.logic.send_message.SendMailByPlanIdAndStateLogic;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.util.SaveStackTraceService;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.year.SwitchYearTaskFailureService;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.year.SwitchYearTaskSuccessService;
@@ -39,6 +40,10 @@ public class RecordTaskPlanJobExecutionListner implements JobExecutionListener {
     @Autowired
     private SwitchYearTaskFailureService switchYearTaskFailureService;
 
+    /** タスク計画で通知メール送信Logic */
+    @Autowired
+    private SendMailByPlanIdAndStateLogic sendMailByPlanIdAndStateLogic;
+
     /** StackTrace保存Service */
     @Autowired
     private SaveStackTraceService saveStackTraceService;
@@ -62,20 +67,23 @@ public class RecordTaskPlanJobExecutionListner implements JobExecutionListener {
         LocalDateTime endDatetime = LocalDateTime.now();
 
         try {
+            int state = 0;
             if (jobExecution.getStatus() == BatchStatus.COMPLETED) {
                 // 成功の記録を保存
                 switchYearTaskSuccessService.practice(tableYear, userDto, taskId, endDatetime);
+                state = SendMailByPlanIdAndStateLogic.STATE_END;
             } else if (jobExecution.getStatus() == BatchStatus.FAILED) {
+                state = SendMailByPlanIdAndStateLogic.STATE_SUSPEND;
                 switchYearTaskFailureService.practice(tableYear, userDto, taskId, taskCode, endDatetime);
                 // 失敗した場合には保存された例外を保存
                 for (Throwable throwable : jobExecution.getAllFailureExceptions()) {
                     saveStackTraceService.practice((Exception) throwable, tableYear, taskCode);
                 }
             }
-            
+
             // メール送信
-            
-            
+            sendMailByPlanIdAndStateLogic.practice(userDto, tableYear, taskId, state);
+
         } catch (Exception exception) { // NOPMD 業務的な理由から積極的に許容
             saveStackTraceService.practice(exception, Year.now().getValue(), 0);
         }

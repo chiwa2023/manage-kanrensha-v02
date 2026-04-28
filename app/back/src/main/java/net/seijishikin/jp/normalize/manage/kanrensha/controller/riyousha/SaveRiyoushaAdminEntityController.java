@@ -48,7 +48,7 @@ public class SaveRiyoushaAdminEntityController {
             if (zero.equals(saveRiyoushaAdminEntityService.practice(capsuleDto))) {
                 resultDto.setIsFailure(true);
                 resultDto.setMessage(FrameworkMessageAndResultDto.MESSAGE_NO_RECORD);
-                return ResponseEntity.status(HttpStatus.NO_CONTENT).body(resultDto);
+                return ResponseEntity.status(HttpStatus.ACCEPTED).body(resultDto);
 
             } else {
                 resultDto.setMessage(FrameworkMessageAndResultDto.MESSAGE_EXPECTED);

@@ -97,11 +97,10 @@ export default class RoutePathConstants {
     /** 関連者政治団体マスタ一括登録 */
     static readonly PAGE_REGI_BULK_MASTER_POLI_ORG: string = this.BASE_PATH + "/bulk-master-seijidantai";
 
-    // /** 関連者個人－企業／団体紐づけ登録 */
-    // static readonly PAGE_REGI_COMBINE_KIGYOU: string = this.BASE_PATH + "/combine-kigyou";
-
-    // /** 関連者個人－企業／団体紐づけ登録 */
-    // static readonly PAGE_REGI_COMBINE_POLI_ORG: string = this.BASE_PATH + "/combine-seijidantai";
+    /** 関連者個人－企業／団体紐づけ登録 */
+    static readonly PAGE_REGI_BULK_COMBINE_KIGYOU: string = this.BASE_PATH + "/bulk-combine-kigyou";
+    /** 関連者個人－企業／団体紐づけ登録 */
+    static readonly PAGE_REGI_BULK_COMBINE_SEIJIDANTAI: string = this.BASE_PATH + "/bulk-combine-seijidantai";
 
     /** 関連者マスタ一ダンプ(指定期間まで) */
     static readonly PAGE_DUMP_MASTER: string = this.BASE_PATH + "/dump-master";
@@ -153,11 +152,11 @@ export default class RoutePathConstants {
     /** 予約実行 */
     static readonly PAGE_TIMER_YOTEI: string = this.BASE_PATH + "/timer-yotei";
 
-    // /** 運営者による関連者管理 */
-    // static readonly PAGE_REGI_PARTNER_MANAGE: string = this.BASE_PATH + "/partner-manage";
+    /** 運営者による関連者管理 */
+    static readonly PAGE_KANRENSHA_MANAGE: string = this.BASE_PATH + "/kanrensha-manage";
 
-    // /** 本人による関連者編集 */
-    // static readonly PAGE_REGI_PARTNER_EDIT: string = this.BASE_PATH + "/partner-edit";
+    /** 本人による関連者編集 */
+    static readonly PAGE_KANRENSHA_EDIT: string = this.BASE_PATH + "/kanrensha-edit";
 
     // /** 作業内容承認 */
     // static readonly PAGE_WORKS_APPROVAL: string = this.BASE_PATH + "/works-approval";
@@ -185,6 +184,7 @@ export default class RoutePathConstants {
     // static readonly PAGE_INVITE_MANAGER_PERSON: string = this.BASE_PATH + "/invite-manager";
     // /** 運営者組織に招待を個人が承認 */
     // static readonly PAGE_ACCEPT_MANAGER_PERSON: string = this.BASE_PATH + "/accept-manager";
+
 
     /** タスク計画検索 */
     static readonly PAGE_SEARCH_TASK_PLAN: string = this.BASE_PATH + "/search-task-plan";

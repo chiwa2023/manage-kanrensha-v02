@@ -57,24 +57,6 @@ function onCancel() {
 }
 
 function onSave() {
-    alert("実行");
-    // getAuthorizedPromiseArea().then(token => {
-    //     const url = urlBack + "/regist-bulk-history/retry-seijidantai";
-    //     const method = "POST";
-    //     const body = JSON.stringify(retryCapsuleDto.value);
-    //     const headers = {
-    //         'Accept': 'application/json',
-    //         'Content-Type': 'application/json',
-    //         'X-AUTH-TOKEN': 'Bearer ' + token
-    //     };
-    //     fetch(url, { method, headers, body })
-    //         .then(async (response) => {
-    //             const resultDto: FrameworkMessageAndResultInterface = await response.json();
-    //             alert(resultDto.message);
-    //         })
-    //         .catch((error) => { alert(error); });
-    // });
-
 
     title.value = "関連者政治団体履歴一括処理再処理";
     getAuthorizedPromiseArea().then(token => {
@@ -100,7 +82,6 @@ function onSave() {
                     message.value = resultDto.message;
                     return;
                 }
-                alert(resultDto.message);
             })
             .catch((error) => {
                 alert(error);
@@ -135,25 +116,6 @@ function onSave() {
 }
 
 function onBatchByFile() {
-    alert("バッチ処理");
-    // getAuthorizedPromiseArea().then(token => {
-    //     const url = urlBack + "/regist-bulk-history/execute-seijidantai";
-    //     const method = "POST";
-    //     const body = JSON.stringify(capsuleDto.value);
-    //     const headers = {
-    //         'Accept': 'application/json',
-    //         'Content-Type': 'application/json',
-    //         'X-AUTH-TOKEN': 'Bearer ' + token
-    //     };
-    //     fetch(url, { method, headers, body })
-    //         .then(async (response) => {
-    //             const resultDto: FrameworkMessageAndResultInterface = await response.json();
-    //             alert(resultDto.message);
-    //         })
-    //         .catch((error) => { alert(error); });
-    // });
-
-
     title.value = "関連者政治団体履歴CSV一括登録";
     getAuthorizedPromiseArea().then(token => {
         const url = urlBack + "/regist-bulk-history/execute-seijidantai";

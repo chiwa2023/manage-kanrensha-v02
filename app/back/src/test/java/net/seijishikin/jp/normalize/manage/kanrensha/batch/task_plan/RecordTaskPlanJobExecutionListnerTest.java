@@ -55,7 +55,7 @@ class RecordTaskPlanJobExecutionListnerTest {
     private TaskPlan2026Repository taskPlan2026Repository;
 
     @Test
-    @Tag("TableTruncate")
+    @Tag("ExternalService")
     void testCompleted() throws Exception {
 
         final Integer taskId = 453;
@@ -72,7 +72,7 @@ class RecordTaskPlanJobExecutionListnerTest {
     }
 
     @Test
-    @Tag("TableTruncate")
+    @Tag("ExternalService")
     void testFailure() throws Exception {
 
         final Integer taskCode = 393;

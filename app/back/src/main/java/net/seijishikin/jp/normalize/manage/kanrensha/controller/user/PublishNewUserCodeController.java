@@ -50,7 +50,7 @@ public class PublishNewUserCodeController {
 
             if (Objects.isNull(resultDto)) {
                 // コード発行、メール送信関連で事故が発生時
-                return ResponseEntity.status(HttpStatus.NO_CONTENT).body(new NewComerDto());
+                return ResponseEntity.status(HttpStatus.ACCEPTED).body(new NewComerDto());
             } else {
                 // 正常動作
                 return ResponseEntity.status(HttpStatus.OK).body(resultDto);

@@ -51,7 +51,6 @@ function onCancel() {
 }
 
 function onSave() {
-    alert("実行");
     title.value = "関連者企業団体履歴一括処理再処理";
     getAuthorizedPromiseArea().then(token => {
         const url = urlBack + "/regist-bulk-history/retry-kigyou-dt";
@@ -76,7 +75,6 @@ function onSave() {
                     message.value = resultDto.message;
                     return;
                 }
-                alert(resultDto.message);
             })
             .catch((error) => {
                 alert(error);
