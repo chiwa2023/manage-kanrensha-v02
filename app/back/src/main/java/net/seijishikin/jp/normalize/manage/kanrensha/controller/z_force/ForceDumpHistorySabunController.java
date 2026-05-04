@@ -61,6 +61,7 @@ public class ForceDumpHistorySabunController {
             if (!capsuleDto.getIsExecuteKigyouDt() && !capsuleDto.getIsExecutePerson()
                     && !capsuleDto.getIsExecuteSeijidantai()) {
                 resultDto.setMessage("実行するダンプ処理が選択されていません");
+                resultDto.setIsFailure(true);
                 return ResponseEntity.status(HttpStatus.ACCEPTED).body(resultDto);
             }
 

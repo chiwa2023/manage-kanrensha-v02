@@ -413,9 +413,6 @@ function onSave() {
         message.value = "システム管理者にお問い合わせください";
         return;
     });
-
-
-
 }
 
 function recievePagingNumber(selecteddNumber: number) {
