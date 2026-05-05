@@ -103,6 +103,9 @@ class ChangeUserInfoServiceTest {
         assertEquals(true, entityRoleNew.getIsLatest());
         assertEquals(email, entityRoleNew.getEmail());
         assertEquals(role, entityRoleNew.getRole());
+        // TODO ロール追加後、紐づく関連者／利用者の設定がされていない
+        assertEquals("", entityRoleNew.getKanrenshaCode());
+        assertEquals(0, entityRoleNew.getRiyoushaCode());
         assertEquals(81, entityRoleNew.getInsertUserId());
     }
 

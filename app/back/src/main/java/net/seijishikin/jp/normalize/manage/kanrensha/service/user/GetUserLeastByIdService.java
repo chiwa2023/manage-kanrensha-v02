@@ -1,5 +1,7 @@
 package net.seijishikin.jp.normalize.manage.kanrensha.service.user;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +11,7 @@ import net.seijishikin.jp.normalize.common_tool.dto.FrameworkMessageAndResultDto
 import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.user.GetUserDtoResultDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.UserPersonEntity;
+import net.seijishikin.jp.normalize.manage.kanrensha.entity.UserRoleEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.repository.UserPersonRepository;
 import net.seijishikin.jp.normalize.manage.kanrensha.repository.UserRoleRepository;
 
@@ -49,7 +52,30 @@ public class GetUserLeastByIdService {
         userDto.setUserPersonId(entityOperator.getUserPersonId());
         userDto.setUserPersonCode(entityOperator.getUserPersonCode());
         userDto.setUserPersonName(entityOperator.getUserPersonName());
-        userDto.setListRoles(userRoleRepository.findLatestRoleByMail(entityOperator.getEmail()));
+
+        // 取得した権限から詳細情報が入っているロールを特定してコードを格納
+        List<UserRoleEntity> listEntity = userRoleRepository.findByEmailAndIsLatestTrue(entityOperator.getEmail());
+        List<String> listRole = new ArrayList<>();
+        final int INIT_NUM = 0;
+        final String BLANK = "";
+        for (UserRoleEntity entity : listEntity) {
+            String role = entity.getRole();
+            listRole.add(role);
+            if (role.startsWith("kanrensha_")) {
+                String kanrenshaCode = entity.getKanrenshaCode();
+                if (!BLANK.equals(kanrenshaCode)) {
+                    userDto.setKanrenshaCode(kanrenshaCode);
+                    userDto.setKanrenshaRole(role);
+                }
+            } else {
+                Integer riyoushaCode = entity.getRiyoushaCode();
+                if (INIT_NUM != riyoushaCode) {
+                    userDto.setRiyoushaCode(riyoushaCode);
+                    userDto.setRiyoushaRole(role);
+                }
+            }
+        }
+        userDto.setListRoles(listRole);
 
         resultDto.setUserDto(userDto);
         resultDto.setIsAlertTaskStart(entityOperator.getIsAlertTaskStart());

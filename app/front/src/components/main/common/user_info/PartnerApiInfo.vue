@@ -238,7 +238,8 @@ function onTransfer() {
 
     <!-- 個人メニュー表示 -->
     <div class="personMenuLayer" v-if="isVewPersonMenu">
-        <PersonMenu :view-role="UserRoleConstants.ROLE_ADMIN" @send-canceel-menu="recieveCanceelPersonMenu">
+        <PersonMenu :view-role="UserRoleConstants.ROLE_PARTNER_API" :user-dto="props.userDto"
+            @send-canceel-menu="recieveCanceelPersonMenu">
         </PersonMenu>
     </div>
 

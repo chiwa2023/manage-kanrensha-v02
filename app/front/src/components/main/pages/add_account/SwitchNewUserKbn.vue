@@ -8,6 +8,7 @@ import { MessageConstants, MessageView } from 'seijishikin-jp-normalize_common-t
 import router from '../../../../router';
 import UserRoleConstants from '../../dto/user/userRoleConstants';
 import NewComerInfo from '../../common/user_info/NewComerInfo.vue';
+import { useUserInfoStore } from '../../stores/storeUserInfo';
 
 // back側アクセス
 const urlBack: string = RoutePathConstants.DOMAIN + RoutePathConstants.BASE_PATH;
@@ -32,8 +33,6 @@ if (null !== dtoJson) {
     newComer.value = JSON.parse(dtoJson);
 }
 
-newComer.value.role = "manager";
-
 // 入力されたコードをチェックして正常ならパスワード入力と
 // 権限を選択してもらう
 // API呼び出し用Composable
@@ -54,21 +53,23 @@ async function onRegistUser() {
     const resultDto: LoginUserResultDtoInterface | null = await fetchAddUser(url, config);
 
     if (resultDto !== null) {
-        sessionStorage.setItem("userDto", JSON.stringify(resultDto.userDto));
-        sessionStorage.setItem("jwtToken", JSON.stringify(resultDto.jwtTokenDto));
+        // 取得できたら保存
+        const userInfo = useUserInfoStore();
+        userInfo.jwtDto = resultDto.jwtTokenDto;
+        userInfo.userDto = resultDto.userDto;
 
         switch (newComer.value.role) {
-            case UserRoleConstants.ROLE_MANAGER:
+            case UserRoleConstants.MANAGER:
                 // 運営者
                 router.push(RoutePathConstants.PAGE_INSERT_MANAGER);
                 break;
-            case UserRoleConstants.ROLE_PARTNER_API:
+            case UserRoleConstants.PARTNER_API:
                 // APIパートナー
                 router.push(RoutePathConstants.PAGE_INSERT_PARTNER_API);
                 break;
-            case UserRoleConstants.ROLE_KANRENSHA_PERSON:
-            case UserRoleConstants.ROLE_KANRENSHA_KIGYOU_DT:
-            case UserRoleConstants.ROLE_KANRENSHA_SEIJIDANTAI:
+            case UserRoleConstants.KANRENSHA_PERSON:
+            case UserRoleConstants.KANRENSHA_KIGYOU_DT:
+            case UserRoleConstants.KANRENSHA_SEIJIDANTAI:
                 // 関連者
                 router.push(RoutePathConstants.PAGE_INSERT_KANRENSHA);
                 break;
@@ -166,9 +167,8 @@ function recieveSubmit(button: string) {
         <div class="right-area">
             <div class="form-group-vertical">
                 <div>
-                    <input type="radio" id="role" v-model="newComer.role"
-                        :value=UserRoleConstants.MANAGER>このサイトで<span class="explain">大量・一括関連者データ編集</span>を行いたい<span
-                        class="kbn">運営者</span>
+                    <input type="radio" id="role" v-model="newComer.role" :value=UserRoleConstants.MANAGER>このサイトで<span
+                        class="explain">大量・一括関連者データ編集</span>を行いたい<span class="kbn">運営者</span>
                 </div>
                 <div>
                     <input type="radio" id="role" v-model="newComer.role"
@@ -177,13 +177,13 @@ function recieveSubmit(button: string) {
                 </div>
                 <div>
                     <input type="radio" id="role" v-model="newComer.role"
-                        :value=UserRoleConstants.KANRENSHA_PERSON><span
-                        class="explain">政治団体と資金・物品の取引</span>をする<span class="kbn">関連者個人</span>
+                        :value=UserRoleConstants.KANRENSHA_PERSON><span class="explain">政治団体と資金・物品の取引</span>をする<span
+                        class="kbn">関連者個人</span>
                 </div>
                 <div>
                     <input type="radio" id="role" v-model="newComer.role"
-                        :value=UserRoleConstants.KANRENSHA_KIGYOU_DT><span
-                        class="explain">政治団体と資金・物品の取引</span>をする<span class="kbn">関連者企業・団体</span>
+                        :value=UserRoleConstants.KANRENSHA_KIGYOU_DT><span class="explain">政治団体と資金・物品の取引</span>をする<span
+                        class="kbn">関連者企業・団体</span>
                 </div>
                 <div>
                     <input type="radio" id="role" v-model="newComer.role"
@@ -236,7 +236,7 @@ function recieveSubmit(button: string) {
         <button class="footer-button" @click="onCancel">前に戻る</button>
         <button class="footer-button left-space" @click="onRegistUser" :disabled="addUserLoading">送信</button>
     </div>
-    
+
     <!-- メッセージ表示 -->
     <div class="overMessage" v-if="messageType !== MessageConstants.VIEW_NONE">
         <MessageView :info-level="infoLevel" :message-type="messageType" :title="title" :message="message"

@@ -77,7 +77,7 @@ public class ChangeUserInfoService {
         newPersonEntity.setUserPersonName(newName);
         newPersonEntity.setIsAlertTaskStart(capsuleDto.getIsAlertTaskStart());
         newPersonEntity.setIsAlertTaskEnd(capsuleDto.getIsAlertTaskEnd());
-        
+
         setTableDataHistoryUtil.practiceInsert(operatorUserDto, newPersonEntity);
         newPersonEntity.setUserPersonId(0); // auto iuncrement明記
 
@@ -92,7 +92,9 @@ public class ChangeUserInfoService {
 
         // 新しいロールを追加
         for (String role : capsuleDto.getUserDto().getListRoles()) {
-            UserRoleEntity newRole = this.createRoleEntitty(newId, newPersonEntity.getEmail(), role, newName);
+            UserRoleEntity oldRoleEntity = this.pickupRole(oldRoles, role);
+            UserRoleEntity newRole = this.createRoleEntitty(role, newId, oldRoleEntity, newName,
+                    newPersonEntity.getEmail());
             setTableDataHistoryUtil.practiceInsert(operatorUserDto, newRole);
             newRole.setUserRoleId(0); // auto increment明記
             userRoleRepository.save(newRole);
@@ -135,16 +137,30 @@ public class ChangeUserInfoService {
         return operatorUserDto;
     }
 
-    private UserRoleEntity createRoleEntitty(final Integer newId, final String email, final String role,
-            final String newName) {
+    private UserRoleEntity createRoleEntitty(final String role, final Integer newId, final UserRoleEntity oldEntity,
+            final String newName, final String email) {
 
         UserRoleEntity newRole = new UserRoleEntity();
         newRole.setEmail(email);
         newRole.setRole(role);
+        newRole.setKanrenshaCode(oldEntity.getKanrenshaCode());
+        newRole.setRiyoushaCode(oldEntity.getRiyoushaCode());
         newRole.setUserRoleId(newId);
         newRole.setDeleteUserName(newName);
 
         return newRole;
+    }
+
+    private UserRoleEntity pickupRole(final List<UserRoleEntity> list, final String key) {
+
+        for (UserRoleEntity entity : list) {
+            if (key.equals(entity.getRole())) {
+                return entity;
+            }
+        }
+
+        // 該当roleがなければ空
+        return new UserRoleEntity();
     }
 
 }

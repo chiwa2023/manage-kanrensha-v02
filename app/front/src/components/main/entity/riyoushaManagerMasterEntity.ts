@@ -1,4 +1,4 @@
-interface RiyoushaManagerEntityInterface {
+interface RiyoushaManagerMasterEntityInterface {
 
     /** 利用者運営者Id */
     riyoushaManagerId: number;
@@ -16,7 +16,7 @@ interface RiyoushaManagerEntityInterface {
 
 
 
-class RiyoushaManagerEntity implements RiyoushaManagerEntityInterface {
+class RiyoushaManagerMasterEntity implements RiyoushaManagerMasterEntityInterface {
 
     /** 利用者運営者Id */
     riyoushaManagerId: number;
@@ -47,4 +47,4 @@ class RiyoushaManagerEntity implements RiyoushaManagerEntityInterface {
     }
 }
 
-export { type RiyoushaManagerEntityInterface, RiyoushaManagerEntity }
+export { type RiyoushaManagerMasterEntityInterface, RiyoushaManagerMasterEntity }

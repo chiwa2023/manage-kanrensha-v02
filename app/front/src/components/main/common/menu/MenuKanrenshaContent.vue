@@ -15,31 +15,13 @@ import RoutePathConstants from '../../../../routePathConstants';
 
 </script>
 <template>
-
     <div class="menu-container">
         <div class="menu-section">
-            <h4 class="menu-title">利用者組織</h4>
-            <RouterLink :to="RoutePathConstants.PAGE_REGIST_RIYOUSHA_ORG" class="menu-item">利用者組織編集</RouterLink>
-            <a href="#" class="menu-item">組織・個人紐づけ</a>
-        </div>
-
-        <div class="menu-section">
-            <h4 class="menu-title">本人情報編集</h4>
-            <a href="#" class="menu-item">パスワード更新</a><br>
-            <a href="#" class="menu-item">名称・住所・連絡先編集</a><br>
-            <a href="#" class="menu-item">退会</a><br>
-            <!--
-    <RouterLink :to=RoutePathConstants.PAGE_REFLESH_PASSWORD>パスワード更新</RouterLink><br>
-    <a href="#">メニューサンプル関連者</a><br>
-
-    <RouterLink :to=RoutePathConstants.PAGE_REFRESH_PASSWORD>パスワード更新</RouterLink><br>
-    <RouterLink :to=RoutePathConstants.PAGE_USER_EDIT>ユーザ編集</RouterLink><br>
-    <RouterLink :to=RoutePathConstants.PAGE_CHANGE_ROLE>権限変更</RouterLink><br>
-    <RouterLink :to=RoutePathConstants.PAGE_USER_WITHDRAW>退会</RouterLink><br>
-    -->
-
+            <RouterLink class="menu-item" :to=RoutePathConstants.PAGE_KANRENSHA_MYSELF>本人情報編集</RouterLink>
         </div>
     </div>
+
+    <RouterLink class="menu-item" :to=RoutePathConstants.PAGE_MENU_KANRENSHA>ページで見る</RouterLink><br>
 
     <div class="menu-container">
         <div class="menu-section">
@@ -47,10 +29,6 @@ import RoutePathConstants from '../../../../routePathConstants';
             <RouterLink :to="RoutePathConstants.PAGE_LOGOUT" class="menu-item">ログアウト</RouterLink>
         </div>
     </div>
-
-     <RouterLink :to=RoutePathConstants.PAGE_MENU_KANRENSHA>ページで見る</RouterLink><br>
-
-     <RouterLink :to="RoutePathConstants.PAGE_LOGOUT">ログアウト</RouterLink><br>
 
 </template>
 <style scoped></style>

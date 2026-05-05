@@ -2,7 +2,6 @@ package net.seijishikin.jp.normalize.manage.kanrensha.service.kanrensha; // NOPM
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -11,22 +10,19 @@ import net.seijishikin.jp.normalize.common_tool.dto.input.InputOrgNameDto;
 import net.seijishikin.jp.normalize.common_tool.utils.FormatNaturalSearchTextUtil;
 import net.seijishikin.jp.normalize.common_tool.utils.SetTableDataHistoryUtil;
 import net.seijishikin.jp.normalize.manage.kanrensha.constants.HoujinShubetsuConstants;
+import net.seijishikin.jp.normalize.manage.kanrensha.constants.UserRoleConstants;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.kanrensha.InputKanrenshaPersonLeastDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.kanrensha.KanrenshaKigyouDtDto;
-//import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
-//import net.seijishikin.jp.normalize.common_tool.utils.FormatNaturalSearchTextUtil;
-//import net.seijishikin.jp.normalize.common_tool.utils.SetTableDataHistoryUtil;
-import net.seijishikin.jp.normalize.manage.kanrensha.dto.user.SaveKanrenshaKigyouDtCapsuleDto;
+import net.seijishikin.jp.normalize.manage.kanrensha.dto.kanrensha.SaveKanrenshaKigyouDtCapsuleDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.KanrenshaKigyouDtAccessEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.KanrenshaKigyouDtAddressEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.KanrenshaKigyouDtHistoryBaseEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.KanrenshaKigyouDtMasterEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.KanrenshaKigyouDtPropertyEntity;
+import net.seijishikin.jp.normalize.manage.kanrensha.logic.user.InsertCombineUserKanrenshaLogic;
 import net.seijishikin.jp.normalize.manage.kanrensha.repository.KanrenshaKigyouDtAccessRepository;
 import net.seijishikin.jp.normalize.manage.kanrensha.repository.KanrenshaKigyouDtAddressRepository;
 import net.seijishikin.jp.normalize.manage.kanrensha.repository.KanrenshaKigyouDtMasterRepository;
-//import net.seijishikin.jp.normalize.manage.kanrensha.logic.user.InsertCombineUserKanrenshaLogic;
-//import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateDokujiCodeForKigyouDtUtil;
 import net.seijishikin.jp.normalize.manage.kanrensha.repository.KanrenshaKigyouDtPropertyRepository;
 import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateDokujiCodeForKigyouDtUtil;
 
@@ -59,9 +55,9 @@ public class InsertKanrenshaKigyouDtService {
     @Autowired
     private InsertKanrenshaKigyouDtHistoryService insertKanrenshaKigyouDtHistoryService;
 
-//    /** ユーザ関連者紐づけLogic */
-//    @Autowired
-//    private InsertCombineUserKanrenshaLogic insertCombineUserKanrenshaLogic;
+    /** ユーザ関連者紐づけLogic */
+    @Autowired
+    private InsertCombineUserKanrenshaLogic insertCombineUserKanrenshaLogic;
 
     /** 全文自然検索整形Utility */
     @Autowired
@@ -153,12 +149,10 @@ public class InsertKanrenshaKigyouDtService {
 
         insertKanrenshaKigyouDtHistoryService.practice(userDto, historyEntity);
 
-//        // 運営者以上が他人のデータを追加していない場合は、操作者ユーザと登録した関連者を紐づける
-//        if (kanrenshaKigyouDtDto.getIsCombineUser()) {
-//            insertCombineUserKanrenshaLogic.practcie(userDto.getUserPersonCode(), KanrenshaKbnConstants.CORP, newCode,
-//                    userDto);
-//        }
-//        return savedEntity.getMasterKigyouDtId();
+        // 運営者以上が他人のデータを追加している以外の場合は操作者ユーザと登録した関連者を紐づける
+        if (kanrenshaKigyouDtDto.getIsCombineUser()) {
+            insertCombineUserKanrenshaLogic.practcie(UserRoleConstants.KANRENSHA_KIGYOU_DT, newCode, userDto);
+        }
 
         return newId;
 

@@ -1,6 +1,10 @@
 ﻿<script setup lang="ts">
-import { InputAccessDto, InputAddressDto, InputOrgNameDto, ViewInputAccess, MockViewInputAddress, ViewInputOrgName, type InputAccessDtoInterface, type InputAddressDtoInterface, type InputOrgNameDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
-import { onBeforeMount, ref, type Ref, watch } from 'vue';
+import {
+    InputAccessDto, InputAddressDto, InputOrgNameDto, ViewInputAccess, MockViewInputAddress,
+    ViewInputOrgName, type InputAccessDtoInterface, type InputAddressDtoInterface, type InputOrgNameDtoInterface, type LeastUserDtoInterface, ViewInputAddressShort,
+    ViewInputAddress, useUserInfoStoreCommon
+} from 'seijishikin-jp-normalize_common-tool';
+import { onBeforeMount, ref, type Ref, toRaw, watch } from 'vue';
 import mockGetOrgName from '../../../test/pages/regist_riyousha_org/mockGetOrgName';
 import mockGetAddress from '../../../test/pages/regist_riyousha_org/mockGetAddress';
 import mockGetAccess from '../../../test/pages/regist_riyousha_org/mockGetAccess';
@@ -15,11 +19,13 @@ const emits = defineEmits(["sendCancelRiyoushaOrg", "sendRiyoushaOrgInterface"])
 
 //仮
 // よく使う定数
-// const BLANK: string = "";
+const BLANK: string = "";
 // const INIT_NUMBER: number = 0;
 // const SERVER_STATUS_OK: number = 200;
 // const SERVER_STATUS_ERROR: number = 400;
 // const SEARCH_LIMIT: number = 20;
+const longToken: Ref<string> = ref(BLANK); // 
+
 // メッセージボックス表示定数
 //const infoLevel: Ref<number> = ref(MessageConstants.LEVEL_NONE);
 //const messageType: Ref<number> = ref(MessageConstants.VIEW_NONE);
@@ -34,6 +40,11 @@ const tempPersonList: Ref<RiyoushaCombineOrgEntityInterface[]> = ref([]);
 
 onBeforeMount(() => {
     callData(props.selectedId);
+
+    // const userInfo = useUserInfoStore();
+
+    // const userInfoCommon = useUserInfoStoreCommon(getActivePinia());
+    // useUserInfoStoreCommon().jwtDto = userInfo.jwtDto;
 });
 
 
@@ -53,7 +64,6 @@ function callData(selectedId: number) {
         tempAccess.value = mockGetAccess();
         tempPersonList.value = mockGetRiyoushaCOmbinePersonList();
     }
-
 }
 
 
@@ -68,9 +78,10 @@ function onSave() {
     emits("sendRiyoushaOrgInterface");
 }
 
-function onDelete(){
+function onDelete() {
     alert("削除");
 }
+
 </script>
 <template>
     <h3>利用者組織編集</h3>
@@ -79,10 +90,10 @@ function onDelete(){
     <ViewInputOrgName :edit-dto="tempOrgName"></ViewInputOrgName>
 
     <!-- 住所入力 -->
-    <ViewInputAddress :edit-dto="tempAddress"></ViewInputAddress>
+    <ViewInputAddress :edit-dto="tempAddress" :long-token="longToken"></ViewInputAddress>
 
     <!-- 連絡先入力 -->
-    <ViewInputAccess :edit-dto="tempAccess"></ViewInputAccess>
+    <ViewInputAccess :edit-dto="tempAccess" :long-token="longToken"></ViewInputAccess>
 
 
     <h3>組織構成員リスト</h3>

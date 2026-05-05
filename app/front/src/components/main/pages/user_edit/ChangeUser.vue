@@ -316,7 +316,7 @@ function recievePagingNumber(selecteddNumber: number) {
     <div v-if="isViewEdit" class="overComponent">
         <UserDetailEdit :user-dto="userDto" :edit-user-id="selectedUserId"
             @send-cancel-edit-user="recieveCancelEditUser" @send-edit-user-interface="recieveEditUserInterface">
-        </UserDetailEdit>ユーザ情報編集
+        </UserDetailEdit>
     </div>
 
     <!-- メッセージ表示 -->

@@ -156,10 +156,8 @@ export default class RoutePathConstants {
     static readonly PAGE_KANRENSHA_MANAGE: string = this.BASE_PATH + "/kanrensha-manage";
 
     /** 本人による関連者編集 */
-    static readonly PAGE_KANRENSHA_EDIT: string = this.BASE_PATH + "/kanrensha-edit";
+    static readonly PAGE_KANRENSHA_MYSELF: string = this.BASE_PATH + "/kanrensha-myself";
 
-    // /** 作業内容承認 */
-    // static readonly PAGE_WORKS_APPROVAL: string = this.BASE_PATH + "/works-approval";
 
     // /** 運営者による利用者検索編集 */
     // static readonly PAGE_SEARCH_RIYOUSHA: string = this.BASE_PATH + "/search-riyousha";

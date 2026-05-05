@@ -4,7 +4,6 @@ import { FrameworkCapsuleDto, type FrameworkCapsuleDtoInterface, type LeastUserD
 import { MessageConstants, MessageView } from 'seijishikin-jp-normalize_common-tool';
 import router from '../../../../router';
 import RoutePathConstants from '../../../../routePathConstants';
-import UserRoleConstants from '../../dto/user/userRoleConstants';
 import AllMenu from '../../../main/common/menu/AllMenu.vue';
 import type { SelectOptionStringDtoInterface } from '../../dto/select_options/selectOptionStringDto';
 import { createListRoleOptions } from '../menu/createListRoleOptions';
@@ -217,7 +216,7 @@ function onTransfer() {
                 </div>
             </div>
             <div class="left-space user-role-icon-container" @click="viewPersonMenu">
-                <img src="#" class="user-role-icon">
+                <img src="" class="user-role-icon">
             </div>
         </div>
     </div>
@@ -236,7 +235,7 @@ function onTransfer() {
 
     <!-- 個人メニュー表示 -->
     <div class="personMenuLayer" v-if="isVewPersonMenu">
-        <PersonMenu :view-role="UserRoleConstants.ROLE_ADMIN" @send-canceel-menu="recieveCanceelPersonMenu">
+        <PersonMenu :view-role="BLANK" @send-canceel-menu="recieveCanceelPersonMenu">
         </PersonMenu>
     </div>
 

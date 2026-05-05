@@ -32,12 +32,12 @@ const listRiyoushaOrg: Ref<RiyoushaOrgMasterEntityInterface[]> = ref([]);
 
 function onSearch() {
     listRiyoushaOrg.value = mockGetRiyoushaOrgMasterList();
-    allCount.value =listRiyoushaOrg.value.length;
+    allCount.value = listRiyoushaOrg.value.length;
 }
 
 const isOrgEdit: Ref<boolean> = ref(INIT_BOOLEAN);
-function onEdit(selectedId:number) {
-    selectedOrgId.value =selectedId;
+function onEdit(selectedId: number) {
+    selectedOrgId.value = selectedId;
     isOrgEdit.value = true;
 }
 function onDelete() {
@@ -101,9 +101,9 @@ function recievePagingNumber(selecteddNumber: number) {
             </tbody>
         </table>
     </div>
-        <!-- ページング -->
-        <PagingControl :all-count="allCount" :limit="limit" :page-number="pageNumber"
-            @send-paging-number="recievePagingNumber"></PagingControl>
+    <!-- ページング -->
+    <PagingControl :all-count="allCount" :limit="limit" :page-number="pageNumber"
+        @send-paging-number="recievePagingNumber"></PagingControl>
 
 
     <div class="footer">

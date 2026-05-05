@@ -8,9 +8,10 @@ import org.springframework.transaction.annotation.Transactional;
 import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
 import net.seijishikin.jp.normalize.common_tool.utils.FormatNaturalSearchTextUtil;
 import net.seijishikin.jp.normalize.common_tool.utils.SetTableDataHistoryUtil;
+import net.seijishikin.jp.normalize.manage.kanrensha.constants.UserRoleConstants;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.kanrensha.InputKanrenshaPersonLeastDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.kanrensha.KanrenshaSeijidantaiDto;
-import net.seijishikin.jp.normalize.manage.kanrensha.dto.user.SaveKanrenshaSeijidantaiCapsuleDto;
+import net.seijishikin.jp.normalize.manage.kanrensha.dto.kanrensha.SaveKanrenshaSeijidantaiCapsuleDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.KanrenshaSeijidantaiAccessEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.KanrenshaSeijidantaiAddressEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.KanrenshaSeijidantaiHistoryBaseEntity;
@@ -20,7 +21,7 @@ import net.seijishikin.jp.normalize.manage.kanrensha.repository.KanrenshaSeijida
 import net.seijishikin.jp.normalize.manage.kanrensha.repository.KanrenshaSeijidantaiAddressRepository;
 import net.seijishikin.jp.normalize.manage.kanrensha.repository.KanrenshaSeijidantaiMasterRepository;
 import net.seijishikin.jp.normalize.manage.kanrensha.repository.KanrenshaSeijidantaiPropertyRepository;
-//import net.seijishikin.jp.normalize.manage.kanrensha.logic.user.InsertCombineUserKanrenshaLogic;
+import net.seijishikin.jp.normalize.manage.kanrensha.logic.user.InsertCombineUserKanrenshaLogic;
 import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateDokujiCodeForSeijidantaiUtil;
 
 /**
@@ -52,9 +53,9 @@ public class InsertKanrenshaSeijidantaiService {
     @Autowired
     private InsertKanrenshaSeijidantaiHistoryService insertKanrenshaSeijidantaiHistoryService;
 
-//    /** ユーザ関連者紐づけLogic */
-//    @Autowired
-//    private InsertCombineUserKanrenshaLogic insertCombineUserKanrenshaLogic;
+    /** ユーザ関連者紐づけLogic */
+    @Autowired
+    private InsertCombineUserKanrenshaLogic insertCombineUserKanrenshaLogic;
 
     /** 全文自然検索整形Utility */
     @Autowired
@@ -146,11 +147,10 @@ public class InsertKanrenshaSeijidantaiService {
 
         insertKanrenshaSeijidantaiHistoryService.practice(userDto, historyEntity);
 
-//        // 運営者以上が他人のデータを追加している以外の場合は操作者ユーザと登録した関連者を紐づける
-//        if (kanrenshaSeijidantaiDto.getIsCombineUser()) {
-//            insertCombineUserKanrenshaLogic.practcie(userDto.getUserPersonCode(), KanrenshaKbnConstants.POLI_ORG, newCode,
-//                    userDto);
-//        }
+        // 運営者以上が他人のデータを追加している以外の場合は操作者ユーザと登録した関連者を紐づける
+        if (kanrenshaSeijidantaiDto.getIsCombineUser()) {
+            insertCombineUserKanrenshaLogic.practcie(UserRoleConstants.KANRENSHA_SEIJIDANTAI, newCode, userDto);
+        }
 
         return newId;
     }

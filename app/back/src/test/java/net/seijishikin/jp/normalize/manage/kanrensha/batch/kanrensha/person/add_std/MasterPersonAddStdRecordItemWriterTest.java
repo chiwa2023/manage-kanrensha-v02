@@ -197,6 +197,8 @@ class MasterPersonAddStdRecordItemWriterTest {
         assertEquals(1, listProperty.size());
         KanrenshaPersonPropertyEntity entity15 = listProperty.get(0);
 
+        assertEquals(entity00.getLastNameKana() + "　" + entity00.getMiddleNameKana() + entity00.getFirstNameKana(),
+                entity15.getAllNameKana());
         assertEquals(entity00.getLastName(), entity15.getLastName());
         assertEquals(entity00.getFirstName(), entity15.getFirstName());
         assertEquals(entity00.getMiddleName(), entity15.getMiddleName());

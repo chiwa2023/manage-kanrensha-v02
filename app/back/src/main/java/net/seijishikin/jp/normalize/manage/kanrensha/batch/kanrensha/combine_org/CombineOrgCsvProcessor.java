@@ -20,7 +20,6 @@ import net.seijishikin.jp.normalize.manage.kanrensha.entity.WkTblKanrenshaCombin
 import net.seijishikin.jp.normalize.manage.kanrensha.repository.KanrenshaKigyouDtMasterRepository;
 import net.seijishikin.jp.normalize.manage.kanrensha.repository.KanrenshaPersonMasterRepository;
 import net.seijishikin.jp.normalize.manage.kanrensha.repository.KanrenshaSeijidantaiMasterRepository;
-import net.seijishikin.jp.normalize.common_tool.utils.SetTableDataHistoryUtil;
 
 /**
  * 個人団体紐づけCsvからワークテーブルProcessor
@@ -97,7 +96,7 @@ public class CombineOrgCsvProcessor
 
         // 未入力チェック
         this.checkSetValue(stringBuilder, entity);
-        
+
         // 登録年チェック(front側で生成した場合はチェックをスキップ)
         if (BLANK.equals(entity.getYearArrayText())) {
             if (this.checkSetYear(stringBuilder, entity, yMin, yMax)) {
@@ -115,10 +114,10 @@ public class CombineOrgCsvProcessor
                     String text = builder.toString();
                     entity.setYearArrayText(text.substring(0, text.length() - 1));
                 }
-            }else {
+            } else {
                 entity.setYearArrayText(BLANK); // 最初の指定時はよかったのに、編集時にダメにした場合の対策
             }
-        } 
+        }
 
         // 作成予定の各年のテーブルについてチェックを行う
         if (!BLANK.equals(entity.getYearArrayText())) {
@@ -200,8 +199,8 @@ public class CombineOrgCsvProcessor
 
         // 個人コード存在確認(最初の1件を呼んでいるようだが実質1件しか存在しない運用をする)
         Optional<KanrenshaPersonMasterEntity> optionalPerson = kanrenshaPersonMasterRepository
-                .findFirstByPersonKanrenshaCodeAndIsLatest(entity.getPersonKanrenshaCode(),
-                        SetTableDataHistoryUtil.INSERT_STATE);
+                .findFirstByPersonKanrenshaCodeAndIsLatestTrueOrderByKanrenshaPersonMasterIdDesc(
+                        entity.getPersonKanrenshaCode());
         if (optionalPerson.isEmpty()) {
             stringBuilder.append("指定された個人関連者コードが存在しません;");
         }
@@ -209,8 +208,8 @@ public class CombineOrgCsvProcessor
         // 紐づけ団体が企業団体の場合
         if (KanrenshaKbnConstants.KIGYOU_DT == entity.getKanrenshaKbn()) {
             Optional<KanrenshaKigyouDtMasterEntity> optionalKigyouDt = kanrenshaKigyouDtMasterRepository
-                    .findFirstByKigyouDtKanrenshaCodeAndIsLatest(entity.getOrgKanrenshaCode(),
-                            SetTableDataHistoryUtil.INSERT_STATE);
+                    .findFirstByKigyouDtKanrenshaCodeAndIsLatestTrueOrderByKanrenshaKigyouDtMasterIdDesc(
+                            entity.getOrgKanrenshaCode());
             if (optionalKigyouDt.isEmpty()) {
                 stringBuilder.append("指定された企業／団体関連者コードが存在しません;");
             }
@@ -219,8 +218,8 @@ public class CombineOrgCsvProcessor
         // 紐づけ団体が政治団体の場合
         if (KanrenshaKbnConstants.SEIJIDANTAI == entity.getKanrenshaKbn()) {
             Optional<KanrenshaSeijidantaiMasterEntity> optionalSeijidantai = kanrenshaSeijidantaiMasterRepository
-                    .findFirstBySeijidantaiKanrenshaCodeAndIsLatest(entity.getOrgKanrenshaCode(),
-                            SetTableDataHistoryUtil.INSERT_STATE);
+                    .findFirstBySeijidantaiKanrenshaCodeAndIsLatestTrueOrderByKanrenshaSeijidantaiMasterId(
+                            entity.getOrgKanrenshaCode());
             if (optionalSeijidantai.isEmpty()) {
                 stringBuilder.append("指定された政治団体団体関連者コードが存在しません;");
             }

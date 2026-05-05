@@ -1,14 +1,14 @@
-package net.seijishikin.jp.normalize.manage.kanrensha.dto.user;
+package net.seijishikin.jp.normalize.manage.kanrensha.dto.kanrensha;
 
 import java.io.Serializable;
 
-import net.seijishikin.jp.normalize.common_tool.dto.FrameworkCapsuleDto;
-import net.seijishikin.jp.normalize.manage.kanrensha.dto.kanrensha.KanrenshaPersonDto;
+import net.seijishikin.jp.normalize.common_tool.dto.FrameworkMessageAndResultDto;
+
 
 /**
  * 関連者個人格納Dto
  */
-public class SaveKanrenshaPersonCapsuleDto extends FrameworkCapsuleDto implements Serializable {
+public class GetKanrenshaPersonResultDto extends FrameworkMessageAndResultDto implements Serializable {
 
     /** Serialize id */
     private static final long serialVersionUID = 1L;

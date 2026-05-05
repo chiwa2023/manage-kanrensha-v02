@@ -1,14 +1,13 @@
-package net.seijishikin.jp.normalize.manage.kanrensha.dto.user;
+package net.seijishikin.jp.normalize.manage.kanrensha.dto.kanrensha;
 
 import java.io.Serializable;
 
-import net.seijishikin.jp.normalize.common_tool.dto.FrameworkCapsuleDto;
-import net.seijishikin.jp.normalize.manage.kanrensha.dto.kanrensha.KanrenshaSeijidantaiDto;
+import net.seijishikin.jp.normalize.common_tool.dto.FrameworkMessageAndResultDto;
 
 /**
  * 関連者政治団体格納Dto
  */
-public class SaveKanrenshaSeijidantaiCapsuleDto extends FrameworkCapsuleDto implements Serializable {
+public class GetKanrenshaSeijidantaiResultDto extends FrameworkMessageAndResultDto implements Serializable {
 
     /** Serialize id */
     private static final long serialVersionUID = 1L;
@@ -18,7 +17,7 @@ public class SaveKanrenshaSeijidantaiCapsuleDto extends FrameworkCapsuleDto impl
 
     /**
      * 関連者政治団体Dtoを取得する
-     *
+     * 
      * @return 関連者政治団体Dto
      */
     public KanrenshaSeijidantaiDto getKanrenshaSeijidantaiDto() {
@@ -27,7 +26,7 @@ public class SaveKanrenshaSeijidantaiCapsuleDto extends FrameworkCapsuleDto impl
 
     /**
      * 関連者政治団体Dtoを設定する
-     *
+     * 
      * @param kanrenshaSeijidantaiDto 関連者政治団体Dto
      */
     public void setKanrenshaSeijidantaiDto(final KanrenshaSeijidantaiDto kanrenshaSeijidantaiDto) {

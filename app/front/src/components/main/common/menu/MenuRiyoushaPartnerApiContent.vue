@@ -17,14 +17,16 @@ import RoutePathConstants from '../../../../routePathConstants';
 <template>
     <div class="menu-container">
         <div class="menu-section">
+            <h4>接続設定</h4>
+            <RouterLink class="menu-item" :to=RoutePathConstants.PAGE_PARTNER_TOKEN_REPLACE>長期トークン(再)発行</RouterLink><br>
+        </div>
+
+        <div class="menu-section">
             <h4>利用者組織</h4>
-            <RouterLink :to="RoutePathConstants.PAGE_REGIST_RIYOUSHA_ORG" class="menu-item">利用者組織編集</RouterLink><br>
+            <RouterLink class="menu-item" :to=RoutePathConstants.PAGE_REGIST_RIYOUSHA_ORG>利用者組織編集</RouterLink><br>
             <a href="#">組織・個人紐づけ</a>
-            <a href="#">Bearer更新</a><br>
         </div>
     </div>
-
-    <RouterLink :to=RoutePathConstants.PAGE_PARTNER_TOKEN_REPLACE>長期トークン(再)発行</RouterLink><br>
 
     <div class="menu-container">
         <div class="menu-section">
@@ -33,17 +35,14 @@ import RoutePathConstants from '../../../../routePathConstants';
         </div>
     </div>
 
+    <RouterLink :to=RoutePathConstants.PAGE_MENU_PARTNER_API>ページで見る</RouterLink><br>
+
     <div class="menu-container">
         <div class="menu-section">
             <h4 class="menu-title">ログアウト</h4>
             <RouterLink :to="RoutePathConstants.PAGE_LOGOUT" class="menu-item">ログアウト</RouterLink>
         </div>
     </div>
-    <RouterLink :to=RoutePathConstants.PAGE_LOGIN>ログインページ</RouterLink><br>
-
-    <RouterLink :to=RoutePathConstants.PAGE_MENU_PARTNER_API>ページで見る</RouterLink><br>
-
-    <RouterLink :to="RoutePathConstants.PAGE_LOGOUT">ログアウト</RouterLink><br>
 
 </template>
 <style scoped></style>

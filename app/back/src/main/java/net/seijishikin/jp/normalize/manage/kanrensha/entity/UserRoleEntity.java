@@ -113,6 +113,50 @@ public class UserRoleEntity implements Serializable, AllTabeDataHistoryInterface
         this.role = role;
     }
 
+    /** 関連者コード */
+    @Column(name = "kanrensha_code")
+    private String kanrenshaCode = INIT_STRING;
+
+    /**
+     * 関連者コードを取得する
+     *
+     * @return 関連者コード
+     */
+    public String getKanrenshaCode() {
+        return kanrenshaCode;
+    }
+
+    /**
+     * 関連者コードを設定する
+     *
+     * @param kanrenshaCode 関連者コード
+     */
+    public void setKanrenshaCode(final String kanrenshaCode) {
+        this.kanrenshaCode = kanrenshaCode;
+    }
+
+    /** 利用者コード */
+    @Column(name = "riyousha_code")
+    private Integer riyoushaCode = INIT_INTEGER;
+
+    /**
+     * 利用者コードを取得する
+     *
+     * @return 利用者コード
+     */
+    public Integer getRiyoushaCode() {
+        return riyoushaCode;
+    }
+
+    /**
+     * 利用者コードを設定する
+     *
+     * @param riyoushaCode 利用者コード
+     */
+    public void setRiyoushaCode(final Integer riyoushaCode) {
+        this.riyoushaCode = riyoushaCode;
+    }
+
     /** 挿入ユーザId */
     @Column(name = "insert_user_id")
     private Integer insertUserId = INIT_INTEGER;

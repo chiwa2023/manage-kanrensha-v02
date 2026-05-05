@@ -1,22 +1,18 @@
 ﻿<script setup lang="ts">
 import { ref, type Ref } from 'vue';
 import { PagingControl, } from 'seijishikin-jp-normalize_common-tool';
-import RiyoushaManagerEdit from '../../common/riyousha_edit/RiyoushaManagerEdit.vue';
-import RiyoushaPartnerApiEdit from '../../common/riyousha_edit/RiyoushaPartnerApiEdit.vue';
+// import RiyoushaManagerEdit from '../../common/riyousha_edit/RiyoushaManagerEdit.vue';
+// import RiyoushaPartnerApiEdit from '../../common/riyousha_edit/RiyoushaPartnerApiEdit.vue';
 import AdminInfo from '../../common/user_info/AdminInfo.vue';
 import type { LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import { getLoginUser } from '../../utils/getLoginUser';
 
 // import UserRoleConstants from '../../dto/user/userRoleConstants';
-// import type RiyoushaManagerInterface from '../../entity/riyoushaManagerEntity';
-// import RiyoushaManagerEntity from '../../entity/riyoushaManagerEntity';
 //import {  InputPersonNameDto, ViewInputPersonName, type InputPersonNameDtoInterface, } from 'seijishikin-jp-normalize_common-tool';
 //import { ComponentCatalog, InputPersonNameDto, ViewInputPersonName, type InputPersonNameDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 
 // import type RiyoushaComradeInterface from '../../../entity/riyoushaComradeEntity';
 // import RiyoushaComradeEntity from '../../../entity/riyoushaComradeEntity';
-// import type RiyoushaManagerInterface from '../../../entity/riyoushaManagerEntity';
-// import RiyoushaManagerEntity from '../../../entity/riyoushaManagerEntity';
 // import RiyoushaAdminInterface from '../../../entity/riyoushaAdminEntity';
 // import RiyoushaAdminEntity from '../../../entity/riyoushaAdminEntity';
 // import UserPersonLeastDto from './../../../dto/user/userPersonLeastDto';
@@ -46,7 +42,6 @@ const userDto: Ref<LeastUserDtoInterface> = ref(getLoginUser());
 // // 入力用変数
 // const viewStatus: Ref<string> = ref("");
 // const inputComradeEntity: Ref<RiyoushaComradeInterface> = ref(new RiyoushaComradeEntity());
-// const inputManagerEntity: Ref<RiyoushaManagerInterface> = ref(new RiyoushaManagerEntity());
 // const inputAdminEntity: Ref<RiyoushaAdminInterface> = ref(new RiyoushaAdminEntity());
 
 // // 検索処理変数
@@ -195,9 +190,9 @@ function recievePagingNumber(selecteddNumber: number) {
                 <PagingControl :all-count="allCount" :limit="limit" :page-number="pageNumber"
                     @send-paging-number="recievePagingNumber"></PagingControl>
 
-                <!-- API接続ユーザ編集 TODO 実際には検索結果の編集ボタンを押して表示-->
+                <!-- API接続ユーザ編集 TODO 実際には検索結果の編集ボタンを押して表示
                 <RiyoushaPartnerApiEdit :user-dto="userDto"></RiyoushaPartnerApiEdit>
-
+-->
             </div>
             <div v-if="showContentB === viewStatus2">
                 <h4>運営者</h4>
@@ -225,9 +220,9 @@ function recievePagingNumber(selecteddNumber: number) {
                 <PagingControl :all-count="allCount" :limit="limit" :page-number="pageNumber"
                     @send-paging-number="recievePagingNumber"></PagingControl>
 
-                <!-- 運営者編集 TODO 実際には検索結果の編集ボタンを押して表示-->
+                <!-- 運営者編集 TODO 実際には検索結果の編集ボタンを押して表示
                 <RiyoushaManagerEdit :user-dto="userDto"></RiyoushaManagerEdit>
-
+-->
             </div>
             <div v-if="showContentC === viewStatus2">
                 <h4>SE権限</h4>
@@ -255,9 +250,9 @@ function recievePagingNumber(selecteddNumber: number) {
                 <PagingControl :all-count="allCount" :limit="limit" :page-number="pageNumber"
                     @send-paging-number="recievePagingNumber"></PagingControl>
 
-                <!-- 管理者編集 TODO -->
+                <!-- 管理者編集 TODO
                 <RiyoushaManagerEdit :user-dto="userDto"></RiyoushaManagerEdit>
-
+ -->
             </div>
             <!-- APIパートナー編集
     <div v-if="viewStatus === UserRoleConstants.ROLE_COMRADE">

@@ -225,7 +225,7 @@ function recieveSubmit(button: string) {
             <div class="right-area">
                 <div class="form-group-vertical">
                     <div>
-                        コード認証期限(1日)が過ぎてしまった、メールが届いていないなどの場合のコード再送信をします
+                        コード認証期限(2時間)が過ぎてしまった、メールが届いていないなどの場合のコード再送信をします
                     </div>
                     <div>
                         <button @click="onResendCode" :disabled="publishLoading">認証コード再送信</button>

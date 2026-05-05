@@ -5,7 +5,7 @@ import { LeastUserDto, type LeastUserDtoInterface } from 'seijishikin-jp-normali
 
 export const useUserInfoStore = defineStore('userInfo', () => {
     // state（リアクティブな状態）
-    const userDto: Ref<LeastUserDtoInterface> = ref(new LeastUserDto);
+    const userDto: Ref<LeastUserDtoInterface> = ref(new LeastUserDto());
     const jwtDto: Ref<JwtTokenDtoInterface> = ref(new JwtTokenDto());
 
     const initialize = () => {

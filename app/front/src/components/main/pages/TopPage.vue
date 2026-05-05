@@ -1,5 +1,5 @@
 ﻿<script setup lang="ts">
-import { MessageConstants, MessageView } from 'seijishikin-jp-normalize_common-tool';
+import { MessageConstants, MessageView, useUserInfoStoreCommon } from 'seijishikin-jp-normalize_common-tool';
 import RoutePathConstants from '../../../routePathConstants';
 import { onBeforeMount, ref, type Ref } from 'vue';
 import { LoginUserCapsuleDto, type LoginUserCapsuleDtoInterface } from '../dto/login/loginUserCapsuleDto';
@@ -9,6 +9,7 @@ import { useUserInfoStore } from '../stores/storeUserInfo';
 import { rememberMeStore } from '../../main/stores/remeberMe';
 import UserRoleConstants from '../dto/user/userRoleConstants';
 import { nextTransferPassStore } from '../stores/nextTransferPass';
+import { getActivePinia } from 'pinia';
 
 // back側アクセス
 const urlBack: string = RoutePathConstants.DOMAIN + RoutePathConstants.BASE_PATH;
@@ -83,6 +84,11 @@ async function onLogin() {
             // 取得できたら保存
             userInfo.jwtDto = resultDto.jwtTokenDto;
             userInfo.userDto = resultDto.userDto;
+
+            // common-toolにアクセス情報を渡す
+            const userInfoCommon = useUserInfoStoreCommon(getActivePinia());
+            userInfoCommon.jwtDto = userInfo.jwtDto;
+            userInfoCommon.userDto = userInfo.userDto;
 
             // ログインに成功かつrememberMeを使用したいときだけPiniaに保存
             if (user.value.rememberMe) {

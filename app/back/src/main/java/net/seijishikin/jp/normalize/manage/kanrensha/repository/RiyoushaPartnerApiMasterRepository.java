@@ -36,7 +36,6 @@ public interface RiyoushaPartnerApiMasterRepository extends JpaRepository<Riyous
             + " WHERE is_latest = 1 AND search_text LIKE ?1", nativeQuery = true)
     Integer countFullText(String searchWords);
 
-
     /**
      * 最大コードをもつEntityを取得する
      *
@@ -44,5 +43,13 @@ public interface RiyoushaPartnerApiMasterRepository extends JpaRepository<Riyous
      */
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     Optional<RiyoushaPartnerApiMasterEntity> findFirstByOrderByRiyoushaPartnerApiMasterCodeDesc();
+
+    /**
+     * コードが一致する最新を取得する
+     *
+     * @return 最大コードをもつEntity
+     */
+    Optional<RiyoushaPartnerApiMasterEntity> findFirstByRiyoushaPartnerApiMasterCodeAndIsLatestTrueOrderByRiyoushaPartnerApiMasterIdDesc(
+            Integer code);
 
 }

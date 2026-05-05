@@ -2,6 +2,7 @@ package net.seijishikin.jp.normalize.manage.kanrensha.dto.kanrensha;
 
 import java.io.Serializable;
 
+import net.seijishikin.jp.normalize.common_tool.dto.DtoEntityInitialValueInterface;
 import net.seijishikin.jp.normalize.common_tool.dto.input.InputAccessDto;
 import net.seijishikin.jp.normalize.common_tool.dto.input.InputAddressDto;
 import net.seijishikin.jp.normalize.common_tool.dto.input.InputOrgNameDto;
@@ -9,19 +10,10 @@ import net.seijishikin.jp.normalize.common_tool.dto.input.InputOrgNameDto;
 /**
  * 関連者政治団体Dto
  */
-public class KanrenshaSeijidantaiDto implements Serializable { // NOPMD DataClass
+public class KanrenshaSeijidantaiDto implements Serializable, DtoEntityInitialValueInterface { // NOPMD DataClass
 
     /** Serialize id */
     private static final long serialVersionUID = 1L;
-
-    /** 初期データ(String) */
-    private static final String INIT_String = "";
-
-    /** 初期データ(Integer) */
-    private static final Integer INIT_Integer = 0;
-
-    /** 初期データ(Boolean) */
-    private static final Boolean INIT_Boolean = false;
 
     /** 名称入力Dto */
     private InputOrgNameDto inputOrgNameDto = new InputOrgNameDto();
@@ -129,7 +121,7 @@ public class KanrenshaSeijidantaiDto implements Serializable { // NOPMD DataClas
     }
 
     /** 政治団体区分 */
-    private String dantaiKbn = INIT_String;
+    private String dantaiKbn = INIT_STRING;
 
     /**
      * 政治団体区分を取得する
@@ -150,7 +142,7 @@ public class KanrenshaSeijidantaiDto implements Serializable { // NOPMD DataClas
     }
 
     /** 政治団体番号 */
-    private String poliOrgNo = INIT_String;
+    private String poliOrgNo = INIT_STRING;
 
     /**
      * 政治団体番号を取得する
@@ -171,16 +163,16 @@ public class KanrenshaSeijidantaiDto implements Serializable { // NOPMD DataClas
     }
 
     /** 関連者政治団体マスタテーブルId */
-    private Integer masterId = INIT_Integer;
+    private Integer masterId = INIT_INTEGER;
 
     /** 関連者政治団体連絡先テーブルId */
-    private Integer accessId = INIT_Integer;
+    private Integer accessId = INIT_INTEGER;
 
     /** 関連者政治団体住所テーブルId */
-    private Integer addressId = INIT_Integer;
+    private Integer addressId = INIT_INTEGER;
 
     /** 関連者政治団体属性テーブルId */
-    private Integer propertyId = INIT_Integer;
+    private Integer propertyId = INIT_INTEGER;
 
     /**
      * 関連者政治団体マスタテーブルIdを取得する
@@ -255,7 +247,7 @@ public class KanrenshaSeijidantaiDto implements Serializable { // NOPMD DataClas
     }
 
     /** 関連者政治団体コード */
-    private String seijidantaiKanrenshaCode = INIT_String;
+    private String seijidantaiKanrenshaCode = INIT_STRING;
 
     /**
      * 関連者政治団体コードを取得する
@@ -276,7 +268,7 @@ public class KanrenshaSeijidantaiDto implements Serializable { // NOPMD DataClas
     }
 
     /** 関連者ユーザ紐づけ該否 */
-    private Boolean isCombineUser = INIT_Boolean;
+    private Boolean isCombineUser = INIT_BOOLEAN;
 
     /**
      * 関連者ユーザ紐づけ該否を取得する

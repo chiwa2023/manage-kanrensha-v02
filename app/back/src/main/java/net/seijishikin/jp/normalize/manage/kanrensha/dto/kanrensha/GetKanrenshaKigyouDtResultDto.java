@@ -1,15 +1,13 @@
-package net.seijishikin.jp.normalize.manage.kanrensha.dto.user;
+package net.seijishikin.jp.normalize.manage.kanrensha.dto.kanrensha;
 
 import java.io.Serializable;
 
-import net.seijishikin.jp.normalize.common_tool.dto.FrameworkCapsuleDto;
-import net.seijishikin.jp.normalize.manage.kanrensha.dto.kanrensha.KanrenshaKigyouDtDto;
-
+import net.seijishikin.jp.normalize.common_tool.dto.FrameworkMessageAndResultDto;
 
 /**
  * 関連者企業団体格納Dto
  */
-public class SaveKanrenshaKigyouDtCapsuleDto extends FrameworkCapsuleDto implements Serializable {
+public class GetKanrenshaKigyouDtResultDto extends FrameworkMessageAndResultDto implements Serializable {
 
     /** Serialize id */
     private static final long serialVersionUID = 1L;
@@ -19,7 +17,7 @@ public class SaveKanrenshaKigyouDtCapsuleDto extends FrameworkCapsuleDto impleme
 
     /**
      * 関連者企業団体Dtoを取得する
-     *
+     * 
      * @return 関連者企業団体Dto
      */
     public KanrenshaKigyouDtDto getKanrenshaKigyouDtDto() {
@@ -28,7 +26,7 @@ public class SaveKanrenshaKigyouDtCapsuleDto extends FrameworkCapsuleDto impleme
 
     /**
      * 関連者企業団体Dtoを設定する
-     *
+     * 
      * @param kanrenshaKigyouDtDto 関連者企業団体Dto
      */
     public void setKanrenshaKigyouDtDto(final KanrenshaKigyouDtDto kanrenshaKigyouDtDto) {

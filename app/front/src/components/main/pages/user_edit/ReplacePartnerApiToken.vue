@@ -131,10 +131,6 @@ function recieveSubmit(button: string) {
     <h1>APIパートナー長期トークン(再)発行</h1>
 
     <div class="one-line">
-        {{ stateDto.userName }} のトークンを再発行
-    </div>
-
-    <div class="one-line">
         <div class="left-area">
             ユーザ名
         </div>

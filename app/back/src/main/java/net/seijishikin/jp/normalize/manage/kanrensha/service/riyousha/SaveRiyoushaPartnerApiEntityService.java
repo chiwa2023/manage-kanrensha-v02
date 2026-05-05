@@ -11,9 +11,11 @@ import org.springframework.transaction.annotation.Transactional;
 import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
 import net.seijishikin.jp.normalize.common_tool.utils.FormatNaturalSearchTextUtil;
 import net.seijishikin.jp.normalize.common_tool.utils.SetTableDataHistoryUtil;
+import net.seijishikin.jp.normalize.manage.kanrensha.constants.UserRoleConstants;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.riyousha.SaveRiyoushaPartnerApiCapsuleDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.RiyoushaPartnerApiMasterEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.RiyoushaPersonPropertyEntity;
+import net.seijishikin.jp.normalize.manage.kanrensha.logic.user.InsertCombineUserRiyoushaLogic;
 import net.seijishikin.jp.normalize.manage.kanrensha.repository.RiyoushaPartnerApiMasterRepository;
 import net.seijishikin.jp.normalize.manage.kanrensha.repository.RiyoushaPersonPropertyRepository;
 
@@ -38,6 +40,10 @@ public class SaveRiyoushaPartnerApiEntityService {
     /** 全文検索用カラム */
     @Autowired
     private FormatNaturalSearchTextUtil formatNaturalSearchTextUtil;
+
+    /** 利用者ユーザrole紐づけLogic */
+    @Autowired
+    private InsertCombineUserRiyoushaLogic insertCombineUserRiyoushaLogic;
 
     /**
      * 利用者仲間エンティティをDBに新規・変更保存する
@@ -86,12 +92,18 @@ public class SaveRiyoushaPartnerApiEntityService {
         Integer codeMaster = 1;
         Optional<RiyoushaPartnerApiMasterEntity> optionalPartnerApi = riyoushaPartnerApiMasterRepository
                 .findFirstByOrderByRiyoushaPartnerApiMasterCodeDesc();
-        if (!optionalProperty.isEmpty()) {
+        if (!optionalPartnerApi.isEmpty()) {
             codeMaster += optionalPartnerApi.get().getRiyoushaPartnerApiMasterCode();
         }
         masterEntity.setRiyoushaPartnerApiMasterCode(codeMaster);
 
         RiyoushaPartnerApiMasterEntity savedMasterEntity = riyoushaPartnerApiMasterRepository.save(masterEntity);
+
+        // 運営者以上が他人のデータを追加している以外の場合は操作者ユーザと登録した関連者を紐づける
+        if (capsuleDto.getRiyoushaPartnerApiDto().getIsCombineUser()) {
+            insertCombineUserRiyoushaLogic.practcie(UserRoleConstants.PARTNER_API,
+                    savedMasterEntity.getRiyoushaPartnerApiMasterCode(), capsuleDto.getUserDto());
+        }
 
         return savedMasterEntity.getRiyoushaPartnerApiMasterId();
     }

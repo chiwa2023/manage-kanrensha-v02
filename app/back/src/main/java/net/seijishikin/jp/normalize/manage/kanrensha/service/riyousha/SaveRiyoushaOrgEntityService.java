@@ -86,7 +86,7 @@ public class SaveRiyoushaOrgEntityService {
         Integer codeMaster = 1;
         Optional<RiyoushaOrgMasterEntity> optionalAdmin = riyoushaOrgMasterRepository
                 .findFirstByOrderByRiyoushaOrgMasterCodeDesc();
-        if (!optionalProperty.isEmpty()) {
+        if (!optionalAdmin.isEmpty()) {
             codeMaster += optionalAdmin.get().getRiyoushaOrgMasterCode();
         }
         masterEntity.setRiyoushaOrgMasterCode(codeMaster);

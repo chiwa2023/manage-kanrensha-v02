@@ -29,7 +29,7 @@ import net.seijishikin.jp.normalize.manage.kanrensha.dto.user.GetUserDtoResultDt
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
 @Transactional
-@Sql("ChangeUserInfoServiceTest.sql")
+@Sql("GetUserLeastByIdServiceTest.sql")
 class GetUserLeastByIdServiceTest {
     // CHECKSTYLE:OFF MagicNumber
 
@@ -50,12 +50,20 @@ class GetUserLeastByIdServiceTest {
         assertEquals(82, userDto.getUserPersonId());
         assertEquals(83, userDto.getUserPersonCode());
         assertEquals("bbb", userDto.getUserPersonName());
-        List<String> listRole = userDto.getListRoles();
-        assertEquals(1, listRole.size());
-        assertEquals("manager", listRole.get(0));
         assertEquals(true, resultDto.getIsAlertTaskStart());
         assertEquals(true, resultDto.getIsAlertTaskEnd());
 
+        List<String> listRole = userDto.getListRoles();
+        assertEquals(3, listRole.size());
+
+        assertEquals("manager", listRole.get(0));
+        assertEquals("partner_api", listRole.get(1));
+        assertEquals("kanrensha_kigyou_dt", listRole.get(2));
+
+        assertEquals(913, userDto.getRiyoushaCode());
+        assertEquals("partner_api", userDto.getRiyoushaRole());
+        assertEquals("ndfx", userDto.getKanrenshaCode());
+        assertEquals("kanrensha_kigyou_dt", userDto.getKanrenshaRole());
     }
 
     @Test

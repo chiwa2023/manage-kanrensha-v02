@@ -1,5 +1,5 @@
 ﻿<script setup lang="ts">
-import { computed, onBeforeMount, ref, type ComputedRef, type Ref } from 'vue';
+import { computed, onMounted, ref, type ComputedRef, type Ref } from 'vue';
 import { FrameworkCapsuleDto, type FrameworkCapsuleDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import { MessageConstants, MessageView } from 'seijishikin-jp-normalize_common-tool';
 import router from '../../../../router';
@@ -36,21 +36,7 @@ const urlBack: string = RoutePathConstants.DOMAIN + RoutePathConstants.BASE_PATH
 // pinia
 const notCompletedTaskInfo = notCompletedTaskStore();
 
-
 const listMenuRoleOptions: Ref<SelectOptionStringDtoInterface[]> = ref(createListRoleOptions(props.userDto.listRoles));
-
-// ログインと権限チェック
-if (INIT_NUMBER === props.userDto.userPersonId
-    || !(props.userDto.listRoles.includes(UserRoleConstants.ROLE_KANRENSHA_KIGYOU_DT)
-        || props.userDto.listRoles.includes(UserRoleConstants.ROLE_KANRENSHA_PERSON)
-        || props.userDto.listRoles.includes(UserRoleConstants.ROLE_KANRENSHA_SEIJIDANTAI))) {
-
-    infoLevel.value = MessageConstants.LEVEL_ERROR;
-    messageType.value = MessageConstants.VIEW_OK;
-    title.value = "ログイン状態または関連者権限が確認できませんでした";
-    message.value = "ログアウト処理をします。再度ログイン処理をするかシステム担当者にお問い合わせください";
-}
-
 
 const viewMenuRole: Ref<string> = ref(BLANK);
 const isVewAllMenu: Ref<boolean> = ref(false);
@@ -83,14 +69,20 @@ const switchYear: Ref<string> = ref("");
 const tansferDisabled: ComputedRef<boolean> = computed(() => BLANK === selectedTask.value);
 
 let actionStatus = INIT_NUMBER;
-onBeforeMount(async () => {
+const nowRoleStatus: Ref<string> = ref(BLANK);
+onMounted(async () => {
     // ログインと権限チェック
-    if (INIT_NUMBER === props.userDto.userPersonId || !props.userDto.listRoles.includes(UserRoleConstants.ROLE_MANAGER)) {
+    if (INIT_NUMBER === props.userDto.userPersonId
+        || !(props.userDto.listRoles.includes(UserRoleConstants.ROLE_KANRENSHA_KIGYOU_DT)
+            || props.userDto.listRoles.includes(UserRoleConstants.ROLE_KANRENSHA_PERSON)
+            || props.userDto.listRoles.includes(UserRoleConstants.ROLE_KANRENSHA_SEIJIDANTAI))) {
         infoLevel.value = MessageConstants.LEVEL_ERROR;
         messageType.value = MessageConstants.VIEW_OK;
-        title.value = "ログイン状態またはAPIパートナー権限が確認できませんでした";
+        title.value = "ログイン状態または関連者権限が確認できませんでした";
         message.value = "ログアウト処理をします。再度ログイン処理をするかシステム担当者にお問い合わせください";
     }
+    // 表示するroleを抽出
+    nowRoleStatus.value = pickupRole();
 
     // 未処理タスクが最新でなければ更新
     if (notCompletedTaskInfo !== null) {
@@ -158,6 +150,21 @@ onBeforeMount(async () => {
     }
 });
 
+const iconPath: ComputedRef<string> = computed(() => {
+
+    switch (nowRoleStatus.value) {
+        case UserRoleConstants.ROLE_KANRENSHA_PERSON:
+            return "kanrensha_person.png";
+        case UserRoleConstants.ROLE_KANRENSHA_KIGYOU_DT:
+            return "kanrensha_kigyou_dt.png";
+        case UserRoleConstants.ROLE_KANRENSHA_SEIJIDANTAI:
+            return "kanrensha_seijidantai.png";
+        default:
+            return BLANK;
+    }
+});
+
+
 function recieveCanceelAllMenu() {
     // 非表示
     viewMenuRole.value = BLANK;
@@ -175,6 +182,18 @@ function viewPersonMenu() {
     isVewAllMenu.value = false;
 }
 
+function pickupRole(): string {
+
+    // 関連者は一人1資格なのでこの実装でOK
+    // (個人が出したいのに政治団体が出てしまう、ということはない)
+    for (const roleString of props.userDto.listRoles) {
+        if (roleString.startsWith("ROLE_kanrensha_")) {
+            return roleString;
+        }
+    }
+
+    return BLANK; // 非ログイン状態でないとここには来ない
+}
 
 // メッセージからの反応受け取り
 function recieveSubmit(button: string) {
@@ -210,7 +229,7 @@ function onTransfer() {
     <div class="user-role-container-kanrensha">
         <div class="user-role-content">
             <div class="user-role-title">
-                <span class="user-role-text">関連者</span><br>
+                <span class="user-role-text">{{ UserRoleConstants.getLabel(nowRoleStatus) }}</span><br>
                 {{ props.userDto.userPersonName }}さん
             </div>
             <div class="user-role-task left-space">
@@ -234,7 +253,7 @@ function onTransfer() {
                 </div>
             </div>
             <div class="left-space user-role-icon-container" @click="viewPersonMenu">
-                <img src="/kanrensha_seijidantai.png" class="user-role-icon">
+                <img :src="iconPath" class="user-role-icon">
             </div>
         </div>
     </div>
@@ -253,7 +272,7 @@ function onTransfer() {
 
     <!-- 個人メニュー表示 -->
     <div class="personMenuLayer" v-if="isVewPersonMenu">
-        <PersonMenu :view-role="UserRoleConstants.ROLE_ADMIN" @send-canceel-menu="recieveCanceelPersonMenu">
+        <PersonMenu :view-role="nowRoleStatus" :user-dto="props.userDto" @send-canceel-menu="recieveCanceelPersonMenu">
         </PersonMenu>
     </div>
 

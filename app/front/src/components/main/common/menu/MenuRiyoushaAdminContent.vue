@@ -27,11 +27,11 @@ import RoutePathConstants from '../../../../routePathConstants';
     <div class="menu-container">
         <div class="menu-section">
             <h4 class="menu-title">ダンプcsv処理</h4>
-            <RouterLink :to="RoutePathConstants.PAGE_DUMP_MASTER" class="menu-item">関連者マスタcsvダンプ(指定期間まで)</RouterLink>
+            <RouterLink :to="RoutePathConstants.PAGE_DUMP_MASTER" class="menu-item">関連者マスタ最小csvダンプ(指定期間まで)</RouterLink>
             <RouterLink :to="RoutePathConstants.PAGE_DUMP_HISTORY" class="menu-item">関連者履歴csvダンプ(指定期間まで)</RouterLink>
             <RouterLink :to="RoutePathConstants.PAGE_DUMP_MASTER_STD" class="menu-item">関連者マスタ標準csvダンプ(指定期間まで)
             </RouterLink>
-            <RouterLink :to="RoutePathConstants.PAGE_DUMP_SABUN_MASTER" class="menu-item">関連者マスタcsv差分ダンプ</RouterLink>
+            <RouterLink :to="RoutePathConstants.PAGE_DUMP_SABUN_MASTER" class="menu-item">関連者マスタ最小csv差分ダンプ</RouterLink>
             <RouterLink :to="RoutePathConstants.PAGE_DUMP_SABUN_HISTORY" class="menu-item">関連者履歴csv差分ダンプ</RouterLink>
             <RouterLink :to="RoutePathConstants.PAGE_DUMP_SABUN_MASTER_STD" class="menu-item">関連者マスタ標準csv差分ダンプ
             </RouterLink>

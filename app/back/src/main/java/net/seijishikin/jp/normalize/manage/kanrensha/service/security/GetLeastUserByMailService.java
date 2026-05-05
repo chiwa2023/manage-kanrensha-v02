@@ -11,7 +11,9 @@ import org.springframework.stereotype.Service;
 
 import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.UserPersonEntity;
+import net.seijishikin.jp.normalize.manage.kanrensha.entity.UserRoleEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.repository.UserPersonRepository;
+import net.seijishikin.jp.normalize.manage.kanrensha.repository.UserRoleRepository;
 
 /**
  * 最低限ユーザ(メール)取得Service
@@ -22,6 +24,10 @@ public class GetLeastUserByMailService {
     /** ユーザ人物Repository */
     @Autowired
     private UserPersonRepository userPersonRepository;
+
+    /** ユーザ権限Repository */
+    @Autowired
+    private UserRoleRepository userRoleRepository;
 
     /**
      * 処理を行う
@@ -48,6 +54,26 @@ public class GetLeastUserByMailService {
         List<String> listAuh = authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority)
                 .collect(Collectors.toList());
         personDto.setListRoles(listAuh);
+
+        List<UserRoleEntity> listEntity = userRoleRepository.findByEmailAndIsLatestTrue(email);
+        final int INIT_NUM = 0;
+        final String BLANK = "";
+        for (UserRoleEntity entity : listEntity) {
+            String role = entity.getRole();
+            if (role.startsWith("kanrensha_")) {
+                String kanrenshaCode = entity.getKanrenshaCode();
+                if (!BLANK.equals(kanrenshaCode)) {
+                    personDto.setKanrenshaCode(kanrenshaCode);
+                    personDto.setKanrenshaRole(role);
+                }
+            } else {
+                Integer riyoushaCode = entity.getRiyoushaCode();
+                if (INIT_NUM != riyoushaCode) {
+                    personDto.setRiyoushaCode(riyoushaCode);
+                    personDto.setRiyoushaRole(role);
+                }
+            }
+        }
 
         return personDto;
     }
