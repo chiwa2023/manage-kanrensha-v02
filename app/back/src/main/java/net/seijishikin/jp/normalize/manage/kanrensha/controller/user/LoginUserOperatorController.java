@@ -69,12 +69,6 @@ public class LoginUserOperatorController {
             resultDto.setJwtTokenDto(jwtToken);
             resultDto.setUserDto(getLeastUserByMailService.practice(capsuleDto.getUserId(), authentication));
 
-            System.out.println("----------取得");
-            System.out.println("**" + resultDto.getUserDto().getRiyoushaRole());
-            System.out.println("**" + resultDto.getUserDto().getRiyoushaCode());
-            System.out.println("**" + resultDto.getUserDto().getKanrenshaRole());
-            System.out.println("**" + resultDto.getUserDto().getKanrenshaCode());
-
             return ResponseEntity.status(HttpStatus.OK).body(resultDto);
 
         } catch (AuthenticationException e) {

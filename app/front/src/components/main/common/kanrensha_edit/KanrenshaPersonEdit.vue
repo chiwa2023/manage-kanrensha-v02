@@ -37,59 +37,60 @@ onMounted(() => {
 });
 
 function load() {
-    const capsuleDto: GetKanrenshaPersonCapsuleDtoInterface = new GetKanrenshaPersonCapsuleDto();
-    capsuleDto.userDto = props.userDto;
-    capsuleDto.masterPersonEntity = props.editEntity;
+    if (0 != props.editEntity.kanrenshaPersonMasterId) {
+        const capsuleDto: GetKanrenshaPersonCapsuleDtoInterface = new GetKanrenshaPersonCapsuleDto();
+        capsuleDto.userDto = props.userDto;
+        capsuleDto.masterPersonEntity = props.editEntity;
 
-    getAuthorizedPromiseArea().then(token => {
-        const url = urlBack + "/user-kanrensha/get-person";
-        const method = "POST";
-        const body = JSON.stringify(capsuleDto);
-        const headers = {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-            'X-AUTH-TOKEN': 'Bearer ' + token
-        };
-        fetch(url, { method, headers, body })
-            .then(async (response) => {
-                const resultDto: GetKanrenshaPersonResultDtoInterface = await response.json();
-                message.value = resultDto.message;
-                // 処理が成功したら再登録できないようにアップロードファイル情報を初期化
-                if (resultDto.isFailure) {
-                    infoLevel.value = MessageConstants.LEVEL_WARNING;
+        getAuthorizedPromiseArea().then(token => {
+            const url = urlBack + "/user-kanrensha/get-person";
+            const method = "POST";
+            const body = JSON.stringify(capsuleDto);
+            const headers = {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'X-AUTH-TOKEN': 'Bearer ' + token
+            };
+            fetch(url, { method, headers, body })
+                .then(async (response) => {
+                    const resultDto: GetKanrenshaPersonResultDtoInterface = await response.json();
+                    message.value = resultDto.message;
+                    // 処理が成功したら再登録できないようにアップロードファイル情報を初期化
+                    if (resultDto.isFailure) {
+                        infoLevel.value = MessageConstants.LEVEL_WARNING;
+                        messageType.value = MessageConstants.VIEW_OK;
+                    } else {
+                        editPersonDto.value = resultDto.kanrenshaPersonDto;
+                    }
+                })
+                .catch((error) => {
+                    alert(error);
+                    infoLevel.value = MessageConstants.LEVEL_ERROR;
                     messageType.value = MessageConstants.VIEW_OK;
-                } else {
-                    editPersonDto.value = resultDto.kanrenshaPersonDto;
-                }
-            })
-            .catch((error) => {
-                alert(error);
-                infoLevel.value = MessageConstants.LEVEL_ERROR;
-                messageType.value = MessageConstants.VIEW_OK;
-                message.value = "システム管理者にお問い合わせください";
+                    message.value = "システム管理者にお問い合わせください";
+                    return;
+                });
+        }).catch((e) => {
+            infoLevel.value = MessageConstants.LEVEL_ERROR;
+            messageType.value = MessageConstants.VIEW_OK;
+
+            if (e instanceof AccessTokenNotFoundError) {
+                // トークン保持ができていない場合
+                title.value = "現在トークンが存在しません";
+                message.value = e.message;
                 return;
-            });
-    }).catch((e) => {
-        infoLevel.value = MessageConstants.LEVEL_ERROR;
-        messageType.value = MessageConstants.VIEW_OK;
-
-        if (e instanceof AccessTokenNotFoundError) {
-            // トークン保持ができていない場合
-            title.value = "現在トークンが存在しません";
-            message.value = e.message;
+            }
+            if (e instanceof TokenRefreshError) {
+                // 取得に失敗している場合
+                title.value = "有効期限まじかのトークンを再取得できませんでした";
+                message.value = e.message;
+                return;
+            }
+            title.value = "システムエラーが発生しました";
+            message.value = "システム管理者にお問い合わせください";
             return;
-        }
-        if (e instanceof TokenRefreshError) {
-            // 取得に失敗している場合
-            title.value = "有効期限まじかのトークンを再取得できませんでした";
-            message.value = e.message;
-            return;
-        }
-        title.value = "システムエラーが発生しました";
-        message.value = "システム管理者にお問い合わせください";
-        return;
-    });
-
+        });
+    }
 }
 
 /**国籍を確認する */

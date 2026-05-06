@@ -37,59 +37,61 @@ const editEntity: Ref<RiyoushaManagerMasterEntityInterface> = ref(new RiyoushaMa
 
 onMounted(() => {
 
-    const capsuleDto: GetRiyoushaMasterCapsuleDtoInterface = new GetRiyoushaMasterCapsuleDto();
-    capsuleDto.riyoushaRole = userDto.value.riyoushaRole;
-    capsuleDto.riyoushaCode = userDto.value.riyoushaCode;
+    if (0 !== userDto.value.riyoushaCode) {
+        const capsuleDto: GetRiyoushaMasterCapsuleDtoInterface = new GetRiyoushaMasterCapsuleDto();
+        capsuleDto.riyoushaRole = userDto.value.riyoushaRole;
+        capsuleDto.riyoushaCode = userDto.value.riyoushaCode;
 
-    getAuthorizedPromiseArea().then(token => {
-        const url = urlBack + "/riyousha/get-myself";
-        const method = "POST";
-        const body = JSON.stringify(capsuleDto);
-        const headers = {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-            'X-AUTH-TOKEN': 'Bearer ' + token
-        };
-        fetch(url, { method, headers, body })
-            .then(async (response) => {
-                const resultDto: GetRiyoushaMasterResultDtoInterface = await response.json();
-                message.value = resultDto.message;
-                // 処理が成功したら再登録できないようにアップロードファイル情報を初期化
-                if (resultDto.isFailure) {
-                    infoLevel.value = MessageConstants.LEVEL_WARNING;
+        getAuthorizedPromiseArea().then(token => {
+            const url = urlBack + "/riyousha/get-myself";
+            const method = "POST";
+            const body = JSON.stringify(capsuleDto);
+            const headers = {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'X-AUTH-TOKEN': 'Bearer ' + token
+            };
+            fetch(url, { method, headers, body })
+                .then(async (response) => {
+                    const resultDto: GetRiyoushaMasterResultDtoInterface = await response.json();
+                    message.value = resultDto.message;
+                    // 処理が成功したら再登録できないようにアップロードファイル情報を初期化
+                    if (resultDto.isFailure) {
+                        infoLevel.value = MessageConstants.LEVEL_WARNING;
+                        messageType.value = MessageConstants.VIEW_OK;
+                    } else {
+                        // editEntityを変更すると自動で呼び出し
+                        editEntity.value = resultDto.managerMasterEntity;
+                    }
+                })
+                .catch((error) => {
+                    alert(error);
+                    infoLevel.value = MessageConstants.LEVEL_ERROR;
                     messageType.value = MessageConstants.VIEW_OK;
-                } else {
-                    // editEntityを変更すると自動で呼び出し
-                    editEntity.value = resultDto.managerMasterEntity;
-                }
-            })
-            .catch((error) => {
-                alert(error);
-                infoLevel.value = MessageConstants.LEVEL_ERROR;
-                messageType.value = MessageConstants.VIEW_OK;
-                message.value = "システム管理者にお問い合わせください";
-                return;
-            });
-    }).catch((e) => {
-        infoLevel.value = MessageConstants.LEVEL_ERROR;
-        messageType.value = MessageConstants.VIEW_OK;
+                    message.value = "システム管理者にお問い合わせください";
+                    return;
+                });
+        }).catch((e) => {
+            infoLevel.value = MessageConstants.LEVEL_ERROR;
+            messageType.value = MessageConstants.VIEW_OK;
 
-        if (e instanceof AccessTokenNotFoundError) {
-            // トークン保持ができていない場合
-            title.value = "現在トークンが存在しません";
-            message.value = e.message;
+            if (e instanceof AccessTokenNotFoundError) {
+                // トークン保持ができていない場合
+                title.value = "現在トークンが存在しません";
+                message.value = e.message;
+                return;
+            }
+            if (e instanceof TokenRefreshError) {
+                // 取得に失敗している場合
+                title.value = "有効期限まじかのトークンを再取得できませんでした";
+                message.value = e.message;
+                return;
+            }
+            title.value = "システムエラーが発生しました";
+            message.value = "システム管理者にお問い合わせください";
             return;
-        }
-        if (e instanceof TokenRefreshError) {
-            // 取得に失敗している場合
-            title.value = "有効期限まじかのトークンを再取得できませんでした";
-            message.value = e.message;
-            return;
-        }
-        title.value = "システムエラーが発生しました";
-        message.value = "システム管理者にお問い合わせください";
-        return;
-    });
+        });
+    }
 });
 
 function recieveCancelManager() {

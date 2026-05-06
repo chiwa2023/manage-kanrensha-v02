@@ -223,6 +223,9 @@ function onTransfer() {
     // ページ遷移
     router.push(RoutePathConstants.BASE_PATH + selectedTask.value);
 }
+
+const notHasDetailInfo: ComputedRef<boolean> = computed(
+    () => props.userDto.kanrenshaCode == "" && props.userDto.riyoushaCode == 0);
 </script>
 <template>
     <!-- ユーザrole別制御コンポーネント -->
@@ -246,7 +249,7 @@ function onTransfer() {
             <!-- 遷移メニュー -->
             <div class="user-role-menu-wrapper">
                 <div class="left-space">
-                    遷移メニュー <select class="left-space" v-model="viewMenuRole" @change="viewAllMenu">
+                    遷移メニュー <select class="left-space" v-model="viewMenuRole" @change="viewAllMenu" :disabled="notHasDetailInfo">
                         <option v-for="dto of listMenuRoleOptions" :key="dto.value" :value="dto.value">{{ dto.text }}
                         </option>
                     </select>&nbsp;

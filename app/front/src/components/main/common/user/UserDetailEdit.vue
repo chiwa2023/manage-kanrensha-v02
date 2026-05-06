@@ -35,6 +35,7 @@ const hasRolePartnerApi: Ref<boolean> = ref(false);
 
 const kanrenshaRole: Ref<string> = ref("");
 const disabledKanrensha: Ref<boolean> = ref(false);
+const disabledRiyousha: Ref<boolean> = ref(false);
 
 onBeforeMount(() => {
 
@@ -78,10 +79,12 @@ onBeforeMount(() => {
                     if (editUserDto.value.userDto.listRoles.includes(UserRoleConstants.KANRENSHA_KIGYOU_DT)) {
                         kanrenshaRole.value = UserRoleConstants.KANRENSHA_KIGYOU_DT;
                         disabledKanrensha.value = true;
+                        disabledRiyousha.value = true;
                     }
                     if (editUserDto.value.userDto.listRoles.includes(UserRoleConstants.KANRENSHA_SEIJIDANTAI)) {
                         kanrenshaRole.value = UserRoleConstants.KANRENSHA_SEIJIDANTAI;
                         disabledKanrensha.value = true;
+                        disabledRiyousha.value = true;
                     }
                 }
             })
@@ -114,58 +117,67 @@ onBeforeMount(() => {
 
 let actionStatus: number = INIT_NUMBER;
 function onSave() {
-    // 更新実行
-    getAuthorizedPromiseArea().then(token => {
-        const url = urlBack + "/edit-user/change";
-        const method = "POST";
-        const body = JSON.stringify(editUserDto.value);
-        const headers = {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-            'X-AUTH-TOKEN': 'Bearer ' + token
-        };
-        fetch(url, { method, headers, body })
-            .then(async (response) => {
-                const resultDto: GetUserDtoResultDtoInterface = await response.json();
-                if (resultDto.isFailure) {
-                    title.value = "更新処理失敗";
-                    infoLevel.value = MessageConstants.LEVEL_ERROR;
-                    messageType.value = MessageConstants.VIEW_OK;
-                    message.value = resultDto.message;
-                    return;
-                } else {
-                    title.value = "ユーザ更新処理";
-                    infoLevel.value = MessageConstants.LEVEL_INFO;
-                    messageType.value = MessageConstants.VIEW_TOAST;
-                    message.value = "ユーザ更新処理が正常にできました";
-                    actionStatus = SERVER_STATUS_OK;
-                    return;
-                }
-            })
-            .catch((e) => {
-                if (e instanceof AccessTokenNotFoundError) {
-                    infoLevel.value = MessageConstants.LEVEL_ERROR;
-                    // トークン保持ができていない場合
-                    messageType.value = MessageConstants.VIEW_OK;
-                    title.value = "現在トークンが存在しません";
-                    message.value = e.message;
-                    return;
-                }
-                if (e instanceof TokenRefreshError) {
-                    // 取得に失敗している場合
-                    infoLevel.value = MessageConstants.LEVEL_ERROR;
-                    messageType.value = MessageConstants.VIEW_OK;
-                    title.value = "有効期限まじかのトークンを再取得できませんでした";
-                    message.value = e.message;
-                    return;
-                }
-                infoLevel.value = MessageConstants.LEVEL_ERROR;
-                messageType.value = MessageConstants.VIEW_OK;
-                title.value = "システムエラーが発生しました";
-                message.value = "システム管理者にお問い合わせください";
-                return;
-            });
-    });
+    // すべての権限を外すのは許可しない
+    if (!hasRoleManager.value && !hasRolePartnerApi.value && kanrenshaRole.value === UserRoleConstants.NONE) {
+        title.value = "ユーザ編集処理";
+        infoLevel.value = MessageConstants.LEVEL_ERROR;
+        messageType.value = MessageConstants.VIEW_OK;
+        message.value = "すべての権限をなくす場合は、アイコンをクリックして個人メニューを出し、退会処理をしてください";
+        return;
+    }
+
+    // // 更新実行
+    // getAuthorizedPromiseArea().then(token => {
+    //     const url = urlBack + "/edit-user/change";
+    //     const method = "POST";
+    //     const body = JSON.stringify(editUserDto.value);
+    //     const headers = {
+    //         'Accept': 'application/json',
+    //         'Content-Type': 'application/json',
+    //         'X-AUTH-TOKEN': 'Bearer ' + token
+    //     };
+    //     fetch(url, { method, headers, body })
+    //         .then(async (response) => {
+    //             const resultDto: GetUserDtoResultDtoInterface = await response.json();
+    //             if (resultDto.isFailure) {
+    //                 title.value = "更新処理失敗";
+    //                 infoLevel.value = MessageConstants.LEVEL_ERROR;
+    //                 messageType.value = MessageConstants.VIEW_OK;
+    //                 message.value = resultDto.message;
+    //                 return;
+    //             } else {
+    //                 title.value = "ユーザ更新処理";
+    //                 infoLevel.value = MessageConstants.LEVEL_INFO;
+    //                 messageType.value = MessageConstants.VIEW_TOAST;
+    //                 message.value = "ユーザ更新処理が正常にできました";
+    //                 actionStatus = SERVER_STATUS_OK;
+    //                 return;
+    //             }
+    //         })
+    //         .catch((e) => {
+    //             if (e instanceof AccessTokenNotFoundError) {
+    //                 infoLevel.value = MessageConstants.LEVEL_ERROR;
+    //                 // トークン保持ができていない場合
+    //                 messageType.value = MessageConstants.VIEW_OK;
+    //                 title.value = "現在トークンが存在しません";
+    //                 message.value = e.message;
+    //                 return;
+    //             }
+    //             if (e instanceof TokenRefreshError) {
+    //                 // 取得に失敗している場合
+    //                 infoLevel.value = MessageConstants.LEVEL_ERROR;
+    //                 messageType.value = MessageConstants.VIEW_OK;
+    //                 title.value = "有効期限まじかのトークンを再取得できませんでした";
+    //                 message.value = e.message;
+    //                 return;
+    //             }
+    //             infoLevel.value = MessageConstants.LEVEL_ERROR;
+    //             messageType.value = MessageConstants.VIEW_OK;
+    //             title.value = "システムエラーが発生しました";
+    //             message.value = "システム管理者にお問い合わせください";
+    //             return;
+    //         });
+    // });
 }
 
 function onCancel() {
@@ -202,20 +214,28 @@ function recieveSubmit(button: string) {
             <input type="text" v-model="editUserDto.userDto.userPersonName">
         </div>
     </div>
-
+    <div class="one-line" v-if="disabledRiyousha">
+        <div class="left-area">
+            権限変更制限
+        </div>
+        <div class="right-area">
+            関連者企業団体と関連者政治団体は権限の変更ができません。<br>
+            利用者資格を追加したい場合は、別途個人で必要なアカウントを作成してください。
+        </div>
+    </div>
     <div class="one-line">
         <div class="left-area">
             利用者権限
         </div>
         <div class="right-area">
-            <input type="checkbox" v-model="hasRoleManager">運営者権限
-            <input type="checkbox" v-model="hasRolePartnerApi" class="left-space">APIパートナー
+            <input type="checkbox" v-model="hasRoleManager" :disabled="disabledRiyousha">運営者権限
+            <input type="checkbox" v-model="hasRolePartnerApi" :disabled="disabledRiyousha" class="left-space">APIパートナー
         </div>
     </div>
 
     <div class="one-line">
         <div class="left-area">
-            関連者
+            関連者権限
         </div>
         <div class="right-area">
             <input type="radio" id="role" v-model="kanrenshaRole" :value=UserRoleConstants.NONE
@@ -231,7 +251,7 @@ function recieveSubmit(button: string) {
 
     <div class="one-line">
         <div class="left-area">
-            関連者
+            連続処理通知
         </div>
         <div class="right-area">
             <div class="form-group-vertical">

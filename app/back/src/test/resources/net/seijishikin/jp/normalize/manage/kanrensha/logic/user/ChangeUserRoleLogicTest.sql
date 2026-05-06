@@ -1,31 +1,31 @@
-DELETE FROM `login_status`;
-
 DELETE FROM `user_role`;
-ALTER TABLE `user_role` auto_increment = 1;
+ALTER TABLE `user_role` auto_increment = 0;
 
 DELETE FROM `user_person`;
-ALTER TABLE `user_person` auto_increment = 80;
-
-INSERT INTO `login_status` (`email`,`password`,`is_success`,`fail_reason`,`disabled`,`disabled_reason`,`login_time`,`pass_change_time`)
-  VALUES 
-       ('aaa@politician.balanse.report.net','$2a$10$KLZCF1ao2ZOZ1NRTDhfYSuwcY0jHFgUoIOJE9S44z/mxA0WeR3yg6',1,'',0,'','2026-01-05 20:15:48','2026-01-05 20:15:48')
-      ,('bbb@politician.balanse.report.net','$2a$10$KLZCF1ao2ZOZ1NRTDhfYSuwcY0jHFgUoIOJE9S44z/mxA0WeR3yg6',1,'',1,'','2000-01-05 20:15:48','2000-01-05 20:15:48');
+ALTER TABLE `user_person` auto_increment = 0;
 
 
+/**
 INSERT INTO `user_person` (`user_person_id`,`user_person_code`,`user_person_name`,`is_latest`,`email`  ,`is_alert_task_start`  ,`is_alert_task_end`       ,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`) 
   VALUES 
-  (81,80,'aaa',1,'aaa@politician.balanse.report.net',0,0 ,1,1,'aaa','2026-01-05 20:15:48',0,0,'','1948-07-28 22:59:59')
-  ,(82,83,'bbb',1,'bbb@politician.balanse.report.net',1,1 ,1,1,'bbb','2026-01-05 20:15:48',0,0,'','1948-07-28 22:59:59');
+  (80,80,'aaa',1,'qqq@politician.balanse.report.net',0,0 ,1,1,'aaa','2026-01-05 20:15:48',0,0,'','1948-07-28 22:59:59')
+  ,(81,80,'aaa',1,'aaa@politician.balanse.report.net',0,0 ,1,1,'aaa','2026-01-05 20:15:48',0,0,'','1948-07-28 22:59:59')
+  ,(82,83,'bbb',1,'bbb@politician.balanse.report.net',1,1 ,1,1,'bbb','2026-01-05 20:15:48',0,0,'','1948-07-28 22:59:59')
+  ,(196,83,'bbb',1,'ccc@politician.balanse.report.net',1,1 ,1,1,'bbb','2026-01-05 20:15:48',0,0,'','1948-07-28 22:59:59')
+  ;
+*/
 
+/*
 INSERT INTO `user_role` (`user_role_id`,`email`,`is_latest`,`role`,`kanrensha_code`,`riyousha_code`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`)
   VALUES 
-  (1,'aaa@politician.balanse.report.net',1,'manager','dvsdf',244,1,1,'aaa','2026-01-05 20:15:48',0,0,'','1948-07-28 22:59:59')
-  ,(2,'bbb@politician.balanse.report.net',1,'manager','',14,1,1,'bbb','2026-01-05 20:15:48',0,0,'','1948-07-28 22:59:59');
-
--- テスト実施年ごとに代わる
-DELETE FROM `login_history_2026`;
-ALTER TABLE `login_history_2026` auto_increment = 0;
-
+  (80,'qqq@politician.balanse.report.net',1,'manager','dvsdf',0,1,1,'aaa','2026-01-05 20:15:48',0,0,'','1948-07-28 22:59:59')
+  ,(81,'aaa@politician.balanse.report.net',1,'manager','',244,1,1,'aaa','2026-01-05 20:15:48',0,0,'','1948-07-28 22:59:59')
+  ,(82,'bbb@politician.balanse.report.net',1,'manager','ndfx',913,1,1,'bbb','2026-01-05 20:15:48',0,0,'','1948-07-28 22:59:59')
+  ,(83,'bbb@politician.balanse.report.net',1,'manager','ndfx',913,1,1,'bbb','2026-01-05 20:15:48',0,0,'','1948-07-28 22:59:59')
+  ,(84,'bbb@politician.balanse.report.net',1,'manager','ndfx',913,1,1,'bbb','2026-01-05 20:15:48',0,0,'','1948-07-28 22:59:59')
+  ,(190,'ccc@politician.balanse.report.net',1,'manager','',0,1,1,'aaa','2026-01-05 20:15:48',0,0,'','1948-07-28 22:59:59')
+  ;
+*/
   
 DELETE FROM `kanrensha_person_access`;
 ALTER TABLE `kanrensha_person_access` auto_increment = 0;
@@ -92,4 +92,4 @@ INSERT INTO `riyousha_partner_api_master` (`riyousha_partner_api_master_id`,`riy
 INSERT INTO `riyousha_partner_api_master` (`riyousha_partner_api_master_id`,`riyousha_partner_api_master_code`,`riyousha_person_property_id`,`riyousha_person_property_code`,`is_latest`,`all_name`,`all_name_kana`,`address_all`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`) 
     VALUES (204,24,4,4,1,'運営者 太郎','うんえいしゃ たろう','宮崎県実在市山麓町3丁目6の9星形ビル444','宮崎県実在市山麓町3丁目6の9星形ビル444運営者太郎うんえいしゃたろう',196,190,'管理人 花子','2025-11-24 14:40:09',0,0,'','1948-07-28 23:59:59');
   
-    
+  

@@ -1,7 +1,7 @@
 ﻿<script setup lang="ts">
 import MenuKanrenshaContent from '../../common/menu/MenuKanrenshaContent.vue';
 import { type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
-import { ref, type Ref } from 'vue';
+import { computed, ref, type ComputedRef, type Ref } from 'vue';
 import { getLoginUser } from '../../utils/getLoginUser';
 import KanrenshaInfo from '../../common/user_info/KanrenshaInfo.vue';
 
@@ -20,13 +20,23 @@ import KanrenshaInfo from '../../common/user_info/KanrenshaInfo.vue';
 // ユーザ呼び出し
 const userDto: Ref<LeastUserDtoInterface> = ref(getLoginUser());
 
+const notHasDetailInfo: ComputedRef<boolean> = computed(
+    () => userDto.value.kanrenshaCode == "" && userDto.value.riyoushaCode == 0);
 </script>
 <template>
     <!-- 関連者 -->
     <KanrenshaInfo :user-dto="userDto"></KanrenshaInfo>
 
     <h1>関連者用メニュー</h1><br>
-    <MenuKanrenshaContent></MenuKanrenshaContent>
 
+    <div v-if="notHasDetailInfo">
+        <p>
+            連絡先等の詳細情報が登録されていない場合は、編集等の機能はご利用できません。<br>
+            アイコンをクリックして出現した『メニュー>個人情報編集』から情報の追加をお願いします。
+        </p>
+    </div>
+    <div v-if="!notHasDetailInfo">
+        <MenuKanrenshaContent></MenuKanrenshaContent>
+    </div>
 </template>
 <style scoped></style>

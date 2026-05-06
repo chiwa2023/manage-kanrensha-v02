@@ -17,6 +17,7 @@ import net.seijishikin.jp.normalize.common_tool.utils.SetTableDataHistoryUtil;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.user.EditUserPersonCapsuleDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.UserPersonEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.UserRoleEntity;
+import net.seijishikin.jp.normalize.manage.kanrensha.logic.user.ChangeUserRoleLogic;
 import net.seijishikin.jp.normalize.manage.kanrensha.repository.UserPersonRepository;
 import net.seijishikin.jp.normalize.manage.kanrensha.repository.UserRoleRepository;
 
@@ -33,6 +34,10 @@ public class ChangeUserInfoService {
     /** ユーザ権限Repository */
     @Autowired
     private UserRoleRepository userRoleRepository;
+
+    /** ユーザ権限変更Logic */
+    @Autowired
+    private ChangeUserRoleLogic changeUserRoleLogic;
 
     /** テーブル履歴設定Utility */
     @Autowired
@@ -53,7 +58,7 @@ public class ChangeUserInfoService {
         // 編集対象ユーザ情報が正常に取得できない
         if (Objects.isNull(oldPersonEntity)) {
             resultDto.setIsFailure(true);
-            resultDto.setMessage("編集ユーザ情報に正常に取得できませんでした");
+            resultDto.setMessage("編集ユーザ情報が正常に取得できませんでした");
             return resultDto;
         }
 
@@ -81,23 +86,26 @@ public class ChangeUserInfoService {
         setTableDataHistoryUtil.practiceInsert(operatorUserDto, newPersonEntity);
         newPersonEntity.setUserPersonId(0); // auto iuncrement明記
 
-        Integer newId = userPersonRepository.save(newPersonEntity).getUserPersonId();
+        userPersonRepository.save(newPersonEntity).getUserPersonId();
 
-        // 既存のロールを無効化
-        List<UserRoleEntity> oldRoles = userRoleRepository.findByEmailAndIsLatestTrue(oldPersonEntity.getEmail());
-        for (UserRoleEntity oldRole : oldRoles) {
-            setTableDataHistoryUtil.practiceDelete(operatorUserDto, oldRole);
-            userRoleRepository.save(oldRole);
-        }
+        String email = oldPersonEntity.getEmail();
+        List<UserRoleEntity> oldRoles = userRoleRepository.findByEmailAndIsLatestTrue(email);
+        List<UserRoleEntity> listNewRole = changeUserRoleLogic.practice(oldRoles,
+                capsuleDto.getUserDto().getListRoles(), operatorUserDto);
 
-        // 新しいロールを追加
-        for (String role : capsuleDto.getUserDto().getListRoles()) {
-            UserRoleEntity oldRoleEntity = this.pickupRole(oldRoles, role);
-            UserRoleEntity newRole = this.createRoleEntitty(role, newId, oldRoleEntity, newName,
-                    newPersonEntity.getEmail());
-            setTableDataHistoryUtil.practiceInsert(operatorUserDto, newRole);
-            newRole.setUserRoleId(0); // auto increment明記
-            userRoleRepository.save(newRole);
+        if (!listNewRole.isEmpty()) {
+
+            for (UserRoleEntity oldRoleEntity : oldRoles) {
+                setTableDataHistoryUtil.practiceDelete(operatorUserDto, oldRoleEntity);
+                userRoleRepository.save(oldRoleEntity);
+            }
+
+            for (UserRoleEntity newRoleEntity : listNewRole) {
+                newRoleEntity.setEmail(email);
+                setTableDataHistoryUtil.practiceInsert(operatorUserDto, newRoleEntity);
+                newRoleEntity.setUserRoleId(0); // auto increment明記
+                userRoleRepository.save(newRoleEntity);
+            }
         }
 
         return resultDto;
@@ -136,31 +144,4 @@ public class ChangeUserInfoService {
 
         return operatorUserDto;
     }
-
-    private UserRoleEntity createRoleEntitty(final String role, final Integer newId, final UserRoleEntity oldEntity,
-            final String newName, final String email) {
-
-        UserRoleEntity newRole = new UserRoleEntity();
-        newRole.setEmail(email);
-        newRole.setRole(role);
-        newRole.setKanrenshaCode(oldEntity.getKanrenshaCode());
-        newRole.setRiyoushaCode(oldEntity.getRiyoushaCode());
-        newRole.setUserRoleId(newId);
-        newRole.setDeleteUserName(newName);
-
-        return newRole;
-    }
-
-    private UserRoleEntity pickupRole(final List<UserRoleEntity> list, final String key) {
-
-        for (UserRoleEntity entity : list) {
-            if (key.equals(entity.getRole())) {
-                return entity;
-            }
-        }
-
-        // 該当roleがなければ空
-        return new UserRoleEntity();
-    }
-
 }
