@@ -35,7 +35,7 @@ public class GetRiyoushaOrgCombinOptionsService {
         list.add(new SelectOptionIntegerDto(DtoEntityInitialValueInterface.INIT_INTEGER, "新規"));
 
         List<RiyoushaCombineOrgEntity> listEntity = riyoushaCombineOrgRepository
-                .findByPersonRiyoushaCodeAndIsLatestTrue(capsuleDto.getUserDto().getUserPersonCode());
+                .findByPersonCodeAndIsLatestTrue(capsuleDto.getUserDto().getUserPersonCode());
 
         for (RiyoushaCombineOrgEntity entity : listEntity) {
             list.add(new SelectOptionIntegerDto(entity.getOrgRiyoushaCode(), entity.getOrgName()));

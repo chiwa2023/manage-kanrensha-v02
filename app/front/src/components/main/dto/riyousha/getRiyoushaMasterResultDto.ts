@@ -7,7 +7,7 @@ interface GetRiyoushaMasterResultDtoInterface extends FrameworkMessageAndResultD
     managerMasterEntity: RiyoushaManagerMasterEntityInterface;
 
     /** APIユーザマスタEntity */
-    maPartnerApiMasterEntity: RiyoushaPartnerApiMasterEntityInterface;
+    partnerApiMasterEntity: RiyoushaPartnerApiMasterEntityInterface;
 
 }
 
@@ -18,7 +18,7 @@ class GetRiyoushaMasterResultDto extends FrameworkMessageAndResultDto
     managerMasterEntity: RiyoushaManagerMasterEntityInterface;
 
     /** APIユーザマスタEntity */
-    maPartnerApiMasterEntity: RiyoushaPartnerApiMasterEntityInterface;
+    partnerApiMasterEntity: RiyoushaPartnerApiMasterEntityInterface;
 
     constructor() {
         super();
@@ -27,7 +27,7 @@ class GetRiyoushaMasterResultDto extends FrameworkMessageAndResultDto
         this.managerMasterEntity = new RiyoushaManagerMasterEntity();
 
         /** APIユーザマスタEntity */
-        this.maPartnerApiMasterEntity = new RiyoushaPartnerApiMasterEntity();
+        this.partnerApiMasterEntity = new RiyoushaPartnerApiMasterEntity();
 
     }
 }

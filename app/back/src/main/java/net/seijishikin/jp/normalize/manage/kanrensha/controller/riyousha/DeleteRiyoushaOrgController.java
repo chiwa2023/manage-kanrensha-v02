@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import org.springframework.http.HttpStatus;
 import net.seijishikin.jp.normalize.common_tool.dto.FrameworkMessageAndResultDto;
-import net.seijishikin.jp.normalize.manage.kanrensha.dto.riyousha.DeleteRiyoushaOrgCapsuleDto;
+import net.seijishikin.jp.normalize.manage.kanrensha.dto.riyousha.UpdateRiyoushaOrgCapsuleDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.riyousha.DeleteRiyoushaOrgSevice;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.util.SaveStackTraceService;
 import net.seijishikin.jp.normalize.manage.kanrensha.controller.PathRouteConstants;
@@ -39,7 +39,7 @@ public class DeleteRiyoushaOrgController {
      */
     @PostMapping("/delete")
     public ResponseEntity<FrameworkMessageAndResultDto> practice(
-            @RequestBody final DeleteRiyoushaOrgCapsuleDto capsuleDto) {
+            @RequestBody final UpdateRiyoushaOrgCapsuleDto capsuleDto) {
 
         FrameworkMessageAndResultDto resultDto;
         try {

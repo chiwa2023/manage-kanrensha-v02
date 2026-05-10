@@ -158,6 +158,14 @@ export default class RoutePathConstants {
     /** 本人による関連者編集 */
     static readonly PAGE_KANRENSHA_MYSELF: string = this.BASE_PATH + "/kanrensha-myself";
 
+    /** 利用者組織に個人を招待 */
+    static readonly PAGE_INSERT_COMBINE_ORG: string = this.BASE_PATH + "/insert-combine-org";
+    /** 利用者組織に個人を招待 */
+    static readonly PAGE_INVITE_ORG_PERSON: string = this.BASE_PATH + "/invite-combine-manager";
+    /** 利用者組織に招待を個人が承認 */
+    static readonly PAGE_ACCEPT_ORG_PERSON: string = this.BASE_PATH + "/accept-combine-riyousha";
+
+
 
     // /** 運営者による利用者検索編集 */
     // static readonly PAGE_SEARCH_RIYOUSHA: string = this.BASE_PATH + "/search-riyousha";
@@ -178,10 +186,6 @@ export default class RoutePathConstants {
     // /** APIパートナー組織に招待を個人が承認 */
     // static readonly PAGE_ACCEPT_COMRADE_PERSON: string = this.BASE_PATH + "/accept-comrade";
 
-    // /** 運営者組織に個人を招待 */
-    // static readonly PAGE_INVITE_MANAGER_PERSON: string = this.BASE_PATH + "/invite-manager";
-    // /** 運営者組織に招待を個人が承認 */
-    // static readonly PAGE_ACCEPT_MANAGER_PERSON: string = this.BASE_PATH + "/accept-manager";
 
 
     /** タスク計画検索 */

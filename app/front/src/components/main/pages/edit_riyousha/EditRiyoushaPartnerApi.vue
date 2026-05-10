@@ -59,7 +59,7 @@ onMounted(() => {
                         messageType.value = MessageConstants.VIEW_OK;
                     } else {
                         // editEntityを変更すると自動で呼び出し
-                        editEntity.value = resultDto.maPartnerApiMasterEntity;
+                        editEntity.value = resultDto.partnerApiMasterEntity;
                     }
                 })
                 .catch((error) => {

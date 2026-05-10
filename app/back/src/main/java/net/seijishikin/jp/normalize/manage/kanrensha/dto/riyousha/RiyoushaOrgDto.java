@@ -4,10 +4,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import net.seijishikin.jp.normalize.common_tool.dto.DtoEntityInitialValueInterface;
 import net.seijishikin.jp.normalize.common_tool.dto.FrameworkMessageAndResultDto;
 import net.seijishikin.jp.normalize.common_tool.dto.input.InputAccessDto;
@@ -25,9 +21,6 @@ public class RiyoushaOrgDto extends FrameworkMessageAndResultDto // NOPMD DataCl
     private static final long serialVersionUID = 1L;
 
     /** テーブルId */
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "riyousha_org_master_id")
     private Integer riyoushaOrgMasterId = INIT_INTEGER;
 
     /**
@@ -49,7 +42,6 @@ public class RiyoushaOrgDto extends FrameworkMessageAndResultDto // NOPMD DataCl
     }
 
     /** 利用者組織コード */
-    @Column(name = "riyousha_org_master_code")
     private Integer riyoushaOrgMasterCode = INIT_INTEGER;
 
     /**
@@ -71,7 +63,6 @@ public class RiyoushaOrgDto extends FrameworkMessageAndResultDto // NOPMD DataCl
     }
 
     /** 利用者組織属性id */
-    @Column(name = "riyousha_org_property_id")
     private Integer riyoushaOrgPropertyId = INIT_INTEGER;
 
     /**
@@ -93,7 +84,6 @@ public class RiyoushaOrgDto extends FrameworkMessageAndResultDto // NOPMD DataCl
     }
 
     /** 利用者組織属性コード */
-    @Column(name = "riyousha_org_property_code")
     private Integer riyoushaOrgPropertyCode = INIT_INTEGER;
 
     /**

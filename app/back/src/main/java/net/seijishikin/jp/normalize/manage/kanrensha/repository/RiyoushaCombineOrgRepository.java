@@ -1,9 +1,12 @@
 package net.seijishikin.jp.normalize.manage.kanrensha.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Lock;
 
+import jakarta.persistence.LockModeType;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.RiyoushaCombineOrgEntity;
 
 /**
@@ -17,7 +20,7 @@ public interface RiyoushaCombineOrgRepository extends JpaRepository<RiyoushaComb
      * @param userCode ユーザコード
      * @return 検索結果
      */
-    List<RiyoushaCombineOrgEntity> findByPersonRiyoushaCodeAndIsLatestTrue(Integer userCode);
+    List<RiyoushaCombineOrgEntity> findByPersonCodeAndIsLatestTrue(Integer userCode);
 
     /**
      * 組織コードから紐づきを検索する
@@ -26,5 +29,13 @@ public interface RiyoushaCombineOrgRepository extends JpaRepository<RiyoushaComb
      * @return 検索結果
      */
     List<RiyoushaCombineOrgEntity> findByOrgRiyoushaCodeAndIsLatestTrue(Integer orgCode);
+
+    /**
+     * 最大コードをもつEntityを取得する
+     *
+     * @return 最大コードをもつEntity
+     */
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
+    Optional<RiyoushaCombineOrgEntity> findFirstByOrderByRiyoushaCombineOrgCodeDesc();
 
 }

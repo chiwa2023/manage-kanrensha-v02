@@ -19,7 +19,7 @@ public class GetRiyoushaMasterResultDto extends FrameworkMessageAndResultDto // 
     private RiyoushaManagerMasterEntity managerMasterEntity = new RiyoushaManagerMasterEntity();
 
     /** APIユーザマスタEntity */
-    private RiyoushaPartnerApiMasterEntity maPartnerApiMasterEntity = new RiyoushaPartnerApiMasterEntity();
+    private RiyoushaPartnerApiMasterEntity partnerApiMasterEntity = new RiyoushaPartnerApiMasterEntity();
 
     /**
      * 運営者マスタEntityを取得する
@@ -44,17 +44,17 @@ public class GetRiyoushaMasterResultDto extends FrameworkMessageAndResultDto // 
      * 
      * @return APIユーザマスタEntity
      */
-    public RiyoushaPartnerApiMasterEntity getMaPartnerApiMasterEntity() {
-        return maPartnerApiMasterEntity;
+    public RiyoushaPartnerApiMasterEntity getPartnerApiMasterEntity() {
+        return partnerApiMasterEntity;
     }
 
     /**
      * APIユーザマスタEntityを設定する
      * 
-     * @param maPartnerApiMasterEntity APIユーザマスタEntity
+     * @param partnerApiMasterEntity APIユーザマスタEntity
      */
-    public void setMaPartnerApiMasterEntity(final RiyoushaPartnerApiMasterEntity maPartnerApiMasterEntity) {
-        this.maPartnerApiMasterEntity = maPartnerApiMasterEntity;
+    public void setPartnerApiMasterEntity(final RiyoushaPartnerApiMasterEntity partnerApiMasterEntity) {
+        this.partnerApiMasterEntity = partnerApiMasterEntity;
     }
 
 }

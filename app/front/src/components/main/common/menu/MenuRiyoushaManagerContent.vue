@@ -37,8 +37,10 @@ import RoutePathConstants from '../../../../routePathConstants';
             <RouterLink :to="RoutePathConstants.PAGE_REGI_BULK_MASTER_KIGYOU" class="menu-item">企業・団体マスタ登録</RouterLink>
             <RouterLink :to="RoutePathConstants.PAGE_REGI_BULK_MASTER_PERSON" class="menu-item">個人マスタ登録</RouterLink>
             <RouterLink :to="RoutePathConstants.PAGE_REGI_BULK_MASTER_POLI_ORG" class="menu-item">政治団体マスタ登録</RouterLink>
-            <RouterLink :to="RoutePathConstants.PAGE_REGI_BULK_COMBINE_KIGYOU" class="menu-item">関連者個人企業・団体紐づけ登録</RouterLink>
-            <RouterLink :to="RoutePathConstants.PAGE_REGI_BULK_COMBINE_SEIJIDANTAI" class="menu-item">関連者個人政治団体紐づけ登録</RouterLink>
+            <RouterLink :to="RoutePathConstants.PAGE_REGI_BULK_COMBINE_KIGYOU" class="menu-item">関連者個人企業・団体紐づけ登録
+            </RouterLink>
+            <RouterLink :to="RoutePathConstants.PAGE_REGI_BULK_COMBINE_SEIJIDANTAI" class="menu-item">関連者個人政治団体紐づけ登録
+            </RouterLink>
             <RouterLink :to="RoutePathConstants.PAGE_WORKS_APPROVAL" class="menu-item">作業内容承認</RouterLink>
         </div>
 
@@ -75,8 +77,10 @@ import RoutePathConstants from '../../../../routePathConstants';
     <div class="menu-container">
         <div class="menu-section">
             <h4 class="menu-title">利用者組織</h4>
-            <RouterLink :to="RoutePathConstants.PAGE_REGIST_RIYOUSHA_ORG" class="menu-item">利用者組織編集</RouterLink>
-            <a href="#" class="menu-item">組織・個人紐づけ</a>
+            <RouterLink class="menu-item" :to="{ path:RoutePathConstants.PAGE_REGIST_RIYOUSHA_ORG , query:{ userRole: 'manager' }}">利用者組織編集</RouterLink>
+            <RouterLink class="menu-item" :to="{ path:RoutePathConstants.PAGE_INSERT_COMBINE_ORG , query:{ userRole: 'manager' }}">組織に所属する</RouterLink>
+            <RouterLink class="menu-item" :to="{ path:RoutePathConstants.PAGE_INVITE_ORG_PERSON , query:{ userRole: 'manager' }}">自分が所属する組織に他利用者を招待</RouterLink>
+            <RouterLink class="menu-item" :to="{ path:RoutePathConstants.PAGE_ACCEPT_ORG_PERSON , query: { userRole: 'manager'} }">利用者組織招待承諾</RouterLink>
         </div>
     </div>
 

@@ -30,6 +30,11 @@ const routes = [
     { path: RoutePathConstants.PAGE_EDIT_RIYOUSHA_PARTNER, name: "EditRiyoushaPartnerApi", component: () => import("./components/main/pages/edit_riyousha/EditRiyoushaPartnerApi.vue") },
     { path: RoutePathConstants.PAGE_SEARCH_RIYOUSHA_ORG, name: "SearchRiyoushaOrg", component: () => import("./components/main/pages/regist_riyousha_org/SearchRiyoushaOrg.vue") },
 
+    // 利用者組織紐づけ
+   { path: RoutePathConstants.PAGE_INSERT_COMBINE_ORG, name: "InsertRiyoushaOrgMyself", component: () => import("./components/main/pages/regist_riyousha_org/InsertRiyoushaOrgMyself.vue") },
+   { path: RoutePathConstants.PAGE_INVITE_ORG_PERSON, name: "InviteRiyoushaOrgPerson", component: () => import("./components/main/pages/regist_riyousha_org/InviteRiyoushaOrgPerson.vue") },
+   { path: RoutePathConstants.PAGE_ACCEPT_ORG_PERSON, name: "AcceptInviteRiyoushaOrg", component: () => import("./components/main/pages/regist_riyousha_org/AcceptInviteRiyoushaOrg.vue") },
+ 
     // 新規アカウント作成
     { path: RoutePathConstants.PAGE_ADD_ACCOUNT, name: "AddAccountMenu", component: () => import("./components/main/pages/add_account/AddAccountMenu.vue") },
     { path: RoutePathConstants.PAGE_SEND_ACCESS_CODE, name: "SendAccessCode", component: () => import("./components/main/pages/add_account/SendAccessCode.vue") },

@@ -7,7 +7,8 @@ import net.seijishikin.jp.normalize.common_tool.dto.DtoEntityInitialValueInterfa
 /**
  * 利用者マスタ取得条件Dto
  */
-public class GetRiyoushaMasterCapsuleDto implements Serializable, DtoEntityInitialValueInterface {
+public class GetRiyoushaMasterCapsuleDto // NOPMD DataClass
+        implements Serializable, DtoEntityInitialValueInterface {
 
     /** Serialize id */
     private static final long serialVersionUID = 1L;

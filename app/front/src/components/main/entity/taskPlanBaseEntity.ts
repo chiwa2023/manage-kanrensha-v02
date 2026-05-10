@@ -1,6 +1,9 @@
 
 interface TaskPlanBaseEntityInterface {
     /** タスク計画コード */
+    taskPlanId: number;
+
+    /** タスク計画コード */
     taskPlanCode: number;
 
     /** タスク計画名称 */
@@ -32,6 +35,8 @@ interface TaskPlanBaseEntityInterface {
 }
 
 class TaskPlanBaseEntity implements TaskPlanBaseEntityInterface {
+    /** タスク計画コード */
+    taskPlanId: number;
 
     /** タスク計画コード */
     taskPlanCode: number;
@@ -71,6 +76,7 @@ class TaskPlanBaseEntity implements TaskPlanBaseEntityInterface {
         const INIT_BOOLEAN: boolean = false;
         const INIT_DATE: Date = new Date(1948, 7, 29, 0, 0, 0);
 
+        this.taskPlanId = INIT_NUMBER;
         this.taskPlanCode = INIT_NUMBER;
         this.tableYear = INIT_NUMBER;
         this.isStart = INIT_BOOLEAN;

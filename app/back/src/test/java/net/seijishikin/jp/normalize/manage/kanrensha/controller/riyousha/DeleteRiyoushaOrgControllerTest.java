@@ -23,7 +23,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import net.seijishikin.jp.normalize.common_tool.utils.GetObjectMapperWithTimeModuleUtil;
 import net.seijishikin.jp.normalize.manage.kanrensha.controller.PathRouteConstants;
-import net.seijishikin.jp.normalize.manage.kanrensha.dto.riyousha.DeleteRiyoushaOrgCapsuleDto;
+import net.seijishikin.jp.normalize.manage.kanrensha.dto.riyousha.UpdateRiyoushaOrgCapsuleDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.RiyoushaOrgMasterEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.repository.RiyoushaOrgMasterRepository;
 import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateLeastUserForTestUtil;
@@ -52,7 +52,7 @@ class DeleteRiyoushaOrgControllerTest {
     @WithMockUser
     void test() throws Exception {
 
-        DeleteRiyoushaOrgCapsuleDto capsuleDto = new DeleteRiyoushaOrgCapsuleDto();
+        UpdateRiyoushaOrgCapsuleDto capsuleDto = new UpdateRiyoushaOrgCapsuleDto();
         capsuleDto.setUserDto(CreateLeastUserForTestUtil.practice());
         RiyoushaOrgMasterEntity masterEntity = riyoushaOrgMasterRepository.findById(318).get();
         capsuleDto.setMasterEntity(masterEntity);

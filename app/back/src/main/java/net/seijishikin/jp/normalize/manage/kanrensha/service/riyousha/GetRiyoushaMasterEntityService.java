@@ -60,7 +60,7 @@ public class GetRiyoushaMasterEntityService {
                     resultDto.setMessage(FrameworkMessageAndResultDto.MESSAGE_NO_CONTENT);
 
                 } else {
-                    resultDto.setMaPartnerApiMasterEntity(optionalPartner.get());
+                    resultDto.setPartnerApiMasterEntity(optionalPartner.get());
                 }
                 break;
 

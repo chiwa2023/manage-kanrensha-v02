@@ -55,7 +55,6 @@ onMounted(() => {
                 .then(async (response) => {
                     const resultDto: GetRiyoushaMasterResultDtoInterface = await response.json();
                     message.value = resultDto.message;
-                    // 処理が成功したら再登録できないようにアップロードファイル情報を初期化
                     if (resultDto.isFailure) {
                         infoLevel.value = MessageConstants.LEVEL_WARNING;
                         messageType.value = MessageConstants.VIEW_OK;

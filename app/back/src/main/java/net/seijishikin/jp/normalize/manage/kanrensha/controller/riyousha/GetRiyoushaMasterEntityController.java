@@ -40,7 +40,6 @@ public class GetRiyoushaMasterEntityController {
     @PostMapping("/get-myself")
     public ResponseEntity<GetRiyoushaMasterResultDto> practice(
             @RequestBody final GetRiyoushaMasterCapsuleDto capsuleDto) {
-
         try {
             return ResponseEntity.status(HttpStatus.OK).body(getRiyoushaMasterEntityService.practice(capsuleDto));
         } catch (Exception exception) { // NOPMD 業務的な理由から積極的に許容

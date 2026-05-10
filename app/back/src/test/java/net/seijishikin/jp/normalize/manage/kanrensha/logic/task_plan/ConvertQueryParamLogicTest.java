@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import java.util.Map;
 import java.util.TreeMap;
 
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -14,6 +15,7 @@ import org.junit.jupiter.api.Test;
 class ConvertQueryParamLogicTest {
 
     @Test
+    @Tag("TableTruncate")
     void test() {
 
         final String blank = "";

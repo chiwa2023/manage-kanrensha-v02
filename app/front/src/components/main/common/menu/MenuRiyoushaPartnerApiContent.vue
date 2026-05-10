@@ -23,8 +23,10 @@ import RoutePathConstants from '../../../../routePathConstants';
 
         <div class="menu-section">
             <h4>利用者組織</h4>
-            <RouterLink class="menu-item" :to=RoutePathConstants.PAGE_REGIST_RIYOUSHA_ORG>利用者組織編集</RouterLink><br>
-            <a href="#">組織・個人紐づけ</a>
+            <RouterLink class="menu-item" :to="{ path:RoutePathConstants.PAGE_REGIST_RIYOUSHA_ORG , query:{ userRole: 'partner_api' }}">利用者組織編集</RouterLink>
+            <RouterLink class="menu-item" :to="{ path:RoutePathConstants.PAGE_INSERT_COMBINE_ORG , query:{ userRole: 'partner_api' }}">組織に所属する</RouterLink>
+            <RouterLink class="menu-item" :to="{ path:RoutePathConstants.PAGE_INVITE_ORG_PERSON , query:{ userRole: 'partner_api' }}">自分が所属する組織に他利用者を招待</RouterLink>
+            <RouterLink class="menu-item" :to="{ path:RoutePathConstants.PAGE_ACCEPT_ORG_PERSON , query: { userRole: 'partner_api'} }">利用者組織招待承諾</RouterLink>
         </div>
     </div>
 

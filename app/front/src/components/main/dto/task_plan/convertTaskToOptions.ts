@@ -1,22 +1,24 @@
 import type { TaskPlanBaseEntityInterface } from "../../entity/taskPlanBaseEntity";
-import { SelectOptionStringDto, type SelectOptionStringDtoInterface } from "../select_options/selectOptionStringDto";
+import { SelectOptionsTaskPlanDto, type SelectOptionsTaskPlanDtoInterface } from "../select_options/selectOptionsTaskPlanDto";
 
 
-export default function convertTaskToOption(taskList: TaskPlanBaseEntityInterface[]): SelectOptionStringDtoInterface[] {
+export default function convertTaskToOption(taskList: TaskPlanBaseEntityInterface[]): SelectOptionsTaskPlanDtoInterface[] {
 
-    const list: SelectOptionStringDtoInterface[] = [];
+    const list: SelectOptionsTaskPlanDtoInterface[] = [];
 
     // 未選択
-    const initDto: SelectOptionStringDtoInterface = new SelectOptionStringDto();
+    const initDto: SelectOptionsTaskPlanDtoInterface = new SelectOptionsTaskPlanDto();
     initDto.value = "";
     initDto.text = "(未選択)";
 
     list.push(initDto);
 
     for (const entity of taskList) {
-        const dto: SelectOptionStringDtoInterface = new SelectOptionStringDto();
+        const dto: SelectOptionsTaskPlanDtoInterface = new SelectOptionsTaskPlanDto();
         dto.value = entity.transferPass;
         dto.text = "【" + entity.insertTimestamp + "】" + entity.taskPlanName;
+        dto.taskYear = entity.tableYear;
+        dto.taskPlanId = entity.taskPlanId;
         list.push(dto);
     }
 

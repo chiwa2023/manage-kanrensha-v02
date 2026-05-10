@@ -1,6 +1,6 @@
 interface RiyoushaCombineOrgEntityInterface {
 
-        /** テーブルId */
+    /** テーブルId */
     riyoushaCombineOrgId: number;
 
     /** 紐づけコード */
@@ -10,16 +10,22 @@ interface RiyoushaCombineOrgEntityInterface {
     isLatest: boolean;
 
     /** 紐づけ関連者区分 */
-    riyoushaKbn: number;
+    riyoushaRole: string;
 
     /** 個人関連者コード */
+    personCode: number;
+
+    /** 利用者個人コード */
     personRiyoushaCode: number;
 
     /** 個人氏名 */
-    personName: string;
+    personRiyoushaName: string;
 
     /** 団体関連者コード */
     orgRiyoushaCode: number;
+
+    /** 団体関連者名称 */
+    orgName: string;
 
 }
 
@@ -36,16 +42,22 @@ class RiyoushaCombineOrgEntity implements RiyoushaCombineOrgEntityInterface {
     isLatest: boolean;
 
     /** 紐づけ関連者区分 */
-    riyoushaKbn: number;
+    riyoushaRole: string;
 
     /** 個人関連者コード */
+    personCode: number;
+
+    /** 利用者個人コード */
     personRiyoushaCode: number;
 
     /** 個人氏名 */
-    personName: string;
+    personRiyoushaName: string;
 
     /** 団体関連者コード */
     orgRiyoushaCode: number;
+
+    /** 団体関連者名称 */
+    orgName: string;
 
     constructor() {
 
@@ -56,10 +68,12 @@ class RiyoushaCombineOrgEntity implements RiyoushaCombineOrgEntityInterface {
         this.riyoushaCombineOrgId = INIT_NUMBER;
         this.riyoushaCombineOrgCode = INIT_NUMBER;
         this.isLatest = INIT_BOOLEAN;
-        this.riyoushaKbn = INIT_NUMBER;
+        this.riyoushaRole = INIT_STRING;
+        this.personCode = INIT_NUMBER;
         this.personRiyoushaCode = INIT_NUMBER;
-        this.personName = INIT_STRING;
+        this.personRiyoushaName = INIT_STRING;
         this.orgRiyoushaCode = INIT_NUMBER;
+        this.orgName = INIT_STRING;
     }
 }
 

@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import net.seijishikin.jp.normalize.common_tool.dto.FrameworkMessageAndResultDto;
 import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
 import net.seijishikin.jp.normalize.common_tool.utils.SetTableDataHistoryUtil;
-import net.seijishikin.jp.normalize.manage.kanrensha.dto.riyousha.DeleteRiyoushaOrgCapsuleDto;
+import net.seijishikin.jp.normalize.manage.kanrensha.dto.riyousha.UpdateRiyoushaOrgCapsuleDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.RiyoushaCombineOrgEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.RiyoushaOrgMasterEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.RiyoushaOrgPropertyEntity;
@@ -47,7 +47,7 @@ public class DeleteRiyoushaOrgSevice {
      * @return 処理結果Dto
      */
     @Transactional
-    public FrameworkMessageAndResultDto practice(final DeleteRiyoushaOrgCapsuleDto capsuleDto) {
+    public FrameworkMessageAndResultDto practice(final UpdateRiyoushaOrgCapsuleDto capsuleDto) {
 
         // 削除するマスタを呼び出し
         Optional<RiyoushaOrgMasterEntity> optionalMaster = riyoushaOrgMasterRepository

@@ -15,6 +15,8 @@ import getAuthorizedPromiseArea from '../../dto/login/getAuthorizedPromiseArea';
 import convertTaskToOption from '../../dto/task_plan/convertTaskToOptions';
 import { AccessTokenNotFoundError, TokenRefreshError } from '../../dto/login/errors';
 import ShowTask from '../show_task/ShowTask.vue';
+import type { SelectOptionsTaskPlanDtoInterface } from '../../dto/select_options/selectOptionsTaskPlanDto';
+import { useTaskPlan } from '../../stores/storeTaskPlan';
 
 // props,emmits
 const props = defineProps<{ userDto: LeastUserDtoInterface }>();
@@ -73,18 +75,18 @@ function viewPersonMenu() {
 
 // 未処理タスク表示
 const resultDtoTask: Ref<TaskListForUserInfoResultDtoInterface> = ref(new TaskListForUserInfoResultDto());
-const optionsThisYear: Ref<SelectOptionStringDtoInterface[]> = ref([]);
-const optionsLastYear: Ref<SelectOptionStringDtoInterface[]> = ref([]);
-const optionsView: ComputedRef<SelectOptionStringDtoInterface[]> = computed(() => {
+const optionsThisYear: Ref<SelectOptionsTaskPlanDtoInterface[]> = ref([]);
+const optionsLastYear: Ref<SelectOptionsTaskPlanDtoInterface[]> = ref([]);
+const optionsView: ComputedRef<SelectOptionsTaskPlanDtoInterface[]> = computed(() => {
     if ("1" === switchYear.value) {
         return optionsThisYear.value;
     } else {
         return optionsLastYear.value;
     }
 });
-const selectedTask: Ref<string> = ref("");
+const selectedTask: Ref<number> = ref(0);
 const switchYear: Ref<string> = ref("");
-const tansferDisabled: ComputedRef<boolean> = computed(() => BLANK === selectedTask.value);
+const tansferDisabled: ComputedRef<boolean> = computed(() => 0 === selectedTask.value);
 let actionStatus = INIT_NUMBER;
 onBeforeMount(async () => {
     // ログインと権限チェック
@@ -193,8 +195,17 @@ function recieveCancelShowTask() {
 }
 
 function onTransfer() {
-    // ページ遷移
-    router.push(RoutePathConstants.BASE_PATH + selectedTask.value);
+    const selectedDto: SelectOptionsTaskPlanDtoInterface | undefined =
+        optionsView.value.filter((e) => e.taskPlanId == selectedTask.value)[0];
+
+    if (undefined !== selectedDto) {
+        const storesTaskPlan = useTaskPlan();
+        storesTaskPlan.taskPlanId = selectedDto.taskPlanId;
+        storesTaskPlan.taskYear = selectedDto.taskYear;
+
+        // ページ遷移
+        router.push(RoutePathConstants.BASE_PATH + selectedDto.value);
+    }
 }
 
 const notHasDetailInfo: ComputedRef<boolean> = computed(
@@ -212,7 +223,7 @@ const notHasDetailInfo: ComputedRef<boolean> = computed(
                 <input type="radio" v-model="switchYear" value="1" id="test">本年{{ optionsThisYear.length - 1 }}件
                 <input type="radio" v-model="switchYear" value="2" id="test">前年{{ optionsLastYear.length - 1 }}件
                 <select v-model="selectedTask" class="left-space">
-                    <option v-for="option in optionsView" :value="option.value">{{ option.text }}</option>
+                    <option v-for="option in optionsView" :value="option.taskPlanId">{{ option.text }}</option>
                 </select>
                 <button @click="onTransfer" :disabled="tansferDisabled"
                     class="left-space-narrow user-role-transfer-button">遷移</button><br>

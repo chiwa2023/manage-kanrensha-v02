@@ -55,7 +55,7 @@ class GetRiyoushaMasterEntityServiceTest {
         capsuleDto3.setRiyoushaRole("partner_api");
         capsuleDto3.setRiyoushaCode(22);
         GetRiyoushaMasterResultDto resultDto3 = getRiyoushaMasterEntityService.practice(capsuleDto3);
-        assertEquals(203, resultDto3.getMaPartnerApiMasterEntity().getRiyoushaPartnerApiMasterId());
+        assertEquals(203, resultDto3.getPartnerApiMasterEntity().getRiyoushaPartnerApiMasterId());
 
         GetRiyoushaMasterCapsuleDto capsuleDto4 = new GetRiyoushaMasterCapsuleDto();
         capsuleDto4.setRiyoushaRole("partner_api");
