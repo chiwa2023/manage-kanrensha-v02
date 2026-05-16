@@ -11,7 +11,6 @@ import { AccessTokenNotFoundError, TokenRefreshError } from '../../dto/login/err
 const props = defineProps<{ userDto: LeastUserDtoInterface, taskInfoEntity: TaskInfoEntityInterface }>()
 const emits = defineEmits(["sendCancelTaskInfo", "sendTaskInfoInterface"]);
 
-//仮
 // よく使う定数
 const BLANK: string = "";
 const INIT_NUMBER: number = 0;

@@ -9,7 +9,6 @@ import { SearchWorksApprovalCapsuleDto, type SearchWorksApprovalCapsuleDtoInterf
 import type { KanrenshaAddressBaseEntityInterface } from '../../entity/kanrenshaAddressBaseEntity';
 import { SearchWorksApprovalResultDto, type SearchWorksApprovalResultDtoInterface } from '../../dto/works_approval/searchWorksApprovalResultDto';
 
-//仮
 // よく使う定数
 const BLANK: string = "";
 const INIT_NUMBER: number = 0;

@@ -11,7 +11,6 @@ import RoutePathConstants from '../../../../routePathConstants';
 const props = defineProps<{ userDto: LeastUserDtoInterface, timerYoyakuEntity: TimerYoteiEntityInterface }>()
 const emits = defineEmits(["sendTimerYoyakuInterface", "sendCancelTimerYoyaku"]);
 
-//仮
 // よく使う定数
 const BLANK: string = "";
 const INIT_NUMBER: number = 0;

@@ -14,7 +14,6 @@ import RoutePathConstants from '../../../../routePathConstants';
 import { AccessTokenNotFoundError, TokenRefreshError } from '../../dto/login/errors';
 import EditTimerYotei from '../../common/yotei_timer/EditTimerYotei.vue';
 
-//仮
 // よく使う定数
 const BLANK: string = "";
 const INIT_NUMBER: number = 0;

@@ -20,7 +20,6 @@ import KanrenshaPersonEdit from '../../common/kanrensha_edit/KanrenshaPersonEdit
 import KanrenshaSeijidanatiEdit from '../../common/kanrensha_edit/KanrenshaSeijidanatiEdit.vue';
 import router from '../../../../router';
 
-//仮
 // よく使う定数
 const BLANK: string = "";
 // const INIT_NUMBER: number = 0;

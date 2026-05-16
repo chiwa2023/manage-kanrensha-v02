@@ -14,7 +14,6 @@ import { useRoute } from 'vue-router';
 import UserRoleConstants from '../../dto/user/userRoleConstants';
 import PartnerApiInfo from '../../common/user_info/PartnerApiInfo.vue';
 
-//仮
 // よく使う定数
 const BLANK: string = "";
 const INIT_NUMBER: number = 0;

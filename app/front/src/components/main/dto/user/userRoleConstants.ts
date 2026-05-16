@@ -82,6 +82,24 @@ export default class UserRoleConstants {
 
             case UserRoleConstants.ROLE_KANRENSHA_SEIJIDANTAI:
                 return UserRoleConstants.ROLE_KANRENSHA_SEIJIDANTAI_TEXT;
+
+            case UserRoleConstants.ADMIN:
+                return UserRoleConstants.ROLE_ADMIN_TEXT;
+
+            case UserRoleConstants.MANAGER:
+                return UserRoleConstants.ROLE_MANAGER_TEXT;
+
+            case UserRoleConstants.PARTNER_API:
+                return UserRoleConstants.ROLE_PARTNER_API_TEXT;
+
+            case UserRoleConstants.KANRENSHA_KIGYOU_DT:
+                return UserRoleConstants.ROLE_KANRENSHA_KIGYOU_DT_TEXT;
+
+            case UserRoleConstants.KANRENSHA_PERSON:
+                return UserRoleConstants.ROLE_KANRENSHA_PERSON_TEXT;
+
+            case UserRoleConstants.KANRENSHA_SEIJIDANTAI:
+                return UserRoleConstants.ROLE_KANRENSHA_SEIJIDANTAI_TEXT;
             default:
                 // 何もしない
                 return "";

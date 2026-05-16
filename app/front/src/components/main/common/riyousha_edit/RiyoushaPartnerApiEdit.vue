@@ -111,6 +111,16 @@ function recieveSubmit(button: string) {
 
     <!-- 長期トークン発行機能は他人がこの基礎情報を編集する可能性があるので別ページに移転 -->
 
+    <div class="one-line">
+        <div class="left-area">
+            関連者コード
+        </div>
+        <div class="right-area">
+            <input type="text" disabled="true" v-model="inputpartnerApiDto.riyoushaPartnerApiMasterCode"
+                class="left-space code-input">
+        </div>
+    </div>
+
     <!-- 個人姓名入力 -->
     <ViewInputPersonName :edit-dto="inputpartnerApiDto.inputPersonNameDto"></ViewInputPersonName>
 

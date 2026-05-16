@@ -30,21 +30,22 @@ public class SearchRiyoushaOrgService {
         resultDto.setLimit(capsuleDto.getLimit());
         resultDto.setPageNumber(capsuleDto.getPageNumber());
 
-        String words = "%" + capsuleDto.getSearchNaturalWords() + "%"; // TODO Match Against
         // String words =
         // createSerachWordsBooleanModeUtil.practice(capsuleDto.getSearchNaturalWords());
+        String words = "%" + capsuleDto.getSearchNaturalWords() + "%"; // TODO Match Against
 
-        resultDto.setAllCount(riyoushaOrgMasterRepository.countFullText(words));
+        int cnt = riyoushaOrgMasterRepository.countFullText(words);
+        resultDto.setAllCount(cnt);
 
         // 全件数が0の場合は結果を返却
-        final Integer zero = 0;
-        if (zero.equals(resultDto.getAllCount())) {
+        final int zero = 0;
+        if (zero == cnt) {
             resultDto.setPageNumber(0);
             return resultDto;
         }
 
         // 検索語を変更するなど、ページング条件で齟齬が発生した場合はページ番号を初期化
-        if (resultDto.getAllCount() < resultDto.getLimit() * resultDto.getPageNumber()) {
+        if (resultDto.getAllCount() < resultDto.getLimit() * (resultDto.getPageNumber() + 1)) {
             resultDto.setPageNumber(0);
         }
 

@@ -42,15 +42,11 @@ public class SearchRiyoushaAllController {
     public ResponseEntity<SearchRiyoushaAllResultDto> practice(
             @RequestBody final SearchRiyoushaAllCapsuleDto capsuleDto) {
 
-        SearchRiyoushaAllResultDto resultDto;
+        SearchRiyoushaAllResultDto resultDto = new SearchRiyoushaAllResultDto();
         try {
             resultDto = searchRiyoushaAllService.practice(capsuleDto);
 
-            final Integer zero = 0;
-            if (zero.equals(resultDto.getSearchRiyoushaAdminResultDto().getAllCount())
-                    && zero.equals(resultDto.getSearchRiyoushaManagerResultDto().getAllCount())
-                    && zero.equals(resultDto.getSearchRiyoushaPartnerApiResultDto().getAllCount())) {
-
+            if (0 == resultDto.getAllCount()) {
                 resultDto.setIsFailure(true);
                 resultDto.setMessage(FrameworkMessageAndResultDto.MESSAGE_NO_CONTENT);
                 return ResponseEntity.status(HttpStatus.ACCEPTED).body(resultDto);
@@ -60,11 +56,9 @@ public class SearchRiyoushaAllController {
         } catch (Exception exception) { // NOPMD AvoidCatchGenericException
             // 例外を保存してエラー発生を伝達
             saveStackTraceService.practice(exception, Year.now().getValue(), 0);
-            resultDto = new SearchRiyoushaAllResultDto();
             resultDto.setIsFailure(true);
             resultDto.setMessage(FrameworkMessageAndResultDto.MESSAGE_INTERNAL_ERROR);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(resultDto);
         }
     }
-
 }

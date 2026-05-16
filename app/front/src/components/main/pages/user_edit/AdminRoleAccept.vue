@@ -15,7 +15,6 @@ import { notCompletedTaskStore } from '../../stores/notCompletedTask';
 // back側アクセス
 const urlBack: string = RoutePathConstants.DOMAIN + RoutePathConstants.BASE_PATH;
 
-//仮
 // よく使う定数
 const BLANK: string = "";
 const INIT_NUMBER: number = 0;

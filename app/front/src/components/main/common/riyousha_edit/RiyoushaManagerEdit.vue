@@ -41,7 +41,7 @@ watch(props, () => {
 
 function onChangeEntity() {
     // 編集しないときはgetしない    
-    if (props.editEntity.riyoushaManagerId !== 0) {
+    if (props.editEntity.riyoushaManagerMasterId !== 0) {
 
         getAuthorizedPromiseArea().then(token => {
             const url = urlBack + "/riyousha/get-manager";

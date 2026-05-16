@@ -13,7 +13,6 @@ import { EditUserPersonCapsuleDto, type EditUserPersonCapsuleDtoInterface } from
 const props = defineProps<{ editUserId: number, userDto: LeastUserDtoInterface }>()
 const emits = defineEmits(["sendCancelEditUser", "sendEditUserInterface"]);
 
-//仮
 // よく使う定数
 const BLANK: string = "";
 const INIT_NUMBER: number = 0;

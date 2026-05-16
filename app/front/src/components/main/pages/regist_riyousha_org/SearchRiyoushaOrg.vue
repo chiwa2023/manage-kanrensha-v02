@@ -1,38 +1,105 @@
 <script setup lang="ts">
 import { ref, type Ref } from 'vue';
 import RiyoushaOrgEdit from '../../common/riyousha_edit/RiyoushaOrgEdit.vue';
-import { PagingControl, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
+import { MessageConstants, MessageView, PagingControl, type FrameworkMessageAndResultDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import { getLoginUser } from '../../utils/getLoginUser';
-import type { RiyoushaOrgMasterEntityInterface } from '../../entity/riyoushaOrgMasterEntity';
-import mockGetRiyoushaOrgMasterList from '../../../test/pages/regist_riyousha_org/mockGetRiyoushaOrgMasterList';
 import AdminInfo from '../../common/user_info/AdminInfo.vue';
+import getAuthorizedPromiseArea from '../../dto/login/getAuthorizedPromiseArea';
+import { AccessTokenNotFoundError, TokenRefreshError } from '../../dto/login/errors';
+import { SearchRiyoushaOrgCapsuleDto, type SearchRiyoushaOrgCapsuleDtoInterface } from '../../dto/riyousha/searchRiyoushaOrgCapsuleDto';
+import RoutePathConstants from '../../../../routePathConstants';
+import { SearchRiyoushaOrgResultDto, type SearchRiyoushaOrgResultDtoInterface } from '../../dto/riyousha/searchRiyoushaOrgResultDto';
+import type { RiyoushaOrgDtoInterface } from '../../dto/riyousha/riyoushaOrgDto';
+import { SaveRiyoushaOrgCapsuleDto, type SaveRiyoushaOrgCapsuleDtoInterface } from '../../dto/riyousha/saveRiyoushaOrgCapsuleDto';
 
-//仮
 // よく使う定数
-// const BLANK: string = "";
+const BLANK: string = "";
 const INIT_NUMBER: number = 0;
 const INIT_BOOLEAN: boolean = false;
 const SEARCH_LIMIT: number = 20;
 // const SERVER_STATUS_OK: number = 200;
 // const SERVER_STATUS_ERROR: number = 400;
 // メッセージボックス表示定数
-//const infoLevel: Ref<number> = ref(MessageConstants.LEVEL_NONE);
-//const messageType: Ref<number> = ref(MessageConstants.VIEW_NONE);
-//const title: Ref<string> = ref(BLANK);
-//const message: Ref<string> = ref(BLANK);
+const infoLevel: Ref<number> = ref(MessageConstants.LEVEL_NONE);
+const messageType: Ref<number> = ref(MessageConstants.VIEW_NONE);
+const title: Ref<string> = ref(BLANK);
+const message: Ref<string> = ref(BLANK);
+
 // Paging
 const pageNumber: Ref<number> = ref(INIT_NUMBER);
 const allCount: Ref<number> = ref(INIT_NUMBER);
 const limit: Ref<number> = ref(SEARCH_LIMIT);
 
+// back側アクセス
+const urlBack: string = RoutePathConstants.DOMAIN + RoutePathConstants.BASE_PATH;
+
 // ユーザ呼び出し
 const userDto: Ref<LeastUserDtoInterface> = ref(getLoginUser());
 const selectedOrgId: Ref<number> = ref(INIT_NUMBER);
-const listRiyoushaOrg: Ref<RiyoushaOrgMasterEntityInterface[]> = ref([]);
+
+// 検索条件
+const capsuleDto: Ref<SearchRiyoushaOrgCapsuleDtoInterface> = ref(new SearchRiyoushaOrgCapsuleDto());
+const resultDto: Ref<SearchRiyoushaOrgResultDtoInterface> = ref(new SearchRiyoushaOrgResultDto());
 
 function onSearch() {
-    listRiyoushaOrg.value = mockGetRiyoushaOrgMasterList();
-    allCount.value = listRiyoushaOrg.value.length;
+    // listRiyoushaOrg.value = mockGetRiyoushaOrgMasterList();
+    // allCount.value = listRiyoushaOrg.value.length;
+    capsuleDto.value.allCount = allCount.value;
+    capsuleDto.value.pageNumber = pageNumber.value;
+    capsuleDto.value.limit = limit.value;
+
+    title.value = "利用者組織検索";
+    getAuthorizedPromiseArea().then(token => {
+        const url = urlBack + "/riyousha-org/search";
+        const method = "POST";
+        const body = JSON.stringify(capsuleDto.value);
+        const headers = {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'X-AUTH-TOKEN': 'Bearer ' + token
+        };
+        fetch(url, { method, headers, body })
+            .then(async (response) => {
+                resultDto.value = await response.json();
+                allCount.value = resultDto.value.allCount;
+                limit.value = resultDto.value.limit;
+                pageNumber.value = resultDto.value.pageNumber;
+
+                if (resultDto.value.listRiyoushaOrg.length === 0) {
+                    infoLevel.value = MessageConstants.LEVEL_WARNING;
+                    messageType.value = MessageConstants.VIEW_OK;
+                    message.value = "検索結果が0件でした";
+                }
+            })
+            .catch((error) => {
+                alert(error);
+                infoLevel.value = MessageConstants.LEVEL_ERROR;
+                messageType.value = MessageConstants.VIEW_OK;
+                message.value = "システム管理者にお問い合わせください";
+                return;
+            });
+    }).catch((e) => {
+        infoLevel.value = MessageConstants.LEVEL_ERROR;
+        messageType.value = MessageConstants.VIEW_OK;
+
+        if (e instanceof AccessTokenNotFoundError) {
+            // トークン保持ができていない場合
+            title.value = "現在トークンが存在しません";
+            message.value = e.message;
+            return;
+        }
+        if (e instanceof TokenRefreshError) {
+            // 取得に失敗している場合
+            title.value = "有効期限まじかのトークンを再取得できませんでした";
+            message.value = e.message;
+            return;
+        }
+        title.value = "システムエラーが発生しました";
+        message.value = "システム管理者にお問い合わせください";
+        return;
+    });
+
+
 }
 
 const isOrgEdit: Ref<boolean> = ref(INIT_BOOLEAN);
@@ -47,7 +114,64 @@ function recieveCancelRiyoushaOrg() {
     isOrgEdit.value = false;
 }
 
-function recieveRiyoushaOrgInterface() {
+function recieveRiyoushaOrgInterface(editDto: RiyoushaOrgDtoInterface) {
+
+    // 保存処理
+    const capsuleDto: SaveRiyoushaOrgCapsuleDtoInterface = new SaveRiyoushaOrgCapsuleDto();
+    capsuleDto.userDto = userDto.value;
+    capsuleDto.riyoushaOrgDto = editDto;
+
+    title.value = "利用者組織更新";
+    getAuthorizedPromiseArea().then(token => {
+        const url = urlBack + "/riyousha-org/update";
+        const method = "POST";
+        const body = JSON.stringify(capsuleDto);
+        const headers = {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'X-AUTH-TOKEN': 'Bearer ' + token
+        };
+        fetch(url, { method, headers, body })
+            .then(async (response) => {
+                const resultDto: FrameworkMessageAndResultDtoInterface = await response.json();
+                if (resultDto.isFailure) {
+                    infoLevel.value = MessageConstants.LEVEL_WARNING;
+                    messageType.value = MessageConstants.VIEW_OK;
+                } else {
+                    infoLevel.value = MessageConstants.LEVEL_INFO;
+                    messageType.value = MessageConstants.VIEW_TOAST;
+                }
+            })
+            .catch((error) => {
+                alert(error);
+                infoLevel.value = MessageConstants.LEVEL_ERROR;
+                messageType.value = MessageConstants.VIEW_OK;
+                message.value = "システム管理者にお問い合わせください";
+                return;
+            });
+    }).catch((e) => {
+        infoLevel.value = MessageConstants.LEVEL_ERROR;
+        messageType.value = MessageConstants.VIEW_OK;
+
+        if (e instanceof AccessTokenNotFoundError) {
+            // トークン保持ができていない場合
+            title.value = "現在トークンが存在しません";
+            message.value = e.message;
+            return;
+        }
+        if (e instanceof TokenRefreshError) {
+            // 取得に失敗している場合
+            title.value = "有効期限まじかのトークンを再取得できませんでした";
+            message.value = e.message;
+            return;
+        }
+        title.value = "システムエラーが発生しました";
+        message.value = "システム管理者にお問い合わせください";
+        return;
+    });
+
+
+
 
     isOrgEdit.value = false;
 }
@@ -60,6 +184,11 @@ function recievePagingNumber(selecteddNumber: number) {
     alert("ページ情報受信");
 }
 
+function recieveSubmit(button: string) {
+    console.log(button); // 警告除け
+    infoLevel.value = 0;
+    messageType.value = 0;
+}
 </script>
 <template>
     <!-- SE権限 -->
@@ -70,7 +199,7 @@ function recievePagingNumber(selecteddNumber: number) {
     <h3>検索条件</h3>
     <div class="one-line">
         <div class="left-area">検索語</div>
-        <div class="right-area"><input type="text"></div>
+        <div class="right-area"><input type="text" v-model="capsuleDto.searchNaturalWords"></div>
     </div>
     <div class="one-line">
         <div class="left-area">検索</div>
@@ -91,11 +220,11 @@ function recievePagingNumber(selecteddNumber: number) {
             </tbody>
 
             <tbody>
-                <tr v-for="entity in listRiyoushaOrg" :key="entity.riyoushaOrgMasterId">
+                <tr v-for="entity in resultDto.listRiyoushaOrg" :key="entity.riyoushaOrgMasterId">
                     <td>{{ entity.riyoushaOrgMasterCode }}</td>
                     <td>({{ entity.allNameKana }})<br>{{ entity.allName }}</td>
                     <td>{{ entity.addressAll }}</td>
-                    <td><button @click="onEdit(entity.riyoushaOrgMasterId)">編集</button></td>
+                    <td><button @click="onEdit(entity.riyoushaOrgMasterCode)">編集</button></td>
                     <td><button @click="onDelete">削除</button></td>
                 </tr>
             </tbody>
@@ -104,7 +233,6 @@ function recievePagingNumber(selecteddNumber: number) {
     <!-- ページング -->
     <PagingControl :all-count="allCount" :limit="limit" :page-number="pageNumber"
         @send-paging-number="recievePagingNumber"></PagingControl>
-
 
     <div class="footer">
         <button class="footer-button" @click="onCancel">キャンセル</button>
@@ -116,6 +244,13 @@ function recievePagingNumber(selecteddNumber: number) {
         <RiyoushaOrgEdit :user-dto="userDto" :selected-id="selectedOrgId"
             @send-cancel-riyousha-org="recieveCancelRiyoushaOrg"
             @send-riyousha-org-interface="recieveRiyoushaOrgInterface"></RiyoushaOrgEdit>
+    </div>
+
+    <!-- メッセージ表示 -->
+    <div class="overMessage" v-if="messageType !== MessageConstants.VIEW_NONE">
+        <MessageView :info-level="infoLevel" :message-type="messageType" :title="title" :message="message"
+            @send-submit="recieveSubmit">
+        </MessageView>
     </div>
 
 </template>

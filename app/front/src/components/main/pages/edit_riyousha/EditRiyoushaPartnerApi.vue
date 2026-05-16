@@ -13,7 +13,6 @@ import type { GetRiyoushaMasterResultDtoInterface } from '../../dto/riyousha/get
 import { SaveRiyoushaPartnerApiCapsuleDto, type SaveRiyoushaPartnerApiCapsuleDtoInterface } from '../../dto/riyousha/saveRiyoushaPartnerApiCapsuleDto';
 import type { RiyoushaPartnerApiDtoInterface } from '../../dto/riyousha/riyoushaPartnerApiDto';
 
-//仮
 // よく使う定数
 const BLANK: string = "";
 // const INIT_NUMBER: number = 0;

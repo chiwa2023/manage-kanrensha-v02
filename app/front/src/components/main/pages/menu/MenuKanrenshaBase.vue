@@ -5,7 +5,6 @@ import { computed, ref, type ComputedRef, type Ref } from 'vue';
 import { getLoginUser } from '../../utils/getLoginUser';
 import KanrenshaInfo from '../../common/user_info/KanrenshaInfo.vue';
 
-//仮
 // よく使う定数
 // const BLANK: string = "";
 // const INIT_NUMBER: number = 0;

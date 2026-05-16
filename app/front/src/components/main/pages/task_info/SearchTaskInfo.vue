@@ -11,7 +11,6 @@ import getAuthorizedPromiseArea from '../../dto/login/getAuthorizedPromiseArea';
 import { AccessTokenNotFoundError, TokenRefreshError } from '../../dto/login/errors';
 import { TaskInfoEntity, type TaskInfoEntityInterface } from '../../entity/taskInfoEntity';
 
-//仮
 // よく使う定数
 const BLANK: string = "";
 const INIT_NUMBER: number = 0;

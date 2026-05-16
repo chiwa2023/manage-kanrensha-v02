@@ -15,7 +15,6 @@ import { RiyoushaCombinePersonCapsuleDto, type RiyoushaCombinePersonCapsuleDtoIn
 import { useRoute } from 'vue-router';
 import PartnerApiInfo from '../../common/user_info/PartnerApiInfo.vue';
 
-//仮
 // よく使う定数
 const BLANK: string = "";
 const INIT_NUMBER: number = 0;

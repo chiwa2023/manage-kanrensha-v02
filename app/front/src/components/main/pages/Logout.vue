@@ -3,7 +3,6 @@ import RoutePathConstants from '../../../routePathConstants';
 import router from '../../../router';
 import { logout } from '../utils/logout';
 
-//仮
 // よく使う定数
 // const BLANK: string = "";
 // const INIT_NUMBER: number = 0;

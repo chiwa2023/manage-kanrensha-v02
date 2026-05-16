@@ -1,7 +1,6 @@
 ﻿<script setup lang="ts">
 import RoutePathConstants from '../../../../routePathConstants';
 
-//仮
 // よく使う定数
 // const BLANK: string = "";
 // const INIT_NUMBER: number = 0;

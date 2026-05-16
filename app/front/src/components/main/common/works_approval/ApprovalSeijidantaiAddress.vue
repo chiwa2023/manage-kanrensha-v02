@@ -12,7 +12,6 @@ import { SaveWorksApprovalCapsuleDto, type SaveWorksApprovalCapsuleDtoInterface 
 //props,emit
 const props = defineProps<{ userDto: LeastUserDtoInterface }>()
 
-//仮
 // よく使う定数
 const BLANK: string = "";
 const INIT_NUMBER: number = 0;

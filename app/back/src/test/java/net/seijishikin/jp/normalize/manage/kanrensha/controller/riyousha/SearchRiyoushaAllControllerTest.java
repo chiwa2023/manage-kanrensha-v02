@@ -32,9 +32,7 @@ import net.seijishikin.jp.normalize.manage.kanrensha.dto.riyousha.SearchRiyousha
 @AutoConfigureMockMvc
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
-@Sql({ "../../service/riyousha/SearchRiyoushaAdminServiceTest.sql",
-        "../../service/riyousha/SearchRiyoushaManagerServiceTest.sql",
-        "../../service/riyousha/SearchRiyoushaPartnerAppiServiceTest.sql" })
+@Sql("../../service/riyousha/SearchRiyoushaAllServiceTest.sql")
 class SearchRiyoushaAllControllerTest {
     // CHECKSTYLE:OFF MagicNumber
 
@@ -43,7 +41,7 @@ class SearchRiyoushaAllControllerTest {
     private MockMvc mockMvc;
 
     @Test
-    @Tag("NaturalSearch")
+    @Tag("TableTruncate")
     @WithMockUser
     void test() throws Exception {
 
@@ -52,7 +50,7 @@ class SearchRiyoushaAllControllerTest {
         capsuleDto.setIsManagerSearch(true);
         capsuleDto.setIsPartnerApiSearch(true);
         capsuleDto.setLimit(20);
-        capsuleDto.setSearchNaturalWords("管理者");
+        capsuleDto.setSearchNaturalWords("花子");
         capsuleDto.setPageNumber(0);
 
         String path = PathRouteConstants.ROOT + "/riyousha/search-all";

@@ -17,7 +17,6 @@ import ManagerInfo from '../../common/user_info/ManagerInfo.vue';
 // props,emit
 const emits = defineEmits(["sendCancelManager", "sendManagerInterface"]);
 
-//仮
 // よく使う定数
 const BLANK: string = "";
 // const INIT_NUMBER: number = 0;

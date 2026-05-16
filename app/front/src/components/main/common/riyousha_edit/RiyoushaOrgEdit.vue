@@ -2,7 +2,8 @@
 import {
     ViewInputAccess, ViewInputOrgName, type LeastUserDtoInterface, ViewInputAddress,
     MessageConstants,
-    MessageView
+    MessageView,
+    type FrameworkMessageAndResultDtoInterface
 } from 'seijishikin-jp-normalize_common-tool';
 import { onBeforeMount, ref, type Ref, watch } from 'vue';
 // import mockGetOrgName from '../../../test/pages/regist_riyousha_org/mockGetOrgName';
@@ -15,15 +16,16 @@ import getAuthorizedPromiseArea from '../../dto/login/getAuthorizedPromiseArea';
 import { AccessTokenNotFoundError, TokenRefreshError } from '../../dto/login/errors';
 import { GetRiyoushaOrgByCodeCapsuleDto, type GetRiyoushaOrgByCodeCapsuleDtoInterface } from '../../dto/riyousha/getRiyoushaOrgByCodeCapsuleDto';
 import UserRoleConstants from '../../dto/user/userRoleConstants';
+import type { RiyoushaCombineOrgEntityInterface } from '../../entity/riyoushaCombineOrgEntity';
+import { RiyoushaCombinePersonCapsuleDto, type RiyoushaCombinePersonCapsuleDtoInterface } from '../../dto/riyousha/riyoushaCombinePersonCapsuleDto';
 
 //props,emit
 const props = defineProps<{ userDto: LeastUserDtoInterface, selectedId: number }>();
 const emits = defineEmits(["sendCancelRiyoushaOrg", "sendRiyoushaOrgInterface"]);
 
-//仮
 // よく使う定数
 const BLANK: string = "";
-// const INIT_NUMBER: number = 0;
+const INIT_NUMBER: number = 0;
 // const SERVER_STATUS_OK: number = 200;
 // const SERVER_STATUS_ERROR: number = 400;
 // const SEARCH_LIMIT: number = 20;
@@ -54,7 +56,7 @@ function callData(selectedId: number) {
     } else {
         const capsuleDto: GetRiyoushaOrgByCodeCapsuleDtoInterface = new GetRiyoushaOrgByCodeCapsuleDto();
         capsuleDto.selectedCode = props.selectedId;
-
+        title.value = "利用者組織編集対象呼び出し";
         getAuthorizedPromiseArea().then(token => {
             const url = urlBack + "/riyousha-org/get-by-code";
             const method = "POST";
@@ -68,7 +70,6 @@ function callData(selectedId: number) {
                 .then(async (response) => {
                     editDto.value = await response.json();
                     message.value = editDto.value.message;
-                    // 処理が成功したら再登録できないようにアップロードファイル情報を初期化
                     if (editDto.value.isFailure) {
                         infoLevel.value = MessageConstants.LEVEL_WARNING;
                         messageType.value = MessageConstants.VIEW_OK;
@@ -104,24 +105,97 @@ function callData(selectedId: number) {
     }
 }
 
-
 function onCancel() {
     emits("sendCancelRiyoushaOrg");
 }
 
 function onSave() {
-    alert("保存");
     emits("sendRiyoushaOrgInterface", editDto.value);
 }
 
-function onDelete() {
-    alert("削除");
+let combineDeleteId: number = INIT_NUMBER;
+function onDelete(selectedId: number) {
+    combineDeleteId = selectedId;
+
+    title.value = "利用者組織所属削除";
+    infoLevel.value = MessageConstants.LEVEL_WARNING;
+    messageType.value = MessageConstants.VIEW_YES_NO;
+    message.value = "削除すると戻すことができません。よろしいですか？";
+}
+
+function doDelete() {
+
+    const deleteEntity: RiyoushaCombineOrgEntityInterface | undefined
+        = editDto.value.listPersonCombine.filter((e) => e.riyoushaCombineOrgId === combineDeleteId)[0];
+
+    if (undefined !== deleteEntity) {
+
+        const capsuleDtoDelete: RiyoushaCombinePersonCapsuleDtoInterface = new RiyoushaCombinePersonCapsuleDto();
+        capsuleDtoDelete.userDto = props.userDto
+        capsuleDtoDelete.combineEntity = deleteEntity;
+
+        title.value = "利用者組織所属削除";
+        getAuthorizedPromiseArea().then(token => {
+            const url = urlBack + "/riyousha-org/delete-person";
+            const method = "POST";
+            const body = JSON.stringify(capsuleDtoDelete);
+            const headers = {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'X-AUTH-TOKEN': 'Bearer ' + token
+            };
+            fetch(url, { method, headers, body })
+                .then(async (response) => {
+                    const resultDto: FrameworkMessageAndResultDtoInterface = await response.json();
+                    if (resultDto.isFailure) {
+                        message.value = editDto.value.message;
+                        infoLevel.value = MessageConstants.LEVEL_WARNING;
+                        messageType.value = MessageConstants.VIEW_OK;
+                    } else {
+                        message.value = editDto.value.message;
+                        infoLevel.value = MessageConstants.LEVEL_INFO;
+                        messageType.value = MessageConstants.VIEW_TOAST;
+                    }
+                    // 削除が終わったら初期化
+                    combineDeleteId = INIT_NUMBER;
+                })
+                .catch((error) => {
+                    alert(error);
+                    infoLevel.value = MessageConstants.LEVEL_ERROR;
+                    messageType.value = MessageConstants.VIEW_OK;
+                    message.value = "システム管理者にお問い合わせください";
+                    return;
+                });
+        }).catch((e) => {
+            infoLevel.value = MessageConstants.LEVEL_ERROR;
+            messageType.value = MessageConstants.VIEW_OK;
+
+            if (e instanceof AccessTokenNotFoundError) {
+                // トークン保持ができていない場合
+                title.value = "現在トークンが存在しません";
+                message.value = e.message;
+                return;
+            }
+            if (e instanceof TokenRefreshError) {
+                // 取得に失敗している場合
+                title.value = "有効期限まじかのトークンを再取得できませんでした";
+                message.value = e.message;
+                return;
+            }
+            title.value = "システムエラーが発生しました";
+            message.value = "システム管理者にお問い合わせください";
+            return;
+        });
+    }
 }
 
 function recieveSubmit(button: string) {
     console.log(button); // 警告除け
-    infoLevel.value = 0;
-    messageType.value = 0;
+    if (combineDeleteId !== INIT_NUMBER && "yes" === button) {
+        doDelete();
+    }
+    infoLevel.value = INIT_NUMBER;
+    messageType.value = INIT_NUMBER;
 }
 </script>
 <template>
@@ -154,8 +228,8 @@ function recieveSubmit(button: string) {
             <tbody>
                 <tr v-for="entity of editDto.listPersonCombine" :key="entity.riyoushaCombineOrgId">
                     <td>{{ UserRoleConstants.getLabel(entity.riyoushaRole) }}</td>
-                    <td>({{ entity.personCode }})<br>{{ entity.personRiyoushaName }}</td>
-                    <td><button @click="onDelete">削除</button></td>
+                    <td>({{ entity.personRiyoushaCode }})<br>{{ entity.personRiyoushaName }}</td>
+                    <td><button @click="onDelete(entity.riyoushaCombineOrgId)">削除</button></td>
                 </tr>
             </tbody>
         </table>

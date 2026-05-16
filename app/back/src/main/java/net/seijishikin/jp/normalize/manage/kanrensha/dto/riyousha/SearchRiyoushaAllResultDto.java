@@ -1,80 +1,97 @@
 package net.seijishikin.jp.normalize.manage.kanrensha.dto.riyousha;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import net.seijishikin.jp.normalize.common_tool.dto.FrameworkMessageAndResultDto;
+import net.seijishikin.jp.normalize.common_tool.dto.paging.PagingIntegerDtoInterface;
 
 /**
  * 利用者検索結果Dto
  */
 public class SearchRiyoushaAllResultDto extends FrameworkMessageAndResultDto // NOPMD DataClass
-        implements Serializable {
+        implements Serializable, PagingIntegerDtoInterface {
 
     /** Serialize id */
     private static final long serialVersionUID = 1L;
 
-    /** 利用者SE権限検索結果Dto */
-    private SearchRiyoushaAdminResultDto searchRiyoushaAdminResultDto = new SearchRiyoushaAdminResultDto();
+    /** 全件数 */
+    private Integer allCount = INIT_INTEGER;
 
-    /** 利用者運営者検索結果Dto */
-    private SearchRiyoushaManagerResultDto searchRiyoushaManagerResultDto = new SearchRiyoushaManagerResultDto();
+    /** ページ内件数 */
+    private Integer limit = INIT_INTEGER;
 
-    /** 利用者APIパートナー検索結果Dto */
-    private SearchRiyoushaPartnerApiResultDto searchRiyoushaPartnerApiResultDto = new SearchRiyoushaPartnerApiResultDto();
+    /** ページ番号 */
+    private Integer pageNumber = INIT_INTEGER;
 
     /**
-     * 利用者SE権限検索結果Dtoを取得する
-     * 
-     * @return 利用者SE権限検索結果Dto
+     * 全件数を取得する
      */
-    public SearchRiyoushaAdminResultDto getSearchRiyoushaAdminResultDto() {
-        return searchRiyoushaAdminResultDto;
+    @Override
+    public Integer getAllCount() {
+        return allCount;
     }
 
     /**
-     * 利用者SE権限検索結果Dtoを設定する
-     * 
-     * @param searchRiyoushaAdminResultDto 利用者SE権限検索結果Dto
+     * 全件数を設定する
      */
-    public void setSearchRiyoushaAdminResultDto(final SearchRiyoushaAdminResultDto searchRiyoushaAdminResultDto) {
-        this.searchRiyoushaAdminResultDto = searchRiyoushaAdminResultDto;
+    @Override
+    public void setAllCount(final Integer allCount) {
+        this.allCount = allCount;
     }
 
     /**
-     * 利用者運営者検索結果Dtoを取得する
-     * 
-     * @return 利用者運営者検索結果Dto
+     * ページ内件数を取得する
      */
-    public SearchRiyoushaManagerResultDto getSearchRiyoushaManagerResultDto() {
-        return searchRiyoushaManagerResultDto;
+    @Override
+    public Integer getLimit() {
+        return limit;
     }
 
     /**
-     * 利用者運営者検索結果Dtoを設定する
-     * 
-     * @param searchRiyoushaManagerResultDto 利用者運営者検索結果Dto
+     * ページ内件数を設定する
      */
-    public void setSearchRiyoushaManagerResultDto(final SearchRiyoushaManagerResultDto searchRiyoushaManagerResultDto) {
-        this.searchRiyoushaManagerResultDto = searchRiyoushaManagerResultDto;
+    @Override
+    public void setLimit(final Integer limit) {
+        this.limit = limit;
     }
 
     /**
-     * 利用者APIパートナー検索結果Dtoを取得する
-     * 
-     * @return 利用者APIパートナー検索結果Dto
+     * ページ番号を取得する
      */
-    public SearchRiyoushaPartnerApiResultDto getSearchRiyoushaPartnerApiResultDto() {
-        return searchRiyoushaPartnerApiResultDto;
+    @Override
+    public Integer getPageNumber() {
+        return pageNumber;
     }
 
     /**
-     * 利用者APIパートナー検索結果Dtoを設定する
-     * 
-     * @param searchRiyoushaPartnerApiResultDto 利用者APIパートナー検索結果Dto
+     * ページ番号を設定する
      */
-    public void setSearchRiyoushaPartnerApiResultDto(
-            final SearchRiyoushaPartnerApiResultDto searchRiyoushaPartnerApiResultDto) {
-        this.searchRiyoushaPartnerApiResultDto = searchRiyoushaPartnerApiResultDto;
+    @Override
+    public void setPageNumber(final Integer pageNumber) {
+        this.pageNumber = pageNumber;
+    }
+
+    /** 全権限者リスト */
+    private List<SearchViewCombineAliveRiyoushaResultDto> listAllRiyousha = new ArrayList<>();
+
+    /**
+     * 全権限者リストを取得する
+     * 
+     * @return 全権限者リスト
+     */
+    public List<SearchViewCombineAliveRiyoushaResultDto> getListAllRiyousha() {
+        return listAllRiyousha;
+    }
+
+    /**
+     * 全権限者リストを設定する
+     * 
+     * @param listAllRiyousha 全権限者リスト
+     */
+    public void setListAllRiyousha(final List<SearchViewCombineAliveRiyoushaResultDto> listAllRiyousha) {
+        this.listAllRiyousha = listAllRiyousha;
     }
 
 }

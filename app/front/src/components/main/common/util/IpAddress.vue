@@ -4,7 +4,6 @@ import { onBeforeMount, ref, type Ref } from 'vue';
 const props = defineProps<{ ipAddress: string }>();
 const emits = defineEmits(["sendIpAddress"]);
 
-//仮
 // よく使う定数
 // const BLANK: string = "";
 // const INIT_NUMBER: number = 0;

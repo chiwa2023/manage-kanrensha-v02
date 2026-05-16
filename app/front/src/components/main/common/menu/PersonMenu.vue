@@ -8,7 +8,6 @@ import type { LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool
 const props = defineProps<{ viewRole: string, userDto: LeastUserDtoInterface }>();
 const emits = defineEmits(["sendCanceelMenu"]);
 
-//仮
 // よく使う定数
 const BLANK: string = "";
 // const INIT_NUMBER: number = 0;

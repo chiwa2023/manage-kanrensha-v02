@@ -13,7 +13,6 @@ import { GetRiyoushaMasterCapsuleDto, type GetRiyoushaMasterCapsuleDtoInterface 
 import type { RiyoushaManagerDtoInterface } from '../../dto/riyousha/riyoushaManagerDto';
 import { SaveRiyoushaManagerCapsuleDto, type SaveRiyoushaManagerCapsuleDtoInterface } from '../../dto/riyousha/saveRiyoushaManagerCapsuleDto';
 
-//仮
 // よく使う定数
 const BLANK: string = "";
 // const INIT_NUMBER: number = 0;

@@ -5,7 +5,6 @@ import type { LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool
 import { getLoginUser } from '../../utils/getLoginUser';
 import ReadCsv from '../../common/read_csv/ReadCsv.vue';
 
-//仮
 // よく使う定数
 // const BLANK: string = "";
 // const INIT_NUMBER: number = 0;

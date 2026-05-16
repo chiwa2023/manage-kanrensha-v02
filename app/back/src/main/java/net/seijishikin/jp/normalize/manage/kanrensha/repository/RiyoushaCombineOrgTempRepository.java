@@ -21,9 +21,24 @@ public interface RiyoushaCombineOrgTempRepository extends JpaRepository<Riyousha
      */
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     Optional<RiyoushaCombineOrgTempEntity> findFirstByOrderByRiyoushaCombineOrgTempCodeDesc();
-    
+
+    /**
+     * 最新を個人コードから検索する
+     * 
+     * @param personCode 個人コード
+     * @return 検索結果
+     */
     List<RiyoushaCombineOrgTempEntity> findByPersonCodeAndIsLatestTrue(Integer personCode);
-    
-    List<RiyoushaCombineOrgTempEntity> findByPersonRiyoushaCodeAndOrgRiyoushaCodeAndRiyoushaRoleAndIsLatestTrue(Integer personCode,Integer orgCode,String userRole);
+
+    /**
+     * 最新かつ個人コード、組織コード、権限で検索する
+     * 
+     * @param personCode 個人コード
+     * @param orgCode    組織コード
+     * @param userRole   個人権限
+     * @return 検索結果
+     */
+    List<RiyoushaCombineOrgTempEntity> findByPersonRiyoushaCodeAndOrgRiyoushaCodeAndRiyoushaRoleAndIsLatestTrue(
+            Integer personCode, Integer orgCode, String userRole);
 
 }
