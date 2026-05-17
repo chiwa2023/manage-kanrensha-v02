@@ -16,7 +16,6 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
-import org.springframework.transaction.annotation.Transactional;
 
 import net.seijishikin.jp.normalize.common_tool.dto.FrameworkMessageAndResultDto;
 import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
@@ -30,8 +29,7 @@ import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateLeastUserForTes
 @AutoConfigureMockMvc
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
-@Transactional
-@Sql("InsertTaskPlanServiceTest.sql")
+@Sql("InsertTaskPlanServiceNothingMailTest.sql")
 class InsertTaskPlanServiceNothingMailTest {
     // CHECKSTYLE:OFF MagicNumber
 
@@ -45,23 +43,22 @@ class InsertTaskPlanServiceNothingMailTest {
     void testMail() {
 
         LeastUserDto userDto = CreateLeastUserForTestUtil.practice();
+        userDto.setUserPersonId(197); // 開始時メール送信するユーザ
+        userDto.setUserPersonCode(191);
         LocalDateTime createDatetime = LocalDateTime.of(2026, 12, 5, 12, 34, 56);
-        insertTaskPlanService.setFlgSendAlert(true);
         FrameworkMessageAndResultDto resultDto = insertTaskPlanService.practice(userDto, createDatetime,
                 TaskInfoConstants.PROMOTE_ADMIN,null);
         assertTrue(resultDto.getIsFailure());
-        assertEquals("推薦者へメール送信時に例外が発生しています", resultDto.getMessage());
+        assertEquals("メール送信時に例外が発生しています", resultDto.getMessage());
     }
 
     @Test
     void testNotSendMail() {
-
+        // メール送信機能が切れいていても、設定がユーザメール送信なしなら失敗にはならない
         LeastUserDto userDto = CreateLeastUserForTestUtil.practice();
         LocalDateTime createDatetime = LocalDateTime.of(2026, 12, 5, 12, 34, 56);
-        insertTaskPlanService.setFlgSendAlert(false);
         FrameworkMessageAndResultDto resultDto = insertTaskPlanService.practice(userDto, createDatetime,
                 TaskInfoConstants.PROMOTE_ADMIN,null);
-        insertTaskPlanService.setFlgSendAlert(true);
         assertFalse(resultDto.getIsFailure());
     }
 

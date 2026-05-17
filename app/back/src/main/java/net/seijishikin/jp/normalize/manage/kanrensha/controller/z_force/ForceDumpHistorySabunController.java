@@ -69,14 +69,14 @@ public class ForceDumpHistorySabunController {
             // TODO Queryはfront連結後決定
             Map<String, String> mapParam = new TreeMap<>();
 
-            InsertTaskPlanResultDto planDto1 = switchYearInsertTaskPlanService.practice(userDto, dateTimeStart,
+            InsertTaskPlanResultDto planDto1 = switchYearInsertTaskPlanService.practice(null, userDto, dateTimeStart,
                     TaskInfoConstants.DUMP_HISTORY_SABUN_PERSON, mapParam);
             taskPlanCode = planDto1.getTaskPlanCode();
 
-            InsertTaskPlanResultDto planDto2 = switchYearInsertTaskPlanService.practice(userDto, dateTimeStart,
+            InsertTaskPlanResultDto planDto2 = switchYearInsertTaskPlanService.practice(null, userDto, dateTimeStart,
                     TaskInfoConstants.DUMP_HISTORY_SABUN_KIGYOU, mapParam);
 
-            InsertTaskPlanResultDto planDto3 = switchYearInsertTaskPlanService.practice(userDto, dateTimeStart,
+            InsertTaskPlanResultDto planDto3 = switchYearInsertTaskPlanService.practice(null, userDto, dateTimeStart,
                     TaskInfoConstants.DUMP_HISTORY_SABUN_SEIJIDANTAI, mapParam);
 
             asyncForceDumpHistorySabunService.practice(year, planDto1, planDto2, planDto3, capsuleDto);

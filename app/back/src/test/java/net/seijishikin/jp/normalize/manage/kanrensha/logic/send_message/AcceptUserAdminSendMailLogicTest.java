@@ -38,7 +38,6 @@ class AcceptUserAdminSendMailLogicTest {
     @Tag("ExternalService")
     void test() throws Exception {
 
-        acceptUserAdminSendMailLogic.setFlgSendAlert(true);
         SendMaileResultDto resultDto = acceptUserAdminSendMailLogic
                 .pracitce(CreateLeastUserForTestUtil.practice().getUserPersonId());
         assertEquals(false, resultDto.getIsFailure());
@@ -63,9 +62,7 @@ class AcceptUserAdminSendMailLogicTest {
 
         LeastUserDto userDto = CreateLeastUserForTestUtil.practice();
         userDto.setUserPersonId(621);
-        acceptUserAdminSendMailLogic.setFlgSendAlert(false); // 通知送信Off
         SendMaileResultDto resultDto = acceptUserAdminSendMailLogic.pracitce(userDto.getUserPersonId());
-        acceptUserAdminSendMailLogic.setFlgSendAlert(true);
         // 取得できないユーザを呼び出そうとしても落ちない
         assertEquals(false, resultDto.getIsFailure());
     }

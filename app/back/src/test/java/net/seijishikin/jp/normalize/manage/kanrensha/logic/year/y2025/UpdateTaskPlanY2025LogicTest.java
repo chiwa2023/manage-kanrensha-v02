@@ -57,8 +57,11 @@ class UpdateTaskPlanY2025LogicTest {
         Integer taskCode = TaskInfoConstants.SAVE_POSTAL_REPAIR_CSV;
         LeastUserDto userDto = CreateLeastUserForTestUtil.practice();
         LocalDateTime datetimeStart = LocalDateTime.of(2025, 1, 5, 11, 22, 33);
+        LeastUserDto workUserDto = new LeastUserDto(); 
+        workUserDto.setUserPersonCode(854);
+        workUserDto.setUserPersonName("利用者　直子");
 
-        InsertTaskPlanResultDto dto = insertTaskPlanY2025Logic.practice(userDto, datetimeStart, taskCode,
+        InsertTaskPlanResultDto dto = insertTaskPlanY2025Logic.practice(workUserDto,userDto, datetimeStart, taskCode,
                 CreateQueryParamDummyUtil.practice());
         Integer newId = dto.getTaskPlanId();
 
@@ -75,6 +78,8 @@ class UpdateTaskPlanY2025LogicTest {
         assertEquals(updateId, updateEntity.getTaskPlanId());
         assertEquals(updateEntity.getTaskPlanCode(), updateEntity.getTaskPlanCode());
         assertEquals(updateEntity.getTaskInfoCode(), updateEntity.getTaskInfoCode());
+        assertEquals(workUserDto.getUserPersonCode(), updateEntity.getTaskUserCode());
+        assertEquals(workUserDto.getUserPersonName(), updateEntity.getTaskUserName());
         assertEquals(datetime, updateEntity.getEndDateimte());
         assertEquals(isFinished, updateEntity.getIsFinished());
         assertEquals(!isFinished, updateEntity.getIsSuspended());

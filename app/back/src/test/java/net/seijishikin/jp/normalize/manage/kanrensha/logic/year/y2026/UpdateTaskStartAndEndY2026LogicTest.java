@@ -56,7 +56,7 @@ class UpdateTaskStartAndEndY2026LogicTest {
         assertThrows(EmptyResultDataAccessException.class,
                 () -> updateTaskStartAndEndY2026Logic.practice(userDto, 11, endTime));
 
-        final Integer loadId = 203;
+        final Integer loadId = 523;
         Integer savedId = updateTaskStartAndEndY2026Logic.practice(userDto, loadId, endTime);
         // 履歴が積みあがっていること
         assertNotEquals(loadId, savedId);
@@ -64,7 +64,7 @@ class UpdateTaskStartAndEndY2026LogicTest {
         TaskPlan2026Entity entityPre = taskPlan2026Repository.findById(loadId).get();
         // 過去データに未使用フラグ以外の変更はないこと
         assertFalse(entityPre.getIsLatest());
-        assertFalse(entityPre.getIsStart());
+        assertTrue(entityPre.getIsStart());
         assertFalse(entityPre.getIsFinished());
 
         TaskPlan2026Entity entityPro = taskPlan2026Repository.findById(savedId).get();
@@ -73,7 +73,7 @@ class UpdateTaskStartAndEndY2026LogicTest {
         assertTrue(entityPro.getIsLatest());
         assertTrue(entityPro.getIsFinished());
         assertTrue(entityPro.getIsStart());
-        assertEquals(endTime, entityPro.getStartDatetime());
+        assertEquals(entityPre.getStartDatetime(), entityPro.getStartDatetime());
         assertEquals(endTime, entityPro.getEndDateimte());
     }
 

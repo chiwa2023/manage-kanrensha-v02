@@ -34,27 +34,6 @@ public class InsertTaskPlanService {
     /** 送信メールアドレス */
     private static final String sendEmail = "test@example.com";
 
-    /** propertiesからインジェクションされた通知送信フラグ */
-    private Boolean flgSendAlert;
-
-    /**
-     * 通知送信フラグを取得する
-     * 
-     * @return 通知送信フラグ
-     */
-    public Boolean getFlgSendAlert() {
-        return flgSendAlert;
-    }
-
-    /**
-     * 通知送信フラグを設定す津
-     * 
-     * @param flgSendAlert 通知送信フラグ
-     */
-    public void setFlgSendAlert(final Boolean flgSendAlert) {
-        this.flgSendAlert = flgSendAlert;
-    }
-
     /** ユーザ個人Repository */
     @Autowired
     private UserPersonRepository userPersonRepository;
@@ -90,7 +69,8 @@ public class InsertTaskPlanService {
 
         Integer savedId;
         try {
-            resultDto = switchYearInsertTaskPlanInsertService.practice(userDto, createDatetime, taskInfoCode, mapParam);
+            resultDto = switchYearInsertTaskPlanInsertService.practice(null, userDto, createDatetime, taskInfoCode,
+                    mapParam);
 
             savedId = resultDto.getTaskPlanId();
             if (0 == savedId) {
@@ -109,24 +89,25 @@ public class InsertTaskPlanService {
             return resultDto;
         }
 
+        
+        // 送信先メールアドレス取得
+        Optional<UserPersonEntity> optionalPerson = userPersonRepository.findById(userDto.getUserPersonId());
+        if (optionalPerson.isEmpty()) {
+            resultDto.setIsFailure(true);
+            resultDto.setMessage("ユーザ情報がが取得できませんでした");
+            return resultDto;
+        }
+        UserPersonEntity userPersonEntity = optionalPerson.get();
+        
         // 作業者にタスクを通知
-        if (flgSendAlert) {
-
-            // 送信先メールアドレス取得
-            Optional<UserPersonEntity> optionalPerson = userPersonRepository.findById(userDto.getUserPersonId());
-            if (optionalPerson.isEmpty()) {
-                resultDto.setIsFailure(true);
-                resultDto.setMessage("推薦者のユーザ情報がが取得できませんでした");
-                return resultDto;
-            }
-            UserPersonEntity userPersonEntity = optionalPerson.get();
-
+        if (userPersonEntity.getIsAlertTaskStart()) {
+            
             SendMaileResultDto mailResultDto = this.sendAlert(resultDto, userPersonEntity.getEmail(), savedId);
 
             if (Objects.isNull(mailResultDto)) {
                 // 予測されれないエラーの場合はシステムエラー
                 resultDto.setIsFailure(true);
-                resultDto.setMessage("推薦者へメール送信時に例外が発生しています");
+                resultDto.setMessage("メール送信時に例外が発生しています");
                 return resultDto;
             }
 
@@ -145,7 +126,6 @@ public class InsertTaskPlanService {
     private SendMaileResultDto sendAlert(final InsertTaskPlanResultDto resultDto, final String mailAddress,
             final Integer savedId) {
         try {
-
             SimpleMailMessage mailMessage = new SimpleMailMessage();
             mailMessage.setFrom(sendEmail); // 送信元メールアドレス
             mailMessage.setTo(mailAddress);
@@ -178,11 +158,10 @@ public class InsertTaskPlanService {
     private String getFailureMessage(final SendMaileResultDto mailResultDto) {
 
         if (BLANK.equals(mailResultDto.getMessage())) {
-            return "推薦者へメール送信時に例外が発生しています";
+            return "メール送信時に例外が発生しています";
         } else {
             return mailResultDto.getMessage();
         }
-
     }
 
 }

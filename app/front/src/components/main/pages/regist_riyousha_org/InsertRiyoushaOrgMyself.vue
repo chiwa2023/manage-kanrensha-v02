@@ -82,7 +82,7 @@ onMounted(() => {
                         editCombineEntity.value.riyoushaRole = UserRoleConstants.MANAGER;
                         editCombineEntity.value.personCode = userDto.value.userPersonCode;
                     } else {
-                        editCombineEntity.value.personRiyoushaCode = resultDto.managerMasterEntity.riyoushaManagerMasterCode;
+                        editCombineEntity.value.personRiyoushaCode = resultDto.partnerApiMasterEntity.riyoushaPartnerApiMasterCode;
                         editCombineEntity.value.personRiyoushaName = resultDto.partnerApiMasterEntity.allName;
                         editCombineEntity.value.riyoushaRole = UserRoleConstants.PARTNER_API;
                         editCombineEntity.value.personCode = userDto.value.userPersonCode;

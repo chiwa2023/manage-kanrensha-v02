@@ -55,7 +55,7 @@ public class RetryBatchCombineOrgController {
         // TODO Queryはfront連結後決定
         Map<String, String> mapParam = new TreeMap<>();
 
-        InsertTaskPlanResultDto planDto = switchYearInsertTaskPlanService.practice(capsuleDto.getUserDto(),
+        InsertTaskPlanResultDto planDto = switchYearInsertTaskPlanService.practice(null, capsuleDto.getUserDto(),
                 dateTimeStart, TaskInfoConstants.COMBINE_RETRY, mapParam);
         retryBatchCombineKigyouDtService.practice(capsuleDto.getUserDto(), year, planDto);
 

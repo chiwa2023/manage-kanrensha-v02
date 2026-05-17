@@ -65,7 +65,7 @@ public class RetryBatchMasterStdKigyouDtController {
             // TODO Queryはfront連結後決定
             Map<String, String> mapParam = new TreeMap<>();
 
-            InsertTaskPlanResultDto planDto = switchYearInsertTaskPlanService.practice(userDto, dateTimeStart,
+            InsertTaskPlanResultDto planDto = switchYearInsertTaskPlanService.practice(null, userDto, dateTimeStart,
                     TaskInfoConstants.RETRY_KIGYOU_STD, mapParam);
             taskPlanCode = planDto.getTaskPlanCode();
 

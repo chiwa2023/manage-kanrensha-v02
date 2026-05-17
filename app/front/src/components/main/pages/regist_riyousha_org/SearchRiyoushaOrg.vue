@@ -11,6 +11,8 @@ import RoutePathConstants from '../../../../routePathConstants';
 import { SearchRiyoushaOrgResultDto, type SearchRiyoushaOrgResultDtoInterface } from '../../dto/riyousha/searchRiyoushaOrgResultDto';
 import type { RiyoushaOrgDtoInterface } from '../../dto/riyousha/riyoushaOrgDto';
 import { SaveRiyoushaOrgCapsuleDto, type SaveRiyoushaOrgCapsuleDtoInterface } from '../../dto/riyousha/saveRiyoushaOrgCapsuleDto';
+import type { RiyoushaOrgMasterEntityInterface } from '../../entity/riyoushaOrgMasterEntity';
+import { UpdateRiyoushaOrgCapsuleDto, type UpdateRiyoushaOrgCapsuleDtoInterface } from '../../dto/riyousha/updateRiyoushaOrgCapsuleDto';
 
 // よく使う定数
 const BLANK: string = "";
@@ -107,9 +109,16 @@ function onEdit(selectedId: number) {
     selectedOrgId.value = selectedId;
     isOrgEdit.value = true;
 }
-function onDelete() {
-    alert("削除");
+
+let orgDeleteId: number = 0;
+function onDelete(editIndex: number) {
+    title.value = "利用者組織削除";
+    infoLevel.value = MessageConstants.LEVEL_WARNING;
+    messageType.value = MessageConstants.VIEW_YES_NO;
+    message.value = "削除すると戻すことができません。よろしいですか？";
+    orgDeleteId = editIndex;
 }
+
 function recieveCancelRiyoushaOrg() {
     isOrgEdit.value = false;
 }
@@ -169,12 +178,75 @@ function recieveRiyoushaOrgInterface(editDto: RiyoushaOrgDtoInterface) {
         message.value = "システム管理者にお問い合わせください";
         return;
     });
-
-
-
-
     isOrgEdit.value = false;
 }
+
+function doDelete() {
+    const deleteEntity: RiyoushaOrgMasterEntityInterface | undefined =
+        resultDto.value.listRiyoushaOrg.filter((e) => orgDeleteId === e.riyoushaOrgMasterId)[0];
+
+    if (undefined !== deleteEntity) {
+        const capsuleDtoDelete: UpdateRiyoushaOrgCapsuleDtoInterface = new UpdateRiyoushaOrgCapsuleDto();
+        capsuleDtoDelete.userDto = userDto.value;
+        capsuleDtoDelete.masterEntity = deleteEntity;
+
+        title.value = "利用者組織削除";
+        getAuthorizedPromiseArea().then(token => {
+            const url = urlBack + "/riyousha-org/delete";
+            const method = "POST";
+            const body = JSON.stringify(capsuleDtoDelete);
+            const headers = {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'X-AUTH-TOKEN': 'Bearer ' + token
+            };
+            fetch(url, { method, headers, body })
+                .then(async (response) => {
+                    const resultDto: FrameworkMessageAndResultDtoInterface = await response.json();
+                    message.value = resultDto.message;
+                    if (resultDto.isFailure) {
+                        infoLevel.value = MessageConstants.LEVEL_WARNING;
+                        messageType.value = MessageConstants.VIEW_OK;
+                    } else {
+                        infoLevel.value = MessageConstants.LEVEL_INFO;
+                        messageType.value = MessageConstants.VIEW_TOAST;
+                    }
+                    // 削除が終わったら初期化
+                    orgDeleteId = INIT_NUMBER;
+                })
+                .catch((error) => {
+                    alert(error);
+                    infoLevel.value = MessageConstants.LEVEL_ERROR;
+                    messageType.value = MessageConstants.VIEW_OK;
+                    message.value = "システム管理者にお問い合わせください";
+                    return;
+                });
+        }).catch((e) => {
+            infoLevel.value = MessageConstants.LEVEL_ERROR;
+            messageType.value = MessageConstants.VIEW_OK;
+
+            if (e instanceof AccessTokenNotFoundError) {
+                // トークン保持ができていない場合
+                title.value = "現在トークンが存在しません";
+                message.value = e.message;
+                return;
+            }
+            if (e instanceof TokenRefreshError) {
+                // 取得に失敗している場合
+                title.value = "有効期限まじかのトークンを再取得できませんでした";
+                message.value = e.message;
+                return;
+            }
+            title.value = "システムエラーが発生しました";
+            message.value = "システム管理者にお問い合わせください";
+            return;
+        });
+    }
+}
+
+
+
+
 
 function onCancel() {
     history.back();
@@ -185,7 +257,12 @@ function recievePagingNumber(selecteddNumber: number) {
 }
 
 function recieveSubmit(button: string) {
-    console.log(button); // 警告除け
+
+    // ダイアログでyesなら削除
+    if (orgDeleteId !== INIT_NUMBER && "yes" === button) {
+        doDelete();
+    }
+
     infoLevel.value = 0;
     messageType.value = 0;
 }
@@ -225,7 +302,7 @@ function recieveSubmit(button: string) {
                     <td>({{ entity.allNameKana }})<br>{{ entity.allName }}</td>
                     <td>{{ entity.addressAll }}</td>
                     <td><button @click="onEdit(entity.riyoushaOrgMasterCode)">編集</button></td>
-                    <td><button @click="onDelete">削除</button></td>
+                    <td><button @click="onDelete(entity.riyoushaOrgMasterId)">削除</button></td>
                 </tr>
             </tbody>
         </table>
@@ -239,8 +316,7 @@ function recieveSubmit(button: string) {
     </div>
 
     <!-- 利用者組織編集画面 -->
-    <div v-if="isOrgEdit" class="overBackground"></div>
-    <div v-if="isOrgEdit" class="overComponent">
+    <div v-if="isOrgEdit">
         <RiyoushaOrgEdit :user-dto="userDto" :selected-id="selectedOrgId"
             @send-cancel-riyousha-org="recieveCancelRiyoushaOrg"
             @send-riyousha-org-interface="recieveRiyoushaOrgInterface"></RiyoushaOrgEdit>

@@ -18,9 +18,12 @@ import org.springframework.transaction.annotation.Transactional;
 import net.seijishikin.jp.normalize.common_tool.dto.input.InputAccessDto;
 import net.seijishikin.jp.normalize.common_tool.dto.input.InputAddressDto;
 import net.seijishikin.jp.normalize.common_tool.dto.input.InputOrgNameDto;
+import net.seijishikin.jp.normalize.manage.kanrensha.constants.UserRoleConstants;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.riyousha.SaveRiyoushaOrgCapsuleDto;
+import net.seijishikin.jp.normalize.manage.kanrensha.entity.RiyoushaCombineOrgEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.RiyoushaOrgMasterEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.RiyoushaOrgPropertyEntity;
+import net.seijishikin.jp.normalize.manage.kanrensha.repository.RiyoushaCombineOrgRepository;
 import net.seijishikin.jp.normalize.manage.kanrensha.repository.RiyoushaOrgMasterRepository;
 import net.seijishikin.jp.normalize.manage.kanrensha.repository.RiyoushaOrgPropertyRepository;
 import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateLeastUserForTestUtil;
@@ -49,6 +52,13 @@ class SaveRiyoushaOrgEntityServiceTest {
     @Autowired
     private RiyoushaOrgPropertyRepository riyoushaOrgPropertyRepository;
 
+
+    /** 利用者組織属性Repository */
+    @Autowired
+    private RiyoushaCombineOrgRepository riyoushaCombineOrgRepository;
+
+    
+    
     @Test
     @Tag("TableTruncate")
     void testAdd() throws Exception {
@@ -63,6 +73,10 @@ class SaveRiyoushaOrgEntityServiceTest {
         capsuleDto.getRiyoushaOrgDto().setInputOrgNameDto(nameDto);
         capsuleDto.getRiyoushaOrgDto().setInputAddressDto(addressDto);
         capsuleDto.getRiyoushaOrgDto().setInputAccessDto(accessDto);
+        capsuleDto.setRiyoushaCode(423);
+        capsuleDto.setRiyoushaName("新規登録者　太郎");
+        capsuleDto.setRiyoushaRole(UserRoleConstants.MANAGER);
+        
         // その他のidなどは空にすると新規登録
 
         // マスタ
@@ -106,6 +120,14 @@ class SaveRiyoushaOrgEntityServiceTest {
         assertEquals(accessDto.getSnsServiceName(), savedPropertyEntity.getSnsServiceName());
         assertEquals(accessDto.getSnsPortalUrl(), savedPropertyEntity.getSnsPortalUrl());
         assertEquals(accessDto.getSnsAccount(), savedPropertyEntity.getSnsAccount());
+        
+        // 新規の場合は個人と組織を紐づけする
+        RiyoushaCombineOrgEntity combineOrgEntity = riyoushaCombineOrgRepository.findAll().getLast();
+        assertEquals(savedMasterEntity.getRiyoushaOrgMasterCode(), combineOrgEntity.getOrgRiyoushaCode());
+        assertEquals(savedMasterEntity.getAllName(), combineOrgEntity.getOrgName());
+        assertEquals(capsuleDto.getRiyoushaCode(), combineOrgEntity.getPersonRiyoushaCode());
+        assertEquals(capsuleDto.getRiyoushaName(), combineOrgEntity.getPersonRiyoushaName());
+        assertEquals(capsuleDto.getRiyoushaRole(), combineOrgEntity.getRiyoushaRole());
     }
 
     @Test

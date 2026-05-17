@@ -14,7 +14,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.dao.EmptyResultDataAccessException;
-
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.jdbc.Sql;
@@ -36,8 +35,8 @@ import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateLeastUserForTes
 @AutoConfigureMockMvc
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
-@Sql("InsertTaskPlanY2026LogicTest.sql")
 @Transactional
+@Sql("InsertTaskPlanY2026LogicTest.sql")
 class InsertTaskPlanY2026LogicTest {
     // CHECKSTYLE:OFF MagicNumber
 
@@ -49,10 +48,9 @@ class InsertTaskPlanY2026LogicTest {
     @Autowired
     private TaskPlan2026Repository taskPlan2026Repository;
 
-    @Tag("TableTruncate")
-    @Transactional
     @Test
-    void test() {
+    @Tag("TableTruncate")
+    void test() throws Exception {
 
         final Integer taskCode = TaskInfoConstants.SAVE_POSTAL_REPAIR_CSV;
         LeastUserDto userDto = CreateLeastUserForTestUtil.practice();
@@ -60,8 +58,12 @@ class InsertTaskPlanY2026LogicTest {
         Map<String, String> map = new TreeMap<>();
         map.put("asd", "123");
         map.put("zxc", "456");
+        LeastUserDto workUserDto = new LeastUserDto();
+        workUserDto.setUserPersonCode(854);
+        workUserDto.setUserPersonName("利用者　直子");
 
-        InsertTaskPlanResultDto dto = insertTaskPlanY2026Logic.practice(userDto, dateTimeStart, taskCode, map);
+        InsertTaskPlanResultDto dto = insertTaskPlanY2026Logic.practice(workUserDto, userDto, dateTimeStart, taskCode,
+                map);
 
         TaskPlan2026Entity entity = taskPlan2026Repository.findById(dto.getTaskPlanId()).get();
 
@@ -78,20 +80,24 @@ class InsertTaskPlanY2026LogicTest {
         assertEquals(false, entity.getIsFinished());
         assertEquals("admin,manager", entity.getRoleList());
         assertEquals("http://localhost:6180/kanrensha-manage/edit-page?asd=123&zxc=456", entity.getTransferPass());
+        assertEquals(workUserDto.getUserPersonCode(), entity.getTaskUserCode());
+        assertEquals(workUserDto.getUserPersonName(), entity.getTaskUserName());
 
-        assertThrows(EmptyResultDataAccessException.class,
-                () -> insertTaskPlanY2026Logic.practice(userDto, dateTimeStart, 622, map));
-        
-        
         assertEquals(entity.getTaskInfoCode(), dto.getTaskInfoCode());
         assertEquals(entity.getTaskPlanCode(), dto.getTaskPlanCode());
         assertEquals(entity.getTaskPlanId(), dto.getTaskPlanId());
         assertEquals(entity.getTaskPlanName(), dto.getTaskPlanName());
         assertEquals(entity.getTableYear(), dto.getTaskYear());
         assertEquals(entity.getTransferPass(), dto.getTransferPass());
-        //assertEquals("admin,manager", dto.getMessageTemplate());
-        //assertEquals(, dto.getParamQuery());
 
+        assertThrows(EmptyResultDataAccessException.class,
+                () -> insertTaskPlanY2026Logic.practice(null, userDto, dateTimeStart, 622, map));
+
+        // 本人宛タスク
+        InsertTaskPlanResultDto dto1 = insertTaskPlanY2026Logic.practice(null, userDto, dateTimeStart, taskCode, map);
+        TaskPlan2026Entity entity1 = taskPlan2026Repository.findById(dto1.getTaskPlanId()).get();
+        assertEquals(userDto.getUserPersonCode(), entity1.getTaskUserCode());
+        assertEquals(userDto.getUserPersonName(), entity1.getTaskUserName());
     }
 
 }

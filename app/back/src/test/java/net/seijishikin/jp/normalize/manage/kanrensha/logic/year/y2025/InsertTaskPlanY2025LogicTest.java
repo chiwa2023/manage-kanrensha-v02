@@ -58,8 +58,12 @@ class InsertTaskPlanY2025LogicTest {
         Map<String, String> map = new TreeMap<>();
         map.put("asd", "123");
         map.put("zxc", "456");
+        LeastUserDto workUserDto = new LeastUserDto();
+        workUserDto.setUserPersonCode(854);
+        workUserDto.setUserPersonName("利用者　直子");
 
-        InsertTaskPlanResultDto dto = insertTaskPlanY2025Logic.practice(userDto, dateTimeStart, taskCode, map);
+        InsertTaskPlanResultDto dto = insertTaskPlanY2025Logic.practice(workUserDto, userDto, dateTimeStart, taskCode,
+                map);
 
         TaskPlan2025Entity entity = taskPlan2025Repository.findById(dto.getTaskPlanId()).get();
 
@@ -76,19 +80,24 @@ class InsertTaskPlanY2025LogicTest {
         assertEquals(false, entity.getIsFinished());
         assertEquals("admin,manager", entity.getRoleList());
         assertEquals("http://localhost:6180/kanrensha-manage/edit-page?asd=123&zxc=456", entity.getTransferPass());
+        assertEquals(workUserDto.getUserPersonCode(), entity.getTaskUserCode());
+        assertEquals(workUserDto.getUserPersonName(), entity.getTaskUserName());
 
-        
         assertEquals(entity.getTaskInfoCode(), dto.getTaskInfoCode());
         assertEquals(entity.getTaskPlanCode(), dto.getTaskPlanCode());
         assertEquals(entity.getTaskPlanId(), dto.getTaskPlanId());
         assertEquals(entity.getTaskPlanName(), dto.getTaskPlanName());
         assertEquals(entity.getTableYear(), dto.getTaskYear());
         assertEquals(entity.getTransferPass(), dto.getTransferPass());
-        //assertEquals("admin,manager", dto.getMessageTemplate());
-        //assertEquals(, dto.getParamQuery());
-        
+
         assertThrows(EmptyResultDataAccessException.class,
-                () -> insertTaskPlanY2025Logic.practice(userDto, dateTimeStart, 622, map));
+                () -> insertTaskPlanY2025Logic.practice(null, userDto, dateTimeStart, 622, map));
+
+        // 本人宛タスク
+        InsertTaskPlanResultDto dto1 = insertTaskPlanY2025Logic.practice(null, userDto, dateTimeStart, taskCode, map);
+        TaskPlan2025Entity entity1 = taskPlan2025Repository.findById(dto1.getTaskPlanId()).get();
+        assertEquals(userDto.getUserPersonCode(), entity1.getTaskUserCode());
+        assertEquals(userDto.getUserPersonName(), entity1.getTaskUserName());
     }
 
 }

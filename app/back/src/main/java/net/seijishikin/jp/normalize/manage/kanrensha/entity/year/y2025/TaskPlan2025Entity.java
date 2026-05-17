@@ -312,6 +312,50 @@ public class TaskPlan2025Entity // NOPMD DataClass
         this.transferPass = transferPass;
     }
 
+    /** タスクユーザコード */
+    @Column(name = "task_user_code")
+    private Integer taskUserCode = INIT_INTEGER;
+
+    /**
+     * タスクユーザコードを取得する
+     *
+     * @return タスクユーザコード
+     */
+    public Integer getTaskUserCode() {
+        return taskUserCode;
+    }
+
+    /**
+     * タスクユーザコードを設定する
+     *
+     * @param taskUserCode タスクユーザコード
+     */
+    public void setTaskUserCode(final Integer taskUserCode) {
+        this.taskUserCode = taskUserCode;
+    }
+
+    /** 挿入ユーザ名称 */
+    @Column(name = "task_user_name")
+    private String taskUserName = INIT_STRING;
+
+    /**
+     * タスクユーザ名称を取得する
+     *
+     * @return タスクユーザ名称
+     */
+    public String getTaskUserName() {
+        return taskUserName;
+    }
+
+    /**
+     * タスクユーザ名称を設定する
+     *
+     * @param taskUserName タスクユーザ名称
+     */
+    public void setTaskUserName(final String taskUserName) {
+        this.taskUserName = taskUserName;
+    }
+
     /** 挿入ユーザId */
     @Column(name = "insert_user_id")
     private Integer insertUserId = INIT_INTEGER;

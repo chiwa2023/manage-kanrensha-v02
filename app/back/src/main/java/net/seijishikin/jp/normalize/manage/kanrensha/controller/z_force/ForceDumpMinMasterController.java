@@ -53,7 +53,7 @@ public class ForceDumpMinMasterController {
         Integer year = dateTimeStart.getYear();
         LeastUserDto userDto = capsuleDto.getUserDto();
         Integer taskPlanCode = 0;
-        
+
         FrameworkMessageAndResultDto resultDto = new FrameworkMessageAndResultDto();
         try {
             resultDto.setMessage("処理を開始しました。完了までしばらくお待ちください。");
@@ -70,14 +70,14 @@ public class ForceDumpMinMasterController {
             // TODO Queryはfront連結後決定
             Map<String, String> mapParam = new TreeMap<>();
 
-            InsertTaskPlanResultDto planDto1 = switchYearInsertTaskPlanService.practice(userDto, dateTimeStart,
+            InsertTaskPlanResultDto planDto1 = switchYearInsertTaskPlanService.practice(null, userDto, dateTimeStart,
                     TaskInfoConstants.DUMP_MIN_PERSON, mapParam);
             taskPlanCode = planDto1.getTaskPlanCode();
 
-            InsertTaskPlanResultDto planDto2 = switchYearInsertTaskPlanService.practice(userDto, dateTimeStart,
+            InsertTaskPlanResultDto planDto2 = switchYearInsertTaskPlanService.practice(null, userDto, dateTimeStart,
                     TaskInfoConstants.DUMP_MIN_KIGYOU, mapParam);
 
-            InsertTaskPlanResultDto planDto3 = switchYearInsertTaskPlanService.practice(userDto, dateTimeStart,
+            InsertTaskPlanResultDto planDto3 = switchYearInsertTaskPlanService.practice(null, userDto, dateTimeStart,
                     TaskInfoConstants.DUMP_MIN_SEIJIDANTAI, mapParam);
 
             asyncForceDumpMinMasterService.practice(year, planDto1, planDto2, planDto3, capsuleDto);

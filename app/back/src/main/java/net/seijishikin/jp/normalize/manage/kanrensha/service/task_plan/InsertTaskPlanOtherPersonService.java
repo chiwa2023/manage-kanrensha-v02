@@ -46,21 +46,22 @@ public class InsertTaskPlanOtherPersonService {
      * @param mapParam       接続QueryParameterMap
      * @return 処理結果
      */
-    public FrameworkMessageAndResultDto practice(final String email, final LeastUserDto userDto,
-            final LocalDateTime createDatetime, final Integer taskInfoCode, final Map<String, String> mapParam) {
+    public FrameworkMessageAndResultDto practice(final String email, final LeastUserDto userDtoTask,
+            final LeastUserDto userDto, final LocalDateTime createDatetime, final Integer taskInfoCode,
+            final Map<String, String> mapParam) {
 
         // タスク計画挿入
-        InsertTaskPlanResultDto insertTaskPlanResultDto = new InsertTaskPlanResultDto();
+        InsertTaskPlanResultDto insertTaskPlanResultDto;
         FrameworkMessageAndResultDto resultDto = new FrameworkMessageAndResultDto();
 
         try {
-            insertTaskPlanResultDto = switchYearInsertTaskPlanInsertService.practice(userDto, createDatetime,
-                    taskInfoCode, mapParam);
+            insertTaskPlanResultDto = switchYearInsertTaskPlanInsertService.practice(userDtoTask, userDto,
+                    createDatetime, taskInfoCode, mapParam);
         } catch (EmptyResultDataAccessException exception) {
             resultDto.setIsFailure(true);
             resultDto.setMessage(exception.getMessage());
             return resultDto;
-        } catch (IllegalArgumentException exception) {
+        } catch (IllegalArgumentException exception) { // NOPMD 業務的な理由から積極的に許容
             resultDto.setIsFailure(true);
             resultDto.setMessage(exception.getMessage());
             return resultDto;
@@ -80,7 +81,7 @@ public class InsertTaskPlanOtherPersonService {
         mailMessage.setSubject(insertTaskPlanResultDto.getTaskPlanName() + "：政治資金関連者標準化サイト");
         mailMessage.setReplyTo("このアドレスに返信はできません");
 
-        String body= insertTaskPlanResultDto.getMessageTemplate();
+        String body = insertTaskPlanResultDto.getMessageTemplate();
         body = body.replaceAll("【transferPass】", insertTaskPlanResultDto.getTransferPass());
         mailMessage.setText(body);
 
@@ -91,10 +92,16 @@ public class InsertTaskPlanOtherPersonService {
         List<MailDataDto> listMailData = new ArrayList<>();
         listMailData.add(mailDataDto);
 
-        SendMaileResultDto sendMaileResultDto = sendMailUserLogic.practice(listMailData);
-        if (sendMaileResultDto.getIsFailure()) {
+        SendMaileResultDto sendMaileResultDto;
+        try {
+            sendMaileResultDto = sendMailUserLogic.practice(listMailData);
+            if (sendMaileResultDto.getIsFailure()) {
+                resultDto.setIsFailure(true);
+                resultDto.setMessage("メールが送信できませんでした");
+            }
+        } catch (Exception exception) { // NOPMD 業務的な理由から積極的に許容
             resultDto.setIsFailure(true);
-            resultDto.setMessage(insertTaskPlanResultDto.getMessage());
+            resultDto.setMessage("処理は実行できましたが、メールが送信できませんでした");
         }
 
         return resultDto;

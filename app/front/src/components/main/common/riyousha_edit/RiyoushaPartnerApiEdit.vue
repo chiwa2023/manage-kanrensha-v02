@@ -113,6 +113,15 @@ function recieveSubmit(button: string) {
 
     <div class="one-line">
         <div class="left-area">
+            権限
+        </div>
+        <div class="right-area">
+            <input type="text" disabled="true" value="APIパートナー">
+        </div>
+    </div>
+
+    <div class="one-line">
+        <div class="left-area">
             関連者コード
         </div>
         <div class="right-area">

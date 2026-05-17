@@ -1,5 +1,5 @@
 ﻿<script setup lang="ts">
-import { ref, useTemplateRef, type Ref } from 'vue';
+import { onMounted, ref, useTemplateRef, type Ref } from 'vue';
 import { getLoginUser } from '../../utils/getLoginUser';
 import KanrenshaKbnConstants from '../../dto/kanrensha/kanrenshaKbnConstants';
 import SeijidantaiDantaiKbnConstants from '../../dto/kanrensha/seijidantaiDantaiKbnConstants';
@@ -19,6 +19,9 @@ import RoutePathConstants from '../../../../routePathConstants';
 import getAuthorizedPromiseArea from '../../dto/login/getAuthorizedPromiseArea';
 import { AccessTokenNotFoundError, TokenRefreshError } from '../../dto/login/errors';
 import type { UpdateWkTblAddByXmlResultDtoInterface } from '../../dto/add_xml/updateWkTblAddByXmlResultDto';
+import { useRoute } from 'vue-router';
+import { nextTransferPassStore } from '../../stores/nextTransferPass';
+import router from '../../../../router';
 
 // ユーザ呼び出し
 const userDto: Ref<LeastUserDtoInterface> = ref(getLoginUser());
@@ -38,6 +41,17 @@ const message: Ref<string> = ref(BLANK);
 
 // back側アクセス
 const urlBack: string = RoutePathConstants.DOMAIN + RoutePathConstants.BASE_PATH;
+
+const route = useRoute();
+onMounted(() =>{
+    // 直リンク(パスチェックあり)を許容ロジック
+    if (INIT_NUMBER === userDto.value.userPersonId) {
+        const passStore = nextTransferPassStore()
+        passStore.fullPath = route.fullPath;
+        router.push(RoutePathConstants.PAGE_LOGIN);
+        return;
+    }
+});
 
 // 関連者区分定数
 const kanrenshaKbnNoSelect: number = KanrenshaKbnConstants.NO_SELECT;

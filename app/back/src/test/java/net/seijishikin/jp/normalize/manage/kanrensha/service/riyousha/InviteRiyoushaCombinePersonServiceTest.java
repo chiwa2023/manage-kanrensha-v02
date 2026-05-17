@@ -81,6 +81,10 @@ class InviteRiyoushaCombinePersonServiceTest {
         FrameworkMessageAndResultDto resultDto2 = inviteRiyoushaCombinePersonService.practice(capsuleDto2,
                 createDatetime);
         assertFalse(resultDto2.getIsFailure()); // 成功
+        
+        // MEMO メール発信機能を切っていた場合
+        // assertTrue(resultDto2.getIsFailure());
+        // assertEquals("メールが送信できませんでした" , resultDto2.getMessage());
 
         // 登録したデータを取得
         RiyoushaCombineOrgTempEntity tempEntity = riyoushaCombineOrgTempRepository.findAll().getLast();

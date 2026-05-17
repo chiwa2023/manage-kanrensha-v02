@@ -1,5 +1,5 @@
 ﻿<script setup lang="ts">
-import { computed, ref, type ComputedRef, type Ref } from 'vue';
+import { computed, onMounted, ref, type ComputedRef, type Ref } from 'vue';
 import { getLoginUser } from '../../utils/getLoginUser';
 import { RegistDataByCsvFileCapsuleDto, type RegistDataByCsvFileCapsuleDtoInterface } from '../../dto/storage_file/registDataByCsvFileCapsuleDto';
 import { FrameworkCapsuleDto, MessageConstants, MessageView, type FrameworkCapsuleDtoInterface, type FrameworkMessageAndResultDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
@@ -11,10 +11,13 @@ import ReadCsv from '../../common/read_csv/ReadCsv.vue';
 import RoutePathConstants from '../../../../routePathConstants';
 import { AccessTokenNotFoundError, TokenRefreshError } from '../../dto/login/errors';
 import getAuthorizedPromiseArea from '../../dto/login/getAuthorizedPromiseArea';
+import { useRoute } from 'vue-router';
+import { nextTransferPassStore } from '../../stores/nextTransferPass';
+import router from '../../../../router';
 
 // よく使う定数
 const BLANK: string = "";
-// const INIT_NUMBER: number = 0;
+const INIT_NUMBER: number = 0;
 const INIT_BOOLEAN: boolean = false;
 //const SEARCH_LIMIT: number = 20;
 // const SERVER_STATUS_OK: number = 200;
@@ -32,6 +35,16 @@ const urlBack: string = RoutePathConstants.DOMAIN + RoutePathConstants.BASE_PATH
 // ユーザ呼び出し
 const userDto: Ref<LeastUserDtoInterface> = ref(getLoginUser());
 
+const route = useRoute();
+onMounted(() =>{
+    // 直リンク(パスチェックあり)を許容ロジック
+    if (INIT_NUMBER === userDto.value.userPersonId) {
+        const passStore = nextTransferPassStore()
+        passStore.fullPath = route.fullPath;
+        router.push(RoutePathConstants.PAGE_LOGIN);
+        return;
+    }
+});
 
 // サンプル表示
 const templateViewButtonText: ComputedRef<String> = computed(() => isVisibleTemplate.value ? "CSVサンプルを隠す" : "CSVサンプルを表示する");

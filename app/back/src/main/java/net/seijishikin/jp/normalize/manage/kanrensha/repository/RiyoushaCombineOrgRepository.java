@@ -31,6 +31,14 @@ public interface RiyoushaCombineOrgRepository extends JpaRepository<RiyoushaComb
     List<RiyoushaCombineOrgEntity> findByOrgRiyoushaCodeAndIsLatestTrue(Integer orgCode);
 
     /**
+     * 利用者個人コードから紐づきを検索する
+     * 
+     * @param personCode 利用者個人コード
+     * @return 検索結果
+     */
+    List<RiyoushaCombineOrgEntity> findByPersonRiyoushaCodeAndRiyoushaRoleAndIsLatestTrue(Integer personCode,String riyoushaRole);
+
+    /**
      * 最大コードをもつEntityを取得する
      *
      * @return 最大コードをもつEntity

@@ -60,4 +60,11 @@ public interface RiyoushaManagerMasterRepository extends JpaRepository<RiyoushaM
      */
     Optional<RiyoushaManagerMasterEntity> findByRiyoushaManagerMasterCodeAndAllNameAndIsLatestTrue(Integer masterCode,
             String name);
+
+    /**
+     * コードが一致する最新をリスト形式で取得する
+     *
+     * @return 最大コードをもつEntity
+     */
+    List<RiyoushaManagerMasterEntity> findByRiyoushaManagerMasterCodeAndIsLatestTrue(Integer code);
 }

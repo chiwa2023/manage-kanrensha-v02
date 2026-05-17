@@ -60,4 +60,12 @@ public interface RiyoushaPartnerApiMasterRepository extends JpaRepository<Riyous
      */
     Optional<RiyoushaPartnerApiMasterEntity> findByRiyoushaPartnerApiMasterCodeAndAllNameAndIsLatestTrue(
             Integer masterCode, String name);
+
+    /**
+     * コードが一致する最新をリスト形式で取得する
+     *
+     * @return 最大コードをもつEntity
+     */
+    List<RiyoushaPartnerApiMasterEntity> findByRiyoushaPartnerApiMasterCodeAndIsLatestTrue(Integer code);
+
 }

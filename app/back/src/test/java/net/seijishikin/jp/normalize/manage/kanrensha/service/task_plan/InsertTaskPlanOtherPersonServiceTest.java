@@ -48,20 +48,25 @@ class InsertTaskPlanOtherPersonServiceTest {
         String email = "xcv@abcdefg.net";
 
         LocalDateTime createDatetime = LocalDateTime.of(2026, 2, 4, 11, 22, 33);
+        LeastUserDto workUserDto = new LeastUserDto();
+        workUserDto.setUserPersonCode(400);
+        workUserDto.setUserPersonName("利用者　直子");
+        
         Map<String, String> mapParam = new TreeMap<>();
-        mapParam.put("personCode", String.valueOf(400));
+        mapParam.put("personCode", String.valueOf(workUserDto.getUserPersonCode()));
         mapParam.put("orgCode", String.valueOf(518));
+
 
         // タスク挿入ができないテストはSwitchYearInsertTaskPlanInsertServiceで実施済、
         // 例外が発生時にその例外が伝播することだけを確認
-        FrameworkMessageAndResultDto resultDto0 = insertTaskPlanOtherPersonService.practice(email, userDto,
+        FrameworkMessageAndResultDto resultDto0 = insertTaskPlanOtherPersonService.practice(email, workUserDto, userDto,
                 createDatetime, 2000, mapParam);
         assertTrue(resultDto0.getIsFailure());
 
         // TODO メールが送信できない場合のテストは別ファイル
 
         // 正常ケース
-        FrameworkMessageAndResultDto resultDto1 = insertTaskPlanOtherPersonService.practice(email, userDto,
+        FrameworkMessageAndResultDto resultDto1 = insertTaskPlanOtherPersonService.practice(email, workUserDto, userDto,
                 createDatetime, TaskInfoConstants.ORG_COMBINE_PERSON_RIYOUSHA, mapParam);
         assertFalse(resultDto1.getIsFailure());
 

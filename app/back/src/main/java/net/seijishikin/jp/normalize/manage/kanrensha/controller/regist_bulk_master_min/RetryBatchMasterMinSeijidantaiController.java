@@ -65,7 +65,7 @@ public class RetryBatchMasterMinSeijidantaiController {
             // TODO Queryはfront連結後決定
             Map<String, String> mapParam = new TreeMap<>();
 
-            InsertTaskPlanResultDto planDto = switchYearInsertTaskPlanService.practice(userDto, dateTimeStart,
+            InsertTaskPlanResultDto planDto = switchYearInsertTaskPlanService.practice(null, userDto, dateTimeStart,
                     TaskInfoConstants.RETRY_SEIJIDANTAI_MIN, mapParam);
             taskPlanCode = planDto.getTaskPlanCode();
 

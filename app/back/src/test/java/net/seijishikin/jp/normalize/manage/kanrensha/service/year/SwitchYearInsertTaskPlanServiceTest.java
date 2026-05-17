@@ -53,8 +53,12 @@ class SwitchYearInsertTaskPlanServiceTest {
         LeastUserDto userDto = CreateLeastUserForTestUtil.practice();
         LocalDateTime dateTimeStart = LocalDateTime.of(2026, 12, 13, 11, 22, 33);
 
-        InsertTaskPlanResultDto dto = switchYearInsertTaskPlanService.practice(userDto, dateTimeStart, taskCode,
-                CreateQueryParamDummyUtil.practice());
+        LeastUserDto workUserDto = new LeastUserDto();
+        workUserDto.setUserPersonCode(854);
+        workUserDto.setUserPersonName("利用者　直子");
+
+        InsertTaskPlanResultDto dto = switchYearInsertTaskPlanService.practice(workUserDto, userDto, dateTimeStart,
+                taskCode, CreateQueryParamDummyUtil.practice());
 
         TaskPlan2026Entity entity = taskPlan2026Repository.findById(dto.getTaskPlanId()).get();
 
@@ -70,6 +74,8 @@ class SwitchYearInsertTaskPlanServiceTest {
         assertEquals(false, entity.getIsFinished());
         assertEquals("admin,manager", entity.getRoleList());
         assertEquals("http://localhost:6180/kanrensha-manage/edit-page?asd=123&zxc=456", entity.getTransferPass());
+        assertEquals(workUserDto.getUserPersonCode(), entity.getTaskUserCode());
+        assertEquals(workUserDto.getUserPersonName(), entity.getTaskUserName());
     }
 
 }

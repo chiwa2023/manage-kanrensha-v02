@@ -30,27 +30,6 @@ public class PromoteUserAdminSendMailLogic {
     /** 送信メールアドレス */
     private static final String sendEmail = "test@example.com";
 
-    /** propertiesからインジェクションされた通知送信フラグ */
-    private Boolean flgSendAlert;
-
-    /**
-     * 通知送信フラグを取得する
-     * 
-     * @return 通知送信フラグ
-     */
-    public Boolean getFlgSendAlert() {
-        return flgSendAlert;
-    }
-
-    /**
-     * 通知送信フラグを設定す津
-     * 
-     * @param flgSendAlert 通知送信フラグ
-     */
-    public void setFlgSendAlert(final Boolean flgSendAlert) {
-        this.flgSendAlert = flgSendAlert;
-    }
-
     /** mail送信Logic */
     @Autowired
     private SendMailUserLogic sendMailUserLogic;
@@ -67,31 +46,29 @@ public class PromoteUserAdminSendMailLogic {
      */
     public SendMaileResultDto pracitce(final LeastUserDto userDto) {
 
-        if (flgSendAlert) {
-            // 送信先メールアドレス取得
-            Optional<UserPersonEntity> optionalPerson = userPersonRepository.findById(userDto.getUserPersonId());
-            if (optionalPerson.isEmpty()) {
-                SendMaileResultDto resultDto = new SendMaileResultDto();
-                resultDto.setIsFailure(true);
-                resultDto.setMessage("作業者のメールアドレスが取得できませんでした");
-                return resultDto;
-            }
-            UserPersonEntity userPersonEntity = optionalPerson.get();
+        // 送信先メールアドレス取得
+        Optional<UserPersonEntity> optionalPerson = userPersonRepository.findById(userDto.getUserPersonId());
+        if (optionalPerson.isEmpty()) {
+            SendMaileResultDto resultDto = new SendMaileResultDto();
+            resultDto.setIsFailure(true);
+            resultDto.setMessage("作業者のメールアドレスが取得できませんでした");
+            return resultDto;
+        }
+        UserPersonEntity userPersonEntity = optionalPerson.get();
 
-            try {
-                List<MailDataDto> list = new ArrayList<>();
-                list.add(this.createMailData(userPersonEntity.getEmail()));
-                return sendMailUserLogic.practice(list);
-            } catch (IOException iOException) {
-                SendMaileResultDto resultDto = new SendMaileResultDto();
-                resultDto.setIsFailure(true);
-                resultDto.setMessage("メール用テンプレートが取得できませんでした");
-                return resultDto;
-            } catch (Exception exception) { // NOPMD 業務上の理由で積極的に許容
-                SendMaileResultDto resultDto = new SendMaileResultDto();
-                resultDto.setIsFailure(true);
-                resultDto.setMessage("その他のシステムエラー");
-            }
+        try {
+            List<MailDataDto> list = new ArrayList<>();
+            list.add(this.createMailData(userPersonEntity.getEmail()));
+            return sendMailUserLogic.practice(list);
+        } catch (IOException iOException) {
+            SendMaileResultDto resultDto = new SendMaileResultDto();
+            resultDto.setIsFailure(true);
+            resultDto.setMessage("メール用テンプレートが取得できませんでした");
+            return resultDto;
+        } catch (Exception exception) { // NOPMD 業務上の理由で積極的に許容
+            SendMaileResultDto resultDto = new SendMaileResultDto();
+            resultDto.setIsFailure(true);
+            resultDto.setMessage("その他のシステムエラー");
         }
 
         return new SendMaileResultDto();

@@ -73,8 +73,14 @@ public class InviteRiyoushaCombinePersonService {
             return resultDto;
         }
 
+        LeastUserDto taskUser = new LeastUserDto();
+        UserPersonEntity taskUserPersonEntity = optionalPerson.get();
+        taskUser.setUserPersonId(taskUserPersonEntity.getUserPersonId());
+        taskUser.setUserPersonCode(taskUserPersonEntity.getUserPersonCode());
+        taskUser.setUserPersonName(taskUserPersonEntity.getUserPersonName());
+
         RiyoushaCombineOrgEntity combineOrgEntity = capsuleDto.getCombineEntity();
-        combineOrgEntity.setPersonCode(optionalPerson.get().getUserPersonCode());
+        combineOrgEntity.setPersonCode(taskUser.getUserPersonCode());
 
         List<UserRoleEntity> listRole = userRoleRepository.findByEmailAndIsLatestTrue(email);
         for (UserRoleEntity entity : listRole) {
@@ -106,7 +112,7 @@ public class InviteRiyoushaCombinePersonService {
         mapParam.put("orgCode", String.valueOf(combineOrgEntity.getOrgRiyoushaCode()));
         mapParam.put("userRole", combineOrgEntity.getRiyoushaRole());
 
-        resultDto = insertTaskPlanOtherPersonService.practice(email, userDto, createDateTime,
+        resultDto = insertTaskPlanOtherPersonService.practice(email, taskUser, userDto, createDateTime,
                 TaskInfoConstants.ORG_COMBINE_PERSON_RIYOUSHA, mapParam);
 
         return resultDto;

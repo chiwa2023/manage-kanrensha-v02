@@ -68,7 +68,7 @@ class SwitchYearUpdateTaskStartAndEndServiceTest {
         assertTrue(entityPro.getIsLatest());
         assertTrue(entityPro.getIsFinished());
         assertTrue(entityPro.getIsStart());
-        assertEquals(endTime, entityPro.getStartDatetime());
+        assertEquals(LocalDateTime.of(2022, 12, 5, 12, 34, 56), entityPro.getStartDatetime());
         assertEquals(endTime, entityPro.getEndDateimte());
     }
 

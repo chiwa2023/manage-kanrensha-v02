@@ -70,7 +70,7 @@ public class FileUploadServcie {
         switchYearInsertSaveStorageService.practice(dateTimeStrat.getYear(), userDto, fullPath, Short.valueOf("205"));
 
         // TODO タスク情報の入れ方を決定する
-        switchYearInsertTaskPlanService.practice(userDto, dateTimeStrat, TaskInfoConstants.SAVE_POSTAL_REPAIR_CSV,
+        switchYearInsertTaskPlanService.practice(null, userDto, dateTimeStrat, TaskInfoConstants.SAVE_POSTAL_REPAIR_CSV,
                 mapQuery);
 
         return fullPath;

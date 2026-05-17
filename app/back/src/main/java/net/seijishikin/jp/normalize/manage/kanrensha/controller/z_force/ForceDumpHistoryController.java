@@ -69,14 +69,14 @@ public class ForceDumpHistoryController {
             Map<String, String> mapParam = new TreeMap<>();
 
             // 非同期処理はタスク登録をする
-            InsertTaskPlanResultDto planDto1 = switchYearInsertTaskPlanService.practice(userDto, dateTimeStart,
+            InsertTaskPlanResultDto planDto1 = switchYearInsertTaskPlanService.practice(null, userDto, dateTimeStart,
                     TaskInfoConstants.DUMP_HISTORY_PERSON, mapParam);
             taskPlanCode = planDto1.getTaskPlanCode();
 
-            InsertTaskPlanResultDto planDto2 = switchYearInsertTaskPlanService.practice(userDto, dateTimeStart,
+            InsertTaskPlanResultDto planDto2 = switchYearInsertTaskPlanService.practice(null, userDto, dateTimeStart,
                     TaskInfoConstants.DUMP_HISTORY_KIGYOU, mapParam);
 
-            InsertTaskPlanResultDto planDto3 = switchYearInsertTaskPlanService.practice(userDto, dateTimeStart,
+            InsertTaskPlanResultDto planDto3 = switchYearInsertTaskPlanService.practice(null, userDto, dateTimeStart,
                     TaskInfoConstants.DUMP_HISTORY_SEIJIDANTAI, mapParam);
 
             asyncForceDumpHistoryService.practice(year, planDto1, planDto2, planDto3, capsuleDto);

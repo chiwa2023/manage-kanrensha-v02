@@ -147,14 +147,13 @@ function doDelete() {
             fetch(url, { method, headers, body })
                 .then(async (response) => {
                     const resultDto: FrameworkMessageAndResultDtoInterface = await response.json();
+                    message.value = editDto.value.message;
                     if (resultDto.isFailure) {
-                        message.value = editDto.value.message;
                         infoLevel.value = MessageConstants.LEVEL_WARNING;
                         messageType.value = MessageConstants.VIEW_OK;
                     } else {
                         message.value = editDto.value.message;
                         infoLevel.value = MessageConstants.LEVEL_INFO;
-                        messageType.value = MessageConstants.VIEW_TOAST;
                     }
                     // 削除が終わったら初期化
                     combineDeleteId = INIT_NUMBER;
@@ -190,7 +189,6 @@ function doDelete() {
 }
 
 function recieveSubmit(button: string) {
-    console.log(button); // 警告除け
     if (combineDeleteId !== INIT_NUMBER && "yes" === button) {
         doDelete();
     }
@@ -209,7 +207,6 @@ function recieveSubmit(button: string) {
 
     <!-- 連絡先入力 -->
     <ViewInputAccess :edit-dto="editDto.inputAccessDto"></ViewInputAccess>
-
 
     <h3>組織構成員リスト</h3>
     <div class="one-line">

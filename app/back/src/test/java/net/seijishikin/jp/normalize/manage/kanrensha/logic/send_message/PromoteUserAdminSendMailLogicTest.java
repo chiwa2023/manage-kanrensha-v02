@@ -38,7 +38,6 @@ class PromoteUserAdminSendMailLogicTest {
     @Tag("ExternalService")
     void test() throws Exception {
 
-        promoteUserAdminSendMailLogic.setFlgSendAlert(true);
         SendMaileResultDto resultDto = promoteUserAdminSendMailLogic.pracitce(CreateLeastUserForTestUtil.practice());
         assertEquals(false, resultDto.getIsFailure());
         // 送信後の内容は目視で確認
@@ -62,9 +61,7 @@ class PromoteUserAdminSendMailLogicTest {
 
         LeastUserDto userDto = CreateLeastUserForTestUtil.practice();
         userDto.setUserPersonId(621);
-        promoteUserAdminSendMailLogic.setFlgSendAlert(false); // 通知送信Off
         SendMaileResultDto resultDto = promoteUserAdminSendMailLogic.pracitce(userDto);
-        promoteUserAdminSendMailLogic.setFlgSendAlert(true);
         // 取得できないユーザを呼び出そうとしても落ちない
         assertEquals(false, resultDto.getIsFailure());
     }

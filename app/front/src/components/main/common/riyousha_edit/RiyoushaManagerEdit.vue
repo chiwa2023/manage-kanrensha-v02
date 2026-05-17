@@ -112,11 +112,19 @@ function recieveSubmit(button: string) {
 
     <div class="one-line">
         <div class="left-area">
+            権限
+        </div>
+        <div class="right-area">
+            <input type="text" disabled="true" value="運営者">
+        </div>
+    </div>
+
+    <div class="one-line">
+        <div class="left-area">
             関連者コード
         </div>
         <div class="right-area">
-            <input type="text" disabled="true" v-model="inputManagerDto.riyoushaManagerMasterCode"
-                class="left-space code-input">
+            <input type="text" disabled="true" v-model="inputManagerDto.riyoushaManagerMasterCode">
         </div>
     </div>
 

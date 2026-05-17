@@ -93,7 +93,7 @@ public class SendMailUserLogic {
                 resultDto.getListFailure().add(listMailData.get(index));
                 resultDto.setIsFailure(true);
 
-            } catch (MailException mailException) { // NOPMD 業務上の理由で積極的許容
+            } catch (MailException mailException) {
 
                 saveStackTraceService.practice(mailException, now.getYear(), 0);
                 writeLogService.practiceError("mail送信処理中に例外が発生しました", mailException);

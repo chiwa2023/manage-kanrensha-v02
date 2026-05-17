@@ -34,21 +34,24 @@ public class SwitchYearInsertTaskPlanService {
     /**
      * 処理を行う
      *
-     * @param userDto       ユーザ最小限Dto
+     * @param userDtoWork   作業者ユーザDto
+     * @param userDtoInsert 操作者ユーザDto
      * @param startDatetime タスク開始時間
      * @param taskPlanCode  タスク情報コード
      * @return 追加Id
      */
     @Transactional
-    public InsertTaskPlanResultDto practice(final LeastUserDto userDto, final LocalDateTime startDatetime,
-            final Integer taskPlanCode, final Map<String, String> mapParam) {
+    public InsertTaskPlanResultDto practice(final LeastUserDto userDtoWork, final LeastUserDto userDtoInsert,
+            final LocalDateTime startDatetime, final Integer taskPlanCode, final Map<String, String> mapParam) {
 
         Integer year = startDatetime.getYear();
         switch (year) {
             case YEAR_2025:
-                return insertTaskPlanY2025Logic.practice(userDto, startDatetime, taskPlanCode, mapParam);
+                return insertTaskPlanY2025Logic.practice(userDtoWork, userDtoInsert, startDatetime, taskPlanCode,
+                        mapParam);
             case YEAR_2026:
-                return insertTaskPlanY2026Logic.practice(userDto, startDatetime, taskPlanCode, mapParam);
+                return insertTaskPlanY2026Logic.practice(userDtoWork, userDtoInsert, startDatetime, taskPlanCode,
+                        mapParam);
 
             default:
                 throw new IllegalArgumentException("Unexpected value: " + year);

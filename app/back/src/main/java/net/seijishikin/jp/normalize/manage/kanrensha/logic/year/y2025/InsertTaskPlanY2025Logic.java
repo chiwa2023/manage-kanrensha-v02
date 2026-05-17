@@ -3,6 +3,7 @@ package net.seijishikin.jp.normalize.manage.kanrensha.logic.year.y2025;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,14 +48,23 @@ public class InsertTaskPlanY2025Logic {
     /**
      * 処理を行う
      * 
-     * @param userDto       ユーザ最小限Dto
+     * @param userDtoWork   作業者ユーザDto
+     * @param userDtoInsert 操作者ユーザDto
      * @param startDatetime タスク開始時間
      * @param taskInfoCode  タスク情報Entity
      * @param mapParam      queryパラメータMap
      * @return 追加Id
      */
-    public InsertTaskPlanResultDto practice(final LeastUserDto userDto, final LocalDateTime startDatetime,
-            final Integer taskInfoCode, final Map<String, String> mapParam) {
+    public InsertTaskPlanResultDto practice(final LeastUserDto userDtoWork, final LeastUserDto userDtoInsert,
+            final LocalDateTime startDatetime, final Integer taskInfoCode, final Map<String, String> mapParam) {
+
+        // タスク対象のユーザを設定する
+        LeastUserDto taskUser;
+        if (Objects.isNull(userDtoWork)) {
+            taskUser = userDtoInsert;
+        } else {
+            taskUser = userDtoWork;
+        }
 
         List<TaskInfoEntity> list = taskInfoRepository.findByTaskInfoCodeAndIsLatestTrue(taskInfoCode);
         if (list.isEmpty()) {
@@ -80,7 +90,10 @@ public class InsertTaskPlanY2025Logic {
         planEntity.setTransferPass(taskInfoEntity.getTransferPass()
                 + convertQueryParamLogic.practice(taskInfoEntity.getParamQuery(), mapParam));
 
-        setTableDataHistoryUtil.practiceInsert(userDto, planEntity);
+        planEntity.setTaskUserCode(taskUser.getUserPersonCode());
+        planEntity.setTaskUserName(taskUser.getUserPersonName());
+
+        setTableDataHistoryUtil.practiceInsert(userDtoInsert, planEntity);
 
         // コードを取得
         Integer code = 1;

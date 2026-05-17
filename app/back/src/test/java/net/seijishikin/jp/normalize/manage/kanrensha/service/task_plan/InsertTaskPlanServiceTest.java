@@ -107,7 +107,7 @@ class InsertTaskPlanServiceTest {
         FrameworkMessageAndResultDto resultDto = insertTaskPlanService.practice(userDto, createDatetime,
                 TaskInfoConstants.PROMOTE_ADMIN, null);
         assertTrue(resultDto.getIsFailure());
-        assertEquals("推薦者のユーザ情報がが取得できませんでした", resultDto.getMessage());
+        assertEquals("ユーザ情報がが取得できませんでした", resultDto.getMessage());
     }
 
 }

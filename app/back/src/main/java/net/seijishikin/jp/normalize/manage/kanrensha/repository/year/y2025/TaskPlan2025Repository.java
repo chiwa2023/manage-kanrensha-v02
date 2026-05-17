@@ -107,6 +107,6 @@ public interface TaskPlan2025Repository extends JpaRepository<TaskPlan2025Entity
      * @param pageable ページング
      * @return 検索結果
      */
-    List<TaskPlan2025Entity> findByInsertUserCodeAndIsLatestTrueAndIsFinishedFalseOrderByInsertTimestampDesc(
+    List<TaskPlan2025Entity> findByTaskUserCodeAndIsLatestTrueAndIsFinishedFalseOrderByInsertTimestampDesc(
             Integer userCode, Pageable pageable);
 }

@@ -49,6 +49,7 @@ public class DeleteRiyoushaCombinePersonController {
                 return ResponseEntity.status(HttpStatus.ACCEPTED).body(resultDto);
 
             } else {
+                resultDto.setMessage(FrameworkMessageAndResultDto.MESSAGE_EXPECTED);
                 return ResponseEntity.status(HttpStatus.OK).body(resultDto);
             }
 
