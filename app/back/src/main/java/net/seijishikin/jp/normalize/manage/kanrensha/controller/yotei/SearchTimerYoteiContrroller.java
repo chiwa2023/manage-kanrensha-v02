@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import io.netty.handler.codec.http.HttpResponseStatus;
+import org.springframework.http.HttpStatus;
 import net.seijishikin.jp.normalize.manage.kanrensha.controller.PathRouteConstants;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.yotei.SearchTimerYoteiCapsuleDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.yotei.SearchTimerYoteiResultDto;
@@ -34,7 +34,7 @@ public class SearchTimerYoteiContrroller {
     public ResponseEntity<SearchTimerYoteiResultDto> practice(
             final @RequestBody SearchTimerYoteiCapsuleDto capsuleDto) {
 
-        return ResponseEntity.status(HttpResponseStatus.OK.code()).body(searchTimerYoteiService.practice(capsuleDto));
+        return ResponseEntity.status(HttpStatus.OK).body(searchTimerYoteiService.practice(capsuleDto));
 
     }
 

@@ -15,7 +15,6 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
-import org.springframework.transaction.annotation.Transactional;
 
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.yotei.EditTimerYoteiCapsuleDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.TimerYoteiEntity;
@@ -30,7 +29,6 @@ import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateLeastUserForTes
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
 @Sql("DeleteTimerYoteiServiceTest.sql")
-@Transactional
 class DeleteTimerYoteiServiceTest {
 
     /** テスト対象 */

@@ -16,7 +16,7 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
-import net.seijishikin.jp.normalize.manage.kanrensha.dto.task.TaskPlanInfoDto;
+import net.seijishikin.jp.normalize.manage.kanrensha.dto.task.InsertTaskPlanResultDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateLeastUserForTestUtil;
 
 /**
@@ -39,14 +39,14 @@ class ForceSabunDumpMinMasterSeijidantaiServiceTest {
     void test() {
 
         final Integer year = 2026;
-        TaskPlanInfoDto planDto = new TaskPlanInfoDto();
+        InsertTaskPlanResultDto planDto = new InsertTaskPlanResultDto();
         planDto.setTaskPlanId(453);
         planDto.setTaskPlanCode(187);
 
         LeastUserDto userDto = CreateLeastUserForTestUtil.practice();
-        
+
         assertDoesNotThrow(() -> forceSabunDumpMinMasterSeijidantaiService.practice(year, planDto,
-                LocalDate.of(2024, 1, 1), LocalDate.of(2025, 1, 1),userDto));
+                LocalDate.of(2024, 1, 1), LocalDate.of(2025, 1, 1), userDto));
     }
 
 }

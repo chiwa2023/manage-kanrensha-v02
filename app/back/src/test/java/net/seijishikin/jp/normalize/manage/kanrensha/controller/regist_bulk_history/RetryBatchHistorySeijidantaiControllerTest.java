@@ -50,7 +50,7 @@ class RetryBatchHistorySeijidantaiControllerTest {
 
         ObjectMapper objectMapper = GetObjectMapperWithTimeModuleUtil.practice();
 
-        String path = PathRouteConstants.ROOT + "/regist-bulk-history/retry-poli-org";
+        String path = PathRouteConstants.ROOT + "/regist-bulk-history/retry-seijidantai";
 
         // サーバステータスがOK(200)
         assertEquals(HttpStatus.OK.value(), mockMvc // NOPMD LawOfDemeter

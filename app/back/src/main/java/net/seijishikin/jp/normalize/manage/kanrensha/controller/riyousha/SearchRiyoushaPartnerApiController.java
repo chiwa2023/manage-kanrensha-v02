@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import io.netty.handler.codec.http.HttpResponseStatus;
+import org.springframework.http.HttpStatus;
 import net.seijishikin.jp.normalize.common_tool.dto.FrameworkMessageAndResultDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.riyousha.SearchRiyoushaPartnerApiCapsuleDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.riyousha.SearchRiyoushaPartnerApiResultDto;
@@ -42,24 +42,25 @@ public class SearchRiyoushaPartnerApiController {
     public ResponseEntity<SearchRiyoushaPartnerApiResultDto> practice(
             @RequestBody final SearchRiyoushaPartnerApiCapsuleDto capsuleDto) {
 
+        SearchRiyoushaPartnerApiResultDto resultDto;
         try {
-            SearchRiyoushaPartnerApiResultDto resultDto = searchRiyoushaPartnerAppiService.practice(capsuleDto);
+            resultDto = searchRiyoushaPartnerAppiService.practice(capsuleDto);
 
             final Integer zero = 0;
             if (zero.equals(resultDto.getAllCount())) {
                 resultDto.setIsFailure(true);
                 resultDto.setMessage(FrameworkMessageAndResultDto.MESSAGE_NO_CONTENT);
-                return ResponseEntity.status(HttpResponseStatus.ACCEPTED.code()).body(resultDto);
+                return ResponseEntity.status(HttpStatus.ACCEPTED).body(resultDto);
             } else {
-                return ResponseEntity.status(HttpResponseStatus.OK.code()).body(resultDto);
+                return ResponseEntity.status(HttpStatus.OK).body(resultDto);
             }
         } catch (Exception exception) { // NOPMD AvoidCatchGenericException
             // 例外を保存してエラー発生を伝達
             saveStackTraceService.practice(exception, Year.now().getValue(), 0);
-            SearchRiyoushaPartnerApiResultDto resultDto = new SearchRiyoushaPartnerApiResultDto();
+            resultDto = new SearchRiyoushaPartnerApiResultDto();
             resultDto.setIsFailure(true);
             resultDto.setMessage(FrameworkMessageAndResultDto.MESSAGE_INTERNAL_ERROR);
-            return ResponseEntity.status(HttpResponseStatus.INTERNAL_SERVER_ERROR.code()).body(resultDto);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(resultDto);
         }
 
     }

@@ -56,7 +56,7 @@ class SearchBulkMasterStdSeijidantaiControllerTest {
 
         ObjectMapper objectMapper = GetObjectMapperWithTimeModuleUtil.practice();
 
-        String path = PathRouteConstants.ROOT + "/regist-bulk-master-std/search-poli-org";
+        String path = PathRouteConstants.ROOT + "/regist-bulk-master-std/search-seijidantai";
 
         // サーバステータスがOK(200)
         assertEquals(HttpStatus.OK.value(), mockMvc // NOPMD LawOfDemeter

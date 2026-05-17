@@ -7,16 +7,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import net.seijishikin.jp.normalize.manage.kanrensha.controller.PathRouteConstants;
 import net.seijishikin.jp.normalize.manage.kanrensha.logic.file.GetAbsolutePathLogic;
 import net.seijishikin.jp.normalize.manage.kanrensha.repository.SampleTableRepository;
-import net.seijishikin.jp.normalize.manage.kanrensha.controller.PathRouteConstants;
 
 /**
  * 機能疎通確認Controller
  */
 @RestController
+@RequestMapping(PathRouteConstants.ROOT)
 public class TrialAccessController {
 
     /** 絶対パス取得Logic */
@@ -32,7 +34,7 @@ public class TrialAccessController {
      *
      * @return 表示文字列
      */
-    @GetMapping(PathRouteConstants.ROOT + "/trial-access")
+    @GetMapping("/trial-access")
     public ResponseEntity<String> practice() {
 
         final String BLANK = "";

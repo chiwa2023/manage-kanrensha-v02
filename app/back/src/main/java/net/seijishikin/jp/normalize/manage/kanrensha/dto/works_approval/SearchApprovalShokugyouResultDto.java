@@ -15,17 +15,14 @@ public class SearchApprovalShokugyouResultDto // NOPMD DataClass
     /** Serialize id */
     private static final long serialVersionUID = 1L;
 
-    /** 初期データ(Integer) */
-    private static final Integer INIT_Integer = 0;
-
     /** 全件数 */
-    private Integer allCount = INIT_Integer;
+    private Integer allCount = INIT_INTEGER;
 
     /** ページ内件数 */
-    private Integer limit = INIT_Integer;
+    private Integer limit = INIT_INTEGER;
 
     /** ページ番号 */
-    private Integer pageNumber = INIT_Integer;
+    private Integer pageNumber = INIT_INTEGER;
 
     /**
      * 全件数を取得する

@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import io.netty.handler.codec.http.HttpResponseStatus;
+import org.springframework.http.HttpStatus;
 import net.seijishikin.jp.normalize.manage.kanrensha.controller.PathRouteConstants;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.postal.AddressRsdtResultDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.postal.PostalCodeCapsuleDto;
@@ -42,24 +42,26 @@ public class PostalCodeRegistoryCodeController {
     @PostMapping("/rsdt-detail-id")
     public ResponseEntity<AddressRsdtResultDto> practice(final @RequestBody PostalCodeCapsuleDto capsuleDto) {
 
+        AddressRsdtResultDto resultDto = new AddressRsdtResultDto();
         try {
             AddressRsdtTemplateEntity templateEntity = getPostalCodeRegistoryCodeService
                     .practice(capsuleDto.getLgCode(), capsuleDto.getSelectedRsdtId());
-            AddressRsdtResultDto resultDto = new AddressRsdtResultDto();
 
             if (Objects.isNull(templateEntity)) {
                 // 予測できる理由で取得できないときはエラーで落とさない
                 resultDto.setIsFailure(true);
                 resultDto.setMessage("正常に住居詳細が取得できませんでした");
-                return ResponseEntity.status(HttpResponseStatus.ACCEPTED.code()).body(resultDto);
+                return ResponseEntity.status(HttpStatus.ACCEPTED).body(resultDto);
             } else {
                 resultDto.setAddressRsdtEntity(templateEntity);
-                return ResponseEntity.status(HttpResponseStatus.OK.code()).body(resultDto);
+                return ResponseEntity.status(HttpStatus.OK).body(resultDto);
             }
 
         } catch (Exception exception) { // NOPMD 業務的な理由から積極的に許容
             saveStackTraceService.practice(exception, Year.now().getValue(), 0);
-            return ResponseEntity.status(HttpResponseStatus.INTERNAL_SERVER_ERROR.code()).build();
+            resultDto.setIsFailure(true);
+            resultDto.setMessage(exception.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(resultDto);
         }
 
     }

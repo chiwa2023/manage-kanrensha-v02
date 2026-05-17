@@ -15,7 +15,7 @@ import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
 import net.seijishikin.jp.normalize.common_tool.utils.CreateUserLeastDtoByBatchParamUtil;
 import net.seijishikin.jp.normalize.manage.kanrensha.batch.kanrensha.kigyou_dt.add_min.RetryMinKanrenshaKigyouDtMasterBatchConfiguration;
 import net.seijishikin.jp.normalize.manage.kanrensha.batch.task_plan.RecordTaskPlanJobExecutionListner;
-import net.seijishikin.jp.normalize.manage.kanrensha.dto.task.TaskPlanInfoDto;
+import net.seijishikin.jp.normalize.manage.kanrensha.dto.task.InsertTaskPlanResultDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.util.SaveStackTraceService;
 
 /**
@@ -43,7 +43,7 @@ public class RetryBatchMasterMinKigyouDtService {
      * @param userDto ユーザDto
      */
     @Async
-    public void practice(final LeastUserDto userDto, final Integer year, final TaskPlanInfoDto planDto) {
+    public void practice(final LeastUserDto userDto, final Integer year, final InsertTaskPlanResultDto planDto) {
 
         JobParameters jobParameters = new JobParametersBuilder(
                 retryMinKanrenshaKigyouDtMaster.getJobParametersIncrementer().getNext(new JobParameters())) // NOPMD
@@ -55,7 +55,8 @@ public class RetryBatchMasterMinKigyouDtService {
                 .addString(CreateUserLeastDtoByBatchParamUtil.USER_NAME_PARAM, userDto.getUserPersonName())
                 .addLong(RecordTaskPlanJobExecutionListner.KEY_YEAR, (long) year)
                 .addLong(RecordTaskPlanJobExecutionListner.KEY_ID, (long) planDto.getTaskPlanId())
-                .addLong(RecordTaskPlanJobExecutionListner.KEY_CODE, (long) planDto.getTaskPlanCode()).toJobParameters();
+                .addLong(RecordTaskPlanJobExecutionListner.KEY_CODE, (long) planDto.getTaskPlanCode())
+                .toJobParameters();
 
         try {
             jobLauncher.run(retryMinKanrenshaKigyouDtMaster, jobParameters);

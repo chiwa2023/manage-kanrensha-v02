@@ -2,28 +2,19 @@ package net.seijishikin.jp.normalize.manage.kanrensha.dto.kanrensha;
 
 import java.io.Serializable;
 
+import net.seijishikin.jp.normalize.common_tool.dto.DtoEntityInitialValueInterface;
 import net.seijishikin.jp.normalize.common_tool.dto.input.InputAccessDto;
 import net.seijishikin.jp.normalize.common_tool.dto.input.InputAddressDto;
 import net.seijishikin.jp.normalize.common_tool.dto.input.InputPersonNameDto;
 import net.seijishikin.jp.normalize.common_tool.dto.input.InputShokugyouDto;
 
-
 /**
  * 関連者個人Dto
  */
-public class KanrenshaPersonDto implements Serializable { // NOPMD DataClass
+public class KanrenshaPersonDto implements Serializable, DtoEntityInitialValueInterface { // NOPMD DataClass
 
     /** Serialize id */
     private static final long serialVersionUID = 1L;
-
-    /** 初期データ(Integer) */
-    private static final Integer INIT_Integer = 0;
-
-    /** 初期データ(String) */
-    private static final String INIT_String = "";
-
-    /** 初期データ(Boolean) */
-    private static final Boolean INIT_Boolean = false;
 
     /** 個人氏名入力Dto */
     private InputPersonNameDto inputPersonNameDto = new InputPersonNameDto();
@@ -110,7 +101,7 @@ public class KanrenshaPersonDto implements Serializable { // NOPMD DataClass
     }
 
     /** 外国籍該否 */
-    private Boolean isForeign = INIT_Boolean;
+    private Boolean isForeign = INIT_BOOLEAN;
 
     /**
      * 外国籍該否を取得する
@@ -131,16 +122,16 @@ public class KanrenshaPersonDto implements Serializable { // NOPMD DataClass
     }
 
     /** 関連者個人マスタテーブルId */
-    private Integer masterId = INIT_Integer;
+    private Integer masterId = INIT_INTEGER;
 
     /** 関連者個人連絡先テーブルId */
-    private Integer accessId = INIT_Integer;
+    private Integer accessId = INIT_INTEGER;
 
     /** 関連者個人住所テーブルId */
-    private Integer addressId = INIT_Integer;
+    private Integer addressId = INIT_INTEGER;
 
     /** 関連者個人属性テーブルId */
-    private Integer propertyId = INIT_Integer;
+    private Integer propertyId = INIT_INTEGER;
 
     /**
      * 関連者個人マスタテーブルIdを取得する
@@ -215,7 +206,7 @@ public class KanrenshaPersonDto implements Serializable { // NOPMD DataClass
     }
 
     /** 関連者個人コード */
-    private String personKanrenshaCode = INIT_String;
+    private String personKanrenshaCode = INIT_STRING;
 
     /**
      * 関連者個人コードを取得する
@@ -236,7 +227,7 @@ public class KanrenshaPersonDto implements Serializable { // NOPMD DataClass
     }
 
     /** 関連者ユーザ紐づけ該否 */
-    private Boolean isCombineUser = INIT_Boolean;
+    private Boolean isCombineUser = INIT_BOOLEAN;
 
     /**
      * 関連者ユーザ紐づけ該否を取得する

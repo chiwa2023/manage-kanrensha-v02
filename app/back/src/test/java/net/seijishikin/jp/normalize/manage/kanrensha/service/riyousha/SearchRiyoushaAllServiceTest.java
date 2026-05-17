@@ -1,7 +1,6 @@
 package net.seijishikin.jp.normalize.manage.kanrensha.service.riyousha;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
@@ -17,14 +16,9 @@ import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
-import net.seijishikin.jp.normalize.manage.kanrensha.dto.riyousha.SearchRiyoushaAdminResultDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.riyousha.SearchRiyoushaAllCapsuleDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.riyousha.SearchRiyoushaAllResultDto;
-import net.seijishikin.jp.normalize.manage.kanrensha.dto.riyousha.SearchRiyoushaManagerResultDto;
-import net.seijishikin.jp.normalize.manage.kanrensha.dto.riyousha.SearchRiyoushaPartnerApiResultDto;
-import net.seijishikin.jp.normalize.manage.kanrensha.entity.RiyoushaAdminMasterEntity;
-import net.seijishikin.jp.normalize.manage.kanrensha.entity.RiyoushaManagerMasterEntity;
-import net.seijishikin.jp.normalize.manage.kanrensha.entity.RiyoushaPartnerApiMasterEntity;
+import net.seijishikin.jp.normalize.manage.kanrensha.dto.riyousha.SearchViewCombineAliveRiyoushaResultDto;
 
 /**
  * SearchRiyoushaAllService単体テスト
@@ -33,8 +27,7 @@ import net.seijishikin.jp.normalize.manage.kanrensha.entity.RiyoushaPartnerApiMa
 @AutoConfigureMockMvc
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
-@Sql({ "SearchRiyoushaAdminServiceTest.sql", "SearchRiyoushaManagerServiceTest.sql",
-        "SearchRiyoushaPartnerAppiServiceTest.sql" })
+@Sql("SearchRiyoushaAllServiceTest.sql")
 class SearchRiyoushaAllServiceTest {
     // CHECKSTYLE:OFF MagicNumber
 
@@ -51,73 +44,60 @@ class SearchRiyoushaAllServiceTest {
         capsuleDto0.setIsManagerSearch(false);
         capsuleDto0.setIsPartnerApiSearch(false);
         capsuleDto0.setLimit(20);
-        capsuleDto0.setSearchNaturalWords("管理者");
+        capsuleDto0.setSearchNaturalWords("花子");
         capsuleDto0.setPageNumber(0);
 
         SearchRiyoushaAllResultDto resultDto0 = searchRiyoushaAllService.practice(capsuleDto0);
 
         // すべての検索をしないよう、フラグを立てていないので空しか戻らない
-        assertTrue(resultDto0.getSearchRiyoushaPartnerApiResultDto().getListRiyoushaPartner().isEmpty());
-        assertTrue(resultDto0.getSearchRiyoushaManagerResultDto().getListRiyoushaManager().isEmpty());
-        assertTrue(resultDto0.getSearchRiyoushaPartnerApiResultDto().getListRiyoushaPartner().isEmpty());
+        assertTrue(resultDto0.getListAllRiyousha().isEmpty());
 
         SearchRiyoushaAllCapsuleDto capsuleDto1 = new SearchRiyoushaAllCapsuleDto();
         capsuleDto1.setIsPartnerApiSearch(true);
         capsuleDto1.setIsManagerSearch(true);
         capsuleDto1.setIsAdminSearch(true);
         capsuleDto1.setLimit(20);
-        capsuleDto1.setSearchNaturalWords("管理者");
+        capsuleDto1.setSearchNaturalWords("花子");
         capsuleDto1.setPageNumber(0);
 
         SearchRiyoushaAllResultDto resultDto1 = searchRiyoushaAllService.practice(capsuleDto1);
 
-        SearchRiyoushaPartnerApiResultDto resultDtoPartner = resultDto1.getSearchRiyoushaPartnerApiResultDto();
+        assertEquals(5, resultDto1.getAllCount());
+        assertEquals(capsuleDto1.getLimit(), resultDto1.getLimit());
+        assertEquals(0, resultDto1.getPageNumber());
 
-        assertEquals(2, resultDtoPartner.getAllCount());
-        assertEquals(capsuleDto1.getLimit(), resultDtoPartner.getLimit());
-        assertEquals(0, resultDtoPartner.getPageNumber());
+        List<SearchViewCombineAliveRiyoushaResultDto> listAllRiyousha = resultDto1.getListAllRiyousha();
+        assertEquals(resultDto1.getAllCount(), listAllRiyousha.size());
 
-        assertNotNull(resultDtoPartner.getListRiyoushaPartner());
+        final String admin = "admin";
+        final String manager = "manager";
+        final String partner = "partner_api";
 
-        List<RiyoushaPartnerApiMasterEntity> listPartner = resultDtoPartner.getListRiyoushaPartner();
+        SearchViewCombineAliveRiyoushaResultDto dto0 = listAllRiyousha.get(0);
+        assertEquals(284, dto0.getRiyoushaId());
+        assertEquals(manager, dto0.getRoleBase());
+        assertEquals(manager, dto0.getRoleHas());
+        assertEquals("管理者 マリア花子3", dto0.getAllName());
 
-        RiyoushaPartnerApiMasterEntity entityPartner00 = listPartner.get(0);
-        RiyoushaPartnerApiMasterEntity entityPartner01 = listPartner.get(1);
+        SearchViewCombineAliveRiyoushaResultDto dto1 = listAllRiyousha.get(1);
+        assertEquals(327, dto1.getRiyoushaId());
+        assertEquals(partner, dto1.getRoleBase());
+        assertEquals(admin, dto1.getRoleHas());
 
-        assertEquals(1, entityPartner00.getRiyoushaPartnerApiMasterId());
-        assertEquals(3, entityPartner01.getRiyoushaPartnerApiMasterId());
+        SearchViewCombineAliveRiyoushaResultDto dto2 = listAllRiyousha.get(2);
+        assertEquals(327, dto2.getRiyoushaId());
+        assertEquals(partner, dto2.getRoleBase());
+        assertEquals(manager, dto2.getRoleHas());
 
-        SearchRiyoushaManagerResultDto resultDtoManager = resultDto1.getSearchRiyoushaManagerResultDto();
+        SearchViewCombineAliveRiyoushaResultDto dto3 = listAllRiyousha.get(3);
+        assertEquals(327, dto3.getRiyoushaId());
+        assertEquals(partner, dto3.getRoleBase());
+        assertEquals(partner, dto3.getRoleHas());
 
-        assertEquals(2, resultDtoManager.getAllCount());
-        assertEquals(capsuleDto1.getLimit(), resultDtoManager.getLimit());
-        assertEquals(0, resultDtoManager.getPageNumber());
-
-        assertNotNull(resultDtoManager.getListRiyoushaManager());
-
-        List<RiyoushaManagerMasterEntity> listManager = resultDtoManager.getListRiyoushaManager();
-
-        RiyoushaManagerMasterEntity entityManager00 = listManager.get(0);
-        RiyoushaManagerMasterEntity entityManager01 = listManager.get(1);
-
-        assertEquals(1, entityManager00.getRiyoushaManagerMasterId());
-        assertEquals(3, entityManager01.getRiyoushaManagerMasterId());
-
-        SearchRiyoushaAdminResultDto resultDtoAdmin = resultDto1.getSearchRiyoushaAdminResultDto();
-
-        assertEquals(2, resultDtoAdmin.getAllCount());
-        assertEquals(capsuleDto1.getLimit(), resultDtoAdmin.getLimit());
-        assertEquals(0, resultDtoAdmin.getPageNumber());
-
-        assertNotNull(resultDtoAdmin.getListRiyoushaAdmin());
-
-        List<RiyoushaAdminMasterEntity> listAdmin = resultDtoAdmin.getListRiyoushaAdmin();
-
-        RiyoushaAdminMasterEntity entityAdmin00 = listAdmin.get(0);
-        RiyoushaAdminMasterEntity entityAdmin01 = listAdmin.get(1);
-
-        assertEquals(1, entityAdmin00.getRiyoushaAdminMasterId());
-        assertEquals(3, entityAdmin01.getRiyoushaAdminMasterId());
+        SearchViewCombineAliveRiyoushaResultDto dto4 = listAllRiyousha.get(4);
+        assertEquals(325, dto4.getRiyoushaId());
+        assertEquals(partner, dto4.getRoleBase());
+        assertEquals(partner, dto4.getRoleHas());
     }
 
 }

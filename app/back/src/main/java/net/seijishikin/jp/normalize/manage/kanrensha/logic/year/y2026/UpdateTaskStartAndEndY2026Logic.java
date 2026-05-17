@@ -50,7 +50,7 @@ public class UpdateTaskStartAndEndY2026Logic {
         taskPlan2026Repository.save(entitySrc);
 
         entityNew.setIsStart(true);
-        entityNew.setStartDatetime(endTime);
+        // entityNew.setStartDatetime(endTime);
         entityNew.setIsFinished(true);
         entityNew.setEndDateimte(endTime);
         setTableDataHistoryUtil.practiceInsert(userDto, entityNew);

@@ -56,7 +56,7 @@ class SearchBulkHistoryKigyouDtControllerTest {
 
         ObjectMapper objectMapper = GetObjectMapperWithTimeModuleUtil.practice();
 
-        String path = PathRouteConstants.ROOT + "/regist-bulk-history/search-kigyouDt";
+        String path = PathRouteConstants.ROOT + "/regist-bulk-history/search-kigyou-dt";
 
         // サーバステータスがOK(200)
         assertEquals(HttpStatus.OK.value(), mockMvc // NOPMD LawOfDemeter

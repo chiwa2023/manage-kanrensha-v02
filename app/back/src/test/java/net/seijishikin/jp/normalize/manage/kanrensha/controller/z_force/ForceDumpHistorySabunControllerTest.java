@@ -82,7 +82,8 @@ class ForceDumpHistorySabunControllerTest {
         // 配下を全削除
         Path pathRootKigyouDt = Paths.get(pathSaved, frontDumpFolder, "/dump_history_sabun_corp");
         if (Files.exists(pathRootKigyouDt)) {
-            Files.walk(pathRootKigyouDt).sorted(Comparator.reverseOrder()).map(Path::toFile).forEach(java.io.File::delete);
+            Files.walk(pathRootKigyouDt).sorted(Comparator.reverseOrder()).map(Path::toFile)
+                    .forEach(java.io.File::delete);
         }
         Path pathRootPerson = Paths.get(pathSaved, frontDumpFolder, "/dump_history_sabun_person");
         if (Files.exists(pathRootPerson)) {
@@ -119,13 +120,13 @@ class ForceDumpHistorySabunControllerTest {
 
         ObjectMapper objectMapper = GetObjectMapperWithTimeModuleUtil.practice();
 
-        String path = PathRouteConstants.ROOT +"/dump-history-sabun/execute";
+        String path = PathRouteConstants.ROOT + "/dump-history-sabun/execute";
 
-        // サーバステータスがOK(200)
-        assertEquals(HttpStatus.NO_CONTENT.value(), mockMvc // NOPMD LawOfDemeter
+        // サーバステータスがOK(202)
+        assertEquals(HttpStatus.ACCEPTED.value(), mockMvc // NOPMD LawOfDemeter
                 .perform(post(path).content(objectMapper.writeValueAsString(capsuleDto00)) // リクエストボディを指定
                         .contentType(MediaType.APPLICATION_JSON_VALUE)) // Content Typeを指定
-                .andExpect(status().isNoContent()).andReturn().getResponse().getStatus());
+                .andExpect(status().isAccepted()).andReturn().getResponse().getStatus());
 
         /* 処理実施 */
         ForceDumpCapsuleDto capsuleDto01 = new ForceDumpCapsuleDto();

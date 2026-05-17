@@ -38,4 +38,23 @@ public interface UserRoleRepository extends JpaRepository<UserRoleEntity, Intege
      */
     List<UserRoleEntity> findByIsLatestAndEmail(boolean isLatest, String email);
 
+    /**
+     * emailとis_latestフラグでUserRoleEntityのリストを検索する
+     * 
+     * @param email メールアドレス
+     * @return ユーザ権限Entityのリスト
+     */
+    List<UserRoleEntity> findByEmailAndRoleAndIsLatestTrue(String email, String role);
+
+    /**
+     * 権限と利用者コードでUserRoleEntityのリストを検索する
+     * 
+     * @param role         権限
+     * @param riyoushaCode 利用者コード
+     * @return ユーザ権限Entityのリスト
+     */
+    @Query(value = "SELECT * FROM user_role WHERE is_latest = 1 AND email IN (SELECT email FROM "
+            + " user_role WHERE is_latest = 1 AND riyousha_code =?1 AND role = ?2)", nativeQuery = true)
+    List<UserRoleEntity> findRiyoushaCodeAndRole(Integer riyoushaCode, String role);
+
 }

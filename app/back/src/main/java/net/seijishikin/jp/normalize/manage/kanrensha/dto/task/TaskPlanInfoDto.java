@@ -99,4 +99,25 @@ public class TaskPlanInfoDto // NOPMD DataClass
         this.taskPlanName = taskPlanName;
     }
 
+    /** タスク発生年 */
+    private Integer taskYear = INIT_INTEGER;
+
+    /**
+     * タスク発生年を取得する
+     *
+     * @return タスク発生年
+     */
+    public Integer getTaskYear() {
+        return taskYear;
+    }
+
+    /**
+     * タスク発生年を設定する
+     *
+     * @param taskYear タスク発生年
+     */
+    public void setTaskYear(final Integer taskYear) {
+        this.taskYear = taskYear;
+    }
+
 }

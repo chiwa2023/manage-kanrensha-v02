@@ -121,11 +121,11 @@ class ForceDumpHistoryControllerTest {
         String path = PathRouteConstants.ROOT +"/dump-history/execute";
 
         /* 処理未選択 */
-        // 実行処理を選択しなかったのでNoContent(204)
-        assertEquals(HttpStatus.NO_CONTENT.value(), mockMvc // NOPMD LawOfDemeter
+        // 実行処理を選択しなかったのでAccepted(202)
+        assertEquals(HttpStatus.ACCEPTED.value(), mockMvc // NOPMD LawOfDemeter
                 .perform(post(path).content(objectMapper.writeValueAsString(capsuleDto00)) // リクエストボディを指定
                         .contentType(MediaType.APPLICATION_JSON_VALUE)) // Content Typeを指定
-                .andExpect(status().isNoContent()).andReturn().getResponse().getStatus());
+                .andExpect(status().isAccepted()).andReturn().getResponse().getStatus());
 
         // 何も処理ができていないことを確認
         assertFalse(Files.exists(pathRootKigyouDt));

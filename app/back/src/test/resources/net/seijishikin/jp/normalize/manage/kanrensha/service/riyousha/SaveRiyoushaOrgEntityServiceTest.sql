@@ -20,3 +20,14 @@ INSERT INTO `riyousha_org_property` (`riyousha_org_property_id`,`riyousha_org_pr
   ,(425,325,1,'利用者組織','りようしゃそしき','987','5432','宮崎県実在市山麓町','3丁目6の9','星形ビル444','123456','2345','3456','4567','5678','6789','567','8901','2345','test@example.com','http://example.com/',1,2,'無名SNS','http://jakushou.sns.net/','@123hanakao',196,190,'管理人　花子','2025-11-24 14:12:29',0,0,'','1948-07-28 23:59:59')
   ,(426,326,1,'利用者組織','りようしゃそしき','987','5432','宮崎県実在市山麓町','3丁目6の9','星形ビル444','123456','2345','3456','4567','5678','6789','567','8901','2345','test@example.com','http://example.com/',1,2,'無名SNS','http://jakushou.sns.net/','@123hanakao',196,190,'管理人　花子','2025-11-24 14:12:29',0,0,'','1948-07-28 23:59:59')
   ;
+
+DELETE FROM `riyousha_combine_org`;
+ALTER TABLE `riyousha_combine_org` auto_increment = 0;
+
+DELETE FROM `riyousha_manager_master`;
+ALTER TABLE `riyousha_manager_master` auto_increment = 0;
+
+INSERT INTO `riyousha_manager_master` (`riyousha_manager_master_id`,`riyousha_manager_master_code`,`riyousha_person_property_id`,`riyousha_person_property_code`,`is_latest`,`all_name`,`all_name_kana`,`address_all`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`) 
+   VALUES 
+      (1,423,1,1,1,'新規登録者　太郎','うんえいしゃ　まりあはなこ','宮崎県実在市山麓町3丁目6の9星形ビル444','宮崎県実在市山麓町3丁目6の9星形ビル444管理者マリア花子うんえいしゃまりあはなこ',196,190,'管理人　花子','2025-11-24 14:12:30',0,0,'','1948-07-28 23:59:59')
+      ;

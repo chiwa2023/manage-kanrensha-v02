@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import io.netty.handler.codec.http.HttpResponseStatus;
+import org.springframework.http.HttpStatus;
 import net.seijishikin.jp.normalize.common_tool.dto.FrameworkMessageAndResultDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.controller.PathRouteConstants;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.sns.EditSnsServiceCapsuleDto;
@@ -41,19 +41,21 @@ public class SaveSnsDataController {
     public ResponseEntity<FrameworkMessageAndResultDto> practice(
             @RequestBody final EditSnsServiceCapsuleDto capsuleDto) {
 
+        FrameworkMessageAndResultDto resultDto = new FrameworkMessageAndResultDto();
         try {
             Integer deleteId = saveSnsDataService.practice(capsuleDto);
 
-            FrameworkMessageAndResultDto resultDto = new FrameworkMessageAndResultDto();
             if (0 == deleteId) {
-                return ResponseEntity.status(HttpResponseStatus.ACCEPTED.code()).body(resultDto);
+                return ResponseEntity.status(HttpStatus.ACCEPTED).body(resultDto);
 
             } else {
-                return ResponseEntity.status(HttpResponseStatus.OK.code()).body(resultDto);
+                return ResponseEntity.status(HttpStatus.OK).body(resultDto);
             }
         } catch (Exception exception) { // NOPMD 業務上の理由で積極的許容
             saveStackTraceService.practice(exception, Year.now().getValue(), 0);
-            return ResponseEntity.status(HttpResponseStatus.INTERNAL_SERVER_ERROR.code()).build();
+            resultDto.setIsFailure(true);
+            resultDto.setMessage(exception.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(resultDto);
 
         }
 

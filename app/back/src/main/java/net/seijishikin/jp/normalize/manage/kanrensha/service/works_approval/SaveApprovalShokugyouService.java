@@ -1,5 +1,6 @@
 package net.seijishikin.jp.normalize.manage.kanrensha.service.works_approval;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -7,6 +8,7 @@ import java.util.Objects;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
 import net.seijishikin.jp.normalize.common_tool.utils.SetTableDataHistoryUtil;
@@ -39,6 +41,10 @@ public class SaveApprovalShokugyouService {
     @Autowired
     private SetTableDataHistoryUtil setTableDataHistoryUtil;
 
+    /** 未削除判定比較値 */
+    public static final LocalDateTime DELETE_LIMIT_TIMESTAMP = //
+            LocalDateTime.of(1948, 7, 29, 0, 0, 0); // SUPPRESS CHECKSTYLE // MagicNumber
+
     /**
      * 処理を行う
      *
@@ -46,14 +52,18 @@ public class SaveApprovalShokugyouService {
      * @param userDto       職業最小限Dto
      * @return 処理行数
      */
+    @Transactional
     public Integer practice(final List<KanrenshaPersonPropertyEntity> listShokugyou, final LeastUserDto userDto) {
 
         List<KanrenshaPersonPropertyEntity> listHistory = new ArrayList<>();
         List<KanrenshaPersonPropertyEntity> listInsert = new ArrayList<>();
 
         for (KanrenshaPersonPropertyEntity entity : listShokugyou) {
+
             KanrenshaPersonPropertyEntity entityHistory = this.judgeSaveEntity(entity, userDto);
+
             if (!Objects.isNull(entityHistory)) {
+
                 listHistory.add(entityHistory);
 
                 // マスタも変更
@@ -67,7 +77,6 @@ public class SaveApprovalShokugyouService {
                 if (newMasterId != 0) {
                     newPropertyEntity.setKanrenshaPersonId(newMasterId);
                 }
-
                 listInsert.add(newPropertyEntity);
             }
         }
@@ -130,9 +139,9 @@ public class SaveApprovalShokugyouService {
     /**
      * マスタを更新する
      * 
-     * @param masterEntity マスタEntity
-     * @param userDto ユーザ最小限Dtto
-     * @param nextShokugyou　新たな職業
+     * @param masterEntity  マスタEntity
+     * @param userDto       ユーザ最小限Dtto
+     * @param nextShokugyou 新たな職業
      * @return 新規データId
      */
     private Integer updateMaster(final KanrenshaPersonMasterEntity masterEntity, final LeastUserDto userDto,
@@ -152,7 +161,7 @@ public class SaveApprovalShokugyouService {
             kanrenshaPersonMasterRepository.save(masterEntity);
             return kanrenshaPersonMasterRepository.save(masterNewEntity).getKanrenshaPersonMasterId();
         }
-        
+
         return 0; // 変更なし
     }
 

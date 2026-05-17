@@ -3,6 +3,10 @@ package net.seijishikin.jp.normalize.manage.kanrensha.logic.year.y2025;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import java.time.LocalDateTime;
+import java.util.Map;
+import java.util.TreeMap;
+
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,9 +20,10 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import org.springframework.transaction.annotation.Transactional;
 
+import net.seijishikin.jp.normalize.common_tool.dto.DtoEntityInitialValueInterface;
 import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.constants.TaskInfoConstants;
-import net.seijishikin.jp.normalize.manage.kanrensha.dto.task.TaskPlanInfoDto;
+import net.seijishikin.jp.normalize.manage.kanrensha.dto.task.InsertTaskPlanResultDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.year.y2025.TaskPlan2025Entity;
 import net.seijishikin.jp.normalize.manage.kanrensha.repository.year.y2025.TaskPlan2025Repository;
 import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateLeastUserForTestUtil;
@@ -47,19 +52,52 @@ class InsertTaskPlanY2025LogicTest {
     @Tag("TableTruncate")
     void test() throws Exception {
 
-        Integer taskCode = TaskInfoConstants.SAVE_POSTAL_REPAIR_CSV;
+        final Integer taskCode = TaskInfoConstants.SAVE_POSTAL_REPAIR_CSV;
         LeastUserDto userDto = CreateLeastUserForTestUtil.practice();
-        TaskPlanInfoDto dto = insertTaskPlanY2025Logic.practice(userDto, taskCode);
+        LocalDateTime dateTimeStart = LocalDateTime.of(2025, 12, 13, 11, 22, 33);
+        Map<String, String> map = new TreeMap<>();
+        map.put("asd", "123");
+        map.put("zxc", "456");
+        LeastUserDto workUserDto = new LeastUserDto();
+        workUserDto.setUserPersonCode(854);
+        workUserDto.setUserPersonName("利用者　直子");
+
+        InsertTaskPlanResultDto dto = insertTaskPlanY2025Logic.practice(workUserDto, userDto, dateTimeStart, taskCode,
+                map);
 
         TaskPlan2025Entity entity = taskPlan2025Repository.findById(dto.getTaskPlanId()).get();
 
-        assertEquals(false, entity.getIsFinished());
         assertEquals(true, entity.getIsLatest());
-        assertEquals("admin,manager", entity.getRoleList());
-        assertEquals("pageUrl", entity.getTransferPass());
-        assertEquals("郵便番号差分修正", entity.getTaskPlanName());
 
-        assertThrows(EmptyResultDataAccessException.class, () -> insertTaskPlanY2025Logic.practice(userDto, 622));
+        assertEquals(dateTimeStart.getYear(), entity.getTableYear());
+        assertEquals(taskCode, entity.getTaskInfoCode());
+        assertEquals(1, entity.getTaskPlanCode());
+        assertEquals("郵便番号差分修正", entity.getTaskPlanName());
+        assertEquals(dateTimeStart, entity.getStartDatetime());
+        assertEquals(DtoEntityInitialValueInterface.INIT_TIMESTAMP, entity.getEndDateimte());
+        assertEquals(true, entity.getIsStart());
+        assertEquals(false, entity.getIsSuspended());
+        assertEquals(false, entity.getIsFinished());
+        assertEquals("admin,manager", entity.getRoleList());
+        assertEquals("http://localhost:6180/kanrensha-manage/edit-page?asd=123&zxc=456", entity.getTransferPass());
+        assertEquals(workUserDto.getUserPersonCode(), entity.getTaskUserCode());
+        assertEquals(workUserDto.getUserPersonName(), entity.getTaskUserName());
+
+        assertEquals(entity.getTaskInfoCode(), dto.getTaskInfoCode());
+        assertEquals(entity.getTaskPlanCode(), dto.getTaskPlanCode());
+        assertEquals(entity.getTaskPlanId(), dto.getTaskPlanId());
+        assertEquals(entity.getTaskPlanName(), dto.getTaskPlanName());
+        assertEquals(entity.getTableYear(), dto.getTaskYear());
+        assertEquals(entity.getTransferPass(), dto.getTransferPass());
+
+        assertThrows(EmptyResultDataAccessException.class,
+                () -> insertTaskPlanY2025Logic.practice(null, userDto, dateTimeStart, 622, map));
+
+        // 本人宛タスク
+        InsertTaskPlanResultDto dto1 = insertTaskPlanY2025Logic.practice(null, userDto, dateTimeStart, taskCode, map);
+        TaskPlan2025Entity entity1 = taskPlan2025Repository.findById(dto1.getTaskPlanId()).get();
+        assertEquals(userDto.getUserPersonCode(), entity1.getTaskUserCode());
+        assertEquals(userDto.getUserPersonName(), entity1.getTaskUserName());
     }
 
 }

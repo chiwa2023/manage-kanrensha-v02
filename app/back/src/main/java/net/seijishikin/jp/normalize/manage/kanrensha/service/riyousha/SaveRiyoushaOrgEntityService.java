@@ -12,6 +12,7 @@ import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
 import net.seijishikin.jp.normalize.common_tool.utils.FormatNaturalSearchTextUtil;
 import net.seijishikin.jp.normalize.common_tool.utils.SetTableDataHistoryUtil;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.riyousha.SaveRiyoushaOrgCapsuleDto;
+import net.seijishikin.jp.normalize.manage.kanrensha.entity.RiyoushaCombineOrgEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.RiyoushaOrgMasterEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.RiyoushaOrgPropertyEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.repository.RiyoushaOrgMasterRepository;
@@ -30,6 +31,10 @@ public class SaveRiyoushaOrgEntityService {
     /** 利用者組織属性Repository */
     @Autowired
     private RiyoushaOrgPropertyRepository riyoushaOrgPropertyRepository;
+
+    /** 利用者組織属性Repository */
+    @Autowired
+    private InsertRiyoushaCombinePersonService insertRiyoushaCombinePersonService;
 
     /** テーブル履歴設定utility */
     @Autowired
@@ -66,9 +71,11 @@ public class SaveRiyoushaOrgEntityService {
      */
     private Integer practiceInsert(final SaveRiyoushaOrgCapsuleDto capsuleDto) {
 
+        LeastUserDto userDto = capsuleDto.getUserDto();
+
         // 属性
         RiyoushaOrgPropertyEntity propertyEntity = this.createPropertyEntity(capsuleDto);
-        setTableDataHistoryUtil.practiceInsert(capsuleDto.getUserDto(), propertyEntity);
+        setTableDataHistoryUtil.practiceInsert(userDto, propertyEntity);
 
         Integer codeProperty = 1;
         Optional<RiyoushaOrgPropertyEntity> optionalProperty = riyoushaOrgPropertyRepository
@@ -86,12 +93,23 @@ public class SaveRiyoushaOrgEntityService {
         Integer codeMaster = 1;
         Optional<RiyoushaOrgMasterEntity> optionalAdmin = riyoushaOrgMasterRepository
                 .findFirstByOrderByRiyoushaOrgMasterCodeDesc();
-        if (!optionalProperty.isEmpty()) {
+        if (!optionalAdmin.isEmpty()) {
             codeMaster += optionalAdmin.get().getRiyoushaOrgMasterCode();
         }
         masterEntity.setRiyoushaOrgMasterCode(codeMaster);
 
         RiyoushaOrgMasterEntity savedMasterEntity = riyoushaOrgMasterRepository.save(masterEntity);
+
+        // 新規の時は作成者と組織の紐づけを行う
+        RiyoushaCombineOrgEntity orgEntity = new RiyoushaCombineOrgEntity();
+        orgEntity.setOrgRiyoushaCode(savedMasterEntity.getRiyoushaOrgMasterCode());
+        orgEntity.setOrgName(savedMasterEntity.getAllName());
+        orgEntity.setPersonCode(userDto.getUserPersonCode());
+        orgEntity.setRiyoushaRole(capsuleDto.getRiyoushaRole());
+        orgEntity.setPersonRiyoushaCode(capsuleDto.getRiyoushaCode());
+        orgEntity.setPersonRiyoushaName(capsuleDto.getRiyoushaName());
+
+        insertRiyoushaCombinePersonService.practice(orgEntity, userDto);
 
         return savedMasterEntity.getRiyoushaOrgMasterId();
     }
@@ -183,5 +201,4 @@ public class SaveRiyoushaOrgEntityService {
 
         return masterEntity;
     }
-
 }

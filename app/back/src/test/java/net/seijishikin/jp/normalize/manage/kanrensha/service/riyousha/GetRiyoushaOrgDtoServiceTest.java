@@ -91,19 +91,19 @@ class GetRiyoushaOrgDtoServiceTest {
         assertEquals(3, listPerson.size());
 
         RiyoushaCombineOrgEntity personEntity0 = listPerson.get(0);
-        assertEquals((short) 1, personEntity0.getRiyoushaKbn());
-        assertEquals(190, personEntity0.getPersonRiyoushaCode());
-        assertEquals("管理者太郎", personEntity0.getPersonName());
+        assertEquals("ROLE_partner_api", personEntity0.getRiyoushaRole()); //NOPMD DuplicateString
+        assertEquals(190, personEntity0.getPersonCode());
+        assertEquals("管理者太郎", personEntity0.getPersonRiyoushaName());
 
         RiyoushaCombineOrgEntity personEntity1 = listPerson.get(1);
-        assertEquals((short) 2, personEntity1.getRiyoushaKbn());
-        assertEquals(191, personEntity1.getPersonRiyoushaCode());
-        assertEquals("管理者花子", personEntity1.getPersonName());
+        assertEquals("ROLE_manager", personEntity1.getRiyoushaRole());
+        assertEquals(191, personEntity1.getPersonCode());
+        assertEquals("管理者花子", personEntity1.getPersonRiyoushaName());
 
         RiyoushaCombineOrgEntity personEntity2 = listPerson.get(2);
-        assertEquals((short) 3, personEntity2.getRiyoushaKbn());
-        assertEquals(192, personEntity2.getPersonRiyoushaCode());
-        assertEquals("管理者直子", personEntity2.getPersonName());
+        assertEquals("ROLE_partner_api", personEntity2.getRiyoushaRole());
+        assertEquals(192, personEntity2.getPersonCode());
+        assertEquals("管理者直子", personEntity2.getPersonRiyoushaName());
     }
 
     @Test
@@ -154,19 +154,19 @@ class GetRiyoushaOrgDtoServiceTest {
         assertEquals(3, listPerson.size());
 
         RiyoushaCombineOrgEntity personEntity0 = listPerson.get(0);
-        assertEquals((short) 1, personEntity0.getRiyoushaKbn());
-        assertEquals(190, personEntity0.getPersonRiyoushaCode());
-        assertEquals("管理者太郎", personEntity0.getPersonName());
+        assertEquals("ROLE_partner_api", personEntity0.getRiyoushaRole());
+        assertEquals(190, personEntity0.getPersonCode());
+        assertEquals("管理者太郎", personEntity0.getPersonRiyoushaName());
 
         RiyoushaCombineOrgEntity personEntity1 = listPerson.get(1);
-        assertEquals((short) 2, personEntity1.getRiyoushaKbn());
-        assertEquals(191, personEntity1.getPersonRiyoushaCode());
-        assertEquals("管理者花子", personEntity1.getPersonName());
+        assertEquals("ROLE_manager", personEntity1.getRiyoushaRole());
+        assertEquals(191, personEntity1.getPersonCode());
+        assertEquals("管理者花子", personEntity1.getPersonRiyoushaName());
 
         RiyoushaCombineOrgEntity personEntity2 = listPerson.get(2);
-        assertEquals((short) 3, personEntity2.getRiyoushaKbn());
-        assertEquals(192, personEntity2.getPersonRiyoushaCode());
-        assertEquals("管理者直子", personEntity2.getPersonName());
+        assertEquals("ROLE_partner_api", personEntity2.getRiyoushaRole());
+        assertEquals(192, personEntity2.getPersonCode());
+        assertEquals("管理者直子", personEntity2.getPersonRiyoushaName());
     }
 
 }

@@ -17,7 +17,7 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 import net.seijishikin.jp.normalize.common_tool.dto.FrameworkMessageAndResultDto;
-import net.seijishikin.jp.normalize.manage.kanrensha.dto.riyousha.DeleteRiyoushaOrgCapsuleDto;
+import net.seijishikin.jp.normalize.manage.kanrensha.dto.riyousha.UpdateRiyoushaOrgCapsuleDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.RiyoushaCombineOrgEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.RiyoushaOrgMasterEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.RiyoushaOrgPropertyEntity;
@@ -57,12 +57,12 @@ class DeleteRiyoushaOrgSeviceTest {
     void test() throws Exception {
 
         // 削除失敗
-        FrameworkMessageAndResultDto resultDto0 = deleteRiyoushaOrgSevice.practice(new DeleteRiyoushaOrgCapsuleDto());
+        FrameworkMessageAndResultDto resultDto0 = deleteRiyoushaOrgSevice.practice(new UpdateRiyoushaOrgCapsuleDto());
         assertTrue(resultDto0.getIsFailure());
 
         final Integer deleteId = 318;
         
-        DeleteRiyoushaOrgCapsuleDto capsuleDto = new DeleteRiyoushaOrgCapsuleDto();
+        UpdateRiyoushaOrgCapsuleDto capsuleDto = new UpdateRiyoushaOrgCapsuleDto();
         capsuleDto.setUserDto(CreateLeastUserForTestUtil.practice());
         RiyoushaOrgMasterEntity masterEntity = riyoushaOrgMasterRepository.findById(deleteId).get();
 

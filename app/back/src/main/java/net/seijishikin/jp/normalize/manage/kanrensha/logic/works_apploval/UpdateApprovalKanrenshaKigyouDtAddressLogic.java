@@ -72,12 +72,12 @@ public class UpdateApprovalKanrenshaKigyouDtAddressLogic {
         } else {
             setTableDataHistoryUtil.practiceDelete(userDto, entityLoad);
             kanrenshaKigyouDtAddressRepository.save(entityLoad);
-
         }
 
         // マスタ本体も必要に応じて修正
-        Integer newMasterId = this.updateMaster(callKigyouDtMasterEntityLogic.practice(entityLoad.getKigyouDtKanrenshaCode()),
-                userDto, CreateAllAddressUtil.practice(entity.getAddressPostal(), entity.getAddressBlock(),
+        Integer newMasterId = this.updateMaster(
+                callKigyouDtMasterEntityLogic.practice(entityLoad.getKigyouDtKanrenshaCode()), userDto,
+                CreateAllAddressUtil.practice(entity.getAddressPostal(), entity.getAddressBlock(),
                         entity.getAddressBuilding()));
 
         // 住所履歴積み上げ
@@ -127,7 +127,7 @@ public class UpdateApprovalKanrenshaKigyouDtAddressLogic {
             final String nextAddress) {
 
         // 最新かつ住所が異なる場合はマスタも更新
-        
+
         if (masterEntity.getIsLatest() && !nextAddress.equals(masterEntity.getAllAddress())) {
 
             KanrenshaKigyouDtMasterEntity masterNewEntity = new KanrenshaKigyouDtMasterEntity();

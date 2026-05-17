@@ -69,7 +69,7 @@ class RegistBulkMasterMinSeijidantaiControllerTest {
 
         ObjectMapper objectMapper = GetObjectMapperWithTimeModuleUtil.practice();
 
-        String path = PathRouteConstants.ROOT + "/regist-bulk-master-min/update-poli-org";
+        String path = PathRouteConstants.ROOT + "/regist-bulk-master-min/update-seijidantai";
 
         // サーバステータスがOK(200)
         assertEquals(HttpStatus.OK.value(), mockMvc // NOPMD LawOfDemeter

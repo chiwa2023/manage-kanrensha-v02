@@ -47,6 +47,7 @@ public class SaveStackTraceService {
         if (Objects.isNull(exception)) {
             throw new IllegalArgumentException("保存しようとしているExceptionがnullです");
         }
+
         Integer taskCode = 0;
         if (!Objects.isNull(taskPlanCode)) {
             taskCode = taskPlanCode;

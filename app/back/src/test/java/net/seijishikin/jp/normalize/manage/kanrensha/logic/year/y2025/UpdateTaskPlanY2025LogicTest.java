@@ -19,8 +19,10 @@ import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import org.springframework.transaction.annotation.Transactional;
 
 import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
-import net.seijishikin.jp.normalize.manage.kanrensha.dto.task.TaskPlanInfoDto;
+import net.seijishikin.jp.normalize.manage.kanrensha.constants.TaskInfoConstants;
+import net.seijishikin.jp.normalize.manage.kanrensha.dto.task.InsertTaskPlanResultDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.year.y2025.TaskPlan2025Entity;
+import net.seijishikin.jp.normalize.manage.kanrensha.logic.task_plan.CreateQueryParamDummyUtil;
 import net.seijishikin.jp.normalize.manage.kanrensha.repository.year.y2025.TaskPlan2025Repository;
 import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateLeastUserForTestUtil;
 
@@ -52,12 +54,18 @@ class UpdateTaskPlanY2025LogicTest {
     @Tag("TableTruncate")
     void test() throws Exception {
 
-        Integer taskCode = 101;
+        Integer taskCode = TaskInfoConstants.SAVE_POSTAL_REPAIR_CSV;
         LeastUserDto userDto = CreateLeastUserForTestUtil.practice();
-        TaskPlanInfoDto dto = insertTaskPlanY2025Logic.practice(userDto, taskCode);
+        LocalDateTime datetimeStart = LocalDateTime.of(2025, 1, 5, 11, 22, 33);
+        LeastUserDto workUserDto = new LeastUserDto(); 
+        workUserDto.setUserPersonCode(854);
+        workUserDto.setUserPersonName("利用者　直子");
+
+        InsertTaskPlanResultDto dto = insertTaskPlanY2025Logic.practice(workUserDto,userDto, datetimeStart, taskCode,
+                CreateQueryParamDummyUtil.practice());
         Integer newId = dto.getTaskPlanId();
 
-        LocalDateTime datetime = LocalDateTime.of(2022, 12, 5, 12, 34, 56);
+        LocalDateTime datetime = LocalDateTime.of(2026, 12, 5, 12, 34, 56);
         Boolean isFinished = true;
         Integer updateId = updateTaskPlanY2025Logic.practice(userDto, newId, datetime, isFinished);
 
@@ -70,6 +78,8 @@ class UpdateTaskPlanY2025LogicTest {
         assertEquals(updateId, updateEntity.getTaskPlanId());
         assertEquals(updateEntity.getTaskPlanCode(), updateEntity.getTaskPlanCode());
         assertEquals(updateEntity.getTaskInfoCode(), updateEntity.getTaskInfoCode());
+        assertEquals(workUserDto.getUserPersonCode(), updateEntity.getTaskUserCode());
+        assertEquals(workUserDto.getUserPersonName(), updateEntity.getTaskUserName());
         assertEquals(datetime, updateEntity.getEndDateimte());
         assertEquals(isFinished, updateEntity.getIsFinished());
         assertEquals(!isFinished, updateEntity.getIsSuspended());

@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import io.netty.handler.codec.http.HttpResponseStatus;
+import org.springframework.http.HttpStatus;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.riyousha.SearchRiyoushaOrgCapsuleDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.riyousha.SearchRiyoushaOrgResultDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.riyousha.SearchRiyoushaOrgService;
@@ -41,20 +41,24 @@ public class SearchRiyoushaOrgController {
     public ResponseEntity<SearchRiyoushaOrgResultDto> practice(
             @RequestBody final SearchRiyoushaOrgCapsuleDto capsuleDto) {
 
+        SearchRiyoushaOrgResultDto resultDto;
         try {
-            SearchRiyoushaOrgResultDto resultDto = searchRiyoushaOrgService.practice(capsuleDto);
+            resultDto = searchRiyoushaOrgService.practice(capsuleDto);
 
             if (resultDto.getAllCount() == 0) {
                 resultDto.setMessage("検索結果が取得できませんでした");
-                return ResponseEntity.status(HttpResponseStatus.ACCEPTED.code()).body(resultDto);
+                return ResponseEntity.status(HttpStatus.ACCEPTED).body(resultDto);
 
             } else {
-                return ResponseEntity.status(HttpResponseStatus.OK.code()).body(resultDto);
+                return ResponseEntity.status(HttpStatus.OK).body(resultDto);
             }
 
         } catch (Exception exception) { // NOPMD 業務上の理由で積極的許容
             saveStackTraceService.practice(exception, Year.now().getValue(), 0);
-            return ResponseEntity.status(HttpResponseStatus.INTERNAL_SERVER_ERROR.code()).build();
+            resultDto = new SearchRiyoushaOrgResultDto();
+            resultDto.setIsFailure(true);
+            resultDto.setMessage(exception.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(resultDto);
 
         }
 

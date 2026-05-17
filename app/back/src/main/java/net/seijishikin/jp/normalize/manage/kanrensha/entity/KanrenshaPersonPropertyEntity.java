@@ -136,6 +136,27 @@ public class KanrenshaPersonPropertyEntity // NOPMD DataClass
         this.isLatest = isLatest;
     }
 
+    /** 姓名かな */
+    private String allNameKana = INIT_STRING;
+    
+    /**
+     * 姓名かなを取得する。
+     * 
+     * @return 姓名かな
+     */
+    public String getAllNameKana() {
+        return allNameKana;
+    }
+
+    /**
+     * 姓名かなを設定する。
+     * 
+     * @param allNameKana 姓名かな
+     */
+    public void setAllNameKana(final String allNameKana) {
+        this.allNameKana = allNameKana;
+    }
+
     /** 外国籍該否 */
     @Column(name = "is_foreign")
     private Boolean isForeign = INIT_BOOLEAN;

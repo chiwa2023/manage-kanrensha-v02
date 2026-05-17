@@ -2,22 +2,21 @@ package net.seijishikin.jp.normalize.manage.kanrensha.dto.kanrensha;
 
 import java.io.Serializable;
 
+import net.seijishikin.jp.normalize.common_tool.dto.DtoEntityInitialValueInterface;
+
 /**
  * 関連者個人最小Dto
  */
-public class InputKanrenshaPersonLeastDto implements Serializable { // NOPMD DataClass
+public class InputKanrenshaPersonLeastDto implements Serializable, DtoEntityInitialValueInterface { // NOPMD DataClass
 
     /** Serialize id */
     private static final long serialVersionUID = 1L;
 
-    /** 初期データ(String) */
-    private static final String INIT_String = "";
-
     /** 関連者個人姓名 */
-    private String personName = INIT_String;
+    private String personName = INIT_STRING;
 
     /** 関連者個人コード */
-    private String personKanrenshaCode = INIT_String;
+    private String personKanrenshaCode = INIT_STRING;
 
     /**
      * 関連者個人姓名を取得する

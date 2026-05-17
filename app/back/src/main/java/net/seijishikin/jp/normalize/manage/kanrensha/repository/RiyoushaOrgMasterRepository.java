@@ -52,4 +52,12 @@ public interface RiyoushaOrgMasterRepository extends JpaRepository<RiyoushaOrgMa
      */
     Optional<RiyoushaOrgMasterEntity> findByRiyoushaOrgMasterCodeAndIsLatestTrue(Integer masterCode);
 
+    
+    /**
+     * マスタコード最新データかつ名称一致を取得する
+     * 
+     * @param masterCode マスタコード
+     * @return 利用者組織マスタEnity
+     */
+    Optional<RiyoushaOrgMasterEntity> findByRiyoushaOrgMasterCodeAndAllNameAndIsLatestTrue(Integer masterCode,String name);
 }

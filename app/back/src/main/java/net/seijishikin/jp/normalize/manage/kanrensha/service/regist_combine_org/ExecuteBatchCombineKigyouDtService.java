@@ -1,7 +1,5 @@
 package net.seijishikin.jp.normalize.manage.kanrensha.service.regist_combine_org;
 
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -11,7 +9,6 @@ import org.springframework.batch.core.JobParametersBuilder;
 import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
@@ -28,7 +25,6 @@ import net.seijishikin.jp.normalize.manage.kanrensha.service.util.SaveStackTrace
  * 個人団体紐づけcsv読み取り処理からすべて政治団体Service
  */
 @Service
-@ConfigurationProperties(prefix = "net.seijishikin.jp.normalize.kanrensha")
 public class ExecuteBatchCombineKigyouDtService {
 
     /** 起動をするJob */
@@ -48,27 +44,6 @@ public class ExecuteBatchCombineKigyouDtService {
     @Autowired
     private GetCombineYearListLogic getCombineYearListLogic;
 
-    /** propertiesからインジェクションされた最上位保存フォルダ絶対パス */
-    private String storageFolder;
-
-    /**
-     * 最上位保存フォルダ絶対パスを取得する
-     *
-     * @return 最上位保存フォルダ絶対パス
-     */
-    public String getStorageFolder() {
-        return storageFolder;
-    }
-
-    /**
-     * 最上位保存フォルダ絶対パスを設定する
-     *
-     * @param storageFolder 最上位保存フォルダ絶対パス
-     */
-    public void setStorageFolder(final String storageFolder) {
-        this.storageFolder = storageFolder;
-    }
-
     /**
      * 処理を行う
      *
@@ -80,13 +55,13 @@ public class ExecuteBatchCombineKigyouDtService {
     public void practice(final Integer year, final LeastUserDto userDto, final TaskPlanWithUseFileDto planFileDto) {
 
         try {
-            Path path = Paths.get(storageFolder, planFileDto.getReadFile().toString()); // NOPMD LowOfDemeter
 
             List<Short> listYear = getCombineYearListLogic.practice();
 
             JobParameters jobParameters = new JobParametersBuilder(
                     addCombineOrg.getJobParametersIncrementer().getNext(new JobParameters())) // NOPMD
-                    .addLocalDateTime("executeTime", LocalDateTime.now()).addString("readFilePath", path.toString())
+                    .addLocalDateTime("executeTime", LocalDateTime.now()) //
+                    .addString("readFilePath", planFileDto.getReadFile().toString()) // NOPMD LawOfDemeter
                     .addLong(CreateUserLeastDtoByBatchParamUtil.USER_ID_PARAM,
                             Long.parseLong(userDto.getUserPersonId().toString()))
                     .addLong(CreateUserLeastDtoByBatchParamUtil.USER_CODE_PARAM,
@@ -97,7 +72,8 @@ public class ExecuteBatchCombineKigyouDtService {
                     .addString("yearMax", String.valueOf(listYear.getLast()))
                     .addLong(RecordTaskPlanJobExecutionListner.KEY_YEAR, (long) year)
                     .addLong(RecordTaskPlanJobExecutionListner.KEY_ID, (long) planFileDto.getTaskPlanId())
-                    .addLong(RecordTaskPlanJobExecutionListner.KEY_CODE, (long) planFileDto.getTaskPlanCode()).toJobParameters();
+                    .addLong(RecordTaskPlanJobExecutionListner.KEY_CODE, (long) planFileDto.getTaskPlanCode())
+                    .toJobParameters();
 
             jobLauncher.run(addCombineOrg, jobParameters);
 

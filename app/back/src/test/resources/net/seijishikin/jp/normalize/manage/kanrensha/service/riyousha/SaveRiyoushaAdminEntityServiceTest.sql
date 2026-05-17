@@ -14,3 +14,31 @@ INSERT INTO `riyousha_person_property` (`riyousha_person_property_id`,`riyousha_
 INSERT INTO `riyousha_person_property` (`riyousha_person_property_id`,`riyousha_person_property_code`,`is_latest`,`last_name`,`first_name`,`middle_name`,`last_name_kana`,`first_name_kana`,`middle_name_kana`,`postalcode1`,`postalcode2`,`address_postal`,`address_block`,`address_building`,`lg_code`,`machiaza_id`,`blk_id`,`prc_id`,`rsdt_id`,`rsdt2_id`,`phon1`,`phon2`,`phon3`,`email`,`my_portal_url`,`sns_service_id`,`sns_service_code`,`sns_service_name`,`sns_portal_url`,`sns_account`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`) VALUES (2,2,1,'管理者','花子','マリア','うんえいしゃ','はなこ','まりあ','987','5432','宮崎県実在市山麓町','3丁目6の9','星形ビル444','123456','2345','3456','4567','5678','6789','567','8901','2345','test@example.com','http://example.com/',1,2,'無名SNS','http://jakushou.sns.net/','@123hanakao',196,190,'管理人　花子','2025-11-24 14:38:24',0,0,'','1948-07-28 23:59:59');
 INSERT INTO `riyousha_person_property` (`riyousha_person_property_id`,`riyousha_person_property_code`,`is_latest`,`last_name`,`first_name`,`middle_name`,`last_name_kana`,`first_name_kana`,`middle_name_kana`,`postalcode1`,`postalcode2`,`address_postal`,`address_block`,`address_building`,`lg_code`,`machiaza_id`,`blk_id`,`prc_id`,`rsdt_id`,`rsdt2_id`,`phon1`,`phon2`,`phon3`,`email`,`my_portal_url`,`sns_service_id`,`sns_service_code`,`sns_service_name`,`sns_portal_url`,`sns_account`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`) VALUES (3,3,1,'管理者','花子','マリア','うんえいしゃ','はなこ','まりあ','987','5432','宮崎県実在市山麓町','3丁目6の9','星形ビル444','123456','2345','3456','4567','5678','6789','567','8901','2345','test@example.com','http://example.com/',1,2,'無名SNS','http://jakushou.sns.net/','@123hanakao',196,190,'管理人　花子','2025-11-24 14:39:09',0,0,'','1948-07-28 23:59:59');
 INSERT INTO `riyousha_person_property` (`riyousha_person_property_id`,`riyousha_person_property_code`,`is_latest`,`last_name`,`first_name`,`middle_name`,`last_name_kana`,`first_name_kana`,`middle_name_kana`,`postalcode1`,`postalcode2`,`address_postal`,`address_block`,`address_building`,`lg_code`,`machiaza_id`,`blk_id`,`prc_id`,`rsdt_id`,`rsdt2_id`,`phon1`,`phon2`,`phon3`,`email`,`my_portal_url`,`sns_service_id`,`sns_service_code`,`sns_service_name`,`sns_portal_url`,`sns_account`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`) VALUES (4,4,1,'管理者','花子','マリア','うんえいしゃ','はなこ','まりあ','987','5432','宮崎県実在市山麓町','3丁目6の9','星形ビル444','123456','2345','3456','4567','5678','6789','567','8901','2345','test@example.com','http://example.com/',1,2,'無名SNS','http://jakushou.sns.net/','@123hanakao',196,190,'管理人　花子','2025-11-24 14:40:08',0,0,'','1948-07-28 23:59:59');
+
+DELETE FROM `user_role`;
+ALTER TABLE `user_role` auto_increment = 1;
+
+DELETE FROM `user_person`;
+ALTER TABLE `user_person` auto_increment = 80;
+
+
+
+INSERT INTO `user_person` (`user_person_id`,`user_person_code`,`user_person_name`,`is_latest`,`email`  ,`is_alert_task_start`  ,`is_alert_task_end`       ,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`) 
+  VALUES 
+  (80,80,'aaa',1,'qqq@politician.balanse.report.net',0,0 ,1,1,'aaa','2026-01-05 20:15:48',0,0,'','1948-07-28 22:59:59')
+  ,(81,80,'aaa',1,'aaa@politician.balanse.report.net',0,0 ,1,1,'aaa','2026-01-05 20:15:48',0,0,'','1948-07-28 22:59:59')
+  ,(82,83,'bbb',1,'bbb@politician.balanse.report.net',1,1 ,1,1,'bbb','2026-01-05 20:15:48',0,0,'','1948-07-28 22:59:59')
+  ,(196,83,'bbb',1,'ccc@politician.balanse.report.net',1,1 ,1,1,'bbb','2026-01-05 20:15:48',0,0,'','1948-07-28 22:59:59')
+  ;
+
+INSERT INTO `user_role` (`user_role_id`,`email`,`is_latest`,`role`,`kanrensha_code`,`riyousha_code`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`)
+  VALUES 
+  (80,'qqq@politician.balanse.report.net',1,'manager','dvsdf',0,1,1,'aaa','2026-01-05 20:15:48',0,0,'','1948-07-28 22:59:59')
+  ,(81,'aaa@politician.balanse.report.net',1,'manager','',244,1,1,'aaa','2026-01-05 20:15:48',0,0,'','1948-07-28 22:59:59')
+  ,(82,'bbb@politician.balanse.report.net',1,'manager','ndfx',913,1,1,'bbb','2026-01-05 20:15:48',0,0,'','1948-07-28 22:59:59')
+  ,(83,'bbb@politician.balanse.report.net',1,'manager','ndfx',913,1,1,'bbb','2026-01-05 20:15:48',0,0,'','1948-07-28 22:59:59')
+  ,(84,'bbb@politician.balanse.report.net',1,'manager','ndfx',913,1,1,'bbb','2026-01-05 20:15:48',0,0,'','1948-07-28 22:59:59')
+  ,(190,'ccc@politician.balanse.report.net',1,'admin','',0,1,1,'aaa','2026-01-05 20:15:48',0,0,'','1948-07-28 22:59:59')
+  ;
+
+  

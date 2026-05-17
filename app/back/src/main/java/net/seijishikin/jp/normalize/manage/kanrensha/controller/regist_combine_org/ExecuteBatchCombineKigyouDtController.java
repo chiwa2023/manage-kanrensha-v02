@@ -1,6 +1,8 @@
 package net.seijishikin.jp.normalize.manage.kanrensha.controller.regist_combine_org;
 
-import java.time.Year;
+import java.time.LocalDateTime;
+import java.util.Map;
+import java.util.TreeMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -9,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import io.netty.handler.codec.http.HttpResponseStatus;
+import org.springframework.http.HttpStatus;
 import net.seijishikin.jp.normalize.common_tool.dto.FrameworkMessageAndResultDto;
 import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.kanrensha.RegistDataByCsvFileCapsuleDto;
@@ -46,29 +48,37 @@ public class ExecuteBatchCombineKigyouDtController {
      * @param capsuleDto Csv登録バッチ起動条件Dto
      * @return 処理受付レスポンス
      */
-    @PostMapping("/execute-kigyouDt")
+    @PostMapping("/execute-kigyou-dt")
     public ResponseEntity<FrameworkMessageAndResultDto> practice(
             final @RequestBody RegistDataByCsvFileCapsuleDto capsuleDto) {
 
-        Integer year = Year.now().getValue();
+        LocalDateTime dateTimeStart = LocalDateTime.now();
+        Integer year = dateTimeStart.getYear();
         LeastUserDto userDto = capsuleDto.getUserDto();
         Integer taskPlanCode = 0;
+        FrameworkMessageAndResultDto resultDto = new FrameworkMessageAndResultDto();
         try {
-            FrameworkMessageAndResultDto resultDto = new FrameworkMessageAndResultDto();
             resultDto.setMessage("処理を開始しました。完了までしばらくお待ちください。");
 
-            TaskPlanWithUseFileDto planFileDto = copyTempToUseSavedFileService.practice(year,
+            // 一時ファイルを本ファイルとして登録、タスクを登録
+            // TODO Queryはfront連結後決定
+            Map<String, String> mapParam = new TreeMap<>();
+
+            TaskPlanWithUseFileDto planFileDto = copyTempToUseSavedFileService.practice(dateTimeStart,
                     capsuleDto.getStorageFileDto(), userDto, FileTypeConstants.FILE_TYPE,
-                    TaskInfoConstants.COMBINE_KIGYOU);
+                    TaskInfoConstants.COMBINE_KIGYOU, mapParam);
             taskPlanCode = planFileDto.getTaskPlanCode();
-            
+
+            // 本処理
             executeBatchCombineKigyouDtService.practice(year, capsuleDto.getUserDto(), planFileDto);
 
-            return ResponseEntity.status(HttpResponseStatus.OK.code()).body(resultDto);
+            return ResponseEntity.status(HttpStatus.OK).body(resultDto);
 
         } catch (Exception exception) { // NOPMD 業務的な理由から積極的に許容
             saveStackTraceService.practice(exception, year, taskPlanCode);
-            return ResponseEntity.status(HttpResponseStatus.INTERNAL_SERVER_ERROR.code()).build();
+            resultDto.setIsFailure(true);
+            resultDto.setMessage(exception.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(resultDto);
         }
     }
 }

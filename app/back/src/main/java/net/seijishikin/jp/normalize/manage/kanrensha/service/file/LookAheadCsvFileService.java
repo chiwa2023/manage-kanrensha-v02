@@ -20,7 +20,6 @@ import net.seijishikin.jp.normalize.manage.kanrensha.logic.file.GetAbsolutePathL
 import net.seijishikin.jp.normalize.manage.kanrensha.logic.file.GetTempFilePathLogic;
 import net.seijishikin.jp.normalize.manage.kanrensha.logic.file.SaveFileLogic;
 
-
 /**
  * アップロードされたCSVファイルを10行先読みService
  */
@@ -57,7 +56,7 @@ public class LookAheadCsvFileService {
         StorageFileDto storageFileDto = getTempFilePathLogic.practice(month, uploadFileDto.getFileName());
         resultDto.setStorageFileDto(storageFileDto);
 
-        Path path = getAbsolutePathLogic.practice(storageFileDto.getSavedDir(),storageFileDto.getFileName());
+        Path path = getAbsolutePathLogic.practice(storageFileDto.getSavedDir(), storageFileDto.getFileName());
 
         if (saveFileLogic.practice(path, uploadFileDto.getFileContent())) {
 
@@ -77,17 +76,22 @@ public class LookAheadCsvFileService {
             }
 
             resultDto.setTableData(listCsv);
+            if (listCsv.isEmpty()) {
+                resultDto.setIsFailure(true);
+                resultDto.setMessage("ファイル内のデータが取得できませんでした");
+            }
             return resultDto;
 
         } else {
-            // ファイルが正常保存できなかった場合
-            return null;
+            resultDto.setIsFailure(true);
+            resultDto.setMessage("ファイルが正常に保存できませんでした");
+            return resultDto;
         }
 
     }
 
     private List<String> addColumn(final int count, final List<String> list) {
-        
+
         // Arrays.asListでは不変リストが作成されるので作り直し
         List<String> listData = new ArrayList<>(list);
 

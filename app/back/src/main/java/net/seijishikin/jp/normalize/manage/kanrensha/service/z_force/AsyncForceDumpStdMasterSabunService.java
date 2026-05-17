@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 import net.seijishikin.jp.normalize.manage.kanrensha.constants.MasterCsvFileNameConstants;
 import net.seijishikin.jp.normalize.manage.kanrensha.constants.MasterCsvFileNameConstants.SabunMasterStd;
-import net.seijishikin.jp.normalize.manage.kanrensha.dto.task.TaskPlanInfoDto;
+import net.seijishikin.jp.normalize.manage.kanrensha.dto.task.InsertTaskPlanResultDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.z_force.ForceDumpCapsuleDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.logic.file.CompressZipPointedFileLogic;
 import net.seijishikin.jp.normalize.manage.kanrensha.logic.file.CreateMasterCompressFilePathLogic;
@@ -51,13 +51,16 @@ public class AsyncForceDumpStdMasterSabunService {
      * @param capsuleDto 処理条件Dto
      */
     @Async
-    public void practice(final Integer year, final TaskPlanInfoDto planDto1, final TaskPlanInfoDto planDto2, final TaskPlanInfoDto planDto3, final ForceDumpCapsuleDto capsuleDto) {
+    public void practice(final Integer year, final InsertTaskPlanResultDto planDto1,
+            final InsertTaskPlanResultDto planDto2, final InsertTaskPlanResultDto planDto3,
+            final ForceDumpCapsuleDto capsuleDto) {
 
         LocalDate startDate = capsuleDto.getDateStart();
         LocalDate endDate = capsuleDto.getDateEnd();
 
         if (capsuleDto.getIsExecuteKigyouDt()) {
-            forceSabunDumpStdMasterKigyouDtService.practice(year, planDto1, startDate, endDate, capsuleDto.getUserDto());
+            forceSabunDumpStdMasterKigyouDtService.practice(year, planDto1, startDate, endDate,
+                    capsuleDto.getUserDto());
         }
         if (capsuleDto.getIsExecutePerson()) {
             forceSabunDumpStdMasterPersonService.practice(year, planDto2, startDate, endDate, capsuleDto.getUserDto());

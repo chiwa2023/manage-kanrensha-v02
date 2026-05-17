@@ -136,26 +136,70 @@ public class TaskInfoEntity // NOPMD DataClass
         this.roleList = roleList;
     }
 
-    /** メッセージテンプレート */
-    @Column(name = "message_template")
-    private String messageTemplate = INIT_STRING;
+    /** 開始メッセージ */
+    @Column(name = "message_start")
+    private String messageStart = INIT_STRING;
 
     /**
-     * メッセージテンプレートを取得する
+     * 開始メッセージを取得する
      *
-     * @return メッセージテンプレート
+     * @return 開始メッセージ
      */
-    public String getMessageTemplate() {
-        return messageTemplate;
+    public String getMessageStart() {
+        return messageStart;
     }
 
     /**
-     * メッセージテンプレートを設定する
+     * 開始メッセージを設定する
      *
-     * @param messageTemplate メッセージテンプレート
+     * @param messageStart 開始メッセージ
      */
-    public void setMessageTemplate(final String messageTemplate) {
-        this.messageTemplate = messageTemplate;
+    public void setMessageStart(final String messageStart) {
+        this.messageStart = messageStart;
+    }
+
+    /** 終了メッセージ  */
+    @Column(name = "message_finish")
+    private String messageFinish = INIT_STRING;
+
+    /**
+     * 終了メッセージを取得する
+     *
+     * @return 終了メッセージ
+     */
+    public String getMessageFinish() {
+        return messageFinish;
+    }
+
+    /**
+     * 終了メッセージを設定する
+     *
+     * @param messageFinish 終了メッセージ
+     */
+    public void setMessageFinish(final String messageFinish) {
+        this.messageFinish = messageFinish;
+    }
+
+    /** 中断メッセージ */
+    @Column(name = "message_suspend")
+    private String messageSuspend = INIT_STRING;
+
+    /**
+     * 中断メッセージを取得する
+     *
+     * @return 中断メッセージ
+     */
+    public String getMessageSuspend() {
+        return messageSuspend;
+    }
+
+    /**
+     * 中断メッセージを設定する
+     *
+     * @param messageSuspend 中断メッセージ
+     */
+    public void setMessageSuspend(final String messageSuspend) {
+        this.messageSuspend = messageSuspend;
     }
 
     /** 遷移パス(URL) */
@@ -180,23 +224,23 @@ public class TaskInfoEntity // NOPMD DataClass
         this.transferPass = transferPass;
     }
 
-    /** SNS同一識別コード */
+    /** 遷移時引数 */
     @Column(name = "param_query")
     private String paramQuery = INIT_STRING;
 
     /**
-     * SNS同一識別コードを取得する
+     * 遷移時引数
      *
-     * @return SNS同一識別コード
+     * @return 遷移時引数
      */
     public String getParamQuery() {
         return paramQuery;
     }
 
     /**
-     * SNS同一識別コードを設定する
+     * 遷移時引数
      *
-     * @param paramQuery SNS同一識別コード
+     * @param paramQuery 遷移時引数
      */
     public void setParamQuery(final String paramQuery) {
         this.paramQuery = paramQuery;

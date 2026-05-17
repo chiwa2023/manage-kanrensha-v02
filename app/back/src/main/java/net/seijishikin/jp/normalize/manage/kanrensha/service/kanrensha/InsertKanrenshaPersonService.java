@@ -10,8 +10,9 @@ import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
 import net.seijishikin.jp.normalize.common_tool.dto.input.InputShokugyouDto;
 import net.seijishikin.jp.normalize.common_tool.utils.FormatNaturalSearchTextUtil;
 import net.seijishikin.jp.normalize.common_tool.utils.SetTableDataHistoryUtil;
+import net.seijishikin.jp.normalize.manage.kanrensha.constants.UserRoleConstants;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.kanrensha.KanrenshaPersonDto;
-import net.seijishikin.jp.normalize.manage.kanrensha.dto.user.SaveKanrenshaPersonCapsuleDto;
+import net.seijishikin.jp.normalize.manage.kanrensha.dto.kanrensha.SaveKanrenshaPersonCapsuleDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.KanrenshaPersonAccessEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.KanrenshaPersonAddressEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.KanrenshaPersonHistoryBaseEntity;
@@ -21,7 +22,7 @@ import net.seijishikin.jp.normalize.manage.kanrensha.repository.KanrenshaPersonA
 import net.seijishikin.jp.normalize.manage.kanrensha.repository.KanrenshaPersonAddressRepository;
 import net.seijishikin.jp.normalize.manage.kanrensha.repository.KanrenshaPersonMasterRepository;
 import net.seijishikin.jp.normalize.manage.kanrensha.repository.KanrenshaPersonPropertyRepository;
-//import net.seijishikin.jp.normalize.manage.kanrensha.logic.user.InsertCombineUserKanrenshaLogic;
+import net.seijishikin.jp.normalize.manage.kanrensha.logic.user.InsertCombineUserKanrenshaLogic;
 import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateDokujiCodeForPersonUtil;
 
 /**
@@ -50,9 +51,9 @@ public class InsertKanrenshaPersonService {
     @Autowired
     private InsertKanrenshaPersonHistoryService insertKanrenshaPersonHistoryService;
 
-//    /** ユーザ関連者紐づけLogic */
-//    @Autowired
-//    private InsertCombineUserKanrenshaLogic insertCombineUserKanrenshaLogic;
+    /** ユーザ関連者紐づけLogic */
+    @Autowired
+    private InsertCombineUserKanrenshaLogic insertCombineUserKanrenshaLogic;
 
     /** 全文自然検索整形Utility */
     @Autowired
@@ -107,7 +108,7 @@ public class InsertKanrenshaPersonService {
         KanrenshaPersonAccessEntity accessEntity = new KanrenshaPersonAccessEntity();
         BeanUtils.copyProperties(kanrenshaPersonDto.getInputAccessDto(), accessEntity);
         accessEntity.setPersonKanrenshaCode(newCode);
-        accessEntity.setKanrenshaPersonId(newId); 
+        accessEntity.setKanrenshaPersonId(newId);
         accessEntity.setKanrenshaName(personEntity.getKanrenshaName());
         accessEntity.setKanrenshaPersonAccessId(0); // auto_increment明示
         setTableDataHistoryUtil.practiceInsert(userDto, accessEntity);
@@ -119,7 +120,7 @@ public class InsertKanrenshaPersonService {
         InputShokugyouDto inputShokugyouDto = kanrenshaPersonDto.getInputShokugyouDto();
         BeanUtils.copyProperties(inputShokugyouDto, propertyEntity);
         propertyEntity.setPersonKanrenshaCode(newCode);
-        propertyEntity.setKanrenshaPersonId(newId); 
+        propertyEntity.setKanrenshaPersonId(newId);
         propertyEntity.setKanrenshaName(personEntity.getKanrenshaName());
         propertyEntity.setKigyouDtNo(inputShokugyouDto.getHoujinNo());
         propertyEntity.setKigyouDtName(inputShokugyouDto.getHoujinName());
@@ -128,7 +129,7 @@ public class InsertKanrenshaPersonService {
         propertyEntity.setIsShokyouEdit(
                 !DtoEntityInitialValueInterface.INIT_STRING.equals(inputShokugyouDto.getShokugyouUserWrite()));
         propertyEntity.setIsForeign(kanrenshaPersonDto.getIsForeign());
-        
+
         propertyEntity.setKanrenshaPersonPropertyId(0); // auto_increment明示
         setTableDataHistoryUtil.practiceInsert(userDto, propertyEntity);
         kanrenshaPersonPropertyRepository.save(propertyEntity);
@@ -141,13 +142,12 @@ public class InsertKanrenshaPersonService {
         historyEntity.setPersonKanrenshaCode(newCode);
 
         insertKanrenshaPersonHistoryService.practice(userDto, historyEntity);
-//
-//        // 運営者以上が他人のデータを追加しない場合は操作者ユーザと登録した関連者を紐づける
-//        if (kanrenshaPersonDto.getIsCombineUser()) {
-//            insertCombineUserKanrenshaLogic.practcie(userDto.getUserPersonCode(), KanrenshaKbnConstants.PERSON, newCode,
-//                    userDto);
-//        }
-//
+
+        // 運営者以上が他人のデータを追加している以外の場合は操作者ユーザと登録した関連者を紐づける
+        if (kanrenshaPersonDto.getIsCombineUser()) {
+            insertCombineUserKanrenshaLogic.practcie(UserRoleConstants.KANRENSHA_PERSON, newCode, userDto);
+        }
+
         return newId;
 
     }

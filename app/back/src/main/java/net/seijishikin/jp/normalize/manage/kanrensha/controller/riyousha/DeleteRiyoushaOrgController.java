@@ -9,9 +9,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import io.netty.handler.codec.http.HttpResponseStatus;
+import org.springframework.http.HttpStatus;
 import net.seijishikin.jp.normalize.common_tool.dto.FrameworkMessageAndResultDto;
-import net.seijishikin.jp.normalize.manage.kanrensha.dto.riyousha.DeleteRiyoushaOrgCapsuleDto;
+import net.seijishikin.jp.normalize.manage.kanrensha.dto.riyousha.UpdateRiyoushaOrgCapsuleDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.riyousha.DeleteRiyoushaOrgSevice;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.util.SaveStackTraceService;
 import net.seijishikin.jp.normalize.manage.kanrensha.controller.PathRouteConstants;
@@ -39,20 +39,25 @@ public class DeleteRiyoushaOrgController {
      */
     @PostMapping("/delete")
     public ResponseEntity<FrameworkMessageAndResultDto> practice(
-            @RequestBody final DeleteRiyoushaOrgCapsuleDto capsuleDto) {
+            @RequestBody final UpdateRiyoushaOrgCapsuleDto capsuleDto) {
 
+        FrameworkMessageAndResultDto resultDto;
         try {
-            FrameworkMessageAndResultDto resultDto = deleteRiyoushaOrgSevice.practice(capsuleDto);
+            resultDto = deleteRiyoushaOrgSevice.practice(capsuleDto);
 
             if (resultDto.getIsFailure()) {
-                return ResponseEntity.status(HttpResponseStatus.ACCEPTED.code()).body(resultDto);
+                return ResponseEntity.status(HttpStatus.ACCEPTED).body(resultDto);
 
             } else {
-                return ResponseEntity.status(HttpResponseStatus.OK.code()).body(resultDto);
+                resultDto.setMessage(FrameworkMessageAndResultDto.MESSAGE_EXPECTED);
+                return ResponseEntity.status(HttpStatus.OK).body(resultDto);
             }
         } catch (Exception exception) { // NOPMD 業務上の理由で積極的許容
             saveStackTraceService.practice(exception, Year.now().getValue(), 0);
-            return ResponseEntity.status(HttpResponseStatus.INTERNAL_SERVER_ERROR.code()).build();
+            resultDto = new FrameworkMessageAndResultDto();
+            resultDto.setIsFailure(true);
+            resultDto.setMessage(exception.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(resultDto);
 
         }
 

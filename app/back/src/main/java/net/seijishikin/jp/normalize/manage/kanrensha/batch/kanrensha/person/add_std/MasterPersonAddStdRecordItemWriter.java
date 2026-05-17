@@ -170,6 +170,8 @@ public class MasterPersonAddStdRecordItemWriter extends JpaItemWriter<WkTblKanre
         propertyEntity.setPersonKanrenshaCode(kanrenshaCode);
         propertyEntity.setKanrenshaPersonId(masterId);
         BeanUtils.copyProperties(entityWkTbl, propertyEntity);
+        propertyEntity.setAllNameKana(
+                entityWkTbl.getLastNameKana() + "　" + entityWkTbl.getMiddleNameKana() + entityWkTbl.getFirstNameKana());
         propertyEntity.setIsShokyouEdit(true);
         setTableDataHistoryUtil.practiceInsert(userDto, propertyEntity);
         masterPersonPropertyRepository.save(propertyEntity);

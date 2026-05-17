@@ -47,8 +47,8 @@ public class TimerYoteiExecuteService {
     /**
      * 規定の時間が来たら処理を行う
      */
-    @Scheduled(cron = "0 0 * * * *")
     @Transactional
+    @Scheduled(cron = "0 0 * * * *")
     public Integer practice() {
 
         // 基本的には1時間1件しか動かさない想定。TODO 起動メモリ的に十分に動作することが確認出来てからリスト化する

@@ -90,7 +90,6 @@ public class UpdateApprovalKanrenshaSeijidantaiAddressLogic {
         if (0 == kanrenshaSeijidantaiAddressRepository.save(entityInsert).getKanrenshaSeijidantaiAddressId()) {
             return 0;
         } else {
-
             return 1;
         }
     }

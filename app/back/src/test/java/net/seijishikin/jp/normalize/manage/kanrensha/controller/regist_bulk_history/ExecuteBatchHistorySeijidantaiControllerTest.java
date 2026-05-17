@@ -96,7 +96,7 @@ class ExecuteBatchHistorySeijidantaiControllerTest {
 
         ObjectMapper objectMapper = GetObjectMapperWithTimeModuleUtil.practice();
 
-        String path = PathRouteConstants.ROOT + "/regist-bulk-history/execute-poli-org";
+        String path = PathRouteConstants.ROOT + "/regist-bulk-history/execute-seijidantai";
 
         // サーバステータスがOK(200)
         assertEquals(HttpStatus.OK.value(), mockMvc // NOPMD LawOfDemeter

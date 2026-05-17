@@ -99,6 +99,13 @@ public class TaskInfoConstants { // NOPMD DataClass
     /** 関連者紐づけ再処理 */
     public static final int COMBINE_RETRY = 372;
 
+    
+    /** 関連者他者紐づけ */
+    public static final int ORG_COMBINE_PERSON_KANRENSHA = 801;
+    
+    /** 利用者他者紐づけ */
+    public static final int ORG_COMBINE_PERSON_RIYOUSHA = 802;
+    
     /** SE権限推薦 */
     public static final int PROMOTE_ADMIN = 901;
 

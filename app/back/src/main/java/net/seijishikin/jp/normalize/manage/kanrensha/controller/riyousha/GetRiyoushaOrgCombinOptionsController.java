@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import io.netty.handler.codec.http.HttpResponseStatus;
+import org.springframework.http.HttpStatus;
 import net.seijishikin.jp.normalize.common_tool.dto.FrameworkCapsuleDto;
 import net.seijishikin.jp.normalize.common_tool.dto.select_options.SelectOptionIntegerDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.riyousha.GetRiyoushaOrgCombinOptionsService;
@@ -42,12 +42,12 @@ public class GetRiyoushaOrgCombinOptionsController {
     public ResponseEntity<List<SelectOptionIntegerDto>> practice(@RequestBody final FrameworkCapsuleDto capsuleDto) {
         try {
             // 必ずサイズ1以上のリストが返ってくる
-            return ResponseEntity.status(HttpResponseStatus.OK.code())
+            return ResponseEntity.status(HttpStatus.OK)
                     .body(getRiyoushaOrgCombinOptionsService.practice(capsuleDto));
 
         } catch (Exception exception) { // NOPMD 業務上の理由で積極的許容
             saveStackTraceService.practice(exception, Year.now().getValue(), 0);
-            return ResponseEntity.status(HttpResponseStatus.INTERNAL_SERVER_ERROR.code()).build();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 

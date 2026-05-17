@@ -9,25 +9,19 @@ import net.seijishikin.jp.normalize.common_tool.dto.paging.PagingIntegerDtoInter
  * 作業承認リスト検索Dto
  */
 public class SearchWorksApprovalCapsuleDto // NOPMD DataClass
-        implements PagingIntegerDtoInterface ,Serializable {
+        implements PagingIntegerDtoInterface, Serializable {
 
     /** Serialize id */
     private static final long serialVersionUID = 1L;
 
-    /** 初期データ(Integer) */
-    private static final Integer INIT_Integer = 0;
-
-    /** 初期データ(Boolean) */
-    private static final Boolean INIT_Boolean = false;
-
     /** 全件数 */
-    private Integer allCount = INIT_Integer;
+    private Integer allCount = INIT_INTEGER;
 
     /** ページ内件数 */
-    private Integer limit = INIT_Integer;
+    private Integer limit = INIT_INTEGER;
 
     /** ページ番号 */
-    private Integer pageNumber = INIT_Integer;
+    private Integer pageNumber = INIT_INTEGER;
 
     /** 初期データ(LoclaDate) */
     private static final LocalDate INIT_LocalDate = LocalDate.of(1948, 7, 29);
@@ -87,7 +81,7 @@ public class SearchWorksApprovalCapsuleDto // NOPMD DataClass
     private LocalDate endDate = INIT_LocalDate;
 
     /** 終了タスク除外フラグ */
-    private Boolean isExcludeFinishedTask = INIT_Boolean;
+    private Boolean isExcludeFinishedTask = INIT_BOOLEAN;
 
     /**
      * 検索開始日を取得する

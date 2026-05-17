@@ -21,7 +21,7 @@ import net.seijishikin.jp.normalize.manage.kanrensha.batch.task_plan.RecordTaskP
 import net.seijishikin.jp.normalize.manage.kanrensha.constants.GetCurrentResourcePath;
 import net.seijishikin.jp.normalize.manage.kanrensha.constants.MasterCsvFileNameConstants;
 import net.seijishikin.jp.normalize.manage.kanrensha.constants.MasterCsvFileNameConstants.SabunMasterMin;
-import net.seijishikin.jp.normalize.manage.kanrensha.dto.task.TaskPlanInfoDto;
+import net.seijishikin.jp.normalize.manage.kanrensha.dto.task.InsertTaskPlanResultDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.util.SaveStackTraceService;
 
 /**
@@ -71,7 +71,7 @@ public class ForceSabunDumpMinMasterPersonService {
      * @param startDate 抽出開始時間
      * @param endDate   抽出終了時間
      */
-    public void practice(final Integer year, final TaskPlanInfoDto planDto, final LocalDate startDate,
+    public void practice(final Integer year, final InsertTaskPlanResultDto planDto, final LocalDate startDate,
             final LocalDate endDate, final LeastUserDto userDto) {
 
         final String pathSaved = Paths.get(GetCurrentResourcePath.getBackSrcPath("")).getParent().getParent()

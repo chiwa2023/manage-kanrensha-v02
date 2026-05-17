@@ -91,111 +91,133 @@ public class RiyoushaCombineOrgEntity implements Serializable, AllTabeDataHistor
         this.isLatest = isLatest;
     }
 
-    /** 紐づけ関連者区分 */
-    @Column(name = "riyousha_kbn")
-    private Short riyoushaKbn = INIT_SHORT;
+    /** 利用者権限 */
+    @Column(name = "riyousha_role")
+    private String riyoushaRole = INIT_STRING;
 
     /**
-     * 紐づけ関連者区分を取得する
+     * 利用者権限を取得する
      *
-     * @return 紐づけ関連者区分
+     * @return 利用者権限
      */
-    public Short getRiyoushaKbn() {
-        return riyoushaKbn;
+    public String getRiyoushaRole() {
+        return riyoushaRole;
     }
 
     /**
-     * 紐づけ関連者区分を設定する
+     * 利用者権限を設定する
      *
-     * @param riyoushaKbn 紐づけ関連者区分
+     * @param riyoushaRole 利用者権限
      */
-    public void setRiyoushaKbn(final Short riyoushaKbn) {
-        this.riyoushaKbn = riyoushaKbn;
+    public void setRiyoushaRole(final String riyoushaRole) {
+        this.riyoushaRole = riyoushaRole;
     }
 
-    /** 紐づけコード */
+    /** 個人コード */
+    @Column(name = "person_code")
+    private Integer personCode = INIT_INTEGER;
+
+    /**
+     * 個人コードを取得する
+     *
+     * @return 個人コード
+     */
+    public Integer getPersonCode() {
+        return personCode;
+    }
+
+    /**
+     * 個人コードを設定する
+     *
+     * @param personCode 個人コード
+     */
+    public void setPersonCode(final Integer personCode) {
+        this.personCode = personCode;
+    }
+
+    /** 利用者個人コード */
     @Column(name = "person_riyousha_code")
     private Integer personRiyoushaCode = INIT_INTEGER;
 
     /**
-     * 紐づけコードを取得する
-     *
-     * @return 紐づけコード
+     * 利用者個人コードを取得する
+     * 
+     * @return 利用者個人コード
      */
     public Integer getPersonRiyoushaCode() {
         return personRiyoushaCode;
     }
 
     /**
-     * 紐づけコードを設定する
-     *
-     * @param personRiyoushaCode 紐づけコード
+     * 利用者個人コードを設定する
+     * 
+     * @param personRiyoushaCode 利用者個人コード
      */
     public void setPersonRiyoushaCode(final Integer personRiyoushaCode) {
         this.personRiyoushaCode = personRiyoushaCode;
     }
 
-    /** 個人氏名 */
-    @Column(name = "person_name")
-    private String personName = INIT_STRING;
+    /** 利用者氏名 */
+    @Column(name = "person_riyousha_name")
+    private String personRiyoushaName = INIT_STRING;
 
     /**
-     * 個人氏名を取得する
+     * 利用者氏名を取得する
      *
-     * @return 個人氏名
+     * @return 利用者氏名
      */
-    public String getPersonName() {
-        return personName;
+    public String getPersonRiyoushaName() {
+        return personRiyoushaName;
     }
 
     /**
-     * 個人氏名を設定する
+     * 利用者氏名を設定する
      *
-     * @param personName 個人氏名
+     * @param personRiyoushaName 利用者氏名
      */
-    public void setPersonName(final String personName) {
-        this.personName = personName;
+    public void setPersonRiyoushaName(final String personRiyoushaName) {
+        this.personRiyoushaName = personRiyoushaName;
     }
 
-    /** 紐づけコード */
+    /** 利用者組織コード */
     @Column(name = "org_riyousha_code")
     private Integer orgRiyoushaCode = INIT_INTEGER;
 
     /**
-     * 紐づけコードを取得する
+     * 利用者組織コードを取得する
      *
-     * @return 紐づけコード
+     * @return 利用者組織コード
      */
     public Integer getOrgRiyoushaCode() {
         return orgRiyoushaCode;
     }
 
     /**
-     * 紐づけコードを設定する
+     * 利用者組織コードを設定する
      *
-     * @param orgRiyoushaCode 紐づけコード
+     * @param orgRiyoushaCode 利用者組織コード
      */
     public void setOrgRiyoushaCode(final Integer orgRiyoushaCode) {
         this.orgRiyoushaCode = orgRiyoushaCode;
     }
 
-    /** 団体代表者名称 */
+    /** 利用者組織名称 */
     @Column(name = "org_name")
     private String orgName = INIT_STRING;
 
     /**
-     * 団体代表者名称を取得する
+     * 利用者組織名称を取得する
      *
-     * @return 団体代表者名称
+     * @return 利用者組織名称
      */
     public String getOrgName() {
         return orgName;
     }
 
     /**
-     * 団体代表者名称を設定する
+     * 利用者組織名称を設定する
      *
-     * @param orgName 団体代表者名称
+     * @param orgName 利用者組織名称
      */
     public void setOrgName(final String orgName) {
         this.orgName = orgName;

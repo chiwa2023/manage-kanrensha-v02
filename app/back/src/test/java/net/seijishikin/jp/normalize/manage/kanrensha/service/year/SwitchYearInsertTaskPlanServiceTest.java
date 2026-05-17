@@ -1,7 +1,8 @@
 package net.seijishikin.jp.normalize.manage.kanrensha.service.year;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+
+import java.time.LocalDateTime;
 
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -15,7 +16,13 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import org.springframework.transaction.annotation.Transactional;
 
-import net.seijishikin.jp.normalize.manage.kanrensha.repository.year.y2025.TaskPlan2025Repository;
+import net.seijishikin.jp.normalize.common_tool.dto.DtoEntityInitialValueInterface;
+import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
+import net.seijishikin.jp.normalize.manage.kanrensha.constants.TaskInfoConstants;
+import net.seijishikin.jp.normalize.manage.kanrensha.dto.task.InsertTaskPlanResultDto;
+import net.seijishikin.jp.normalize.manage.kanrensha.entity.year.y2026.TaskPlan2026Entity;
+import net.seijishikin.jp.normalize.manage.kanrensha.logic.task_plan.CreateQueryParamDummyUtil;
+import net.seijishikin.jp.normalize.manage.kanrensha.repository.year.y2026.TaskPlan2026Repository;
 import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateLeastUserForTestUtil;
 
 /**
@@ -25,37 +32,50 @@ import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateLeastUserForTes
 @AutoConfigureMockMvc
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
-@Sql("SwitchYearInsertTaskPlanServiceTest.sql")
 @Transactional
+@Sql("SwitchYearInsertTaskPlanServiceTest.sql")
 class SwitchYearInsertTaskPlanServiceTest {
-    // CHECKSTYLE:OFF MagicNumber
+    // CHECKSTYLE:OFF
 
     /** テスト対象 */
     @Autowired
     private SwitchYearInsertTaskPlanService switchYearInsertTaskPlanService;
 
-    /** タスク計画Repository(2025) */
+    /** タスク計画Repository(2026) */
     @Autowired
-    private TaskPlan2025Repository taskPlan2025Repository;
-
-    @Test
-    void testNoSource() throws Exception {
-        assertThrows(IllegalArgumentException.class,
-                () -> switchYearInsertTaskPlanService.practice(1001, CreateLeastUserForTestUtil.practice(), 533));
-    }
+    private TaskPlan2026Repository taskPlan2026Repository;
 
     @Test
     @Tag("TableTruncate")
-    void test() throws Exception {
+    void test2026() {
 
-        Integer countPre = Math.toIntExact(taskPlan2025Repository.count());
-        Integer taskCode = 101;
+        final Integer taskCode = TaskInfoConstants.SAVE_POSTAL_REPAIR_CSV;
+        LeastUserDto userDto = CreateLeastUserForTestUtil.practice();
+        LocalDateTime dateTimeStart = LocalDateTime.of(2026, 12, 13, 11, 22, 33);
 
-        switchYearInsertTaskPlanService.practice(2025, CreateLeastUserForTestUtil.practice(), taskCode);
+        LeastUserDto workUserDto = new LeastUserDto();
+        workUserDto.setUserPersonCode(854);
+        workUserDto.setUserPersonName("利用者　直子");
 
-        Integer countPro = Math.toIntExact(taskPlan2025Repository.count());
+        InsertTaskPlanResultDto dto = switchYearInsertTaskPlanService.practice(workUserDto, userDto, dateTimeStart,
+                taskCode, CreateQueryParamDummyUtil.practice());
 
-        assertEquals(0, countPre);
-        assertEquals(1, countPro);
+        TaskPlan2026Entity entity = taskPlan2026Repository.findById(dto.getTaskPlanId()).get();
+
+        assertEquals(true, entity.getIsLatest());
+
+        assertEquals(dateTimeStart.getYear(), entity.getTableYear());
+        assertEquals(taskCode, entity.getTaskInfoCode());
+        assertEquals("郵便番号差分修正", entity.getTaskPlanName());
+        assertEquals(dateTimeStart, entity.getStartDatetime());
+        assertEquals(DtoEntityInitialValueInterface.INIT_TIMESTAMP, entity.getEndDateimte());
+        assertEquals(true, entity.getIsStart());
+        assertEquals(false, entity.getIsSuspended());
+        assertEquals(false, entity.getIsFinished());
+        assertEquals("admin,manager", entity.getRoleList());
+        assertEquals("http://localhost:6180/kanrensha-manage/edit-page?asd=123&zxc=456", entity.getTransferPass());
+        assertEquals(workUserDto.getUserPersonCode(), entity.getTaskUserCode());
+        assertEquals(workUserDto.getUserPersonName(), entity.getTaskUserName());
     }
+
 }

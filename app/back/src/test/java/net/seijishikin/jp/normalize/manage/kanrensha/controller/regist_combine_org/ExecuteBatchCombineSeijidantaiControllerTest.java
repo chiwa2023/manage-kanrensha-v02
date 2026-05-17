@@ -96,7 +96,7 @@ class ExecuteBatchCombineSeijidantaiControllerTest {
 
         ObjectMapper objectMapper = GetObjectMapperWithTimeModuleUtil.practice();
 
-        String path = PathRouteConstants.ROOT + "/regist-combine/execute-poli-org";
+        String path = PathRouteConstants.ROOT + "/regist-combine/execute-seijidantai";
 
         // サーバステータスがOK(200)
         assertEquals(HttpStatus.OK.value(), mockMvc // NOPMD LawOfDemeter

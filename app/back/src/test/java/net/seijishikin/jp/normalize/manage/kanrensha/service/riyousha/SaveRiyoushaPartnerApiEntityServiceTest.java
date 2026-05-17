@@ -3,6 +3,8 @@ package net.seijishikin.jp.normalize.manage.kanrensha.service.riyousha;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
+import java.util.List;
+
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,11 +19,14 @@ import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import net.seijishikin.jp.normalize.common_tool.dto.input.InputAccessDto;
 import net.seijishikin.jp.normalize.common_tool.dto.input.InputAddressDto;
 import net.seijishikin.jp.normalize.common_tool.dto.input.InputPersonNameDto;
+import net.seijishikin.jp.normalize.manage.kanrensha.constants.UserRoleConstants;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.riyousha.SaveRiyoushaPartnerApiCapsuleDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.RiyoushaPartnerApiMasterEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.RiyoushaPersonPropertyEntity;
+import net.seijishikin.jp.normalize.manage.kanrensha.entity.UserRoleEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.repository.RiyoushaPartnerApiMasterRepository;
 import net.seijishikin.jp.normalize.manage.kanrensha.repository.RiyoushaPersonPropertyRepository;
+import net.seijishikin.jp.normalize.manage.kanrensha.repository.UserRoleRepository;
 import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateLeastUserForTestUtil;
 
 /**
@@ -47,6 +52,10 @@ class SaveRiyoushaPartnerApiEntityServiceTest {
     @Autowired
     private RiyoushaPartnerApiMasterRepository riyoushaPartnerApiMasterRepository;
 
+    /** ユーザ権限Repository */
+    @Autowired
+    private UserRoleRepository userRoleRepository;
+
     @Test
     @Tag("TableTruncate")
     void testAdd() throws Exception {
@@ -62,6 +71,7 @@ class SaveRiyoushaPartnerApiEntityServiceTest {
         capsuleDto.getRiyoushaPartnerApiDto().setInputAddressDto(addressDto);
         capsuleDto.getRiyoushaPartnerApiDto().setInputAccessDto(accessDto);
         // その他のidなどは空にすると新規登録
+        capsuleDto.getRiyoushaPartnerApiDto().setIsCombineUser(true);
 
         // マスタ
         Integer newId = saveRiyoushaPartnerApiEntityService.practice(capsuleDto);
@@ -109,6 +119,13 @@ class SaveRiyoushaPartnerApiEntityServiceTest {
         assertEquals(accessDto.getSnsPortalUrl(), savedPropertyEntity.getSnsPortalUrl());
         assertEquals(accessDto.getSnsAccount(), savedPropertyEntity.getSnsAccount());
 
+        // 自身データで新規追加の場合roleを紐づけのために更新
+        List<UserRoleEntity> listRole = userRoleRepository
+                .findByEmailAndRoleAndIsLatestTrue("ccc@politician.balanse.report.net", UserRoleConstants.PARTNER_API);
+        assertEquals(1, listRole.size());
+
+        UserRoleEntity roleEntity = listRole.get(0);
+        assertEquals(savedMasterEntity.getRiyoushaPartnerApiMasterCode(), roleEntity.getRiyoushaCode());
     }
 
     @Test

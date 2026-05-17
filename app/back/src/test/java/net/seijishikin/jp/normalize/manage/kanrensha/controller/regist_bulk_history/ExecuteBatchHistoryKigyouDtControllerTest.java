@@ -96,7 +96,7 @@ class ExecuteBatchHistoryKigyouDtControllerTest {
 
         ObjectMapper objectMapper = GetObjectMapperWithTimeModuleUtil.practice();
 
-        String path = PathRouteConstants.ROOT + "/regist-bulk-history/execute-kigyouDt";
+        String path = PathRouteConstants.ROOT + "/regist-bulk-history/execute-kigyou-dt";
 
         // サーバステータスがOK(200)
         assertEquals(HttpStatus.OK.value(), mockMvc // NOPMD LawOfDemeter

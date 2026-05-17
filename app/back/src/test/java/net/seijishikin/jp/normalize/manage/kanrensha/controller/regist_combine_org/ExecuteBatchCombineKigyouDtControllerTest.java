@@ -91,12 +91,12 @@ class ExecuteBatchCombineKigyouDtControllerTest {
 
         RegistDataByCsvFileCapsuleDto capsuleDto = new RegistDataByCsvFileCapsuleDto();
         capsuleDto.setUserDto(CreateLeastUserForTestUtil.practice());
-        capsuleDto.getStorageFileDto().setSavedDir("190/test/");
+        capsuleDto.getStorageFileDto().setSavedDir(dirName);
         capsuleDto.getStorageFileDto().setFileName(fileName);
 
         ObjectMapper objectMapper = GetObjectMapperWithTimeModuleUtil.practice();
 
-        String path = PathRouteConstants.ROOT + "/regist-combine/execute-kigyouDt";
+        String path = PathRouteConstants.ROOT + "/regist-combine/execute-kigyou-dt";
 
         // サーバステータスがOK(200)
         assertEquals(HttpStatus.OK.value(), mockMvc // NOPMD LawOfDemeter

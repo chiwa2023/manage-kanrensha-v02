@@ -135,6 +135,50 @@ public class UserPersonEntity implements Serializable, AllTabeDataHistoryInterfa
         this.email = email;
     }
 
+    /** タスク開始通知有無 */
+    @Column(name = "is_alert_task_start")
+    private Boolean isAlertTaskStart = INIT_BOOLEAN;
+
+    /**
+     * タスク開始通知有無を取得する
+     *
+     * @return タスク開始通知有無
+     */
+    public Boolean getIsAlertTaskStart() {
+        return isAlertTaskStart;
+    }
+
+    /**
+     * タスク開始通知有無を設定する
+     *
+     * @param isAlertTaskStart タスク開始通知有無
+     */
+    public void setIsAlertTaskStart(final Boolean isAlertTaskStart) {
+        this.isAlertTaskStart = isAlertTaskStart;
+    }
+
+    /** タスク終了通知有無 */
+    @Column(name = "is_alert_task_end")
+    private Boolean isAlertTaskEnd = INIT_BOOLEAN;
+
+    /**
+     * タスク終了通知有無を取得する
+     *
+     * @return タスク終了通知有無
+     */
+    public Boolean getIsAlertTaskEnd() {
+        return isAlertTaskEnd;
+    }
+
+    /**
+     * タスク終了通知有無を設定する
+     *
+     * @param isAlertTaskEnd タスク終了通知有無
+     */
+    public void setIsAlertTaskEnd(final Boolean isAlertTaskEnd) {
+        this.isAlertTaskEnd = isAlertTaskEnd;
+    }
+
     /** 挿入ユーザId */
     @Column(name = "insert_user_id")
     private Integer insertUserId = INIT_INTEGER;

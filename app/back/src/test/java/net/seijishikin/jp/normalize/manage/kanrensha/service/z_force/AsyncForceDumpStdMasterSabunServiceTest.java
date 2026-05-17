@@ -15,7 +15,7 @@ import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
-import net.seijishikin.jp.normalize.manage.kanrensha.dto.task.TaskPlanInfoDto;
+import net.seijishikin.jp.normalize.manage.kanrensha.dto.task.InsertTaskPlanResultDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.z_force.ForceDumpCapsuleDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateLeastUserForTestUtil;
 
@@ -39,15 +39,15 @@ class AsyncForceDumpStdMasterSabunServiceTest {
     void test() throws Exception {
 
         final Integer year = 2026;
-        TaskPlanInfoDto planDto1 = new TaskPlanInfoDto();
+        InsertTaskPlanResultDto planDto1 = new InsertTaskPlanResultDto();
         planDto1.setTaskPlanId(453);
         planDto1.setTaskPlanCode(187);
 
-        TaskPlanInfoDto planDto2 = new TaskPlanInfoDto();
+        InsertTaskPlanResultDto planDto2 = new InsertTaskPlanResultDto();
         planDto2.setTaskPlanId(461);
         planDto2.setTaskPlanCode(188);
 
-        TaskPlanInfoDto planDto3 = new TaskPlanInfoDto();
+        InsertTaskPlanResultDto planDto3 = new InsertTaskPlanResultDto();
         planDto3.setTaskPlanId(462);
         planDto3.setTaskPlanCode(189);
 

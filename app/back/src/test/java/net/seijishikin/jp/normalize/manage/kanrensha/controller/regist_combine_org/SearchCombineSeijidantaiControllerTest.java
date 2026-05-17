@@ -55,7 +55,7 @@ class SearchCombineSeijidantaiControllerTest {
 
         ObjectMapper objectMapper = GetObjectMapperWithTimeModuleUtil.practice();
 
-        String path = PathRouteConstants.ROOT + "/regist-combine/search-poli-org";
+        String path = PathRouteConstants.ROOT + "/regist-combine/search-seijidantai";
 
         // サーバステータスがOK(200)
         assertEquals(HttpStatus.OK.value(), mockMvc // NOPMD LawOfDemeter

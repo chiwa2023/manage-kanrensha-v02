@@ -81,7 +81,7 @@ class ExecuteBatchHistoryKigyouDtServiceTest {
 
         Integer year = 2026;
         TaskPlanWithUseFileDto planFileDto = new TaskPlanWithUseFileDto();
-        planFileDto.setReadFile(readFilePath);
+        planFileDto.setReadFile(readFilePathAbs);
         planFileDto.setTaskPlanId(453);
         planFileDto.setTaskPlanCode(187);
 

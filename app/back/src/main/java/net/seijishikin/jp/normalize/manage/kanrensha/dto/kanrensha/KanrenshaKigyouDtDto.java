@@ -2,6 +2,7 @@ package net.seijishikin.jp.normalize.manage.kanrensha.dto.kanrensha;
 
 import java.io.Serializable;
 
+import net.seijishikin.jp.normalize.common_tool.dto.DtoEntityInitialValueInterface;
 import net.seijishikin.jp.normalize.common_tool.dto.input.InputAccessDto;
 import net.seijishikin.jp.normalize.common_tool.dto.input.InputAddressDto;
 import net.seijishikin.jp.normalize.common_tool.dto.input.InputOrgNameDto;
@@ -10,19 +11,10 @@ import net.seijishikin.jp.normalize.common_tool.dto.input.InputOrgNameDto;
 /**
  * 関連者企業団体Dto
  */
-public class KanrenshaKigyouDtDto implements Serializable { // NOPMD DataClass
+public class KanrenshaKigyouDtDto implements Serializable,DtoEntityInitialValueInterface { // NOPMD DataClass
 
     /** Serialize id */
     private static final long serialVersionUID = 1L;
-
-    /** 初期データ(String) */
-    private static final String INIT_String = "";
-
-    /** 初期データ(Integer) */
-    private static final Integer INIT_Integer = 0;
-
-    /** 初期データ(Boolean) */
-    private static final Boolean INIT_Boolean = false;
 
     /** 団体名称入力Dto */
     private InputOrgNameDto inputOrgNameDto = new InputOrgNameDto();
@@ -91,10 +83,10 @@ public class KanrenshaKigyouDtDto implements Serializable { // NOPMD DataClass
     }
 
     /** 支店該当 */
-    private Boolean isShiten = INIT_Boolean;
+    private Boolean isShiten = INIT_BOOLEAN;
 
     /** 法人種別 */
-    private String houjinSbts = INIT_String;
+    private String houjinSbts = INIT_STRING;
 
     /**
      * 法人種別を取得する
@@ -151,7 +143,7 @@ public class KanrenshaKigyouDtDto implements Serializable { // NOPMD DataClass
     }
 
     /** 法人番号 */
-    private String houjinNo = INIT_String;
+    private String houjinNo = INIT_STRING;
 
     /**
      * 法人番号を取得する
@@ -172,16 +164,16 @@ public class KanrenshaKigyouDtDto implements Serializable { // NOPMD DataClass
     }
 
     /** 関連者企業団体マスタテーブルId */
-    private Integer masterId = INIT_Integer;
+    private Integer masterId = INIT_INTEGER;
 
     /** 関連者企業団体連絡先テーブルId */
-    private Integer accessId = INIT_Integer;
+    private Integer accessId = INIT_INTEGER;
 
     /** 関連者企業団体住所テーブルId */
-    private Integer addressId = INIT_Integer;
+    private Integer addressId = INIT_INTEGER;
 
     /** 関連者企業団体属性テーブルId */
-    private Integer propertyId = INIT_Integer;
+    private Integer propertyId = INIT_INTEGER;
 
     /**
      * 関連者企業団体マスタテーブルIdを取得する
@@ -256,7 +248,7 @@ public class KanrenshaKigyouDtDto implements Serializable { // NOPMD DataClass
     }
 
     /** 関連者企業団体コード */
-    private String kigyouDtKanrenshaCode = INIT_String;
+    private String kigyouDtKanrenshaCode = INIT_STRING;
 
     /**
      * 関連者企業団体コードを取得する
@@ -277,7 +269,7 @@ public class KanrenshaKigyouDtDto implements Serializable { // NOPMD DataClass
     }
 
     /** 関連者ユーザ紐づけ該否 */
-    private Boolean isCombineUser = INIT_Boolean;
+    private Boolean isCombineUser = INIT_BOOLEAN;
 
     /**
      * 関連者ユーザ紐づけ該否を取得する

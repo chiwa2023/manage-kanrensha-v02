@@ -1,18 +1,21 @@
 package net.seijishikin.jp.normalize.manage.kanrensha.controller.regist_by_xml;
 
+import java.time.Year;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import io.netty.handler.codec.http.HttpResponseStatus;
 import net.seijishikin.jp.normalize.common_tool.dto.FrameworkMessageAndResultDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.add_xml.UpdateWkTblAddByXmlTableListCapsuleDto;
 import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.WkTblMasterAllByXmlEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.regist_by_xml.RegistAddByXmlService;
+import net.seijishikin.jp.normalize.manage.kanrensha.service.util.SaveStackTraceService;
 import net.seijishikin.jp.normalize.manage.kanrensha.controller.PathRouteConstants;
 
 /**
@@ -26,6 +29,10 @@ public class RegistAddByXmTableListController {
     @Autowired
     private RegistAddByXmlService registAddByXmlService;
 
+    /** StackTrace保存Service */
+    @Autowired
+    private SaveStackTraceService saveStackTraceService;
+
     /**
      * 処理を行う
      *
@@ -36,22 +43,32 @@ public class RegistAddByXmTableListController {
     public ResponseEntity<FrameworkMessageAndResultDto> practice(
             final @RequestBody UpdateWkTblAddByXmlTableListCapsuleDto capsuleDto) {
 
-        LeastUserDto userDto = capsuleDto.getUserDto();
-
         FrameworkMessageAndResultDto resultDto = new FrameworkMessageAndResultDto();
-        for (WkTblMasterAllByXmlEntity entityEdit : capsuleDto.getListWkTblByXml()) {
-            if (entityEdit.getIsAffected()) { // 編集する、と宣言していないデータは除外
-                WkTblMasterAllByXmlEntity entityAns = registAddByXmlService.practice(entityEdit, userDto);
-                if (0 == entityAns.getWkTblMasterAllByXmlId()) {
-                    resultDto.setIsFailure(true);
-                    resultDto.setMessage("途中で処理が中断されました");
-                    return ResponseEntity.status(HttpResponseStatus.ACCEPTED.code()).body(resultDto);
+        try {
+            LeastUserDto userDto = capsuleDto.getUserDto();
+
+            for (WkTblMasterAllByXmlEntity entityEdit : capsuleDto.getListWkTblByXml()) {
+                if (entityEdit.getIsAffected()) { // 編集する、と宣言していないデータは除外
+                    WkTblMasterAllByXmlEntity entityAns = registAddByXmlService.practice(entityEdit, userDto);
+                    if (0 == entityAns.getWkTblMasterAllByXmlId()) {
+                        resultDto.setIsFailure(true);
+                        resultDto.setMessage("途中で処理が中断されました");
+                        return ResponseEntity.status(HttpStatus.ACCEPTED).body(resultDto);
+                    }
                 }
             }
+
+            resultDto.setMessage("正常に登録できました");
+            return ResponseEntity.status(HttpStatus.OK).body(resultDto);
+
+        } catch (Exception exception) { // NOPMD 業務的な理由から積極的に許容
+            saveStackTraceService.practice(exception, Year.now().getValue(), 0);
+            resultDto.setIsFailure(true);
+            resultDto.setMessage(FrameworkMessageAndResultDto.MESSAGE_INTERNAL_ERROR);
+
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(resultDto);
         }
 
-        resultDto.setMessage("正常に登録できました");
-        return ResponseEntity.status(HttpResponseStatus.OK.code()).body(resultDto);
     }
 
 }
