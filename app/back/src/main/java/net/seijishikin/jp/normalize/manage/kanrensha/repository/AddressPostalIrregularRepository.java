@@ -77,8 +77,7 @@ public interface AddressPostalIrregularRepository extends JpaRepository<AddressP
     @Query(value = "SELECT * FROM address_postal_irregular WHERE lg_code LIKE ?1" + " AND address_org NOT LIKE '%〜%'"
             + " AND address_org NOT LIKE '%、%' AND address_org NOT LIKE '%階）%'"
             + " AND address_org NOT LIKE '%階層不明）%' AND address_org NOT LIKE '%（その他）%'"
-            + " AND address_org NOT LIKE '%（次のビルを除く）%' AND address_org NOT LIKE '%番地%'"
-            + " AND address_org NOT LIKE '%丁目%' AND is_latest = 1", nativeQuery = true)
+            + " AND address_org NOT LIKE '%（次のビルを除く）%' AND is_latest = 1", nativeQuery = true)
     Page<AddressPostalIrregularEntity> findSingleAddress(String lgCode, Pageable pageable);
 
     /**

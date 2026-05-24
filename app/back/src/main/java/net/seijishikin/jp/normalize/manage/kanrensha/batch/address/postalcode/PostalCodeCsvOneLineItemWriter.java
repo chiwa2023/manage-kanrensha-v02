@@ -1,5 +1,6 @@
 package net.seijishikin.jp.normalize.manage.kanrensha.batch.address.postalcode;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,6 +20,7 @@ import net.seijishikin.jp.normalize.manage.kanrensha.entity.AddressPostalEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.AddressPostalIrregularEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.repository.AddressPostalIrregularRepository;
 import net.seijishikin.jp.normalize.manage.kanrensha.repository.AddressPostalRepository;
+import net.seijishikin.jp.normalize.manage.kanrensha.service.util.WriteLogService;
 
 /**
  * 郵便番号ItemWriter
@@ -48,6 +50,10 @@ public class PostalCodeCsvOneLineItemWriter extends JpaItemWriter<AddressPostalE
     /** カッコ文字 */
     private static final String KEY_EMP = "（";
 
+    /** バッチ起動条件からユーザ最低限作成Utility */
+    @Autowired
+    private WriteLogService writeLogService;
+
     /**
      * コンストラクタ
      *
@@ -75,6 +81,8 @@ public class PostalCodeCsvOneLineItemWriter extends JpaItemWriter<AddressPostalE
     @Override
     public void write(final Chunk<? extends AddressPostalEntity> items) {
 
+        writeLogService.writeInfo("chunk:" + items.getItems().get(0).getLgCode() + "==" + LocalDateTime.now());
+        
         List<AddressPostalIrregularEntity> listIrregular = new ArrayList<>();
         for (AddressPostalEntity entity : items) {
             setTableDataHistoryUtil.practiceInsert(userDto, entity);
@@ -95,7 +103,9 @@ public class PostalCodeCsvOneLineItemWriter extends JpaItemWriter<AddressPostalE
         // 単純な複写でないパターンがあれば追加する
         // nameはかっこより前を登録する
         int pos = entityIrregular.getAddressName().indexOf(KEY_EMP);
-        entityIrregular.setAddressName(entityIrregular.getAddressName().substring(0,pos));
+        if(-1 != pos) {
+            entityIrregular.setAddressName(entityIrregular.getAddressName().substring(0,pos));
+        }
         
         setTableDataHistoryUtil.practiceInsert(userDto, entityIrregular);
         entityIrregular.setAddressPostalIrregularId(0); // auto incremment明記

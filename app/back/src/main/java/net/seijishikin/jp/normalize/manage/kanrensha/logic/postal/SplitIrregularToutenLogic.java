@@ -78,9 +78,24 @@ public class SplitIrregularToutenLogic {
     private String getAddType(final String data) {
 
         try {
-            int num = Integer.parseInt(ConvertNumberUtil.practice(data).replaceAll("[^0-9]", KEY_EMPTY));
+            // int posHyphen = data.indexOf("−");
+            int posNamisen = data.indexOf("〜");
+            int tempPos = posNamisen;
+            //if (posHyphen > posNamisen) {
+            //    tempPos = posHyphen;
+            //} else {
+            //    tempPos = posNamisen;
+            //}
+            String lastData;
+            if (-1 == tempPos) {
+                lastData = data;
+            } else {
+                lastData = data.substring(tempPos, data.length());
+            }
 
-            return data.substring(String.valueOf(num).length(), data.length());
+            int num = Integer.parseInt(ConvertNumberUtil.practice(lastData).replaceAll("[^0-9]", KEY_EMPTY));
+
+            return lastData.substring(String.valueOf(num).length() , lastData.length());
 
         } catch (NumberFormatException e) {
             // 数字がついていない場合は手作業空文字

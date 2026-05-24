@@ -29,7 +29,7 @@ class SqlDumpRestoreRsdtTableCmdBatFileLogicTest {
     @Tag("TableTruncate")
     void test() throws Exception {
         
-        final String lgCodePref = "01";
+        final String lgCodePref = "47";
         final String dir = "c:/temp";
         
         assertDoesNotThrow(() -> sqlDumpRestoreRsdtTableCmdBatFileLogic.practice(lgCodePref, dir));

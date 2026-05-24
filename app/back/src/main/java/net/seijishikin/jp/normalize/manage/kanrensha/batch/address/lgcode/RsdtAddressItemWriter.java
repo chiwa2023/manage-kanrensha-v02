@@ -88,7 +88,7 @@ public class RsdtAddressItemWriter extends JpaItemWriter<AddressRsdtBaseEntity> 
     @Transactional
     public void write(final Chunk<? extends AddressRsdtBaseEntity> items) {
 
-        writeLogService.writeInfo("chunk:" + LocalDateTime.now());
+        writeLogService.writeInfo("chunk:" + items.getItems().get(0).getLgCode() + "==" + LocalDateTime.now());
 
         final String blank = "";
         // ローカル専用のトランザクションを設定しそこにJoinせよ、とのこと
@@ -160,8 +160,6 @@ public class RsdtAddressItemWriter extends JpaItemWriter<AddressRsdtBaseEntity> 
 
     private String getCity(final AddressRsdtBaseEntity entity) {
         List<AddressAllCityEntity> list = addressAllCityRepository.findByLgCodeAndIsLatestTrue(entity.getLgCode());
-
-        
         
         if (list.isEmpty()) {
             return "行政区コードなし:" + entity.getAddressBlock();

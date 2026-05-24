@@ -229,11 +229,11 @@ public class RepairPostalCodeIrregularBatchConfiguration {
     ) {
 
         return new JobBuilder(JOB_NAME, jobRepository).incrementer(new RunIdIncrementer()).flow(stepClean)
-                .next(stepSplitTouten).next(stepHistory1).next(stepClean1) // 読点分割処理
-                .next(stepOther).next(stepHistory2).next(stepClean2) // その他処理
-                .next(stepRange).next(stepHistory3).next(stepClean3) // 範囲処理
+                .next(stepSplitTouten).next(stepHistory1).next(stepClean1) // 読点分割処理（A,B）を不規則にだけで（A）（B）別行
+                .next(stepOther).next(stepHistory2).next(stepClean2) // その他処理(正規のその他表現を削除)
+                .next(stepRange).next(stepHistory3).next(stepClean3) // 範囲処理(正規に範囲展開を追加)
                 .next(stepSingle).next(stepHistory4).next(stepClean4) // 単一地域処理
-                .next(stepJigyoushoSplit).next(stepHistory5).next(stepClean5) // 事業所地域処理
+                // .next(stepJigyoushoSplit).next(stepHistory5).next(stepClean5) // 事業所地域処理
                 .next(stepPostalNormal).next(stepPostalOther) // 郵便番号更新(通常・その他)
                 .next(stepKeisaiNashi).next(stepHistory6).next(stepClean6) // 以下に掲載がない場合修復
                 .end().build();
@@ -456,7 +456,6 @@ public class RepairPostalCodeIrregularBatchConfiguration {
                 .reader(worksPostalItemReader).processor(addressPostalWorksPostalProcessor)
                 .writer(normalPostalItemWriter).build();
     }
-
 
     /**
      * StepHistoryを返却する

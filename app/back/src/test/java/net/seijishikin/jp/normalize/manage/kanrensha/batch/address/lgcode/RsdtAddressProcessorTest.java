@@ -6,25 +6,36 @@ import java.time.LocalDate;
 
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
 
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.AddressRsdtBaseEntity;
 
 /**
  * RsdtAddressProcessor単体テスト
  */
+@AutoConfigureMockMvc
+@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
+@DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
 class RsdtAddressProcessorTest {
     // CHECKSTYLE:OFF MagicNumber
+
+    /** テスト対象 */
+    @Autowired
+    private RsdtAddressProcessor rsdtAddressProcessor;
 
     @Test
     @Tag("TableTruncate")
     void test() throws Exception {
 
         RsdtAddressCsvLineMapper lineMapper = new RsdtAddressCsvLineMapper();
-        String line0 = "011053,0013018,017,011,123,札幌市,豊平区,月寒東五条,十八丁目,aaa,bbb,17,11,99,0,1,1,0,2022-11-19,2046-08-11,0,";
+        String line0 = "011053,0013018,017,011,123,札幌市,豊平区,月寒東５条,１８丁目,aaa,bbb,17,11,99,0,1,1,0,2022-11-19,2046-08-11,0,";
 
         RsdtAddressCsvDto csvDto0 = lineMapper.mapLine(line0, 0);
-
-        RsdtAddressProcessor rsdtAddressProcessor = new RsdtAddressProcessor();
 
         AddressRsdtBaseEntity baseEntity = rsdtAddressProcessor.process(csvDto0);
 

@@ -33,6 +33,10 @@ public class SelectSingleAddressLogic {
 
     /** テーブル履歴設定Util */
     @Autowired
+    private ConvertAddressNumberFormatLogic convertAddressNumberFormatLogic;
+
+    /** テーブル履歴設定Util */
+    @Autowired
     private SetTableDataHistoryUtil setTableDataHistoryUtil;
 
     /** Logger */
@@ -59,12 +63,11 @@ public class SelectSingleAddressLogic {
             return list;
         }
 
-        String place = org.substring(posStart + 1, posEnd);
+        String place = convertAddressNumberFormatLogic.practice(org.substring(posStart + 1, posEnd));
 
         // 共通部分(address_name)で始まり、（）内の語句までが一致するデータをピックアップ
-        // ()までとカッコ内の地名が離れていることがあるので単純にかっこを除去するだけでは不可
         String sql = "SELECT * FROM address_rsdt_" + worksEntity.getLgCode() + " WHERE address_block LIKE '"
-                + baseAddress + "%' AND address_block LIKE '%" + place + "%'";
+                + baseAddress + place + "%'";
 
         Query query = entityManager.createNativeQuery(sql, AddressRsdtBaseEntity.class);
 

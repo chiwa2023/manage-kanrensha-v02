@@ -5,8 +5,6 @@ import java.util.Objects;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import net.seijishikin.jp.normalize.manage.kanrensha.utils.ConvertNumberUtil;
-
 /**
  * 事業所郵便番号住所を標準化する
  */
@@ -15,7 +13,7 @@ public class JigyoushoBlockNormalizeLogic {
 
     /** 漢数字変換Utility */
     @Autowired
-    private ConvertNumberToKansujiUtil convertNumberToKansujiUtil;
+    private ConvertAddressNumberFormatLogic convertAddressNumberFormatLogic;
 
     /** 全角スペース */
     private static final String WIDE_SPACE = "　";
@@ -44,18 +42,7 @@ public class JigyoushoBlockNormalizeLogic {
             return "";
         }
 
-        String answer = ConvertNumberUtil.practice(data);
-
-        // 丁目表示はアドレス・ベース・レジストリに倣って漢数字表記が必要
-        int posChoume = answer.indexOf(KEY_CHOUME);
-        if (posChoume != -1) {
-            try {
-                Integer chou = Integer.parseInt(answer.substring(0, posChoume));
-                answer = convertNumberToKansujiUtil.practice(chou) + answer.substring(posChoume, answer.length());
-            } catch (Exception e) { // NOPMD
-                // 何もしない
-            }
-        }
+        String answer = convertAddressNumberFormatLogic.practice(data);
 
         int posGou = answer.indexOf(KEY_GOU);
 
@@ -81,6 +68,7 @@ public class JigyoushoBlockNormalizeLogic {
         }
 
         // 最後が丁目で終わっていない場合は丁目の後を1文字開ける(ただし最初のみ、、後の文字が数字の場合は除く)
+        int posChoume = answer.indexOf(KEY_CHOUME);
         if (posGou == -1 && posBanchi == -1 && posChoume != -1 && this.hasNotProNumber(answer, KEY_CHOUME)) {
             answer = answer.replaceFirst(KEY_CHOUME, KEY_CHOUME + WIDE_SPACE);
         }

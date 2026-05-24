@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.AddressPostalEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.logic.address.registory.WriteLogAddressFormatLogic;
+import net.seijishikin.jp.normalize.manage.kanrensha.logic.postal.CheckPostalToMachiazaLogic;
 import net.seijishikin.jp.normalize.manage.kanrensha.utils.PlusCheckDigitUtil;
 
 /**
@@ -24,6 +25,10 @@ public class PostalCodeOneLineProcessor implements ItemProcessor<PostalCodeCsvOn
     @Autowired
     private WriteLogAddressFormatLogic writeLogAddressFormatLogic;
 
+    /** アドレス・ベース・レジストリ地名確認Logic */
+    @Autowired
+    private CheckPostalToMachiazaLogic checkPostalToMachiazaLogic;
+
     /**
      * 変換処理を実行する
      */
@@ -40,8 +45,10 @@ public class PostalCodeOneLineProcessor implements ItemProcessor<PostalCodeCsvOn
             writeLogAddressFormatLogic.practice(WriteLogAddressFormatLogic.ERROR, postalCode, "郵便番号が7桁でありません");
         }
 
-        entity.setLgCode(PlusCheckDigitUtil.plusForLgCode(item.getLgCode()));
-        entity.setAddressName(item.getPref() + item.getCity() + item.getAddressOrg());
+        String lgCode = PlusCheckDigitUtil.plusForLgCode(item.getLgCode());
+        entity.setLgCode(lgCode);
+        entity.setAddressName(item.getPref() + item.getCity() + checkPostalToMachiazaLogic.practice(item, lgCode)
+                + item.getAddressOrg());
         entity.setAddressOrg(item.getAddressOrg());
         entity.setIsGyoseikuData(true);
 
