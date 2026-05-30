@@ -35,7 +35,7 @@ public class RsdtAddressCsvItemReader extends FlatFileItemReader<RsdtAddressCsvD
     @BeforeStep
     public void beforeStep(final StepExecution stepExecution) {
 
-        String filePath = stepExecution.getJobParameters().getString("readFilePath");
+        String filePath = stepExecution.getJobParameters().getString("readFilePathRsdt");
 
         Path path = Paths.get(filePath);
 

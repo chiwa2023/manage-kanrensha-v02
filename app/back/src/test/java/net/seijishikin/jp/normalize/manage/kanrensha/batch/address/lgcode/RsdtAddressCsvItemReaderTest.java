@@ -78,7 +78,7 @@ class RsdtAddressCsvItemReaderTest {
                 "mt_rsdtdsp_rsdt_pref01.csv");
 
         JobParameters jobParameters = new JobParametersBuilder() // NOPMD
-                .addString("readFilePath", path.toString()).toJobParameters();
+                .addString("readFilePathRsdt", path.toString()).toJobParameters();
 
         // 起動引数付きのStepExecutionを作成
         return MetaDataInstanceFactory.createStepExecution(jobParameters);

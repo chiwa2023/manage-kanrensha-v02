@@ -43,8 +43,7 @@ public class GetChibanCsvLogic {
             String lgCode = entity.getLgCode();
 
             try {
-                URI uri = new URI( // NOPMD
-                        "https://catalog.registries.digital.go.jp/rsc/address/mt_parcel_city" + lgCode + ".csv.zip");
+                URI uri = new URI(GetChibanConstants.ACCESS_URL + lgCode + ".csv.zip"); // NOPMD
                 URL url = uri.toURL();
 
                 // URLに紐づいたURLConnectionインスタンスを生成

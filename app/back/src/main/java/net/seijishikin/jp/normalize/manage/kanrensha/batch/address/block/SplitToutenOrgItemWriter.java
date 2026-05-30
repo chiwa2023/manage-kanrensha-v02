@@ -18,6 +18,7 @@ import net.seijishikin.jp.normalize.manage.kanrensha.entity.AddressPostalIrregul
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.WkTblPostalCommonEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.logic.postal.SplitIrregularToutenLogic;
 import net.seijishikin.jp.normalize.manage.kanrensha.repository.WkTblPostalCommonRepository;
+import net.seijishikin.jp.normalize.manage.kanrensha.service.util.WriteLogService;
 
 /**
  * 読点分割ItemWriter
@@ -43,6 +44,9 @@ public class SplitToutenOrgItemWriter extends JpaItemWriter<AddressPostalIrregul
 
     /** ユーザ最低限Dto */
     private LeastUserDto userDto;
+
+    /** ログ書き出しService */
+    private WriteLogService writeLogService;
 
     /**
      * コンストラクタ
@@ -70,6 +74,8 @@ public class SplitToutenOrgItemWriter extends JpaItemWriter<AddressPostalIrregul
      */
     @Override
     public void write(final Chunk<? extends AddressPostalIrregularEntity> items) {
+
+        writeLogService.writeInfo("---split touten" + items.getItems().get(0).getLgCode());
 
         for (AddressPostalIrregularEntity entity : items) {
             setTableDataHistoryUtil.practiceInsert(userDto, entity);

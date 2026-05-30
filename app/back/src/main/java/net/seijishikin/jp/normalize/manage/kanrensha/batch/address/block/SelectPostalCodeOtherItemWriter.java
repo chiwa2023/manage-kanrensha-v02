@@ -18,6 +18,7 @@ import net.seijishikin.jp.normalize.manage.kanrensha.entity.WkTblPostalCommonEnt
 import net.seijishikin.jp.normalize.manage.kanrensha.logic.postal.CheckExistPostalCodeByOtherLogic;
 import net.seijishikin.jp.normalize.manage.kanrensha.repository.AddressPostalRepository;
 import net.seijishikin.jp.normalize.manage.kanrensha.repository.WkTblPostalCommonRepository;
+import net.seijishikin.jp.normalize.manage.kanrensha.service.util.WriteLogService;
 
 /**
  * 郵便番号不規則データ(その他)有効ItemWriter
@@ -48,6 +49,9 @@ public class SelectPostalCodeOtherItemWriter extends JpaItemWriter<WkTblPostalCo
     /** ユーザ最低限Dto */
     private LeastUserDto userDto;
 
+    /** ログ書き出しService */
+    private WriteLogService writeLogService;
+
     /**
      * コンストラクタ
      *
@@ -74,6 +78,8 @@ public class SelectPostalCodeOtherItemWriter extends JpaItemWriter<WkTblPostalCo
      */
     @Override
     public void write(final Chunk<? extends WkTblPostalCommonEntity> items) {
+
+        writeLogService.writeInfo("---other" + items.getItems().get(0).getLgCode());
 
         for (WkTblPostalCommonEntity entity : items) {
             // 住居テーブルに共通部分データが存在すれば、データとして有効化

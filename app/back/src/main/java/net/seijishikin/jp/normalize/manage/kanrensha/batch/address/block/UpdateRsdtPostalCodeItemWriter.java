@@ -17,6 +17,7 @@ import jakarta.persistence.Query;
 import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
 import net.seijishikin.jp.normalize.common_tool.utils.CreateUserLeastDtoByBatchParamUtil;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.AddressPostalEntity;
+import net.seijishikin.jp.normalize.manage.kanrensha.service.util.WriteLogService;
 
 /**
  * 住所テーブル郵便番号更新ItemReader
@@ -33,6 +34,9 @@ public class UpdateRsdtPostalCodeItemWriter extends JpaItemWriter<AddressPostalE
 
     /** ユーザ最低限Dto */
     private LeastUserDto userDto;
+
+    /** ログ書き出しService */
+    private WriteLogService writeLogService;
 
     /**
      * コンストラクタ
@@ -63,6 +67,8 @@ public class UpdateRsdtPostalCodeItemWriter extends JpaItemWriter<AddressPostalE
     @Override
     @Transactional
     public void write(final Chunk<? extends AddressPostalEntity> items) {
+
+        writeLogService.writeInfo("---address update" + items.getItems().get(0).getLgCode());
 
         LocalDateTime now = LocalDateTime.now();
         String timestampString = now.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);

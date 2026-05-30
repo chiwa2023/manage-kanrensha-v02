@@ -134,8 +134,10 @@ public class CopyPostalCodeByRangeNameLogic {
                     .findByPostalcode1AndPostalcode2OrderByAddressNameAsc(irregularEntity.getPostalcode1(),
                             irregularEntity.getPostalcode2());
             for (AddressPostalEntity entityPostal : listHistory) {
-                setTableDataHistoryUtil.practiceDelete(userDto, entityPostal);
-                list.add(entityPostal);
+                if(entityPostal.getIsLatest()) {
+                    setTableDataHistoryUtil.practiceDelete(userDto, entityPostal);
+                    list.add(entityPostal);
+                }
             }
         }
         return list;

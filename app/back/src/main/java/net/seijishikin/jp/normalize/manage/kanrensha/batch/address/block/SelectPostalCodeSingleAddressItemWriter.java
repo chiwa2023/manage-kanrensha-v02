@@ -18,6 +18,7 @@ import net.seijishikin.jp.normalize.manage.kanrensha.entity.WkTblPostalCommonEnt
 import net.seijishikin.jp.normalize.manage.kanrensha.logic.postal.SelectSingleAddressLogic;
 import net.seijishikin.jp.normalize.manage.kanrensha.repository.AddressPostalRepository;
 import net.seijishikin.jp.normalize.manage.kanrensha.repository.WkTblPostalCommonRepository;
+import net.seijishikin.jp.normalize.manage.kanrensha.service.util.WriteLogService;
 
 /**
  * （）内単一住所データの呼び出し住所を正規郵便番号に反映するItemWriter
@@ -48,6 +49,9 @@ public class SelectPostalCodeSingleAddressItemWriter extends JpaItemWriter<WkTbl
     /** ユーザ最低限Dto */
     private LeastUserDto userDto;
 
+    /** ログ書き出しService */
+    private WriteLogService writeLogService;
+
     /**
      * コンストラクタ
      *
@@ -74,6 +78,7 @@ public class SelectPostalCodeSingleAddressItemWriter extends JpaItemWriter<WkTbl
      */
     @Override
     public void write(final Chunk<? extends WkTblPostalCommonEntity> items) {
+        writeLogService.writeInfo("---address single" + items.getItems().get(0).getLgCode());
 
         for (WkTblPostalCommonEntity entity : items) {
             // 住居テーブルに存在する地名で有効化

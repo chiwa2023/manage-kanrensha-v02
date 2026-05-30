@@ -76,7 +76,7 @@ class ParcelAddressCsvItemReaderTest {
                 "mt_parcel_city011029_sample.csv");
 
         JobParameters jobParameters = new JobParametersBuilder() // NOPMD
-                .addString("readFilePath", path.toString()).toJobParameters();
+                .addString("readFilePathParcel", path.toString()).toJobParameters();
 
         // 起動引数付きのStepExecutionを作成
         return MetaDataInstanceFactory.createStepExecution(jobParameters);
