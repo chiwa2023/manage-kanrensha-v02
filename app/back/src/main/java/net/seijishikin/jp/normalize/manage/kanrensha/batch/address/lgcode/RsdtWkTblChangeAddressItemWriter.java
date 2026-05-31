@@ -29,7 +29,7 @@ import net.seijishikin.jp.normalize.manage.kanrensha.repository.WkTblAddressRsdt
 public class RsdtWkTblChangeAddressItemWriter extends JpaItemWriter<WkTblAddressRsdtFileEntity> {
 
     /** EntityManager */
-    private EntityManager entityManager;
+    private final EntityManager entityManager;
 
     /** テーブル履歴設定Util */
     @Autowired

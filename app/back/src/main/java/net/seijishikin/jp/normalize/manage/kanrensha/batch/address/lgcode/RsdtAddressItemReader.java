@@ -33,8 +33,8 @@ public class RsdtAddressItemReader extends AbstractPaginatedDataItemReader<Addre
      */
     public RsdtAddressItemReader(final EntityManager entityManager,
             final @Value("#{jobParameters['lgCode']}") String lgCode) {
-
-        this.setName("rsdtAddressItemReader");
+        super();
+        this.setName("rsdtAddressItemReader"); // NOPMD CallOveridableMethod
         this.entityManager = entityManager;
         this.lgCode = lgCode;
     }

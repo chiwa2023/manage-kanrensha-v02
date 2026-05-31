@@ -54,6 +54,9 @@ public class PostalCodeCsvOneLineItemWriter extends JpaItemWriter<AddressPostalE
     @Autowired
     private WriteLogService writeLogService;
 
+    /** 地方自治体コード */
+    private String lgCode;
+
     /**
      * コンストラクタ
      *
@@ -73,6 +76,7 @@ public class PostalCodeCsvOneLineItemWriter extends JpaItemWriter<AddressPostalE
     public void beforeStep(final StepExecution stepExecution) {
 
         userDto = createUserLeastDtoByBatchParamUtil.practice(stepExecution);
+        lgCode = stepExecution.getJobParameters().getString("lgCode");
     }
 
     /**
@@ -84,17 +88,27 @@ public class PostalCodeCsvOneLineItemWriter extends JpaItemWriter<AddressPostalE
         writeLogService.writeInfo("chunk:" + items.getItems().get(0).getLgCode() + "==" + LocalDateTime.now());
         
         List<AddressPostalIrregularEntity> listIrregular = new ArrayList<>();
+        List<AddressPostalEntity> listPostal = new ArrayList<>();
+        
         for (AddressPostalEntity entity : items) {
-            setTableDataHistoryUtil.practiceInsert(userDto, entity);
-            entity.setAddressPostalId(0); // auto increment明記
-            // （かっこ が原文書に存在する場合は特殊例として並行して不規則に保存
-            if (entity.getAddressOrg().contains(KEY_EMP)) {
-                listIrregular.add(this.copyIrregular(entity));
+            // 指定地方自治体コードで始まる場合のみに限定
+            if(entity.getLgCode().startsWith(lgCode)) {
+                setTableDataHistoryUtil.practiceInsert(userDto, entity);
+                entity.setAddressPostalId(0); // auto increment明記
+                listPostal.add(entity);
+                // （かっこ が原文書に存在する場合は特殊例として並行して不規則に保存
+                if (entity.getAddressOrg().contains(KEY_EMP)) {
+                    listIrregular.add(this.copyIrregular(entity));
+                }
             }
         }
 
-        addressPostalIrregularRepository.saveAll(listIrregular);
-        addressPostalRepository.saveAll(items);
+        if(!listIrregular.isEmpty()) {
+            addressPostalIrregularRepository.saveAll(listIrregular);
+        }
+        if(!listPostal.isEmpty()) {
+            addressPostalRepository.saveAll(listPostal);
+        }
     }
 
     private AddressPostalIrregularEntity copyIrregular(final AddressPostalEntity entity) {

@@ -46,96 +46,103 @@ class RsdtWkTblDeleteAddressItemWriterTest {
     @Tag("TableTruncate")
     void test() throws Exception {
 
+        
         // コードは一致するが建物住所が入力されているデータしかなく、番地代表住所が存在しないので削除対象とカウント
         AddressRsdtBaseEntity baseEntity0 = new AddressRsdtBaseEntity();
-        baseEntity0.setLgCode("452020");
+        final String lgCode = "452020";
+        baseEntity0.setLgCode(lgCode);
         baseEntity0.setAddressRsdtId(140);
-        baseEntity0.setMachiazaId("0013018");
-        baseEntity0.setBlkId("334");
-        baseEntity0.setPrcId("017");
-        baseEntity0.setRsdtId("556");
+        final String machiazaId = "0013018";
+        baseEntity0.setMachiazaId(machiazaId);
+        final String blkId = "334";
+        baseEntity0.setBlkId(blkId);
+        final String prcId = "017";
+        baseEntity0.setPrcId(prcId);
+        final String rsdtId = "556";
+        baseEntity0.setRsdtId(rsdtId);
         baseEntity0.setRsdt2Id("245");
         baseEntity0.setAddressBlock("札幌市豊平区月寒東五条十八丁目aaa17番地11号");
         baseEntity0.setAddressBuilding("");
 
         // 履歴が最新でないので削除とカウント
         AddressRsdtBaseEntity baseEntity1 = new AddressRsdtBaseEntity();
-        baseEntity1.setLgCode("452020");
+        baseEntity1.setLgCode(lgCode);
         baseEntity1.setAddressRsdtId(141);
-        baseEntity1.setMachiazaId("0013018");
-        baseEntity1.setBlkId("334");
-        baseEntity1.setPrcId("017");
-        baseEntity1.setRsdtId("556");
+        baseEntity1.setMachiazaId(machiazaId);
+        baseEntity1.setBlkId(blkId);
+        baseEntity1.setPrcId(prcId);
+        baseEntity1.setRsdtId(rsdtId);
         baseEntity1.setRsdt2Id("246");
 
         // 条件を満たすので削除対象でない
         AddressRsdtBaseEntity baseEntity2 = new AddressRsdtBaseEntity();
-        baseEntity2.setLgCode("452020");
+        baseEntity2.setLgCode(lgCode);
         baseEntity2.setAddressRsdtId(142);
-        baseEntity2.setMachiazaId("0013018");
-        baseEntity2.setBlkId("334");
-        baseEntity2.setPrcId("017");
-        baseEntity2.setRsdtId("556");
-        baseEntity2.setRsdt2Id("247");
+        baseEntity2.setMachiazaId(machiazaId);
+        baseEntity2.setBlkId(blkId);
+        baseEntity2.setPrcId(prcId);
+        baseEntity2.setRsdtId(rsdtId);
+        final String rsdt2Id = "247";
+        baseEntity2.setRsdt2Id(rsdt2Id);
 
         // コードが違う1
         AddressRsdtBaseEntity baseEntity3 = new AddressRsdtBaseEntity();
-        baseEntity3.setLgCode("452020");
+        baseEntity3.setLgCode(lgCode);
         baseEntity3.setAddressRsdtId(143);
         baseEntity3.setMachiazaId("013018");
-        baseEntity3.setBlkId("334");
-        baseEntity3.setPrcId("017");
-        baseEntity3.setRsdtId("556");
-        baseEntity3.setRsdt2Id("247");
+        baseEntity3.setBlkId(blkId);
+        baseEntity3.setPrcId(prcId);
+        baseEntity3.setRsdtId(rsdtId);
+        baseEntity3.setRsdt2Id(rsdt2Id);
 
         // コードが違う2
         AddressRsdtBaseEntity baseEntity4 = new AddressRsdtBaseEntity();
-        baseEntity4.setLgCode("452020");
+        baseEntity4.setLgCode(lgCode);
         baseEntity4.setAddressRsdtId(144);
-        baseEntity4.setMachiazaId("0013018");
+        baseEntity4.setMachiazaId(machiazaId);
         baseEntity4.setBlkId("1334");
-        baseEntity4.setPrcId("017");
-        baseEntity4.setRsdtId("556");
-        baseEntity4.setRsdt2Id("247");
+        baseEntity4.setPrcId(prcId);
+        baseEntity4.setRsdtId(rsdtId);
+        baseEntity4.setRsdt2Id(rsdt2Id);
 
         // コードが違う3
         AddressRsdtBaseEntity baseEntity5 = new AddressRsdtBaseEntity();
-        baseEntity5.setLgCode("452020");
+        baseEntity5.setLgCode(lgCode);
         baseEntity5.setAddressRsdtId(5);
-        baseEntity5.setMachiazaId("0013018");
-        baseEntity5.setBlkId("334");
+        baseEntity5.setMachiazaId(machiazaId);
+        baseEntity5.setBlkId(blkId);
         baseEntity5.setPrcId("1017");
-        baseEntity5.setRsdtId("556");
-        baseEntity5.setRsdt2Id("247");
+        baseEntity5.setRsdtId(rsdtId);
+        baseEntity5.setRsdt2Id(rsdt2Id);
 
         // コードが違う4
         AddressRsdtBaseEntity baseEntity6 = new AddressRsdtBaseEntity();
-        baseEntity6.setLgCode("452020");
+        baseEntity6.setLgCode(lgCode);
         baseEntity6.setAddressRsdtId(6);
-        baseEntity6.setMachiazaId("0013018");
-        baseEntity6.setBlkId("334");
-        baseEntity6.setPrcId("017");
+        baseEntity6.setMachiazaId(machiazaId);
+        baseEntity6.setBlkId(blkId);
+        baseEntity6.setPrcId(prcId);
         baseEntity6.setRsdtId("1556");
-        baseEntity6.setRsdt2Id("247");
+        baseEntity6.setRsdt2Id(rsdt2Id);
 
         // コードが違う5
         AddressRsdtBaseEntity baseEntity7 = new AddressRsdtBaseEntity();
-        baseEntity7.setLgCode("452020");
+        baseEntity7.setLgCode(lgCode);
         baseEntity7.setAddressRsdtId(7);
-        baseEntity7.setMachiazaId("0013018");
-        baseEntity7.setBlkId("334");
-        baseEntity7.setPrcId("017");
-        baseEntity7.setRsdtId("556");
+        baseEntity7.setMachiazaId(machiazaId);
+        baseEntity7.setBlkId(blkId);
+        baseEntity7.setPrcId(prcId);
+        baseEntity7.setRsdtId(rsdtId);
         baseEntity7.setRsdt2Id("999");
 
         // ユーザが違う
         AddressRsdtBaseEntity baseEntity8 = new AddressRsdtBaseEntity();
-        baseEntity8.setLgCode("452020");
+        baseEntity8.setLgCode(lgCode);
         baseEntity8.setAddressRsdtId(8);
-        baseEntity8.setMachiazaId("0013018");
-        baseEntity8.setBlkId("334");
-        baseEntity8.setPrcId("017");
-        baseEntity8.setRsdtId("556");
+        baseEntity8.setMachiazaId(machiazaId);
+        baseEntity8.setBlkId(blkId);
+        baseEntity8.setPrcId(prcId);
+        baseEntity8.setRsdtId(rsdtId);
         baseEntity8.setRsdt2Id("248");
 
         List<AddressRsdtBaseEntity> list = new ArrayList<>();

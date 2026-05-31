@@ -46,7 +46,6 @@ class RsdtWkTblChangeAddressItemWriterTest {
     @Tag("TableTruncate")
     void test() throws Exception {
 
-
         // コードが一致して住所が異なるので変更扱い
         WkTblAddressRsdtFileEntity fileEntity0 = this.getChengeEntity();
         fileEntity0.setAddressBlock("北海道石狩郡当別町425番地の37");

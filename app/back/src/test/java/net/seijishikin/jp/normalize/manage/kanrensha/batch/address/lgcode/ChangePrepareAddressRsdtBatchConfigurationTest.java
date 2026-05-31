@@ -82,8 +82,8 @@ class ChangePrepareAddressRsdtBatchConfigurationTest {
                 .addLong("userCode", (long) userDto.getUserPersonCode())
                 .addString("userName", userDto.getUserPersonName())
                 .addLong(RecordTaskPlanJobExecutionListner.KEY_YEAR, (long) 2026) //
-                .addLong(RecordTaskPlanJobExecutionListner.KEY_ID, (long) 453) //
-                .addLong(RecordTaskPlanJobExecutionListner.KEY_CODE, (long) 152).toJobParameters();
+                .addLong(RecordTaskPlanJobExecutionListner.KEY_ID, (long) 459) //
+                .addLong(RecordTaskPlanJobExecutionListner.KEY_CODE, (long) 153).toJobParameters();
 
         JobExecution jobExecution = jobLauncherTestUtils.launchJob(jobParameters);
         assertEquals("COMPLETED", jobExecution.getExitStatus().getExitCode(), "作業完了Statusが戻ってくる");

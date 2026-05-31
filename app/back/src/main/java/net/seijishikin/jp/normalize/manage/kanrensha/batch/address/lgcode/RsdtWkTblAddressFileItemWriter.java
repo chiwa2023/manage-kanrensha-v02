@@ -24,7 +24,7 @@ import net.seijishikin.jp.normalize.manage.kanrensha.repository.WkTblAddressRsdt
  * アドレス・ベース・レジストリワークテーブル書き出しItemWriter
  */
 @Component
-public class RsdtWkTblAddressFileItemWriter extends JpaItemWriter<AddressRsdtBaseEntity> {
+public class RsdtWkTblAddressFileItemWriter extends JpaItemWriter<AddressRsdtBaseEntity>{
 
     /** アドレス・ベース・レジストリワークテーブルRepository */
     @Autowired

@@ -85,6 +85,7 @@ class RebuildAddressPostalCodeBatchConfigurationAllTest {
                 .addLocalDateTime("executeTime", LocalDateTime.now())
                 .addString("readFilePathOneLine", pathOneLine.toString())
                 .addString("readFilePathJigyousha", pathJigyousha.toString())
+                .addString("lgCode", "0110")
                 .addLong("userId", (long) userDto.getUserPersonId())
                 .addLong("userCode", (long) userDto.getUserPersonCode())
                 .addString("userName", userDto.getUserPersonName()).toJobParameters();

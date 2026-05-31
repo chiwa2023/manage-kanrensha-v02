@@ -1,9 +1,7 @@
-package net.seijishikin.jp.normalize.manage.kanrensha.batch.address.postalcode;
+package net.seijishikin.jp.normalize.manage.kanrensha.batch.address.lgcode;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.time.LocalDateTime;
 
 import org.junit.jupiter.api.Tag;
@@ -26,76 +24,56 @@ import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.BackApplication;
-import net.seijishikin.jp.normalize.manage.kanrensha.constants.GetCurrentResourcePath;
+import net.seijishikin.jp.normalize.manage.kanrensha.batch.task_plan.RecordTaskPlanJobExecutionListner;
 import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateLeastUserForTestUtil;
 
 /**
- * RebuildAddressPostalCodeBatchConfiguration単体テスト
+ * UpdateAddressRsdtBatchConfiguration単体テスト
  */
 @SpringJUnitConfig
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @SpringBatchTest
 @ContextConfiguration(classes = BackApplication.class) // 全体起動
 @DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
-@Sql("RebuildAddressPostalCodeBatchConfigurationTest.sql")
-class RebuildAddressPostalCodeBatchConfigurationTest {
+@Sql("UpdateAddressRsdtBatchConfigurationTest.sql")
+class UpdateAddressRsdtBatchConfigurationTest {
+    // CHECKSTYLE:OFF MagicNumber
 
     /** テストユーティリティ */
     @Autowired
     private JobLauncherTestUtils jobLauncherTestUtils;
 
     /** 起動をするJob */
-    @Qualifier(RebuildAddressPostalCodeBatchConfiguration.JOB_NAME)
+    @Qualifier(UpdateAddressRsdtBatchConfiguration.JOB_NAME)
     @Autowired
-    private Job rebuildAddressPostalCode;
+    private Job updateAddressRsdt;
 
     @Test
     @Tag("TableTruncate")
     void testJob() {
-        assertEquals(RebuildAddressPostalCodeBatchConfiguration.JOB_NAME, rebuildAddressPostalCode.getName(),
-                "Job名が一致");
+        assertEquals(UpdateAddressRsdtBatchConfiguration.JOB_NAME, updateAddressRsdt.getName(), "Job名が一致");
     }
 
     @Test
     @Tag("TableTruncate")
     void testExecute() throws Exception {
 
-        jobLauncherTestUtils.setJob(rebuildAddressPostalCode);
-
-        // 本番用データ作成ファイル指定
-        // Path pathRoot = Paths.get(GetCurrentResourcePath.getBackSrcPath(""));
-        // Path pathBase =
-        // Paths.get(pathRoot.getParent().getParent().getParent().toString(),"/config/file_address/postal/");
-
-        // Path pathOneLine = Paths.get(pathBase.toString(),"/utf_ken_all/"
-        // ,"utf_ken_all.csv");
-        // Path pathJigyousha = Paths.get(pathBase.toString(),"/jigyousho/"
-        // ,"JIGYOSYO.CSV");
-        // Path pathOneLine = Paths.get(pathBase.toString(),"/utf_ken_all/"
-        // ,"temp.csv");
-        // Path pathJigyousha = Paths.get(pathBase.toString(),"/jigyousho/"
-        // ,"temp.csv");
-
-        Path pathOneLine = Paths.get(GetCurrentResourcePath.getBackTestResourcePath(), "/file/batch/postalcode/",
-                "utf_add_2601.csv");
-        Path pathJigyousha = Paths.get(GetCurrentResourcePath.getBackTestResourcePath(), "/file/batch/postalcode/",
-                "JIGYOSYO_SAMPLE.CSV");
+        jobLauncherTestUtils.setJob(updateAddressRsdt);
 
         LeastUserDto userDto = CreateLeastUserForTestUtil.practice();
 
         JobParameters jobParameters = new JobParametersBuilder(
-                rebuildAddressPostalCode.getJobParametersIncrementer().getNext(new JobParameters())) // NOPMD
-                .addLocalDateTime("executeTime", LocalDateTime.now())
-                .addString("readFilePathOneLine", pathOneLine.toString())
-                .addString("readFilePathJigyousha", pathJigyousha.toString())
-                .addString("lgCode", "01")
+                updateAddressRsdt.getJobParametersIncrementer().getNext(new JobParameters())) // NOPMD
+                .addLocalDateTime("executeTime", LocalDateTime.now()) //
                 .addLong("userId", (long) userDto.getUserPersonId())
                 .addLong("userCode", (long) userDto.getUserPersonCode())
-                .addString("userName", userDto.getUserPersonName()).toJobParameters();
+                .addString("userName", userDto.getUserPersonName())
+                .addLong(RecordTaskPlanJobExecutionListner.KEY_YEAR, (long) 2026) //
+                .addLong(RecordTaskPlanJobExecutionListner.KEY_ID, (long) 453) //
+                .addLong(RecordTaskPlanJobExecutionListner.KEY_CODE, (long) 152).toJobParameters();
 
         JobExecution jobExecution = jobLauncherTestUtils.launchJob(jobParameters);
         assertEquals("COMPLETED", jobExecution.getExitStatus().getExitCode(), "作業完了Statusが戻ってくる");
-
     }
 
 }
