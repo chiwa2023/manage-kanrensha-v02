@@ -18,7 +18,7 @@ import jakarta.persistence.Query;
 import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
 import net.seijishikin.jp.normalize.common_tool.utils.CreateUserLeastDtoByBatchParamUtil;
 import net.seijishikin.jp.normalize.common_tool.utils.SetTableDataHistoryUtil;
-import net.seijishikin.jp.normalize.manage.kanrensha.entity.AddressRsdtBaseEntity;
+import net.seijishikin.jp.normalize.manage.kanrensha.entity.AddressRsdtTemplateEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.WkTblAddressRsdtChangeEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.WkTblAddressRsdtMarkEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.logic.lgcode.CreateSqlAddressRsdtHistoryLogic;
@@ -120,7 +120,7 @@ public class WkTblAddressChangeItemWriter extends JpaItemWriter<WkTblAddressRsdt
 
     private void insertAddressRsdt(final WkTblAddressRsdtChangeEntity entity, final String timestampString) {
 
-        AddressRsdtBaseEntity baseEntity = new AddressRsdtBaseEntity();
+        AddressRsdtTemplateEntity baseEntity = new AddressRsdtTemplateEntity();
         BeanUtils.copyProperties(entity, baseEntity);
 
         // 最新データを挿入
@@ -131,7 +131,7 @@ public class WkTblAddressChangeItemWriter extends JpaItemWriter<WkTblAddressRsdt
 
     private void changeAddressRsdt(final WkTblAddressRsdtChangeEntity entity, final String timestampString) {
 
-        AddressRsdtBaseEntity baseEntity = new AddressRsdtBaseEntity();
+        AddressRsdtTemplateEntity baseEntity = new AddressRsdtTemplateEntity();
         BeanUtils.copyProperties(entity, baseEntity);
 
         // 既存データを履歴に変更

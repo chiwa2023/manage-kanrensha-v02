@@ -26,7 +26,6 @@ import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
 import net.seijishikin.jp.normalize.common_tool.utils.CreateUserLeastDtoByBatchParamUtil;
 import net.seijishikin.jp.normalize.manage.kanrensha.BackApplication;
 import net.seijishikin.jp.normalize.manage.kanrensha.batch.address.block.PickupManualWorksBatchConfiguration;
-import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateLeastUserForTestUtil;
 
 /**
  * PickupManualWorksBatchConfigurationテスト実行用
@@ -54,7 +53,7 @@ class PickupManualWorksBatchConfigurationAllTest {
 
         jobLauncherTestUtils.setJob(pickupManualWorksBatchConfiguration);
 
-        LeastUserDto userDto = CreateLeastUserForTestUtil.practice();
+        LeastUserDto userDto = CreateSystemInitialUserUtil.practice();
 
         JobParameters jobParameters = new JobParametersBuilder(
                 pickupManualWorksBatchConfiguration.getJobParametersIncrementer().getNext(new JobParameters())) // NOPMD

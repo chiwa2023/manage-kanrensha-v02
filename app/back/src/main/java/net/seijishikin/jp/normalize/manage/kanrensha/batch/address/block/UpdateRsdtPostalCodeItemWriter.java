@@ -36,6 +36,7 @@ public class UpdateRsdtPostalCodeItemWriter extends JpaItemWriter<AddressPostalE
     private LeastUserDto userDto;
 
     /** ログ書き出しService */
+    @Autowired
     private WriteLogService writeLogService;
 
     /**

@@ -64,8 +64,8 @@ public interface AddressPostalIrregularRepository extends JpaRepository<AddressP
      * @param pageable ページング
      * @return 検索結果
      */
-    Page<AddressPostalIrregularEntity> findByLgCodeStartingWithAndAddressOrgLikeAndAddressOrgNotLikeAndIsLatestTrue(String lgCode,
-            String nami, String comma, Pageable pageable);
+    Page<AddressPostalIrregularEntity> findByLgCodeStartingWithAndAddressOrgLikeAndAddressOrgNotLikeAndIsLatestTrue(
+            String lgCode, String nami, String comma, Pageable pageable);
 
     /**
      * 地名(地名)といった単一地域を抽出する
@@ -84,23 +84,32 @@ public interface AddressPostalIrregularRepository extends JpaRepository<AddressP
      * 番地まで住所に空白文字を含むデータを取得する
      *
      * @param lgCode   地方公共団体コード(県部分)
-     * @param space     空白文字
+     * @param space    空白文字
      * @param pageable ページング
      * @return 検索結果
      */
     Page<AddressPostalIrregularEntity> findByLgCodeStartingWithAndAddressBlockLikeAndIsLatestTrue(String lgCode,
-            String space,  Pageable pageable);
+            String space, Pageable pageable);
 
-    
     /**
      * 原文書に読点を含むデータを取得する
      *
      * @param lgCode   地方公共団体コード(県部分)
-     * @param touten     空白文字
+     * @param touten   空白文字
      * @param pageable ページング
      * @return 検索結果
      */
     Page<AddressPostalIrregularEntity> findByLgCodeStartingWithAndAddressOrgLikeAndIsLatestTrue(String lgCode,
-            String touten,  Pageable pageable);
-    
+            String touten, Pageable pageable);
+
+    /**
+     * 郵便番号1と郵便番号2が一致かつ最新を検索する
+     * 
+     * @param postalcode1 郵便番号1
+     * @param postalcode2 郵便番号2
+     * @return 検索結果
+     */
+    List<AddressPostalIrregularEntity> findByPostalcode1AndPostalcode2AndIsLatestTrue(String postalcode1,
+            String postalcode2);
+
 }

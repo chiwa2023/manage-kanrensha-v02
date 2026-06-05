@@ -45,6 +45,7 @@ public class FixIkaniKeisaiNashiItemWriter extends JpaItemWriter<WkTblPostalComm
     private SearchAddressRsdtIkaniKeisaiNashiService searchAddressRsdtIkaniKeisaiNashiService;
     
     /** ログ書き出しService */
+    @Autowired
     private WriteLogService writeLogService;
 
     /** ユーザ最低限Dto */

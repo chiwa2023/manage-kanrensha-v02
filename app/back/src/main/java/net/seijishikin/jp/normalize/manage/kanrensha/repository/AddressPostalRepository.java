@@ -32,6 +32,14 @@ public interface AddressPostalRepository extends JpaRepository<AddressPostalEnti
      * @param postal1 郵便番号(7桁)
      * @return 検索結果
      */
+    List<AddressPostalEntity> findByPostalcode1AndPostalcode2AndIsLatestTrueOrderByAddressNameAsc(String postal1, String postal2);
+
+    /**
+     * 郵便番号が同一であるデータを取得する
+     *
+     * @param postal1 郵便番号(7桁)
+     * @return 検索結果
+     */
     List<AddressPostalEntity> findByPostalcode1AndPostalcode2OrderByAddressNameAsc(String postal1, String postal2);
 
     /**

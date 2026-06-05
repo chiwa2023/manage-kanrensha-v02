@@ -121,11 +121,6 @@ public class CopyPostalCodeByRangeNameLogic {
                 isHosei = true;
 
             }
-            // もうログに出さない
-            // else {
-            // writeLogAddressFormatLogic.practice(WriteLogAddressFormatLogic.ERROR,
-            // "範囲変換で郵便番号ファイルにあるがアドレスレジストリにありません", newAddress);
-            // }
         }
 
         // 該当郵便番号ですでに存在する同一郵便番号データは履歴とする

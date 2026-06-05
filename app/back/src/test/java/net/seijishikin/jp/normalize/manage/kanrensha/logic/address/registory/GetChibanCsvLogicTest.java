@@ -31,7 +31,7 @@ class GetChibanCsvLogicTest {
     @Tag("TableTruncate")
     void testLimit() throws Exception {
 
-        final String lgCodePref = "34";
+        final String lgCodePref = "47";
         assertDoesNotThrow(() -> getChibanCsvLogic.practice(lgCodePref, GetChibanConstants.STORED_PATH));
     }
 

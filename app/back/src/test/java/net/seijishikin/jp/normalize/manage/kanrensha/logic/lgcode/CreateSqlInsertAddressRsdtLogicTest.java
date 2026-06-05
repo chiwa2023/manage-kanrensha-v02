@@ -22,6 +22,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
 import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.AddressRsdtBaseEntity;
+import net.seijishikin.jp.normalize.manage.kanrensha.entity.AddressRsdtTemplateEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateLeastUserForTestUtil;
 
 /**
@@ -51,7 +52,7 @@ class CreateSqlInsertAddressRsdtLogicTest {
         LocalDateTime time = LocalDateTime.of(2025, 12, 5, 12, 34, 56);
         String timestampString = time.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
 
-        AddressRsdtBaseEntity baseEntity = new AddressRsdtBaseEntity();
+        AddressRsdtTemplateEntity baseEntity = new AddressRsdtTemplateEntity();
         baseEntity.setLgCode("011045");
         baseEntity.setPostalcode1("11");
         baseEntity.setPostalcode2("12");

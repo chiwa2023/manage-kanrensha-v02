@@ -50,6 +50,7 @@ public class ChoicePostalCodeIrregularItemWriter extends JpaItemWriter<WkTblPost
     private LeastUserDto userDto;
 
     /** ログ書き出しService */
+    @Autowired
     private WriteLogService writeLogService;
 
     /**

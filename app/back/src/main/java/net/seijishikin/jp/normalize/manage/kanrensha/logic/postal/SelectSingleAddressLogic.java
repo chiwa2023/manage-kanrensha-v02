@@ -93,7 +93,7 @@ public class SelectSingleAddressLogic {
 
             // 該当する郵便番号(実際は1件のはず)を抽出する
             List<AddressPostalEntity> listPostal = addressPostalRepository
-                    .findByPostalcode1AndPostalcode2OrderByAddressNameAsc(worksEntity.getPostalcode1(),
+                    .findByPostalcode1AndPostalcode2AndIsLatestTrueOrderByAddressNameAsc(worksEntity.getPostalcode1(),
                             worksEntity.getPostalcode2());
 
             List<AddressPostalEntity> listAnswer = new ArrayList<>();

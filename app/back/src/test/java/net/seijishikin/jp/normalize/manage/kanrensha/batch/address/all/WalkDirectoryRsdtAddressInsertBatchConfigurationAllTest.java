@@ -27,7 +27,6 @@ import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.BackApplication;
 import net.seijishikin.jp.normalize.manage.kanrensha.batch.address.lgcode.WalkDirectoryRsdtAddressInsertBatchConfiguration;
 import net.seijishikin.jp.normalize.manage.kanrensha.constants.GetCurrentResourcePath;
-import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateLeastUserForTestUtil;
 
 /**
  * WalkDirectoryRsdtAddressInsertBatchConfiguration全実行
@@ -69,7 +68,7 @@ class WalkDirectoryRsdtAddressInsertBatchConfigurationAllTest {
 
         Path path = Paths.get(pathBase.toString(), prefCode);
 
-        LeastUserDto userDto = CreateLeastUserForTestUtil.practice();
+        LeastUserDto userDto = CreateSystemInitialUserUtil.practice();
 
         JobParameters jobParameters = new JobParametersBuilder(
                 walkDirectoryRsdtAddressInsert.getJobParametersIncrementer().getNext(new JobParameters())) // NOPMD

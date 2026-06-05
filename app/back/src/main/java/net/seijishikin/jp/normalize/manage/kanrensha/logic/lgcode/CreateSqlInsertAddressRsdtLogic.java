@@ -5,7 +5,7 @@ import java.util.Objects;
 import org.springframework.stereotype.Component;
 
 import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
-import net.seijishikin.jp.normalize.manage.kanrensha.entity.AddressRsdtBaseEntity;
+import net.seijishikin.jp.normalize.manage.kanrensha.entity.AddressRsdtTemplateEntity;
 
 /**
  * 住所住居最新挿入SQL作成Logic
@@ -27,7 +27,7 @@ public class CreateSqlInsertAddressRsdtLogic {
      * @param timestampIsoString 記録時間
      * @return SQL
      */
-    public String practice(final LeastUserDto userDto, final AddressRsdtBaseEntity entity,
+    public String practice(final LeastUserDto userDto, final AddressRsdtTemplateEntity entity,
             final String timestampIsoString) {
 
         StringBuilder builder = new StringBuilder("INSERT INTO address_rsdt_");
@@ -37,12 +37,13 @@ public class CreateSqlInsertAddressRsdtLogic {
                 .append(" effect_date , abolish_date , is_latest , insert_user_id , ")
                 .append(" insert_user_code, insert_user_name , insert_timestamp , delete_user_id ,  ")
                 .append(" delete_user_code ,delete_user_name , delete_timestamp) VALUES (0,")
-                .append(this.createInsertParameter(entity, timestampIsoString)).append(" )");
+                .append(this.createInsertParameter(entity, timestampIsoString, userDto)).append(" )");
 
         return builder.toString();
     }
 
-    private String createInsertParameter(final AddressRsdtBaseEntity entity, final String timestampIsoString) {
+    private String createInsertParameter(final AddressRsdtTemplateEntity entity, final String timestampIsoString,
+            final LeastUserDto userDto) {
         StringBuilder builder = new StringBuilder();
 
         builder.append(QUOTE_SINGLE).append(entity.getLgCode()).append(QUOTE_SINGLE).append(COMMA) //
@@ -65,9 +66,9 @@ public class CreateSqlInsertAddressRsdtLogic {
         }
 
         builder.append(QUOTE_SINGLE).append(1).append(QUOTE_SINGLE).append(COMMA).append(QUOTE_SINGLE)
-                .append(entity.getInsertUserId()).append(QUOTE_SINGLE).append(COMMA).append(QUOTE_SINGLE)
-                .append(entity.getInsertUserCode()).append(QUOTE_SINGLE).append(COMMA).append(QUOTE_SINGLE)
-                .append(entity.getInsertUserName()).append(QUOTE_SINGLE).append(COMMA).append(QUOTE_SINGLE)
+                .append(userDto.getUserPersonId()).append(QUOTE_SINGLE).append(COMMA).append(QUOTE_SINGLE)
+                .append(userDto.getUserPersonCode()).append(QUOTE_SINGLE).append(COMMA).append(QUOTE_SINGLE)
+                .append(userDto.getUserPersonName()).append(QUOTE_SINGLE).append(COMMA).append(QUOTE_SINGLE)
                 .append(timestampIsoString).append(QUOTE_SINGLE).append(COMMA).append(QUOTE_SINGLE)
                 .append(entity.getDeleteUserId()).append(QUOTE_SINGLE).append(COMMA).append(QUOTE_SINGLE)
                 .append(entity.getDeleteUserCode()).append(QUOTE_SINGLE).append(COMMA).append(QUOTE_SINGLE)

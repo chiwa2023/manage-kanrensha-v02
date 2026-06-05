@@ -52,7 +52,7 @@ public class CheckExistPostalCodeByOtherLogic {
                     worksEntity.getAddressName(),worksEntity.getLgCode());
             return list;
         } else {
-            return addressPostalRepository.findByPostalcode1AndPostalcode2OrderByAddressNameAsc(
+            return addressPostalRepository.findByPostalcode1AndPostalcode2AndIsLatestTrueOrderByAddressNameAsc(
                     worksEntity.getPostalcode1(), worksEntity.getPostalcode2());
         }
     }

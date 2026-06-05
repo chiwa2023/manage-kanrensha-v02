@@ -27,7 +27,6 @@ import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.BackApplication;
 import net.seijishikin.jp.normalize.manage.kanrensha.batch.address.lgcode.WalkDirectoryParcelAddressInsertBatchConfiguration;
 import net.seijishikin.jp.normalize.manage.kanrensha.constants.GetCurrentResourcePath;
-import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateLeastUserForTestUtil;
 
 /**
  * WalkDirectoryParcelAddressInsertBatchConfiguration全実行
@@ -68,7 +67,7 @@ class WalkDirectoryParcelAddressInsertBatchConfigurationAllTest {
 
         Path path = Paths.get(pathBase.toString(), prefCode);
 
-        LeastUserDto userDto = CreateLeastUserForTestUtil.practice();
+        LeastUserDto userDto = CreateSystemInitialUserUtil.practice();
 
         JobParameters jobParameters = new JobParametersBuilder(
                 walkDirectoryParcelAddressInsert.getJobParametersIncrementer().getNext(new JobParameters())) // NOPMD

@@ -41,7 +41,6 @@ public class ClearPostalcodeTasklet implements Tasklet {
 
         // 処理終了
         return RepeatStatus.FINISHED;
-
     }
 
 }

@@ -121,6 +121,7 @@ public class WkTblAddressRsdtFileEntity implements Serializable, AllTabeDataHist
      *
      * @return 最新該否
      */
+    @Override
     public Boolean getIsLatest() {
         return isLatest;
     }
@@ -130,6 +131,7 @@ public class WkTblAddressRsdtFileEntity implements Serializable, AllTabeDataHist
      *
      * @param isLatest 最新該否
      */
+    @Override
     public void setIsLatest(final Boolean isLatest) {
         this.isLatest = isLatest;
     }
@@ -341,6 +343,7 @@ public class WkTblAddressRsdtFileEntity implements Serializable, AllTabeDataHist
      *
      * @return 挿入ユーザId
      */
+    @Override
     public Integer getInsertUserId() {
         return insertUserId;
     }
@@ -350,6 +353,7 @@ public class WkTblAddressRsdtFileEntity implements Serializable, AllTabeDataHist
      *
      * @param insertUserId 挿入ユーザId
      */
+    @Override
     public void setInsertUserId(final Integer insertUserId) {
         this.insertUserId = insertUserId;
     }
@@ -363,6 +367,7 @@ public class WkTblAddressRsdtFileEntity implements Serializable, AllTabeDataHist
      *
      * @return 挿入ユーザコード
      */
+    @Override
     public Integer getInsertUserCode() {
         return insertUserCode;
     }
@@ -372,6 +377,7 @@ public class WkTblAddressRsdtFileEntity implements Serializable, AllTabeDataHist
      *
      * @param insertUserCode 挿入ユーザコード
      */
+    @Override
     public void setInsertUserCode(final Integer insertUserCode) {
         this.insertUserCode = insertUserCode;
     }
@@ -385,6 +391,7 @@ public class WkTblAddressRsdtFileEntity implements Serializable, AllTabeDataHist
      *
      * @return 挿入ユーザ名称
      */
+    @Override
     public String getInsertUserName() {
         return insertUserName;
     }
@@ -394,6 +401,7 @@ public class WkTblAddressRsdtFileEntity implements Serializable, AllTabeDataHist
      *
      * @param insertUserName 挿入ユーザ名称
      */
+    @Override
     public void setInsertUserName(final String insertUserName) {
         this.insertUserName = insertUserName;
     }
@@ -407,6 +415,7 @@ public class WkTblAddressRsdtFileEntity implements Serializable, AllTabeDataHist
      *
      * @return 挿入日時
      */
+    @Override
     public LocalDateTime getInsertTimestamp() {
         return insertTimestamp;
     }
@@ -416,6 +425,7 @@ public class WkTblAddressRsdtFileEntity implements Serializable, AllTabeDataHist
      *
      * @param insertTimestamp 挿入日時
      */
+    @Override
     public void setInsertTimestamp(final LocalDateTime insertTimestamp) {
         this.insertTimestamp = insertTimestamp;
     }
@@ -429,6 +439,7 @@ public class WkTblAddressRsdtFileEntity implements Serializable, AllTabeDataHist
      *
      * @return 無効ユーザId
      */
+    @Override
     public Integer getDeleteUserId() {
         return deleteUserId;
     }
@@ -438,6 +449,7 @@ public class WkTblAddressRsdtFileEntity implements Serializable, AllTabeDataHist
      *
      * @param deleteUserId 無効ユーザId
      */
+    @Override
     public void setDeleteUserId(final Integer deleteUserId) {
         this.deleteUserId = deleteUserId;
     }
@@ -451,6 +463,7 @@ public class WkTblAddressRsdtFileEntity implements Serializable, AllTabeDataHist
      *
      * @return 無効ユーザコード
      */
+    @Override
     public Integer getDeleteUserCode() {
         return deleteUserCode;
     }
@@ -460,6 +473,7 @@ public class WkTblAddressRsdtFileEntity implements Serializable, AllTabeDataHist
      *
      * @param deleteUserCode 無効ユーザコード
      */
+    @Override
     public void setDeleteUserCode(final Integer deleteUserCode) {
         this.deleteUserCode = deleteUserCode;
     }
@@ -473,6 +487,7 @@ public class WkTblAddressRsdtFileEntity implements Serializable, AllTabeDataHist
      *
      * @return 無効ユーザ名称
      */
+    @Override
     public String getDeleteUserName() {
         return deleteUserName;
     }
@@ -482,6 +497,7 @@ public class WkTblAddressRsdtFileEntity implements Serializable, AllTabeDataHist
      *
      * @param deleteUserName 無効ユーザ名称
      */
+    @Override
     public void setDeleteUserName(final String deleteUserName) {
         this.deleteUserName = deleteUserName;
     }
@@ -495,6 +511,7 @@ public class WkTblAddressRsdtFileEntity implements Serializable, AllTabeDataHist
      *
      * @return 無効日時
      */
+    @Override
     public LocalDateTime getDeleteTimestamp() {
         return deleteTimestamp;
     }
@@ -504,6 +521,7 @@ public class WkTblAddressRsdtFileEntity implements Serializable, AllTabeDataHist
      *
      * @param deleteTimestamp 無効日時
      */
+    @Override
     public void setDeleteTimestamp(final LocalDateTime deleteTimestamp) {
         this.deleteTimestamp = deleteTimestamp;
     }
