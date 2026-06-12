@@ -1,5 +1,7 @@
 package net.seijishikin.jp.normalize.manage.kanrensha.repository;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -28,5 +30,25 @@ public interface WkTblAddressRsdtChangeRepository extends JpaRepository<WkTblAdd
      * @return 検索結果
      */
     Page<WkTblAddressRsdtChangeEntity> findByInsertUserCodeAndIsLatestTrue(Integer userCode, Pageable pageable);
+
+    /**
+     * 作業ユーザコードかつ最新条件で検索する
+     * 
+     * @param userocde         ユーザコード
+     * @param listSearchLatest 最新該否検索条件
+     * @param pageable         ページング
+     * @return 検索結果
+     */
+    List<WkTblAddressRsdtChangeEntity> findByInsertUserCodeAndIsLatestIn(Integer userocde,
+            List<Integer> listSearchLatest, Pageable pageable);
+
+    /**
+     * 作業ユーザコードかつ最新条件の件数を取得する
+     * 
+     * @param userocde         ユーザコード
+     * @param listSearchLatest 最新該否検索条件
+     * @return 検索件数
+     */
+    Integer countByInsertUserCodeAndIsLatestIn(Integer userocde, List<Integer> listSearchLatest);
 
 }

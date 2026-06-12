@@ -2,6 +2,7 @@ package net.seijishikin.jp.normalize.manage.kanrensha.repository;
 
 import java.util.List;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -61,8 +62,9 @@ public interface WkTblPostalEditRepository extends JpaRepository<WkTblPostalEdit
      * @param orgName    地名原記述
      * @return 検索結果
      */
-    List<WkTblPostalEditEntity> findByInsertUserCodeAndFlgHenkouRiyuAndIsLatestTrueAndPrefNameAndCityNameAndOrgName( // NOPMD CreanerAPI
-            Integer userocde, String henkouRiyu, String prefName, String cityName, String orgName);
+    List<WkTblPostalEditEntity> //
+            findByInsertUserCodeAndFlgHenkouRiyuAndIsLatestTrueAndPrefNameAndCityNameAndOrgName( // NOPMD CreanerAPI
+                    Integer userocde, String henkouRiyu, String prefName, String cityName, String orgName);
 
     /**
      * 変更理由と郵便番号で検索する
@@ -84,5 +86,28 @@ public interface WkTblPostalEditRepository extends JpaRepository<WkTblPostalEdit
      */
     List<WkTblPostalEditEntity> findByInsertUserCodeAndWorksTextAndIsLatestTrueOrderByFlgHenkouRiyu(Integer userocde,
             String workText);
+
+    /**
+     * ユーザコード、最新該否検索条件、修復該否検索条件で検索する
+     * 
+     * @param userocde         ユーザコード
+     * @param listSearchLatest 新該否検索条件
+     * @param listSearchRepair 修復該否検索条件
+     * @param pageable ページング
+     * @return 検索結果
+     */
+    List<WkTblPostalEditEntity> findByInsertUserCodeAndIsLatestInAndIsRepairInOrderByFlgHenkouRiyu(Integer userocde,
+            List<Boolean> listSearchLatest, List<Boolean> listSearchRepair, Pageable pageable);
+
+    /**
+     * ユーザコード、最新該否検索条件、修復該否検索条件で件数を取得する
+     * 
+     * @param userocde         ユーザコード
+     * @param listSearchLatest 新該否検索条件
+     * @param listSearchRepair 修復該否検索条件
+     * @return 件数
+     */
+    Integer countByInsertUserCodeAndIsLatestInAndIsRepairIn(Integer userocde, List<Boolean> listSearchLatest,
+            List<Boolean> listSearchRepair);
 
 }

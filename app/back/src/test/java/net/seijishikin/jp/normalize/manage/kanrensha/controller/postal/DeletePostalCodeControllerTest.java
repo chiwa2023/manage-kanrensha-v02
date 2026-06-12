@@ -26,6 +26,9 @@ import net.seijishikin.jp.normalize.manage.kanrensha.controller.PathRouteConstan
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.postal.SavePostalCapsuleDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateLeastUserForTestUtil;
 
+/**
+ * DeletePostalCodeController単体テスト
+ */
 @SpringJUnitConfig
 @AutoConfigureMockMvc
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)

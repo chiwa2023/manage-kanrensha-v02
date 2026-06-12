@@ -20,6 +20,18 @@ import net.seijishikin.jp.normalize.manage.kanrensha.logic.houjin_no.ValidateCre
 @Service
 public class GetHoujinNoService {
 
+    /** サーバステータス400 */
+    private static final int STATUS_400 = 400;
+
+    /** サーバステータス403 */
+    private static final int STATUS_403 = 403;
+
+    /** サーバステータス404 */
+    private static final int STATUS_404 = 404;
+
+    /** サーバステータス500 */
+    private static final int STATUS_500 = 500;
+
     /** 法人番号APIアクセスUrl作成Logic */
     @Autowired
     private ValidateCreateSearchHoujinNoUrlLogic validateCreateSearchHoujinNoUrlLogic;
@@ -35,6 +47,11 @@ public class GetHoujinNoService {
     @Autowired
     private WriteLogAddressFormatLogic writeLogAddressFormatLogic;
 
+    /**
+     * 処理を行う
+     * 
+     * @param capsuleDto 検索条件Dto
+     */
     public void pratice(final SearchHoujinNoCapsuleDto capsuleDto) {
 
         try {
@@ -55,10 +72,23 @@ public class GetHoujinNoService {
             // 取得内容のStream
             InputStream input = conn.getInputStream();
 
-            if (400 == statusCode) {
-
+            
+            
+            
+            
+            if (STATUS_400 == statusCode) {
                 // TODO inputの中にcsvがHTTP ステータス コード, エラー コード, エラーメッセージの順に1行だけ格納されているはずなので(本当か?)
                 // エラーメッセージ(エラーコード)の形式でメッセージとして格納
+            }
+
+            if (STATUS_403 == statusCode) {
+                // TODO このアプリケーションIdは機能制限されています(bodyなし)
+            }
+            if (STATUS_404 == statusCode) {
+                // TODO アプリケーションIDが登録されていません(bodyなし)
+            }
+            if (STATUS_500 == statusCode) {
+                // TODO 法人番号公表機能に障害等が発生しました(bodyなし)
             }
 
         } catch (Exception e) { // NOPMD

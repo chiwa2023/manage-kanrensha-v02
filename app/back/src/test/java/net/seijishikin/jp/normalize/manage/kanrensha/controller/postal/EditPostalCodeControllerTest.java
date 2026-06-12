@@ -27,6 +27,9 @@ import net.seijishikin.jp.normalize.manage.kanrensha.dto.postal.SavePostalCapsul
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.AddressPostalEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateLeastUserForTestUtil;
 
+/**
+ * EditPostalCodeController単体テスト
+ */
 @SpringJUnitConfig
 @AutoConfigureMockMvc
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
