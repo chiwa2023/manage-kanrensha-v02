@@ -1,6 +1,6 @@
 package net.seijishikin.jp.normalize.manage.kanrensha.logic.year.y2026; // NOPMD ManyStaticImport 
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals; // NOPMD TooManyStaticImport
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertFalse;

@@ -90,6 +90,13 @@
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
 		</dependency>
+		
+		<!-- https://mvnrepository.com/artifact/com.opencsv/opencsv -->
+		<dependency>
+		    <groupId>com.opencsv</groupId>
+		    <artifactId>opencsv</artifactId>
+			<version>5.12.0</version>
+		</dependency>
 
 		<!-- 初回、下記2つのjarをmaven参照ディレクトリに複写するため、下記をコメントアウトし、
 		mvnw clean installしたのち 再度コメント外して有効化する必要がある -->

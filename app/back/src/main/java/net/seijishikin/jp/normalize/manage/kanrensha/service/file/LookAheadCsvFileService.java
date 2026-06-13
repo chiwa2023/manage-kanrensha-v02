@@ -1,17 +1,17 @@
 package net.seijishikin.jp.normalize.manage.kanrensha.service.file;
 
+import java.io.BufferedReader;
 import java.io.IOException;
-import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
-import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.opencsv.CSVReader;
+import com.opencsv.exceptions.CsvValidationException;
 
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.storage_file.LookAheadCsvResultDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.storage_file.StorageFileDto;
@@ -49,7 +49,8 @@ public class LookAheadCsvFileService {
      * @return 頭出し結果
      * @throws IOException ファイルに関する例外
      */
-    public LookAheadCsvResultDto practice(final int month, final UploadFileDto uploadFileDto) throws IOException {
+    public LookAheadCsvResultDto practice(final int month, final UploadFileDto uploadFileDto)
+            throws IOException, CsvValidationException {
 
         // 保存場所の設定
         LookAheadCsvResultDto resultDto = new LookAheadCsvResultDto();
@@ -61,21 +62,36 @@ public class LookAheadCsvFileService {
         if (saveFileLogic.practice(path, uploadFileDto.getFileContent())) {
 
             List<List<String>> listCsv = new ArrayList<>();
-            try (Stream<String> stream = Files.lines(path, Charset.forName(uploadFileDto.getCharset()))
-                    .limit(READ_LINE)) {
-                Iterator<String> iterator = stream.iterator();
-                // 最初の1行だけはカラム数がほしいのでWhile処理に混ぜない
-                String[] cell = iterator.next().split(",");
-                int count = cell.length;
-                listCsv.add(Arrays.asList(cell));
 
-                while (iterator.hasNext()) {
-                    List<String> temp = Arrays.asList(iterator.next().split(","));
-                    listCsv.add(this.addColumn(count, temp));
+            // openCsvを使用した実装に変更した
+            BufferedReader bufferedReader = new BufferedReader(Files.newBufferedReader(path));
+            try (CSVReader csvReader = new CSVReader(bufferedReader)) {
+
+                int counter = 0;
+                String[] cell;
+                int maxCplumn = 0;
+                List<String[]> listLine = new ArrayList<>();
+                // ヘッダ+最大10行=11行を頭出し
+                while ((cell = csvReader.readNext()) != null && counter < READ_LINE) {
+                    // 最大列数を更新
+                    if (maxCplumn < cell.length) {
+                        maxCplumn = cell.length;
+                    }
+
+                    listLine.add(cell);
+                    counter++;
                 }
+
+                // 確認した最大列数を使って、最大10行分を再作成処理
+                for (String[] csvCell : listLine) {
+                    listCsv.add(this.addColumn(maxCplumn, csvCell));
+                }
+
+                resultDto.setTableData(listCsv);
             }
 
             resultDto.setTableData(listCsv);
+
             if (listCsv.isEmpty()) {
                 resultDto.setIsFailure(true);
                 resultDto.setMessage("ファイル内のデータが取得できませんでした");
@@ -87,21 +103,18 @@ public class LookAheadCsvFileService {
             resultDto.setMessage("ファイルが正常に保存できませんでした");
             return resultDto;
         }
-
     }
 
-    private List<String> addColumn(final int count, final List<String> list) {
+    private List<String> addColumn(final int count, final String[] cell) {
 
-        // Arrays.asListでは不変リストが作成されるので作り直し
-        List<String> listData = new ArrayList<>(list);
-
-        if (count > list.size()) {
-            int start = list.size();
-            for (int index = start; index < count; index++) {
+        List<String> listData = new ArrayList<>();
+        for (int index = 0; index < count; index++) {
+            if (cell.length > index) {
+                listData.add(cell[index]);
+            } else {
                 listData.add("");
             }
         }
-
         return listData;
     }
 

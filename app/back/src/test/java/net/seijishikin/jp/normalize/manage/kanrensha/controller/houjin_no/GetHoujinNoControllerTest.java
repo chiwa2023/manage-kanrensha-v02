@@ -1,4 +1,4 @@
-package net.seijishikin.jp.normalize.manage.kanrensha.controller.task_plan;
+package net.seijishikin.jp.normalize.manage.kanrensha.controller.houjin_no;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -15,51 +15,43 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
-import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import net.seijishikin.jp.normalize.common_tool.dto.FrameworkCapsuleDto;
-import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
 import net.seijishikin.jp.normalize.common_tool.utils.GetObjectMapperWithTimeModuleUtil;
 import net.seijishikin.jp.normalize.manage.kanrensha.controller.PathRouteConstants;
-import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateLeastUserForTestUtil;
+import net.seijishikin.jp.normalize.manage.kanrensha.dto.houjin_no.SearchHoujinNoCapsuleDto;
 
 /**
- * GetRoleSomeoneTaskController単体テスト
+ * GetHoujinNoController単体テスト
  */
 @SpringJUnitConfig
 @AutoConfigureMockMvc
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
-@Transactional
-@Sql("../../service/task_plan/GetRoleSomeoneTaskServiceTest.sql")
-class GetRoleSomeoneTaskControllerTest {
+class GetHoujinNoControllerTest {
 
     /** MockMvc */
     @Autowired
     private MockMvc mockMvc;
 
     @Test
-    @Tag("TableTruncate")
+    @Tag("ExternalService")
     @WithMockUser
     void test() throws Exception {
+        
+        // csv形式のボディを解析
+        final SearchHoujinNoCapsuleDto capsuleDto = new SearchHoujinNoCapsuleDto();
+        capsuleDto.setAppId("9191919");
+        capsuleDto.setName("国税あいがも商事"); // 01_csv:2000行
+        capsuleDto.setType("02");
 
-        FrameworkCapsuleDto capsuleDto = new FrameworkCapsuleDto();
-        LeastUserDto userDto = CreateLeastUserForTestUtil.practice();
-        userDto.getListRoles().add("ROLE_admin");
-        userDto.getListRoles().add("ROLE_kanrensha_person");
-
-        capsuleDto.setUserDto(userDto);
+        String path = PathRouteConstants.ROOT + "/houjin-no/get-external";
 
         ObjectMapper objectMapper = GetObjectMapperWithTimeModuleUtil.practice();
 
-        String path = PathRouteConstants.ROOT + "/task-plan/get-not-finished";
-
-        // サーバステータスがOK(200)
         assertEquals(HttpStatus.OK.value(), mockMvc // NOPMD LawOfDemeter
                 .perform(post(path).content(objectMapper.writeValueAsString(capsuleDto)) //
                         .contentType(MediaType.APPLICATION_JSON_VALUE)) //
