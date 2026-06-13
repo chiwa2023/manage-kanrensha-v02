@@ -13,20 +13,21 @@ import org.springframework.web.bind.annotation.RestController;
 import net.seijishikin.jp.normalize.common_tool.dto.FrameworkCapsuleDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.controller.PathRouteConstants;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.task.TaskListForUserInfoResultDto;
-import net.seijishikin.jp.normalize.manage.kanrensha.service.task_plan.GetNotCompletdTaskForUserInfoService;
+import net.seijishikin.jp.normalize.manage.kanrensha.service.task_plan.GetRoleSomeoneTaskService;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.util.SaveStackTraceService;
 
 /**
- * 未処理タスク取得Controller
+ * 権限別タスク計画取得Controller
  */
 @RestController
 @RequestMapping(PathRouteConstants.ROOT + "/task-plan")
-public class GetNotCompletdTaskForUserInfoController {
+public class GetRoleSomeoneTaskController {
 
-    /** 未処理タスク取得Service */
+    /** 権限別タスク計画取得Service */
     @Autowired
-    private GetNotCompletdTaskForUserInfoService getNotCompletdTaskForUserInfoService;
-
+    private GetRoleSomeoneTaskService getRoleSomeoneTaskService;
+    
+    
     /** StackTrace保存Service */
     @Autowired
     private SaveStackTraceService saveStackTraceService;
@@ -37,18 +38,20 @@ public class GetNotCompletdTaskForUserInfoController {
      * @param capsuleDto 起動条件Dto
      * @return レスポンス
      */
-    @PostMapping("/get-not-finished")
+    @PostMapping("/get-someone")
     public ResponseEntity<TaskListForUserInfoResultDto> practice(final @RequestBody FrameworkCapsuleDto capsuleDto) {
 
         Integer year = LocalDate.now().getYear();
         try {
             return ResponseEntity.status(HttpStatus.OK)
-                    .body(getNotCompletdTaskForUserInfoService.practice(year, capsuleDto));
+                    .body(getRoleSomeoneTaskService.practice(year, capsuleDto));
 
         } catch (Exception exception) { // NOPMD 業務的な理由から積極的に許容
+
             saveStackTraceService.practice(exception, year, 0);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new TaskListForUserInfoResultDto());
         }
     }
+
 
 }
