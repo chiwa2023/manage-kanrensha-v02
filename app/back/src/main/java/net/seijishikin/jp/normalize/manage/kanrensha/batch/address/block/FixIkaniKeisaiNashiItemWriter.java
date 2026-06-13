@@ -20,6 +20,7 @@ import net.seijishikin.jp.normalize.manage.kanrensha.entity.AddressPostalEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.WkTblPostalCommonEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.repository.WkTblPostalCommonRepository;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.postal.SearchAddressRsdtIkaniKeisaiNashiService;
+import net.seijishikin.jp.normalize.manage.kanrensha.service.util.WriteLogService;
 
 /**
  * 以下に掲載がない場合修正ItemWriter
@@ -42,6 +43,10 @@ public class FixIkaniKeisaiNashiItemWriter extends JpaItemWriter<WkTblPostalComm
     /** 以下に掲載のない場合住所検索Service */
     @Autowired
     private SearchAddressRsdtIkaniKeisaiNashiService searchAddressRsdtIkaniKeisaiNashiService;
+    
+    /** ログ書き出しService */
+    @Autowired
+    private WriteLogService writeLogService;
 
     /** ユーザ最低限Dto */
     private LeastUserDto userDto;
@@ -72,6 +77,8 @@ public class FixIkaniKeisaiNashiItemWriter extends JpaItemWriter<WkTblPostalComm
      */
     @Override
     public void write(final Chunk<? extends WkTblPostalCommonEntity> items) {
+
+        writeLogService.writeInfo("---"+items.getItems().get(0).getLgCode());
 
         List<WkTblPostalCommonEntity> list = new ArrayList<>();
         for (WkTblPostalCommonEntity entity : items) {

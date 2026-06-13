@@ -71,7 +71,7 @@ class SelectPostalCodeSingleAddressItemWriterTest {
 
         // 処理前は住居テーブルを参照しない設定
         AddressPostalEntity postalPreEntity = addressPostalRepository
-                .findByPostalcode1AndPostalcode2OrderByAddressNameAsc(worksEntity00.getPostalcode1(),
+                .findByPostalcode1AndPostalcode2AndIsLatestTrueOrderByAddressNameAsc(worksEntity00.getPostalcode1(),
                         worksEntity00.getPostalcode2())
                 .get(0);
         assertFalse(postalPreEntity.getIsGyoseikuData());
@@ -93,7 +93,7 @@ class SelectPostalCodeSingleAddressItemWriterTest {
 
         // 処理後は住居テーブルを参照する設定に変更かつ呼び出し住所が更新
         AddressPostalEntity postalProEntity = addressPostalRepository
-                .findByPostalcode1AndPostalcode2OrderByAddressNameAsc(worksEntity00.getPostalcode1(),
+                .findByPostalcode1AndPostalcode2AndIsLatestTrueOrderByAddressNameAsc(worksEntity00.getPostalcode1(),
                         worksEntity00.getPostalcode2())
                 .get(0);
         assertTrue(postalProEntity.getIsGyoseikuData());

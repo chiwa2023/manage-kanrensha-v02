@@ -15,7 +15,6 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
-import org.springframework.transaction.annotation.Transactional;
 
 import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.AddressPostalEntity;
@@ -29,7 +28,6 @@ import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateLeastUserForTes
 @AutoConfigureMockMvc
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
-@Transactional
 @Sql("CopyPostalCodeByRangeNameLogicTest.sql")
 class CopyPostalCodeByRangeNameLogicTest {
     // CHECKSTYLE:OFF MagicNumber
@@ -84,6 +82,12 @@ class CopyPostalCodeByRangeNameLogicTest {
         worksEntity05.setAddressName("旭川市東旭川町豊田");
         List<AddressPostalEntity> list5 = copyPostalCodeByRangeNameLogic.practice(worksEntity05, userDto);
         assertEquals(9, list5.size());
+        AddressPostalEntity postalEntity50 = list5.get(0);
+        assertEquals("東旭川町豊田", postalEntity50.getAddressOrg());
+        assertEquals("旭川市東旭川町豊田1番地", postalEntity50.getAddressName());
+        AddressPostalEntity postalEntity51 = list5.get(1);
+        assertEquals("東旭川町豊田", postalEntity51.getAddressOrg());
+        assertEquals("旭川市東旭川町豊田2番地", postalEntity51.getAddressName());
 
         // もっとも単純な範囲データ(丁目)
         WkTblPostalCommonEntity worksEntity06 = new WkTblPostalCommonEntity();
@@ -92,7 +96,12 @@ class CopyPostalCodeByRangeNameLogicTest {
         worksEntity06.setAddressName("深川市広里町");
 
         List<AddressPostalEntity> list6 = copyPostalCodeByRangeNameLogic.practice(worksEntity06, userDto);
-        assertEquals(5, list6.size());
+        assertEquals(4, list6.size());
+
+        AddressPostalEntity postalEntity60 = list6.get(0);
+        assertEquals("広里町", postalEntity60.getAddressOrg());
+        assertEquals("深川市広里町一丁目", postalEntity60.getAddressName());
+
     }
 
 }

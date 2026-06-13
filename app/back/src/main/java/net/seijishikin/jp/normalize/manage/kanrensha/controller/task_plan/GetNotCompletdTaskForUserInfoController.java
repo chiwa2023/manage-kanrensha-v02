@@ -46,7 +46,6 @@ public class GetNotCompletdTaskForUserInfoController {
                     .body(getNotCompletdTaskForUserInfoService.practice(year, capsuleDto));
 
         } catch (Exception exception) { // NOPMD 業務的な理由から積極的に許容
-
             saveStackTraceService.practice(exception, year, 0);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new TaskListForUserInfoResultDto());
         }

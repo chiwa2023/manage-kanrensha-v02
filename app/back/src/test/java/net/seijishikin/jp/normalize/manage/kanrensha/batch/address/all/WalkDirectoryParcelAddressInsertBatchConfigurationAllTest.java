@@ -27,7 +27,6 @@ import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.BackApplication;
 import net.seijishikin.jp.normalize.manage.kanrensha.batch.address.lgcode.WalkDirectoryParcelAddressInsertBatchConfiguration;
 import net.seijishikin.jp.normalize.manage.kanrensha.constants.GetCurrentResourcePath;
-import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateLeastUserForTestUtil;
 
 /**
  * WalkDirectoryParcelAddressInsertBatchConfiguration全実行
@@ -64,11 +63,11 @@ class WalkDirectoryParcelAddressInsertBatchConfigurationAllTest {
                 "/config/file_address/base_registory/parcel/");
 
         // 処理する県の地方自治体コード
-        final String prefCode = "01";
+        final String prefCode = "13";
 
         Path path = Paths.get(pathBase.toString(), prefCode);
 
-        LeastUserDto userDto = CreateLeastUserForTestUtil.practice();
+        LeastUserDto userDto = CreateSystemInitialUserUtil.practice();
 
         JobParameters jobParameters = new JobParametersBuilder(
                 walkDirectoryParcelAddressInsert.getJobParametersIncrementer().getNext(new JobParameters())) // NOPMD

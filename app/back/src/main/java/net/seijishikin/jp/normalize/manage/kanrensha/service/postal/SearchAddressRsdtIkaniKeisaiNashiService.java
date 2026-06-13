@@ -42,6 +42,7 @@ public class SearchAddressRsdtIkaniKeisaiNashiService {
         Query query = entityManager.createNativeQuery(sql, SelectOptionStringDto.class);
 
         List<SelectOptionStringDto> list = (List<SelectOptionStringDto>) query.getResultList();
+
         resultDto.setIsGyouseikuData(true);
         resultDto.setListOptions(list);
 

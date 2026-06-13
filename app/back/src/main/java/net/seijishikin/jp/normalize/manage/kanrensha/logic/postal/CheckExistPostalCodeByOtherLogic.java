@@ -42,7 +42,7 @@ public class CheckExistPostalCodeByOtherLogic {
 
         // (その他)の前までの住所が共通である住所が存在すればOK
         String sql = "SELECT * FROM address_rsdt_" + worksEntity.getLgCode() + " WHERE address_block LIKE '"
-                + worksEntity.getAddressName() + "%' LIMIT 2";
+                + worksEntity.getAddressName() + "%' LIMIT 1";
         Query query = entityManager.createNativeQuery(sql, AddressRsdtBaseEntity.class);
 
         List<AddressPostalEntity> list = new ArrayList<>();
@@ -52,7 +52,7 @@ public class CheckExistPostalCodeByOtherLogic {
                     worksEntity.getAddressName(),worksEntity.getLgCode());
             return list;
         } else {
-            return addressPostalRepository.findByPostalcode1AndPostalcode2OrderByAddressNameAsc(
+            return addressPostalRepository.findByPostalcode1AndPostalcode2AndIsLatestTrueOrderByAddressNameAsc(
                     worksEntity.getPostalcode1(), worksEntity.getPostalcode2());
         }
     }

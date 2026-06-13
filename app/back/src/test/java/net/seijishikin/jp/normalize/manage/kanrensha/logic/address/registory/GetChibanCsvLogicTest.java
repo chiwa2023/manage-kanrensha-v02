@@ -1,6 +1,6 @@
 package net.seijishikin.jp.normalize.manage.kanrensha.logic.address.registory;
 
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -31,11 +31,8 @@ class GetChibanCsvLogicTest {
     @Tag("TableTruncate")
     void testLimit() throws Exception {
 
-        String storeDir = "c:/temp/address/mt_parcel_city";
-        final String lgCodePref = "13";
-        getChibanCsvLogic.practice(lgCodePref, storeDir);
-
-        fail("Not yet implemented");
+        final String lgCodePref = "47";
+        assertDoesNotThrow(() -> getChibanCsvLogic.practice(lgCodePref, GetChibanConstants.STORED_PATH));
     }
 
 }

@@ -85,7 +85,9 @@ public class RebuildAddressPostalCodeBatchConfiguration {
             @Qualifier(STEP_ONLINE) final Step stepOneLine, @Qualifier(STEP_JIGYOUSHA) final Step stepJigyousha) {
 
         return new JobBuilder(JOB_NAME, jobRepository).incrementer(new RunIdIncrementer()).flow(stepCrean)
-                .next(stepOneLine).next(stepJigyousha).end().build();
+                .next(stepOneLine) //
+                // .next(stepJigyousha) //
+                .end().build();
     }
 
     /**

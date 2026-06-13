@@ -30,7 +30,6 @@ import net.seijishikin.jp.normalize.manage.kanrensha.BackApplication;
 import net.seijishikin.jp.normalize.manage.kanrensha.batch.address.lgcode.InsertAddressAllCityBatchConfiguration;
 import net.seijishikin.jp.normalize.manage.kanrensha.batch.task_plan.RecordTaskPlanJobExecutionListner;
 import net.seijishikin.jp.normalize.manage.kanrensha.constants.GetCurrentResourcePath;
-import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateLeastUserForTestUtil;
 
 /**
  * InsertAddressAllCityBatchConfiguration全体実行
@@ -69,7 +68,7 @@ class InsertAddressAllCityBatchConfigurationAllTest {
                 "/config/file_address/lg_code/");
         Path path = Paths.get(pathBase.toString(), "mt_city_all.csv");
 
-        LeastUserDto userDto = CreateLeastUserForTestUtil.practice();
+        LeastUserDto userDto = CreateSystemInitialUserUtil.practice();
 
         JobParameters jobParameters = new JobParametersBuilder(
                 insertAddressAllCity.getJobParametersIncrementer().getNext(new JobParameters())) // NOPMD

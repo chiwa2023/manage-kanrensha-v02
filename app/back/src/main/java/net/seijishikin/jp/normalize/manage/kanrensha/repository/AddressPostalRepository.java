@@ -32,6 +32,15 @@ public interface AddressPostalRepository extends JpaRepository<AddressPostalEnti
      * @param postal1 郵便番号(7桁)
      * @return 検索結果
      */
+    List<AddressPostalEntity> findByPostalcode1AndPostalcode2AndIsLatestTrueOrderByAddressNameAsc(String postal1,
+            String postal2);
+
+    /**
+     * 郵便番号が同一であるデータを取得する
+     *
+     * @param postal1 郵便番号(7桁)
+     * @return 検索結果
+     */
     List<AddressPostalEntity> findByPostalcode1AndPostalcode2OrderByAddressNameAsc(String postal1, String postal2);
 
     /**
@@ -86,5 +95,28 @@ public interface AddressPostalRepository extends JpaRepository<AddressPostalEnti
     @Query(value = "SELECT * FROM address_postal WHERE lg_code LIKE ?1 AND is_latest = 1 "
             + "AND ( address_name LIKE '%以下に掲載がない場合'  OR address_name LIKE '%（%' )", nativeQuery = true)
     Page<AddressPostalEntity> findRepairLog(String prefCode, Pageable pageable);
+
+    /**
+     * 郵便番号と住所が部分一致かつ最新を取得する
+     * 
+     * @param postalcode1 郵便番号1
+     * @param postalcode2 郵便番号2
+     * @param name        住所名
+     * @param pageable    ページング
+     * @return 検索結果
+     */
+    List<AddressPostalEntity> findByPostalcode1StartingWithAndPostalcode2StartingWithAndIsLatestTrueAndAddressNameStartingWith(
+            String postalcode1, String postalcode2, String name, Pageable pageable);
+
+    /**
+     * 郵便番号と住所が部分一致かつ最新の件数を取得する
+     * 
+     * @param postalcode1 郵便番号1検索条件
+     * @param postalcode2 郵便番号2検索条件
+     * @param name        住所名
+     * @return 件数
+     */
+    Integer countByPostalcode1StartingWithAndPostalcode2StartingWithAndIsLatestTrueAndAddressNameStartingWith(
+            String postalcode1, String postalcode2, String name);
 
 }

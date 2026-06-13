@@ -61,14 +61,14 @@ class InsertRsdtAddressBatchConfigurationTest {
 
         jobLauncherTestUtils.setJob(insertRsdtAddress);
 
-        Path path = Paths.get(GetCurrentResourcePath.getBackTestResourcePath(), "/file/batch/address_base/rsdt",
+        Path pathRsdt = Paths.get(GetCurrentResourcePath.getBackTestResourcePath(), "/file/batch/address_base/rsdt",
                 "mt_rsdtdsp_rsdt_pref01.csv");
 
         LeastUserDto userDto = CreateLeastUserForTestUtil.practice();
 
         JobParameters jobParameters = new JobParametersBuilder(
                 insertRsdtAddress.getJobParametersIncrementer().getNext(new JobParameters())) // NOPMD
-                .addLocalDateTime("executeTime", LocalDateTime.now()).addString("readFilePath", path.toString())
+                .addLocalDateTime("executeTime", LocalDateTime.now()).addString("readFilePathRsdt", pathRsdt.toString())
                 .addLong("userId", (long) userDto.getUserPersonId())
                 .addLong("userCode", (long) userDto.getUserPersonCode())
                 .addString("userName", userDto.getUserPersonName()).toJobParameters();

@@ -1,4 +1,4 @@
-package net.seijishikin.jp.normalize.manage.kanrensha.dto.postal;
+package net.seijishikin.jp.normalize.manage.kanrensha.dto.address_rsdt;
 
 import java.io.Serializable;
 

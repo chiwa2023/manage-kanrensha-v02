@@ -41,7 +41,7 @@ public class SearchAddressPostalService {
             // 空の場合は不規則を郵便番号で取得する
             PostalCodePostalResultDto resultDto = new PostalCodePostalResultDto();
             resultDto.setIsGyouseikuData(false);
-            resultDto.setListOptions(addressPostalIrregularRepository.findByPostalCode(postalCode1,postalCode2));
+            resultDto.setListOptions(addressPostalIrregularRepository.findByPostalCode(postalCode1, postalCode2));
 
             return resultDto;
         } else {

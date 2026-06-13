@@ -48,7 +48,6 @@ class PostalCodeCsvOneLineItemWriterTest {
     @Autowired
     private AddressPostalRepository addressPostalRepository;
 
-
     /** 郵便番号不規則Repository */
     @Autowired
     private AddressPostalIrregularRepository addressPostalIrregularRepository;
@@ -73,12 +72,10 @@ class PostalCodeCsvOneLineItemWriterTest {
         entity01.setPostalcode1("253");
         entity01.setPostalcode2("9162");
         entity01.setAddressOrg("町字（特殊設定）");
-        entity01.setAddressName("都道府県行政区");
+        entity01.setAddressName("都道府県行政区（特殊設定）");
         entity01.setIsGyoseikuData(true);
         list.add(entity01);
 
-        
-        
         // Chunkを作成してセット
         Chunk<? extends AddressPostalEntity> items = new Chunk<>(list);
 
@@ -106,22 +103,17 @@ class PostalCodeCsvOneLineItemWriterTest {
         assertEquals(entity01.getAddressName(), answerEntity01.getAddressName());
         assertEquals(entity01.getIsGyoseikuData(), answerEntity01.getIsGyoseikuData());
 
-        
-        // TODO （ありの場合は正規と不規則双方に登録する
-
-        
         List<AddressPostalIrregularEntity> listIrregular = addressPostalIrregularRepository.findAll();
         assertEquals(1, listIrregular.size());
 
         AddressPostalIrregularEntity answerEntity10 = listIrregular.get(0);
 
-        
         assertEquals(entity01.getLgCode(), answerEntity10.getLgCode());
         assertEquals(entity01.getPostalcode1(), answerEntity10.getPostalcode1());
         assertEquals(entity01.getPostalcode2(), answerEntity10.getPostalcode2());
         assertEquals(entity01.getAddressOrg(), answerEntity10.getAddressOrg());
-        assertEquals(entity01.getAddressName(), answerEntity10.getAddressName());
-        
+        assertEquals("都道府県行政区", answerEntity10.getAddressName());
+
     }
 
     private StepExecution getStepExecution() {

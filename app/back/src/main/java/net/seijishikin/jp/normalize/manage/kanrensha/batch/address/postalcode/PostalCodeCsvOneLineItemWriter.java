@@ -1,5 +1,6 @@
 package net.seijishikin.jp.normalize.manage.kanrensha.batch.address.postalcode;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,6 +20,7 @@ import net.seijishikin.jp.normalize.manage.kanrensha.entity.AddressPostalEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.AddressPostalIrregularEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.repository.AddressPostalIrregularRepository;
 import net.seijishikin.jp.normalize.manage.kanrensha.repository.AddressPostalRepository;
+import net.seijishikin.jp.normalize.manage.kanrensha.service.util.WriteLogService;
 
 /**
  * 郵便番号ItemWriter
@@ -48,6 +50,13 @@ public class PostalCodeCsvOneLineItemWriter extends JpaItemWriter<AddressPostalE
     /** カッコ文字 */
     private static final String KEY_EMP = "（";
 
+    /** バッチ起動条件からユーザ最低限作成Utility */
+    @Autowired
+    private WriteLogService writeLogService;
+
+    /** 地方自治体コード */
+    private String lgCode;
+
     /**
      * コンストラクタ
      *
@@ -67,6 +76,7 @@ public class PostalCodeCsvOneLineItemWriter extends JpaItemWriter<AddressPostalE
     public void beforeStep(final StepExecution stepExecution) {
 
         userDto = createUserLeastDtoByBatchParamUtil.practice(stepExecution);
+        lgCode = stepExecution.getJobParameters().getString("lgCode");
     }
 
     /**
@@ -75,18 +85,30 @@ public class PostalCodeCsvOneLineItemWriter extends JpaItemWriter<AddressPostalE
     @Override
     public void write(final Chunk<? extends AddressPostalEntity> items) {
 
+        writeLogService.writeInfo("chunk:" + items.getItems().get(0).getLgCode() + "==" + LocalDateTime.now());
+        
         List<AddressPostalIrregularEntity> listIrregular = new ArrayList<>();
+        List<AddressPostalEntity> listPostal = new ArrayList<>();
+        
         for (AddressPostalEntity entity : items) {
-            setTableDataHistoryUtil.practiceInsert(userDto, entity);
-            entity.setAddressPostalId(0); // auto increment明記
-            // （かっこ が原文書に存在する場合は特殊例として並行して不規則に保存
-            if (entity.getAddressOrg().contains(KEY_EMP)) {
-                listIrregular.add(this.copyIrregular(entity));
+            // 指定地方自治体コードで始まる場合のみに限定
+            if(entity.getLgCode().startsWith(lgCode)) {
+                setTableDataHistoryUtil.practiceInsert(userDto, entity);
+                entity.setAddressPostalId(0); // auto increment明記
+                listPostal.add(entity);
+                // （かっこ が原文書に存在する場合は特殊例として並行して不規則に保存
+                if (entity.getAddressOrg().contains(KEY_EMP)) {
+                    listIrregular.add(this.copyIrregular(entity));
+                }
             }
         }
 
-        addressPostalIrregularRepository.saveAll(listIrregular);
-        addressPostalRepository.saveAll(items);
+        if(!listIrregular.isEmpty()) {
+            addressPostalIrregularRepository.saveAll(listIrregular);
+        }
+        if(!listPostal.isEmpty()) {
+            addressPostalRepository.saveAll(listPostal);
+        }
     }
 
     private AddressPostalIrregularEntity copyIrregular(final AddressPostalEntity entity) {
@@ -95,7 +117,9 @@ public class PostalCodeCsvOneLineItemWriter extends JpaItemWriter<AddressPostalE
         // 単純な複写でないパターンがあれば追加する
         // nameはかっこより前を登録する
         int pos = entityIrregular.getAddressName().indexOf(KEY_EMP);
-        entityIrregular.setAddressName(entityIrregular.getAddressName().substring(0,pos));
+        if(-1 != pos) {
+            entityIrregular.setAddressName(entityIrregular.getAddressName().substring(0,pos));
+        }
         
         setTableDataHistoryUtil.practiceInsert(userDto, entityIrregular);
         entityIrregular.setAddressPostalIrregularId(0); // auto incremment明記

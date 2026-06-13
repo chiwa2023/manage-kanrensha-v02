@@ -68,7 +68,7 @@ class InsertParcelAddressBatchConfigurationTest {
 
         JobParameters jobParameters = new JobParametersBuilder(
                 InsertParcelAddress.getJobParametersIncrementer().getNext(new JobParameters())) // NOPMD
-                .addLocalDateTime("executeTime", LocalDateTime.now()).addString("readFilePath", path.toString())
+                .addLocalDateTime("executeTime", LocalDateTime.now()).addString("readFilePathParcel", path.toString())
                 .addLong("userId", (long) userDto.getUserPersonId())
                 .addLong("userCode", (long) userDto.getUserPersonCode())
                 .addString("userName", userDto.getUserPersonName()).toJobParameters();

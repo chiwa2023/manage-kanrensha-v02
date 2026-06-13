@@ -2,9 +2,13 @@ package net.seijishikin.jp.normalize.manage.kanrensha.batch.address.lgcode;
 
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.AddressRsdtBaseEntity;
+import net.seijishikin.jp.normalize.manage.kanrensha.logic.postal.ConvertAddressNumberFormatLogic;
+import net.seijishikin.jp.normalize.manage.kanrensha.utils.ConvertKansujiUtil;
+import net.seijishikin.jp.normalize.manage.kanrensha.utils.ConvertNumberUtil;
 
 /**
  * アドレス・ベース・レジストリ公式Csv用自システム格納Dto自システムテーブル変換Processor
@@ -15,6 +19,10 @@ public class RsdtAddressProcessor implements ItemProcessor<RsdtAddressCsvDto, Ad
     /** 空白文字 */
     private static final String BLANK = "";
 
+    /** 丁目数字変換ロジック */
+    @Autowired
+    private ConvertAddressNumberFormatLogic convertAddressNumberFormatLogic;
+
     /**
      * 変換処理を実行する
      */
@@ -23,6 +31,8 @@ public class RsdtAddressProcessor implements ItemProcessor<RsdtAddressCsvDto, Ad
 
         AddressRsdtBaseEntity entity = new AddressRsdtBaseEntity();
 
+        item.setOazaCho(ConvertKansujiUtil.practice(item.getOazaCho()));
+        item.setChome(convertAddressNumberFormatLogic.practice(ConvertNumberUtil.practice(item.getChome())));
         BeanUtils.copyProperties(item, entity);
 
         // 建物までの住所変換

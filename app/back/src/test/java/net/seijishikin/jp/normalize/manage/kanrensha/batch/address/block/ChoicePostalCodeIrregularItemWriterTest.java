@@ -82,7 +82,7 @@ class ChoicePostalCodeIrregularItemWriterTest {
         list.add(worksEntity06);
 
         // 事前に同一郵便番号件数を確認
-        int countPre = addressPostalRepository.findByPostalcode1AndPostalcode2OrderByAddressNameAsc(postal1, postal2)
+        int countPre = addressPostalRepository.findByPostalcode1AndPostalcode2AndIsLatestTrueOrderByAddressNameAsc(postal1, postal2)
                 .size();
         assertEquals(2, countPre, "作業前件数2");
 

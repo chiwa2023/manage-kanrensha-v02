@@ -13,7 +13,7 @@ import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
 import net.seijishikin.jp.normalize.common_tool.utils.SetTableDataHistoryUtil;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.AddressPostalEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.WkTblPostalCommonEntity;
-import net.seijishikin.jp.normalize.manage.kanrensha.logic.address.registory.WriteLogAddressFormatLogic;
+// import net.seijishikin.jp.normalize.manage.kanrensha.logic.address.registory.WriteLogAddressFormatLogic;
 import net.seijishikin.jp.normalize.manage.kanrensha.repository.AddressPostalRepository;
 
 /**
@@ -46,10 +46,6 @@ public class CopyPostalCodeByRangeNameLogic {
 
     /** から記号 */
     private static final String NAMI_DASH = "〜";
-
-    /** Logger */
-    @Autowired
-    private WriteLogAddressFormatLogic writeLogAddressFormatLogic;
 
     /**
      * 処理を行う
@@ -120,35 +116,36 @@ public class CopyPostalCodeByRangeNameLogic {
             Integer count = (Integer) query.getResultList().get(0);
 
             if (dataAri < count) {
-                list.add(this.createEntity(irregularEntity, newAddress, userDto));
+                String orgAddress = postalAddressName.substring(0, posStartParenthese);
+                list.add(this.createEntity(irregularEntity, orgAddress, newAddress, userDto));
                 isHosei = true;
 
-            } else {
-                writeLogAddressFormatLogic.practice(WriteLogAddressFormatLogic.ERROR,
-                        "範囲変換で郵便番号ファイルにあるがアドレスレジストリにありません", newAddress);
             }
         }
-        
+
         // 該当郵便番号ですでに存在する同一郵便番号データは履歴とする
-        if(isHosei) {
+        if (isHosei) {
             List<AddressPostalEntity> listHistory = addressPostalRepository
                     .findByPostalcode1AndPostalcode2OrderByAddressNameAsc(irregularEntity.getPostalcode1(),
                             irregularEntity.getPostalcode2());
             for (AddressPostalEntity entityPostal : listHistory) {
-                setTableDataHistoryUtil.practiceDelete(userDto, entityPostal);
-                list.add(entityPostal);
+                if(entityPostal.getIsLatest()) {
+                    setTableDataHistoryUtil.practiceDelete(userDto, entityPostal);
+                    list.add(entityPostal);
+                }
             }
         }
         return list;
     }
 
-    private AddressPostalEntity createEntity(final WkTblPostalCommonEntity irregularEntity, final String newAddress,
-            final LeastUserDto userDto) {
+    private AddressPostalEntity createEntity(final WkTblPostalCommonEntity irregularEntity, final String newOrgAddress,
+            final String newAddress, final LeastUserDto userDto) {
 
         AddressPostalEntity postalEntity = new AddressPostalEntity();
 
         BeanUtils.copyProperties(irregularEntity, postalEntity);
 
+        postalEntity.setAddressOrg(newOrgAddress);
         postalEntity.setAddressName(newAddress);
         postalEntity.setIsGyoseikuData(true);
         setTableDataHistoryUtil.practiceInsert(userDto, postalEntity);

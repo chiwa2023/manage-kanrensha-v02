@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import org.springframework.http.HttpStatus;
 import net.seijishikin.jp.normalize.manage.kanrensha.controller.PathRouteConstants;
-import net.seijishikin.jp.normalize.manage.kanrensha.dto.postal.AddressRsdtResultDto;
+import net.seijishikin.jp.normalize.manage.kanrensha.dto.address_rsdt.AddressRsdtResultDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.postal.PostalCodeCapsuleDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.AddressRsdtTemplateEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.postal.GetPostalCodeRegistoryCodeService;

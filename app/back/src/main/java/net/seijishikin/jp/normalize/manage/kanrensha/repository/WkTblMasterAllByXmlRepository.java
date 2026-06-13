@@ -18,8 +18,8 @@ import net.seijishikin.jp.normalize.manage.kanrensha.entity.WkTblMasterAllByXmlE
 /**
  * wk_tbl_master_all_by_xml接続用Repository
  */
-public interface WkTblMasterAllByXmlRepository //
-        extends JpaRepository<WkTblMasterAllByXmlEntity, Integer> { // NOPMD TooManyMethods
+public interface WkTblMasterAllByXmlRepository // NOPMD TooManyMethods
+        extends JpaRepository<WkTblMasterAllByXmlEntity, Integer> {
 
     /**
      * 操作者のコードで検索する

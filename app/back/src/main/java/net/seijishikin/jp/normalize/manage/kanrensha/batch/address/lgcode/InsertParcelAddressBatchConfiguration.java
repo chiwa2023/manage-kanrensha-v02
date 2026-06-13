@@ -14,13 +14,11 @@ import org.springframework.transaction.PlatformTransactionManager;
 
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.AddressRsdtBaseEntity;
 
-
 /**
  * アドレス・ベース・レジストリ地番データ挿入処理
  */
 @Configuration
 public class InsertParcelAddressBatchConfiguration {
-
 
     /** 機能名 */
     private static final String FUNCTION_NAME = "insertParcelAddress";
@@ -79,10 +77,8 @@ public class InsertParcelAddressBatchConfiguration {
 
         return new StepBuilder(STEP_INSERT_NAME, jobRepository)
                 .<ParcelAddressCsvDto, AddressRsdtBaseEntity>chunk(CHUNK_SIZE, transactionManager)
-                .reader(parcelAddressCsvItemReader).processor(parcelAddressCsvProcessor)
-                .writer(rsdtAddressItemWriter).build();
+                .reader(parcelAddressCsvItemReader).processor(parcelAddressCsvProcessor).writer(rsdtAddressItemWriter)
+                .build();
     }
-    
-    
-    
+
 }

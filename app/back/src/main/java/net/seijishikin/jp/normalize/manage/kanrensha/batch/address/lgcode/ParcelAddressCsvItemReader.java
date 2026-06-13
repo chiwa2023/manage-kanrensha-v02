@@ -35,7 +35,7 @@ public class ParcelAddressCsvItemReader extends FlatFileItemReader<ParcelAddress
     @BeforeStep
     public void beforeStep(final StepExecution stepExecution) {
 
-        String filePath = stepExecution.getJobParameters().getString("readFilePath");
+        String filePath = stepExecution.getJobParameters().getString("readFilePathParcel");
 
         Path path = Paths.get(filePath);
 

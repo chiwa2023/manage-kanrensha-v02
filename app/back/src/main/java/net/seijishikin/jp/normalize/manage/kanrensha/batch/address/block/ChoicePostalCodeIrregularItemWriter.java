@@ -18,6 +18,7 @@ import net.seijishikin.jp.normalize.manage.kanrensha.entity.WkTblPostalCommonEnt
 import net.seijishikin.jp.normalize.manage.kanrensha.logic.postal.CopyPostalCodeByRangeNameLogic;
 import net.seijishikin.jp.normalize.manage.kanrensha.repository.AddressPostalRepository;
 import net.seijishikin.jp.normalize.manage.kanrensha.repository.WkTblPostalCommonRepository;
+import net.seijishikin.jp.normalize.manage.kanrensha.service.util.WriteLogService;
 
 /**
  * 郵便番号不規則抽出ItemWriter
@@ -48,6 +49,10 @@ public class ChoicePostalCodeIrregularItemWriter extends JpaItemWriter<WkTblPost
     /** ユーザ最低限Dto */
     private LeastUserDto userDto;
 
+    /** ログ書き出しService */
+    @Autowired
+    private WriteLogService writeLogService;
+
     /**
      * コンストラクタ
      *
@@ -74,6 +79,8 @@ public class ChoicePostalCodeIrregularItemWriter extends JpaItemWriter<WkTblPost
      */
     @Override
     public void write(final Chunk<? extends WkTblPostalCommonEntity> items) {
+
+        writeLogService.writeInfo("---Irregular" + items.getItems().get(0).getLgCode());
 
         for (WkTblPostalCommonEntity entity : items) {
             setTableDataHistoryUtil.practiceInsert(userDto, entity);

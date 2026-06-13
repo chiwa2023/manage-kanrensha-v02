@@ -54,42 +54,50 @@ public class SearchAddressBlockService {
     @SuppressWarnings("unchecked")
     public PostalCodeBlockResultDto practice(final Integer tableid, final boolean isGyouseikuData) {
 
-        // 自治体住居を検索する場合、自治体住居を住居の前方一致で取得する
-        AddressPostalEntity postalEntity = addressPostalRepository.findById(tableid).get();
-
-        String addressOrg = postalEntity.getAddressOrg();
-
-        // 以下に掲載のない場合は別の方法で検索する
-        if (KISAI_NASHI.equals(addressOrg)) {
-            return searchAddressRsdtIkaniKeisaiNashiService.practice(postalEntity);
-        }
-
-        // （その他）に該当する場合は別の方法で検索する
-        if (addressOrg.contains("（その他）")) {
-            return searchAddressRsdtOtherService.practice(postalEntity);
-        }
-
         if (isGyouseikuData) {
+
+            // 自治体住居を検索する場合、自治体住居を住居の前方一致で取得する
+            AddressPostalEntity postalEntity = addressPostalRepository.findById(tableid).get();
+
+            String addressOrg = postalEntity.getAddressOrg();
+
+            // 以下に掲載のない場合は別の方法で検索する
+            if (KISAI_NASHI.equals(addressOrg)) {
+                return searchAddressRsdtIkaniKeisaiNashiService.practice(postalEntity);
+            }
+
+            // （その他）に該当する場合は別の方法で検索する
+            if (addressOrg.contains("（その他）")) {
+                return searchAddressRsdtOtherService.practice(postalEntity);
+            }
 
             PostalCodeBlockResultDto resultDto = new PostalCodeBlockResultDto();
             String lgCode = postalEntity.getLgCode();
             resultDto.setLgCode(lgCode);
 
-            String name = postalEntity.getAddressName();
+            String addressName = postalEntity.getAddressName();
 
             String sql = "SELECT address_block AS value, RIGHT(address_block, CHAR_LENGTH(address_block)-"
-                    + name.length() + ") AS text" + " FROM address_rsdt_" + lgCode + "  WHERE address_block LIKE '"
-                    + name + "%' AND address_building = '' AND is_latest = 1";
+                    + addressName.length() + ") AS text" + " FROM address_rsdt_" + lgCode
+                    + "  WHERE address_block LIKE '" + addressName + "%' AND address_building = '' AND is_latest = 1";
             Query query = entityManager.createNativeQuery(sql, SelectOptionStringDto.class);
 
             List<SelectOptionStringDto> list = (List<SelectOptionStringDto>) query.getResultList();
+
+            // 空が返ってくる場合は郵便番号住所=住居住所の場合(範囲展開)。
+            // この場合は1件だけの範囲前住所と分割する
+            // ex.北海道足寄郡足寄町中矢9番地
+            // address_orgが"中矢"なので9番地だけを分割して1件のリストにする
+            if (1 == list.size()) { // NOPMD AvodLiteralIf
+                this.changeEqualBlockAddressToPostalName(list, addressOrg, addressName);
+            }
+
             resultDto.setIsGyouseikuData(true);
             resultDto.setListOptions(list);
 
             return resultDto;
 
         } else {
-
             // 自治体住居を検索しない場合不規則に郵便番号でアクセスして取得
             AddressPostalIrregularEntity irregularEntity = addressPostalIrregularRepository
                     .findById(Math.toIntExact(tableid)).get();
@@ -111,4 +119,16 @@ public class SearchAddressBlockService {
 
     }
 
+    private void changeEqualBlockAddressToPostalName(final List<SelectOptionStringDto> list, final String addressOrg,
+            final String addressName) {
+
+        SelectOptionStringDto stringDtoOne = list.get(0);
+        if (addressName.equals(stringDtoOne.getValue())) {
+            int pos = addressName.lastIndexOf(addressOrg);
+            String dataPlusKey = addressOrg + "★"
+                    + addressName.substring(pos + addressOrg.length(), addressName.length());
+            stringDtoOne.setText(dataPlusKey);
+        }
+
+    }
 }

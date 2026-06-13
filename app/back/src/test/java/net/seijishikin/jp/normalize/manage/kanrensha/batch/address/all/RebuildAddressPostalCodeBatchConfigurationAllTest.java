@@ -28,7 +28,6 @@ import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.BackApplication;
 import net.seijishikin.jp.normalize.manage.kanrensha.batch.address.postalcode.RebuildAddressPostalCodeBatchConfiguration;
 import net.seijishikin.jp.normalize.manage.kanrensha.constants.GetCurrentResourcePath;
-import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateLeastUserForTestUtil;
 
 /**
  * 郵便番号再構成処理
@@ -78,13 +77,14 @@ class RebuildAddressPostalCodeBatchConfigurationAllTest {
         // Path pathJigyousha = Paths.get(pathBase.toString(),"/jigyousho/"
         // ,"temp.csv");
 
-        LeastUserDto userDto = CreateLeastUserForTestUtil.practice();
+        LeastUserDto userDto = CreateSystemInitialUserUtil.practice();
 
         JobParameters jobParameters = new JobParametersBuilder(
                 rebuildAddressPostalCode.getJobParametersIncrementer().getNext(new JobParameters())) // NOPMD
                 .addLocalDateTime("executeTime", LocalDateTime.now())
                 .addString("readFilePathOneLine", pathOneLine.toString())
                 .addString("readFilePathJigyousha", pathJigyousha.toString())
+                .addString("lgCode", "04207")
                 .addLong("userId", (long) userDto.getUserPersonId())
                 .addLong("userCode", (long) userDto.getUserPersonCode())
                 .addString("userName", userDto.getUserPersonName()).toJobParameters();

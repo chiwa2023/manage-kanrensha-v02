@@ -24,8 +24,11 @@ public class SqlDumpRestoreRsdtTableCmdBatFileLogic {
     @Autowired
     private EntityManager entityManager;
 
+    /** 操作対象データベース */
+    private static final String DATABASE_NAME = "test_manage_kanrensha_v02";
+
     /**
-     * 処理行う
+     * 処理を行う
      *
      * @throws IOException ファイル例外
      */
@@ -41,15 +44,15 @@ public class SqlDumpRestoreRsdtTableCmdBatFileLogic {
         listDump.add("set myPass=パスワード");
         listRestore.add("set myPass=パスワード");
 
-        String sql = "SELECT table_name FROM information_schema.tables WHERE table_schema = 'test_manage_kanrensha' AND table_name LIKE 'address_rsdt_"
-                + lgCodePref + "%' ";
+        String sql = "SELECT table_name FROM information_schema.tables WHERE table_schema = '" + DATABASE_NAME
+                + "' AND table_name LIKE 'address_rsdt_" + lgCodePref + "%' ";
         Query queryCount = entityManager.createNativeQuery(sql, String.class);
         List<String> listTable = (List<String>) queryCount.getResultList();
 
         for (String table : listTable) {
             String fileName = "c:\\temp\\sql\\" + lgCodePref + "\\" + table + ".sql";
-            listDump.add("mysqldump -u root -p%myPass% manage_kanrensha " + table + " > " + fileName);
-            listRestore.add("mysql -u root -p%myPass% test_manage_kanrensha < " + fileName);
+            listDump.add("mysqldump -u root -p%myPass% " + DATABASE_NAME + " " + table + " > " + fileName);
+            listRestore.add("mysql -u root -p%myPass% " + DATABASE_NAME + " < " + fileName);
         }
         listDump.add("endlocal");
         listRestore.add("endlocal");

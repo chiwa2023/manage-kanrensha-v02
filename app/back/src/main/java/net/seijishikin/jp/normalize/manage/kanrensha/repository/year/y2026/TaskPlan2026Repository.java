@@ -118,4 +118,15 @@ public interface TaskPlan2026Repository extends JpaRepository<TaskPlan2026Entity
      */
     List<TaskPlan2026Entity> findByTaskUserCodeAndIsLatestTrueAndIsFinishedFalseOrderByInsertTimestampDesc(
             Integer userCode, Pageable pageable);
+
+    /**
+     * 未終了のタスク計画を権限で取得する
+     * 
+     * @param listRole 権限リスト
+     * @param pageable ページング
+     * @return 検索結果
+     */
+    @Query(value = "SELECT * FROM task_plan_2026 WHERE is_latest= 1 AND is_finished = 0 AND task_user_code = 0 "
+            + "AND role_list IN ?1", nativeQuery = true)
+    List<TaskPlanBaseEntity> findRoleSomeoneTask(List<String> listRole, Pageable pageable);
 }

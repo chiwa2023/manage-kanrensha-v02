@@ -24,7 +24,6 @@ import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.BackApplication;
 import net.seijishikin.jp.normalize.manage.kanrensha.batch.address.block.RepairPostalCodeIrregularBatchConfiguration;
-import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateLeastUserForTestUtil;
 
 /**
  * 郵便番号以降地区処理
@@ -57,12 +56,12 @@ class RepairPostalCodeIrregularBatchConfigurationAllTest {
 
         jobLauncherTestUtils.setJob(repairPostalCodeIrregularBatchConfiguration);
 
-        LeastUserDto userDto = CreateLeastUserForTestUtil.practice();
+        LeastUserDto userDto = CreateSystemInitialUserUtil.practice();
 
         JobParameters jobParameters = new JobParametersBuilder(
                 repairPostalCodeIrregularBatchConfiguration.getJobParametersIncrementer().getNext(new JobParameters())) // NOPMD
                 .addLocalDateTime("executeTime", LocalDateTime.now()) //
-                .addString("lgCodePref", "01") //
+                .addString("lgCodePref", "04207") //
                 .addLong("userId", (long) userDto.getUserPersonId())
                 .addLong("userCode", (long) userDto.getUserPersonCode())
                 .addString("userName", userDto.getUserPersonName()).toJobParameters();
