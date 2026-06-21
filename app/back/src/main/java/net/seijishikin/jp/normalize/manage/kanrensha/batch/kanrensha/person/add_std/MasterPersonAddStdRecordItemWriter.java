@@ -35,7 +35,7 @@ import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateDokujiCodeForPe
  * 関連者個人標準登録マスタ複写ItemWriter
  */
 @Component
-public class MasterPersonAddStdRecordItemWriter extends JpaItemWriter<WkTblKanrenshaPersonMasterEntity> {
+public class MasterPersonAddStdRecordItemWriter extends JpaItemWriter<WkTblKanrenshaPersonMasterEntity> { // NOPMD
 
     /** 関連者個人マスタ標準判定結果Repository */
     @Autowired

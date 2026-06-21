@@ -15,24 +15,24 @@ public class EditAddressRsdtCapsuleDto extends FrameworkCapsuleDto //
     private static final long serialVersionUID = 1L;
 
     /** アドレス・ベース・レジストリEntity */
-    private AddressRsdtTemplateEntity editEntiy = new AddressRsdtTemplateEntity();
+    private AddressRsdtTemplateEntity editEntity = new AddressRsdtTemplateEntity();
 
     /**
      * アドレス・ベース・レジストリEntityを取得する
      * 
      * @return アドレス・ベース・レジストリEntity
      */
-    public AddressRsdtTemplateEntity getEditEntiy() {
-        return editEntiy;
+    public AddressRsdtTemplateEntity getEditEntity() {
+        return editEntity;
     }
 
     /**
      * アドレス・ベース・レジストリEntityを設定する
      * 
-     * @param editEntiy アドレス・ベース・レジストリEntity
+     * @param editEntity アドレス・ベース・レジストリEntity
      */
-    public void setEditEntiy(final AddressRsdtTemplateEntity editEntiy) {
-        this.editEntiy = editEntiy;
+    public void setEditEntity(final AddressRsdtTemplateEntity editEntity) {
+        this.editEntity = editEntity;
     }
 
 }

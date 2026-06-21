@@ -52,31 +52,31 @@ class WkTblAddressMarkItemWriterTest {
     @Tag("TableTruncate")
     void test() throws Exception {
 
-        WkTblAddressRsdtMarkEntity markChangeEntiy = new WkTblAddressRsdtMarkEntity();
-        markChangeEntiy.setWlRsdtChangeId(334);
+        WkTblAddressRsdtMarkEntity markChangeEntity = new WkTblAddressRsdtMarkEntity();
+        markChangeEntity.setWlRsdtChangeId(334);
 
-        WkTblAddressRsdtMarkEntity markDeleteEntiy = new WkTblAddressRsdtMarkEntity();
-        markDeleteEntiy.setWlRsdtDeleteId(526);
+        WkTblAddressRsdtMarkEntity markDeleteEntity = new WkTblAddressRsdtMarkEntity();
+        markDeleteEntity.setWlRsdtDeleteId(526);
 
         // 何も呼ばないデータでも例外で落ちないだけ
-        WkTblAddressRsdtMarkEntity markNoneEntiy = new WkTblAddressRsdtMarkEntity();
-        markNoneEntiy.setWlRsdtChangeId(0);
-        markNoneEntiy.setWlRsdtDeleteId(0);
+        WkTblAddressRsdtMarkEntity markNoneEntity = new WkTblAddressRsdtMarkEntity();
+        markNoneEntity.setWlRsdtChangeId(0);
+        markNoneEntity.setWlRsdtDeleteId(0);
 
         // 紐づきが正常でなくても例外で落ちないだけ
-        WkTblAddressRsdtMarkEntity markWrongIdEntiy = new WkTblAddressRsdtMarkEntity();
-        markWrongIdEntiy.setWlRsdtChangeId(1002);
+        WkTblAddressRsdtMarkEntity markWrongIdEntity = new WkTblAddressRsdtMarkEntity();
+        markWrongIdEntity.setWlRsdtChangeId(1002);
 
         // 履歴データでも落ちないだけ
-        WkTblAddressRsdtMarkEntity markHistoryEntiy = new WkTblAddressRsdtMarkEntity();
-        markHistoryEntiy.setWlRsdtChangeId(331);
+        WkTblAddressRsdtMarkEntity markHistoryEntity = new WkTblAddressRsdtMarkEntity();
+        markHistoryEntity.setWlRsdtChangeId(331);
 
         List<WkTblAddressRsdtMarkEntity> list = new ArrayList<>();
-        list.add(markChangeEntiy);
-        list.add(markDeleteEntiy);
-        list.add(markNoneEntiy);
-        list.add(markWrongIdEntiy);
-        list.add(markHistoryEntiy);
+        list.add(markChangeEntity);
+        list.add(markDeleteEntity);
+        list.add(markNoneEntity);
+        list.add(markWrongIdEntity);
+        list.add(markHistoryEntity);
 
         // Chunkを作成してセット
         Chunk<? extends WkTblAddressRsdtMarkEntity> items = new Chunk<>(list);
@@ -86,11 +86,11 @@ class WkTblAddressMarkItemWriterTest {
 
         // 処理後は2件が履歴に更新されている
         WkTblAddressRsdtChangeEntity changeEntity = wkTblAddressRsdtChangeRepository
-                .findById(markChangeEntiy.getWlRsdtChangeId()).get();
+                .findById(markChangeEntity.getWlRsdtChangeId()).get();
         assertFalse(changeEntity.getIsLatest());
 
         WkTblAddressRsdtDeleteEntity deleteEntity = wkTblAddressRsdtDeleteRepository
-                .findById(markDeleteEntiy.getWlRsdtDeleteId()).get();
+                .findById(markDeleteEntity.getWlRsdtDeleteId()).get();
         assertFalse(deleteEntity.getIsLatest());
     }
 

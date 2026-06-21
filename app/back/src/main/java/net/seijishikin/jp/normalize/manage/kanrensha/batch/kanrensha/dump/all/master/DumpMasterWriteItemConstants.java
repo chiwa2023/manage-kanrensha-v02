@@ -8,7 +8,14 @@ public class DumpMasterWriteItemConstants {
     /**
      * 企業団体用カラム定義定数
      */
-    public class KigyouDt {
+    public final class KigyouDt {
+
+        /**
+         * コンストラクタ
+         */
+        private KigyouDt() {
+
+        }
 
         /** 書き出すカラム列名 */
         public static final String[] NAMES = { "kigyouDtKanrenshaCode", "kanrenshaName", "orgNameKana", "allAddress",
@@ -22,7 +29,14 @@ public class DumpMasterWriteItemConstants {
     /**
      * 個人用カラム定義定数
      */
-    public class Person {
+    public final class Person {
+
+        /**
+         * コンストラクタ
+         */
+        private Person() {
+
+        }
 
         /** 書き出すカラム列名 */
         public static final String[] NAMES = { "personKanrenshaCode", "kanrenshaName", "allAddress", "personShokugyou",
@@ -36,7 +50,14 @@ public class DumpMasterWriteItemConstants {
     /**
      * 政治団体用カラム定義定数
      */
-    public class Seijidantai {
+    public final class Seijidantai {
+
+        /**
+         * コンストラクタ
+         */
+        private Seijidantai() {
+
+        }
 
         /** 書き出すカラム列名 */
         public static final String[] NAMES = { "seijidantaiKanrenshaCode", "kanrenshaName", "orgNameKana", "allAddress",

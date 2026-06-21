@@ -3,6 +3,9 @@ interface AddressRsdtTemplateEntityInterface {
     /** テーブルId */
     addressRsdtId: number;
 
+    /** 最新該否 */
+    isLatest: boolean;
+
     /** 住所全体 */
     addressAll: string;
     /** 元住所全体 */
@@ -45,6 +48,9 @@ class AddressRsdtTemplateEntity implements AddressRsdtTemplateEntityInterface {
     /** テーブルId */
     addressRsdtId: number;
 
+    /** 最新該否 */
+    isLatest: boolean;
+
     /** 住所全体 */
     addressAll: string;
     /** 元住所全体 */
@@ -85,7 +91,7 @@ class AddressRsdtTemplateEntity implements AddressRsdtTemplateEntityInterface {
         const INIT_STRING: string = "";
 
         this.addressRsdtId = 0;
-
+        this.isLatest = false;
         this.addressAll = INIT_STRING;
         this.orginAddressAll = INIT_STRING;
 

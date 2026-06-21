@@ -1,4 +1,4 @@
-import { WkTblKanrenshaKigyouDtHistoryEntity, type WkTblKanrenshaKigyouDtHistoryEntityInterface } from "../../../entity/wkTblKanrenshaKigyouDtHistoryEntity";
+import { WkTblKanrenshaKigyouDtHistoryEntity, type WkTblKanrenshaKigyouDtHistoryEntityInterface } from "../../../../main/entity/wkTblKanrenshaKigyouDtHistoryEntity";
 
 export default function getMockWkTblKigyouDtList(): WkTblKanrenshaKigyouDtHistoryEntityInterface[] {
 

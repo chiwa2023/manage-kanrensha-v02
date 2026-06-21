@@ -1,6 +1,6 @@
 package net.seijishikin.jp.normalize.manage.kanrensha.batch.kanrensha.dump.all.history; // NOPMD
 
-import org.springframework.batch.core.Job;
+import org.springframework.batch.core.Job; // NOPMD
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.job.builder.JobBuilder;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
@@ -67,7 +67,7 @@ import net.seijishikin.jp.normalize.manage.kanrensha.entity.lgcode.KanrenshaSeij
  * 関連者政治団体履歴csv作成BatchConfiguration
  */
 @Configuration
-public class DumpKanrenshaSeijidantaiHistoryBatchConfiguration {
+public class DumpKanrenshaSeijidantaiHistoryBatchConfiguration { // NOPMD
 
     /** 機能名 */
     private static final String FUNCTION_NAME = "dumpKanrenshaSeijidantaiHistory";

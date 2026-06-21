@@ -1,4 +1,4 @@
-import { WkTblKanrenshaPersonAddMinEntity, type WkTblKanrenshaPersonAddMinEntityInterface } from "../../../entity/wkTblKanrenshaPersonAddMinEntity";
+import { WkTblKanrenshaPersonAddMinEntity, type WkTblKanrenshaPersonAddMinEntityInterface } from "../../../../main/entity/wkTblKanrenshaPersonAddMinEntity";
 
 export default function getMockWkTblPersonList(): WkTblKanrenshaPersonAddMinEntityInterface[] {
 

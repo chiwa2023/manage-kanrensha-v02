@@ -1,6 +1,6 @@
 package net.seijishikin.jp.normalize.manage.kanrensha.service.kanrensha; // NOPMD HighNumberImports
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;  // NOPMD highNumberImports
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 import java.util.List;
@@ -47,7 +47,7 @@ import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateLeastUserForTes
 @DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
 @Transactional
 @Sql("InsertKanrenshaPersonServiceTest.sql")
-class InsertKanrenshaPersonServiceTest {
+class InsertKanrenshaPersonServiceTest { // NOPMD CouplingObjects
 
     /** テスト対象 */
     @Autowired

@@ -8,7 +8,14 @@ public class DumpMinWriteItemConstants {
     /**
      * 企業団体用カラム定義定数
      */
-    public class KigyouDt {
+    public final class KigyouDt {
+
+        /**
+         * コンストラクタ
+         */
+        private KigyouDt() {
+
+        }
 
         /** 書き出すカラム列名 */
         public static final String[] NAMES = { "kigyouDtKanrenshaCode", "kanrenshaName", "allAddress",
@@ -21,7 +28,14 @@ public class DumpMinWriteItemConstants {
     /**
      * 個人用カラム定義定数
      */
-    public class Person {
+    public final class Person {
+
+        /**
+         * コンストラクタ
+         */
+        private Person() {
+
+        }
 
         /** 書き出すカラム列名 */
         public static final String[] NAMES = { "personKanrenshaCode", "kanrenshaName", "allAddress", "personShokugyou",
@@ -34,7 +48,14 @@ public class DumpMinWriteItemConstants {
     /**
      * 政治団体用カラム定義定数
      */
-    public class Seijidantai {
+    public final class Seijidantai {
+
+        /**
+         * コンストラクタ
+         */
+        private Seijidantai() {
+
+        }
 
         /** 書き出すカラム列名 */
         public static final String[] NAMES = { "seijidantaiKanrenshaCode", "kanrenshaName", "allAddress",

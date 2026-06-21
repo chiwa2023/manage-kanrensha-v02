@@ -35,7 +35,7 @@ import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateDokujiCodeForKi
  * 関連者企業・団体標準登録マスタ複写ItemWriter
  */
 @Component
-public class MasterKigyouDtAddStdRecordItemWriter extends JpaItemWriter<WkTblKanrenshaKigyouDtMasterEntity> {
+public class MasterKigyouDtAddStdRecordItemWriter extends JpaItemWriter<WkTblKanrenshaKigyouDtMasterEntity> { // NOPMD
 
     /** 関連者企業・団体マスタ標準判定結果Repository */
     @Autowired

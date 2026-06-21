@@ -18,8 +18,8 @@ function createEntity(index: number): RiyoushaCombineOrgEntityInterface {
     entity.riyoushaCombineOrgId = 300 + index;
     entity.riyoushaCombineOrgCode = 200 + index;
     entity.personRiyoushaCode = 1000 + index;
-    entity.personName = "利用者　花子" + index;
-    entity.riyoushaKbn = (index % 3) + 1;
+    entity.personRiyoushaName = "利用者　花子" + index;
+    // entity.riyoushaKbn = (index % 3) + 1;
 
     return entity;
 }

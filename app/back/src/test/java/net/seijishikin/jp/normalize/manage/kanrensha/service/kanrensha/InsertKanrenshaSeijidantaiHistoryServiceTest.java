@@ -1,6 +1,6 @@
 package net.seijishikin.jp.normalize.manage.kanrensha.service.kanrensha; // NOPMD ExcessiveImport
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals; // NOPMD highNumberImports
 
 import java.util.List;
 

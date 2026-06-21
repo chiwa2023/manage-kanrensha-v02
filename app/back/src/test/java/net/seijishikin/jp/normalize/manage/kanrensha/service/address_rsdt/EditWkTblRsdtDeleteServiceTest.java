@@ -47,7 +47,7 @@ class EditWkTblRsdtDeleteServiceTest {
 
         // 誤って削除対象を指定した場合
         EditWktblRsdtDeleteCapsuleDto capsuleDto10 = new EditWktblRsdtDeleteCapsuleDto();
-        capsuleDto10.getEditEntiy().setWkTblAddressRsdtDeleteId(111);
+        capsuleDto10.getEditEntity().setWkTblAddressRsdtDeleteId(111);
         assertThrows(EmptyResultDataAccessException.class, () -> editWkTblRsdtDeleteService.practice(capsuleDto10));
 
         // 変更
@@ -68,7 +68,7 @@ class EditWkTblRsdtDeleteServiceTest {
         entity0.setAbolishDate(LocalDate.of(2026, 7, 11));
 
         EditWktblRsdtDeleteCapsuleDto capsuleDto0 = new EditWktblRsdtDeleteCapsuleDto();
-        capsuleDto0.setEditEntiy(entity0);
+        capsuleDto0.setEditEntity(entity0);
         capsuleDto0.setUserDto(CreateLeastUserForTestUtil.practice());
 
         Integer newId0 = editWkTblRsdtDeleteService.practice(capsuleDto0);
@@ -108,7 +108,7 @@ class EditWkTblRsdtDeleteServiceTest {
         entity1.setAbolishDate(LocalDate.of(2014, 2, 9));
 
         EditWktblRsdtDeleteCapsuleDto capsuleDto1 = new EditWktblRsdtDeleteCapsuleDto();
-        capsuleDto1.setEditEntiy(entity1);
+        capsuleDto1.setEditEntity(entity1);
         capsuleDto1.setUserDto(CreateLeastUserForTestUtil.practice());
 
         Integer newId1 = editWkTblRsdtDeleteService.practice(capsuleDto1);

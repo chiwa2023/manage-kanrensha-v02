@@ -84,7 +84,8 @@ class SabunPreparAddressRsdtServiceTest {
 
         assertDoesNotThrow(() -> sabunPreparAddressRsdtService.practice(userDto, taskPlanDto,
                 this.createStorageFile("mt_rsdtdsp_rsdt_pref01_sample.csv", "/file/batch/address_base/rsdt"),
-                this.createStorageFile("mt_parcel_city011045_sample.csv", "/file/batch/address_base/parcel")));
+                this.createStorageFile("mt_parcel_city011045_sample.csv", "/file/batch/address_base/parcel"),
+                "011045"));
     }
 
     private StorageFileDto createStorageFile(final String fileName, final String dir) throws IOException {

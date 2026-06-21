@@ -1,6 +1,6 @@
 package net.seijishikin.jp.normalize.manage.kanrensha.batch.kanrensha.xml; // NOPMD
 
-import java.util.ArrayList;
+import java.util.ArrayList; // NOPMD
 import java.util.List;
 
 import org.springframework.batch.core.StepExecution;
@@ -39,7 +39,7 @@ import net.seijishikin.jp.normalize.common_tool.utils.SetTableDataHistoryUtil;
  * 関連者企業団体マスタ履歴最小登録IterWriter
  */
 @Component
-public class KanrenshaByXmlMinRecordItemWriter extends JpaItemWriter<WkTblMasterAllByXmlEntity> {
+public class KanrenshaByXmlMinRecordItemWriter extends JpaItemWriter<WkTblMasterAllByXmlEntity> { // NOPMD
 
     /** 関連者個人マスタRepository */
     @Autowired

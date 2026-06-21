@@ -36,7 +36,7 @@ public class EditWkTblRsdtChangeService {
     @Transactional
     public Integer practice(final EditWktblRsdtChangeCapsuleDto capsuleDto) {
 
-        WkTblAddressRsdtChangeEntity entityEdit = capsuleDto.getEditEntiy();
+        WkTblAddressRsdtChangeEntity entityEdit = capsuleDto.getEditEntity();
         Integer editId = entityEdit.getWkTblAddressRsdtChangeId();
 
         LeastUserDto userDto = capsuleDto.getUserDto();

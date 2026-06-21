@@ -1,4 +1,4 @@
-import { WkTblKanrenshaKigyouDtAddMinEntity, type WkTblKanrenshaKigyouDtAddMinEntityInterface } from "../../../entity/wkTblKanrenshaKigyouDtAddMinEntity";
+import { WkTblKanrenshaKigyouDtAddMinEntity, type WkTblKanrenshaKigyouDtAddMinEntityInterface } from "../../../../main/entity/wkTblKanrenshaKigyouDtAddMinEntity";
 
 export default function getMockWkTblCorpList(): WkTblKanrenshaKigyouDtAddMinEntityInterface[] {
         const list: WkTblKanrenshaKigyouDtAddMinEntityInterface[] = [];

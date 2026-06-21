@@ -57,7 +57,7 @@ class DeleteAddressRsdtControllerTest {
 
         AddressRsdtTemplateEntity editEntity = this.getAddressEntity(lgCode, deleteId);
         EditAddressRsdtCapsuleDto capsuleDto = new EditAddressRsdtCapsuleDto();
-        capsuleDto.setEditEntiy(editEntity);
+        capsuleDto.setEditEntity(editEntity);
         capsuleDto.setUserDto(CreateLeastUserForTestUtil.practice());
 
         String path = PathRouteConstants.ROOT + "/address-rsdt/delete";

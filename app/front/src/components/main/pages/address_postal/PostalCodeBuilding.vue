@@ -1,14 +1,16 @@
 ﻿<script setup lang="ts">
-import { InputAddressDto, InputBuildingAddress, MessageConstants, MessageView, PagingControl, type InputAddressDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
-import { onBeforeMount, ref, type Ref } from 'vue';
+import { FrameworkPagingDto, InputAddressDto, InputBuildingAddress, MessageConstants, MessageView, PagingControl, type FrameworkMessageAndResultDtoInterface, type FrameworkPagingDtoInterface, type InputAddressDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
+import { onMounted, ref, type Ref } from 'vue';
 import { getLoginUser } from '../../utils/getLoginUser';
 import { SearchPostalIllegularResultDto, type SearchPostalIllegularResultDtoInterface } from '../../dto/address_postal/searchPostalIllegularResultDto';
-import mockGetIllegularItem from '../../../test/pages/address_postal/mock/mockGetIllegularItem';
 import { GetDetailPostalIllegularResultDto, type GetDetailPostalIllegularResultDtoInterface } from '../../dto/address_postal/getDetailPostalIllegularResultDto';
-import { PostalIrregularItemDto, type PostalIrregularItemDtoInterface } from '../../dto/address_postal/postalIrregularItemDto';
-import mockGetIllegularAddress from '../../../test/pages/address_postal/mock/mockGetIllegularAddress';
 import ManagerInfo from '../../common/user_info/ManagerInfo.vue';
-
+import getAuthorizedPromiseArea from '../../dto/login/getAuthorizedPromiseArea.ts';
+import RoutePathConstants from '../../../../routePathConstants.ts';
+import { AccessTokenNotFoundError, TokenRefreshError } from '../../dto/login/errors.ts';
+import { GetDetailPostalIllegularCapsuleDto, type GetDetailPostalIllegularCapsuleDtoInterface } from '../../dto/address_postal/getDetailPostalIllegularCapsuleDto.ts';
+import { SavePostalIrregularCapsuleDto, type SavePostalIrregularCapsuleDtoInterface } from '../../dto/address_postal/savePostalIrregularCapsuleDto.ts';
+import { AddressPostalIrregularEntity, type AddressPostalIrregularEntityInterface } from '../../entity/addressPostalIrregularEntity.ts';
 
 // よく使う定数
 const BLANK: string = "";
@@ -23,6 +25,9 @@ const messageType: Ref<number> = ref(MessageConstants.VIEW_NONE);
 const title: Ref<string> = ref(BLANK);
 const message: Ref<string> = ref(BLANK);
 
+// back側アクセス
+const urlBack: string = RoutePathConstants.DOMAIN + RoutePathConstants.BASE_PATH;
+
 // ユーザ呼び出し
 const userDto: Ref<LeastUserDtoInterface> = ref(getLoginUser());
 
@@ -36,53 +41,73 @@ const commonAddress: Ref<string> = ref("");
 
 
 const resultDtoItem: Ref<SearchPostalIllegularResultDtoInterface> = ref(new SearchPostalIllegularResultDto());
+onMounted(() => {
 
-onBeforeMount(() => {
-    //const capsuleDtoItem: Ref<FrameworkPagingDtoInterface> = ref(new FrameworkPagingDto());
-    resultDtoItem.value = mockGetIllegularItem();
-    allCount.value = resultDtoItem.value.listItem.length;
+    // 初期で建物住所を取得する
+    // 建物の地階データを取得する
+    const capsuleDtoItem: Ref<FrameworkPagingDtoInterface> = ref(new FrameworkPagingDto());
+    capsuleDtoItem.value.limit = SEARCH_LIMIT;
 
+    getAuthorizedPromiseArea().then(token => {
+        const url = urlBack + "/postal-irregular/building";
+        const method = "POST";
+        const body = JSON.stringify(capsuleDtoItem.value);
+        const headers = {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'X-AUTH-TOKEN': 'Bearer ' + token
+        };
+        fetch(url, { method, headers, body })
+            .then(async (response) => {
+                resultDtoItem.value = await response.json();
+                allCount.value = resultDtoItem.value.allCount;
+                limit.value = resultDtoItem.value.limit;
+                pageNumber.value = resultDtoItem.value.pageNumber;
 
-    // 初期で建物住所を全件取得する
-    // 建物の地階データを全件取得する
-    // getAuthorizedPromiseArea().then(token => {
-    //     if (token !== "") {
-    //         // const conditionDto: SaveAddressRegistoryCapsuleInterface = new SaveAddressRegistoryCapsuleEntity();
-    //         // conditionDto.addressRsdtTemplateEntity = entityEdit.value;
-    //
-    //         const url = urlBack + "/postal-irregular/building";
-    //         const method = "POST";
-    //         const body = JSON.stringify(null);
-    //         const headers = {
-    //             'Accept': 'application/json',
-    //             'Content-Type': 'application/json',
-    //             'X-AUTH-TOKEN': 'Bearer ' + token
-    //         };
-    //         fetch(url, { method, headers, body })
-    //             .then(async (response) => {
-    //                 // const resultDto: FrameworkMessageAndResultInterface = await response.json();
-    //
-    //                 // alert(resultDto.message);
-    //             })
-    //             .catch((e) => { alert(e); });
-    //     } else {
-    //         alert("エラーのつもり");
-    //     }
-    // });
+                if (resultDtoItem.value.allCount == 0) {
+                    infoLevel.value = MessageConstants.LEVEL_WARNING;
+                    messageType.value = MessageConstants.VIEW_OK;
+                    message.value = "検索結果が存在しませんでした";
+                }
+            })
+            .catch((error) => {
+                alert(error);
+                infoLevel.value = MessageConstants.LEVEL_ERROR;
+                messageType.value = MessageConstants.VIEW_OK;
+                message.value = "システム管理者にお問い合わせください";
+                return;
+            });
+    }).catch((e) => {
+        infoLevel.value = MessageConstants.LEVEL_ERROR;
+        messageType.value = MessageConstants.VIEW_OK;
 
-
+        if (e instanceof AccessTokenNotFoundError) {
+            // トークン保持ができていない場合
+            title.value = "現在トークンが存在しません";
+            message.value = e.message;
+            return;
+        }
+        if (e instanceof TokenRefreshError) {
+            // 取得に失敗している場合
+            title.value = "有効期限まじかのトークンを再取得できませんでした";
+            message.value = e.message;
+            return;
+        }
+        title.value = "システムエラーが発生しました";
+        message.value = "システム管理者にお問い合わせください";
+        return;
+    });
 });
 
 
 
 // 編集対象の詳細リスト
-// const capsuleDtoIllegular: Ref<GetDetailPostalIllegularCapsuleInterface> = ref(new GetDetailPostalIllegularCapsuleDto());
 const resultDtoIllegular: Ref<GetDetailPostalIllegularResultDtoInterface> = ref(new GetDetailPostalIllegularResultDto());
 
-const editDto: Ref<InputAddressDtoInterface> = ref(new InputAddressDto());
-
+const editAddressDto: Ref<InputAddressDtoInterface> = ref(new InputAddressDto());
 // 編集対象の変更
-const dtoEdit: Ref<PostalIrregularItemDtoInterface> = ref(new PostalIrregularItemDto());
+const entityEdit: Ref<AddressPostalIrregularEntityInterface> = ref(new AddressPostalIrregularEntity());
+
 const storeId: Ref<number> = ref(INIT_NUMBER);
 function onChangeEdit(id: number) {
 
@@ -93,57 +118,73 @@ function onChangeEdit(id: number) {
         title.value = "未保存データが存在";
         message.value = "住所入力がされています。保存せず新たな編集対象を表示してよいですか?";
         messageType.value = MessageConstants.VIEW_YES_NO;
-
         return;
     } else {
         onShowDetail(id);
     }
-
-
-
-    // capsuleDtoIllegular.value.lgCode = dtoEdit.value.lgCode;
-
-    // 選択された建物の全フロアデータを取得する
-    // getAuthorizedPromiseArea().then(token => {
-    //     if (token !== "") {
-    //         // const conditionDto: SaveAddressRegistoryCapsuleInterface = new SaveAddressRegistoryCapsuleEntity();
-    //         // conditionDto.addressRsdtTemplateEntity = entityEdit.value;
-    //
-    //         const url = urlBack + "/postal-irregular/building-detail";
-    //         const method = "POST";
-    //         const body = JSON.stringify(null);
-    //         const headers = {
-    //             'Accept': 'application/json',
-    //             'Content-Type': 'application/json',
-    //             'X-AUTH-TOKEN': 'Bearer ' + token
-    //         };
-    //         fetch(url, { method, headers, body })
-    //             .then(async (response) => {
-    //                 // const resultDto: FrameworkMessageAndResultInterface = await response.json();
-    //
-    //                 // alert(resultDto.message);
-    //             })
-    //             .catch((e) => { alert(e); });
-    //     } else {
-    //         alert("エラーのつもり");
-    //     }
-    // });
-
 }
 
 
 function onShowDetail(id: number) {
-
-    const tempDto: PostalIrregularItemDtoInterface | undefined
+    const tempDto: AddressPostalIrregularEntityInterface | undefined
         = resultDtoItem.value.listItem.filter(e => e.addressPostalIrregularId === id)[0];
-    if (tempDto !== undefined) {
-        dtoEdit.value = tempDto;
+    if (tempDto === undefined) {
+        return;
     }
-    resultDtoIllegular.value = mockGetIllegularAddress(dtoEdit.value.addressName);
+    entityEdit.value = tempDto;
+
+    // 同一建物のデータをすべて取得
+    const capsuleDto: GetDetailPostalIllegularCapsuleDtoInterface = new GetDetailPostalIllegularCapsuleDto();
+    capsuleDto.addressWords = entityEdit.value.addressName;
+
+    getAuthorizedPromiseArea().then(token => {
+        const url = urlBack + "/postal-irregular/building-detail";
+        const method = "POST";
+        const body = JSON.stringify(capsuleDto);
+        const headers = {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'X-AUTH-TOKEN': 'Bearer ' + token
+        };
+        fetch(url, { method, headers, body })
+            .then(async (response) => {
+                resultDtoIllegular.value = await response.json();
+
+                if (resultDtoItem.value.allCount == 0) {
+                    infoLevel.value = MessageConstants.LEVEL_WARNING;
+                    messageType.value = MessageConstants.VIEW_OK;
+                    message.value = "検索結果が存在しませんでした";
+                }
+            })
+            .catch((error) => {
+                alert(error);
+                infoLevel.value = MessageConstants.LEVEL_ERROR;
+                messageType.value = MessageConstants.VIEW_OK;
+                message.value = "システム管理者にお問い合わせください";
+                return;
+            });
+    }).catch((e) => {
+        infoLevel.value = MessageConstants.LEVEL_ERROR;
+        messageType.value = MessageConstants.VIEW_OK;
+
+        if (e instanceof AccessTokenNotFoundError) {
+            // トークン保持ができていない場合
+            title.value = "現在トークンが存在しません";
+            message.value = e.message;
+            return;
+        }
+        if (e instanceof TokenRefreshError) {
+            // 取得に失敗している場合
+            title.value = "有効期限まじかのトークンを再取得できませんでした";
+            message.value = e.message;
+            return;
+        }
+        title.value = "システムエラーが発生しました";
+        message.value = "システム管理者にお問い合わせください";
+        return;
+    });
     commonAddress.value = BLANK;
 }
-
-
 
 
 function onCancel() {
@@ -151,33 +192,63 @@ function onCancel() {
 
 }
 function onSave() {
-    alert("保存");
-
     // 入力された住所を全フロア住所に展開する
-    // getAuthorizedPromiseArea().then(token => {
-    //     if (token !== "") {
-    //         // const conditionDto: SaveAddressRegistoryCapsuleInterface = new SaveAddressRegistoryCapsuleEntity();
-    //         // conditionDto.addressRsdtTemplateEntity = entityEdit.value;
-    //
-    //         const url = urlBack + "/postal-irregular/save-building";
-    //         const method = "POST";
-    //         const body = JSON.stringify(null);
-    //         const headers = {
-    //             'Accept': 'application/json',
-    //             'Content-Type': 'application/json',
-    //             'X-AUTH-TOKEN': 'Bearer ' + token
-    //         };
-    //         fetch(url, { method, headers, body })
-    //             .then(async (response) => {
-    //                 // const resultDto: FrameworkMessageAndResultInterface = await response.json();
-    //
-    //                 // alert(resultDto.message);
-    //             })
-    //             .catch((e) => { alert(e); });
-    //     } else {
-    //         alert("エラーのつもり");
-    //     }
-    // });
+    const capsuleDto: SavePostalIrregularCapsuleDtoInterface = new SavePostalIrregularCapsuleDto();
+    capsuleDto.userDto = userDto.value;
+    entityEdit.value.addressPostal = editAddressDto.value.addressPostal;
+    entityEdit.value.addressBlock = editAddressDto.value.addressBlock;
+    capsuleDto.addressPostalIrregularEntity = entityEdit.value;
+
+    getAuthorizedPromiseArea().then(token => {
+        const url = urlBack + "/postal-irregular/save-building";
+        const method = "POST";
+        const body = JSON.stringify(capsuleDto);
+        const headers = {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'X-AUTH-TOKEN': 'Bearer ' + token
+        };
+        fetch(url, { method, headers, body })
+            .then(async (response) => {
+                const resultDto: FrameworkMessageAndResultDtoInterface = await response.json();
+                if (resultDto.isFailure) {
+                    infoLevel.value = MessageConstants.LEVEL_WARNING;
+                    messageType.value = MessageConstants.VIEW_OK;
+                    message.value = resultDto.message;
+                } else {
+                    infoLevel.value = MessageConstants.LEVEL_INFO;
+                    messageType.value = MessageConstants.VIEW_TOAST;
+                    message.value = resultDto.message;
+                }
+            })
+            .catch((error) => {
+                alert(error);
+                infoLevel.value = MessageConstants.LEVEL_ERROR;
+                messageType.value = MessageConstants.VIEW_OK;
+                message.value = "システム管理者にお問い合わせください";
+                return;
+            });
+    }).catch((e) => {
+        infoLevel.value = MessageConstants.LEVEL_ERROR;
+        messageType.value = MessageConstants.VIEW_OK;
+
+        if (e instanceof AccessTokenNotFoundError) {
+            // トークン保持ができていない場合
+            title.value = "現在トークンが存在しません";
+            message.value = e.message;
+            return;
+        }
+        if (e instanceof TokenRefreshError) {
+            // 取得に失敗している場合
+            title.value = "有効期限まじかのトークンを再取得できませんでした";
+            message.value = e.message;
+            return;
+        }
+        title.value = "システムエラーが発生しました";
+        message.value = "システム管理者にお問い合わせください";
+        return;
+    });
+
     commonAddress.value = BLANK;
 }
 
@@ -209,7 +280,7 @@ function recieveCancelInputAddress() {
 }
 
 function recieveSubmit(button: string) {
-
+    // 住所入力が存在するときだけは確認する
     if ("yes" === button) {
         onShowDetail(storeId.value);
     }
@@ -226,6 +297,7 @@ function recieveSubmit(button: string) {
     <h1>フロア郵便番号追加</h1>
 
     <h3>フロア郵便番号建物検索</h3>
+
     <div class="one-line-scroll">
         <table>
             <tbody>
@@ -236,15 +308,14 @@ function recieveSubmit(button: string) {
                     <th>住所郵便番号まで</th>
                     <th>住所番地まで</th>
                     <th>&nbsp;</th>
-
                 </tr>
-                <tr v-for="dto of resultDtoItem.listItem" :key="dto.addressPostalIrregularId">
-                    <td>{{ dto.postal1 }}</td>
-                    <td>{{ dto.addressName }}</td>
-                    <td>{{ dto.lgCode }}</td>
-                    <td>{{ dto.inputAddress.addressPostal }}</td>
-                    <td>{{ dto.inputAddress.addressBlock }}</td>
-                    <td><button @click="onChangeEdit(dto.addressPostalIrregularId)">編集</button></td>
+                <tr v-for="entity of resultDtoItem.listItem" :key="entity.addressPostalIrregularId">
+                    <td>{{ entity.postalcode1 }}{{ entity.postalcode2 }}</td>
+                    <td>{{ entity.addressOrg }}</td>
+                    <td>{{ entity.lgCode }}</td>
+                    <td>{{ entity.addressPostal }}</td>
+                    <td>{{ entity.addressBlock }}</td>
+                    <td><button @click="onChangeEdit(entity.addressPostalIrregularId)">編集</button></td>
                 </tr>
             </tbody>
         </table>
@@ -266,7 +337,7 @@ function recieveSubmit(button: string) {
                     <th>住所番地まで</th>
                 </tr>
                 <tr v-for="entity of resultDtoIllegular.listIrregular" :key="entity.addressPostalIrregularId">
-                    <td>{{ entity.postal1 }}</td>
+                    <td>{{ entity.postalcode1 }}{{ entity.postalcode2 }}</td>
                     <td>{{ entity.addressName }}</td>
                     <td>{{ entity.addressOrg }}</td>
                     <td>{{ entity.addressPostal }}</td>
@@ -295,7 +366,7 @@ function recieveSubmit(button: string) {
     <!-- 専用住所入力 -->
     <div v-if="isAddressInput" class="overBackground"></div>
     <div v-if="isAddressInput" class="overComponent">
-        <InputBuildingAddress :edit-dto="editDto" @send-cancel-input-address="recieveCancelInputAddress"
+        <InputBuildingAddress :edit-dto="editAddressDto" @send-cancel-input-address="recieveCancelInputAddress"
             @send-input-address-interface="recieveInputAddressInterface"></InputBuildingAddress>
     </div>
 

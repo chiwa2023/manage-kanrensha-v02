@@ -15,7 +15,7 @@ export default function mockGetIllegularItem(): SearchPostalIllegularResultDtoIn
     list.push(createDto(4));
     list.push(createDto(5));
 
-    dto.listItem = list;
+    //dto.listItem = list;
     dto.allCount =249;
     dto.limit = 30;
     dto.pageNumber =0;

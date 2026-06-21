@@ -45,10 +45,14 @@ public class SearchWktblPostalCodeService {
             listSearchRepair.add(false);
         }
 
+        String worksText = '%' + capsuleDto.getWorksText() + '%';
+        String orgName = '%' + capsuleDto.getOrgName() + '%';
+
         Integer userCode = capsuleDto.getUserDto().getUserPersonCode();
 
-        resultDto.setAllCount(wkTblPostalEditRepository.countByInsertUserCodeAndIsLatestInAndIsRepairIn(userCode,
-                listSearchLatest, listSearchRepair));
+        resultDto.setAllCount(
+                wkTblPostalEditRepository.countByInsertUserCodeAndIsLatestInAndIsRepairInAndWorksTextLikeAndOrgNameLike(
+                        userCode, listSearchLatest, listSearchRepair, worksText, orgName));
 
         // 全件数が0の場合は結果を返却
         final Integer zero = 0;
@@ -64,9 +68,9 @@ public class SearchWktblPostalCodeService {
 
         // 実検索
         Pageable pageable = Pageable.ofSize(resultDto.getLimit()).withPage(resultDto.getPageNumber());
-        resultDto.setListEntity(
-                wkTblPostalEditRepository.findByInsertUserCodeAndIsLatestInAndIsRepairInOrderByFlgHenkouRiyu(userCode,
-                        listSearchLatest, listSearchRepair, pageable));
+        resultDto.setListEntity(wkTblPostalEditRepository
+                .findByInsertUserCodeAndIsLatestInAndIsRepairInAndWorksTextLikeAndOrgNameLikeOrderByFlgHenkouRiyu(
+                        userCode, listSearchLatest, listSearchRepair, worksText, orgName, pageable));
 
         return resultDto;
     }

@@ -73,11 +73,21 @@ export default class RoutePathConstants {
     static readonly PAGE_POSTAL_BUILDING: string = this.BASE_PATH + "/postal-code-building";
     /** 郵便番号編集 */
     static readonly PAGE_POSTAL_EDIT: string = this.BASE_PATH + "/postal-code-edit";
+    /** 郵便番号移動 */
+    static readonly PAGE_POSTAL_MOVE: string = this.BASE_PATH + "/postal-code-move";
+
     /** 郵便番号差分 */
     static readonly PAGE_POSTAL_SABUN: string = this.BASE_PATH + "/postal-code-sabun";
+    /** 郵便番号差分ワークテーブル編集 */
+    static readonly PAGE_POSTAL_SABUN_UPDATE: string = this.BASE_PATH + "/postal-wktbl-update";
 
     /** アドレス・ベース・レジストリ編集 */
     static readonly PAGE_ADDRESS_REGI_EDIT: string = this.BASE_PATH + "/address-registry-edit";
+   /** アドレス・ベース・レジストリ差分編集 */
+    static readonly PAGE_ADDRESS_SABUN_EDIT: string = this.BASE_PATH + "/address-wktbl-edit";
+   /** アドレス・ベース・レジストリ差分一括更新 */
+    static readonly PAGE_ADDRESS_SABUN_UPDATE: string = this.BASE_PATH + "/address-wktbl-update";
+ 
     /** アドレス・ベース・レジストリ差分 */
     static readonly PAGE_ADDRESS_REGI_SABUN: string = this.BASE_PATH + "/address-registry-sabun";
     /** 地方自治体コード差分 */

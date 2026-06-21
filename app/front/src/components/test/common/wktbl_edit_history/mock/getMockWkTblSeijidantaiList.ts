@@ -1,4 +1,4 @@
-import { WkTblKanrenshaSeijidantaiHistoryEntity, type WkTblKanrenshaSeijidantaiHistoryEntityInterface } from "../../../entity/wkTblKanrenshaSeijidantaiHistoryEntity";
+import { WkTblKanrenshaSeijidantaiHistoryEntity, type WkTblKanrenshaSeijidantaiHistoryEntityInterface } from "../../../../main/entity/wkTblKanrenshaSeijidantaiHistoryEntity";
 
 export default function getMockWkTblSeijidantaiList(): WkTblKanrenshaSeijidantaiHistoryEntityInterface[] {
     const list: WkTblKanrenshaSeijidantaiHistoryEntityInterface[] = [];

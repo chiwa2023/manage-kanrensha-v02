@@ -1,6 +1,6 @@
 package net.seijishikin.jp.normalize.manage.kanrensha.service.kanrensha; // NOPMD
 
-import org.springframework.beans.BeanUtils;
+import org.springframework.beans.BeanUtils; // NOPMD
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

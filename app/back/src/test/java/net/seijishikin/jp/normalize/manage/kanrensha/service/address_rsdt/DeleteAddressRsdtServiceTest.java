@@ -45,7 +45,7 @@ class DeleteAddressRsdtServiceTest {
 
         AddressRsdtTemplateEntity editEntity = this.getAddressEntity(lgCode, deleteId);
         EditAddressRsdtCapsuleDto capsuleDto = new EditAddressRsdtCapsuleDto();
-        capsuleDto.setEditEntiy(editEntity);
+        capsuleDto.setEditEntity(editEntity);
         capsuleDto.setUserDto(CreateLeastUserForTestUtil.practice());
 
         assertNotEquals(0, deleteAddressRsdtService.practice(capsuleDto));

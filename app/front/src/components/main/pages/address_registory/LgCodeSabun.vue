@@ -4,6 +4,7 @@ import type { StorageFileDtoInterface } from '../../dto/storage_file/storageFile
 import type { LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import { getLoginUser } from '../../utils/getLoginUser';
 import ReadCsv from '../../common/read_csv/ReadCsv.vue';
+import ManagerInfo from '../../common/user_info/ManagerInfo.vue';
 
 // よく使う定数
 // const BLANK: string = "";
@@ -41,6 +42,9 @@ function onSave() {
 
 </script>
 <template>
+    <!-- 管理者メニュー兼チェック -->
+    <ManagerInfo :user-dto="userDto"></ManagerInfo>
+
     <h1>地方自治体コード差分</h1>
 
     <!-- 住居ファイル用 -->

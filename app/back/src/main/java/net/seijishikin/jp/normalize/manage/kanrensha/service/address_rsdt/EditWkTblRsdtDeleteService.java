@@ -36,7 +36,7 @@ public class EditWkTblRsdtDeleteService {
     @Transactional
     public Integer practice(final EditWktblRsdtDeleteCapsuleDto capsuleDto) {
 
-        WkTblAddressRsdtDeleteEntity entityEdit = capsuleDto.getEditEntiy();
+        WkTblAddressRsdtDeleteEntity entityEdit = capsuleDto.getEditEntity();
         Integer editId = entityEdit.getWkTblAddressRsdtDeleteId();
 
         LeastUserDto userDto = capsuleDto.getUserDto();

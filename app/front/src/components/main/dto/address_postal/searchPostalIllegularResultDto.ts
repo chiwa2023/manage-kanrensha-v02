@@ -1,17 +1,17 @@
 import { FrameworkPagingDto, type FrameworkPagingDtoInterface } from "seijishikin-jp-normalize_common-tool";
-import type { PostalIrregularItemDtoInterface } from "./postalIrregularItemDto";
+import type { AddressPostalIrregularEntityInterface } from "../../entity/addressPostalIrregularEntity";
 
 interface SearchPostalIllegularResultDtoInterface extends FrameworkPagingDtoInterface {
 
     /** 郵便番号不規則リスト */
-    listItem: PostalIrregularItemDtoInterface[];
+    listItem: AddressPostalIrregularEntityInterface[];
 }
 
 class SearchPostalIllegularResultDto extends FrameworkPagingDto
     implements SearchPostalIllegularResultDtoInterface {
 
     /** 郵便番号不規則リスト */
-    listItem: PostalIrregularItemDtoInterface[];
+    listItem: AddressPostalIrregularEntityInterface[];
 
     constructor() {
         super();

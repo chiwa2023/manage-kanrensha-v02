@@ -4,10 +4,10 @@ interface AddressPostalEntityInterface {
     addressPostalId: number;
 
     /** 郵便番号1 */
-    postal1: string;
+    postalcode1: string;
 
     /** 郵便番号2 */
-    postal2: string;
+    postalcode2: string;
 
     /** 地方自治体コード */
     lgCode: string;
@@ -29,10 +29,10 @@ class AddressPostalEntity implements AddressPostalEntityInterface {
     addressPostalId: number;
 
     /** 郵便番号1 */
-    postal1: string;
+    postalcode1: string;
 
     /** 郵便番号2 */
-    postal2: string;
+    postalcode2: string;
 
     /** 地方自治体コード */
     lgCode: string;
@@ -50,8 +50,8 @@ class AddressPostalEntity implements AddressPostalEntityInterface {
         const INIT_STRING: string = "";
 
         this.addressPostalId = 0;
-        this.postal1 = INIT_STRING;
-        this.postal2 = INIT_STRING;
+        this.postalcode1 = INIT_STRING;
+        this.postalcode2 = INIT_STRING;
         this.lgCode = INIT_STRING;
         this.addressOrg = INIT_STRING;
         this.addressName = INIT_STRING;

@@ -1,6 +1,6 @@
 package net.seijishikin.jp.normalize.manage.kanrensha.controller.address_rsdt; // NOPMD HighImport
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals; // NOPMD HighImports
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -82,6 +82,7 @@ class SabunPreparAddressRsdtControllerTest {
                 this.createStorageFile("mt_parcel_city011045_sample.csv", "/file/batch/address_base/parcel"));
         capsuleDto.setRsdtFileDto(
                 this.createStorageFile("mt_rsdtdsp_rsdt_pref01_sample.csv", "/file/batch/address_base/rsdt"));
+        capsuleDto.setLgCode("011045");
 
         String path = PathRouteConstants.ROOT + "/wktbl-address-rsdt/prepare";
 

@@ -47,7 +47,7 @@ class EditWkTblRsdtChangeServiceTest {
 
         // 誤って削除対象を指定した場合
         EditWktblRsdtChangeCapsuleDto capsuleDto10 = new EditWktblRsdtChangeCapsuleDto();
-        capsuleDto10.getEditEntiy().setWkTblAddressRsdtChangeId(111);
+        capsuleDto10.getEditEntity().setWkTblAddressRsdtChangeId(111);
         assertThrows(EmptyResultDataAccessException.class, () -> editWkTblRsdtChangeService.practice(capsuleDto10));
 
         // 変更
@@ -68,7 +68,7 @@ class EditWkTblRsdtChangeServiceTest {
         entity0.setAbolishDate(LocalDate.of(2026, 7, 11));
 
         EditWktblRsdtChangeCapsuleDto capsuleDto0 = new EditWktblRsdtChangeCapsuleDto();
-        capsuleDto0.setEditEntiy(entity0);
+        capsuleDto0.setEditEntity(entity0);
         capsuleDto0.setUserDto(CreateLeastUserForTestUtil.practice());
 
         Integer newId0 = editWkTblRsdtChangeService.practice(capsuleDto0);
@@ -108,7 +108,7 @@ class EditWkTblRsdtChangeServiceTest {
         entity1.setAbolishDate(LocalDate.of(2014, 2, 9));
 
         EditWktblRsdtChangeCapsuleDto capsuleDto1 = new EditWktblRsdtChangeCapsuleDto();
-        capsuleDto1.setEditEntiy(entity1);
+        capsuleDto1.setEditEntity(entity1);
         capsuleDto1.setUserDto(CreateLeastUserForTestUtil.practice());
 
         Integer newId1 = editWkTblRsdtChangeService.practice(capsuleDto1);

@@ -104,7 +104,6 @@ public class SearchWkTblPostalCodeCapsuleDto extends FrameworkCapsuleDto // NOPM
         this.isSearchHistory = isSearchHistory;
     }
 
-
     /** 自動修復検索該否 */
     private Boolean isSearchRepair = INIT_BOOLEAN;
 
@@ -124,6 +123,48 @@ public class SearchWkTblPostalCodeCapsuleDto extends FrameworkCapsuleDto // NOPM
      */
     public void setIsSearchRepair(final Boolean isSearchRepair) {
         this.isSearchRepair = isSearchRepair;
+    }
+
+    /** 原文書名 */
+    private String orgName = INIT_STRING;
+
+    /**
+     * 原文書名を取得する
+     *
+     * @return 原文書名
+     */
+    public String getOrgName() {
+        return orgName;
+    }
+
+    /**
+     * 原文書名を設定する
+     *
+     * @param orgName 原文書名
+     */
+    public void setOrgName(final String orgName) {
+        this.orgName = orgName;
+    }
+
+    /** 編集内容説明 */
+    private String worksText = INIT_STRING;
+
+    /**
+     * 編集内容説明を取得する
+     *
+     * @return 編集内容説明
+     */
+    public String getWorksText() {
+        return worksText;
+    }
+
+    /**
+     * 編集内容説明を設定する
+     *
+     * @param worksText 編集内容説明
+     */
+    public void setWorksText(final String worksText) {
+        this.worksText = worksText;
     }
 
 }

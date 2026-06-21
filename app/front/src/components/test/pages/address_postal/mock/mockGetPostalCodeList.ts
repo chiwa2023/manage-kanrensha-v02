@@ -30,8 +30,8 @@ function createEntity(index: number) {
     entity.addressOrg = "湖畔町" + index + "丁目";
     entity.addressName = "架空県実在町" + "湖畔町" + index + "丁目";
     entity.lgCode = "9133" + index;
-    entity.postal1 = "246801" + index;
-    entity.postal2 = "801" + index;
+    entity.postalcode1 = "246801" + index;
+    entity.postalcode2 = "801" + index;
 
     return entity;
 }

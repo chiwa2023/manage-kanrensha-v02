@@ -5,6 +5,13 @@ package net.seijishikin.jp.normalize.manage.kanrensha.logic.address.registory;
  */
 public final class GetChibanConstants {
 
+    /**
+     * コンストラクタ
+     */
+    private GetChibanConstants() {
+
+    }
+
     /** 保存先path */
     public static final String STORED_PATH = "C:/temp/address/";
 

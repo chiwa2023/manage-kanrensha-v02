@@ -67,9 +67,15 @@ import RoutePathConstants from '../../../../routePathConstants';
             <h4 class="menu-title">住所編集</h4>
             <RouterLink :to="RoutePathConstants.PAGE_POSTAL_BUILDING" class="menu-item">フロア郵便番号建物住所入力</RouterLink>
             <RouterLink :to="RoutePathConstants.PAGE_POSTAL_EDIT" class="menu-item">郵便番号編集</RouterLink>
+            <RouterLink :to="RoutePathConstants.PAGE_POSTAL_MOVE" class="menu-item">郵便番号移動</RouterLink>
             <RouterLink :to="RoutePathConstants.PAGE_POSTAL_SABUN" class="menu-item">郵便番号差分取込</RouterLink>
+            <RouterLink :to="RoutePathConstants.PAGE_POSTAL_SABUN_UPDATE" class="menu-item">郵便番号差分結果編集</RouterLink>
+
             <RouterLink :to="RoutePathConstants.PAGE_ADDRESS_REGI_EDIT" class="menu-item">住所編集</RouterLink>
             <RouterLink :to="RoutePathConstants.PAGE_ADDRESS_REGI_SABUN" class="menu-item">住所差分取込</RouterLink>
+            <RouterLink :to="RoutePathConstants.PAGE_ADDRESS_SABUN_UPDATE" class="menu-item">住所差分結果一括更新</RouterLink>
+            <RouterLink :to="RoutePathConstants.PAGE_ADDRESS_SABUN_EDIT" class="menu-item">住所差分結果編集</RouterLink>
+            <!-- 地方自治体コード更新 -->
         </div>
     </div>
 

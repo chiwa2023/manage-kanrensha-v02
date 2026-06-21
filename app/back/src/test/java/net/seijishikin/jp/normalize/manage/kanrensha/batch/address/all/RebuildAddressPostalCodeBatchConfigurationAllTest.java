@@ -79,12 +79,14 @@ class RebuildAddressPostalCodeBatchConfigurationAllTest {
 
         LeastUserDto userDto = CreateSystemInitialUserUtil.practice();
 
+        // 最初の1回だけは初期化して、残りは@Sqlを無効化する
+        
         JobParameters jobParameters = new JobParametersBuilder(
                 rebuildAddressPostalCode.getJobParametersIncrementer().getNext(new JobParameters())) // NOPMD
                 .addLocalDateTime("executeTime", LocalDateTime.now())
                 .addString("readFilePathOneLine", pathOneLine.toString())
                 .addString("readFilePathJigyousha", pathJigyousha.toString())
-                .addString("lgCode", "04207")
+                .addString("lgCode", "131")
                 .addLong("userId", (long) userDto.getUserPersonId())
                 .addLong("userCode", (long) userDto.getUserPersonCode())
                 .addString("userName", userDto.getUserPersonName()).toJobParameters();

@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import net.seijishikin.jp.normalize.common_tool.dto.select_options.SelectOptionStringDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.AddressAllCityEntity;
 
 /**
@@ -60,5 +61,27 @@ public interface AddressAllCityRepository extends JpaRepository<AddressAllCityEn
      */
     @Query(value = "SELECT count(*) FROM address_all_city WHERE is_latest = 1 and (abolish_date is null or abolish_date > ?1)", nativeQuery = true)
     Integer countLgCode(LocalDate abolishDate);
+
+    /**
+     * 地方自治体コード5桁を県条件で検索する
+     * 
+     * @param prefCode 県地自体コード
+     * @return 検索結果
+     */
+    @Query(value = "SELECT LEFT(lg_code,5) AS value, CONCAT(pref,county,city,ward) AS text FROM address_all_city "
+            + "  where lg_code LIKE ?1 AND is_latest = 1 AND effect_date < NOW() "
+            + "      AND (abolish_date > NOW() OR abolish_date is null) ORDER BY lg_code ASC;", nativeQuery = true)
+    List<SelectOptionStringDto> findPrefCityDigit5(String prefCode);
+
+    /**
+     * 地方自治体コードを県条件で検索する
+     * 
+     * @param prefCode 県地自体コード
+     * @return 検索結果
+     */
+    @Query(value = "SELECT lg_code AS value, CONCAT(pref,county,city,ward) AS text FROM address_all_city "
+            + "  where lg_code LIKE ?1 AND is_latest = 1 AND effect_date < NOW() "
+            + "      AND (abolish_date > NOW() OR abolish_date is null) ORDER BY lg_code ASC;", nativeQuery = true)
+    List<SelectOptionStringDto> findPrefCity(String prefCode);
 
 }

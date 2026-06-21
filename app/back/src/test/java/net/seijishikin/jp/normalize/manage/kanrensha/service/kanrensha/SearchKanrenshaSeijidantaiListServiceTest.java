@@ -61,8 +61,8 @@ class SearchKanrenshaSeijidantaiListServiceTest {
         List<KanrenshaSeijidantaiMasterEntity> list = resultDto.getListMasterSeijidantai();
         assertEquals(1, list.size());
 
-        KanrenshaSeijidantaiMasterEntity entiy = list.get(0);
-        assertEquals(323, entiy.getKanrenshaSeijidantaiMasterId());
+        KanrenshaSeijidantaiMasterEntity entity = list.get(0);
+        assertEquals(323, entity.getKanrenshaSeijidantaiMasterId());
     }
 
     @Test
@@ -96,23 +96,23 @@ class SearchKanrenshaSeijidantaiListServiceTest {
         List<KanrenshaSeijidantaiMasterEntity> list = resultDto.getListMasterSeijidantai();
         assertEquals(6, list.size());
 
-        KanrenshaSeijidantaiMasterEntity entiy0 = list.get(0);
-        assertEquals(323, entiy0.getKanrenshaSeijidantaiMasterId());
+        KanrenshaSeijidantaiMasterEntity entity0 = list.get(0);
+        assertEquals(323, entity0.getKanrenshaSeijidantaiMasterId());
 
-        KanrenshaSeijidantaiMasterEntity entiy1 = list.get(1);
-        assertEquals(325, entiy1.getKanrenshaSeijidantaiMasterId());
+        KanrenshaSeijidantaiMasterEntity entity1 = list.get(1);
+        assertEquals(325, entity1.getKanrenshaSeijidantaiMasterId());
 
-        KanrenshaSeijidantaiMasterEntity entiy2 = list.get(2);
-        assertEquals(326, entiy2.getKanrenshaSeijidantaiMasterId());
+        KanrenshaSeijidantaiMasterEntity entity2 = list.get(2);
+        assertEquals(326, entity2.getKanrenshaSeijidantaiMasterId());
 
-        KanrenshaSeijidantaiMasterEntity entiy3 = list.get(3);
-        assertEquals(327, entiy3.getKanrenshaSeijidantaiMasterId());
+        KanrenshaSeijidantaiMasterEntity entity3 = list.get(3);
+        assertEquals(327, entity3.getKanrenshaSeijidantaiMasterId());
 
-        KanrenshaSeijidantaiMasterEntity entiy4 = list.get(4);
-        assertEquals(328, entiy4.getKanrenshaSeijidantaiMasterId());
+        KanrenshaSeijidantaiMasterEntity entity4 = list.get(4);
+        assertEquals(328, entity4.getKanrenshaSeijidantaiMasterId());
 
-        KanrenshaSeijidantaiMasterEntity entiy5 = list.get(5);
-        assertEquals(329, entiy5.getKanrenshaSeijidantaiMasterId());
+        KanrenshaSeijidantaiMasterEntity entity5 = list.get(5);
+        assertEquals(329, entity5.getKanrenshaSeijidantaiMasterId());
     }
 
 }

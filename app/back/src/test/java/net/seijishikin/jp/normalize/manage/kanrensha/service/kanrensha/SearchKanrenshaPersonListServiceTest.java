@@ -55,8 +55,8 @@ class SearchKanrenshaPersonListServiceTest {
         List<KanrenshaPersonMasterEntity> list = resultDto.getListMasterPerson();
         assertEquals(1, list.size());
 
-        KanrenshaPersonMasterEntity entiy = list.get(0);
-        assertEquals(231, entiy.getKanrenshaPersonMasterId());
+        KanrenshaPersonMasterEntity entity = list.get(0);
+        assertEquals(231, entity.getKanrenshaPersonMasterId());
     }
 
     @Test
@@ -81,17 +81,17 @@ class SearchKanrenshaPersonListServiceTest {
         List<KanrenshaPersonMasterEntity> list = resultDto.getListMasterPerson();
         assertEquals(4, list.size());
 
-        KanrenshaPersonMasterEntity entiy0 = list.get(0);
-        assertEquals(231, entiy0.getKanrenshaPersonMasterId());
+        KanrenshaPersonMasterEntity entity0 = list.get(0);
+        assertEquals(231, entity0.getKanrenshaPersonMasterId());
 
-        KanrenshaPersonMasterEntity entiy1 = list.get(1);
-        assertEquals(233, entiy1.getKanrenshaPersonMasterId());
+        KanrenshaPersonMasterEntity entity1 = list.get(1);
+        assertEquals(233, entity1.getKanrenshaPersonMasterId());
 
-        KanrenshaPersonMasterEntity entiy2 = list.get(2);
-        assertEquals(234, entiy2.getKanrenshaPersonMasterId());
+        KanrenshaPersonMasterEntity entity2 = list.get(2);
+        assertEquals(234, entity2.getKanrenshaPersonMasterId());
 
-        KanrenshaPersonMasterEntity entiy3 = list.get(3);
-        assertEquals(235, entiy3.getKanrenshaPersonMasterId());
+        KanrenshaPersonMasterEntity entity3 = list.get(3);
+        assertEquals(235, entity3.getKanrenshaPersonMasterId());
     }
 
 }

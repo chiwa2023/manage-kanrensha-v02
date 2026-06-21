@@ -96,8 +96,8 @@ public interface WkTblPostalEditRepository extends JpaRepository<WkTblPostalEdit
      * @param pageable ページング
      * @return 検索結果
      */
-    List<WkTblPostalEditEntity> findByInsertUserCodeAndIsLatestInAndIsRepairInOrderByFlgHenkouRiyu(Integer userocde,
-            List<Boolean> listSearchLatest, List<Boolean> listSearchRepair, Pageable pageable);
+    List<WkTblPostalEditEntity> findByInsertUserCodeAndIsLatestInAndIsRepairInAndWorksTextLikeAndOrgNameLikeOrderByFlgHenkouRiyu(Integer userocde,
+            List<Boolean> listSearchLatest, List<Boolean> listSearchRepair,String worksText,String orgName, Pageable pageable);
 
     /**
      * ユーザコード、最新該否検索条件、修復該否検索条件で件数を取得する
@@ -107,7 +107,7 @@ public interface WkTblPostalEditRepository extends JpaRepository<WkTblPostalEdit
      * @param listSearchRepair 修復該否検索条件
      * @return 件数
      */
-    Integer countByInsertUserCodeAndIsLatestInAndIsRepairIn(Integer userocde, List<Boolean> listSearchLatest,
-            List<Boolean> listSearchRepair);
+    Integer countByInsertUserCodeAndIsLatestInAndIsRepairInAndWorksTextLikeAndOrgNameLike(Integer userocde, List<Boolean> listSearchLatest,
+            List<Boolean> listSearchRepair,String worksText,String orgName);
 
 }

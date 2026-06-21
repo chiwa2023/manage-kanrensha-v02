@@ -20,7 +20,7 @@ import net.seijishikin.jp.normalize.manage.kanrensha.entity.WkTblPostalCommonEnt
  * 郵便番号不規則修正BachConfig
  */
 @Configuration
-public class RepairPostalCodeIrregularBatchConfiguration {
+public class RepairPostalCodeIrregularBatchConfiguration { // NOPMD CouplingBetweenObjects
 
     /** 機能名 */
     private static final String FUNCTION_NAME = "repairPostalCodeIrregular";

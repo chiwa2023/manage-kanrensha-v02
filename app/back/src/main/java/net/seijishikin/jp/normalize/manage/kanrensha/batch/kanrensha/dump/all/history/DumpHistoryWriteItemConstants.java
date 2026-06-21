@@ -8,7 +8,15 @@ public class DumpHistoryWriteItemConstants {
     /**
      * 企業団体用カラム定義定数
      */
-    public class KigyouDt {
+    public final class KigyouDt {
+
+        /**
+         * コンストラクタ
+         */
+        private KigyouDt() {
+
+        }
+
         /** 書き出すカラム列名 */
         public static final String[] NAMES = { "kigyouDtKanrenshaCode", "allName", "allAddress", "orgDelegateName",
                 "orgDelegateCode", "insertTimestamp" };
@@ -21,9 +29,18 @@ public class DumpHistoryWriteItemConstants {
     /**
      * 個人用カラム定義定数
      */
-    public class Person {
+    public final class Person {
+
+        /**
+         * コンストラクタ
+         */
+        private Person() {
+
+        }
+
         /** 書き出すカラム列名 */
-        public static final String[] NAMES = { "personKanrenshaCode", "allName", "allAddress", "personShokugyou", "insertTimestamp" };
+        public static final String[] NAMES = { "personKanrenshaCode", "allName", "allAddress", "personShokugyou",
+                "insertTimestamp" };
 
         /** 書き出すカラム表示名称 */
         public static final String[] HEADERS = { "\"関連者番号\"", "\"名称\"", "\"全住所\"", "\"個人職業\"", "\"登録日時\"" };
@@ -32,13 +49,22 @@ public class DumpHistoryWriteItemConstants {
     /**
      * 政治団体用カラム定義定数
      */
-    public class Seijidantai {
+    public final class Seijidantai {
+
+        /**
+         * コンストラクタ
+         */
+        private Seijidantai() {
+
+        }
+
         /** 書き出すカラム列名 */
         public static final String[] NAMES = { "seijidantaiKanrenshaCode", "allName", "allAddress", "orgDelegateName",
                 "orgDelegateCode", "insertTimestamp" };
 
         /** 書き出すカラム表示名称 */
-        public static final String[] HEADERS = { "\"関連者番号\"", "\"名称\"", "\"全住所\"", "\"代表者名\"", "\"代表者コード\"", "\"登録日時\"" };
+        public static final String[] HEADERS = { "\"関連者番号\"", "\"名称\"", "\"全住所\"", "\"代表者名\"", "\"代表者コード\"",
+                "\"登録日時\"" };
     }
 
 }

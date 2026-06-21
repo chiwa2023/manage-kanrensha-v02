@@ -4,10 +4,10 @@ interface AddressPostalIrregularEntityInterface {
     addressPostalIrregularId: number;
 
     /** 郵便番号1 */
-    postal1: string;
+    postalcode1: string;
 
     /** 郵便番号2 */
-    postal2: string;
+    postalcode2: string;
 
     /** 地方公共団体コード */
     lgCode: string;
@@ -38,10 +38,10 @@ class AddressPostalIrregularEntity implements AddressPostalIrregularEntityInterf
     addressPostalIrregularId: number;
 
     /** 郵便番号1 */
-    postal1: string;
+    postalcode1: string;
 
     /** 郵便番号2 */
-    postal2: string;
+    postalcode2: string;
 
     /** 地方公共団体コード */
     lgCode: string;
@@ -70,8 +70,8 @@ class AddressPostalIrregularEntity implements AddressPostalIrregularEntityInterf
         const INIT_BOOLEAN: boolean = false;
 
         this.addressPostalIrregularId = INIT_NUMBER;
-        this.postal1 = INIT_STRING;
-        this.postal2 = INIT_STRING;
+        this.postalcode1 = INIT_STRING;
+        this.postalcode2 = INIT_STRING;
         this.lgCode = INIT_STRING;
         this.addressOrg = INIT_STRING;
         this.addressName = INIT_STRING;

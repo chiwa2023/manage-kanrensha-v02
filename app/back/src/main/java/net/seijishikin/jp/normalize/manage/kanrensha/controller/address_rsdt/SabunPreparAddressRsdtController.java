@@ -61,7 +61,7 @@ public class SabunPreparAddressRsdtController {
 
         // バッチ起動
         sabunPreparAddressRsdtService.practice(userDto, taskPlanDto, capsuleDto.getRsdtFileDto(),
-                capsuleDto.getParcelFileDto());
+                capsuleDto.getParcelFileDto(), capsuleDto.getLgCode());
 
         return ResponseEntity.status(HttpStatus.OK).body(resultDto);
     }

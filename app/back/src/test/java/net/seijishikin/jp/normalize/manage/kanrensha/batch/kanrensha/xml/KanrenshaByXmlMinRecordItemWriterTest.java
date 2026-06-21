@@ -1,6 +1,6 @@
-package net.seijishikin.jp.normalize.manage.kanrensha.batch.kanrensha.xml; //NOPMD
+package net.seijishikin.jp.normalize.manage.kanrensha.batch.kanrensha.xml; // NOPMD
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;  // NOPMD ExccesiveImports
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
@@ -52,7 +52,7 @@ import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateLeastUserForTes
 @DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
 @Transactional
 @Sql("KanrenshaByXmlMinRecordItemWriterTest.sql")
-class KanrenshaByXmlMinRecordItemWriterTest {
+class KanrenshaByXmlMinRecordItemWriterTest { // NOPMD CouplingBetweenObjects
     // CHECKSTYLE:OFF MagicNumber
 
     /** テスト対象 */
@@ -123,10 +123,10 @@ class KanrenshaByXmlMinRecordItemWriterTest {
 
         // すべてのマスタと履歴テーブルとそのauto_incrementをクリアしているのでId1をで取得して登録内容を確認
 
-        KanrenshaPersonHistory01Entity entiytHistory = kanrenshaPersonHistory01Repository.findById(1).get();
-        assertEquals(entityBase.getKanrenshaName(), entiytHistory.getAllName());
-        assertEquals(entityBase.getAllAddress(), entiytHistory.getAllAddress());
-        assertEquals(entityBase.getPersonShokugyou(), entiytHistory.getPersonShokugyou());
+        KanrenshaPersonHistory01Entity entitytHistory = kanrenshaPersonHistory01Repository.findById(1).get();
+        assertEquals(entityBase.getKanrenshaName(), entitytHistory.getAllName());
+        assertEquals(entityBase.getAllAddress(), entitytHistory.getAllAddress());
+        assertEquals(entityBase.getPersonShokugyou(), entitytHistory.getPersonShokugyou());
 
         KanrenshaPersonMasterEntity entityMaster = kanrenshaPersonMasterRepository.findById(1).get();
         assertEquals(entityBase.getKanrenshaName(), entityMaster.getKanrenshaName());
@@ -134,7 +134,7 @@ class KanrenshaByXmlMinRecordItemWriterTest {
         assertEquals(entityBase.getPersonShokugyou(), entityMaster.getPersonShokugyou());
 
         // 同じコードで紐づけ
-        assertEquals(entityMaster.getPersonKanrenshaCode(), entiytHistory.getPersonKanrenshaCode());
+        assertEquals(entityMaster.getPersonKanrenshaCode(), entitytHistory.getPersonKanrenshaCode());
     }
 
     @Test
@@ -170,10 +170,10 @@ class KanrenshaByXmlMinRecordItemWriterTest {
 
         // すべてのマスタと履歴テーブルとそのauto_incrementをクリアしているのでId1をで取得して登録内容を確認
 
-        KanrenshaKigyouDtHistory01Entity entiytHistory = kanrenshaKigyouDtHistory01Repository.findById(1).get();
-        assertEquals(entityBase.getKanrenshaName(), entiytHistory.getAllName());
-        assertEquals(entityBase.getAllAddress(), entiytHistory.getAllAddress());
-        assertEquals(entityBase.getOrgDelegate(), entiytHistory.getOrgDelegateName());
+        KanrenshaKigyouDtHistory01Entity EntitytHistory = kanrenshaKigyouDtHistory01Repository.findById(1).get();
+        assertEquals(entityBase.getKanrenshaName(), EntitytHistory.getAllName());
+        assertEquals(entityBase.getAllAddress(), EntitytHistory.getAllAddress());
+        assertEquals(entityBase.getOrgDelegate(), EntitytHistory.getOrgDelegateName());
 
         KanrenshaKigyouDtMasterEntity entityMaster = kanrenshaKigyouDtMasterRepository.findById(1).get();
         assertEquals(entityBase.getKanrenshaName(), entityMaster.getKanrenshaName());
@@ -182,7 +182,7 @@ class KanrenshaByXmlMinRecordItemWriterTest {
         assertEquals(entityBase.getHoujinNo(), entityMaster.getHoujinNo());
 
         // 同じコードで紐づけ
-        assertEquals(entityMaster.getKigyouDtKanrenshaCode(), entiytHistory.getKigyouDtKanrenshaCode());
+        assertEquals(entityMaster.getKigyouDtKanrenshaCode(), EntitytHistory.getKigyouDtKanrenshaCode());
     }
 
     @Test
@@ -218,10 +218,10 @@ class KanrenshaByXmlMinRecordItemWriterTest {
 
         // すべてのマスタと履歴テーブルとそのauto_incrementをクリアしているのでId1をで取得して登録内容を
 
-        KanrenshaSeijidantaiHistory01Entity entiytHistory = kanrenshaSeijidantaiHistory01Repository.findById(1).get();
-        assertEquals(entityBase.getKanrenshaName(), entiytHistory.getAllName());
-        assertEquals(entityBase.getAllAddress(), entiytHistory.getAllAddress());
-        assertEquals(entityBase.getOrgDelegate(), entiytHistory.getOrgDelegateName());
+        KanrenshaSeijidantaiHistory01Entity EntitytHistory = kanrenshaSeijidantaiHistory01Repository.findById(1).get();
+        assertEquals(entityBase.getKanrenshaName(), EntitytHistory.getAllName());
+        assertEquals(entityBase.getAllAddress(), EntitytHistory.getAllAddress());
+        assertEquals(entityBase.getOrgDelegate(), EntitytHistory.getOrgDelegateName());
 
         KanrenshaSeijidantaiMasterEntity entityMaster = kanrenshaSeijidantaiMasterRepository.findById(1).get();
         assertEquals(entityBase.getKanrenshaName(), entityMaster.getKanrenshaName());
@@ -231,7 +231,7 @@ class KanrenshaByXmlMinRecordItemWriterTest {
         assertTrue(entityMaster.getPoliOrgNo().startsWith("0987654"));
 
         // 同じコードで紐づけ
-        assertEquals(entityMaster.getSeijidantaiKanrenshaCode(), entiytHistory.getSeijidantaiKanrenshaCode());
+        assertEquals(entityMaster.getSeijidantaiKanrenshaCode(), EntitytHistory.getSeijidantaiKanrenshaCode());
     }
 
     private StepExecution getStepExecution() {

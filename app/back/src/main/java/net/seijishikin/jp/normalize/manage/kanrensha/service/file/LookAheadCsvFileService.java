@@ -105,7 +105,7 @@ public class LookAheadCsvFileService {
         }
     }
 
-    private List<String> addColumn(final int count, final String[] cell) {
+    private List<String> addColumn(final int count, final String[] cell) { // NOPMD UseVarArgs
 
         List<String> listData = new ArrayList<>();
         for (int index = 0; index < count; index++) {

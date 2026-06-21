@@ -54,7 +54,7 @@ public class SabunPreparAddressRsdtService {
      */
     @Async
     public void practice(final LeastUserDto userDto, final InsertTaskPlanResultDto taskPlanDto,
-            final StorageFileDto fileRsdtDto, final StorageFileDto fileParcelDto) {
+            final StorageFileDto fileRsdtDto, final StorageFileDto fileParcelDto, final String lgCode) {
 
         Integer year = taskPlanDto.getTaskYear();
         try {
@@ -68,7 +68,7 @@ public class SabunPreparAddressRsdtService {
                     .addString("readFilePathRsdt",
                             modifyTempToStorageFileService.practice(year, userDto, fileRsdtDto,
                                     FileTypeConstants.FILE_TYPE)) //
-                    .addString("lgCode", "011045") //
+                    .addString("lgCode", lgCode) //
                     .addLong(CreateUserLeastDtoByBatchParamUtil.USER_ID_PARAM,
                             Long.parseLong(userDto.getUserPersonId().toString()))
                     .addLong(CreateUserLeastDtoByBatchParamUtil.USER_CODE_PARAM,

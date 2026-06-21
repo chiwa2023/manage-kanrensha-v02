@@ -19,7 +19,7 @@ describe('getLoginUser', () => {
     it('正常に値が設定してある場合は正常に取得', () => {
         // 正常ログイン状態
         sessionStorage.clear();
-        const inputDto: LeastUserDto = new LeastUserDto();
+        const inputDto: LeastUserDtoInterface = new LeastUserDto();
         inputDto.userPersonId = 213;
         inputDto.userPersonCode = 190;
         inputDto.userPersonName = "管理者　太郎";

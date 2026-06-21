@@ -35,7 +35,7 @@ public class DeleteSnsDataService {
     @Transactional
     public Integer practice(final EditSnsServiceCapsuleDto capsuleDto) {
 
-        // 指定されたEntiyを履歴にして上書き
+        // 指定されたEntityを履歴にして上書き
 
         Optional<SnsServiceEntity> optional = snsServiceRepository
                 .findById(capsuleDto.getSnsServiceEntity().getSnsServiceId());

@@ -8,14 +8,14 @@ public class TaskInfoConstants { // NOPMD DataClass
     /** 郵便番号差分CSV保存 */
     public static final int SAVE_POSTAL_REPAIR_CSV = 101;
 
-    /** 地方自治体コード更新 */
-    public static final int SAVE_ADDRESS_BASE_CSV = 151;
-
-    /** 地方自治体コード更新準備 */
+    /** アドレス・ベース・レジストリ更新準備 */
     public static final int PREPARE_ADDRESS_BASE_CSV = 152;
 
-    /** 地方自治体コード更新 */
+    /** アドレス・ベース・レジストリ更新 */
     public static final int CHANGE_ADDRESS_BASE_CSV = 153;
+
+    /** 地方自治体コード更新 */
+    public static final int SAVE_ADDRESS_BASE_CSV = 175;
 
     /** 関連者XML読み取りバッチ */
     public static final int WKTBL_KANRENSHA_XML = 301;

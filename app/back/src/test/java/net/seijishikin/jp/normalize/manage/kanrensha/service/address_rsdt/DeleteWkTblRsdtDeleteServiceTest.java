@@ -43,11 +43,11 @@ class DeleteWkTblRsdtDeleteServiceTest {
 
         // 誤って削除対象を指定した場合
         EditWktblRsdtDeleteCapsuleDto capsuleDto0 = new EditWktblRsdtDeleteCapsuleDto();
-        capsuleDto0.getEditEntiy().setWkTblAddressRsdtDeleteId(111);
+        capsuleDto0.getEditEntity().setWkTblAddressRsdtDeleteId(111);
         assertThrows(EmptyResultDataAccessException.class, () -> deleteWkTblRsdtDeleteService.practice(capsuleDto0));
 
         EditWktblRsdtDeleteCapsuleDto capsuleDto1 = new EditWktblRsdtDeleteCapsuleDto();
-        capsuleDto1.getEditEntiy().setWkTblAddressRsdtDeleteId(525);
+        capsuleDto1.getEditEntity().setWkTblAddressRsdtDeleteId(525);
         capsuleDto1.setUserDto(CreateLeastUserForTestUtil.practice());
 
         Integer newId = deleteWkTblRsdtDeleteService.practice(capsuleDto1);

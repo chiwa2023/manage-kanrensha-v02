@@ -1,6 +1,6 @@
 package net.seijishikin.jp.normalize.manage.kanrensha.batch.kanrensha.xml; // NOPMD
 
-import org.springframework.batch.core.Job;
+import org.springframework.batch.core.Job; // NOPMD
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.job.builder.JobBuilder;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;

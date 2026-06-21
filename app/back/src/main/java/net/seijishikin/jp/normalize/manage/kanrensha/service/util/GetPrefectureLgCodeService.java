@@ -1,6 +1,11 @@
 package net.seijishikin.jp.normalize.manage.kanrensha.service.util;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.stereotype.Service;
+
+import net.seijishikin.jp.normalize.common_tool.dto.select_options.SelectOptionStringDto;
 
 /**
  * 住所から県の地方自治体コード前2桁を返却するService
@@ -853,6 +858,70 @@ public class GetPrefectureLgCodeService {
                 return PREF_99_LABEL;
         }
 
+    }
+
+    /**
+     * 県をselectbox形式で取得する
+     * 
+     * @return 県コードリスト
+     */
+    public List<SelectOptionStringDto> getOptions() {
+        List<SelectOptionStringDto> list = new ArrayList<>();
+
+        list.add(new SelectOptionStringDto("", ""));
+
+        list.add(new SelectOptionStringDto(PREF_01_CODE, PREF_01_LABEL));
+        list.add(new SelectOptionStringDto(PREF_02_CODE, PREF_02_LABEL));
+        list.add(new SelectOptionStringDto(PREF_03_CODE, PREF_03_LABEL));
+        list.add(new SelectOptionStringDto(PREF_04_CODE, PREF_04_LABEL));
+        list.add(new SelectOptionStringDto(PREF_05_CODE, PREF_05_LABEL));
+        list.add(new SelectOptionStringDto(PREF_06_CODE, PREF_06_LABEL));
+        list.add(new SelectOptionStringDto(PREF_07_CODE, PREF_07_LABEL));
+        list.add(new SelectOptionStringDto(PREF_08_CODE, PREF_08_LABEL));
+        list.add(new SelectOptionStringDto(PREF_09_CODE, PREF_09_LABEL));
+        list.add(new SelectOptionStringDto(PREF_10_CODE, PREF_10_LABEL));
+        list.add(new SelectOptionStringDto(PREF_11_CODE, PREF_11_LABEL));
+        list.add(new SelectOptionStringDto(PREF_12_CODE, PREF_12_LABEL));
+        list.add(new SelectOptionStringDto(PREF_13_CODE, PREF_13_LABEL));
+        list.add(new SelectOptionStringDto(PREF_14_CODE, PREF_14_LABEL));
+        list.add(new SelectOptionStringDto(PREF_15_CODE, PREF_15_LABEL));
+        list.add(new SelectOptionStringDto(PREF_16_CODE, PREF_16_LABEL));
+        list.add(new SelectOptionStringDto(PREF_17_CODE, PREF_17_LABEL));
+        list.add(new SelectOptionStringDto(PREF_18_CODE, PREF_18_LABEL));
+        list.add(new SelectOptionStringDto(PREF_19_CODE, PREF_19_LABEL));
+        list.add(new SelectOptionStringDto(PREF_20_CODE, PREF_20_LABEL));
+        list.add(new SelectOptionStringDto(PREF_21_CODE, PREF_21_LABEL));
+        list.add(new SelectOptionStringDto(PREF_22_CODE, PREF_22_LABEL));
+        list.add(new SelectOptionStringDto(PREF_23_CODE, PREF_23_LABEL));
+        list.add(new SelectOptionStringDto(PREF_24_CODE, PREF_24_LABEL));
+        list.add(new SelectOptionStringDto(PREF_25_CODE, PREF_25_LABEL));
+        list.add(new SelectOptionStringDto(PREF_26_CODE, PREF_26_LABEL));
+        list.add(new SelectOptionStringDto(PREF_27_CODE, PREF_27_LABEL));
+        list.add(new SelectOptionStringDto(PREF_28_CODE, PREF_28_LABEL));
+        list.add(new SelectOptionStringDto(PREF_29_CODE, PREF_29_LABEL));
+        list.add(new SelectOptionStringDto(PREF_30_CODE, PREF_30_LABEL));
+        list.add(new SelectOptionStringDto(PREF_31_CODE, PREF_31_LABEL));
+        list.add(new SelectOptionStringDto(PREF_32_CODE, PREF_32_LABEL));
+        list.add(new SelectOptionStringDto(PREF_33_CODE, PREF_33_LABEL));
+        list.add(new SelectOptionStringDto(PREF_34_CODE, PREF_34_LABEL));
+        list.add(new SelectOptionStringDto(PREF_35_CODE, PREF_35_LABEL));
+        list.add(new SelectOptionStringDto(PREF_36_CODE, PREF_36_LABEL));
+
+        list.add(new SelectOptionStringDto(PREF_37_CODE, PREF_37_LABEL));
+        list.add(new SelectOptionStringDto(PREF_38_CODE, PREF_38_LABEL));
+        list.add(new SelectOptionStringDto(PREF_39_CODE, PREF_39_LABEL));
+        list.add(new SelectOptionStringDto(PREF_40_CODE, PREF_40_LABEL));
+        list.add(new SelectOptionStringDto(PREF_41_CODE, PREF_41_LABEL));
+        list.add(new SelectOptionStringDto(PREF_42_CODE, PREF_42_LABEL));
+        list.add(new SelectOptionStringDto(PREF_43_CODE, PREF_43_LABEL));
+        list.add(new SelectOptionStringDto(PREF_44_CODE, PREF_44_LABEL));
+        list.add(new SelectOptionStringDto(PREF_45_CODE, PREF_45_LABEL));
+        list.add(new SelectOptionStringDto(PREF_46_CODE, PREF_46_LABEL));
+        list.add(new SelectOptionStringDto(PREF_47_CODE, PREF_47_LABEL));
+
+        list.add(new SelectOptionStringDto(PREF_99_CODE, PREF_99_LABEL));
+
+        return list;
     }
 
 }

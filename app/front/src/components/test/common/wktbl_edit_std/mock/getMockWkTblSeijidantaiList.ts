@@ -1,4 +1,4 @@
-import { WkTblKanrenshaSeijidantaiMasterEntity, type WkTblKanrenshaSeijidantaiMasterEntityInterface } from "../../../entity/wkTblKanrenshaSeijidantaiMasterEntity";
+import { WkTblKanrenshaSeijidantaiMasterEntity, type WkTblKanrenshaSeijidantaiMasterEntityInterface } from "../../../../main/entity/wkTblKanrenshaSeijidantaiMasterEntity";
 
 export default function getMockWkTblPoliOrgList(): WkTblKanrenshaSeijidantaiMasterEntityInterface[] {
     const list: WkTblKanrenshaSeijidantaiMasterEntityInterface[] = [];

@@ -1,16 +1,20 @@
 ﻿<script setup lang="ts">
-import { MessageConstants, MessageView, PagingControl, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
+import { InputLgcode, MessageConstants, MessageView, PagingControl, type FrameworkMessageAndResultDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import { ref, toRaw, type Ref } from 'vue';
 import { getLoginUser } from '../../utils/getLoginUser';
 import { SearchPostalCodeCapsuleDto, type SearchPostalCodeCapsuleDtoInterface } from '../../dto/address_postal/searchPostalCodeCapsuleDto';
 import { SearchPostalCodeResultDto, type SearchPostalCodeResultDtoInterface } from '../../dto/address_postal/searchPostalCodeResultDto';
 import { AddressPostalEntity, type AddressPostalEntityInterface } from '../../entity/addressPostalEntity';
-import mockGetPostalCodeList from '../../../test/pages/address_postal/mock/mockGetPostalCodeList';
 import ManagerInfo from '../../common/user_info/ManagerInfo.vue';
+import getAuthorizedPromiseArea from '../../dto/login/getAuthorizedPromiseArea.ts';
+import RoutePathConstants from '../../../../routePathConstants.ts';
+import { AccessTokenNotFoundError, TokenRefreshError } from '../../dto/login/errors.ts';
+import { SavePostalCapsuleDto, type SavePostalCapsuleDtoInterface } from '../../dto/address_postal/savePostalCapsuleDto.ts';
 
 // よく使う定数
 const BLANK: string = "";
 const INIT_NUMBER: number = 0;
+const INIT_BOOLEAN: boolean = false;
 // const SERVER_STATUS_OK: number = 200;
 // const SERVER_STATUS_ERROR: number = 400;
 const SEARCH_LIMIT: number = 20;
@@ -19,6 +23,9 @@ const infoLevel: Ref<number> = ref(MessageConstants.LEVEL_NONE);
 const messageType: Ref<number> = ref(MessageConstants.VIEW_NONE);
 const title: Ref<string> = ref(BLANK);
 const message: Ref<string> = ref(BLANK);
+
+// back側アクセス
+const urlBack: string = RoutePathConstants.DOMAIN + RoutePathConstants.BASE_PATH;
 
 // ユーザ呼び出し
 const userDto: Ref<LeastUserDtoInterface> = ref(getLoginUser());
@@ -31,43 +38,62 @@ const limit: Ref<number> = ref(SEARCH_LIMIT);
 
 // 検索条件と検索結果Dt0
 const capsuleDto: Ref<SearchPostalCodeCapsuleDtoInterface> = ref(new SearchPostalCodeCapsuleDto());
+capsuleDto.value.allCount = allCount.value;
+capsuleDto.value.limit = limit.value;
+capsuleDto.value.pageNumber = pageNumber.value;
+
 const resultDto: Ref<SearchPostalCodeResultDtoInterface> = ref(new SearchPostalCodeResultDto());
 
 // 編集対象
 const entityEdit: Ref<AddressPostalEntityInterface> = ref(new AddressPostalEntity());
 const entityPre: Ref<AddressPostalEntityInterface> = ref(new AddressPostalEntity());
 function onSearch() {
-    resultDto.value = mockGetPostalCodeList();
-    allCount.value = resultDto.value.listItem.length;
-    pageNumber.value = resultDto.value.pageNumber;
-
     // 入力された検索語で郵便番号検索をする
-    // getAuthorizedPromiseArea().then(token => {
-    //     if (token !== "") {
-    //         // const conditionDto: SaveAddressRegistoryCapsuleInterface = new SaveAddressRegistoryCapsuleEntity();
-    //         // conditionDto.addressRsdtTemplateEntity = entityEdit.value;
-    //
-    //         const url = urlBack + "/postal-code/search";
-    //         const method = "POST";
-    //         const body = JSON.stringify(null);
-    //         const headers = {
-    //             'Accept': 'application/json',
-    //             'Content-Type': 'application/json',
-    //             'X-AUTH-TOKEN': 'Bearer ' + token
-    //         };
-    //         fetch(url, { method, headers, body })
-    //             .then(async (response) => {
-    //                 // const resultDto: FrameworkMessageAndResultInterface = await response.json();
-    //
-    //                 // alert(resultDto.message);
-    //             })
-    //             .catch((e) => { alert(e); });
-    //     } else {
-    //         alert("エラーのつもり");
-    //     }
-    // });
+    getAuthorizedPromiseArea().then(token => {
+        const url = urlBack + "/postal-code/search";
+        const method = "POST";
+        const body = JSON.stringify(capsuleDto.value);
+        const headers = {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'X-AUTH-TOKEN': 'Bearer ' + token
+        };
+        fetch(url, { method, headers, body })
+            .then(async (response) => {
+                resultDto.value = await response.json();
+                if (resultDto.value.allCount === 0) {
+                    infoLevel.value = MessageConstants.LEVEL_WARNING;
+                    messageType.value = MessageConstants.VIEW_OK;
+                    message.value = "検索結果が0件でした";
+                }
+            })
+            .catch((error) => {
+                alert(error);
+                infoLevel.value = MessageConstants.LEVEL_ERROR;
+                messageType.value = MessageConstants.VIEW_OK;
+                message.value = "システム管理者にお問い合わせください";
+                return;
+            });
+    }).catch((e) => {
+        infoLevel.value = MessageConstants.LEVEL_ERROR;
+        messageType.value = MessageConstants.VIEW_OK;
 
-    // pageOptionPostal.value = getPagingOption(resultDto.value);
+        if (e instanceof AccessTokenNotFoundError) {
+            // トークン保持ができていない場合
+            title.value = "現在トークンが存在しません";
+            message.value = e.message;
+            return;
+        }
+        if (e instanceof TokenRefreshError) {
+            // 取得に失敗している場合
+            title.value = "有効期限まじかのトークンを再取得できませんでした";
+            message.value = e.message;
+            return;
+        }
+        title.value = "システムエラーが発生しました";
+        message.value = "システム管理者にお問い合わせください";
+        return;
+    });
 }
 
 function onAddEntity() {
@@ -84,13 +110,10 @@ function onAddEntity() {
     }
 }
 
-
-
 const selectedId: Ref<number> = ref(INIT_NUMBER);
 function onChangeEdit(id: number) {
 
     // 編集があれば保存を促す
-    // TODO 表示項目に合わせて比較も修正する
     if (isDifferEntity()) {
         selectedId.value = id;
         infoLevel.value = MessageConstants.LEVEL_WARNING;
@@ -104,45 +127,152 @@ function onChangeEdit(id: number) {
     }
 }
 
+const isDelete: Ref<boolean> = ref(INIT_BOOLEAN);
+function onDeleteEdit(id: number) {
+
+    // 編集があれば保存を促す
+    selectedId.value = id;
+    isDelete.value = true;
+    infoLevel.value = MessageConstants.LEVEL_WARNING;
+    title.value = "データ削除";
+    message.value = "このデータを削除してよいですか？";
+    messageType.value = MessageConstants.VIEW_YES_NO;
+    return;
+}
+
 function isDifferEntity(): boolean {
-    return entityEdit.value.postal1 !== entityPre.value.postal1
+    return entityEdit.value.postalcode1 !== entityPre.value.postalcode1
+        || entityEdit.value.postalcode2 !== entityPre.value.postalcode2
         || entityEdit.value.addressOrg !== entityPre.value.addressOrg
 }
 
+function onDelete(id: number) {
+
+    const capsuleDto: SavePostalCapsuleDtoInterface = new SavePostalCapsuleDto();
+    capsuleDto.userDto = userDto.value;
+
+    const tmpEntity: AddressPostalEntity | undefined
+        = resultDto.value.listItem.filter(e => e.addressPostalId === id)[0];
+    if (tmpEntity === undefined) {
+        alert("編集対象が確定できない");
+        return;
+    } else {
+        capsuleDto.addressPostalEntity = tmpEntity;
+    }
+
+    // 編集された郵便番号を削除
+    getAuthorizedPromiseArea().then(token => {
+        const url = urlBack + "/postal-code/delete";
+        const method = "POST";
+        const body = JSON.stringify(capsuleDto);
+        const headers = {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'X-AUTH-TOKEN': 'Bearer ' + token
+        };
+        fetch(url, { method, headers, body })
+            .then(async (response) => {
+                const resultDto: FrameworkMessageAndResultDtoInterface = await response.json();
+                title.value = "郵便番号削除";
+                message.value = resultDto.message;
+                if (resultDto.isFailure) {
+                    infoLevel.value = MessageConstants.LEVEL_WARNING;
+                    messageType.value = MessageConstants.VIEW_OK;
+                } else {
+                    infoLevel.value = MessageConstants.LEVEL_INFO;
+                    messageType.value = MessageConstants.VIEW_TOAST;
+                }
+            })
+            .catch((error) => {
+                alert(error);
+                infoLevel.value = MessageConstants.LEVEL_ERROR;
+                messageType.value = MessageConstants.VIEW_OK;
+                message.value = "システム管理者にお問い合わせください";
+                return;
+            });
+    }).catch((e) => {
+        infoLevel.value = MessageConstants.LEVEL_ERROR;
+        messageType.value = MessageConstants.VIEW_OK;
+
+        if (e instanceof AccessTokenNotFoundError) {
+            // トークン保持ができていない場合
+            title.value = "現在トークンが存在しません";
+            message.value = e.message;
+            return;
+        }
+        if (e instanceof TokenRefreshError) {
+            // 取得に失敗している場合
+            title.value = "有効期限まじかのトークンを再取得できませんでした";
+            message.value = e.message;
+            return;
+        }
+        title.value = "システムエラーが発生しました";
+        message.value = "システム管理者にお問い合わせください";
+        return;
+    });
+
+}
 
 function onCancel() {
     history.back();
 
 }
 function onSave() {
-    alert("保存");
 
-    // 編集された郵便番号
-    // getAuthorizedPromiseArea().then(token => {
-    //     if (token !== "") {
-    //         // const conditionDto: SaveAddressRegistoryCapsuleInterface = new SaveAddressRegistoryCapsuleEntity();
-    //         // conditionDto.addressRsdtTemplateEntity = entityEdit.value;
-    //
-    //         const url = urlBack + "/postal-code/save";
-    //         const method = "POST";
-    //         const body = JSON.stringify(null);
-    //         const headers = {
-    //             'Accept': 'application/json',
-    //             'Content-Type': 'application/json',
-    //             'X-AUTH-TOKEN': 'Bearer ' + token
-    //         };
-    //         fetch(url, { method, headers, body })
-    //             .then(async (response) => {
-    //                 // const resultDto: FrameworkMessageAndResultInterface = await response.json();
-    //
-    //                 // alert(resultDto.message);
-    //             })
-    //             .catch((e) => { alert(e); });
-    //     } else {
-    //         alert("エラーのつもり");
-    //     }
-    // });
+    const capsuleDto: SavePostalCapsuleDtoInterface = new SavePostalCapsuleDto();
+    capsuleDto.userDto = userDto.value;
+    capsuleDto.addressPostalEntity = entityEdit.value;
 
+    // 編集された郵便番号を保存
+    getAuthorizedPromiseArea().then(token => {
+        const url = urlBack + "/postal-code/edit";
+        const method = "POST";
+        const body = JSON.stringify(capsuleDto);
+        const headers = {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'X-AUTH-TOKEN': 'Bearer ' + token
+        };
+        fetch(url, { method, headers, body })
+            .then(async (response) => {
+                const resultDto: FrameworkMessageAndResultDtoInterface = await response.json();
+                title.value = "郵便番号更新処理";
+                message.value = resultDto.message;
+                if (resultDto.isFailure) {
+                    infoLevel.value = MessageConstants.LEVEL_WARNING;
+                    messageType.value = MessageConstants.VIEW_OK;
+                } else {
+                    infoLevel.value = MessageConstants.LEVEL_INFO;
+                    messageType.value = MessageConstants.VIEW_TOAST;
+                }
+            })
+            .catch((error) => {
+                alert(error);
+                infoLevel.value = MessageConstants.LEVEL_ERROR;
+                messageType.value = MessageConstants.VIEW_OK;
+                message.value = "システム管理者にお問い合わせください";
+                return;
+            });
+    }).catch((e) => {
+        infoLevel.value = MessageConstants.LEVEL_ERROR;
+        messageType.value = MessageConstants.VIEW_OK;
+
+        if (e instanceof AccessTokenNotFoundError) {
+            // トークン保持ができていない場合
+            title.value = "現在トークンが存在しません";
+            message.value = e.message;
+            return;
+        }
+        if (e instanceof TokenRefreshError) {
+            // 取得に失敗している場合
+            title.value = "有効期限まじかのトークンを再取得できませんでした";
+            message.value = e.message;
+            return;
+        }
+        title.value = "システムエラーが発生しました";
+        message.value = "システム管理者にお問い合わせください";
+        return;
+    });
 }
 
 function recievePagingNumber(selecteddNumber: number) {
@@ -151,29 +281,40 @@ function recievePagingNumber(selecteddNumber: number) {
 }
 
 function recieveSubmit(button: string) {
-    if ("yes" === button) {
-        onShowDetail(selectedId.value);
+    if (isDelete.value) {
+        if ("yes" === button) {
+            onDelete(selectedId.value);
+        }
+    } else {
+        if ("yes" === button) {
+            onShowDetail(selectedId.value);
+        }
     }
 
     // 非表示
     infoLevel.value = 0;
     messageType.value = 0;
+    isDelete.value = false;
 }
 
 function onShowDetail(id: number) {
 
-    if (INIT_NUMBER == - id) {
+    if (INIT_NUMBER === id) {
         entityEdit.value = new AddressPostalEntity();
         entityPre.value = new AddressPostalEntity();
-
     } else {
+        entityPre.value = structuredClone(toRaw(entityEdit.value));
         const tmpEntity: AddressPostalEntity | undefined
             = resultDto.value.listItem.filter(e => e.addressPostalId === id)[0];
         if (tmpEntity !== undefined) {
             entityEdit.value = structuredClone(toRaw(tmpEntity));
-            entityPre.value = structuredClone(toRaw(tmpEntity));
+            //entityPre.value = structuredClone(toRaw(tmpEntity));
         }
     }
+}
+
+function recieveLgCode(data:string){
+    entityEdit.value.lgCode = data;
 }
 </script>
 <template>
@@ -185,10 +326,19 @@ function onShowDetail(id: number) {
     <h3>編集郵便番号の検索条件</h3>
     <div class="one-line">
         <div class="left-area">
-            検索条件(部分一致)
+            郵便番号(前方一致)
         </div>
         <div class="right-area">
-            <input type="text" v-model="capsuleDto.addressWords">
+            <input type="text" v-model="capsuleDto.searchPostalcode1">
+            <input type="text" v-model="capsuleDto.searchPostalcode2" class="left-space">
+        </div>
+    </div>
+    <div class="one-line">
+        <div class="left-area">
+            地名(前方一致)
+        </div>
+        <div class="right-area">
+            <input type="text" v-model="capsuleDto.searchAddressName">
         </div>
     </div>
     <div class="one-line">
@@ -210,12 +360,14 @@ function onShowDetail(id: number) {
                     <th>原文書住所</th>
                     <th>表示住所</th>
                     <th>&nbsp</th>
+                    <th>&nbsp</th>
                 </tr>
                 <tr v-for="entity of resultDto.listItem" :key="entity.addressPostalId">
-                    <td>{{ entity.postal1 }}</td>
+                    <td>{{ entity.postalcode1 }}{{ entity.postalcode2 }}</td>
                     <td>{{ entity.addressOrg }}</td>
                     <td>{{ entity.addressName }}</td>
                     <td><button @click="onChangeEdit(entity.addressPostalId)">編集</button></td>
+                    <td><button @click="onDeleteEdit(entity.addressPostalId)">削除</button></td>
                 </tr>
             </tbody>
         </table>
@@ -236,10 +388,20 @@ function onShowDetail(id: number) {
 
     <div class="one-line">
         <div class="left-area">
+            地方自治体コード
+        </div>
+        <div class="right-area">
+            <InputLgcode :is-digit5="false" :lg-code="entityEdit.lgCode" @send-lg-code="recieveLgCode"></InputLgcode>
+        </div>
+    </div>
+
+    <div class="one-line">
+        <div class="left-area">
             郵便番号
         </div>
         <div class="right-area">
-            <input type="text" v-model="entityEdit.postal1" class="code-input">
+            <input type="text" v-model="entityEdit.postalcode1" class="code-input">
+            <input type="text" v-model="entityEdit.postalcode2" class="code-input left-space">
         </div>
     </div>
 

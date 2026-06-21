@@ -123,9 +123,9 @@ const editCapsuleDto: Ref<UpdateWkTblCombineOrgCapsuleDtoInterface> = ref(new Up
 editCapsuleDto.value.userDto = props.userDto;
 
 function onEditData(editId: number) {
-    const tempEntiy: WkTblKanrenshaCombineOrgEntityInterface | undefined = combineResultDto.value.listCombineOrg.filter((e) => e.wkTblKanrenshaCombineOrgId === editId)[0];
-    if (undefined !== tempEntiy) {
-        entityEdit.value = structuredClone(toRaw(tempEntiy));
+    const tempEntity: WkTblKanrenshaCombineOrgEntityInterface | undefined = combineResultDto.value.listCombineOrg.filter((e) => e.wkTblKanrenshaCombineOrgId === editId)[0];
+    if (undefined !== tempEntity) {
+        entityEdit.value = structuredClone(toRaw(tempEntity));
 
         // 指定配列に基づきチェックボックスにチェックを打つ
         const listRegist = entityEdit.value.yearArrayText.split(":");

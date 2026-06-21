@@ -31,7 +31,7 @@ function createEntity(index: number, address: string): AddressPostalIrregularEnt
     const INIT_STRING: string = "";
 
     entity.addressPostalIrregularId = index;
-    entity.postal1 = "12323" + index;
+    entity.postalcode1 = "12323" + index;
     entity.lgCode = INIT_STRING;
     entity.addressOrg = address + index + "階";
     entity.addressName = address;

@@ -31,10 +31,10 @@ const routes = [
     { path: RoutePathConstants.PAGE_SEARCH_RIYOUSHA_ORG, name: "SearchRiyoushaOrg", component: () => import("./components/main/pages/regist_riyousha_org/SearchRiyoushaOrg.vue") },
 
     // 利用者組織紐づけ
-   { path: RoutePathConstants.PAGE_INSERT_COMBINE_ORG, name: "InsertRiyoushaOrgMyself", component: () => import("./components/main/pages/regist_riyousha_org/InsertRiyoushaOrgMyself.vue") },
-   { path: RoutePathConstants.PAGE_INVITE_ORG_PERSON, name: "InviteRiyoushaOrgPerson", component: () => import("./components/main/pages/regist_riyousha_org/InviteRiyoushaOrgPerson.vue") },
-   { path: RoutePathConstants.PAGE_ACCEPT_ORG_PERSON, name: "AcceptInviteRiyoushaOrg", component: () => import("./components/main/pages/regist_riyousha_org/AcceptInviteRiyoushaOrg.vue") },
- 
+    { path: RoutePathConstants.PAGE_INSERT_COMBINE_ORG, name: "InsertRiyoushaOrgMyself", component: () => import("./components/main/pages/regist_riyousha_org/InsertRiyoushaOrgMyself.vue") },
+    { path: RoutePathConstants.PAGE_INVITE_ORG_PERSON, name: "InviteRiyoushaOrgPerson", component: () => import("./components/main/pages/regist_riyousha_org/InviteRiyoushaOrgPerson.vue") },
+    { path: RoutePathConstants.PAGE_ACCEPT_ORG_PERSON, name: "AcceptInviteRiyoushaOrg", component: () => import("./components/main/pages/regist_riyousha_org/AcceptInviteRiyoushaOrg.vue") },
+
     // 新規アカウント作成
     { path: RoutePathConstants.PAGE_ADD_ACCOUNT, name: "AddAccountMenu", component: () => import("./components/main/pages/add_account/AddAccountMenu.vue") },
     { path: RoutePathConstants.PAGE_SEND_ACCESS_CODE, name: "SendAccessCode", component: () => import("./components/main/pages/add_account/SendAccessCode.vue") },
@@ -93,11 +93,18 @@ const routes = [
     // 郵便番号編集
     { path: RoutePathConstants.PAGE_POSTAL_BUILDING, name: "PostalCodeBuilding", component: () => import("./components/main/pages/address_postal/PostalCodeBuilding.vue") },
     { path: RoutePathConstants.PAGE_POSTAL_EDIT, name: "PostalCodeEdit", component: () => import("./components/main/pages/address_postal/PostalCodeEdit.vue") },
+    { path: RoutePathConstants.PAGE_POSTAL_MOVE, name: "MovePostalCode", component: () => import("./components/main/pages/address_postal/MovePostalCode.vue") },
+
     { path: RoutePathConstants.PAGE_POSTAL_SABUN, name: "PostalCodeSabun", component: () => import("./components/main/pages/address_postal/PostalCodeSabun.vue") },
+    { path: RoutePathConstants.PAGE_POSTAL_SABUN_UPDATE, name: "UpdateWkTblPostalCode", component: () => import("./components/main/pages/address_postal/UpdateWkTblPostalCode.vue") },
 
     // アドレス・ベース・レジストリ編集
     { path: RoutePathConstants.PAGE_ADDRESS_REGI_EDIT, name: "AddressRegistryEdit", component: () => import("./components/main/pages/address_registory/AddressRegistryEdit.vue") },
+
     { path: RoutePathConstants.PAGE_ADDRESS_REGI_SABUN, name: "AddressRegistrySabun", component: () => import("./components/main/pages/address_registory/AddressRegistrySabun.vue") },
+    { path: RoutePathConstants.PAGE_ADDRESS_SABUN_UPDATE, name: "UpdateAddressWktbl", component: () => import("./components/main/pages/address_registory/UpdateAddressWktbl.vue") },
+    { path: RoutePathConstants.PAGE_ADDRESS_SABUN_EDIT, name: "EditAddressWktbl", component: () => import("./components/main/pages/address_registory/EditAddressWktbl.vue") },
+
     { path: RoutePathConstants.PAGE_LGCODE_SABUN, name: "LgCodeSabun", component: () => import("./components/main/pages/address_registory/LgCodeSabun.vue") },
 
     // 入力内容承認

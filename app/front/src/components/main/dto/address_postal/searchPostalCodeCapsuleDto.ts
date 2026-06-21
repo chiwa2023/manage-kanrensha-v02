@@ -2,20 +2,41 @@ import { FrameworkPagingDto, type FrameworkPagingDtoInterface } from "seijishiki
 
 interface SearchPostalCodeCapsuleDtoInterface extends FrameworkPagingDtoInterface {
 
-    /** 住所検索語 */
-    addressWords: string;
+    /** 検索条件郵便番号1 */
+    searchPostalcode1: string;
+
+    /** 検索条件郵便番号2 */
+    searchPostalcode2: string;
+
+    /** 検索条件住所 */
+    searchAddressName: string;
 }
 
 
 class SearchPostalCodeCapsuleDto extends FrameworkPagingDto
     implements SearchPostalCodeCapsuleDtoInterface {
 
-    /** 住所検索語 */
-    addressWords: string;
+    /** 検索条件郵便番号1 */
+    searchPostalcode1: string;
+
+    /** 検索条件郵便番号2 */
+    searchPostalcode2: string;
+
+    /** 検索条件住所 */
+    searchAddressName: string;
 
     constructor() {
         super();
-        this.addressWords = "";
+        const INIT_STRING: string = "";
+
+        /** 検索条件郵便番号1 */
+        this.searchPostalcode1 = INIT_STRING;
+
+        /** 検索条件郵便番号2 */
+        this.searchPostalcode2 = INIT_STRING;
+
+        /** 検索条件住所 */
+        this.searchAddressName = INIT_STRING;
     }
 }
 

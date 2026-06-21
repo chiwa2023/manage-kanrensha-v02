@@ -47,7 +47,7 @@ class DeleteWkTblRsdtChangeControllerTest {
     void test() throws Exception {
 
         EditWktblRsdtChangeCapsuleDto capsuleDto = new EditWktblRsdtChangeCapsuleDto();
-        capsuleDto.getEditEntiy().setWkTblAddressRsdtChangeId(333);
+        capsuleDto.getEditEntity().setWkTblAddressRsdtChangeId(333);
         capsuleDto.setUserDto(CreateLeastUserForTestUtil.practice());
 
         String path = PathRouteConstants.ROOT + "/wktbl-address-rsdt/delete-change";

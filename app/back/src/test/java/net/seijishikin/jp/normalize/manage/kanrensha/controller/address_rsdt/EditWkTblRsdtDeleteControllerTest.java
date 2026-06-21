@@ -67,7 +67,7 @@ class EditWkTblRsdtDeleteControllerTest {
         entity0.setAbolishDate(LocalDate.of(2026, 7, 11));
 
         EditWktblRsdtChangeCapsuleDto capsuleDto = new EditWktblRsdtChangeCapsuleDto();
-        capsuleDto.setEditEntiy(entity0);
+        capsuleDto.setEditEntity(entity0);
         capsuleDto.setUserDto(CreateLeastUserForTestUtil.practice());
 
         String path = PathRouteConstants.ROOT + "/wktbl-address-rsdt/edit-delete";

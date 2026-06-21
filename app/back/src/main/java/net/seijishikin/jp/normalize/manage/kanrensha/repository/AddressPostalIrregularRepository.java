@@ -34,6 +34,16 @@ public interface AddressPostalIrregularRepository extends JpaRepository<AddressP
      * @return 検索結果
      */
     List<AddressPostalIrregularEntity> findByAddressOrgContainingAndIsRepairRsdtAndIsLatestTrue(String words,
+            Boolean isRepairRsdt,Pageable pageable);
+
+    /**
+     * 同一建物=住所名称を取得する
+     *
+     * @param words        建物名
+     * @param isRepairRsdt 修正完了の有無
+     * @return 検索結果
+     */
+    Integer countByAddressOrgContainingAndIsRepairRsdtAndIsLatestTrue(String words,
             Boolean isRepairRsdt);
 
     /**

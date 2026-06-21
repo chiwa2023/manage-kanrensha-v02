@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * 関連者マスタ取得条件Dto
  */
-public class GetKanrenshaMasterCapsuleDto implements Serializable {
+public class GetKanrenshaMasterCapsuleDto implements Serializable { // NOPMD DataClass
 
     /** Serialize id */
     private static final long serialVersionUID = 1L;

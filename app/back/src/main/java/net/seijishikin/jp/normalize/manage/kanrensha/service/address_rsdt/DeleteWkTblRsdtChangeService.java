@@ -35,7 +35,7 @@ public class DeleteWkTblRsdtChangeService {
     @Transactional
     public Integer practice(final EditWktblRsdtChangeCapsuleDto capsuleDto) {
 
-        Integer deleteId = capsuleDto.getEditEntiy().getWkTblAddressRsdtChangeId();
+        Integer deleteId = capsuleDto.getEditEntity().getWkTblAddressRsdtChangeId();
         Optional<WkTblAddressRsdtChangeEntity> optional = wkTblAddressRsdtChangeRepository.findById(deleteId);
         if (optional.isEmpty()) {
             throw new EmptyResultDataAccessException("編集対象が検索できません(" + deleteId + ")", 1);

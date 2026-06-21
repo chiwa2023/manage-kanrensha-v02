@@ -36,7 +36,7 @@ public class DeleteAddressRsdtService {
     @Transactional
     public Integer practice(final EditAddressRsdtCapsuleDto capsuleDto) {
 
-        AddressRsdtTemplateEntity entityEdit = capsuleDto.getEditEntiy();
+        AddressRsdtTemplateEntity entityEdit = capsuleDto.getEditEntity();
         LocalDateTime now = LocalDateTime.now();
         String timestampString = now.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
 

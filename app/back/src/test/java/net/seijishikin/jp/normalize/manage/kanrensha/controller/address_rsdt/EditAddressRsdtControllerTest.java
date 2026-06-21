@@ -77,7 +77,7 @@ class EditAddressRsdtControllerTest {
         baseEntity.setAddressBuilding("99号室");
 
         EditAddressRsdtCapsuleDto capsuleDto = new EditAddressRsdtCapsuleDto();
-        capsuleDto.setEditEntiy(baseEntity);
+        capsuleDto.setEditEntity(baseEntity);
         capsuleDto.setUserDto(CreateLeastUserForTestUtil.practice());
 
         String path = PathRouteConstants.ROOT + "/address-rsdt/edit";

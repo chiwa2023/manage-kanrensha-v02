@@ -15,24 +15,24 @@ public class EditWktblRsdtChangeCapsuleDto extends FrameworkCapsuleDto //
     private static final long serialVersionUID = 1L;
 
     /** 住所差分ワークテーブル変更Entity */
-    private WkTblAddressRsdtChangeEntity editEntiy = new WkTblAddressRsdtChangeEntity();
+    private WkTblAddressRsdtChangeEntity editEntity = new WkTblAddressRsdtChangeEntity();
 
     /**
      * 住所差分ワークテーブル変更Entityを取得する
      * 
      * @return 住所差分ワークテーブル変更Entity
      */
-    public WkTblAddressRsdtChangeEntity getEditEntiy() {
-        return editEntiy;
+    public WkTblAddressRsdtChangeEntity getEditEntity() {
+        return editEntity;
     }
 
     /**
      * 住所差分ワークテーブル変更Entityを設定する
      * 
-     * @param editEntiy 住所差分ワークテーブル変更Entity
+     * @param editEntity 住所差分ワークテーブル変更Entity
      */
-    public void setEditEntiy(final WkTblAddressRsdtChangeEntity editEntiy) {
-        this.editEntiy = editEntiy;
+    public void setEditEntity(final WkTblAddressRsdtChangeEntity editEntity) {
+        this.editEntity = editEntity;
     }
 
 }

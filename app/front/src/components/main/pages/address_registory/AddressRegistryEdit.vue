@@ -1,149 +1,177 @@
 ﻿<script setup lang="ts">
-import { PagingControl, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
+import { InputDate, InputDateAndNull, InputLgcode, MessageConstants, MessageView, PagingControl, type FrameworkMessageAndResultDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import { ref, type Ref } from 'vue';
 import { getLoginUser } from '../../utils/getLoginUser';
-import { SearchAddressRegistoryResultDto, type SearchAddressRegistoryResultDtoInterface } from '../../dto/address_registory/searchAddressRegistoryResultDto';
-import mockGetAddressRsdtList from '../../../test/pages/address_resgistory/mock/mockGetAddressRsdtList';
 import { AddressRsdtTemplateEntity, type AddressRsdtTemplateEntityInterface } from '../../entity/addressRsdtTemplateEntity';
-import { SearchLocalGovernmentCapsuleDto, type SearchLocalGovernmentCapsuleDtoInterface } from '../../dto/address_registory/searchLocalGovernmentCapsuleDto';
-import { SearchLocalGovernmentResultDto, type SearchLocalGovernmentResultDtoInterface } from '../../dto/address_registory/searchLocalGovernmentResultDto';
-import mockGetLgList from '../../../test/pages/address_resgistory/mock/mockGetLgList';
 import ManagerInfo from '../../common/user_info/ManagerInfo.vue';
-
+import { AccessTokenNotFoundError, TokenRefreshError } from '../../dto/login/errors.ts';
+import getAuthorizedPromiseArea from '../../dto/login/getAuthorizedPromiseArea.ts';
+import RoutePathConstants from '../../../../routePathConstants.ts';
+import { SearchAddressRsdtCapsuleDto, type SearchAddressRsdtCapsuleDtoInterface } from '../../dto/address_registory/searchAddressRsdtCapsuleDto.ts';
+import { SearchAddressRsdtResultDto, type SearchAddressRsdtResultDtoInterface } from '../../dto/address_registory/searchAddressRsdtResultDto.ts';
+import { EditAddressRsdtCapsuleDto, type EditAddressRsdtCapsuleDtoInterface } from '../../dto/address_registory/editAddressRsdtCapsuleDto.ts';
 
 // よく使う定数
-// const BLANK: string = "";
+const BLANK: string = "";
 const INIT_NUMBER: number = 0;
 const INIT_BOOLEAN: boolean = false;
 // const SERVER_STATUS_OK: number = 200;
 // const SERVER_STATUS_ERROR: number = 400;
 const SEARCH_LIMIT: number = 20;
 
+// メッセージボックス表示定数
+const infoLevel: Ref<number> = ref(MessageConstants.LEVEL_NONE);
+const messageType: Ref<number> = ref(MessageConstants.VIEW_NONE);
+const title: Ref<string> = ref(BLANK);
+const message: Ref<string> = ref(BLANK);
+
+// back側アクセス
+const urlBack: string = RoutePathConstants.DOMAIN + RoutePathConstants.BASE_PATH;
+
 // ユーザ呼び出し
 const userDto: Ref<LeastUserDtoInterface> = ref(getLoginUser());
 
-// 地方自治体検索
-const selectedIdLg: Ref<string> = ref("");
-const capsuleDtoLocalGov: Ref<SearchLocalGovernmentCapsuleDtoInterface> = ref(new SearchLocalGovernmentCapsuleDto());
-const resultDtoLocalGov: Ref<SearchLocalGovernmentResultDtoInterface> = ref(new SearchLocalGovernmentResultDto());
+// Paging
+const pageNumber: Ref<number> = ref(INIT_NUMBER);
+const allCount: Ref<number> = ref(INIT_NUMBER);
+const limit: Ref<number> = ref(SEARCH_LIMIT);
 
-// Paging(地方自治体コード)
-const pageNumberLgcode: Ref<number> = ref(INIT_NUMBER);
-const allCountLgcode: Ref<number> = ref(INIT_NUMBER);
-const limitLgcode: Ref<number> = ref(SEARCH_LIMIT);
-// Paging(住所詳細)
-const pageNumberDetail: Ref<number> = ref(INIT_NUMBER);
-const allCountDetail: Ref<number> = ref(INIT_NUMBER);
-const limitDetail: Ref<number> = ref(SEARCH_LIMIT);
+const capsuleDto: Ref<SearchAddressRsdtCapsuleDtoInterface> = ref(new SearchAddressRsdtCapsuleDto());
+capsuleDto.value.allCount = allCount.value;
+capsuleDto.value.limit = limit.value;
+capsuleDto.value.pageNumber = pageNumber.value;
+
+const resultDto: Ref<SearchAddressRsdtResultDtoInterface> = ref(new SearchAddressRsdtResultDto());
+
+title.value = "アドレス・ベース・レジストリ編集";
 
 // 地方自治体検索
 function onSearchLocalGov() {
-    resultDtoLocalGov.value = mockGetLgList(capsuleDtoLocalGov.value.pageNumber);
-    allCountLgcode.value = resultDtoLocalGov.value.listAllCity.length;
 
-    // 住所の部分一致から自治体コードに紐づくアドレス・ベース・レジストリ住居検索処理(0件メッセージあり)
-    // getAuthorizedPromiseArea().then(token => {
-    //     if (token !== "") {
-    //         // const conditionDto: SaveAddressRegistoryCapsuleInterface = new SaveAddressRegistoryCapsuleEntity();
-    //         // conditionDto.addressRsdtTemplateEntity = entityEdit.value;
-    //
-    //         const url = urlBack + "/local-gov/search";
-    //         const method = "POST";
-    //         const body = JSON.stringify(null);
-    //         const headers = {
-    //             'Accept': 'application/json',
-    //             'Content-Type': 'application/json',
-    //             'X-AUTH-TOKEN': 'Bearer ' + token
-    //         };
-    //         fetch(url, { method, headers, body })
-    //             .then(async (response) => {
-    //                 // const resultDto: FrameworkMessageAndResultInterface = await response.json();
-    //
-    //                 // alert(resultDto.message);
-    //             })
-    //             .catch((e) => { alert(e); });
-    //     } else {
-    //         alert("エラーのつもり");
-    //     }
-    // });
+    if (capsuleDto.value.searchLgCode === null || capsuleDto.value.searchLgCode === undefined || capsuleDto.value.searchLgCode === BLANK) {
+        infoLevel.value = MessageConstants.LEVEL_ERROR;
+        messageType.value = MessageConstants.VIEW_OK;
+        message.value = "地方自治体コードを指定してください";
+        return;
+    }
 
-    // pageOptionLocalGov.value = getPagingOption(resultDtoLocalGov.value);
+    capsuleDto.value.allCount = allCount.value;
+    capsuleDto.value.pageNumber = pageNumber.value;
+    capsuleDto.value.limit = limit.value;
+
+    // 入力された検索語で郵便番号検索をする
+    getAuthorizedPromiseArea().then(token => {
+        const url = urlBack + "/address-rsdt/search";
+        const method = "POST";
+        const body = JSON.stringify(capsuleDto.value);
+        const headers = {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'X-AUTH-TOKEN': 'Bearer ' + token
+        };
+        fetch(url, { method, headers, body })
+            .then(async (response) => {
+                resultDto.value = await response.json();
+
+                allCount.value = resultDto.value.allCount;
+                limit.value = resultDto.value.limit;
+                pageNumber.value = resultDto.value.pageNumber;
+                if (resultDto.value.allCount === 0) {
+                    infoLevel.value = MessageConstants.LEVEL_WARNING;
+                    messageType.value = MessageConstants.VIEW_OK;
+                    message.value = "検索結果が0件でした";
+                }
+            })
+            .catch((error) => {
+                alert(error);
+                infoLevel.value = MessageConstants.LEVEL_ERROR;
+                messageType.value = MessageConstants.VIEW_OK;
+                message.value = "システム管理者にお問い合わせください";
+                return;
+            });
+    }).catch((e) => {
+        infoLevel.value = MessageConstants.LEVEL_ERROR;
+        messageType.value = MessageConstants.VIEW_OK;
+
+        if (e instanceof AccessTokenNotFoundError) {
+            // トークン保持ができていない場合
+            title.value = "現在トークンが存在しません";
+            message.value = e.message;
+            return;
+        }
+        if (e instanceof TokenRefreshError) {
+            // 取得に失敗している場合
+            title.value = "有効期限まじかのトークンを再取得できませんでした";
+            message.value = e.message;
+            return;
+        }
+        title.value = "システムエラーが発生しました";
+        message.value = "システム管理者にお問い合わせください";
+        return;
+    });
 }
-
-
-// 選択された自治体から住居までリストを取得
-// const selectedIdRsdt: Ref<number> = ref(0);
-// const pageOptionRsdt: Ref<SelectOptionNumberInterface[]> = ref([]);
-// const capsuleDtoRsdt: Ref<SearchAddressRegistoryCapsuleInterface> = ref(new SearchAddressRegistoryCapsuleDto());
-const resultDtoRsdt: Ref<SearchAddressRegistoryResultDtoInterface> = ref(new SearchAddressRegistoryResultDto());
-
-function onChangeEditLocalGov(id: number) {
-    //const entityLg: AddressAllCityInterface = resultDtoLocalGov.value.listAllCity.filter((e) => e.addressAllCityId === id)[0];
-    resultDtoRsdt.value = mockGetAddressRsdtList("12345");
-    allCountDetail.value = resultDtoRsdt.value.listRsdt.length;
-    // 自治体コードをキーにした検索処理
-    // getAuthorizedPromiseArea().then(token => {
-    //     if (token !== "") {
-    //         // const conditionDto: SaveAddressRegistoryCapsuleInterface = new SaveAddressRegistoryCapsuleEntity();
-    //         // conditionDto.addressRsdtTemplateEntity = entityEdit.value;
-    //
-    //         const url = urlBack + "/address-regi-rsdt/search";
-    //         const method = "POST";
-    //         const body = JSON.stringify(null);
-    //         const headers = {
-    //             'Accept': 'application/json',
-    //             'Content-Type': 'application/json',
-    //             'X-AUTH-TOKEN': 'Bearer ' + token
-    //         };
-    //         fetch(url, { method, headers, body })
-    //             .then(async (response) => {
-    //                 // const resultDto: FrameworkMessageAndResultInterface = await response.json();
-    //
-    //                 // alert(resultDto.message);
-    //             })
-    //             .catch((e) => { alert(e); });
-    //     } else {
-    //         alert("エラーのつもり");
-    //     }
-    // });
-
-    // pageOptionRsdt.value = getPagingOption(resultDtoRsdt.value);
-}
-
 
 
 function onCancel() {
-    alert("キャンセル");
     history.back();
 }
 function onSave() {
-    alert("保存");
-
     // アドレス・ベース・レジストリ住居　保存処理
-    // getAuthorizedPromiseArea().then(token => {
-    //     if (token !== "") {
-    //         // const conditionDto: SaveAddressRegistoryCapsuleInterface = new SaveAddressRegistoryCapsuleEntity();
-    //         // conditionDto.addressRsdtTemplateEntity = entityEdit.value;
-    //
-    //         const url = urlBack + "/address-regi-rsdt/save";
-    //         const method = "POST";
-    //         const body = JSON.stringify(null);
-    //         const headers = {
-    //             'Accept': 'application/json',
-    //             'Content-Type': 'application/json',
-    //             'X-AUTH-TOKEN': 'Bearer ' + token
-    //         };
-    //         fetch(url, { method, headers, body })
-    //             .then(async (response) => {
-    //                 // const resultDto: FrameworkMessageAndResultInterface = await response.json();
-    //
-    //                 // alert(resultDto.message);
-    //             })
-    //             .catch((e) => { alert(e); });
-    //     } else {
-    //         alert("エラーのつもり");
-    //     }
-    // });
+    const capsuleDto: EditAddressRsdtCapsuleDtoInterface = new EditAddressRsdtCapsuleDto();
+    capsuleDto.userDto = userDto.value;
+    capsuleDto.editEntity = editEntity.value;
+
+    // 編集された郵便番号を保存
+    getAuthorizedPromiseArea().then(token => {
+        const url = urlBack + "/address-rsdt/edit";
+        const method = "POST";
+        const body = JSON.stringify(capsuleDto);
+        const headers = {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'X-AUTH-TOKEN': 'Bearer ' + token
+        };
+        fetch(url, { method, headers, body })
+            .then(async (response) => {
+                const resultDto: FrameworkMessageAndResultDtoInterface = await response.json();
+                message.value = resultDto.message;
+                if (resultDto.isFailure) {
+                    title.value = "アドレス・ベース・レジストリ編集";
+                    infoLevel.value = MessageConstants.LEVEL_WARNING;
+                    messageType.value = MessageConstants.VIEW_OK;
+                } else {
+                    title.value = "アドレス・ベース・レジストリ編集";
+                    infoLevel.value = MessageConstants.LEVEL_INFO;
+                    messageType.value = MessageConstants.VIEW_TOAST;
+                }
+            })
+            .catch((error) => {
+                alert(error);
+                infoLevel.value = MessageConstants.LEVEL_ERROR;
+                messageType.value = MessageConstants.VIEW_OK;
+                message.value = "システム管理者にお問い合わせください";
+                return;
+            });
+    }).catch((e) => {
+        infoLevel.value = MessageConstants.LEVEL_ERROR;
+        messageType.value = MessageConstants.VIEW_OK;
+
+        if (e instanceof AccessTokenNotFoundError) {
+            // トークン保持ができていない場合
+            title.value = "現在トークンが存在しません";
+            message.value = e.message;
+            return;
+        }
+        if (e instanceof TokenRefreshError) {
+            // 取得に失敗している場合
+            title.value = "有効期限まじかのトークンを再取得できませんでした";
+            message.value = e.message;
+            return;
+        }
+        title.value = "システムエラーが発生しました";
+        message.value = "システム管理者にお問い合わせください";
+        return;
+    });
 
 }
 
@@ -152,50 +180,126 @@ const isAddressEdit: Ref<boolean> = ref(INIT_BOOLEAN);
 const editEntity: Ref<AddressRsdtTemplateEntityInterface> = ref(new AddressRsdtTemplateEntity());
 function onEdit(selectedId: number) {
     const tempEntity: AddressRsdtTemplateEntityInterface | undefined =
-        resultDtoRsdt.value.listRsdt.filter((e) => selectedId === e.addressRsdtId)[0];
+        resultDto.value.listEntity.filter((e) => selectedId === e.addressRsdtId)[0];
+
     if (tempEntity !== undefined) {
         storedId.value = selectedId;
         editEntity.value = tempEntity;
         isAddressEdit.value = true;
     }
 }
-function recieveCancelInputAddress() {
-    isAddressEdit.value = false;
+
+const isDelete: Ref<boolean> = ref(INIT_BOOLEAN);
+const storedId: Ref<number> = ref(INIT_NUMBER);
+function onDeleteEdit(selectedId: number) {
+    const tempEntity: AddressRsdtTemplateEntityInterface | undefined =
+        resultDto.value.listEntity.filter((e) => selectedId === e.addressRsdtId)[0];
+
+    if (tempEntity !== undefined) {
+        storedId.value = selectedId;
+        isDelete.value = true;
+        infoLevel.value = MessageConstants.LEVEL_WARNING;
+        title.value = "データ削除";
+        message.value = "このデータを削除してよいですか？";
+        messageType.value = MessageConstants.VIEW_YES_NO;
+    }
 }
 
-const storedId: Ref<number> = ref(INIT_NUMBER);
-
-function recieveInputAddressInterface(dto: AddressRsdtTemplateEntityInterface) {
+function onDelete(selectedId: number) {
+    const capsuleDto: EditAddressRsdtCapsuleDtoInterface = new EditAddressRsdtCapsuleDto();
+    capsuleDto.userDto = userDto.value;
 
     const tempEntity: AddressRsdtTemplateEntityInterface | undefined =
-        resultDtoRsdt.value.listRsdt.filter((e) => storedId.value === e.addressRsdtId)[0];
+        resultDto.value.listEntity.filter((e) => selectedId === e.addressRsdtId)[0];
     if (tempEntity !== undefined) {
-        // 型が異なるので1フィールドずつ複写
-        tempEntity.postalcode1 = dto.postalcode1;
-        tempEntity.postalcode2 = dto.postalcode2;
-        tempEntity.addressPostal = dto.addressPostal;
-        tempEntity.addressBlock = dto.addressBlock;
-        tempEntity.addressBuilding = dto.addressBuilding;
-        tempEntity.lgCode = dto.lgCode;
-        tempEntity.machiazaId = dto.machiazaId;
-        tempEntity.blkId = dto.blkId;
-        tempEntity.prcId = dto.prcId;
-        tempEntity.rsdtId = dto.rsdtId;
-        tempEntity.rsdt2Id = dto.rsdt2Id;
-
-        tempEntity.effectDate = dto.effectDate;
-        tempEntity.abolishDate = dto.abolishDate;
+        capsuleDto.editEntity = tempEntity;
     }
-    isAddressEdit.value = false;
+
+    // 編集された郵便番号を削除
+    getAuthorizedPromiseArea().then(token => {
+        const url = urlBack + "/address-rsdt/delete";
+        const method = "POST";
+        const body = JSON.stringify(capsuleDto);
+        const headers = {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'X-AUTH-TOKEN': 'Bearer ' + token
+        };
+        fetch(url, { method, headers, body })
+            .then(async (response) => {
+                const resultDto: FrameworkMessageAndResultDtoInterface = await response.json();
+                message.value = resultDto.message;
+                title.value = "アドレス・ベース・レジストリデータ削除";
+                if (resultDto.isFailure) {
+                    infoLevel.value = MessageConstants.LEVEL_WARNING;
+                    messageType.value = MessageConstants.VIEW_OK;
+                } else {
+                    infoLevel.value = MessageConstants.LEVEL_INFO;
+                    messageType.value = MessageConstants.VIEW_TOAST;
+                }
+            })
+            .catch((error) => {
+                alert(error);
+                infoLevel.value = MessageConstants.LEVEL_ERROR;
+                messageType.value = MessageConstants.VIEW_OK;
+                message.value = "システム管理者にお問い合わせください";
+                return;
+            });
+    }).catch((e) => {
+        infoLevel.value = MessageConstants.LEVEL_ERROR;
+        messageType.value = MessageConstants.VIEW_OK;
+
+        if (e instanceof AccessTokenNotFoundError) {
+            // トークン保持ができていない場合
+            title.value = "現在トークンが存在しません";
+            message.value = e.message;
+            return;
+        }
+        if (e instanceof TokenRefreshError) {
+            // 取得に失敗している場合
+            title.value = "有効期限まじかのトークンを再取得できませんでした";
+            message.value = e.message;
+            return;
+        }
+        title.value = "システムエラーが発生しました";
+        message.value = "システム管理者にお問い合わせください";
+        return;
+    });
 }
 
-function recievePagingNumberDetail() {
-
-}
-function recievePagingNumberLgcode() {
-
+function recievePagingNumber(selecteddNumber: number) {
+    pageNumber.value = selecteddNumber;
+    onSearchLocalGov();
 }
 
+// 地方自治体コードを受信
+function recieveLgCode(data: string) {
+    capsuleDto.value.searchLgCode = data;
+}
+
+function recieveSubmit(button: string) {
+    if (isDelete.value) {
+        if ("yes" === button) {
+            onDelete(storedId.value);
+        }
+    }
+
+    // 非表示
+    infoLevel.value = 0;
+    messageType.value = 0;
+}
+
+function recieveDateAndNull(data: Date | null) {
+    editEntity.value.abolishDate = data;
+}
+function recieveDate(data: Date) {
+    editEntity.value.effectDate = data;
+}
+
+
+function onChangeAdd() {
+    editEntity.value.addressRsdtId = 0;
+}
 
 </script>
 <template>
@@ -204,15 +308,25 @@ function recievePagingNumberLgcode() {
 
     <h1>アドレスベースレジストリ編集</h1>
 
-    <h3>編集地方自治体の指定</h3>
+    <h3>検索条件の指定</h3>
 
-    <!-- ページング(API接続者) -->
+    <!-- 検索条件 -->
+    <div class="one-line">
+        <div class="left-area">
+            地方自治体コード
+        </div>
+        <div class="right-area">
+            <InputLgcode :is-digit5="false" :lg-code="capsuleDto.searchLgCode" @send-lg-code="recieveLgCode">
+            </InputLgcode>
+        </div>
+    </div>
+
     <div class="one-line">
         <div class="left-area">
             検索条件(部分一致)
         </div>
         <div class="right-area">
-            <input type="text" v-model="capsuleDtoLocalGov.addressWords">
+            <input type="text" v-model="capsuleDto.searchNaturalWords">
         </div>
     </div>
 
@@ -224,28 +338,6 @@ function recievePagingNumberLgcode() {
             <button @click="onSearchLocalGov">検索</button>
         </div>
     </div>
-
-
-    <div class="one-line-scroll">
-        <table>
-            <tbody>
-                <tr>
-                    <th>&nbsp;</th>
-                    <th>地方公共団体コード</th>
-                    <th>地方団体名</th>
-                </tr>
-                <tr v-for="entity of resultDtoLocalGov.listAllCity" :key="entity.addressAllCityId">
-                    <td><input type="radio" v-model="selectedIdLg" id="listLg" :value="entity.addressAllCityId"
-                            @click="onChangeEditLocalGov(entity.addressAllCityId)"> </td>
-                    <td>{{ entity.lgCode }}</td>
-                    <td>{{ entity.addressName }}</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-    <!-- ページング  -->
-    <PagingControl :all-count="allCountLgcode" :limit="limitLgcode" :page-number="pageNumberLgcode"
-        @send-paging-number="recievePagingNumberLgcode"></PagingControl>
 
     <h3>地方自治体詳細検索結果</h3>
 
@@ -263,7 +355,7 @@ function recievePagingNumberLgcode() {
                     <th>&nbsp;</th>
                     <th>&nbsp;</th>
                 </tr>
-                <tr v-for="entity of resultDtoRsdt.listRsdt" :key="entity.addressRsdtId">
+                <tr v-for="entity of resultDto.listEntity" :key="entity.addressRsdtId">
                     <td>{{ entity.lgCode }}</td>
                     <td>{{ entity.postalcode1 }} - {{ entity.postalcode2 }}</td>
                     <td>{{ entity.machiazaId }}</td>
@@ -272,25 +364,115 @@ function recievePagingNumberLgcode() {
                     <td>{{ entity.addressBlock }}</td>
                     <td>{{ entity.addressBuilding }}</td>
                     <td><button @click="onEdit(entity.addressRsdtId)">編集</button></td>
-                    <td><button>削除</button></td>
+                    <td><button @click="onDeleteEdit(entity.addressRsdtId)">削除</button></td>
                 </tr>
             </tbody>
         </table>
     </div>
     <!-- ページング -->
-    <PagingControl :all-count="allCountDetail" :limit="limitDetail" :page-number="pageNumberDetail"
-        @send-paging-number="recievePagingNumberDetail"></PagingControl>
+    <PagingControl :all-count="allCount" :limit="limit" :page-number="pageNumber"
+        @send-paging-number="recievePagingNumber"></PagingControl>
 
-    <!-- 検索コンポーネント -->
-    <div v-if="isAddressEdit" class="overBackground"></div>
-    <div class="overComponent" v-if="isAddressEdit">
-        <EditAddress :edit-dto="editEntity" @send-cancel-input-address="recieveCancelInputAddress"
-            @send-input-address-interface="recieveInputAddressInterface"></EditAddress>
+    <!-- 編集 -->
+    <div class="one-line">
+        <div class="left-area">
+            <button @click="onChangeAdd">新規</button>
+        </div>
+        <div class="right-area">
+            id:{{ editEntity.addressRsdtId }}(0の時は追加)
+        </div>
+    </div>
+    <div class="one-line">
+        <div class="left-area">
+            地方自治体コード
+        </div>
+        <div class="right-area">
+            {{ editEntity.lgCode }}
+        </div>
+    </div>
+
+    <div class="one-line">
+        <div class="left-area">
+            郵便番号
+        </div>
+        <div class="right-area">
+            <input v-model="editEntity.postalcode1" type="text" class="short-input">&nbsp;-&nbsp;
+            <input v-model="editEntity.postalcode2" type="text" class="short-input">
+        </div>
+    </div>
+
+    <div class="one-line">
+        <div class="left-area">
+            住所番地
+        </div>
+        <div class="right-area">
+            <textarea v-model="editEntity.addressBlock" class="max-input"></textarea>
+        </div>
+    </div>
+
+    <div class="one-line">
+        <div class="left-area">
+            住所建物
+        </div>
+        <div class="right-area">
+            <textarea v-model="editEntity.addressBuilding" class="max-input"></textarea>
+        </div>
+    </div>
+
+    <div class="one-line">
+        <div class="left-area">
+            住所コード
+        </div>
+        <div class="right-area">
+            <div class="form-group-vertical">
+                <div>
+                    <span>町字Id</span><input type="text" v-model="editEntity.machiazaId" class="short-input left-space">
+                </div>
+                <div>
+                    <span>地番Id</span><input type="text" v-model="editEntity.prcId" class="short-input left-space">
+                </div>
+                <div>
+                    <span>街区Id</span><input type="text" v-model="editEntity.blkId" class="short-input left-space">
+                </div>
+                <div>
+                    <span>住居Id</span><input type="text" v-model="editEntity.rsdtId" class="short-input left-space">
+                </div>
+                <div>
+                    <span>住居2Id</span><input type="text" v-model="editEntity.rsdt2Id" class="short-input left-space">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="one-line">
+        <div class="left-area">
+            効力発生日
+        </div>
+        <div class="right-area">
+            <InputDate :date="editEntity.effectDate" :index="1" :is-edit="true" @send-date="recieveDate">
+            </InputDate>
+        </div>
+    </div>
+    <div class="one-line">
+        <div class="left-area">
+            廃止日
+        </div>
+        <div class="right-area">
+            <InputDateAndNull :date="editEntity.abolishDate" :index="2" :is-edit="true" @send-date="recieveDateAndNull">
+            </InputDateAndNull>
+        </div>
     </div>
 
     <div class="footer">
         <button @click="onCancel" class="footer-button">キャンセル</button>
         <button @click="onSave" class="footer-button left-space">送信</button>
+    </div>
+
+    <!-- メッセージ表示    -->
+    <div class="overMessage" v-if="messageType !== MessageConstants.VIEW_NONE">
+        <MessageView :info-level="infoLevel" :message-type="messageType" :title="title" :message="message"
+            @send-submit="recieveSubmit">
+        </MessageView>
     </div>
 
 </template>

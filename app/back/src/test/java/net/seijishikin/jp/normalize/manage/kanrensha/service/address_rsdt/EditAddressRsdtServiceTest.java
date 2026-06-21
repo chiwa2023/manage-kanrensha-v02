@@ -66,7 +66,7 @@ class EditAddressRsdtServiceTest {
         baseEntity.setAddressBuilding("99号室");
 
         EditAddressRsdtCapsuleDto capsuleDto = new EditAddressRsdtCapsuleDto();
-        capsuleDto.setEditEntiy(baseEntity);
+        capsuleDto.setEditEntity(baseEntity);
         capsuleDto.setUserDto(CreateLeastUserForTestUtil.practice());
 
         assertNotEquals(0, editAddressRsdtService.practice(capsuleDto));
@@ -104,7 +104,7 @@ class EditAddressRsdtServiceTest {
         newEntity.setAddressBuilding("100号室");
 
         EditAddressRsdtCapsuleDto capsuleDtoNew = new EditAddressRsdtCapsuleDto();
-        capsuleDtoNew.setEditEntiy(newEntity);
+        capsuleDtoNew.setEditEntity(newEntity);
         capsuleDtoNew.setUserDto(CreateLeastUserForTestUtil.practice());
 
         assertNotEquals(0, editAddressRsdtService.practice(capsuleDtoNew));
