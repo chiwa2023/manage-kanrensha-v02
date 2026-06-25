@@ -75,7 +75,9 @@ import RoutePathConstants from '../../../../routePathConstants';
             <RouterLink :to="RoutePathConstants.PAGE_ADDRESS_REGI_SABUN" class="menu-item">住所差分取込</RouterLink>
             <RouterLink :to="RoutePathConstants.PAGE_ADDRESS_SABUN_UPDATE" class="menu-item">住所差分結果一括更新</RouterLink>
             <RouterLink :to="RoutePathConstants.PAGE_ADDRESS_SABUN_EDIT" class="menu-item">住所差分結果編集</RouterLink>
-            <!-- 地方自治体コード更新 -->
+            
+            <RouterLink :to="RoutePathConstants.PAGE_LGCODE_SABUN" class="menu-item">地方自治体コード差分</RouterLink>
+            <RouterLink :to="RoutePathConstants.PAGE_LGCODE_SABUN_EDIT" class="menu-item">地方自治体コード差分結果更新</RouterLink>
         </div>
     </div>
 

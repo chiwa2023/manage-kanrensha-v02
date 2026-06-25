@@ -21,10 +21,15 @@ class AllCityWkTblProcessorTest {
 
         AddressAllCityEntity item = new AddressAllCityEntity();
         item.setLgCode("91372");
+        item.setPref("和歌山県");
+        item.setCounty("道州郡");
+        item.setCity("山麓市");
+        item.setWard("湖畔区");
 
         AddressCityDeleteEntity deleteEntity = processor.process(item);
 
         assertEquals(item.getLgCode(), deleteEntity.getLgCode());
+        assertEquals("和歌山県道州郡山麓市湖畔区", deleteEntity.getOrgName());
     }
 
 }

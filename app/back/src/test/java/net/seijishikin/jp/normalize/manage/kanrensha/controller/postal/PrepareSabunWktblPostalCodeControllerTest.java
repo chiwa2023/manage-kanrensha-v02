@@ -1,6 +1,6 @@
-package net.seijishikin.jp.normalize.manage.kanrensha.controller.postal; // NOPMD HighNumberImport 
+package net.seijishikin.jp.normalize.manage.kanrensha.controller.postal;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals; // NOPMD HighNumberImport
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;

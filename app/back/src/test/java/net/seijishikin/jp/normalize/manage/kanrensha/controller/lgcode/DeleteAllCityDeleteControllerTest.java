@@ -1,18 +1,12 @@
 package net.seijishikin.jp.normalize.manage.kanrensha.controller.lgcode;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
@@ -28,74 +22,35 @@ import org.springframework.test.web.servlet.MockMvc;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import net.seijishikin.jp.normalize.common_tool.utils.GetObjectMapperWithTimeModuleUtil;
-import net.seijishikin.jp.normalize.manage.kanrensha.constants.GetCurrentResourcePath;
 import net.seijishikin.jp.normalize.manage.kanrensha.controller.PathRouteConstants;
-import net.seijishikin.jp.normalize.manage.kanrensha.dto.kanrensha.RegistDataByCsvFileCapsuleDto;
+import net.seijishikin.jp.normalize.manage.kanrensha.dto.address_rsdt.EditAddressCityDeleteCapsuleDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateLeastUserForTestUtil;
 
 /**
- * RefreshLgCodeController単体テスト
+ * DeleteAllCityDeleteController単体テスト
  */
 @SpringJUnitConfig
 @AutoConfigureMockMvc
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
-@Sql("../../service/lgcode/RefreshLgCodeServiceTest.sql")
-@ConfigurationProperties(prefix = "net.seijishikin.jp.normalize.kanrensha")
-class RefreshLgCodeControllerTest {
+@Sql("../../service/lgcode/DeleteAllCityDeleteServiceTest.sql")
+class DeleteAllCityDeleteControllerTest {
+    // CHECKSTYLE:OFF MagicNumber
 
     /** MockMvc */
     @Autowired
     private MockMvc mockMvc;
-
-    /** propertiesからインジェクションされた最上位保存フォルダ絶対パス */
-    private String storageFolder;
-
-    /**
-     * 最上位保存フォルダ絶対パスを取得する
-     *
-     * @return 最上位保存フォルダ絶対パス
-     */
-    public String getStorageFolder() {
-        return storageFolder;
-    }
-
-    /**
-     * 最上位保存フォルダ絶対パスを設定する
-     *
-     * @param storageFolder 最上位保存フォルダ絶対パス
-     */
-    public void setStorageFolder(final String storageFolder) {
-        this.storageFolder = storageFolder;
-    }
 
     @Test
     @Tag("TableTruncate")
     @WithMockUser
     void test() throws Exception {
 
-        final String fileName = "mt_city_all_sample.csv";
-        final String dirName = "190/test/";
-
-        Path readFilePath = Paths.get(dirName, fileName);
-
-        Path readFilePathAbs = Paths.get(storageFolder, readFilePath.toString());
-
-        // サンプルファイルが存在しないときは複写
-        if (!Files.exists(readFilePathAbs)) {
-            Path pathSrc = Paths.get(GetCurrentResourcePath.getBackTestResourcePath(), "/file/batch/address_base/",
-                    fileName);
-            Files.copy(pathSrc, readFilePathAbs);
-        }
-        assertTrue(Files.exists(readFilePathAbs));
-
-        RegistDataByCsvFileCapsuleDto capsuleDto = new RegistDataByCsvFileCapsuleDto();
+        EditAddressCityDeleteCapsuleDto capsuleDto = new EditAddressCityDeleteCapsuleDto();
         capsuleDto.setUserDto(CreateLeastUserForTestUtil.practice());
-        capsuleDto.getStorageFileDto().setSavedDir(dirName);
-        capsuleDto.getStorageFileDto().setFileName(fileName);
-        capsuleDto.setUserDto(CreateLeastUserForTestUtil.practice());
+        capsuleDto.getEditEntity().setAddressCityDeleteId(161);
 
-        String path = PathRouteConstants.ROOT + "/city-lgcode-all/reflesh";
+        String path = PathRouteConstants.ROOT + "/lgcode-delete/delete";
 
         ObjectMapper objectMapper = GetObjectMapperWithTimeModuleUtil.practice();
 

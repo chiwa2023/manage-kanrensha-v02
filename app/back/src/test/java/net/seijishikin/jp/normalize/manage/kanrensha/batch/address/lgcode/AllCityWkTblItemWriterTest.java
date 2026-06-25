@@ -19,7 +19,6 @@ import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.jdbc.Sql;
-import org.springframework.transaction.annotation.Transactional;
 
 import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.AddressCityDeleteEntity;
@@ -32,7 +31,6 @@ import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateLeastUserForTes
 @AutoConfigureMockMvc
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
-@Transactional
 @Sql("AllCityWkTblItemWriterTest.sql")
 class AllCityWkTblItemWriterTest {
 
@@ -50,6 +48,7 @@ class AllCityWkTblItemWriterTest {
 
         AddressCityDeleteEntity entity01 = new AddressCityDeleteEntity();
         entity01.setLgCode("112233");
+        entity01.setOrgName("和歌山県特別区実在市山麓区");
 
         List<AddressCityDeleteEntity> list = new ArrayList<>();
         list.add(entity01);
@@ -66,6 +65,7 @@ class AllCityWkTblItemWriterTest {
         AddressCityDeleteEntity answerEntity00 = listAnswer.get(0);
 
         assertEquals(entity01.getLgCode(), answerEntity00.getLgCode());
+        assertEquals(entity01.getOrgName(), answerEntity00.getOrgName());
     }
 
     private StepExecution getStepExecution() {

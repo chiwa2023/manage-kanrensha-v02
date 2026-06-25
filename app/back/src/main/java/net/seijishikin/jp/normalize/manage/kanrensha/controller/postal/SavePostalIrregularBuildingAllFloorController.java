@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import net.seijishikin.jp.normalize.manage.kanrensha.controller.PathRouteConstants;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.postal.SavePostalIrregularCapsuleDto;
 import net.seijishikin.jp.normalize.common_tool.dto.FrameworkMessageAndResultDto;
+import net.seijishikin.jp.normalize.manage.kanrensha.service.postal.MakeBuildingRsdtByPostalIrregularService;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.postal.SavePostalIrregularBuildingAllFloorService;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.util.SaveStackTraceService;
 
@@ -26,6 +27,10 @@ public class SavePostalIrregularBuildingAllFloorController {
     /** 郵便番号同一建物フロア住所更新 */
     @Autowired
     private SavePostalIrregularBuildingAllFloorService savePostalIrregularBuildingAllFloorService;
+
+    /** テスト対象 */
+    @Autowired
+    private MakeBuildingRsdtByPostalIrregularService makeBuildingRsdtByPostalIrregularService;
 
     /** StackTrace保存Service */
     @Autowired
@@ -44,6 +49,17 @@ public class SavePostalIrregularBuildingAllFloorController {
         FrameworkMessageAndResultDto resultDto = new FrameworkMessageAndResultDto();
         try {
             resultDto = savePostalIrregularBuildingAllFloorService.practice(capsuleDto);
+
+            try {
+                // 上記不規則に合わせて住居データも追加
+                makeBuildingRsdtByPostalIrregularService.practice(
+                        capsuleDto.getAddressPostalIrregularEntity().getAddressName(), capsuleDto.getUserDto());
+            } catch (Exception exception) { // NOPMD
+                // 郵便番号修正が正規にできていればよく、住居データはある種『おまけ』なので
+                // 業務的観点よりログだけ取って握りつぶし
+                saveStackTraceService.practice(exception, Year.now().getValue(), 0);
+            }
+
             if (resultDto.getIsFailure()) {
                 return ResponseEntity.status(HttpStatus.ACCEPTED).body(resultDto);
             } else {

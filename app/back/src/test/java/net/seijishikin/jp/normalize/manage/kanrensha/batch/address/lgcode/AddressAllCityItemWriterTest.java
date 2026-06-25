@@ -1,12 +1,15 @@
 package net.seijishikin.jp.normalize.manage.kanrensha.batch.address.lgcode;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals; // NOPMD HighImports
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.exception.SQLGrammarException;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.batch.core.JobParameters;
@@ -22,8 +25,9 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
-import org.springframework.transaction.annotation.Transactional;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.Query;
 import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.AddressAllCityEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.WkTblAddressCityEntity;
@@ -38,7 +42,6 @@ import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateLeastUserForTes
 @AutoConfigureMockMvc
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
-@Transactional
 @Sql("AddressAllCityItemWriterTest.sql")
 class AddressAllCityItemWriterTest {
     // CHECKSTYLE:OFF MagicNumber
@@ -55,10 +58,20 @@ class AddressAllCityItemWriterTest {
     @Autowired
     private WkTblAddressCityRepository wkTblAddressCityRepository;
 
+    /** EntityManager */
+    @Autowired
+    private EntityManager entityManager;
+    
+    
     @Test
     @Tag("TableTruncate")
     void testAdd() throws Exception {
 
+        // 完全新規である"965314"は住居テーブルを新設するが、@Sqlで抹殺したことを実行前に確認
+        String sqlPre = "SELECT COUNT(*) FROM address_rsdt_965314";
+        Query queryPre = entityManager.createNativeQuery(sqlPre, Integer.class);
+        assertThrows(SQLGrammarException.class, () ->queryPre.getResultList(),"存在しないテーブルにアクセスすると例外");
+        
         // 完全新規
         AddressAllCityEntity entity00 = new AddressAllCityEntity();
         entity00.setLgCode("965314");
@@ -67,7 +80,7 @@ class AddressAllCityItemWriterTest {
         entity00.setAddressNameKana("てすとけんてすとぐん");
         entity00.setEffectDate(LocalDate.of(1948, 7, 29));
         entity00.setAbolishDate(LocalDate.of(2038, 1, 2));
-
+        
         List<AddressAllCityEntity> list = new ArrayList<>();
         list.add(entity00);
 
@@ -167,6 +180,11 @@ class AddressAllCityItemWriterTest {
 
         WkTblAddressCityEntity wktblEntity03 = listWkTbl.get(3);
         assertEquals(entity03.getLgCode(), wktblEntity03.getLgCode());
+
+        // 完全新規である"965314"は住居テーブルを新設したことの確認
+        String sqlPro = "SELECT COUNT(*) FROM address_rsdt_965314";
+        Query queryPro = entityManager.createNativeQuery(sqlPro, Integer.class);
+        assertDoesNotThrow(() ->queryPro.getResultList());
 
     }
 

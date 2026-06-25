@@ -21,6 +21,7 @@ public class AllCityWkTblProcessor implements ItemProcessor<AddressAllCityEntity
         AddressCityDeleteEntity entity = new AddressCityDeleteEntity();
 
         entity.setLgCode(item.getLgCode());
+        entity.setOrgName(item.getPref() + item.getCounty() + item.getCity() + item.getWard());
 
         return entity;
     }

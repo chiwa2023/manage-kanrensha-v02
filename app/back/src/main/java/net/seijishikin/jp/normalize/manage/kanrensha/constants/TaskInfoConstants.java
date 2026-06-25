@@ -15,7 +15,9 @@ public class TaskInfoConstants { // NOPMD DataClass
     public static final int CHANGE_ADDRESS_BASE_CSV = 153;
 
     /** 地方自治体コード更新 */
-    public static final int SAVE_ADDRESS_BASE_CSV = 175;
+    public static final int SAVE_ALL_LGCODE_CSV = 175;
+    /** 地方自治体コード移行 */
+    public static final int MOVE_ADDRESS_LGCODE = 176;
 
     /** 関連者XML読み取りバッチ */
     public static final int WKTBL_KANRENSHA_XML = 301;

@@ -12,21 +12,22 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
-import net.seijishikin.jp.normalize.manage.kanrensha.batch.address.lgcode.InsertAddressAllCityBatchConfiguration;
+import net.seijishikin.jp.normalize.manage.kanrensha.batch.address.lgcode.MoveAddressRsdtByLgcodeBatchConfiguration;
 import net.seijishikin.jp.normalize.manage.kanrensha.batch.task_plan.RecordTaskPlanJobExecutionListner;
-import net.seijishikin.jp.normalize.manage.kanrensha.dto.task.TaskPlanWithUseFileDto;
+import net.seijishikin.jp.normalize.manage.kanrensha.dto.address_rsdt.EditAddressCityDeleteCapsuleDto;
+import net.seijishikin.jp.normalize.manage.kanrensha.dto.task.InsertTaskPlanResultDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.util.SaveStackTraceService;
 
 /**
- * 地方自治体コード最新化Service
+ * 地方自治体コード移動非同期Service
  */
 @Service
-public class RefreshLgCodeService {
+public class MoveAddressRsdtByLgcodeService {
 
     /** 起動をするJob */
-    @Qualifier(InsertAddressAllCityBatchConfiguration.JOB_NAME)
+    @Qualifier(MoveAddressRsdtByLgcodeBatchConfiguration.JOB_NAME)
     @Autowired
-    private Job insertAddressAllCity;
+    private Job moveAddressRsdtByLgcode;
 
     /** 起動をつかさどるランチャー */
     @Autowired
@@ -39,32 +40,34 @@ public class RefreshLgCodeService {
     /**
      * 処理を行う
      * 
-     * @param year        発生年
-     * @param userDto     ユーザ最小限
-     * @param planFileDto タスク計画と読み取りファイルDto
+     * @param year       発生年
+     * @param planDto    タスク計画Dto
+     * @param capsuleDto 地方自治体コード移行条件Dto
      */
     @Async
-    public void practice(final Integer year, final LeastUserDto userDto, final TaskPlanWithUseFileDto planFileDto) {
+    public void practice(final Integer year, final InsertTaskPlanResultDto planDto,
+            final EditAddressCityDeleteCapsuleDto capsuleDto) {
 
         try {
-
+            LeastUserDto userDto = capsuleDto.getUserDto();
             JobParameters jobParameters = new JobParametersBuilder(
-                    insertAddressAllCity.getJobParametersIncrementer().getNext(new JobParameters())) // NOPMD
+                    moveAddressRsdtByLgcode.getJobParametersIncrementer().getNext(new JobParameters())) // NOPMD
                     .addLocalDateTime("executeTime", LocalDateTime.now())
-                    .addString("readFilePath", planFileDto.getReadFile().toString()) // NOPMD LowDemeter
+                    .addString("srcLgCode", capsuleDto.getEditEntity().getLgCode())
+                    .addString("copyLgCode", capsuleDto.getMoveLgCode())
                     .addLong("userId", (long) userDto.getUserPersonId())
                     .addLong("userCode", (long) userDto.getUserPersonCode())
                     .addString("userName", userDto.getUserPersonName())
-                    .addLong(RecordTaskPlanJobExecutionListner.KEY_YEAR, (long) planFileDto.getTaskYear())
-                    .addLong(RecordTaskPlanJobExecutionListner.KEY_ID, (long) planFileDto.getTaskPlanId())
-                    .addLong(RecordTaskPlanJobExecutionListner.KEY_CODE, (long) planFileDto.getTaskPlanCode())
+                    .addLong(RecordTaskPlanJobExecutionListner.KEY_YEAR, (long) planDto.getTaskYear())
+                    .addLong(RecordTaskPlanJobExecutionListner.KEY_ID, (long) planDto.getTaskPlanId())
+                    .addLong(RecordTaskPlanJobExecutionListner.KEY_CODE, (long) planDto.getTaskPlanCode())
                     .toJobParameters();
 
-            jobLauncher.run(insertAddressAllCity, jobParameters);
+            jobLauncher.run(moveAddressRsdtByLgcode, jobParameters);
 
         } catch (Exception exception) { // NOPMD 業務的な理由から積極的に許容
             // ここで補足できる例外はバッチ起動に関する例外のみで、バッチ動作に関する例外は別で処理する
-            saveStackTraceService.practice(exception, year, planFileDto.getTaskPlanCode());
+            saveStackTraceService.practice(exception, year, planDto.getTaskPlanCode());
         }
     }
 

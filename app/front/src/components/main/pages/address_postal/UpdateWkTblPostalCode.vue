@@ -100,8 +100,6 @@ function onSearch() {
         message.value = "システム管理者にお問い合わせください";
         return;
     });
-
-
 }
 
 function onCancel() {
@@ -199,8 +197,6 @@ function onSave() {
 function recieveSubmit(button: string) {
 
     if ("yes" === button) {
-        alert("削除");
-
         const capsuleDto: SaveWktblPostalCapsuleDtoInterface = new SaveWktblPostalCapsuleDto();
         capsuleDto.userDto = userDto.value;
         capsuleDto.editEntity = entityEdit.value;

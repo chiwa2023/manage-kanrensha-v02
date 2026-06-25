@@ -91,6 +91,28 @@ public class AddressCityDeleteEntity implements Serializable, AllTabeDataHistory
         this.lgCode = lgCode;
     }
 
+    /** 組織名 */
+    @Column(name = "org_name")
+    private String orgName = INIT_STRING;
+
+    /**
+     * 組織名を取得する
+     * 
+     * @return 組織名
+     */
+    public String getOrgName() {
+        return orgName;
+    }
+
+    /**
+     * 組織名を設定する
+     * 
+     * @param orgName 組織名
+     */
+    public void setOrgName(final String orgName) {
+        this.orgName = orgName;
+    }
+
     /** 挿入ユーザId */
     @Column(name = "insert_user_id")
     private Integer insertUserId = INIT_INTEGER;

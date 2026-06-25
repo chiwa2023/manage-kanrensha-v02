@@ -1,4 +1,4 @@
-package net.seijishikin.jp.normalize.manage.kanrensha.controller.postal;
+package net.seijishikin.jp.normalize.manage.kanrensha.controller.lgcode;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -23,45 +23,34 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import net.seijishikin.jp.normalize.common_tool.utils.GetObjectMapperWithTimeModuleUtil;
 import net.seijishikin.jp.normalize.manage.kanrensha.controller.PathRouteConstants;
-import net.seijishikin.jp.normalize.manage.kanrensha.dto.postal.SavePostalIrregularCapsuleDto;
-import net.seijishikin.jp.normalize.manage.kanrensha.entity.AddressPostalIrregularEntity;
-import net.seijishikin.jp.normalize.manage.kanrensha.repository.AddressPostalIrregularRepository;
-import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateLeastUserForTestUtil;
+import net.seijishikin.jp.normalize.manage.kanrensha.dto.PagingIntegerCapsuleDto;
 
 /**
- * SavePostalIrregularBuildingAllFloorController単体テスト
+ * SearchAllCityDeleteController単体テスト
  */
 @SpringJUnitConfig
 @AutoConfigureMockMvc
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
-@Sql( "../../service/postal/SavePostalIrregularBuildingAllFloorServiceTest.sql")
-class SavePostalIrregularBuildingAllFloorControllerTest {
+@Sql("../../service/lgcode/SearchAllCityDeleteServiceTest.sql")
+class SearchAllCityDeleteControllerTest {
     // CHECKSTYLE:OFF MagicNumber
 
     /** MockMvc */
     @Autowired
     private MockMvc mockMvc;
 
-    /** 郵便番号不規則データRepository */
-    @Autowired
-    private AddressPostalIrregularRepository addressPostalIrregularRepository;
-
     @Test
     @Tag("TableTruncate")
     @WithMockUser
     void test() throws Exception {
 
-        AddressPostalIrregularEntity entityEdit = addressPostalIrregularRepository.findById(776).get();
+        PagingIntegerCapsuleDto capsuleDto = new PagingIntegerCapsuleDto();
+        capsuleDto.setAllCount(145);
+        capsuleDto.setPageNumber(7);
+        capsuleDto.setLimit(20);
 
-        entityEdit.setAddressPostal("埼玉県さいたま市中央区新都心");
-        entityEdit.setAddressBlock("11番2");
-
-        SavePostalIrregularCapsuleDto capsuleDto = new SavePostalIrregularCapsuleDto();
-        capsuleDto.setAddressPostalIrregularEntity(entityEdit);
-        capsuleDto.setUserDto(CreateLeastUserForTestUtil.practice());
-
-        String path = PathRouteConstants.ROOT + "/postal-irregular/save-building";
+        String path = PathRouteConstants.ROOT + "/lgcode-delete/search";
 
         ObjectMapper objectMapper = GetObjectMapperWithTimeModuleUtil.practice();
 

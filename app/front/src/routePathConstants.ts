@@ -90,8 +90,11 @@ export default class RoutePathConstants {
  
     /** アドレス・ベース・レジストリ差分 */
     static readonly PAGE_ADDRESS_REGI_SABUN: string = this.BASE_PATH + "/address-registry-sabun";
+
     /** 地方自治体コード差分 */
     static readonly PAGE_LGCODE_SABUN: string = this.BASE_PATH + "/lgcode-sabun";
+    static readonly PAGE_LGCODE_SABUN_EDIT: string = this.BASE_PATH + "/lgcode-sabun-edit";
+
 
     /** 関連者企業・団体履歴一括登録 */
     static readonly PAGE_REGI_BULK_HISTORY_KIGYOU: string = this.BASE_PATH + "/bulk-history-kigyou";

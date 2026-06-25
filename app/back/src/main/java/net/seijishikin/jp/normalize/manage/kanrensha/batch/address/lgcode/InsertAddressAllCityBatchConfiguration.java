@@ -66,7 +66,7 @@ public class InsertAddressAllCityBatchConfiguration {
     /** 地方自治体コードワークテーブルItemReader */
     @Autowired
     private AllCityWkTblItemWriter allCityWkTblItemWriter;
-
+    
     /** ジョブ実行リスナ(タスク計画記録) */
     @Autowired
     private RecordTaskPlanJobExecutionListner recordTaskPlanJobExecutionListner;

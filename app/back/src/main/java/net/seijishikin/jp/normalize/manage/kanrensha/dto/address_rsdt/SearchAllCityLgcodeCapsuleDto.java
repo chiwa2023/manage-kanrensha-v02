@@ -7,7 +7,8 @@ import net.seijishikin.jp.normalize.common_tool.dto.DtoEntityInitialValueInterfa
 /**
  * 地方自治体コード地名取得Dto
  */
-public class SearchAllCityLgcodeCapsuleDto implements Serializable, DtoEntityInitialValueInterface {
+public class SearchAllCityLgcodeCapsuleDto // NOPMD DataClass
+        implements Serializable, DtoEntityInitialValueInterface {
 
     /** Serialize id */
     private static final long serialVersionUID = 1L;

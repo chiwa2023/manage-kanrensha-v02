@@ -10,8 +10,11 @@ import org.springframework.batch.item.Chunk;
 import org.springframework.batch.item.database.JpaItemWriter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
+import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.Query;
 import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
 import net.seijishikin.jp.normalize.common_tool.utils.CreateUserLeastDtoByBatchParamUtil;
 import net.seijishikin.jp.normalize.common_tool.utils.SetTableDataHistoryUtil;
@@ -45,6 +48,9 @@ public class AddressAllCityItemWriter extends JpaItemWriter<AddressAllCityEntity
     /** ユーザ最低限Dto */
     private LeastUserDto userDto;
 
+    /** entityManager */
+    private final EntityManager entityManager;
+
     /**
      * コンストラクタ
      *
@@ -53,6 +59,7 @@ public class AddressAllCityItemWriter extends JpaItemWriter<AddressAllCityEntity
     public AddressAllCityItemWriter(final @Autowired EntityManagerFactory entityManagerFactory) {
         super();
         super.setEntityManagerFactory(entityManagerFactory);
+        entityManager = entityManagerFactory.createEntityManager();
     }
 
     /**
@@ -70,23 +77,27 @@ public class AddressAllCityItemWriter extends JpaItemWriter<AddressAllCityEntity
      * 書き込み処理
      */
     @Override
+    @Transactional
     public void write(final Chunk<? extends AddressAllCityEntity> items) {
 
         List<AddressAllCityEntity> listSave = new ArrayList<>();
         List<WkTblAddressCityEntity> listWkTbl = new ArrayList<>();
 
+        entityManager.joinTransaction();
+
         for (AddressAllCityEntity entity : items) {
 
+            String lgCode = entity.getLgCode();
             // 何はともあれワークうテーブルに挿入
-            listWkTbl.add(this.createWkTblEntity(entity.getLgCode()));
+            listWkTbl.add(this.createWkTblEntity(lgCode));
 
             // 同コードは存在するか確認(ほとんどの場合存在する)
-            List<AddressAllCityEntity> list = addressAllCityRepository.findByLgCodeAndIsLatestTrue(entity.getLgCode());
+            List<AddressAllCityEntity> list = addressAllCityRepository.findByLgCodeAndIsLatestTrue(lgCode);
 
             final int normalExistSize = 1;
 
             if (normalExistSize < list.size()) {
-                // 該当超自治体コードが複数ある場合はデータ不正。
+                // 該当地方自治体コードが複数ある場合はデータ不正。
                 // 過去データをすべて廃棄して、今回のデータに入れ替え
                 for (AddressAllCityEntity entityOld : list) {
                     setTableDataHistoryUtil.practiceDelete(userDto, entityOld);
@@ -103,6 +114,15 @@ public class AddressAllCityItemWriter extends JpaItemWriter<AddressAllCityEntity
                 setTableDataHistoryUtil.practiceInsert(userDto, entity);
                 entity.setAddressAllCityId(0); // auto increment 明記
                 listSave.add(entity);
+
+                // insertしたら住居テーブルも追加
+
+                String table = "address_rsdt_" + lgCode;
+
+                Query queryCreate = entityManager
+                        .createNativeQuery("CREATE TABLE IF NOT EXISTS " + table + " LIKE address_rsdt_template");
+                queryCreate.executeUpdate();
+
                 continue;
             }
 
@@ -126,6 +146,7 @@ public class AddressAllCityItemWriter extends JpaItemWriter<AddressAllCityEntity
 
         addressAllCityRepository.saveAll(listSave);
         wkTblAddressCityRepository.saveAll(listWkTbl);
+        entityManager.flush();
     }
 
     private WkTblAddressCityEntity createWkTblEntity(final String lgCode) {
