@@ -2,7 +2,7 @@ package net.seijishikin.jp.normalize.manage.kanrensha.batch.kanrensha.seijidanta
 
 import java.util.List;
 
-import org.springframework.batch.item.ItemProcessor;
+import org.springframework.batch.infrastructure.item.ItemProcessor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

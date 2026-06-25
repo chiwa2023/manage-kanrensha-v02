@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import org.springframework.batch.item.data.RepositoryItemReader;
+import org.springframework.batch.infrastructure.item.data.RepositoryItemReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Component;
@@ -24,9 +24,8 @@ public class WorksPostalItemReader extends RepositoryItemReader<WkTblPostalCommo
      * @param wkTblPostalCommonRepository 郵便番号作業Respository
      */
     public WorksPostalItemReader(final @Autowired WkTblPostalCommonRepository wkTblPostalCommonRepository) {
-        super();
-        super.setRepository(wkTblPostalCommonRepository);
-        super.setSort(new HashMap<String, Direction>()); // NOPMD
+
+        super(wkTblPostalCommonRepository, new HashMap<String, Direction>());
         super.setMethodName("findAll");
 
         List<Object> list = new ArrayList<>();

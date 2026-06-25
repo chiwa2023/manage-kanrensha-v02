@@ -4,7 +4,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.batch.core.configuration.annotation.StepScope;
-import org.springframework.batch.item.data.AbstractPaginatedDataItemReader;
+import org.springframework.batch.infrastructure.item.data.AbstractPaginatedDataItemReader;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 

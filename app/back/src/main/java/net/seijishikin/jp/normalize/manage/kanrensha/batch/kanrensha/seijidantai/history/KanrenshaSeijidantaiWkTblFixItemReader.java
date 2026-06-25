@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import org.springframework.batch.core.StepExecution;
+import org.springframework.batch.core.step.StepExecution;
 import org.springframework.batch.core.annotation.BeforeStep;
-import org.springframework.batch.item.data.RepositoryItemReader;
+import org.springframework.batch.infrastructure.item.data.RepositoryItemReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Component;
@@ -14,12 +14,12 @@ import org.springframework.stereotype.Component;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.WkTblKanrenshaSeijidantaiHistoryResultEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.repository.WkTblKanrenshaSeijidantaiHistoryResultRepository;
 
-
 /**
  * 関連者政治団体ワークテーブル修正ItemReader
  */
 @Component
-public class KanrenshaSeijidantaiWkTblFixItemReader extends RepositoryItemReader<WkTblKanrenshaSeijidantaiHistoryResultEntity> {
+public class KanrenshaSeijidantaiWkTblFixItemReader
+        extends RepositoryItemReader<WkTblKanrenshaSeijidantaiHistoryResultEntity> {
 
     /**
      * コンストラクタ
@@ -29,9 +29,7 @@ public class KanrenshaSeijidantaiWkTblFixItemReader extends RepositoryItemReader
     public KanrenshaSeijidantaiWkTblFixItemReader(
             final @Autowired WkTblKanrenshaSeijidantaiHistoryResultRepository wkTblKanrenshaSeijidantaiResultRepository) {
 
-        super();
-        super.setRepository(wkTblKanrenshaSeijidantaiResultRepository);
-        super.setSort(new HashMap<String, Direction>()); // NOPMD
+        super(wkTblKanrenshaSeijidantaiResultRepository, new HashMap<String, Direction>());
         super.setMethodName("findByInsertUserCode");
 
         List<Object> list = new ArrayList<>();

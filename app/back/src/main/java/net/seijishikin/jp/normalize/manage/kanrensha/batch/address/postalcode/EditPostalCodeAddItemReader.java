@@ -3,9 +3,9 @@ package net.seijishikin.jp.normalize.manage.kanrensha.batch.address.postalcode;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import org.springframework.batch.core.StepExecution;
+import org.springframework.batch.core.step.StepExecution;
 import org.springframework.batch.core.annotation.BeforeStep;
-import org.springframework.batch.item.file.FlatFileItemReader;
+import org.springframework.batch.infrastructure.item.file.FlatFileItemReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.stereotype.Component;
@@ -22,8 +22,7 @@ public class EditPostalCodeAddItemReader extends FlatFileItemReader<EditPostalCo
      * @param lineMapper lineMapper
      */
     public EditPostalCodeAddItemReader(final @Autowired EditPostalCodeLineMapper lineMapper) {
-        super();
-        super.setLineMapper(lineMapper);
+        super(lineMapper);
         super.setStrict(false);
     }
 

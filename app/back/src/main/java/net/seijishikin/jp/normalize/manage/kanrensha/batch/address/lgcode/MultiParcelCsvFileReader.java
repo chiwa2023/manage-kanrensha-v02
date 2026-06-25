@@ -3,9 +3,9 @@ package net.seijishikin.jp.normalize.manage.kanrensha.batch.address.lgcode;
 import java.io.File;
 import java.io.IOException;
 
-import org.springframework.batch.core.StepExecution;
+import org.springframework.batch.core.step.StepExecution;
 import org.springframework.batch.core.annotation.BeforeStep;
-import org.springframework.batch.item.file.MultiResourceItemReader;
+import org.springframework.batch.infrastructure.item.file.MultiResourceItemReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
@@ -23,8 +23,7 @@ public class MultiParcelCsvFileReader extends MultiResourceItemReader<ParcelAddr
      * @param parcelAddressCsvItemReader 地番住所LineMapper
      */
     public MultiParcelCsvFileReader(final @Autowired ParcelAddressCsvItemReader parcelAddressCsvItemReader) {
-        super();
-        super.setDelegate(parcelAddressCsvItemReader);
+        super(parcelAddressCsvItemReader);
         super.setStrict(false);
     }
 

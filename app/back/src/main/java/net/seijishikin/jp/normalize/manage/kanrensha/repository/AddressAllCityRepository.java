@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
 import net.seijishikin.jp.normalize.common_tool.dto.select_options.SelectOptionStringDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.AddressAllCityEntity;
@@ -14,7 +15,8 @@ import net.seijishikin.jp.normalize.manage.kanrensha.entity.AddressAllCityEntity
 /**
  * address_all_city接続用Repository
  */
-public interface AddressAllCityRepository extends JpaRepository<AddressAllCityEntity, Integer> {
+public interface AddressAllCityRepository extends JpaRepository<AddressAllCityEntity, Integer>,
+        PagingAndSortingRepository<AddressAllCityEntity, Integer> {
 
     /**
      * 地方公共団体コード前方一致条件で取得する

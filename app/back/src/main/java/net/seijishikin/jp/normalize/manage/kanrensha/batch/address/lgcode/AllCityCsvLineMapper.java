@@ -3,7 +3,7 @@ package net.seijishikin.jp.normalize.manage.kanrensha.batch.address.lgcode;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-import org.springframework.batch.item.file.LineMapper;
+import org.springframework.batch.infrastructure.item.file.LineMapper;
 import org.springframework.stereotype.Component;
 
 /**

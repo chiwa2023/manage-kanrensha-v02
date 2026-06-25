@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import org.springframework.batch.core.StepExecution;
+import org.springframework.batch.core.step.StepExecution;
 import org.springframework.batch.core.annotation.BeforeStep;
-import org.springframework.batch.item.data.RepositoryItemReader;
+import org.springframework.batch.infrastructure.item.data.RepositoryItemReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Component;
@@ -19,7 +19,8 @@ import net.seijishikin.jp.normalize.common_tool.utils.SetTableDataHistoryUtil;
  * 関連者個人処理結果反映ItemReader
  */
 @Component
-public class KanrenshaPersonAddMiniWkTblFixItemReader extends RepositoryItemReader<WkTblKanrenshaPersonAddMinResultEntity> {
+public class KanrenshaPersonAddMiniWkTblFixItemReader
+        extends RepositoryItemReader<WkTblKanrenshaPersonAddMinResultEntity> {
 
     /**
      * コンストラクタ
@@ -29,9 +30,7 @@ public class KanrenshaPersonAddMiniWkTblFixItemReader extends RepositoryItemRead
     public KanrenshaPersonAddMiniWkTblFixItemReader(
             final @Autowired WkTblKanrenshaPersonAddMinResultRepository wkTblKanrenshaPersonAddMinResultRepository) {
 
-        super();
-        super.setRepository(wkTblKanrenshaPersonAddMinResultRepository);
-        super.setSort(new HashMap<String, Direction>()); // NOPMD
+        super(wkTblKanrenshaPersonAddMinResultRepository, new HashMap<String, Direction>());
         super.setMethodName("findByInsertUserCodeAndIsLatest");
 
         List<Object> list = new ArrayList<>();

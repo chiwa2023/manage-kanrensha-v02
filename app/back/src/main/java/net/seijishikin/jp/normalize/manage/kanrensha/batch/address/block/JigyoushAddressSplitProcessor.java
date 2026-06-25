@@ -1,7 +1,7 @@
 package net.seijishikin.jp.normalize.manage.kanrensha.batch.address.block;
 
 
-import org.springframework.batch.item.ItemProcessor;
+import org.springframework.batch.infrastructure.item.ItemProcessor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
 

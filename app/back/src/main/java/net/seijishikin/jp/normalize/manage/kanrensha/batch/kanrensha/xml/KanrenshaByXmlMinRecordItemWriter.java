@@ -3,10 +3,10 @@ package net.seijishikin.jp.normalize.manage.kanrensha.batch.kanrensha.xml; // NO
 import java.util.ArrayList; // NOPMD
 import java.util.List;
 
-import org.springframework.batch.core.StepExecution;
+import org.springframework.batch.core.step.StepExecution;
 import org.springframework.batch.core.annotation.BeforeStep;
-import org.springframework.batch.item.Chunk;
-import org.springframework.batch.item.database.JpaItemWriter;
+import org.springframework.batch.infrastructure.item.Chunk;
+import org.springframework.batch.infrastructure.item.database.JpaItemWriter;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -102,7 +102,7 @@ public class KanrenshaByXmlMinRecordItemWriter extends JpaItemWriter<WkTblMaster
      * @param entityManagerFactory entityManagerFactory
      */
     public KanrenshaByXmlMinRecordItemWriter(final @Autowired EntityManagerFactory entityManagerFactory) {
-        super();
+        super(entityManagerFactory);
         super.setEntityManagerFactory(entityManagerFactory);
     }
 

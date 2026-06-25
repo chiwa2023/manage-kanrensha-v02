@@ -3,7 +3,7 @@ package net.seijishikin.jp.normalize.manage.kanrensha.batch.kanrensha.person.add
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.batch.item.file.LineMapper;
+import org.springframework.batch.infrastructure.item.file.LineMapper;
 import org.springframework.stereotype.Component;
 
 /**

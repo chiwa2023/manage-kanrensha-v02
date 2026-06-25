@@ -3,9 +3,10 @@ package net.seijishikin.jp.normalize.manage.kanrensha.batch.address.lgcode;
 import java.io.File;
 import java.io.IOException;
 
-import org.springframework.batch.core.StepExecution;
+import org.springframework.batch.core.step.StepExecution;
+import org.springframework.batch.infrastructure.item.file.MultiResourceItemReader;
 import org.springframework.batch.core.annotation.BeforeStep;
-import org.springframework.batch.item.file.MultiResourceItemReader;
+//import org.springframework.batch.infrastructure.item.file.MultiResourceItemReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
@@ -23,8 +24,7 @@ public class MultiRsdtCsvFileReader extends MultiResourceItemReader<RsdtAddressC
      * @param rsdtAddressCsvItemReader 住居住所LineMapper
      */
     public MultiRsdtCsvFileReader(final @Autowired RsdtAddressCsvItemReader rsdtAddressCsvItemReader) {
-        super();
-        super.setDelegate(rsdtAddressCsvItemReader);
+        super(rsdtAddressCsvItemReader);
         super.setStrict(false);
     }
 

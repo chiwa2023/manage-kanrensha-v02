@@ -5,9 +5,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import org.springframework.batch.core.StepExecution;
+import org.springframework.batch.core.step.StepExecution;
 import org.springframework.batch.core.annotation.BeforeStep;
-import org.springframework.batch.item.data.RepositoryItemReader;
+import org.springframework.batch.infrastructure.item.data.RepositoryItemReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Component;
@@ -30,9 +30,7 @@ public class DumpKanrenshaSeijidantaiHistory03ItemReader
      */
     public DumpKanrenshaSeijidantaiHistory03ItemReader(
             final @Autowired KanrenshaSeijidantaiHistory03Repository partnerPoliOrgHistory03Repository) {
-        super();
-        super.setRepository(partnerPoliOrgHistory03Repository);
-        super.setSort(new HashMap<String, Direction>()); // NOPMD
+        super(partnerPoliOrgHistory03Repository, new HashMap<String, Direction>());
         super.setMethodName("findByInsertTimestampLessThanAndIsLatest");
 
         List<Object> list = new ArrayList<>();

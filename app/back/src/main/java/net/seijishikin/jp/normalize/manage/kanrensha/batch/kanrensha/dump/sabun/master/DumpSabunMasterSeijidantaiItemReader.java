@@ -5,9 +5,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import org.springframework.batch.core.StepExecution;
+import org.springframework.batch.core.step.StepExecution;
 import org.springframework.batch.core.annotation.BeforeStep;
-import org.springframework.batch.item.data.RepositoryItemReader;
+import org.springframework.batch.infrastructure.item.data.RepositoryItemReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Component;
@@ -20,8 +20,7 @@ import net.seijishikin.jp.normalize.manage.kanrensha.repository.KanrenshaSeijida
  * 開始日時以上かつ終了日時より小さい関連者政治団体最新マスタ差分データItemReader
  */
 @Component
-public class DumpSabunMasterSeijidantaiItemReader
-        extends RepositoryItemReader<KanrenshaSeijidantaiMasterEntity> {
+public class DumpSabunMasterSeijidantaiItemReader extends RepositoryItemReader<KanrenshaSeijidantaiMasterEntity> {
 
     /**
      * コンストラクタ
@@ -30,9 +29,7 @@ public class DumpSabunMasterSeijidantaiItemReader
      */
     public DumpSabunMasterSeijidantaiItemReader(
             final @Autowired KanrenshaSeijidantaiMasterRepository kanrenshaSeijidantaiMasterRepository) {
-        super();
-        super.setRepository(kanrenshaSeijidantaiMasterRepository);
-        super.setSort(new HashMap<String, Direction>()); // NOPMD
+        super(kanrenshaSeijidantaiMasterRepository, new HashMap<String, Direction>());
         super.setMethodName("findByInsertTimestampGreaterThanEqualAndInsertTimestampLessThanAndIsLatest");
 
         List<Object> list = new ArrayList<>();

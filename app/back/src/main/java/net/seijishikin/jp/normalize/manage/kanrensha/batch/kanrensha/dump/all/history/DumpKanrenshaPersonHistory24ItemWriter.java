@@ -3,11 +3,11 @@ package net.seijishikin.jp.normalize.manage.kanrensha.batch.kanrensha.dump.all.h
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import org.springframework.batch.core.StepExecution;
+import org.springframework.batch.core.step.StepExecution;
 import org.springframework.batch.core.annotation.BeforeStep;
-import org.springframework.batch.item.file.FlatFileItemWriter;
-import org.springframework.batch.item.file.transform.BeanWrapperFieldExtractor;
-import org.springframework.batch.item.file.transform.DelimitedLineAggregator;
+import org.springframework.batch.infrastructure.item.file.FlatFileItemWriter;
+import org.springframework.batch.infrastructure.item.file.transform.BeanWrapperFieldExtractor;
+import org.springframework.batch.infrastructure.item.file.transform.DelimitedLineAggregator;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.stereotype.Component;
 
@@ -23,13 +23,13 @@ public class DumpKanrenshaPersonHistory24ItemWriter extends FlatFileItemWriter<K
      * コンストラクタ
      */
     public DumpKanrenshaPersonHistory24ItemWriter() {
-        super();
         DelimitedLineAggregator<KanrenshaPersonHistory24Entity> lineAggregator = new DelimitedLineAggregator<>();
         lineAggregator.setDelimiter(","); // 区切り文字をカンマに設定
         lineAggregator.setQuoteCharacter("\"");
         BeanWrapperFieldExtractor<KanrenshaPersonHistory24Entity> fieldExtractor = new BeanWrapperFieldExtractor<>();
         fieldExtractor.setNames(DumpHistoryWriteItemConstants.Person.NAMES); // 書き出すフィールド名を設定
         lineAggregator.setFieldExtractor(fieldExtractor);
+        super(lineAggregator);
         super.setHeaderCallback(
                 writer1 -> writer1.write(String.join(",", DumpHistoryWriteItemConstants.Person.HEADERS)));
         super.setLineAggregator(lineAggregator);

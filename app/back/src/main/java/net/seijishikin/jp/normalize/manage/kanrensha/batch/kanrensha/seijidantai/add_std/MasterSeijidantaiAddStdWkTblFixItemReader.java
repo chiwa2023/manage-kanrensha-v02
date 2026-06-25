@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import org.springframework.batch.core.StepExecution;
+import org.springframework.batch.core.step.StepExecution;
 import org.springframework.batch.core.annotation.BeforeStep;
-import org.springframework.batch.item.data.RepositoryItemReader;
+import org.springframework.batch.infrastructure.item.data.RepositoryItemReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Component;
@@ -19,7 +19,8 @@ import net.seijishikin.jp.normalize.manage.kanrensha.repository.WkTblKanrenshaSe
  * 関連者個人マスタ標準登録処理結果登録ItemReader
  */
 @Component
-public class MasterSeijidantaiAddStdWkTblFixItemReader extends RepositoryItemReader<WkTblKanrenshaSeijidantaiMasterResultEntity> {
+public class MasterSeijidantaiAddStdWkTblFixItemReader
+        extends RepositoryItemReader<WkTblKanrenshaSeijidantaiMasterResultEntity> {
 
     /**
      * コンストラクタ
@@ -29,9 +30,7 @@ public class MasterSeijidantaiAddStdWkTblFixItemReader extends RepositoryItemRea
     public MasterSeijidantaiAddStdWkTblFixItemReader(
             final @Autowired WkTblKanrenshaSeijidantaiMasterResultRepository wkTblKanrenshaSeijidantaiMasterResultRepository) {
 
-        super();
-        super.setRepository(wkTblKanrenshaSeijidantaiMasterResultRepository);
-        super.setSort(new HashMap<String, Direction>()); // NOPMD
+        super(wkTblKanrenshaSeijidantaiMasterResultRepository, new HashMap<String, Direction>());
         super.setMethodName("findByInsertUserCodeAndIsLatest");
 
         List<Object> list = new ArrayList<>();

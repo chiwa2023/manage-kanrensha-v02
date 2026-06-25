@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import org.springframework.batch.core.StepExecution;
+import org.springframework.batch.core.step.StepExecution;
 import org.springframework.batch.core.annotation.BeforeStep;
-import org.springframework.batch.item.data.RepositoryItemReader;
+import org.springframework.batch.infrastructure.item.data.RepositoryItemReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Component;
@@ -29,9 +29,7 @@ public class KanrenshaPersonAddMiniRecordItemReader extends RepositoryItemReader
     public KanrenshaPersonAddMiniRecordItemReader(
             final @Autowired WkTblKanrenshaPersonAddMinRepository wkTblKanrenshaPersonAddMinRepository) {
 
-        super();
-        super.setRepository(wkTblKanrenshaPersonAddMinRepository);
-        super.setSort(new HashMap<String, Direction>()); // NOPMD
+        super(wkTblKanrenshaPersonAddMinRepository, new HashMap<String, Direction>());
         super.setMethodName("findByInsertUserCodeAndIsLatestAndIsAffectedAndIsFinish");
 
         List<Object> list = new ArrayList<>();
@@ -47,7 +45,7 @@ public class KanrenshaPersonAddMiniRecordItemReader extends RepositoryItemReader
     public void beforeStep(final StepExecution stepExecution) {
 
         Integer userCode = Math.toIntExact(stepExecution.getJobParameters().getLong("userCode"));
-        
+
         List<Object> list = new ArrayList<>();
         list.add(userCode);
         list.add(SetTableDataHistoryUtil.INSERT_STATE);

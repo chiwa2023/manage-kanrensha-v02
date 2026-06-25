@@ -3,10 +3,10 @@ package net.seijishikin.jp.normalize.manage.kanrensha.batch.kanrensha.person.add
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import org.springframework.batch.core.StepExecution;
+import org.springframework.batch.core.step.StepExecution;
 import org.springframework.batch.core.annotation.BeforeStep;
-import org.springframework.batch.item.file.FlatFileItemReader;
-import org.springframework.batch.item.file.separator.DefaultRecordSeparatorPolicy;
+import org.springframework.batch.infrastructure.item.file.FlatFileItemReader;
+import org.springframework.batch.infrastructure.item.file.separator.DefaultRecordSeparatorPolicy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.stereotype.Component;
@@ -24,8 +24,7 @@ public class MasterPersonAddStdCsvItemReader extends FlatFileItemReader<Kanrensh
      * @param lineMapper 関連者個人csv読み取りLineMapper
      */
     public MasterPersonAddStdCsvItemReader(final @Autowired KanrenshaPersonAddStdLineMapper lineMapper) {
-        super();
-        super.setLineMapper(lineMapper);
+        super(lineMapper);
         super.setLinesToSkip(1); // ヘッダがあるので1行読み飛ばし
         DefaultRecordSeparatorPolicy separatorPolicy = new DefaultRecordSeparatorPolicy();
         separatorPolicy.setQuoteCharacter("\"");
