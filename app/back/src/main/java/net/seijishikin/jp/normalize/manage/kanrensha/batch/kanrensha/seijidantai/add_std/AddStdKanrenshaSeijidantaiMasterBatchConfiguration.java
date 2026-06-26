@@ -139,8 +139,7 @@ public class AddStdKanrenshaSeijidantaiMasterBatchConfiguration {
     protected Step getStepCsv(final JobRepository jobRepository, final PlatformTransactionManager transactionManager) {
 
         return new StepBuilder(STEP_CSV, jobRepository)
-                .<KanrenshaSeijidantaiAddStdDto, WkTblKanrenshaSeijidantaiMasterEntity>chunk(CHUNK_SIZE,
-                        transactionManager)
+                .<KanrenshaSeijidantaiAddStdDto, WkTblKanrenshaSeijidantaiMasterEntity>chunk(CHUNK_SIZE)
                 .reader(masterSeijidantaiAddStdCsvItemReader).processor(kanrenshaSeijidantaiAddStdCsvProcessor)
                 .writer(masterSeijidantaiAddStdCsvItemWriter).build();
     }
@@ -172,8 +171,7 @@ public class AddStdKanrenshaSeijidantaiMasterBatchConfiguration {
             final PlatformTransactionManager transactionManager) {
 
         return new StepBuilder(STEP_RECORD, jobRepository)
-                .<WkTblKanrenshaSeijidantaiMasterEntity, WkTblKanrenshaSeijidantaiMasterEntity>chunk(CHUNK_SIZE,
-                        transactionManager)
+                .<WkTblKanrenshaSeijidantaiMasterEntity, WkTblKanrenshaSeijidantaiMasterEntity>chunk(CHUNK_SIZE)
                 .reader(masterSeijidantaiAddStdRecordItemReader).writer(masterSeijidantaiAddStdRecordItemWriter)
                 .build();
     }
@@ -189,8 +187,7 @@ public class AddStdKanrenshaSeijidantaiMasterBatchConfiguration {
     protected Step getStepFix(final JobRepository jobRepository, final PlatformTransactionManager transactionManager) {
 
         return new StepBuilder(STEP_FIX, jobRepository)
-                .<WkTblKanrenshaSeijidantaiMasterResultEntity, WkTblKanrenshaSeijidantaiMasterEntity>chunk(CHUNK_SIZE,
-                        transactionManager)
+                .<WkTblKanrenshaSeijidantaiMasterResultEntity, WkTblKanrenshaSeijidantaiMasterEntity>chunk(CHUNK_SIZE)
                 .reader(masterSeijidantaiAddStdWkTblFixItemReader).processor(masterSeijidantaiAddStdWkTblFixProcessor)
                 .writer(masterSeijidantaiAddStdWkTblFixItemWriter).build();
     }

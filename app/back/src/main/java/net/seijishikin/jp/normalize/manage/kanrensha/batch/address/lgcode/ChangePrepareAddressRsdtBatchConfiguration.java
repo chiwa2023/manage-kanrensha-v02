@@ -145,7 +145,7 @@ public class ChangePrepareAddressRsdtBatchConfiguration {
             final PlatformTransactionManager transactionManager) {
 
         return new StepBuilder(STEP_RSDT_INSERT_NAME, jobRepository)
-                .<RsdtAddressCsvDto, AddressRsdtBaseEntity>chunk(CHUNK_SIZE, transactionManager)
+                .<RsdtAddressCsvDto, AddressRsdtBaseEntity>chunk(CHUNK_SIZE)
                 .reader(rsdtAddressCsvItemReader).processor(rsdtAddressProcessor).writer(rsdtWkTblAddressFileItemWriter)
                 .build();
     }
@@ -162,7 +162,7 @@ public class ChangePrepareAddressRsdtBatchConfiguration {
             final PlatformTransactionManager transactionManager) {
 
         return new StepBuilder(STEP_PARCEL_INSERT_NAME, jobRepository)
-                .<ParcelAddressCsvDto, AddressRsdtBaseEntity>chunk(CHUNK_SIZE, transactionManager)
+                .<ParcelAddressCsvDto, AddressRsdtBaseEntity>chunk(CHUNK_SIZE)
                 .reader(parcelAddressCsvItemReader).processor(parcelAddressCsvProcessor)
                 .writer(rsdtWkTblAddressFileItemWriter).build();
     }
@@ -179,7 +179,7 @@ public class ChangePrepareAddressRsdtBatchConfiguration {
             final PlatformTransactionManager transactionManager) {
 
         return new StepBuilder(STEP_DIFFER_NAME, jobRepository)
-                .<WkTblAddressRsdtFileEntity, WkTblAddressRsdtFileEntity>chunk(CHUNK_SIZE, transactionManager)
+                .<WkTblAddressRsdtFileEntity, WkTblAddressRsdtFileEntity>chunk(CHUNK_SIZE)
                 .reader(rsdtWkTblAddressFileLgCodeItemReader).writer(rsdtWkTblChangeAddressItemWriter).build();
     }
 
@@ -195,7 +195,7 @@ public class ChangePrepareAddressRsdtBatchConfiguration {
             final PlatformTransactionManager transactionManager) {
 
         return new StepBuilder(STEP_DELETE_NAME, jobRepository)
-                .<AddressRsdtBaseEntity, AddressRsdtBaseEntity>chunk(CHUNK_SIZE, transactionManager)
+                .<AddressRsdtBaseEntity, AddressRsdtBaseEntity>chunk(CHUNK_SIZE)
                 .reader(rsdtAddressItemReader).writer(rsdtWkTblDeleteAddressItemWriter).build();
     }
 

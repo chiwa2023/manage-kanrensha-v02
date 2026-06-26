@@ -92,7 +92,7 @@ public class DeleteKyuAzaBatchConfiguration {
             final PlatformTransactionManager transactionManager) {
 
         return new StepBuilder(STEP_INSERT, jobRepository)
-                .<AddressPostalRepairLogEntity, AddressPostalRepairLogEntity>chunk(CHUNK_SIZE, transactionManager)
+                .<AddressPostalRepairLogEntity, AddressPostalRepairLogEntity>chunk(CHUNK_SIZE)
                 .reader(deleteKyuAzaItemReader).writer(deleteKyuAzaItemWriter).build();
     }
 
@@ -108,7 +108,7 @@ public class DeleteKyuAzaBatchConfiguration {
             final PlatformTransactionManager transactionManager) {
 
         return new StepBuilder(STEP_LOG_UPDATE, jobRepository)
-                .<WkTblPostalCommonEntity, WkTblPostalCommonEntity>chunk(CHUNK_SIZE, transactionManager)
+                .<WkTblPostalCommonEntity, WkTblPostalCommonEntity>chunk(CHUNK_SIZE)
                 .reader(worksPostalItemReader).writer(deleteKyuAzaRepairLogItemWriter).build();
     }
 

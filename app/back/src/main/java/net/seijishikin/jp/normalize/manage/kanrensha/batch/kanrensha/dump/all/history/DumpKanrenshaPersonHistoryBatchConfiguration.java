@@ -539,7 +539,7 @@ public class DumpKanrenshaPersonHistoryBatchConfiguration { // NOPMD
     @Bean(STEP_OUTPUT01)
     protected Step getStep01(final JobRepository jobRepository, final PlatformTransactionManager transactionManager) {
         return new StepBuilder(STEP_OUTPUT01, jobRepository)
-                .<KanrenshaPersonHistory01Entity, KanrenshaPersonHistory01Entity>chunk(CHUNK_SIZE, transactionManager)
+                .<KanrenshaPersonHistory01Entity, KanrenshaPersonHistory01Entity>chunk(CHUNK_SIZE)
                 .reader(dumpKanrenshaPersonHistory01ItemReader).writer(dumpKanrenshaPersonHistory01ItemWriter).build();
     }
 
@@ -553,7 +553,7 @@ public class DumpKanrenshaPersonHistoryBatchConfiguration { // NOPMD
     @Bean(STEP_OUTPUT02)
     protected Step getStep02(final JobRepository jobRepository, final PlatformTransactionManager transactionManager) {
         return new StepBuilder(STEP_OUTPUT02, jobRepository)
-                .<KanrenshaPersonHistory02Entity, KanrenshaPersonHistory02Entity>chunk(CHUNK_SIZE, transactionManager)
+                .<KanrenshaPersonHistory02Entity, KanrenshaPersonHistory02Entity>chunk(CHUNK_SIZE)
                 .reader(dumpKanrenshaPersonHistory02ItemReader).writer(dumpKanrenshaPersonHistory02ItemWriter).build();
     }
 
@@ -567,7 +567,7 @@ public class DumpKanrenshaPersonHistoryBatchConfiguration { // NOPMD
     @Bean(STEP_OUTPUT03)
     protected Step getStep03(final JobRepository jobRepository, final PlatformTransactionManager transactionManager) {
         return new StepBuilder(STEP_OUTPUT03, jobRepository)
-                .<KanrenshaPersonHistory03Entity, KanrenshaPersonHistory03Entity>chunk(CHUNK_SIZE, transactionManager)
+                .<KanrenshaPersonHistory03Entity, KanrenshaPersonHistory03Entity>chunk(CHUNK_SIZE)
                 .reader(dumpKanrenshaPersonHistory03ItemReader).writer(dumpKanrenshaPersonHistory03ItemWriter).build();
     }
 
@@ -581,7 +581,7 @@ public class DumpKanrenshaPersonHistoryBatchConfiguration { // NOPMD
     @Bean(STEP_OUTPUT04)
     protected Step getStep04(final JobRepository jobRepository, final PlatformTransactionManager transactionManager) {
         return new StepBuilder(STEP_OUTPUT04, jobRepository)
-                .<KanrenshaPersonHistory04Entity, KanrenshaPersonHistory04Entity>chunk(CHUNK_SIZE, transactionManager)
+                .<KanrenshaPersonHistory04Entity, KanrenshaPersonHistory04Entity>chunk(CHUNK_SIZE)
                 .reader(dumpKanrenshaPersonHistory04ItemReader).writer(dumpKanrenshaPersonHistory04ItemWriter).build();
     }
 
@@ -595,7 +595,7 @@ public class DumpKanrenshaPersonHistoryBatchConfiguration { // NOPMD
     @Bean(STEP_OUTPUT05)
     protected Step getStep05(final JobRepository jobRepository, final PlatformTransactionManager transactionManager) {
         return new StepBuilder(STEP_OUTPUT05, jobRepository)
-                .<KanrenshaPersonHistory05Entity, KanrenshaPersonHistory05Entity>chunk(CHUNK_SIZE, transactionManager)
+                .<KanrenshaPersonHistory05Entity, KanrenshaPersonHistory05Entity>chunk(CHUNK_SIZE)
                 .reader(dumpKanrenshaPersonHistory05ItemReader).writer(dumpKanrenshaPersonHistory05ItemWriter).build();
     }
 
@@ -609,7 +609,7 @@ public class DumpKanrenshaPersonHistoryBatchConfiguration { // NOPMD
     @Bean(STEP_OUTPUT06)
     protected Step getStep06(final JobRepository jobRepository, final PlatformTransactionManager transactionManager) {
         return new StepBuilder(STEP_OUTPUT06, jobRepository)
-                .<KanrenshaPersonHistory06Entity, KanrenshaPersonHistory06Entity>chunk(CHUNK_SIZE, transactionManager)
+                .<KanrenshaPersonHistory06Entity, KanrenshaPersonHistory06Entity>chunk(CHUNK_SIZE)
                 .reader(dumpKanrenshaPersonHistory06ItemReader).writer(dumpKanrenshaPersonHistory06ItemWriter).build();
     }
 
@@ -623,7 +623,7 @@ public class DumpKanrenshaPersonHistoryBatchConfiguration { // NOPMD
     @Bean(STEP_OUTPUT07)
     protected Step getStep07(final JobRepository jobRepository, final PlatformTransactionManager transactionManager) {
         return new StepBuilder(STEP_OUTPUT07, jobRepository)
-                .<KanrenshaPersonHistory07Entity, KanrenshaPersonHistory07Entity>chunk(CHUNK_SIZE, transactionManager)
+                .<KanrenshaPersonHistory07Entity, KanrenshaPersonHistory07Entity>chunk(CHUNK_SIZE)
                 .reader(dumpKanrenshaPersonHistory07ItemReader).writer(dumpKanrenshaPersonHistory07ItemWriter).build();
     }
 
@@ -637,7 +637,7 @@ public class DumpKanrenshaPersonHistoryBatchConfiguration { // NOPMD
     @Bean(STEP_OUTPUT08)
     protected Step getStep08(final JobRepository jobRepository, final PlatformTransactionManager transactionManager) {
         return new StepBuilder(STEP_OUTPUT01, jobRepository)
-                .<KanrenshaPersonHistory08Entity, KanrenshaPersonHistory08Entity>chunk(CHUNK_SIZE, transactionManager)
+                .<KanrenshaPersonHistory08Entity, KanrenshaPersonHistory08Entity>chunk(CHUNK_SIZE)
                 .reader(dumpKanrenshaPersonHistory08ItemReader).writer(dumpKanrenshaPersonHistory08ItemWriter).build();
     }
 
@@ -651,7 +651,7 @@ public class DumpKanrenshaPersonHistoryBatchConfiguration { // NOPMD
     @Bean(STEP_OUTPUT09)
     protected Step getStep09(final JobRepository jobRepository, final PlatformTransactionManager transactionManager) {
         return new StepBuilder(STEP_OUTPUT09, jobRepository)
-                .<KanrenshaPersonHistory09Entity, KanrenshaPersonHistory09Entity>chunk(CHUNK_SIZE, transactionManager)
+                .<KanrenshaPersonHistory09Entity, KanrenshaPersonHistory09Entity>chunk(CHUNK_SIZE)
                 .reader(dumpKanrenshaPersonHistory09ItemReader).writer(dumpKanrenshaPersonHistory09ItemWriter).build();
     }
 
@@ -665,7 +665,7 @@ public class DumpKanrenshaPersonHistoryBatchConfiguration { // NOPMD
     @Bean(STEP_OUTPUT10)
     protected Step getStep10(final JobRepository jobRepository, final PlatformTransactionManager transactionManager) {
         return new StepBuilder(STEP_OUTPUT10, jobRepository)
-                .<KanrenshaPersonHistory10Entity, KanrenshaPersonHistory10Entity>chunk(CHUNK_SIZE, transactionManager)
+                .<KanrenshaPersonHistory10Entity, KanrenshaPersonHistory10Entity>chunk(CHUNK_SIZE)
                 .reader(dumpKanrenshaPersonHistory10ItemReader).writer(dumpKanrenshaPersonHistory10ItemWriter).build();
     }
 
@@ -679,7 +679,7 @@ public class DumpKanrenshaPersonHistoryBatchConfiguration { // NOPMD
     @Bean(STEP_OUTPUT11)
     protected Step getStep11(final JobRepository jobRepository, final PlatformTransactionManager transactionManager) {
         return new StepBuilder(STEP_OUTPUT11, jobRepository)
-                .<KanrenshaPersonHistory11Entity, KanrenshaPersonHistory11Entity>chunk(CHUNK_SIZE, transactionManager)
+                .<KanrenshaPersonHistory11Entity, KanrenshaPersonHistory11Entity>chunk(CHUNK_SIZE)
                 .reader(dumpKanrenshaPersonHistory11ItemReader).writer(dumpKanrenshaPersonHistory11ItemWriter).build();
     }
 
@@ -693,7 +693,7 @@ public class DumpKanrenshaPersonHistoryBatchConfiguration { // NOPMD
     @Bean(STEP_OUTPUT12)
     protected Step getStep12(final JobRepository jobRepository, final PlatformTransactionManager transactionManager) {
         return new StepBuilder(STEP_OUTPUT12, jobRepository)
-                .<KanrenshaPersonHistory12Entity, KanrenshaPersonHistory12Entity>chunk(CHUNK_SIZE, transactionManager)
+                .<KanrenshaPersonHistory12Entity, KanrenshaPersonHistory12Entity>chunk(CHUNK_SIZE)
                 .reader(dumpKanrenshaPersonHistory12ItemReader).writer(dumpKanrenshaPersonHistory12ItemWriter).build();
     }
 
@@ -707,7 +707,7 @@ public class DumpKanrenshaPersonHistoryBatchConfiguration { // NOPMD
     @Bean(STEP_OUTPUT13)
     protected Step getStep13(final JobRepository jobRepository, final PlatformTransactionManager transactionManager) {
         return new StepBuilder(STEP_OUTPUT13, jobRepository)
-                .<KanrenshaPersonHistory13Entity, KanrenshaPersonHistory13Entity>chunk(CHUNK_SIZE, transactionManager)
+                .<KanrenshaPersonHistory13Entity, KanrenshaPersonHistory13Entity>chunk(CHUNK_SIZE)
                 .reader(dumpKanrenshaPersonHistory13ItemReader).writer(dumpKanrenshaPersonHistory13ItemWriter).build();
     }
 
@@ -721,7 +721,7 @@ public class DumpKanrenshaPersonHistoryBatchConfiguration { // NOPMD
     @Bean(STEP_OUTPUT14)
     protected Step getStep14(final JobRepository jobRepository, final PlatformTransactionManager transactionManager) {
         return new StepBuilder(STEP_OUTPUT14, jobRepository)
-                .<KanrenshaPersonHistory14Entity, KanrenshaPersonHistory14Entity>chunk(CHUNK_SIZE, transactionManager)
+                .<KanrenshaPersonHistory14Entity, KanrenshaPersonHistory14Entity>chunk(CHUNK_SIZE)
                 .reader(dumpKanrenshaPersonHistory14ItemReader).writer(dumpKanrenshaPersonHistory14ItemWriter).build();
     }
 
@@ -735,7 +735,7 @@ public class DumpKanrenshaPersonHistoryBatchConfiguration { // NOPMD
     @Bean(STEP_OUTPUT15)
     protected Step getStep15(final JobRepository jobRepository, final PlatformTransactionManager transactionManager) {
         return new StepBuilder(STEP_OUTPUT15, jobRepository)
-                .<KanrenshaPersonHistory15Entity, KanrenshaPersonHistory15Entity>chunk(CHUNK_SIZE, transactionManager)
+                .<KanrenshaPersonHistory15Entity, KanrenshaPersonHistory15Entity>chunk(CHUNK_SIZE)
                 .reader(dumpKanrenshaPersonHistory15ItemReader).writer(dumpKanrenshaPersonHistory15ItemWriter).build();
     }
 
@@ -749,7 +749,7 @@ public class DumpKanrenshaPersonHistoryBatchConfiguration { // NOPMD
     @Bean(STEP_OUTPUT16)
     protected Step getStep16(final JobRepository jobRepository, final PlatformTransactionManager transactionManager) {
         return new StepBuilder(STEP_OUTPUT16, jobRepository)
-                .<KanrenshaPersonHistory16Entity, KanrenshaPersonHistory16Entity>chunk(CHUNK_SIZE, transactionManager)
+                .<KanrenshaPersonHistory16Entity, KanrenshaPersonHistory16Entity>chunk(CHUNK_SIZE)
                 .reader(dumpKanrenshaPersonHistory16ItemReader).writer(dumpKanrenshaPersonHistory16ItemWriter).build();
     }
 
@@ -763,7 +763,7 @@ public class DumpKanrenshaPersonHistoryBatchConfiguration { // NOPMD
     @Bean(STEP_OUTPUT17)
     protected Step getStep17(final JobRepository jobRepository, final PlatformTransactionManager transactionManager) {
         return new StepBuilder(STEP_OUTPUT17, jobRepository)
-                .<KanrenshaPersonHistory17Entity, KanrenshaPersonHistory17Entity>chunk(CHUNK_SIZE, transactionManager)
+                .<KanrenshaPersonHistory17Entity, KanrenshaPersonHistory17Entity>chunk(CHUNK_SIZE)
                 .reader(dumpKanrenshaPersonHistory17ItemReader).writer(dumpKanrenshaPersonHistory17ItemWriter).build();
     }
 
@@ -777,7 +777,7 @@ public class DumpKanrenshaPersonHistoryBatchConfiguration { // NOPMD
     @Bean(STEP_OUTPUT18)
     protected Step getStep18(final JobRepository jobRepository, final PlatformTransactionManager transactionManager) {
         return new StepBuilder(STEP_OUTPUT18, jobRepository)
-                .<KanrenshaPersonHistory18Entity, KanrenshaPersonHistory18Entity>chunk(CHUNK_SIZE, transactionManager)
+                .<KanrenshaPersonHistory18Entity, KanrenshaPersonHistory18Entity>chunk(CHUNK_SIZE)
                 .reader(dumpKanrenshaPersonHistory18ItemReader).writer(dumpKanrenshaPersonHistory18ItemWriter).build();
     }
 
@@ -791,7 +791,7 @@ public class DumpKanrenshaPersonHistoryBatchConfiguration { // NOPMD
     @Bean(STEP_OUTPUT19)
     protected Step getStep19(final JobRepository jobRepository, final PlatformTransactionManager transactionManager) {
         return new StepBuilder(STEP_OUTPUT19, jobRepository)
-                .<KanrenshaPersonHistory19Entity, KanrenshaPersonHistory19Entity>chunk(CHUNK_SIZE, transactionManager)
+                .<KanrenshaPersonHistory19Entity, KanrenshaPersonHistory19Entity>chunk(CHUNK_SIZE)
                 .reader(dumpKanrenshaPersonHistory19ItemReader).writer(dumpKanrenshaPersonHistory19ItemWriter).build();
     }
 
@@ -805,7 +805,7 @@ public class DumpKanrenshaPersonHistoryBatchConfiguration { // NOPMD
     @Bean(STEP_OUTPUT20)
     protected Step getStep20(final JobRepository jobRepository, final PlatformTransactionManager transactionManager) {
         return new StepBuilder(STEP_OUTPUT20, jobRepository)
-                .<KanrenshaPersonHistory20Entity, KanrenshaPersonHistory20Entity>chunk(CHUNK_SIZE, transactionManager)
+                .<KanrenshaPersonHistory20Entity, KanrenshaPersonHistory20Entity>chunk(CHUNK_SIZE)
                 .reader(dumpKanrenshaPersonHistory20ItemReader).writer(dumpKanrenshaPersonHistory20ItemWriter).build();
     }
 
@@ -819,7 +819,7 @@ public class DumpKanrenshaPersonHistoryBatchConfiguration { // NOPMD
     @Bean(STEP_OUTPUT21)
     protected Step getStep21(final JobRepository jobRepository, final PlatformTransactionManager transactionManager) {
         return new StepBuilder(STEP_OUTPUT21, jobRepository)
-                .<KanrenshaPersonHistory21Entity, KanrenshaPersonHistory21Entity>chunk(CHUNK_SIZE, transactionManager)
+                .<KanrenshaPersonHistory21Entity, KanrenshaPersonHistory21Entity>chunk(CHUNK_SIZE)
                 .reader(dumpKanrenshaPersonHistory21ItemReader).writer(dumpKanrenshaPersonHistory21ItemWriter).build();
     }
 
@@ -833,7 +833,7 @@ public class DumpKanrenshaPersonHistoryBatchConfiguration { // NOPMD
     @Bean(STEP_OUTPUT22)
     protected Step getStep22(final JobRepository jobRepository, final PlatformTransactionManager transactionManager) {
         return new StepBuilder(STEP_OUTPUT22, jobRepository)
-                .<KanrenshaPersonHistory22Entity, KanrenshaPersonHistory22Entity>chunk(CHUNK_SIZE, transactionManager)
+                .<KanrenshaPersonHistory22Entity, KanrenshaPersonHistory22Entity>chunk(CHUNK_SIZE)
                 .reader(dumpKanrenshaPersonHistory22ItemReader).writer(dumpKanrenshaPersonHistory22ItemWriter).build();
     }
 
@@ -847,7 +847,7 @@ public class DumpKanrenshaPersonHistoryBatchConfiguration { // NOPMD
     @Bean(STEP_OUTPUT23)
     protected Step getStep23(final JobRepository jobRepository, final PlatformTransactionManager transactionManager) {
         return new StepBuilder(STEP_OUTPUT23, jobRepository)
-                .<KanrenshaPersonHistory23Entity, KanrenshaPersonHistory23Entity>chunk(CHUNK_SIZE, transactionManager)
+                .<KanrenshaPersonHistory23Entity, KanrenshaPersonHistory23Entity>chunk(CHUNK_SIZE)
                 .reader(dumpKanrenshaPersonHistory23ItemReader).writer(dumpKanrenshaPersonHistory23ItemWriter).build();
     }
 
@@ -861,7 +861,7 @@ public class DumpKanrenshaPersonHistoryBatchConfiguration { // NOPMD
     @Bean(STEP_OUTPUT24)
     protected Step getStep24(final JobRepository jobRepository, final PlatformTransactionManager transactionManager) {
         return new StepBuilder(STEP_OUTPUT24, jobRepository)
-                .<KanrenshaPersonHistory24Entity, KanrenshaPersonHistory24Entity>chunk(CHUNK_SIZE, transactionManager)
+                .<KanrenshaPersonHistory24Entity, KanrenshaPersonHistory24Entity>chunk(CHUNK_SIZE)
                 .reader(dumpKanrenshaPersonHistory24ItemReader).writer(dumpKanrenshaPersonHistory24ItemWriter).build();
     }
 
@@ -875,7 +875,7 @@ public class DumpKanrenshaPersonHistoryBatchConfiguration { // NOPMD
     @Bean(STEP_OUTPUT25)
     protected Step getStep25(final JobRepository jobRepository, final PlatformTransactionManager transactionManager) {
         return new StepBuilder(STEP_OUTPUT25, jobRepository)
-                .<KanrenshaPersonHistory25Entity, KanrenshaPersonHistory25Entity>chunk(CHUNK_SIZE, transactionManager)
+                .<KanrenshaPersonHistory25Entity, KanrenshaPersonHistory25Entity>chunk(CHUNK_SIZE)
                 .reader(dumpKanrenshaPersonHistory25ItemReader).writer(dumpKanrenshaPersonHistory25ItemWriter).build();
     }
 
@@ -889,7 +889,7 @@ public class DumpKanrenshaPersonHistoryBatchConfiguration { // NOPMD
     @Bean(STEP_OUTPUT26)
     protected Step getStep26(final JobRepository jobRepository, final PlatformTransactionManager transactionManager) {
         return new StepBuilder(STEP_OUTPUT26, jobRepository)
-                .<KanrenshaPersonHistory26Entity, KanrenshaPersonHistory26Entity>chunk(CHUNK_SIZE, transactionManager)
+                .<KanrenshaPersonHistory26Entity, KanrenshaPersonHistory26Entity>chunk(CHUNK_SIZE)
                 .reader(dumpKanrenshaPersonHistory26ItemReader).writer(dumpKanrenshaPersonHistory26ItemWriter).build();
     }
 
@@ -903,7 +903,7 @@ public class DumpKanrenshaPersonHistoryBatchConfiguration { // NOPMD
     @Bean(STEP_OUTPUT27)
     protected Step getStep27(final JobRepository jobRepository, final PlatformTransactionManager transactionManager) {
         return new StepBuilder(STEP_OUTPUT27, jobRepository)
-                .<KanrenshaPersonHistory27Entity, KanrenshaPersonHistory27Entity>chunk(CHUNK_SIZE, transactionManager)
+                .<KanrenshaPersonHistory27Entity, KanrenshaPersonHistory27Entity>chunk(CHUNK_SIZE)
                 .reader(dumpKanrenshaPersonHistory27ItemReader).writer(dumpKanrenshaPersonHistory27ItemWriter).build();
     }
 
@@ -917,7 +917,7 @@ public class DumpKanrenshaPersonHistoryBatchConfiguration { // NOPMD
     @Bean(STEP_OUTPUT28)
     protected Step getStep28(final JobRepository jobRepository, final PlatformTransactionManager transactionManager) {
         return new StepBuilder(STEP_OUTPUT28, jobRepository)
-                .<KanrenshaPersonHistory28Entity, KanrenshaPersonHistory28Entity>chunk(CHUNK_SIZE, transactionManager)
+                .<KanrenshaPersonHistory28Entity, KanrenshaPersonHistory28Entity>chunk(CHUNK_SIZE)
                 .reader(dumpKanrenshaPersonHistory28ItemReader).writer(dumpKanrenshaPersonHistory28ItemWriter).build();
     }
 
@@ -931,7 +931,7 @@ public class DumpKanrenshaPersonHistoryBatchConfiguration { // NOPMD
     @Bean(STEP_OUTPUT29)
     protected Step getStep29(final JobRepository jobRepository, final PlatformTransactionManager transactionManager) {
         return new StepBuilder(STEP_OUTPUT29, jobRepository)
-                .<KanrenshaPersonHistory29Entity, KanrenshaPersonHistory29Entity>chunk(CHUNK_SIZE, transactionManager)
+                .<KanrenshaPersonHistory29Entity, KanrenshaPersonHistory29Entity>chunk(CHUNK_SIZE)
                 .reader(dumpKanrenshaPersonHistory29ItemReader).writer(dumpKanrenshaPersonHistory29ItemWriter).build();
     }
 
@@ -945,7 +945,7 @@ public class DumpKanrenshaPersonHistoryBatchConfiguration { // NOPMD
     @Bean(STEP_OUTPUT30)
     protected Step getStep30(final JobRepository jobRepository, final PlatformTransactionManager transactionManager) {
         return new StepBuilder(STEP_OUTPUT30, jobRepository)
-                .<KanrenshaPersonHistory30Entity, KanrenshaPersonHistory30Entity>chunk(CHUNK_SIZE, transactionManager)
+                .<KanrenshaPersonHistory30Entity, KanrenshaPersonHistory30Entity>chunk(CHUNK_SIZE)
                 .reader(dumpKanrenshaPersonHistory30ItemReader).writer(dumpKanrenshaPersonHistory30ItemWriter).build();
     }
 
@@ -959,7 +959,7 @@ public class DumpKanrenshaPersonHistoryBatchConfiguration { // NOPMD
     @Bean(STEP_OUTPUT31)
     protected Step getStep31(final JobRepository jobRepository, final PlatformTransactionManager transactionManager) {
         return new StepBuilder(STEP_OUTPUT31, jobRepository)
-                .<KanrenshaPersonHistory31Entity, KanrenshaPersonHistory31Entity>chunk(CHUNK_SIZE, transactionManager)
+                .<KanrenshaPersonHistory31Entity, KanrenshaPersonHistory31Entity>chunk(CHUNK_SIZE)
                 .reader(dumpKanrenshaPersonHistory31ItemReader).writer(dumpKanrenshaPersonHistory31ItemWriter).build();
     }
 
@@ -973,7 +973,7 @@ public class DumpKanrenshaPersonHistoryBatchConfiguration { // NOPMD
     @Bean(STEP_OUTPUT32)
     protected Step getStep32(final JobRepository jobRepository, final PlatformTransactionManager transactionManager) {
         return new StepBuilder(STEP_OUTPUT32, jobRepository)
-                .<KanrenshaPersonHistory32Entity, KanrenshaPersonHistory32Entity>chunk(CHUNK_SIZE, transactionManager)
+                .<KanrenshaPersonHistory32Entity, KanrenshaPersonHistory32Entity>chunk(CHUNK_SIZE)
                 .reader(dumpKanrenshaPersonHistory32ItemReader).writer(dumpKanrenshaPersonHistory32ItemWriter).build();
     }
 
@@ -987,7 +987,7 @@ public class DumpKanrenshaPersonHistoryBatchConfiguration { // NOPMD
     @Bean(STEP_OUTPUT33)
     protected Step getStep33(final JobRepository jobRepository, final PlatformTransactionManager transactionManager) {
         return new StepBuilder(STEP_OUTPUT33, jobRepository)
-                .<KanrenshaPersonHistory33Entity, KanrenshaPersonHistory33Entity>chunk(CHUNK_SIZE, transactionManager)
+                .<KanrenshaPersonHistory33Entity, KanrenshaPersonHistory33Entity>chunk(CHUNK_SIZE)
                 .reader(dumpKanrenshaPersonHistory33ItemReader).writer(dumpKanrenshaPersonHistory33ItemWriter).build();
     }
 
@@ -1001,7 +1001,7 @@ public class DumpKanrenshaPersonHistoryBatchConfiguration { // NOPMD
     @Bean(STEP_OUTPUT34)
     protected Step getStep34(final JobRepository jobRepository, final PlatformTransactionManager transactionManager) {
         return new StepBuilder(STEP_OUTPUT34, jobRepository)
-                .<KanrenshaPersonHistory34Entity, KanrenshaPersonHistory34Entity>chunk(CHUNK_SIZE, transactionManager)
+                .<KanrenshaPersonHistory34Entity, KanrenshaPersonHistory34Entity>chunk(CHUNK_SIZE)
                 .reader(dumpKanrenshaPersonHistory34ItemReader).writer(dumpKanrenshaPersonHistory34ItemWriter).build();
     }
 
@@ -1015,7 +1015,7 @@ public class DumpKanrenshaPersonHistoryBatchConfiguration { // NOPMD
     @Bean(STEP_OUTPUT35)
     protected Step getStep35(final JobRepository jobRepository, final PlatformTransactionManager transactionManager) {
         return new StepBuilder(STEP_OUTPUT35, jobRepository)
-                .<KanrenshaPersonHistory35Entity, KanrenshaPersonHistory35Entity>chunk(CHUNK_SIZE, transactionManager)
+                .<KanrenshaPersonHistory35Entity, KanrenshaPersonHistory35Entity>chunk(CHUNK_SIZE)
                 .reader(dumpKanrenshaPersonHistory35ItemReader).writer(dumpKanrenshaPersonHistory35ItemWriter).build();
     }
 
@@ -1029,7 +1029,7 @@ public class DumpKanrenshaPersonHistoryBatchConfiguration { // NOPMD
     @Bean(STEP_OUTPUT36)
     protected Step getStep36(final JobRepository jobRepository, final PlatformTransactionManager transactionManager) {
         return new StepBuilder(STEP_OUTPUT36, jobRepository)
-                .<KanrenshaPersonHistory36Entity, KanrenshaPersonHistory36Entity>chunk(CHUNK_SIZE, transactionManager)
+                .<KanrenshaPersonHistory36Entity, KanrenshaPersonHistory36Entity>chunk(CHUNK_SIZE)
                 .reader(dumpKanrenshaPersonHistory36ItemReader).writer(dumpKanrenshaPersonHistory36ItemWriter).build();
     }
 
@@ -1043,7 +1043,7 @@ public class DumpKanrenshaPersonHistoryBatchConfiguration { // NOPMD
     @Bean(STEP_OUTPUT37)
     protected Step getStep37(final JobRepository jobRepository, final PlatformTransactionManager transactionManager) {
         return new StepBuilder(STEP_OUTPUT37, jobRepository)
-                .<KanrenshaPersonHistory37Entity, KanrenshaPersonHistory37Entity>chunk(CHUNK_SIZE, transactionManager)
+                .<KanrenshaPersonHistory37Entity, KanrenshaPersonHistory37Entity>chunk(CHUNK_SIZE)
                 .reader(dumpKanrenshaPersonHistory37ItemReader).writer(dumpKanrenshaPersonHistory37ItemWriter).build();
     }
 
@@ -1057,7 +1057,7 @@ public class DumpKanrenshaPersonHistoryBatchConfiguration { // NOPMD
     @Bean(STEP_OUTPUT38)
     protected Step getStep38(final JobRepository jobRepository, final PlatformTransactionManager transactionManager) {
         return new StepBuilder(STEP_OUTPUT38, jobRepository)
-                .<KanrenshaPersonHistory38Entity, KanrenshaPersonHistory38Entity>chunk(CHUNK_SIZE, transactionManager)
+                .<KanrenshaPersonHistory38Entity, KanrenshaPersonHistory38Entity>chunk(CHUNK_SIZE)
                 .reader(dumpKanrenshaPersonHistory38ItemReader).writer(dumpKanrenshaPersonHistory38ItemWriter).build();
     }
 
@@ -1071,7 +1071,7 @@ public class DumpKanrenshaPersonHistoryBatchConfiguration { // NOPMD
     @Bean(STEP_OUTPUT39)
     protected Step getStep39(final JobRepository jobRepository, final PlatformTransactionManager transactionManager) {
         return new StepBuilder(STEP_OUTPUT39, jobRepository)
-                .<KanrenshaPersonHistory39Entity, KanrenshaPersonHistory39Entity>chunk(CHUNK_SIZE, transactionManager)
+                .<KanrenshaPersonHistory39Entity, KanrenshaPersonHistory39Entity>chunk(CHUNK_SIZE)
                 .reader(dumpKanrenshaPersonHistory39ItemReader).writer(dumpKanrenshaPersonHistory39ItemWriter).build();
     }
 
@@ -1085,7 +1085,7 @@ public class DumpKanrenshaPersonHistoryBatchConfiguration { // NOPMD
     @Bean(STEP_OUTPUT40)
     protected Step getStep40(final JobRepository jobRepository, final PlatformTransactionManager transactionManager) {
         return new StepBuilder(STEP_OUTPUT40, jobRepository)
-                .<KanrenshaPersonHistory40Entity, KanrenshaPersonHistory40Entity>chunk(CHUNK_SIZE, transactionManager)
+                .<KanrenshaPersonHistory40Entity, KanrenshaPersonHistory40Entity>chunk(CHUNK_SIZE)
                 .reader(dumpKanrenshaPersonHistory40ItemReader).writer(dumpKanrenshaPersonHistory40ItemWriter).build();
     }
 
@@ -1099,7 +1099,7 @@ public class DumpKanrenshaPersonHistoryBatchConfiguration { // NOPMD
     @Bean(STEP_OUTPUT41)
     protected Step getStep41(final JobRepository jobRepository, final PlatformTransactionManager transactionManager) {
         return new StepBuilder(STEP_OUTPUT41, jobRepository)
-                .<KanrenshaPersonHistory41Entity, KanrenshaPersonHistory41Entity>chunk(CHUNK_SIZE, transactionManager)
+                .<KanrenshaPersonHistory41Entity, KanrenshaPersonHistory41Entity>chunk(CHUNK_SIZE)
                 .reader(dumpKanrenshaPersonHistory41ItemReader).writer(dumpKanrenshaPersonHistory41ItemWriter).build();
     }
 
@@ -1113,7 +1113,7 @@ public class DumpKanrenshaPersonHistoryBatchConfiguration { // NOPMD
     @Bean(STEP_OUTPUT42)
     protected Step getStep42(final JobRepository jobRepository, final PlatformTransactionManager transactionManager) {
         return new StepBuilder(STEP_OUTPUT42, jobRepository)
-                .<KanrenshaPersonHistory42Entity, KanrenshaPersonHistory42Entity>chunk(CHUNK_SIZE, transactionManager)
+                .<KanrenshaPersonHistory42Entity, KanrenshaPersonHistory42Entity>chunk(CHUNK_SIZE)
                 .reader(dumpKanrenshaPersonHistory42ItemReader).writer(dumpKanrenshaPersonHistory42ItemWriter).build();
     }
 
@@ -1127,7 +1127,7 @@ public class DumpKanrenshaPersonHistoryBatchConfiguration { // NOPMD
     @Bean(STEP_OUTPUT43)
     protected Step getStep43(final JobRepository jobRepository, final PlatformTransactionManager transactionManager) {
         return new StepBuilder(STEP_OUTPUT43, jobRepository)
-                .<KanrenshaPersonHistory43Entity, KanrenshaPersonHistory43Entity>chunk(CHUNK_SIZE, transactionManager)
+                .<KanrenshaPersonHistory43Entity, KanrenshaPersonHistory43Entity>chunk(CHUNK_SIZE)
                 .reader(dumpKanrenshaPersonHistory43ItemReader).writer(dumpKanrenshaPersonHistory43ItemWriter).build();
     }
 
@@ -1141,7 +1141,7 @@ public class DumpKanrenshaPersonHistoryBatchConfiguration { // NOPMD
     @Bean(STEP_OUTPUT44)
     protected Step getStep44(final JobRepository jobRepository, final PlatformTransactionManager transactionManager) {
         return new StepBuilder(STEP_OUTPUT44, jobRepository)
-                .<KanrenshaPersonHistory44Entity, KanrenshaPersonHistory44Entity>chunk(CHUNK_SIZE, transactionManager)
+                .<KanrenshaPersonHistory44Entity, KanrenshaPersonHistory44Entity>chunk(CHUNK_SIZE)
                 .reader(dumpKanrenshaPersonHistory44ItemReader).writer(dumpKanrenshaPersonHistory44ItemWriter).build();
     }
 
@@ -1155,7 +1155,7 @@ public class DumpKanrenshaPersonHistoryBatchConfiguration { // NOPMD
     @Bean(STEP_OUTPUT45)
     protected Step getStep45(final JobRepository jobRepository, final PlatformTransactionManager transactionManager) {
         return new StepBuilder(STEP_OUTPUT45, jobRepository)
-                .<KanrenshaPersonHistory45Entity, KanrenshaPersonHistory45Entity>chunk(CHUNK_SIZE, transactionManager)
+                .<KanrenshaPersonHistory45Entity, KanrenshaPersonHistory45Entity>chunk(CHUNK_SIZE)
                 .reader(dumpKanrenshaPersonHistory45ItemReader).writer(dumpKanrenshaPersonHistory45ItemWriter).build();
     }
 
@@ -1169,7 +1169,7 @@ public class DumpKanrenshaPersonHistoryBatchConfiguration { // NOPMD
     @Bean(STEP_OUTPUT46)
     protected Step getStep46(final JobRepository jobRepository, final PlatformTransactionManager transactionManager) {
         return new StepBuilder(STEP_OUTPUT46, jobRepository)
-                .<KanrenshaPersonHistory46Entity, KanrenshaPersonHistory46Entity>chunk(CHUNK_SIZE, transactionManager)
+                .<KanrenshaPersonHistory46Entity, KanrenshaPersonHistory46Entity>chunk(CHUNK_SIZE)
                 .reader(dumpKanrenshaPersonHistory46ItemReader).writer(dumpKanrenshaPersonHistory46ItemWriter).build();
     }
 
@@ -1183,7 +1183,7 @@ public class DumpKanrenshaPersonHistoryBatchConfiguration { // NOPMD
     @Bean(STEP_OUTPUT47)
     protected Step getStep47(final JobRepository jobRepository, final PlatformTransactionManager transactionManager) {
         return new StepBuilder(STEP_OUTPUT47, jobRepository)
-                .<KanrenshaPersonHistory47Entity, KanrenshaPersonHistory47Entity>chunk(CHUNK_SIZE, transactionManager)
+                .<KanrenshaPersonHistory47Entity, KanrenshaPersonHistory47Entity>chunk(CHUNK_SIZE)
                 .reader(dumpKanrenshaPersonHistory47ItemReader).writer(dumpKanrenshaPersonHistory47ItemWriter).build();
     }
 
@@ -1197,7 +1197,7 @@ public class DumpKanrenshaPersonHistoryBatchConfiguration { // NOPMD
     @Bean(STEP_OUTPUT99)
     protected Step getStep99(final JobRepository jobRepository, final PlatformTransactionManager transactionManager) {
         return new StepBuilder(STEP_OUTPUT99, jobRepository)
-                .<KanrenshaPersonHistory99Entity, KanrenshaPersonHistory99Entity>chunk(CHUNK_SIZE, transactionManager)
+                .<KanrenshaPersonHistory99Entity, KanrenshaPersonHistory99Entity>chunk(CHUNK_SIZE)
                 .reader(dumpKanrenshaPersonHistory99ItemReader).writer(dumpKanrenshaPersonHistory99ItemWriter).build();
     }
 

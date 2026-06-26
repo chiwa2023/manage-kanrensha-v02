@@ -10,7 +10,7 @@ import org.springframework.batch.core.job.Job;
 import org.springframework.batch.core.job.JobExecution;
 import org.springframework.batch.core.job.parameters.JobParameters;
 import org.springframework.batch.core.job.parameters.JobParametersBuilder;
-import org.springframework.batch.test.JobLauncherTestUtils;
+import org.springframework.batch.test.JobOperatorTestUtils;
 import org.springframework.batch.test.context.SpringBatchTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -27,7 +27,7 @@ import net.seijishikin.jp.normalize.manage.kanrensha.BackApplication;
 import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateLeastUserForTestUtil;
 
 /**
- * RepairPostalCodeIrregularBatchConfiguration単体テスト 
+ * RepairPostalCodeIrregularBatchConfiguration単体テスト
  */
 @SpringJUnitConfig
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
@@ -39,7 +39,7 @@ class RepairPostalCodeIrregularBatchConfigurationTest {
 
     /** テストユーティリティ */
     @Autowired
-    private JobLauncherTestUtils jobLauncherTestUtils;
+    private JobOperatorTestUtils jobOperatorTestUtils;
 
     /** 起動をするJob */
     @Qualifier(RepairPostalCodeIrregularBatchConfiguration.JOB_NAME)
@@ -57,7 +57,7 @@ class RepairPostalCodeIrregularBatchConfigurationTest {
     @Tag("TableTruncate")
     void testExecute() throws Exception {
 
-        jobLauncherTestUtils.setJob(repairPostalCodeIrregularBatchConfiguration);
+        jobOperatorTestUtils.setJob(repairPostalCodeIrregularBatchConfiguration);
 
         LeastUserDto userDto = CreateLeastUserForTestUtil.practice();
 
@@ -69,7 +69,7 @@ class RepairPostalCodeIrregularBatchConfigurationTest {
                 .addLong("userCode", (long) userDto.getUserPersonCode())
                 .addString("userName", userDto.getUserPersonName()).toJobParameters();
 
-        JobExecution jobExecution = jobLauncherTestUtils.launchJob(jobParameters);
+        JobExecution jobExecution = jobOperatorTestUtils.startJob(jobParameters);
         assertEquals("COMPLETED", jobExecution.getExitStatus().getExitCode(), "作業完了Statusが戻ってくる");
 
     }

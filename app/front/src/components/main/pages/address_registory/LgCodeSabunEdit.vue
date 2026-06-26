@@ -9,6 +9,7 @@ import { getLoginUser } from '../../utils/getLoginUser';
 import getAuthorizedPromiseArea from '../../dto/login/getAuthorizedPromiseArea';
 import { AccessTokenNotFoundError, TokenRefreshError } from '../../dto/login/errors';
 import ManagerInfo from '../../common/user_info/ManagerInfo.vue';
+import type { SelectOptionStringDtoInterface } from '../../dto/select_options/selectOptionStringDto.ts';
 
 
 // よく使う定数
@@ -192,6 +193,7 @@ function onMove(editId: number) {
         resultDto.value.listEntity.filter((e) => editId === e.addressCityDeleteId)[0];
     if (undefined !== tempEntity) {
         editCapsuleDto.value.editEntity = tempEntity;
+        editCapsuleDto.value.srcLgName = tempEntity.orgName;
     }
 }
 
@@ -256,8 +258,9 @@ function onSave() {
 }
 
 // 地方自治体コードを受信
-function recieveLgCode(data: string) {
-    editCapsuleDto.value.moveLgCode = data;
+function recieveLgCode(optionDto: SelectOptionStringDtoInterface) {
+    editCapsuleDto.value.moveLgCode = optionDto.value;
+    editCapsuleDto.value.moveLgName = optionDto.text;
 }
 </script>
 <template>
@@ -311,7 +314,18 @@ function recieveLgCode(data: string) {
             移動先地方自治体コード
         </div>
         <div class="right-area">
-            <InputLgcode :is-digit5="false" :lg-code="editCapsuleDto.moveLgCode" @send-lg-code="recieveLgCode"></InputLgcode>
+            <InputLgcode :is-digit5="false" :lg-code="editCapsuleDto.moveLgCode" @send-lg-code="recieveLgCode">
+            </InputLgcode>
+        </div>
+    </div>
+
+    <div class="one-line">
+        <div class="left-area">
+
+        </div>
+        <div class="right-area">
+            <input type="text" v-model="editCapsuleDto.srcLgName"><span class="left-space">を</span><input type="text"
+                v-model="editCapsuleDto.moveLgName" class="left-space"><span class="left-space">に移動(置換)</span>
         </div>
     </div>
 

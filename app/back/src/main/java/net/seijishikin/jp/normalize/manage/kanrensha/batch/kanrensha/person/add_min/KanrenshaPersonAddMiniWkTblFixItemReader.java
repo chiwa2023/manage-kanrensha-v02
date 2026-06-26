@@ -8,7 +8,7 @@ import org.springframework.batch.core.step.StepExecution;
 import org.springframework.batch.core.annotation.BeforeStep;
 import org.springframework.batch.infrastructure.item.data.RepositoryItemReader;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort.Direction;
+
 import org.springframework.stereotype.Component;
 
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.WkTblKanrenshaPersonAddMinResultEntity;
@@ -30,7 +30,7 @@ public class KanrenshaPersonAddMiniWkTblFixItemReader
     public KanrenshaPersonAddMiniWkTblFixItemReader(
             final @Autowired WkTblKanrenshaPersonAddMinResultRepository wkTblKanrenshaPersonAddMinResultRepository) {
 
-        super(wkTblKanrenshaPersonAddMinResultRepository, new HashMap<String, Direction>());
+        super(wkTblKanrenshaPersonAddMinResultRepository, new HashMap<>());
         super.setMethodName("findByInsertUserCodeAndIsLatest");
 
         List<Object> list = new ArrayList<>();

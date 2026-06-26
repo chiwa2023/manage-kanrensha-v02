@@ -82,7 +82,7 @@ public class DumpMasterPersonBatchConfiguration {
     protected Step getStepDump(final JobRepository jobRepository, final PlatformTransactionManager transactionManager) {
 
         return new StepBuilder(STEP_DUMP, jobRepository)
-                .<KanrenshaPersonMasterEntity, DumpKanrenshaPersonMasterDto>chunk(CHUNK_SIZE, transactionManager)
+                .<KanrenshaPersonMasterEntity, DumpKanrenshaPersonMasterDto>chunk(CHUNK_SIZE)
                 .reader(dumpMasterPersonItemReader).processor(dumpMasterPersonProcessor)
                 .writer(dumpMasterPersonItemWriter).build();
     }

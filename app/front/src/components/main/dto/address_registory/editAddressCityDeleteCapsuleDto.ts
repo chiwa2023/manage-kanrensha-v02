@@ -6,8 +6,15 @@ interface EditAddressCityDeleteCapsuleDtoInterface extends FrameworkCapsuleDtoIn
     /** 地方自治体コード削除編集Entity */
     editEntity: AddressCityDeleteEntityInterface;
 
+    /** 編集地方自治体名(置換対象) */
+    srcLgName: string;
+
     /** 移行地方自治体コード */
     moveLgCode: string;
+
+    /** 移行地方自治体名(置換対象) */
+    moveLgName: string;
+
 }
 
 
@@ -16,14 +23,23 @@ class EditAddressCityDeleteCapsuleDto extends FrameworkCapsuleDto implements Edi
     /** 地方自治体コード削除編集Entity */
     editEntity: AddressCityDeleteEntityInterface;
 
+    /** 編集地方自治体名(置換対象) */
+    srcLgName: string;
+
     /** 移行地方自治体コード */
     moveLgCode: string;
 
+    /** 移行地方自治体名(置換対象) */
+    moveLgName: string;
+
     constructor() {
         super();
+        const INIT_STRING: string = "";
 
         this.editEntity = new AddressCityDeleteEntity();
-        this.moveLgCode = "";
+        this.moveLgCode = INIT_STRING;
+        this.srcLgName = INIT_STRING;
+        this.moveLgName = INIT_STRING;
     }
 }
 

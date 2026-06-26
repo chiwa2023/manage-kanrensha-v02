@@ -9,6 +9,7 @@ import { SabunPreparAddressRsdtCapsuleDto, type SabunPreparAddressRsdtCapsuleDto
 import RoutePathConstants from '../../../../routePathConstants.ts';
 import getAuthorizedPromiseArea from '../../dto/login/getAuthorizedPromiseArea.ts';
 import { AccessTokenNotFoundError, TokenRefreshError } from '../../dto/login/errors.ts';
+import type { SelectOptionStringDtoInterface } from '../../dto/select_options/selectOptionStringDto.ts';
 
 // よく使う定数
 const BLANK: string = "";
@@ -105,10 +106,9 @@ function recieveSubmit(button: string) {
     messageType.value = 0;
 }
 
-
 // 地方自治体コードを受信
-function recieveLgCode(data: string) {
-    capsuleDto.value.lgCode = data;
+function recieveLgCode(optionDto: SelectOptionStringDtoInterface) {
+    capsuleDto.value.lgCode = optionDto.value;
 }
 
 </script>

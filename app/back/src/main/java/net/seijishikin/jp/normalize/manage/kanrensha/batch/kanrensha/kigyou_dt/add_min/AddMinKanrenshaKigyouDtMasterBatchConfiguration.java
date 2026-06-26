@@ -139,7 +139,7 @@ public class AddMinKanrenshaKigyouDtMasterBatchConfiguration {
     protected Step getStepCsv(final JobRepository jobRepository, final PlatformTransactionManager transactionManager) {
 
         return new StepBuilder(STEP_CSV, jobRepository)
-                .<KanrenshaKigyouDtAddMiniDto, WkTblKanrenshaKigyouDtAddMinEntity>chunk(CHUNK_SIZE, transactionManager)
+                .<KanrenshaKigyouDtAddMiniDto, WkTblKanrenshaKigyouDtAddMinEntity>chunk(CHUNK_SIZE)
                 .reader(kanrenshaKigyouDtAddMiniCsvItemReader).processor(kanrenshaKigyouDtAddMiniCsvProcessor)
                 .writer(kanrenshaKigyouDtAddMiniCsvItemWriter).build();
     }
@@ -171,8 +171,7 @@ public class AddMinKanrenshaKigyouDtMasterBatchConfiguration {
             final PlatformTransactionManager transactionManager) {
 
         return new StepBuilder(STEP_RECORD, jobRepository)
-                .<WkTblKanrenshaKigyouDtAddMinEntity, WkTblKanrenshaKigyouDtAddMinEntity>chunk(CHUNK_SIZE,
-                        transactionManager)
+                .<WkTblKanrenshaKigyouDtAddMinEntity, WkTblKanrenshaKigyouDtAddMinEntity>chunk(CHUNK_SIZE)
                 .reader(kanrenshaKigyouDtAddMiniRecordItemReader).writer(kanrenshaKigyouDtAddMiniRecordItemWriter)
                 .build();
     }
@@ -188,8 +187,7 @@ public class AddMinKanrenshaKigyouDtMasterBatchConfiguration {
     protected Step getStepFix(final JobRepository jobRepository, final PlatformTransactionManager transactionManager) {
 
         return new StepBuilder(STEP_FIX, jobRepository)
-                .<WkTblKanrenshaKigyouDtAddMinResultEntity, WkTblKanrenshaKigyouDtAddMinEntity>chunk(CHUNK_SIZE,
-                        transactionManager)
+                .<WkTblKanrenshaKigyouDtAddMinResultEntity, WkTblKanrenshaKigyouDtAddMinEntity>chunk(CHUNK_SIZE)
                 .reader(kanrenshaKigyouDtAddMiniWkTblFixItemReader).processor(kanrenshaKigyouDtAddMiniWkTblFixProcessor)
                 .writer(kanrenshaKigyouDtAddMiniWkTblFixItemWriter).build();
     }

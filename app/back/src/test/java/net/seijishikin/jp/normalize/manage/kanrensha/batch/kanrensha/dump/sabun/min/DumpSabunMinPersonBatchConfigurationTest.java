@@ -11,7 +11,7 @@ import org.springframework.batch.core.job.Job;
 import org.springframework.batch.core.job.JobExecution;
 import org.springframework.batch.core.job.parameters.JobParameters;
 import org.springframework.batch.core.job.parameters.JobParametersBuilder;
-import org.springframework.batch.test.JobLauncherTestUtils;
+import org.springframework.batch.test.JobOperatorTestUtils;
 import org.springframework.batch.test.context.SpringBatchTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -66,7 +66,7 @@ class DumpSabunMinPersonBatchConfigurationTest {
 
     /** テストユーティリティ */
     @Autowired
-    private JobLauncherTestUtils jobLauncherTestUtils;
+    private JobOperatorTestUtils jobOperatorTestUtils;
 
     /** 起動をするJob */
     @Qualifier(DumpSabunMinPersonBatchConfiguration.JOB_NAME)
@@ -86,7 +86,7 @@ class DumpSabunMinPersonBatchConfigurationTest {
 
         LeastUserDto userDto = CreateLeastUserForTestUtil.practice();
 
-        jobLauncherTestUtils.setJob(dumpSabunMinPersonBatchConfiguration);
+        jobOperatorTestUtils.setJob(dumpSabunMinPersonBatchConfiguration);
 
         JobParameters jobParameters = new JobParametersBuilder(
                 dumpSabunMinPersonBatchConfiguration.getJobParametersIncrementer().getNext(new JobParameters())) // NOPMD
@@ -101,7 +101,7 @@ class DumpSabunMinPersonBatchConfigurationTest {
                 .addLong(RecordTaskPlanJobExecutionListner.KEY_ID, (long) 453) //
                 .addLong(RecordTaskPlanJobExecutionListner.KEY_CODE, (long) 187).toJobParameters();
 
-        JobExecution jobExecution = jobLauncherTestUtils.launchJob(jobParameters);
+        JobExecution jobExecution = jobOperatorTestUtils.startJob(jobParameters);
         assertEquals("COMPLETED", jobExecution.getExitStatus().getExitCode(), "作業完了Statusが戻ってくる");
     }
 

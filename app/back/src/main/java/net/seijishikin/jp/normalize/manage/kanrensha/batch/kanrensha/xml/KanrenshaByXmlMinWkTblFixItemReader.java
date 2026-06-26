@@ -8,7 +8,7 @@ import org.springframework.batch.core.step.StepExecution;
 import org.springframework.batch.core.annotation.BeforeStep;
 import org.springframework.batch.infrastructure.item.data.RepositoryItemReader;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort.Direction;
+
 import org.springframework.stereotype.Component;
 
 import net.seijishikin.jp.normalize.common_tool.utils.SetTableDataHistoryUtil;
@@ -29,7 +29,7 @@ public class KanrenshaByXmlMinWkTblFixItemReader extends RepositoryItemReader<Wk
     public KanrenshaByXmlMinWkTblFixItemReader(
             final @Autowired WkTblMasterAllByXmlResultRepository wkTblMasterAllByXmlResultRepository) {
 
-        super(wkTblMasterAllByXmlResultRepository, new HashMap<String, Direction>());
+        super(wkTblMasterAllByXmlResultRepository, new HashMap<>());
         super.setMethodName("findByInsertUserCodeAndIsLatest");
 
         List<Object> list = new ArrayList<>();

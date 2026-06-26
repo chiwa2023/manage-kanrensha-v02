@@ -9,7 +9,7 @@ import org.springframework.batch.infrastructure.item.data.RepositoryItemReader;
 import org.springframework.batch.core.annotation.BeforeStep;
 //import org.springframework.batch.infrastructure.item.data.RepositoryItemReader;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort.Direction;
+
 import org.springframework.stereotype.Component;
 
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.AddressPostalIrregularEntity;
@@ -28,7 +28,7 @@ public class ChoicePostalCodeIrregularItemReader extends RepositoryItemReader<Ad
      */
     public ChoicePostalCodeIrregularItemReader(
             final @Autowired AddressPostalIrregularRepository addressPostalIrregularRepository) {
-        super(addressPostalIrregularRepository, new HashMap<String, Direction>());
+        super(addressPostalIrregularRepository, new HashMap<>());
         super.setMethodName("findByLgCodeStartingWithAndAddressOrgLikeAndAddressOrgNotLikeAndIsLatestTrue");
 
         List<Object> list = new ArrayList<>();

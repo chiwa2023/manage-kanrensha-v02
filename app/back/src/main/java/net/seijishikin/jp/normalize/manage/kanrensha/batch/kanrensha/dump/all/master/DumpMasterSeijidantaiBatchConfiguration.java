@@ -82,8 +82,7 @@ public class DumpMasterSeijidantaiBatchConfiguration {
     protected Step getStepDump(final JobRepository jobRepository, final PlatformTransactionManager transactionManager) {
 
         return new StepBuilder(STEP_DUMP, jobRepository)
-                .<KanrenshaSeijidantaiMasterEntity, DumpKanrenshaSeijidantaiMasterDto>chunk(CHUNK_SIZE,
-                        transactionManager)
+                .<KanrenshaSeijidantaiMasterEntity, DumpKanrenshaSeijidantaiMasterDto>chunk(CHUNK_SIZE)
                 .reader(dumpMasterSeijidantaiItemReader).processor(dumpMasterSeijidantaiProcessor)
                 .writer(dumpMasterSeijidantaiItemWriter).build();
     }

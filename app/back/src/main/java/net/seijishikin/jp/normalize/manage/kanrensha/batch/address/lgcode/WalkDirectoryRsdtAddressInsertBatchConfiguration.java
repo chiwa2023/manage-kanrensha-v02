@@ -77,7 +77,7 @@ public class WalkDirectoryRsdtAddressInsertBatchConfiguration {
             final PlatformTransactionManager transactionManager) {
 
         return new StepBuilder(STEP_INSERT_NAME, jobRepository)
-                .<RsdtAddressCsvDto, AddressRsdtBaseEntity>chunk(CHUNK_SIZE, transactionManager)
+                .<RsdtAddressCsvDto, AddressRsdtBaseEntity>chunk(CHUNK_SIZE)
                 .reader(multiRsdtCsvFileReader).processor(rsdtAddressProcessor)
                 .writer(rsdtAddressItemWriter).build();
     }

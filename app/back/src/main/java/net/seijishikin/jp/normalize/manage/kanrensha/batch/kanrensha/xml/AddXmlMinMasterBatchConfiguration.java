@@ -172,8 +172,7 @@ public class AddXmlMinMasterBatchConfiguration {
             final PlatformTransactionManager transactionManager) {
 
         return new StepBuilder(STEP_PERSON_RECORD, jobRepository)
-                .<WkTblKanrenshaPersonAddMinEntity, WkTblKanrenshaPersonAddMinEntity>chunk(CHUNK_SIZE,
-                        transactionManager)
+                .<WkTblKanrenshaPersonAddMinEntity, WkTblKanrenshaPersonAddMinEntity>chunk(CHUNK_SIZE)
                 .reader(kanrenshaPersonAddMiniRecordItemReader).writer(kanrenshaPersonAddMiniRecordItemWriter).build();
     }
 
@@ -189,8 +188,7 @@ public class AddXmlMinMasterBatchConfiguration {
             final PlatformTransactionManager transactionManager) {
 
         return new StepBuilder(STEP_PERSON_FIX, jobRepository)
-                .<WkTblKanrenshaPersonAddMinResultEntity, WkTblKanrenshaPersonAddMinEntity>chunk(CHUNK_SIZE,
-                        transactionManager)
+                .<WkTblKanrenshaPersonAddMinResultEntity, WkTblKanrenshaPersonAddMinEntity>chunk(CHUNK_SIZE)
                 .reader(kanrenshaPersonAddMiniWkTblFixItemReader).processor(kanrenshaPersonAddMiniWkTblFixProcessor)
                 .writer(kanrenshaPersonAddMiniWkTblFixItemWriter).build();
     }
@@ -207,8 +205,7 @@ public class AddXmlMinMasterBatchConfiguration {
             final PlatformTransactionManager transactionManager) {
 
         return new StepBuilder(STEP_KIGYOU_RECORD, jobRepository)
-                .<WkTblKanrenshaKigyouDtAddMinEntity, WkTblKanrenshaKigyouDtAddMinEntity>chunk(CHUNK_SIZE,
-                        transactionManager)
+                .<WkTblKanrenshaKigyouDtAddMinEntity, WkTblKanrenshaKigyouDtAddMinEntity>chunk(CHUNK_SIZE)
                 .reader(kanrenshaKigyouDtAddMiniRecordItemReader).writer(kanrenshaKigyouDtAddMiniRecordItemWriter)
                 .build();
     }
@@ -225,8 +222,7 @@ public class AddXmlMinMasterBatchConfiguration {
             final PlatformTransactionManager transactionManager) {
 
         return new StepBuilder(STEP_KIGYOU_FIX, jobRepository)
-                .<WkTblKanrenshaKigyouDtAddMinResultEntity, WkTblKanrenshaKigyouDtAddMinEntity>chunk(CHUNK_SIZE,
-                        transactionManager)
+                .<WkTblKanrenshaKigyouDtAddMinResultEntity, WkTblKanrenshaKigyouDtAddMinEntity>chunk(CHUNK_SIZE)
                 .reader(kanrenshaKigyouDtAddMiniWkTblFixItemReader).processor(kanrenshaKigyouDtAddMiniWkTblFixProcessor)
                 .writer(kanrenshaKigyouDtAddMiniWkTblFixItemWriter).build();
     }
@@ -243,8 +239,7 @@ public class AddXmlMinMasterBatchConfiguration {
             final PlatformTransactionManager transactionManager) {
 
         return new StepBuilder(STEP_SEIJIDANTAI_RECORD, jobRepository)
-                .<WkTblKanrenshaSeijidantaiAddMinEntity, WkTblKanrenshaSeijidantaiAddMinEntity>chunk(CHUNK_SIZE,
-                        transactionManager)
+                .<WkTblKanrenshaSeijidantaiAddMinEntity, WkTblKanrenshaSeijidantaiAddMinEntity>chunk(CHUNK_SIZE)
                 .reader(kanrenshaSeijidantaiAddMiniRecordItemReader).writer(kanrenshaSeijidantaiAddMiniRecordItemWriter)
                 .build();
     }
@@ -261,8 +256,7 @@ public class AddXmlMinMasterBatchConfiguration {
             final PlatformTransactionManager transactionManager) {
 
         return new StepBuilder(STEP_SEIJIDANTAI_FIX, jobRepository)
-                .<WkTblKanrenshaSeijidantaiAddMinResultEntity, WkTblKanrenshaSeijidantaiAddMinEntity>chunk(CHUNK_SIZE,
-                        transactionManager)
+                .<WkTblKanrenshaSeijidantaiAddMinResultEntity, WkTblKanrenshaSeijidantaiAddMinEntity>chunk(CHUNK_SIZE)
                 .reader(kanrenshaSeijidantaiAddMiniWkTblFixItemReader)
                 .processor(kanrenshaSeijidantaiAddMiniWkTblFixProcessor)
                 .writer(kanrenshaSeijidantaiAddMiniWkTblFixItemWriter).build();

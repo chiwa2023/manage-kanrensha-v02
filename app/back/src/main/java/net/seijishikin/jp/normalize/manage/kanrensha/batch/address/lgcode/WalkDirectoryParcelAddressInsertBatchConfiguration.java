@@ -78,7 +78,7 @@ public class WalkDirectoryParcelAddressInsertBatchConfiguration {
             final PlatformTransactionManager transactionManager) {
 
         return new StepBuilder(STEP_INSERT_NAME, jobRepository)
-                .<ParcelAddressCsvDto, AddressRsdtBaseEntity>chunk(CHUNK_SIZE, transactionManager)
+                .<ParcelAddressCsvDto, AddressRsdtBaseEntity>chunk(CHUNK_SIZE)
                 .reader(multiParcelCsvFileReader).processor(parcelAddressCsvProcessor)
                 .writer(rsdtAddressItemWriter).build();
     }

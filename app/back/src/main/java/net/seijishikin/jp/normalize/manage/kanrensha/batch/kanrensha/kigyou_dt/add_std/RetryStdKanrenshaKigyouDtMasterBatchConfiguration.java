@@ -94,8 +94,7 @@ public class RetryStdKanrenshaKigyouDtMasterBatchConfiguration {
             final PlatformTransactionManager transactionManager) {
 
         return new StepBuilder(STEP_RECORD, jobRepository)
-                .<WkTblKanrenshaKigyouDtMasterEntity, WkTblKanrenshaKigyouDtMasterEntity>chunk(CHUNK_SIZE,
-                        transactionManager)
+                .<WkTblKanrenshaKigyouDtMasterEntity, WkTblKanrenshaKigyouDtMasterEntity>chunk(CHUNK_SIZE)
                 .reader(masterKigyouDtAddStdRecordItemReader).writer(masterKigyouDtAddStdRecordItemWriter).build();
     }
 
@@ -110,8 +109,7 @@ public class RetryStdKanrenshaKigyouDtMasterBatchConfiguration {
     protected Step getStepFix(final JobRepository jobRepository, final PlatformTransactionManager transactionManager) {
 
         return new StepBuilder(STEP_FIX, jobRepository)
-                .<WkTblKanrenshaKigyouDtMasterResultEntity, WkTblKanrenshaKigyouDtMasterEntity>chunk(CHUNK_SIZE,
-                        transactionManager)
+                .<WkTblKanrenshaKigyouDtMasterResultEntity, WkTblKanrenshaKigyouDtMasterEntity>chunk(CHUNK_SIZE)
                 .reader(masterKigyouDtAddStdWkTblFixItemReader).processor(masterKigyouDtAddStdWkTblFixProcessor)
                 .writer(masterKigyouDtAddStdWkTblFixItemWriter).build();
     }

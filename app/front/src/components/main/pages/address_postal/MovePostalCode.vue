@@ -8,6 +8,7 @@ import { AccessTokenNotFoundError, TokenRefreshError } from '../../dto/login/err
 import getAuthorizedPromiseArea from '../../dto/login/getAuthorizedPromiseArea.ts';
 import RoutePathConstants from '../../../../routePathConstants.ts';
 import { useRoute } from 'vue-router';
+import type { SelectOptionStringDtoInterface } from '../../dto/select_options/selectOptionStringDto.ts';
 
 
 // よく使う定数
@@ -37,7 +38,6 @@ const lg: Ref<string> = ref(BLANK);
 onMounted(() => {
     // queryparamがあればセット
     const lgCode = route.query.lgcode;
-    alert(lgCode?.toString());
     if (undefined !== lgCode?.toString()) {
         capsuleDto.value.lgCode = lgCode?.toString();
         lg.value = capsuleDto.value.lgCode;
@@ -130,8 +130,8 @@ function recieveSubmit(button: string) {
 }
 
 // 地方自治体コードを受信
-function recieveLgCode(data: string) {
-    capsuleDto.value.lgCode = data;
+function recieveLgCode(optionDto: SelectOptionStringDtoInterface) {
+    capsuleDto.value.lgCode = optionDto.value;
 }
 </script>
 <template>

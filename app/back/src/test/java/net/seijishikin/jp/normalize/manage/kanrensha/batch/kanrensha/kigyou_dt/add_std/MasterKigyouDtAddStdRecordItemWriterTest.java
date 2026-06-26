@@ -1,6 +1,6 @@
 package net.seijishikin.jp.normalize.manage.kanrensha.batch.kanrensha.kigyou_dt.add_std; // NOPMD ExcessiveImport
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals; // NOPMD ExcessiveImport
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
@@ -48,7 +48,7 @@ import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateLeastUserForTes
 @DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
 @Transactional
 @Sql("MasterKigyouDtAddStdRecordItemWriterTest.sql")
-class MasterKigyouDtAddStdRecordItemWriterTest {
+class MasterKigyouDtAddStdRecordItemWriterTest { // NOPMD CouplingObjects
 
     /** テスト対象 */
     @Autowired

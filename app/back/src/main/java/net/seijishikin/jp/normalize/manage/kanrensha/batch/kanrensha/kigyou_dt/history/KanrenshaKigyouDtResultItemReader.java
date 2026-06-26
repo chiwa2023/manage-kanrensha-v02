@@ -8,7 +8,7 @@ import org.springframework.batch.core.step.StepExecution;
 import org.springframework.batch.core.annotation.BeforeStep;
 import org.springframework.batch.infrastructure.item.data.RepositoryItemReader;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort.Direction;
+
 import org.springframework.stereotype.Component;
 
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.WkTblKanrenshaKigyouDtHistoryEntity;
@@ -29,7 +29,7 @@ public class KanrenshaKigyouDtResultItemReader extends RepositoryItemReader<WkTb
     public KanrenshaKigyouDtResultItemReader(
             final @Autowired WkTblKanrenshaKigyouDtHistoryRepository wkTblKanrenshaKigyouDtHistoryRepository) {
 
-        super(wkTblKanrenshaKigyouDtHistoryRepository, new HashMap<String, Direction>());
+        super(wkTblKanrenshaKigyouDtHistoryRepository, new HashMap<>());
         super.setMethodName("findByInsertUserCodeAndIsLatestAndIsAffectedAndIsFinish");
 
         List<Object> list = new ArrayList<>();

@@ -103,7 +103,7 @@ public class UpdateAddressRsdtBatchConfiguration {
             final PlatformTransactionManager transactionManager) {
 
         return new StepBuilder(STEP_CHANGE_NAME, jobRepository)
-                .<WkTblAddressRsdtChangeEntity, WkTblAddressRsdtChangeEntity>chunk(CHUNK_SIZE, transactionManager)
+                .<WkTblAddressRsdtChangeEntity, WkTblAddressRsdtChangeEntity>chunk(CHUNK_SIZE)
                 .reader(wkTblAddressChangeItemReader).writer(wkTblAddressChangeItemWriter).build();
     }
 
@@ -119,7 +119,7 @@ public class UpdateAddressRsdtBatchConfiguration {
             final PlatformTransactionManager transactionManager) {
 
         return new StepBuilder(STEP_DELET_NAME, jobRepository)
-                .<WkTblAddressRsdtDeleteEntity, WkTblAddressRsdtDeleteEntity>chunk(CHUNK_SIZE, transactionManager)
+                .<WkTblAddressRsdtDeleteEntity, WkTblAddressRsdtDeleteEntity>chunk(CHUNK_SIZE)
                 .reader(wkTblAddressDeleteItemReader).writer(wkTblAddressDeleteItemWriter).build();
     }
 
@@ -135,7 +135,7 @@ public class UpdateAddressRsdtBatchConfiguration {
             final PlatformTransactionManager transactionManager) {
 
         return new StepBuilder(STEP_MARK_NAME, jobRepository)
-                .<WkTblAddressRsdtMarkEntity, WkTblAddressRsdtMarkEntity>chunk(CHUNK_SIZE, transactionManager)
+                .<WkTblAddressRsdtMarkEntity, WkTblAddressRsdtMarkEntity>chunk(CHUNK_SIZE)
                 .reader(wkTblAddressMarkItemReader).writer(wkTblAddressMarkItemWriter).build();
     }
 

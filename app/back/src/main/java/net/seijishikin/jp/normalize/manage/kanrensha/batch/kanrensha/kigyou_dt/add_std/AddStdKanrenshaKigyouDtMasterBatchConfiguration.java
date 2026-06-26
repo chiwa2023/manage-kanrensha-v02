@@ -139,7 +139,7 @@ public class AddStdKanrenshaKigyouDtMasterBatchConfiguration {
     protected Step getStepCsv(final JobRepository jobRepository, final PlatformTransactionManager transactionManager) {
 
         return new StepBuilder(STEP_CSV, jobRepository)
-                .<KanrenshaKigyouDtAddStdDto, WkTblKanrenshaKigyouDtMasterEntity>chunk(CHUNK_SIZE, transactionManager)
+                .<KanrenshaKigyouDtAddStdDto, WkTblKanrenshaKigyouDtMasterEntity>chunk(CHUNK_SIZE)
                 .reader(masterKigyouDtAddStdCsvItemReader).processor(kanrenshaKigyouDtAddStdCsvProcessor)
                 .writer(masterKigyouDtAddStdCsvItemWriter).build();
     }
@@ -171,8 +171,7 @@ public class AddStdKanrenshaKigyouDtMasterBatchConfiguration {
             final PlatformTransactionManager transactionManager) {
 
         return new StepBuilder(STEP_RECORD, jobRepository)
-                .<WkTblKanrenshaKigyouDtMasterEntity, WkTblKanrenshaKigyouDtMasterEntity>chunk(CHUNK_SIZE,
-                        transactionManager)
+                .<WkTblKanrenshaKigyouDtMasterEntity, WkTblKanrenshaKigyouDtMasterEntity>chunk(CHUNK_SIZE)
                 .reader(masterKigyouDtAddStdRecordItemReader).writer(masterKigyouDtAddStdRecordItemWriter).build();
     }
 
@@ -187,8 +186,7 @@ public class AddStdKanrenshaKigyouDtMasterBatchConfiguration {
     protected Step getStepFix(final JobRepository jobRepository, final PlatformTransactionManager transactionManager) {
 
         return new StepBuilder(STEP_FIX, jobRepository)
-                .<WkTblKanrenshaKigyouDtMasterResultEntity, WkTblKanrenshaKigyouDtMasterEntity>chunk(CHUNK_SIZE,
-                        transactionManager)
+                .<WkTblKanrenshaKigyouDtMasterResultEntity, WkTblKanrenshaKigyouDtMasterEntity>chunk(CHUNK_SIZE)
                 .reader(masterKigyouDtAddStdWkTblFixItemReader).processor(masterKigyouDtAddStdWkTblFixProcessor)
                 .writer(masterKigyouDtAddStdWkTblFixItemWriter).build();
     }

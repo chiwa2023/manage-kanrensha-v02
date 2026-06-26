@@ -76,7 +76,7 @@ public class MoveAddressRsdtByLgcodeBatchConfiguration {
     protected Step getStepMove(final JobRepository jobRepository, final PlatformTransactionManager transactionManager) {
 
         return new StepBuilder(STEP_MOVE, jobRepository)
-                .<AddressRsdtBaseEntity, AddressRsdtBaseEntity>chunk(CHUNK_SIZE, transactionManager)
+                .<AddressRsdtBaseEntity, AddressRsdtBaseEntity>chunk(CHUNK_SIZE)
                 .reader(moveAddressRsdtItemReader).writer(moveAddressRsdtItemWriter).build();
     }
 

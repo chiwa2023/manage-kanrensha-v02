@@ -8,7 +8,7 @@ import org.springframework.batch.core.step.StepExecution;
 import org.springframework.batch.core.annotation.BeforeStep;
 import org.springframework.batch.infrastructure.item.data.RepositoryItemReader;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort.Direction;
+
 import org.springframework.stereotype.Component;
 
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.AddressPostalEntity;
@@ -26,7 +26,7 @@ public class FixIkaniKeisaiNashiItemReader extends RepositoryItemReader<AddressP
      * @param addressPostalRepository 郵便番号不規則データRespository
      */
     public FixIkaniKeisaiNashiItemReader(final @Autowired AddressPostalRepository addressPostalRepository) {
-        super(addressPostalRepository, new HashMap<String, Direction>());
+        super(addressPostalRepository, new HashMap<>());
         super.setMethodName("findByLgCodeStartingWithAndIsLatestTrueAndAddressNameEndingWith");
 
         List<Object> list = new ArrayList<>();

@@ -80,7 +80,7 @@ public class DumpSabunMinPersonBatchConfiguration {
     protected Step getStepDump(final JobRepository jobRepository, final PlatformTransactionManager transactionManager) {
 
         return new StepBuilder(STEP_DUMP, jobRepository)
-                .<KanrenshaPersonMasterEntity, KanrenshaPersonMasterEntity>chunk(CHUNK_SIZE, transactionManager)
+                .<KanrenshaPersonMasterEntity, KanrenshaPersonMasterEntity>chunk(CHUNK_SIZE)
                 .reader(dumpSabunMasterPersonItemReader).writer(dumpMinPersonItemWriter).build();
     }
 

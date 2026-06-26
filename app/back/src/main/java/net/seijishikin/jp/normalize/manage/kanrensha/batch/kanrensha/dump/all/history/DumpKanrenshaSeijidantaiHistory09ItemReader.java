@@ -9,7 +9,7 @@ import org.springframework.batch.core.step.StepExecution;
 import org.springframework.batch.core.annotation.BeforeStep;
 import org.springframework.batch.infrastructure.item.data.RepositoryItemReader;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort.Direction;
+
 import org.springframework.stereotype.Component;
 
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.lgcode.KanrenshaSeijidantaiHistory09Entity;
@@ -30,7 +30,7 @@ public class DumpKanrenshaSeijidantaiHistory09ItemReader
      */
     public DumpKanrenshaSeijidantaiHistory09ItemReader(
             final @Autowired KanrenshaSeijidantaiHistory09Repository partnerPoliOrgHistory09Repository) {
-        super(partnerPoliOrgHistory09Repository, new HashMap<String, Direction>());
+        super(partnerPoliOrgHistory09Repository, new HashMap<>());
         super.setMethodName("findByInsertTimestampLessThanAndIsLatest");
 
         List<Object> list = new ArrayList<>();

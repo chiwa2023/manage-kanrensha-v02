@@ -94,7 +94,7 @@ public class RetryCombineOrgBatchConfiguration {
             final PlatformTransactionManager transactionManager) {
 
         return new StepBuilder(STEP_RECORD, jobRepository)
-                .<WkTblKanrenshaCombineOrgEntity, WkTblKanrenshaCombineOrgEntity>chunk(CHUNK_SIZE, transactionManager)
+                .<WkTblKanrenshaCombineOrgEntity, WkTblKanrenshaCombineOrgEntity>chunk(CHUNK_SIZE)
                 .reader(combineOrgRecordItemReader).writer(combineOrgRecordItemWriter).build();
     }
 
@@ -109,8 +109,7 @@ public class RetryCombineOrgBatchConfiguration {
     protected Step getStepFix(final JobRepository jobRepository, final PlatformTransactionManager transactionManager) {
 
         return new StepBuilder(STEP_FIX, jobRepository)
-                .<WkTblKanrenshaCombineOrgResultEntity, WkTblKanrenshaCombineOrgEntity>chunk(CHUNK_SIZE,
-                        transactionManager)
+                .<WkTblKanrenshaCombineOrgResultEntity, WkTblKanrenshaCombineOrgEntity>chunk(CHUNK_SIZE)
                 .reader(combineOrgWkTblFixItemReader).processor(combineOrgWkTblFixProcessor)
                 .writer(combineOrgWkTblFixItemWriter).build();
     }

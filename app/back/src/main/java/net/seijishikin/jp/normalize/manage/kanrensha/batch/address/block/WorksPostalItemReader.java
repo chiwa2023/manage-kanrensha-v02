@@ -6,7 +6,7 @@ import java.util.List;
 
 import org.springframework.batch.infrastructure.item.data.RepositoryItemReader;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort.Direction;
+
 import org.springframework.stereotype.Component;
 
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.WkTblPostalCommonEntity;
@@ -25,7 +25,7 @@ public class WorksPostalItemReader extends RepositoryItemReader<WkTblPostalCommo
      */
     public WorksPostalItemReader(final @Autowired WkTblPostalCommonRepository wkTblPostalCommonRepository) {
 
-        super(wkTblPostalCommonRepository, new HashMap<String, Direction>());
+        super(wkTblPostalCommonRepository, new HashMap<>());
         super.setMethodName("findAll");
 
         List<Object> list = new ArrayList<>();

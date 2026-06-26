@@ -98,7 +98,7 @@ public class InsertAddressAllCityBatchConfiguration {
             final PlatformTransactionManager transactionManager) {
 
         return new StepBuilder(STEP_INSERT_NAME, jobRepository)
-                .<AllCityCsvDto, AddressAllCityEntity>chunk(CHUNK_SIZE, transactionManager).reader(allCityCsvItemReader)
+                .<AllCityCsvDto, AddressAllCityEntity>chunk(CHUNK_SIZE).reader(allCityCsvItemReader)
                 .processor(addressAllCityProcessor).writer(addressAllCityItemWriter).build();
     }
 
@@ -114,7 +114,7 @@ public class InsertAddressAllCityBatchConfiguration {
             final PlatformTransactionManager transactionManager) {
 
         return new StepBuilder(STEP_INSERT_NAME, jobRepository)
-                .<AddressAllCityEntity, AddressCityDeleteEntity>chunk(CHUNK_SIZE, transactionManager)
+                .<AddressAllCityEntity, AddressCityDeleteEntity>chunk(CHUNK_SIZE)
                 .reader(allCityWkTblItemReader).processor(allCityWkTblProcessor).writer(allCityWkTblItemWriter).build();
     }
 }

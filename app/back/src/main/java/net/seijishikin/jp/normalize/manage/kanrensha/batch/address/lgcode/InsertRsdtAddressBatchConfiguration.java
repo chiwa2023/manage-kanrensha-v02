@@ -76,7 +76,7 @@ public class InsertRsdtAddressBatchConfiguration {
             final PlatformTransactionManager transactionManager) {
 
         return new StepBuilder(STEP_INSERT_NAME, jobRepository)
-                .<RsdtAddressCsvDto, AddressRsdtBaseEntity>chunk(CHUNK_SIZE, transactionManager)
+                .<RsdtAddressCsvDto, AddressRsdtBaseEntity>chunk(CHUNK_SIZE)
                 .reader(rsdtAddressCsvItemReader).processor(rsdtAddressProcessor)
                 .writer(rsdtAddressItemWriter).build();
     }

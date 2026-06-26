@@ -12,7 +12,7 @@ import org.springframework.batch.core.job.Job;
 import org.springframework.batch.core.job.JobExecution;
 import org.springframework.batch.core.job.parameters.JobParameters;
 import org.springframework.batch.core.job.parameters.JobParametersBuilder;
-import org.springframework.batch.test.JobLauncherTestUtils;
+import org.springframework.batch.test.JobOperatorTestUtils;
 import org.springframework.batch.test.context.SpringBatchTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -45,7 +45,7 @@ class AddCombineOrgBatchConfigurationTest {
 
     /** テストユーティリティ */
     @Autowired
-    private JobLauncherTestUtils jobLauncherTestUtils;
+    private JobOperatorTestUtils jobOperatorTestUtils;
 
     /** 起動をするJob */
     @Qualifier(AddCombineOrgBatchConfiguration.JOB_NAME)
@@ -62,7 +62,7 @@ class AddCombineOrgBatchConfigurationTest {
     @Tag("TableTruncate")
     void testExecute() throws Exception {
 
-        jobLauncherTestUtils.setJob(addCombineOrgBatchConfiguration);
+        jobOperatorTestUtils.setJob(addCombineOrgBatchConfiguration);
 
         Path path = Paths.get(GetCurrentResourcePath.getBackTestResourcePath(), "file/batch/kanrensha/combine_org",
                 "sample_combine_corp.csv");
@@ -82,7 +82,7 @@ class AddCombineOrgBatchConfigurationTest {
                 .addLong(RecordTaskPlanJobExecutionListner.KEY_CODE, (long) 187)
                 .toJobParameters();
 
-        JobExecution jobExecution = jobLauncherTestUtils.launchJob(jobParameters);
+        JobExecution jobExecution = jobOperatorTestUtils.startJob(jobParameters);
         assertEquals("COMPLETED", jobExecution.getExitStatus().getExitCode(), "作業完了Statusが戻ってくる");
     }
 

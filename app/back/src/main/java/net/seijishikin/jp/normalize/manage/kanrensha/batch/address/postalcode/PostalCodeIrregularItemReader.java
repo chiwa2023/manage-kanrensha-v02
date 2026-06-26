@@ -6,7 +6,7 @@ import java.util.List;
 
 import org.springframework.batch.infrastructure.item.data.RepositoryItemReader;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort.Direction;
+
 import org.springframework.stereotype.Component;
 
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.AddressPostalEntity;
@@ -24,7 +24,7 @@ public class PostalCodeIrregularItemReader extends RepositoryItemReader<AddressP
      * @param addressPostalRepository 郵便番号Repository
      */
     public PostalCodeIrregularItemReader(final @Autowired AddressPostalRepository addressPostalRepository) {
-        super(addressPostalRepository, new HashMap<String, Direction>());
+        super(addressPostalRepository, new HashMap<>());
         super.setMethodName("findByIsGyoseikuDataAndIsLatestTrue");
 
         List<Object> list = new ArrayList<>();

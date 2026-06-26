@@ -8,7 +8,7 @@ import org.springframework.batch.core.step.StepExecution;
 import org.springframework.batch.core.annotation.BeforeStep;
 import org.springframework.batch.infrastructure.item.data.RepositoryItemReader;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort.Direction;
+
 import org.springframework.stereotype.Component;
 
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.AddressPostalIrregularEntity;
@@ -27,7 +27,7 @@ public class SelectPostalCodeOtherItemReader extends RepositoryItemReader<Addres
      */
     public SelectPostalCodeOtherItemReader(
             final @Autowired AddressPostalIrregularRepository addressPostalIrregularRepository) {
-        super(addressPostalIrregularRepository, new HashMap<String, Direction>());
+        super(addressPostalIrregularRepository, new HashMap<>());
         super.setMethodName("findOtherAddress");
 
         List<Object> list = new ArrayList<>();

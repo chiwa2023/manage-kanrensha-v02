@@ -85,7 +85,7 @@ public class PickupManualWorksBatchConfiguration {
             final PlatformTransactionManager transactionManager) {
 
         return new StepBuilder(STEP_INSERT, jobRepository)
-                .<AddressPostalEntity, AddressPostalRepairLogEntity>chunk(CHUNK_SIZE, transactionManager)
+                .<AddressPostalEntity, AddressPostalRepairLogEntity>chunk(CHUNK_SIZE)
                 .reader(pickupManualWorksItemReader).processor(pickupManualWorksProcessor)
                 .writer(pickupManualWorksItemWriter).build();
     }

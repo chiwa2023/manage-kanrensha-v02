@@ -8,7 +8,7 @@ import java.time.LocalTime;
 import org.springframework.batch.core.job.Job;
 import org.springframework.batch.core.job.parameters.JobParameters;
 import org.springframework.batch.core.job.parameters.JobParametersBuilder;
-import org.springframework.batch.core.launch.JobLauncher;
+import org.springframework.batch.core.launch.JobOperator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -33,7 +33,7 @@ public class ForceSabunDumpStdMasterSeijidantaiService {
 
     /** 起動をつかさどるランチャー */
     @Autowired
-    private JobLauncher jobLauncher;
+    private JobOperator jobOperator;
 
     // TODO 標準出力が完成次第切り替える
     /** 起動をするJob */
@@ -95,7 +95,7 @@ public class ForceSabunDumpStdMasterSeijidantaiService {
                 .toJobParameters();
 
         try {
-            jobLauncher.run(dumpSabunMasterPoliticalOrganization, jobParameters);
+            jobOperator.run(dumpSabunMasterPoliticalOrganization, jobParameters);
 
         } catch (Exception exception) { // NOPMD 業務的な理由から積極的に許容
             // ここで補足できる例外はバッチ起動に関する例外のみで、バッチ動作に関する例外は別で処理する

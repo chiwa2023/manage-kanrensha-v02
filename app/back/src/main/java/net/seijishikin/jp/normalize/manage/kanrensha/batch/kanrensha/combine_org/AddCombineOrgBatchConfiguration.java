@@ -139,7 +139,7 @@ public class AddCombineOrgBatchConfiguration {
     protected Step getStepCsv(final JobRepository jobRepository, final PlatformTransactionManager transactionManager) {
 
         return new StepBuilder(STEP_CSV, jobRepository)
-                .<KanrenshaCombineOrgDto, WkTblKanrenshaCombineOrgEntity>chunk(CHUNK_SIZE, transactionManager)
+                .<KanrenshaCombineOrgDto, WkTblKanrenshaCombineOrgEntity>chunk(CHUNK_SIZE)
                 .reader(combineOrgCsvItemReader).processor(combineOrgCsvProcessor).writer(combineOrgCsvItemWriter)
                 .build();
     }
@@ -171,7 +171,7 @@ public class AddCombineOrgBatchConfiguration {
             final PlatformTransactionManager transactionManager) {
 
         return new StepBuilder(STEP_RECORD, jobRepository)
-                .<WkTblKanrenshaCombineOrgEntity, WkTblKanrenshaCombineOrgEntity>chunk(CHUNK_SIZE, transactionManager)
+                .<WkTblKanrenshaCombineOrgEntity, WkTblKanrenshaCombineOrgEntity>chunk(CHUNK_SIZE)
                 .reader(combineOrgRecordItemReader).writer(combineOrgRecordItemWriter).build();
     }
 
@@ -186,8 +186,7 @@ public class AddCombineOrgBatchConfiguration {
     protected Step getStepFix(final JobRepository jobRepository, final PlatformTransactionManager transactionManager) {
 
         return new StepBuilder(STEP_FIX, jobRepository)
-                .<WkTblKanrenshaCombineOrgResultEntity, WkTblKanrenshaCombineOrgEntity>chunk(CHUNK_SIZE,
-                        transactionManager)
+                .<WkTblKanrenshaCombineOrgResultEntity, WkTblKanrenshaCombineOrgEntity>chunk(CHUNK_SIZE)
                 .reader(combineOrgWkTblFixItemReader).processor(combineOrgWkTblFixProcessor)
                 .writer(combineOrgWkTblFixItemWriter).build();
     }

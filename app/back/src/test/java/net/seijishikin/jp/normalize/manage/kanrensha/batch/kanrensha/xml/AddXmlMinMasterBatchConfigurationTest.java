@@ -10,7 +10,7 @@ import org.springframework.batch.core.job.Job;
 import org.springframework.batch.core.job.JobExecution;
 import org.springframework.batch.core.job.parameters.JobParameters;
 import org.springframework.batch.core.job.parameters.JobParametersBuilder;
-import org.springframework.batch.test.JobLauncherTestUtils;
+import org.springframework.batch.test.JobOperatorTestUtils;
 import org.springframework.batch.test.context.SpringBatchTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -41,7 +41,7 @@ class AddXmlMinMasterBatchConfigurationTest {
 
     /** テストユーティリティ */
     @Autowired
-    private JobLauncherTestUtils jobLauncherTestUtils;
+    private JobOperatorTestUtils jobOperatorTestUtils;
 
     /** 起動をするJob */
     @Qualifier(AddXmlMinMasterBatchConfiguration.JOB_NAME)
@@ -59,7 +59,7 @@ class AddXmlMinMasterBatchConfigurationTest {
     @Tag("TableTruncate")
     void testExecute() throws Exception {
 
-        jobLauncherTestUtils.setJob(addXmlMinMasterBatchConfiguration);
+        jobOperatorTestUtils.setJob(addXmlMinMasterBatchConfiguration);
 
         LeastUserDto userDto = CreateLeastUserForTestUtil.practice();
 
@@ -68,11 +68,12 @@ class AddXmlMinMasterBatchConfigurationTest {
                 .addLocalDateTime("executeTime", LocalDateTime.now()) //
                 .addLong("userId", (long) userDto.getUserPersonId())
                 .addLong("userCode", (long) userDto.getUserPersonCode())
-                .addString("userName", userDto.getUserPersonName()).addLong(RecordTaskPlanJobExecutionListner.KEY_YEAR, (long) 2026) //
+                .addString("userName", userDto.getUserPersonName())
+                .addLong(RecordTaskPlanJobExecutionListner.KEY_YEAR, (long) 2026) //
                 .addLong(RecordTaskPlanJobExecutionListner.KEY_ID, (long) 453) //
                 .addLong(RecordTaskPlanJobExecutionListner.KEY_CODE, (long) 187).toJobParameters();
 
-        JobExecution jobExecution = jobLauncherTestUtils.launchJob(jobParameters);
+        JobExecution jobExecution = jobOperatorTestUtils.startJob(jobParameters);
         assertEquals("COMPLETED", jobExecution.getExitStatus().getExitCode(), "作業完了Statusが戻ってくる");
     }
 

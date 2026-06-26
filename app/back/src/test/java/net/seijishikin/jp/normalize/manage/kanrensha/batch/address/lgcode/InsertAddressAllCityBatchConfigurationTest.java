@@ -12,7 +12,7 @@ import org.springframework.batch.core.job.Job;
 import org.springframework.batch.core.job.JobExecution;
 import org.springframework.batch.core.job.parameters.JobParameters;
 import org.springframework.batch.core.job.parameters.JobParametersBuilder;
-import org.springframework.batch.test.JobLauncherTestUtils;
+import org.springframework.batch.test.JobOperatorTestUtils;
 import org.springframework.batch.test.context.SpringBatchTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -44,7 +44,7 @@ class InsertAddressAllCityBatchConfigurationTest {
 
     /** テストユーティリティ */
     @Autowired
-    private JobLauncherTestUtils jobLauncherTestUtils;
+    private JobOperatorTestUtils jobOperatorTestUtils;
 
     /** 起動をするJob */
     @Qualifier(InsertAddressAllCityBatchConfiguration.JOB_NAME)
@@ -61,7 +61,7 @@ class InsertAddressAllCityBatchConfigurationTest {
     @Tag("TableTruncate")
     void testExecute() throws Exception {
 
-        jobLauncherTestUtils.setJob(insertAddressAllCity);
+        jobOperatorTestUtils.setJob(insertAddressAllCity);
         // 本番用データ作成ファイル指定
         // Path pathRoot = Paths.get(GetCurrentResourcePath.getBackSrcPath(""));
         // Path pathBase =
@@ -82,10 +82,9 @@ class InsertAddressAllCityBatchConfigurationTest {
                 .addString("userName", userDto.getUserPersonName())
                 .addLong(RecordTaskPlanJobExecutionListner.KEY_YEAR, 2026L) //
                 .addLong(RecordTaskPlanJobExecutionListner.KEY_ID, 453L)
-                .addLong(RecordTaskPlanJobExecutionListner.KEY_CODE, 187L)
-                .toJobParameters();
+                .addLong(RecordTaskPlanJobExecutionListner.KEY_CODE, 187L).toJobParameters();
 
-        JobExecution jobExecution = jobLauncherTestUtils.launchJob(jobParameters);
+        JobExecution jobExecution = jobOperatorTestUtils.startJob(jobParameters);
         assertEquals("COMPLETED", jobExecution.getExitStatus().getExitCode(), "作業完了Statusが戻ってくる");
 
     }

@@ -98,8 +98,7 @@ public class RetryKanrenshaSeijidantaiHistoryBatchConfiguration {
             final PlatformTransactionManager transactionManager) {
 
         return new StepBuilder(STEP_JUDGE, jobRepository)
-                .<WkTblKanrenshaSeijidantaiHistoryEntity, WkTblKanrenshaSeijidantaiHistoryResultEntity>chunk(CHUNK_SIZE,
-                        transactionManager)
+                .<WkTblKanrenshaSeijidantaiHistoryEntity, WkTblKanrenshaSeijidantaiHistoryResultEntity>chunk(CHUNK_SIZE)
                 .reader(kanrenshaSeijidantaiResultItemReader).processor(kanrenshaSeijidantaiResultProcessor)
                 .writer(kanrenshaSeijidantaiResultItemWriter).build();
     }
@@ -115,8 +114,7 @@ public class RetryKanrenshaSeijidantaiHistoryBatchConfiguration {
     protected Step getStepFix(final JobRepository jobRepository, final PlatformTransactionManager transactionManager) {
 
         return new StepBuilder(STEP_FIX, jobRepository)
-                .<WkTblKanrenshaSeijidantaiHistoryResultEntity, WkTblKanrenshaSeijidantaiHistoryEntity>chunk(CHUNK_SIZE,
-                        transactionManager)
+                .<WkTblKanrenshaSeijidantaiHistoryResultEntity, WkTblKanrenshaSeijidantaiHistoryEntity>chunk(CHUNK_SIZE)
                 .reader(kanrenshaSeijidantaiWkTblFixItemReader).processor(kanrenshaSeijidantaiWkTblFixProcessor)
                 .writer(kanrenshaSeijidantaiWkTblFixItemWriter).build();
     }

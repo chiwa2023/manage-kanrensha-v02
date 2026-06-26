@@ -8,7 +8,7 @@ import org.springframework.batch.core.step.StepExecution;
 import org.springframework.batch.core.annotation.BeforeStep;
 import org.springframework.batch.infrastructure.item.data.RepositoryItemReader;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort.Direction;
+
 import org.springframework.stereotype.Component;
 
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.WkTblKanrenshaSeijidantaiHistoryEntity;
@@ -28,7 +28,7 @@ public class KanrenshaSeijidantaiResultItemReader extends RepositoryItemReader<W
      */
     public KanrenshaSeijidantaiResultItemReader(
             final @Autowired WkTblKanrenshaSeijidantaiHistoryRepository wkTblKanrenshaSeijidantaiHistoryRepository) {
-        super(wkTblKanrenshaSeijidantaiHistoryRepository, new HashMap<String, Direction>());
+        super(wkTblKanrenshaSeijidantaiHistoryRepository, new HashMap<>());
         super.setMethodName("findByInsertUserCodeAndIsLatestAndIsAffectedAndIsFinish");
 
         List<Object> list = new ArrayList<>();

@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 import org.springframework.batch.core.job.Job;
 import org.springframework.batch.core.job.parameters.JobParameters;
 import org.springframework.batch.core.job.parameters.JobParametersBuilder;
-import org.springframework.batch.core.launch.JobLauncher;
+import org.springframework.batch.core.launch.JobOperator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.scheduling.annotation.Async;
@@ -31,7 +31,7 @@ public class RetryBatchMasterStdSeijidantaiService {
 
     /** 起動をつかさどるランチャー */
     @Autowired
-    private JobLauncher jobLauncher;
+    private JobOperator jobOperator;
 
     /** StackTrace保存Service */
     @Autowired
@@ -59,7 +59,7 @@ public class RetryBatchMasterStdSeijidantaiService {
                 .toJobParameters();
 
         try {
-            jobLauncher.run(retryStdKanrenshaPoliticalOrganizationMaster, jobParameters);
+            jobOperator.run(retryStdKanrenshaPoliticalOrganizationMaster, jobParameters);
 
         } catch (Exception exception) { // NOPMD 業務的な理由から積極的に許容
             // ここで補足できる例外はバッチ起動に関する例外のみで、バッチ動作に関する例外は別で処理する

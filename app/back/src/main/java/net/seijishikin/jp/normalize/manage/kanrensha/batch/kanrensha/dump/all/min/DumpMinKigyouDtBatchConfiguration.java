@@ -79,7 +79,7 @@ public class DumpMinKigyouDtBatchConfiguration {
     protected Step getStepDump(final JobRepository jobRepository, final PlatformTransactionManager transactionManager) {
 
         return new StepBuilder(STEP_DUMP, jobRepository)
-                .<KanrenshaKigyouDtMasterEntity, KanrenshaKigyouDtMasterEntity>chunk(CHUNK_SIZE, transactionManager)
+                .<KanrenshaKigyouDtMasterEntity, KanrenshaKigyouDtMasterEntity>chunk(CHUNK_SIZE)
                 .reader(dumpMasterKigyouDtItemReader).writer(dumpMinKigyouDtItemWriter).build();
     }
 

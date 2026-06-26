@@ -10,6 +10,7 @@ import getAuthorizedPromiseArea from '../../dto/login/getAuthorizedPromiseArea.t
 import RoutePathConstants from '../../../../routePathConstants.ts';
 import { AccessTokenNotFoundError, TokenRefreshError } from '../../dto/login/errors.ts';
 import { SavePostalCapsuleDto, type SavePostalCapsuleDtoInterface } from '../../dto/address_postal/savePostalCapsuleDto.ts';
+import type { SelectOptionStringDtoInterface } from '../../dto/select_options/selectOptionStringDto.ts';
 
 // よく使う定数
 const BLANK: string = "";
@@ -313,8 +314,8 @@ function onShowDetail(id: number) {
     }
 }
 
-function recieveLgCode(data:string){
-    entityEdit.value.lgCode = data;
+function recieveLgCode(optionDto: SelectOptionStringDtoInterface){
+    entityEdit.value.lgCode = optionDto.value;
 }
 </script>
 <template>

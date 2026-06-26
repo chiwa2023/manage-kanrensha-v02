@@ -8,7 +8,7 @@ import java.time.LocalTime;
 import org.springframework.batch.core.job.Job;
 import org.springframework.batch.core.job.parameters.JobParameters;
 import org.springframework.batch.core.job.parameters.JobParametersBuilder;
-import org.springframework.batch.core.launch.JobLauncher;
+import org.springframework.batch.core.launch.JobOperator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -31,7 +31,7 @@ public class ForceDumpHistoryPersonService {
 
     /** 起動をつかさどるランチャー */
     @Autowired
-    private JobLauncher jobLauncher;
+    private JobOperator jobOperator;
 
     /** 起動をするJob */
     @Qualifier(DumpKanrenshaPersonHistoryBatchConfiguration.JOB_NAME)
@@ -137,7 +137,7 @@ public class ForceDumpHistoryPersonService {
                 .toJobParameters();
 
         try {
-            jobLauncher.run(dumpPartnerPersonHistory, jobParameters);
+            jobOperator.run(dumpPartnerPersonHistory, jobParameters);
 
         } catch (Exception exception) { // NOPMD 業務的な理由から積極的に許容
             // ここで補足できる例外はバッチ起動に関する例外のみで、バッチ動作に関する例外は別で処理する

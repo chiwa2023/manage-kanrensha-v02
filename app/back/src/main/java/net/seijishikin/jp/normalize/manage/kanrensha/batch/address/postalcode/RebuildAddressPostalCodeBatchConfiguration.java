@@ -116,7 +116,7 @@ public class RebuildAddressPostalCodeBatchConfiguration {
             final PlatformTransactionManager transactionManager) {
 
         return new StepBuilder(STEP_ONLINE, jobRepository)
-                .<PostalCodeCsvOneLineDto, AddressPostalEntity>chunk(CHUNK_SIZE, transactionManager)
+                .<PostalCodeCsvOneLineDto, AddressPostalEntity>chunk(CHUNK_SIZE)
                 .reader(postalCodeCsvOneLineItemReader).processor(postalCodeOneLineProcessor)
                 .writer(postalCodeCsvOneLineItemWriter).build();
     }
@@ -133,7 +133,7 @@ public class RebuildAddressPostalCodeBatchConfiguration {
             final PlatformTransactionManager transactionManager) {
 
         return new StepBuilder(STEP_JIGYOUSHA, jobRepository)
-                .<PostalCodeCsvJigyoushoDto, AddressPostalIrregularEntity>chunk(CHUNK_SIZE, transactionManager)
+                .<PostalCodeCsvJigyoushoDto, AddressPostalIrregularEntity>chunk(CHUNK_SIZE)
                 .reader(postalCodeCsvJigyoushaItemReader).processor(postalCodeJigyoushoProcessor)
                 .writer(postalCodeCsvJigyoushaItemWriter).build();
     }

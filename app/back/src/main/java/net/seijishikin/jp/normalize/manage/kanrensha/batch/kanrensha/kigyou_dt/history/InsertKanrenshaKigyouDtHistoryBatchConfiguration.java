@@ -144,7 +144,7 @@ public class InsertKanrenshaKigyouDtHistoryBatchConfiguration {
             final PlatformTransactionManager transactionManager) {
 
         return new StepBuilder(STEP_HISTORY, jobRepository)
-                .<KanrenshaKigyouDtHistoryDto, WkTblKanrenshaKigyouDtHistoryEntity>chunk(CHUNK_SIZE, transactionManager)
+                .<KanrenshaKigyouDtHistoryDto, WkTblKanrenshaKigyouDtHistoryEntity>chunk(CHUNK_SIZE)
                 .reader(kanrenshaKigyouDtHistoryItemReader).processor(kanrenshaKigyouDtHistoryProcessor)
                 .writer(kanrenshaKigyouDtHistoryItemWriter).build();
     }
@@ -176,8 +176,7 @@ public class InsertKanrenshaKigyouDtHistoryBatchConfiguration {
             final PlatformTransactionManager transactionManager) {
 
         return new StepBuilder(STEP_JUDGE, jobRepository)
-                .<WkTblKanrenshaKigyouDtHistoryEntity, WkTblKanrenshaKigyouDtHistoryResultEntity>chunk(CHUNK_SIZE,
-                        transactionManager)
+                .<WkTblKanrenshaKigyouDtHistoryEntity, WkTblKanrenshaKigyouDtHistoryResultEntity>chunk(CHUNK_SIZE)
                 .reader(kanrenshaKigyouDtResultItemReader).processor(kanrenshaKigyouDtResultProcessor)
                 .writer(kanrenshaKigyouDtResultItemWriter).build();
     }
@@ -193,8 +192,7 @@ public class InsertKanrenshaKigyouDtHistoryBatchConfiguration {
     protected Step getStepFix(final JobRepository jobRepository, final PlatformTransactionManager transactionManager) {
 
         return new StepBuilder(STEP_FIX, jobRepository)
-                .<WkTblKanrenshaKigyouDtHistoryResultEntity, WkTblKanrenshaKigyouDtHistoryEntity>chunk(CHUNK_SIZE,
-                        transactionManager)
+                .<WkTblKanrenshaKigyouDtHistoryResultEntity, WkTblKanrenshaKigyouDtHistoryEntity>chunk(CHUNK_SIZE)
                 .reader(kanrenshaKigyouDtWkTblFixItemReader).processor(kanrenshaKigyouDtWkTblFixProcessor)
                 .writer(kanrenshaKigyouDtWkTblFixItemWriter).build();
     }

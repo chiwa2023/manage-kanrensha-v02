@@ -254,7 +254,7 @@ public class RepairPostalCodeIrregularBatchConfiguration { // NOPMD CouplingBetw
             final PlatformTransactionManager transactionManager) {
 
         return new StepBuilder(STEP_OTHER, jobRepository)
-                .<AddressPostalIrregularEntity, WkTblPostalCommonEntity>chunk(CHUNK_SIZE, transactionManager)
+                .<AddressPostalIrregularEntity, WkTblPostalCommonEntity>chunk(CHUNK_SIZE)
                 .reader(selectPostalCodeOtherItemReader).processor(addressPostalIrregularWorksProcessor)
                 .writer(selectPostalCodeOtherItemWriter).build();
     }
@@ -271,7 +271,7 @@ public class RepairPostalCodeIrregularBatchConfiguration { // NOPMD CouplingBetw
             final PlatformTransactionManager transactionManager) {
 
         return new StepBuilder(STEP_RANGE, jobRepository)
-                .<AddressPostalIrregularEntity, WkTblPostalCommonEntity>chunk(CHUNK_SIZE, transactionManager)
+                .<AddressPostalIrregularEntity, WkTblPostalCommonEntity>chunk(CHUNK_SIZE)
                 .reader(choicePostalCodeIrregularItemReader).processor(addressPostalIrregularWorksProcessor)
                 .writer(choicePostalCodeIrregularItemWriter).build();
     }
@@ -288,7 +288,7 @@ public class RepairPostalCodeIrregularBatchConfiguration { // NOPMD CouplingBetw
             final PlatformTransactionManager transactionManager) {
 
         return new StepBuilder(STEP_SINGLE, jobRepository)
-                .<AddressPostalIrregularEntity, WkTblPostalCommonEntity>chunk(CHUNK_SIZE, transactionManager)
+                .<AddressPostalIrregularEntity, WkTblPostalCommonEntity>chunk(CHUNK_SIZE)
                 .reader(selectPostalCodeSingleAddressItemReader).processor(addressPostalIrregularWorksProcessor)
                 .writer(selectPostalCodeSingleAddressItemWriter).build();
     }
@@ -305,7 +305,7 @@ public class RepairPostalCodeIrregularBatchConfiguration { // NOPMD CouplingBetw
             final PlatformTransactionManager transactionManager) {
 
         return new StepBuilder(STEP_JIGYOUSHO_SPLIT, jobRepository)
-                .<AddressPostalIrregularEntity, WkTblPostalCommonEntity>chunk(CHUNK_SIZE, transactionManager)
+                .<AddressPostalIrregularEntity, WkTblPostalCommonEntity>chunk(CHUNK_SIZE)
                 .reader(jigyoushAddressSplitItemReader).processor(jigyoushAddressSplitProcessor)
                 .writer(wkPostalCommonItemWriter).build();
     }
@@ -322,7 +322,7 @@ public class RepairPostalCodeIrregularBatchConfiguration { // NOPMD CouplingBetw
             final PlatformTransactionManager transactionManager) {
 
         return new StepBuilder(STEP_SPLIT_TOUTEN, jobRepository)
-                .<AddressPostalIrregularEntity, AddressPostalIrregularEntity>chunk(CHUNK_SIZE, transactionManager)
+                .<AddressPostalIrregularEntity, AddressPostalIrregularEntity>chunk(CHUNK_SIZE)
                 .reader(splitToutenOrgItemReader).writer(splitToutenOrgItemWriter).build();
     }
 
@@ -338,7 +338,7 @@ public class RepairPostalCodeIrregularBatchConfiguration { // NOPMD CouplingBetw
             final PlatformTransactionManager transactionManager) {
 
         return new StepBuilder(STEP_POSTAL_NORMAL, jobRepository)
-                .<AddressPostalEntity, AddressPostalEntity>chunk(CHUNK_SIZE, transactionManager)
+                .<AddressPostalEntity, AddressPostalEntity>chunk(CHUNK_SIZE)
                 .reader(updatePostalCodeNormalItemReader).writer(updateRsdtPostalCodeItemWriter).build();
     }
 
@@ -354,7 +354,7 @@ public class RepairPostalCodeIrregularBatchConfiguration { // NOPMD CouplingBetw
             final PlatformTransactionManager transactionManager) {
 
         return new StepBuilder(STEP_POSTAL_OTHER, jobRepository)
-                .<AddressPostalEntity, AddressPostalEntity>chunk(CHUNK_SIZE, transactionManager)
+                .<AddressPostalEntity, AddressPostalEntity>chunk(CHUNK_SIZE)
                 .reader(updatePostalCodeOtherItemReader).writer(updateRsdtPostalCodeItemWriter).build();
     }
 
@@ -370,7 +370,7 @@ public class RepairPostalCodeIrregularBatchConfiguration { // NOPMD CouplingBetw
             final PlatformTransactionManager transactionManager) {
 
         return new StepBuilder(STEP_KEISAI_NASHI, jobRepository)
-                .<AddressPostalEntity, WkTblPostalCommonEntity>chunk(CHUNK_SIZE, transactionManager)
+                .<AddressPostalEntity, WkTblPostalCommonEntity>chunk(CHUNK_SIZE)
                 .reader(fixIkaniKeisaiNashiItemReader).processor(addressPostalWorksProcessor)
                 .writer(fixIkaniKeisaiNashiItemWriter).build();
     }
@@ -387,7 +387,7 @@ public class RepairPostalCodeIrregularBatchConfiguration { // NOPMD CouplingBetw
             final PlatformTransactionManager transactionManager) {
 
         return new StepBuilder(STEP_HISTORY1, jobRepository)
-                .<WkTblPostalCommonEntity, AddressPostalIrregularEntity>chunk(CHUNK_SIZE, transactionManager)
+                .<WkTblPostalCommonEntity, AddressPostalIrregularEntity>chunk(CHUNK_SIZE)
                 .reader(worksPostalItemReader).processor(addressPostalWorksIrregularProcessor)
                 .writer(irregularPostalItemWriter).build();
     }
@@ -404,7 +404,7 @@ public class RepairPostalCodeIrregularBatchConfiguration { // NOPMD CouplingBetw
             final PlatformTransactionManager transactionManager) {
 
         return new StepBuilder(STEP_HISTORY2, jobRepository)
-                .<WkTblPostalCommonEntity, AddressPostalIrregularEntity>chunk(CHUNK_SIZE, transactionManager)
+                .<WkTblPostalCommonEntity, AddressPostalIrregularEntity>chunk(CHUNK_SIZE)
                 .reader(worksPostalItemReader).processor(addressPostalWorksIrregularProcessor)
                 .writer(irregularPostalItemWriter).build();
     }
@@ -421,7 +421,7 @@ public class RepairPostalCodeIrregularBatchConfiguration { // NOPMD CouplingBetw
             final PlatformTransactionManager transactionManager) {
 
         return new StepBuilder(STEP_HISTORY3, jobRepository)
-                .<WkTblPostalCommonEntity, AddressPostalIrregularEntity>chunk(CHUNK_SIZE, transactionManager)
+                .<WkTblPostalCommonEntity, AddressPostalIrregularEntity>chunk(CHUNK_SIZE)
                 .reader(worksPostalItemReader).processor(addressPostalWorksIrregularProcessor)
                 .writer(irregularPostalItemWriter).build();
     }
@@ -438,7 +438,7 @@ public class RepairPostalCodeIrregularBatchConfiguration { // NOPMD CouplingBetw
             final PlatformTransactionManager transactionManager) {
 
         return new StepBuilder(STEP_HISTORY4, jobRepository)
-                .<WkTblPostalCommonEntity, AddressPostalIrregularEntity>chunk(CHUNK_SIZE, transactionManager)
+                .<WkTblPostalCommonEntity, AddressPostalIrregularEntity>chunk(CHUNK_SIZE)
                 .reader(worksPostalItemReader).processor(addressPostalWorksIrregularProcessor)
                 .writer(irregularPostalItemWriter).build();
     }
@@ -455,7 +455,7 @@ public class RepairPostalCodeIrregularBatchConfiguration { // NOPMD CouplingBetw
             final PlatformTransactionManager transactionManager) {
 
         return new StepBuilder(STEP_HISTORY5, jobRepository)
-                .<WkTblPostalCommonEntity, AddressPostalEntity>chunk(CHUNK_SIZE, transactionManager)
+                .<WkTblPostalCommonEntity, AddressPostalEntity>chunk(CHUNK_SIZE)
                 .reader(worksPostalItemReader).processor(addressPostalWorksPostalProcessor)
                 .writer(normalPostalItemWriter).build();
     }
@@ -472,7 +472,7 @@ public class RepairPostalCodeIrregularBatchConfiguration { // NOPMD CouplingBetw
             final PlatformTransactionManager transactionManager) {
 
         return new StepBuilder(STEP_HISTORY6, jobRepository)
-                .<WkTblPostalCommonEntity, AddressPostalIrregularEntity>chunk(CHUNK_SIZE, transactionManager)
+                .<WkTblPostalCommonEntity, AddressPostalIrregularEntity>chunk(CHUNK_SIZE)
                 .reader(worksPostalItemReader).processor(addressPostalWorksIrregularProcessor)
                 .writer(irregularPostalItemWriter).build();
     }

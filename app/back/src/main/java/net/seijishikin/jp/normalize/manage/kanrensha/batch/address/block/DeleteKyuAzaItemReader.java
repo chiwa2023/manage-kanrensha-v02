@@ -8,7 +8,7 @@ import org.springframework.batch.core.step.StepExecution;
 import org.springframework.batch.core.annotation.BeforeStep;
 import org.springframework.batch.infrastructure.item.data.RepositoryItemReader;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort.Direction;
+
 import org.springframework.stereotype.Component;
 
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.AddressPostalRepairLogEntity;
@@ -26,7 +26,7 @@ public class DeleteKyuAzaItemReader extends RepositoryItemReader<AddressPostalRe
      * @param addressPostalRepairLogRepository 郵便番号修復ログRespository
      */
     public DeleteKyuAzaItemReader(final @Autowired AddressPostalRepairLogRepository addressPostalRepairLogRepository) {
-        super(addressPostalRepairLogRepository, new HashMap<String, Direction>());
+        super(addressPostalRepairLogRepository, new HashMap<>());
         super.setMethodName("findByLgCodeStartingWithAndIsLatestTrueAndIsConfirmTrueAndAddressNameContaining");
 
         List<Object> list = new ArrayList<>();

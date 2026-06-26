@@ -132,7 +132,7 @@ public class AddDeleteAddressPostalCodeBatchConfiguration {
             final PlatformTransactionManager transactionManager) {
 
         return new StepBuilder(STEP_RECORD_ADD, jobRepository)
-                .<EditPostalCodeOneLineDto, WkTblPostalEditEntity>chunk(CHUNK_SIZE, transactionManager)
+                .<EditPostalCodeOneLineDto, WkTblPostalEditEntity>chunk(CHUNK_SIZE)
                 .reader(editPostalCodeAddItemReader).processor(editPostalCodeAddProcessor)
                 .writer(editWkTblePostalCodeItemWriter).build();
     }
@@ -149,7 +149,7 @@ public class AddDeleteAddressPostalCodeBatchConfiguration {
             final PlatformTransactionManager transactionManager) {
 
         return new StepBuilder(STEP_RECORD_DELETE, jobRepository)
-                .<EditPostalCodeOneLineDto, WkTblPostalEditEntity>chunk(CHUNK_SIZE, transactionManager)
+                .<EditPostalCodeOneLineDto, WkTblPostalEditEntity>chunk(CHUNK_SIZE)
                 .reader(editPostalCodeDeleteItemReader).processor(editPostalCodeDeleteProcessor)
                 .writer(editWkTblePostalCodeItemWriter).build();
     }

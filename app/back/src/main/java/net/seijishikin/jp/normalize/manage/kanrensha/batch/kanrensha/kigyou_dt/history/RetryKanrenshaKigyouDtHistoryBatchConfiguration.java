@@ -83,8 +83,7 @@ public class RetryKanrenshaKigyouDtHistoryBatchConfiguration {
             @Qualifier(STEP_FIX) final Step stepFix) {
 
         return new JobBuilder(JOB_NAME, jobRepository).incrementer(new RunIdIncrementer())
-                .listener(recordTaskPlanJobExecutionListner).flow(stepJudge).next(stepFix).end()
-                .build();
+                .listener(recordTaskPlanJobExecutionListner).flow(stepJudge).next(stepFix).end().build();
     }
 
     /**
@@ -99,8 +98,7 @@ public class RetryKanrenshaKigyouDtHistoryBatchConfiguration {
             final PlatformTransactionManager transactionManager) {
 
         return new StepBuilder(STEP_JUDGE, jobRepository)
-                .<WkTblKanrenshaKigyouDtHistoryEntity, WkTblKanrenshaKigyouDtHistoryResultEntity>chunk(CHUNK_SIZE,
-                        transactionManager)
+                .<WkTblKanrenshaKigyouDtHistoryEntity, WkTblKanrenshaKigyouDtHistoryResultEntity>chunk(CHUNK_SIZE)
                 .reader(kanrenshaKigyouDtResultItemReader).processor(kanrenshaKigyouDtResultProcessor)
                 .writer(kanrenshaKigyouDtResultItemWriter).build();
     }
@@ -116,8 +114,7 @@ public class RetryKanrenshaKigyouDtHistoryBatchConfiguration {
     protected Step getStepFix(final JobRepository jobRepository, final PlatformTransactionManager transactionManager) {
 
         return new StepBuilder(STEP_FIX, jobRepository)
-                .<WkTblKanrenshaKigyouDtHistoryResultEntity, WkTblKanrenshaKigyouDtHistoryEntity>chunk(CHUNK_SIZE,
-                        transactionManager)
+                .<WkTblKanrenshaKigyouDtHistoryResultEntity, WkTblKanrenshaKigyouDtHistoryEntity>chunk(CHUNK_SIZE)
                 .reader(kanrenshaKigyouDtWkTblFixItemReader).processor(kanrenshaKigyouDtWkTblFixProcessor)
                 .writer(kanrenshaKigyouDtWkTblFixItemWriter).build();
     }
