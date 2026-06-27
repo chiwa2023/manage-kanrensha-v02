@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.KanrenshaAddressBaseEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.KanrenshaPersonAddressEntity;
@@ -13,7 +14,8 @@ import net.seijishikin.jp.normalize.manage.kanrensha.entity.KanrenshaPersonAddre
 /**
  * kanrensha_person_address接続用Repository
  */
-public interface KanrenshaPersonAddressRepository extends JpaRepository<KanrenshaPersonAddressEntity, Integer> {
+public interface KanrenshaPersonAddressRepository extends JpaRepository<KanrenshaPersonAddressEntity, Integer>,
+        PagingAndSortingRepository<KanrenshaPersonAddressEntity, Integer> {
 
     /**
      * 関連者コードで検索する

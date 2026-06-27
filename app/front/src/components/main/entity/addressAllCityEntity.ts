@@ -1,48 +1,88 @@
 interface AddressAllCityEntityInterface {
 
-    /** 地方自治体テーブルId */
+    /** テーブルId */
     addressAllCityId: number;
 
     /** 地方自治体コード */
     lgCode: string;
 
-    /** 住所 */
-    addressName: string;
+    /** 最新該否 */
+    isLatest: boolean;
 
-    /** 住所かな */
+    /** 住所名かな */
     addressNameKana: string;
 
-    /** 影響日 */
+    /** 県名称 */
+    pref: string;
+
+    /** 郡名称 */
+    county: string;
+
+    /** 市名称 */
+    city: string;
+
+    /** 特別区名称 */
+    ward: string;
+
+    /** 適用開始日 */
     effectDate: Date;
+
+    /** 廃止日 */
+    abolishDate: Date;
 
 }
 
 class AddressAllCityEntity implements AddressAllCityEntityInterface {
 
-    /** 地方自治体テーブルId */
+    /** テーブルId */
     addressAllCityId: number;
 
     /** 地方自治体コード */
     lgCode: string;
 
-    /** 住所 */
-    addressName: string;
+    /** 最新該否 */
+    isLatest: boolean;
 
-    /** 住所かな */
+    /** 住所名かな */
     addressNameKana: string;
 
-    /** 影響日 */
+    /** 県名称 */
+    pref: string;
+
+    /** 郡名称 */
+    county: string;
+
+    /** 市名称 */
+    city: string;
+
+    /** 特別区名称 */
+    ward: string;
+
+    /** 適用開始日 */
     effectDate: Date;
+
+    /** 廃止日 */
+    abolishDate: Date;
+
+
 
     constructor() {
 
+        const INIT_NUMBER: number = 0;
         const INIT_STRING: string = "";
+        const INIT_BOOLEAN: boolean = false;
+        const INIT_DATE: Date = new Date();
 
-        this.addressAllCityId = 0;
+        this.addressAllCityId = INIT_NUMBER;
         this.lgCode = INIT_STRING;
-        this.addressName = INIT_STRING;
+        this.isLatest = INIT_BOOLEAN;
         this.addressNameKana = INIT_STRING;
-        this.effectDate = new Date(1948, 7, 28);
+        this.pref = INIT_STRING;
+        this.county = INIT_STRING;
+        this.city = INIT_STRING;
+        this.ward = INIT_STRING;
+        this.effectDate = INIT_DATE;
+        this.abolishDate = INIT_DATE;
     }
 
 }

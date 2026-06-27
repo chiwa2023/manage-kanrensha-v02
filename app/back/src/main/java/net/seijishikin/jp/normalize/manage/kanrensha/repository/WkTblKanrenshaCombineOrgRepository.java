@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
 import net.seijishikin.jp.normalize.manage.kanrensha.batch.kanrensha.combine_org.KanrenshaCombineOrgUniquekeyDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.WkTblKanrenshaCombineOrgEntity;
@@ -14,7 +15,8 @@ import net.seijishikin.jp.normalize.manage.kanrensha.entity.WkTblKanrenshaCombin
 /**
  * wk_tbl_kanrensha_combine_org接続用Repository
  */
-public interface WkTblKanrenshaCombineOrgRepository extends JpaRepository<WkTblKanrenshaCombineOrgEntity, Integer> {
+public interface WkTblKanrenshaCombineOrgRepository extends JpaRepository<WkTblKanrenshaCombineOrgEntity, Integer>,
+        PagingAndSortingRepository<WkTblKanrenshaCombineOrgEntity, Integer> {
 
     /**
      * ユーザが同一であるデータを削除する

@@ -3,13 +3,15 @@ package net.seijishikin.jp.normalize.manage.kanrensha.repository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.WkTblAddressRsdtMarkEntity;
 
 /**
  * wk_tbl_address_rsdt_mark接続用Repository
  */
-public interface WkTblAddressRsdtMarkRepository extends JpaRepository<WkTblAddressRsdtMarkEntity, Integer> {
+public interface WkTblAddressRsdtMarkRepository extends JpaRepository<WkTblAddressRsdtMarkEntity, Integer>,
+        PagingAndSortingRepository<WkTblAddressRsdtMarkEntity, Integer> {
 
     /**
      * ユーザコード条件で削除する

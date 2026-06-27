@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
 import jakarta.persistence.LockModeType;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.RiyoushaAdminMasterEntity;
@@ -14,7 +15,8 @@ import net.seijishikin.jp.normalize.manage.kanrensha.entity.RiyoushaAdminMasterE
 /**
  * riyousha_admin_master接続用Repository
  */
-public interface RiyoushaAdminMasterRepository extends JpaRepository<RiyoushaAdminMasterEntity, Integer> {
+public interface RiyoushaAdminMasterRepository extends JpaRepository<RiyoushaAdminMasterEntity, Integer>,
+        PagingAndSortingRepository<RiyoushaAdminMasterEntity, Integer> {
 
     /**
      * 名称を検索対象として全文検索をする

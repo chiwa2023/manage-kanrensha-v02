@@ -8,13 +8,15 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.KanrenshaKigyouDtMasterEntity;
 
 /**
  * kanrensha_kigyou_dt_master接続用Repository
  */
-public interface KanrenshaKigyouDtMasterRepository extends JpaRepository<KanrenshaKigyouDtMasterEntity, Integer> {
+public interface KanrenshaKigyouDtMasterRepository extends JpaRepository<KanrenshaKigyouDtMasterEntity, Integer>,
+        PagingAndSortingRepository<KanrenshaKigyouDtMasterEntity, Integer> {
 
     /**
      * 最新かつ比較用名称が合致するリストを取得する

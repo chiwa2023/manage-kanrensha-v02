@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
@@ -22,7 +22,7 @@ import net.seijishikin.jp.normalize.manage.kanrensha.repository.WkTblPostalEditR
  * UpdateWkTblPostalcodeService単体テスト
  */
 @SpringJUnitConfig
-@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
+@SpringBootTest
 @DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
 @Sql("UpdateWkTblPostalcodeServiceTest.sql")
 class UpdateWkTblPostalcodeServiceTest {

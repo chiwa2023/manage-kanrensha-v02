@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.jdbc.Sql;
@@ -37,7 +37,7 @@ import net.seijishikin.jp.normalize.shuushi_doc.v05.dto.Sheet070600OtherIncomeDt
  */
 @SpringJUnitConfig
 @AutoConfigureMockMvc
-@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
+@SpringBootTest
 @DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
 class InsertWktblXmlByPublishBikouLogicTest {
     // CHECKSTYLE:OFF

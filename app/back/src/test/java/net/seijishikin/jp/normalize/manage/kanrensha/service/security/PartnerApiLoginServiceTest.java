@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.LockedException;
 import org.springframework.security.oauth2.server.resource.InvalidBearerTokenException;
@@ -33,7 +33,7 @@ import net.seijishikin.jp.normalize.manage.kanrensha.repository.year.y2026.Partn
  */
 @SpringJUnitConfig
 @AutoConfigureMockMvc
-@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
+@SpringBootTest
 @DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
 @Transactional
 @Sql("PartnerApiLoginServiceTest.sql")

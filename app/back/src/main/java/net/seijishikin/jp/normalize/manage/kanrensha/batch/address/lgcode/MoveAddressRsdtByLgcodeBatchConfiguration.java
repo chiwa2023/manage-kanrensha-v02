@@ -14,6 +14,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 
 import net.seijishikin.jp.normalize.manage.kanrensha.batch.task_plan.RecordTaskPlanJobExecutionListner;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.AddressRsdtBaseEntity;
+import net.seijishikin.jp.normalize.manage.kanrensha.entity.AddressRsdtTemplateEntity;
 
 /**
  * 地方自治体コードで住居データを総複写する
@@ -43,9 +44,13 @@ public class MoveAddressRsdtByLgcodeBatchConfiguration {
     @Autowired
     private MoveAddressRsdtItemReader moveAddressRsdtItemReader;
 
-    /** 住居データ移行ItemWrite */
+    /** 住居データ移行ItemWriter */
     @Autowired
     private MoveAddressRsdtItemWriter moveAddressRsdtItemWriter;
+
+    /** 住居データ移行ItemProcessor */
+    @Autowired
+    private MoveAddressRsdtItemProcessor moveAddressRsdtProcessor;
 
     /** ジョブ実行リスナ(タスク計画記録) */
     @Autowired
@@ -76,8 +81,8 @@ public class MoveAddressRsdtByLgcodeBatchConfiguration {
     protected Step getStepMove(final JobRepository jobRepository, final PlatformTransactionManager transactionManager) {
 
         return new StepBuilder(STEP_MOVE, jobRepository)
-                .<AddressRsdtBaseEntity, AddressRsdtBaseEntity>chunk(CHUNK_SIZE)
-                .reader(moveAddressRsdtItemReader).writer(moveAddressRsdtItemWriter).build();
+                .<AddressRsdtBaseEntity, AddressRsdtTemplateEntity>chunk(CHUNK_SIZE).reader(moveAddressRsdtItemReader)
+                .processor(moveAddressRsdtProcessor).writer(moveAddressRsdtItemWriter).build();
     }
 
 }

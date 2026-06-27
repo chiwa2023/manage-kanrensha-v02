@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Lock;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
 import jakarta.persistence.LockModeType;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.TimerYoteiEntity;
@@ -14,7 +15,8 @@ import net.seijishikin.jp.normalize.manage.kanrensha.entity.TimerYoteiEntity;
 /**
  * timer_yotei接続用Repository
  */
-public interface TimerYoteiRepository extends JpaRepository<TimerYoteiEntity, Integer> {
+public interface TimerYoteiRepository
+        extends JpaRepository<TimerYoteiEntity, Integer>, PagingAndSortingRepository<TimerYoteiEntity, Integer> {
 
     /**
      * 予定区分が一致かつ次回日時が指定範囲内でである予定実行を取得する

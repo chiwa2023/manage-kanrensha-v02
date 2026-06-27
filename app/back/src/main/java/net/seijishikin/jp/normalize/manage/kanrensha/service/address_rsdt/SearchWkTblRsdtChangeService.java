@@ -35,10 +35,10 @@ public class SearchWkTblRsdtChangeService {
 
         Integer userCode = capsuleDto.getUserDto().getUserPersonCode();
 
-        List<Integer> listSearchLatest = new ArrayList<>();
-        listSearchLatest.add(1);
+        List<Boolean> listSearchLatest = new ArrayList<>();
+        listSearchLatest.add(true);
         if (capsuleDto.getIsSearchHistory()) {
-            listSearchLatest.add(0);
+            listSearchLatest.add(false);
         }
 
         resultDto.setAllCount(

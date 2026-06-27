@@ -55,6 +55,8 @@ public class MoveAddressRsdtByLgcodeService {
                     .addLocalDateTime("executeTime", LocalDateTime.now())
                     .addString("srcLgCode", capsuleDto.getEditEntity().getLgCode())
                     .addString("copyLgCode", capsuleDto.getMoveLgCode())
+                    .addString("srcLgName", capsuleDto.getSrcLgName())
+                    .addString("copyLgName", capsuleDto.getMoveLgName())
                     .addLong("userId", (long) userDto.getUserPersonId())
                     .addLong("userCode", (long) userDto.getUserPersonCode())
                     .addString("userName", userDto.getUserPersonName())

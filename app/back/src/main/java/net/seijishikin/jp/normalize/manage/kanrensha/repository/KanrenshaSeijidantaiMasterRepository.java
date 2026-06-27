@@ -8,13 +8,15 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.KanrenshaSeijidantaiMasterEntity;
 
 /**
  * kanrensha_seijidantai_master接続用Repository
  */
-public interface KanrenshaSeijidantaiMasterRepository extends JpaRepository<KanrenshaSeijidantaiMasterEntity, Integer> {
+public interface KanrenshaSeijidantaiMasterRepository extends JpaRepository<KanrenshaSeijidantaiMasterEntity, Integer>,
+        PagingAndSortingRepository<KanrenshaSeijidantaiMasterEntity, Integer> {
 
     /**
      * 個人名で検索する

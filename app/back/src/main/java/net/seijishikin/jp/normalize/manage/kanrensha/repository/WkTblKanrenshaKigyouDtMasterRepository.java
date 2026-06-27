@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
 import net.seijishikin.jp.normalize.manage.kanrensha.batch.kanrensha.kigyou_dt.add_min.KanrenshaKigyouDtMasterUniquekeyDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.WkTblKanrenshaKigyouDtMasterEntity;
@@ -15,7 +16,8 @@ import net.seijishikin.jp.normalize.manage.kanrensha.entity.WkTblKanrenshaKigyou
  * wk_tbl_kanrensha_kigyou_dt_master接続用Repository
  */
 public interface WkTblKanrenshaKigyouDtMasterRepository
-        extends JpaRepository<WkTblKanrenshaKigyouDtMasterEntity, Integer> {
+        extends JpaRepository<WkTblKanrenshaKigyouDtMasterEntity, Integer>,
+        PagingAndSortingRepository<WkTblKanrenshaKigyouDtMasterEntity, Integer> {
 
     /**
      * ユーザが同一であるデータを削除する
@@ -63,7 +65,7 @@ public interface WkTblKanrenshaKigyouDtMasterRepository
      */
     List<WkTblKanrenshaKigyouDtMasterEntity> findByKanrenshaNameAndAllAddressAndKigyouDtDelegateAndInsertUserCodeOrderByWkTblKanrenshaKigyouDtMasterIdAsc(
             String name, String address, String delegate, Integer userCode);
-    
+
     /**
      * 編集用に検索を行う
      *
@@ -74,8 +76,9 @@ public interface WkTblKanrenshaKigyouDtMasterRepository
      * @param pageable   ページング
      * @return 検索結果
      */
-    List<WkTblKanrenshaKigyouDtMasterEntity> findByInsertUserCodeAndIsLatestInAndIsAffectedInAndIsFinishIn(Integer userCode,
-            List<Boolean> listLatest, List<Boolean> isAffected, List<Boolean> listFinish, Pageable pageable);
+    List<WkTblKanrenshaKigyouDtMasterEntity> findByInsertUserCodeAndIsLatestInAndIsAffectedInAndIsFinishIn(
+            Integer userCode, List<Boolean> listLatest, List<Boolean> isAffected, List<Boolean> listFinish,
+            Pageable pageable);
 
     /**
      * 編集用に検索を行う際の該当件数を返却する
@@ -88,6 +91,5 @@ public interface WkTblKanrenshaKigyouDtMasterRepository
      */
     Integer countByInsertUserCodeAndIsLatestInAndIsAffectedInAndIsFinishIn(Integer userCode, List<Boolean> listLatest,
             List<Boolean> isAffected, List<Boolean> listFinish);
-
 
 }

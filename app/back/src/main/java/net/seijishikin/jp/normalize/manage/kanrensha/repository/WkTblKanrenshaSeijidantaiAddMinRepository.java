@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
 import net.seijishikin.jp.normalize.manage.kanrensha.batch.kanrensha.seijidantai.add_min.KanrenshaSeijidantaiMasterUniquekeyDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.WkTblKanrenshaSeijidantaiAddMinEntity;
@@ -15,7 +16,8 @@ import net.seijishikin.jp.normalize.manage.kanrensha.entity.WkTblKanrenshaSeijid
  * wk_tbl_kanrensha_seijidantai_add_min接続用Repository
  */
 public interface WkTblKanrenshaSeijidantaiAddMinRepository
-        extends JpaRepository<WkTblKanrenshaSeijidantaiAddMinEntity, Integer> {
+        extends JpaRepository<WkTblKanrenshaSeijidantaiAddMinEntity, Integer>,
+        PagingAndSortingRepository<WkTblKanrenshaSeijidantaiAddMinEntity, Integer> {
 
     /**
      * ユーザが同一であるデータを削除する
@@ -73,7 +75,6 @@ public interface WkTblKanrenshaSeijidantaiAddMinRepository
      */
     List<WkTblKanrenshaSeijidantaiAddMinEntity> findByKanrenshaNameAndAllAddressAndSeijidantaiDelegateAndInsertUserCodeOrderByWkTblKanrenshaSeijidantaiAddMinIdAsc( // NOPMD
             String name, String address, String delegate, Integer userCode);
-    
 
     /**
      * 編集用に検索を行う

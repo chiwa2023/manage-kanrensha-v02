@@ -13,7 +13,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.batch.test.context.SpringBatchTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+
 import org.springframework.scheduling.config.CronTask;
 import org.springframework.scheduling.config.ScheduledTask;
 import org.springframework.scheduling.config.ScheduledTaskHolder;
@@ -30,7 +30,7 @@ import net.seijishikin.jp.normalize.manage.kanrensha.BackApplication;
  * TimerYoteiExecuteService単体テスト
  */
 @SpringJUnitConfig
-@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
+@SpringBootTest
 @SpringBatchTest
 @ContextConfiguration(classes = { BackApplication.class, // 全体起動
         TimerYoteiExecuteService.class // テスト対象)

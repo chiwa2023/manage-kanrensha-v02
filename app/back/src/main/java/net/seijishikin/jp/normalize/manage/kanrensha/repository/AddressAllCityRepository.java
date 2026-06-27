@@ -78,12 +78,35 @@ public interface AddressAllCityRepository extends JpaRepository<AddressAllCityEn
     /**
      * 地方自治体コードを県条件で検索する
      * 
-     * @param prefCode 県地自体コード
+     * @param prefCode 県自治体コード
      * @return 検索結果
      */
     @Query(value = "SELECT lg_code AS value, CONCAT(pref,county,city,ward) AS text FROM address_all_city "
             + "  where lg_code LIKE ?1 AND is_latest = 1 AND effect_date < NOW() "
             + "      AND (abolish_date > NOW() OR abolish_date is null) ORDER BY lg_code ASC;", nativeQuery = true)
     List<SelectOptionStringDto> findPrefCity(String prefCode);
+
+    /**
+     * 県コードと検索語から最新を検索する
+     * 
+     * @param words    検索語
+     * @param prefCode 県コード
+     * @param pageable ページング
+     * @return 検索結果
+     */
+    @Query(value = "SELECT * FROM address_all_city where lg_code LIKE ?2 AND (county LIKE ?1 OR city LIKE ?1 OR ward LIKE ?1 )"
+            + "   AND is_latest = 1 AND (abolish_date IS NULL OR abolish_date > NOW()) AND effect_date <= NOW() ", nativeQuery = true)
+    List<AddressAllCityEntity> findPrefAndWords(String words, String prefCode, Pageable pageable);
+
+    /**
+     * 県コードと検索語から最新件数を取得する
+     * 
+     * @param words    検索語
+     * @param prefCode 県コード
+     * @return 件数
+     */
+    @Query(value = "SELECT count(*) FROM address_all_city where lg_code LIKE ?2 AND (county LIKE ?1 OR city LIKE ?1 OR ward LIKE ?1 )"
+            + "   AND is_latest = 1 AND (abolish_date IS NULL OR abolish_date > NOW()) AND effect_date <= NOW() ", nativeQuery = true)
+    Integer countPrefAndWords(String words, String prefCode);
 
 }

@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.KanrenshaPersonHistoryBaseEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.lgcode.KanrenshaPersonHistory23Entity;
@@ -14,7 +15,8 @@ import net.seijishikin.jp.normalize.manage.kanrensha.entity.lgcode.KanrenshaPers
 /**
  * kanrensha_person_history_23接続用Repository
  */
-public interface KanrenshaPersonHistory23Repository extends JpaRepository<KanrenshaPersonHistory23Entity, Integer> {
+public interface KanrenshaPersonHistory23Repository extends JpaRepository<KanrenshaPersonHistory23Entity, Integer>,
+        PagingAndSortingRepository<KanrenshaPersonHistory23Entity, Integer> {
 
     /**
      * 名称を検索対象として全文検索をする
@@ -46,8 +48,8 @@ public interface KanrenshaPersonHistory23Repository extends JpaRepository<Kanren
      * @param pageable ページング条件
      * @return 検索結果
      */
-    Page<KanrenshaPersonHistory23Entity> findByInsertTimestampLessThanAndIsLatest(LocalDateTime dateTime, boolean isLatest,
-            Pageable pageable);
+    Page<KanrenshaPersonHistory23Entity> findByInsertTimestampLessThanAndIsLatest(LocalDateTime dateTime,
+            boolean isLatest, Pageable pageable);
 
     /**
      * 基準時間開始以上かつ終了より前の最新を取得する
@@ -60,6 +62,5 @@ public interface KanrenshaPersonHistory23Repository extends JpaRepository<Kanren
      */
     Page<KanrenshaPersonHistory23Entity> findByInsertTimestampGreaterThanEqualAndInsertTimestampLessThanAndIsLatest(
             LocalDateTime dateTimeStart, LocalDateTime dateTimeEnd, boolean isLatest, Pageable pageable);
-
 
 }

@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
 import net.seijishikin.jp.normalize.manage.kanrensha.batch.kanrensha.person.add_min.KanrenshaPersonMasterUniquekeyDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.WkTblKanrenshaPersonAddMinEntity;
@@ -14,7 +15,8 @@ import net.seijishikin.jp.normalize.manage.kanrensha.entity.WkTblKanrenshaPerson
 /**
  * wk_tbl_kanrensha_person_add_min接続用Repository
  */
-public interface WkTblKanrenshaPersonAddMinRepository extends JpaRepository<WkTblKanrenshaPersonAddMinEntity, Integer> {
+public interface WkTblKanrenshaPersonAddMinRepository extends JpaRepository<WkTblKanrenshaPersonAddMinEntity, Integer>,
+        PagingAndSortingRepository<WkTblKanrenshaPersonAddMinEntity, Integer> {
 
     /**
      * ユーザが同一であるデータを削除する
@@ -73,8 +75,9 @@ public interface WkTblKanrenshaPersonAddMinRepository extends JpaRepository<WkTb
      * @param pageable   ページング
      * @return 検索結果
      */
-    List<WkTblKanrenshaPersonAddMinEntity> findByInsertUserCodeAndIsLatestInAndIsAffectedInAndIsFinishIn(Integer userCode,
-            List<Boolean> listLatest, List<Boolean> isAffected, List<Boolean> listFinish, Pageable pageable);
+    List<WkTblKanrenshaPersonAddMinEntity> findByInsertUserCodeAndIsLatestInAndIsAffectedInAndIsFinishIn(
+            Integer userCode, List<Boolean> listLatest, List<Boolean> isAffected, List<Boolean> listFinish,
+            Pageable pageable);
 
     /**
      * 編集用に検索を行う際の該当件数を返却する

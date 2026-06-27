@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.jdbc.Sql;
@@ -27,7 +27,7 @@ import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateLeastUserForTes
  * EditAddressRsdtService単体テスト
  */
 @SpringJUnitConfig
-@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
+@SpringBootTest
 @DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
 @Sql("EditAddressRsdtServiceTest.sql")
 class EditAddressRsdtServiceTest {

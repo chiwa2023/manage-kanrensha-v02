@@ -5,13 +5,15 @@ import java.util.List;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.WkTblPostalEditEntity;
 
 /**
  * wk_tbl_postal_edit接続用Repository
  */
-public interface WkTblPostalEditRepository extends JpaRepository<WkTblPostalEditEntity, Integer> {
+public interface WkTblPostalEditRepository extends JpaRepository<WkTblPostalEditEntity, Integer>,
+        PagingAndSortingRepository<WkTblPostalEditEntity, Integer> {
 
     /**
      * ユーザコード条件で削除する
@@ -93,11 +95,12 @@ public interface WkTblPostalEditRepository extends JpaRepository<WkTblPostalEdit
      * @param userocde         ユーザコード
      * @param listSearchLatest 新該否検索条件
      * @param listSearchRepair 修復該否検索条件
-     * @param pageable ページング
+     * @param pageable         ページング
      * @return 検索結果
      */
-    List<WkTblPostalEditEntity> findByInsertUserCodeAndIsLatestInAndIsRepairInAndWorksTextLikeAndOrgNameLikeOrderByFlgHenkouRiyu(Integer userocde,
-            List<Boolean> listSearchLatest, List<Boolean> listSearchRepair,String worksText,String orgName, Pageable pageable);
+    List<WkTblPostalEditEntity> findByInsertUserCodeAndIsLatestInAndIsRepairInAndWorksTextLikeAndOrgNameLikeOrderByFlgHenkouRiyu(
+            Integer userocde, List<Boolean> listSearchLatest, List<Boolean> listSearchRepair, String worksText,
+            String orgName, Pageable pageable);
 
     /**
      * ユーザコード、最新該否検索条件、修復該否検索条件で件数を取得する
@@ -107,7 +110,7 @@ public interface WkTblPostalEditRepository extends JpaRepository<WkTblPostalEdit
      * @param listSearchRepair 修復該否検索条件
      * @return 件数
      */
-    Integer countByInsertUserCodeAndIsLatestInAndIsRepairInAndWorksTextLikeAndOrgNameLike(Integer userocde, List<Boolean> listSearchLatest,
-            List<Boolean> listSearchRepair,String worksText,String orgName);
+    Integer countByInsertUserCodeAndIsLatestInAndIsRepairInAndWorksTextLikeAndOrgNameLike(Integer userocde,
+            List<Boolean> listSearchLatest, List<Boolean> listSearchRepair, String worksText, String orgName);
 
 }

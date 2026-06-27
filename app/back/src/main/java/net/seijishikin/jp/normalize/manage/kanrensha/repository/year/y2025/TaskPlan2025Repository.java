@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
 import jakarta.persistence.LockModeType;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.TaskPlanBaseEntity;
@@ -17,7 +18,8 @@ import net.seijishikin.jp.normalize.manage.kanrensha.entity.year.y2025.TaskPlan2
 /**
  * task_plan_2025接続用Repository
  */
-public interface TaskPlan2025Repository extends JpaRepository<TaskPlan2025Entity, Integer> {
+public interface TaskPlan2025Repository
+        extends JpaRepository<TaskPlan2025Entity, Integer>, PagingAndSortingRepository<TaskPlan2025Entity, Integer> {
 
     /**
      * 名称を検索対象として全文検索をする

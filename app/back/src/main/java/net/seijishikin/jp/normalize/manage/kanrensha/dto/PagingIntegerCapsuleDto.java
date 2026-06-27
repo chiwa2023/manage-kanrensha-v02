@@ -7,7 +7,7 @@ import net.seijishikin.jp.normalize.common_tool.dto.paging.PagingIntegerDtoInter
 /**
  * ページングのみ検索条件Dto
  */
-public class PagingIntegerCapsuleDto implements Serializable,PagingIntegerDtoInterface{
+public class PagingIntegerCapsuleDto implements Serializable,PagingIntegerDtoInterface{ // NOPMD DataClass
 
     /** Serialize id */
     private static final long serialVersionUID = 1L;

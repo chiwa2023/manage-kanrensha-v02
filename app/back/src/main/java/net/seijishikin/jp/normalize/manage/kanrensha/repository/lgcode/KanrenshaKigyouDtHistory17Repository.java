@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.KanrenshaKigyouDtHistoryBaseEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.lgcode.KanrenshaKigyouDtHistory17Entity;
@@ -14,7 +15,8 @@ import net.seijishikin.jp.normalize.manage.kanrensha.entity.lgcode.KanrenshaKigy
 /**
  * kanrensha_kigyou_dt_history_17接続用Repository
  */
-public interface KanrenshaKigyouDtHistory17Repository extends JpaRepository<KanrenshaKigyouDtHistory17Entity, Integer> {
+public interface KanrenshaKigyouDtHistory17Repository extends JpaRepository<KanrenshaKigyouDtHistory17Entity, Integer>,
+        PagingAndSortingRepository<KanrenshaKigyouDtHistory17Entity, Integer> {
 
     /**
      * 名称を検索対象として全文検索をする
@@ -25,7 +27,7 @@ public interface KanrenshaKigyouDtHistory17Repository extends JpaRepository<Kanr
     @Query(value = "SELECT * FROM kanrensha_kigyou_dt_history_17"
             + " WHERE search_text like ?1 AND is_latest=1", nativeQuery = true) // TODO MATCH AGAINST
     List<KanrenshaKigyouDtHistory17Entity> findFullText(String searchWords);
-    
+
     /**
      * 企業・団体の属性でリスト取得する
      *
@@ -46,8 +48,8 @@ public interface KanrenshaKigyouDtHistory17Repository extends JpaRepository<Kanr
      * @param pageable ページング条件
      * @return 検索結果
      */
-    Page<KanrenshaKigyouDtHistory17Entity> findByInsertTimestampLessThanAndIsLatest(LocalDateTime dateTime, boolean isLatest,
-            Pageable pageable);
+    Page<KanrenshaKigyouDtHistory17Entity> findByInsertTimestampLessThanAndIsLatest(LocalDateTime dateTime,
+            boolean isLatest, Pageable pageable);
 
     /**
      * 基準時間開始以上かつ終了より前の最新を取得する

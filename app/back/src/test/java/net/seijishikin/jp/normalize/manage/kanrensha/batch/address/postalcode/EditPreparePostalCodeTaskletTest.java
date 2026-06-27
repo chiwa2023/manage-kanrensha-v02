@@ -10,7 +10,7 @@ import org.springframework.batch.core.step.StepExecution;
 import org.springframework.batch.test.MetaDataInstanceFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.jdbc.Sql;
@@ -23,7 +23,7 @@ import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateLeastUserForTes
 /**
  * EditPreparePostalCodeTasklet単体テスト
  */
-@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
+@SpringBootTest
 @DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
 @Sql("EditPreparePostalCodeTaskletTest.sql")
 class EditPreparePostalCodeTaskletTest {

@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
 import net.seijishikin.jp.normalize.manage.kanrensha.batch.kanrensha.kigyou_dt.history.KanrenshaKigyouDtUniquekeyDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.WkTblKanrenshaKigyouDtHistoryEntity;
@@ -15,7 +16,8 @@ import net.seijishikin.jp.normalize.manage.kanrensha.entity.WkTblKanrenshaKigyou
  * wk_tbl_kanrensha_kigyou_dt_history接続用Repository
  */
 public interface WkTblKanrenshaKigyouDtHistoryRepository
-        extends JpaRepository<WkTblKanrenshaKigyouDtHistoryEntity, Integer> {
+        extends JpaRepository<WkTblKanrenshaKigyouDtHistoryEntity, Integer>,
+        PagingAndSortingRepository<WkTblKanrenshaKigyouDtHistoryEntity, Integer> {
 
     /**
      * ユーザが同一であるデータを削除する

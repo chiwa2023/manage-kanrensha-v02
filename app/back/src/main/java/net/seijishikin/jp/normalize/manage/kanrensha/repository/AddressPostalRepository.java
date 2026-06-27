@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
 import net.seijishikin.jp.normalize.common_tool.dto.select_options.SelectOptionIntegerDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.AddressPostalEntity;
@@ -13,7 +14,8 @@ import net.seijishikin.jp.normalize.manage.kanrensha.entity.AddressPostalEntity;
 /**
  * address_postal接続用Repository
  */
-public interface AddressPostalRepository extends JpaRepository<AddressPostalEntity, Integer> {
+public interface AddressPostalRepository
+        extends JpaRepository<AddressPostalEntity, Integer>, PagingAndSortingRepository<AddressPostalEntity, Integer> {
 
     /**
      * 郵便番号から住所郵便番号までを取得する

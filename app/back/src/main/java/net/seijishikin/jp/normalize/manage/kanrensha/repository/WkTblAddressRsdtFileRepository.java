@@ -5,13 +5,15 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.WkTblAddressRsdtFileEntity;
 
 /**
  * wk_tbl_address_rsdt_file接続用Repository
  */
-public interface WkTblAddressRsdtFileRepository extends JpaRepository<WkTblAddressRsdtFileEntity, Integer> {
+public interface WkTblAddressRsdtFileRepository extends JpaRepository<WkTblAddressRsdtFileEntity, Integer>,
+        PagingAndSortingRepository<WkTblAddressRsdtFileEntity, Integer> {
 
     /**
      * ユーザコード条件で削除する

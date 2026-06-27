@@ -20,7 +20,7 @@ import org.springframework.batch.test.MetaDataInstanceFactory;
 import org.springframework.batch.test.context.SpringBatchTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.jdbc.Sql;
@@ -28,14 +28,13 @@ import org.springframework.test.context.jdbc.Sql;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
 import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
-import net.seijishikin.jp.normalize.manage.kanrensha.entity.AddressRsdtBaseEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.AddressRsdtTemplateEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateLeastUserForTestUtil;
 
 /**
  * MoveAddressRsdtItemWriter単体テスト
  */
-@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
+@SpringBootTest
 @SpringBatchTest
 @DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
 @Sql("MoveAddressRsdtItemWriterTest.sql")
@@ -58,9 +57,9 @@ class MoveAddressRsdtItemWriterTest {
     @SuppressWarnings("unchecked")
     void test() throws Exception {
 
-        AddressRsdtBaseEntity baseEntity = new AddressRsdtBaseEntity();
+        AddressRsdtTemplateEntity baseEntity = new AddressRsdtTemplateEntity();
 
-        baseEntity.setLgCode("442"); // 存在しそうにないテーブル
+        baseEntity.setLgCode(COPY_LGCODE);
         baseEntity.setPostalcode1("123"); // 以降の処理で追加だがここではとりあえず値が入るのを確認
         baseEntity.setPostalcode2("3456"); // 以降の処理で追加だがここではとりあえず値が入るのを確認
         baseEntity.setMachiazaId("0013018");
@@ -73,11 +72,11 @@ class MoveAddressRsdtItemWriterTest {
         baseEntity.setAddressBlock("札幌市豊平区月寒東五条十八丁目aaa17番地11号");
         baseEntity.setAddressBuilding("99号室");
 
-        List<AddressRsdtBaseEntity> list = new ArrayList<>();
+        List<AddressRsdtTemplateEntity> list = new ArrayList<>();
         list.add(baseEntity);
 
         // Chunkを作成してセット
-        Chunk<? extends AddressRsdtBaseEntity> items = new Chunk<>(list);
+        Chunk<? extends AddressRsdtTemplateEntity> items = new Chunk<>(list);
         moveAddressRsdtItemWriter.beforeStep(this.getStepExecution());
         moveAddressRsdtItemWriter.write(items);
 
@@ -90,7 +89,7 @@ class MoveAddressRsdtItemWriterTest {
 
         AddressRsdtTemplateEntity entityAnswer = listAnswer.get(0);
 
-        assertEquals(COPY_LGCODE, entityAnswer.getLgCode());
+        assertEquals(baseEntity.getLgCode(), entityAnswer.getLgCode()); // ItemWriterで変換しないようにした
         assertEquals(baseEntity.getPostalcode1(), entityAnswer.getPostalcode1());
         assertEquals(baseEntity.getPostalcode2(), entityAnswer.getPostalcode2());
         assertEquals(baseEntity.getMachiazaId(), entityAnswer.getMachiazaId());

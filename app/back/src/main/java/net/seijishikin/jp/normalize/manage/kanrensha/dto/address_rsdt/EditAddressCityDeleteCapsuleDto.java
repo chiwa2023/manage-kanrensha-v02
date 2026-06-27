@@ -39,6 +39,12 @@ public class EditAddressCityDeleteCapsuleDto extends FrameworkCapsuleDto // NOPM
     /** 移行地方自治体コード */
     private String moveLgCode = INIT_STRING;
 
+    /** 編集地方自治体名(置換対象) */
+    private String srcLgName = INIT_STRING;
+
+    /** 移行地方自治体名(置換対象) */
+    private String moveLgName = INIT_STRING;
+
     /**
      * 移行地方自治体コードを取得する
      * 
@@ -55,6 +61,42 @@ public class EditAddressCityDeleteCapsuleDto extends FrameworkCapsuleDto // NOPM
      */
     public void setMoveLgCode(final String moveLgCode) {
         this.moveLgCode = moveLgCode;
+    }
+
+    /**
+     * 編集地方自治体名(置換対象)を取得する
+     * 
+     * @return 編集地方自治体名(置換対象)
+     */
+    public String getSrcLgName() {
+        return srcLgName;
+    }
+
+    /**
+     * 編集地方自治体名(置換対象)を設定する
+     * 
+     * @param srcLgName 編集地方自治体名(置換対象)
+     */
+    public void setSrcLgName(final String srcLgName) {
+        this.srcLgName = srcLgName;
+    }
+
+    /**
+     * 移行地方自治体名(置換対象)を取得する
+     * 
+     * @return 移行地方自治体名(置換対象)
+     */
+    public String getMoveLgName() {
+        return moveLgName;
+    }
+
+    /**
+     * 移行地方自治体名(置換対象)を設定する
+     * 
+     * @param moveLgName 移行地方自治体名(置換対象)
+     */
+    public void setMoveLgName(final String moveLgName) {
+        this.moveLgName = moveLgName;
     }
 
 }

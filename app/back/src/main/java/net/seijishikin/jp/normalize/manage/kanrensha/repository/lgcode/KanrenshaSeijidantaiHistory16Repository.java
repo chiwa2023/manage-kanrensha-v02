@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.KanrenshaSeijidantaiHistoryBaseEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.lgcode.KanrenshaSeijidantaiHistory16Entity;
@@ -15,7 +16,8 @@ import net.seijishikin.jp.normalize.manage.kanrensha.entity.lgcode.KanrenshaSeij
  * kanrensha_seijidantai_history_16接続用Repository
  */
 public interface KanrenshaSeijidantaiHistory16Repository
-        extends JpaRepository<KanrenshaSeijidantaiHistory16Entity, Integer> {
+        extends JpaRepository<KanrenshaSeijidantaiHistory16Entity, Integer>,
+        PagingAndSortingRepository<KanrenshaSeijidantaiHistory16Entity, Integer> {
 
     /**
      * 名称を検索対象として全文検索をする
@@ -39,8 +41,6 @@ public interface KanrenshaSeijidantaiHistory16Repository
             + "   AND org_delegate_name = ?3 AND is_latest=1", nativeQuery = true)
     List<KanrenshaSeijidantaiHistoryBaseEntity> selectByProperty(String name, String address, String delegate);
 
-    
-    
     /**
      * 基準時間より前の最新データを取得する
      *
@@ -49,8 +49,8 @@ public interface KanrenshaSeijidantaiHistory16Repository
      * @param pageable ページング条件
      * @return 検索結果
      */
-    Page<KanrenshaSeijidantaiHistory16Entity> findByInsertTimestampLessThanAndIsLatest(LocalDateTime dateTime, boolean isLatest,
-            Pageable pageable);
+    Page<KanrenshaSeijidantaiHistory16Entity> findByInsertTimestampLessThanAndIsLatest(LocalDateTime dateTime,
+            boolean isLatest, Pageable pageable);
 
     /**
      * 基準時間開始以上かつ終了より前の最新を取得する

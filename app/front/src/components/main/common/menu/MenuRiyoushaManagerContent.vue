@@ -75,19 +75,28 @@ import RoutePathConstants from '../../../../routePathConstants';
             <RouterLink :to="RoutePathConstants.PAGE_ADDRESS_REGI_SABUN" class="menu-item">住所差分取込</RouterLink>
             <RouterLink :to="RoutePathConstants.PAGE_ADDRESS_SABUN_UPDATE" class="menu-item">住所差分結果一括更新</RouterLink>
             <RouterLink :to="RoutePathConstants.PAGE_ADDRESS_SABUN_EDIT" class="menu-item">住所差分結果編集</RouterLink>
-            
+
             <RouterLink :to="RoutePathConstants.PAGE_LGCODE_SABUN" class="menu-item">地方自治体コード差分</RouterLink>
             <RouterLink :to="RoutePathConstants.PAGE_LGCODE_SABUN_EDIT" class="menu-item">地方自治体コード差分結果更新</RouterLink>
+            <RouterLink :to="RoutePathConstants.PAGE_LGCODE_SEARCH" class="menu-item">地方自治体コード検索</RouterLink>
         </div>
     </div>
 
     <div class="menu-container">
         <div class="menu-section">
             <h4 class="menu-title">利用者組織</h4>
-            <RouterLink class="menu-item" :to="{ path:RoutePathConstants.PAGE_REGIST_RIYOUSHA_ORG , query:{ userRole: 'manager' }}">利用者組織編集</RouterLink>
-            <RouterLink class="menu-item" :to="{ path:RoutePathConstants.PAGE_INSERT_COMBINE_ORG , query:{ userRole: 'manager' }}">組織に所属する</RouterLink>
-            <RouterLink class="menu-item" :to="{ path:RoutePathConstants.PAGE_INVITE_ORG_PERSON , query:{ userRole: 'manager' }}">自分が所属する組織に他利用者を招待</RouterLink>
-            <RouterLink class="menu-item" :to="{ path:RoutePathConstants.PAGE_ACCEPT_ORG_PERSON , query: { userRole: 'manager'} }">利用者組織招待承諾</RouterLink>
+            <RouterLink class="menu-item"
+                :to="{ path: RoutePathConstants.PAGE_REGIST_RIYOUSHA_ORG, query: { userRole: 'manager' } }">利用者組織編集
+            </RouterLink>
+            <RouterLink class="menu-item"
+                :to="{ path: RoutePathConstants.PAGE_INSERT_COMBINE_ORG, query: { userRole: 'manager' } }">組織に所属する
+            </RouterLink>
+            <RouterLink class="menu-item"
+                :to="{ path: RoutePathConstants.PAGE_INVITE_ORG_PERSON, query: { userRole: 'manager' } }">
+                自分が所属する組織に他利用者を招待</RouterLink>
+            <RouterLink class="menu-item"
+                :to="{ path: RoutePathConstants.PAGE_ACCEPT_ORG_PERSON, query: { userRole: 'manager' } }">利用者組織招待承諾
+            </RouterLink>
         </div>
     </div>
 

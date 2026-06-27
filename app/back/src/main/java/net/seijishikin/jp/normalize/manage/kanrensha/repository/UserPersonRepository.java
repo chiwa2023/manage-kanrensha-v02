@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
 import jakarta.persistence.LockModeType;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.UserPersonEntity;
@@ -14,7 +15,8 @@ import net.seijishikin.jp.normalize.manage.kanrensha.entity.UserPersonEntity;
 /**
  * user_person接続用Repository
  */
-public interface UserPersonRepository extends JpaRepository<UserPersonEntity, Integer> {
+public interface UserPersonRepository
+        extends JpaRepository<UserPersonEntity, Integer>, PagingAndSortingRepository<UserPersonEntity, Integer> {
 
     /**
      * 最大のコードを持つデータを取得する
@@ -51,8 +53,8 @@ public interface UserPersonRepository extends JpaRepository<UserPersonEntity, In
     @Query(value = "SELECT * FROM user_person "
             + "   WHERE email IN (SELECT email FROM user_role WHERE role IN ?2 AND is_latest = 1) "
             + "     AND is_latest = 1 AND CASE WHEN ?1<> '' THEN user_person_name LIKE ?1 ELSE 1=1 END ORDER BY user_person_id", nativeQuery = true)
-    List<UserPersonEntity> findNameAndRoles(String name, List<String> listRole ,Pageable pageable);
-    
+    List<UserPersonEntity> findNameAndRoles(String name, List<String> listRole, Pageable pageable);
+
     /**
      * 名称と権限からユーザを検索したときの全件数を取得する
      * 

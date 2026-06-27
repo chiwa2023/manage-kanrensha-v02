@@ -94,7 +94,7 @@ export default class RoutePathConstants {
     /** 地方自治体コード差分 */
     static readonly PAGE_LGCODE_SABUN: string = this.BASE_PATH + "/lgcode-sabun";
     static readonly PAGE_LGCODE_SABUN_EDIT: string = this.BASE_PATH + "/lgcode-sabun-edit";
-
+    static readonly PAGE_LGCODE_SEARCH: string = this.BASE_PATH + "/lgcode-search";
 
     /** 関連者企業・団体履歴一括登録 */
     static readonly PAGE_REGI_BULK_HISTORY_KIGYOU: string = this.BASE_PATH + "/bulk-history-kigyou";

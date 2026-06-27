@@ -5,13 +5,15 @@ import java.util.List;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.TaskInfoEntity;
 
 /**
  * task_info接続用Repository
  */
-public interface TaskInfoRepository extends JpaRepository<TaskInfoEntity, Integer> {
+public interface TaskInfoRepository
+        extends JpaRepository<TaskInfoEntity, Integer>, PagingAndSortingRepository<TaskInfoEntity, Integer> {
 
     /**
      * 名称を検索対象として全文検索をする

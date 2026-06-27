@@ -5,13 +5,15 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.AddressPostalRepairLogEntity;
 
 /**
  * address_postal_repair_log接続用Repository
  */
-public interface AddressPostalRepairLogRepository extends JpaRepository<AddressPostalRepairLogEntity, Integer> {
+public interface AddressPostalRepairLogRepository extends JpaRepository<AddressPostalRepairLogEntity, Integer>,
+        PagingAndSortingRepository<AddressPostalRepairLogEntity, Integer> {
 
     /**
      * 現在抽出分を初期化用に履歴とする

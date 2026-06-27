@@ -3,6 +3,7 @@ package net.seijishikin.jp.normalize.manage.kanrensha.repository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.WkTblKanrenshaSeijidantaiAddMinResultEntity;
 
@@ -10,7 +11,8 @@ import net.seijishikin.jp.normalize.manage.kanrensha.entity.WkTblKanrenshaSeijid
  * wk_tbl_kanrensha_seijidantai_add_min_result接続用Repository
  */
 public interface WkTblKanrenshaSeijidantaiAddMinResultRepository
-        extends JpaRepository<WkTblKanrenshaSeijidantaiAddMinResultEntity, Integer> {
+        extends JpaRepository<WkTblKanrenshaSeijidantaiAddMinResultEntity, Integer>,
+        PagingAndSortingRepository<WkTblKanrenshaSeijidantaiAddMinResultEntity, Integer> {
 
     /**
      * ユーザが同一であるデータを削除する
@@ -27,7 +29,7 @@ public interface WkTblKanrenshaSeijidantaiAddMinResultRepository
      * @param pageable ページング条件
      * @return 検索結果
      */
-    Page<WkTblKanrenshaSeijidantaiAddMinResultEntity> findByInsertUserCodeAndIsLatest(Integer userCode, boolean isLatest,
-            Pageable pageable);
+    Page<WkTblKanrenshaSeijidantaiAddMinResultEntity> findByInsertUserCodeAndIsLatest(Integer userCode,
+            boolean isLatest, Pageable pageable);
 
 }

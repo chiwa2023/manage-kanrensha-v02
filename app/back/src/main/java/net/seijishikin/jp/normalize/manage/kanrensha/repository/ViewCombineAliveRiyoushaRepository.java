@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.riyousha.SearchViewCombineAliveRiyoushaResultDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.ViewCombineAliveRiyoushaEntity;
@@ -14,7 +15,8 @@ import net.seijishikin.jp.normalize.manage.kanrensha.entity.ViewCombineAliveRiyo
  * 最新利用者全権限混合Repository
  */
 public interface ViewCombineAliveRiyoushaRepository
-        extends JpaRepository<ViewCombineAliveRiyoushaEntity, ViewCombineAliveRiyoushaPrimaryKey> {
+        extends JpaRepository<ViewCombineAliveRiyoushaEntity, ViewCombineAliveRiyoushaPrimaryKey>,
+        PagingAndSortingRepository<ViewCombineAliveRiyoushaEntity, ViewCombineAliveRiyoushaPrimaryKey> {
 
     /**
      * 権限と検索語で該当する件数を返却する

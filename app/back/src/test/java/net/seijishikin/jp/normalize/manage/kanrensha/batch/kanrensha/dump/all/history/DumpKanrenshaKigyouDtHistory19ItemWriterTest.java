@@ -20,7 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
@@ -32,7 +32,7 @@ import net.seijishikin.jp.normalize.manage.kanrensha.entity.lgcode.KanrenshaKigy
  */
 @SpringJUnitConfig
 @AutoConfigureMockMvc
-@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
+@SpringBootTest
 @DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
 @ConfigurationProperties(prefix = "net.seijishikin.jp.normalize.kanrensha")
 class DumpKanrenshaKigyouDtHistory19ItemWriterTest {

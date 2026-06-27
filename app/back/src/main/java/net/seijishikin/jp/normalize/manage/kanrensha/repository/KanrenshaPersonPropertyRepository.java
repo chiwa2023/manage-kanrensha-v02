@@ -5,13 +5,15 @@ import java.util.List;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.KanrenshaPersonPropertyEntity;
 
 /**
  * kanrensha_person_property接続用Repository
  */
-public interface KanrenshaPersonPropertyRepository extends JpaRepository<KanrenshaPersonPropertyEntity, Integer> {
+public interface KanrenshaPersonPropertyRepository extends JpaRepository<KanrenshaPersonPropertyEntity, Integer>,
+        PagingAndSortingRepository<KanrenshaPersonPropertyEntity, Integer> {
 
     /**
      * 関連者コードで検索する
@@ -21,7 +23,6 @@ public interface KanrenshaPersonPropertyRepository extends JpaRepository<Kanrens
      */
     List<KanrenshaPersonPropertyEntity> findByPersonKanrenshaCodeOrderByKanrenshaPersonPropertyIdDesc(
             String kanrenshaCode);
-
 
     /**
      * 職業承認作業リストを取得する

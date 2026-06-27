@@ -15,7 +15,7 @@ import org.springframework.batch.test.context.SpringBatchTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.ContextConfiguration;
@@ -34,7 +34,7 @@ import net.seijishikin.jp.normalize.manage.kanrensha.batch.address.block.RepairP
  * </p>
  */
 @SpringJUnitConfig
-@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
+@SpringBootTest
 @SpringBatchTest
 @ContextConfiguration(classes = BackApplication.class) // 全体起動
 @DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
@@ -66,7 +66,8 @@ class RepairPostalCodeIrregularBatchConfigurationAllTest {
                 .addLong("userCode", (long) userDto.getUserPersonCode())
                 .addString("userName", userDto.getUserPersonName()).toJobParameters();
 
-        JobExecution jobExecution = jobOperatorTestUtils.startJob(jobParameters);
+        @SuppressWarnings("removal")
+        JobExecution jobExecution = jobOperatorTestUtils.launchJob(jobParameters);
         assertEquals("COMPLETED", jobExecution.getExitStatus().getExitCode(), "作業完了Statusが戻ってくる");
 
     }

@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
 import net.seijishikin.jp.normalize.common_tool.dto.select_options.SelectOptionIntegerDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.AddressPostalIrregularEntity;
@@ -13,7 +14,8 @@ import net.seijishikin.jp.normalize.manage.kanrensha.entity.AddressPostalIrregul
 /**
  * address_postal_irregular接続用Repository
  */
-public interface AddressPostalIrregularRepository extends JpaRepository<AddressPostalIrregularEntity, Integer> {
+public interface AddressPostalIrregularRepository extends JpaRepository<AddressPostalIrregularEntity, Integer>,
+        PagingAndSortingRepository<AddressPostalIrregularEntity, Integer> {
 
     /**
      * 郵便番号から住所を取得する
@@ -34,7 +36,7 @@ public interface AddressPostalIrregularRepository extends JpaRepository<AddressP
      * @return 検索結果
      */
     List<AddressPostalIrregularEntity> findByAddressOrgContainingAndIsRepairRsdtAndIsLatestTrue(String words,
-            Boolean isRepairRsdt,Pageable pageable);
+            Boolean isRepairRsdt, Pageable pageable);
 
     /**
      * 同一建物=住所名称を取得する
@@ -43,8 +45,7 @@ public interface AddressPostalIrregularRepository extends JpaRepository<AddressP
      * @param isRepairRsdt 修正完了の有無
      * @return 検索結果
      */
-    Integer countByAddressOrgContainingAndIsRepairRsdtAndIsLatestTrue(String words,
-            Boolean isRepairRsdt);
+    Integer countByAddressOrgContainingAndIsRepairRsdtAndIsLatestTrue(String words, Boolean isRepairRsdt);
 
     /**
      * 住所名称が一致する郵便番号不規則を取得する

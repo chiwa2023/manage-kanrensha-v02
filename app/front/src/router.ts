@@ -105,8 +105,10 @@ const routes = [
     { path: RoutePathConstants.PAGE_ADDRESS_SABUN_UPDATE, name: "UpdateAddressWktbl", component: () => import("./components/main/pages/address_registory/UpdateAddressWktbl.vue") },
     { path: RoutePathConstants.PAGE_ADDRESS_SABUN_EDIT, name: "EditAddressWktbl", component: () => import("./components/main/pages/address_registory/EditAddressWktbl.vue") },
 
+    // 地方自治体コード
     { path: RoutePathConstants.PAGE_LGCODE_SABUN, name: "LgCodeSabun", component: () => import("./components/main/pages/address_registory/LgCodeSabun.vue") },
     { path: RoutePathConstants.PAGE_LGCODE_SABUN_EDIT, name: "LgCodeSabunEdit", component: () => import("./components/main/pages/address_registory/LgCodeSabunEdit.vue") },
+    { path: RoutePathConstants.PAGE_LGCODE_SEARCH, name: "SearchLgCode", component: () => import("./components/main/pages/address_registory/SearchLgCode.vue") },
 
     // 入力内容承認
     { path: RoutePathConstants.PAGE_WORKS_APPROVAL, name: "WorksApproval", component: () => import("./components/main/pages/works_approval/WorksApproval.vue") },

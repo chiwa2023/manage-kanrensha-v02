@@ -4,13 +4,15 @@ import java.util.List;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.AddressCityDeleteEntity;
 
 /**
  * address_city_delete接続用Repository
  */
-public interface AddressCityDeleteRepository extends JpaRepository<AddressCityDeleteEntity, Integer> {
+public interface AddressCityDeleteRepository extends JpaRepository<AddressCityDeleteEntity, Integer>,
+        PagingAndSortingRepository<AddressCityDeleteEntity, Integer> {
 
     /**
      * 最新を取得する

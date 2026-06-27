@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
 import jakarta.persistence.LockModeType;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.RiyoushaOrgMasterEntity;
@@ -14,7 +15,8 @@ import net.seijishikin.jp.normalize.manage.kanrensha.entity.RiyoushaOrgMasterEnt
 /**
  * riyousha_org_master接続用Repository
  */
-public interface RiyoushaOrgMasterRepository extends JpaRepository<RiyoushaOrgMasterEntity, Integer> {
+public interface RiyoushaOrgMasterRepository extends JpaRepository<RiyoushaOrgMasterEntity, Integer>,
+        PagingAndSortingRepository<RiyoushaOrgMasterEntity, Integer> {
 
     /**
      * 名称を検索対象として全文検索をする
@@ -52,12 +54,12 @@ public interface RiyoushaOrgMasterRepository extends JpaRepository<RiyoushaOrgMa
      */
     Optional<RiyoushaOrgMasterEntity> findByRiyoushaOrgMasterCodeAndIsLatestTrue(Integer masterCode);
 
-    
     /**
      * マスタコード最新データかつ名称一致を取得する
      * 
      * @param masterCode マスタコード
      * @return 利用者組織マスタEnity
      */
-    Optional<RiyoushaOrgMasterEntity> findByRiyoushaOrgMasterCodeAndAllNameAndIsLatestTrue(Integer masterCode,String name);
+    Optional<RiyoushaOrgMasterEntity> findByRiyoushaOrgMasterCodeAndAllNameAndIsLatestTrue(Integer masterCode,
+            String name);
 }

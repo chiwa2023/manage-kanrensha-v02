@@ -18,7 +18,7 @@ import org.springframework.batch.test.MetaDataInstanceFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
 
@@ -28,7 +28,7 @@ import net.seijishikin.jp.normalize.manage.kanrensha.constants.GetCurrentResourc
  * RsdtAddressCsvItemReader単体テスト
  */
 @AutoConfigureMockMvc
-@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
+@SpringBootTest
 @DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
 class RsdtAddressCsvItemReaderTest {
     // CHECKSTYLE:OFF MagicNumber

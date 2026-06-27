@@ -5,13 +5,15 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.WkTblAddressRsdtChangeEntity;
 
 /**
  * wk_tbl_address_rsdt_change接続用Repository
  */
-public interface WkTblAddressRsdtChangeRepository extends JpaRepository<WkTblAddressRsdtChangeEntity, Integer> {
+public interface WkTblAddressRsdtChangeRepository extends JpaRepository<WkTblAddressRsdtChangeEntity, Integer>,
+        PagingAndSortingRepository<WkTblAddressRsdtChangeEntity, Integer> {
 
     /**
      * ユーザコード条件で削除する
@@ -40,7 +42,7 @@ public interface WkTblAddressRsdtChangeRepository extends JpaRepository<WkTblAdd
      * @return 検索結果
      */
     List<WkTblAddressRsdtChangeEntity> findByInsertUserCodeAndIsLatestIn(Integer userocde,
-            List<Integer> listSearchLatest, Pageable pageable);
+            List<Boolean> listSearchLatest, Pageable pageable);
 
     /**
      * 作業ユーザコードかつ最新条件の件数を取得する
@@ -49,6 +51,6 @@ public interface WkTblAddressRsdtChangeRepository extends JpaRepository<WkTblAdd
      * @param listSearchLatest 最新該否検索条件
      * @return 検索件数
      */
-    Integer countByInsertUserCodeAndIsLatestIn(Integer userocde, List<Integer> listSearchLatest);
+    Integer countByInsertUserCodeAndIsLatestIn(Integer userocde, List<Boolean> listSearchLatest);
 
 }
