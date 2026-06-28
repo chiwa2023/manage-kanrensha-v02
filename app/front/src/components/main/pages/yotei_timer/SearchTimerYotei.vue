@@ -1,7 +1,7 @@
 ﻿<script setup lang="ts">
 import { ref, toRaw, type Ref } from 'vue';
 import { getLoginUser } from '../../utils/getLoginUser';
-import { convertDatetimeText, InputDatetime, MessageConstants, MessageView, PagingControl, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
+import { convertDatetimeText, DtoEntityConstants, InputDatetime, MessageConstants, MessageView, PagingControl, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import { SearchTimerYoteiResultDto, type SearchTimerYoteiResultDtoInterface } from '../../dto/yoyaku_timer/searchTimerYoteiResultDto';
 import { SearchTimerYoteiCapsuleDto, type SearchTimerYoteiCapsuleDtoInterface } from '../../dto/yoyaku_timer/searchTimerYoteiCapsuleDto';
 import { type MultiSelectOptionNumberDtoInterface } from '../../dto/select_options/multiSelectOptionsNumberDto';
@@ -37,6 +37,9 @@ const pageNumber: Ref<number> = ref(0);
 const allCount: Ref<number> = ref(0);
 const limit: Ref<number> = ref(SEARCH_LIMIT);
 
+// 日付コンポーネント不正値
+const LIMIT_DATE = DtoEntityConstants.INIT_DATETIME_LIMIT;
+
 // 検索条件と結果
 const capsuleDto: Ref<SearchTimerYoteiCapsuleDtoInterface> = ref(new SearchTimerYoteiCapsuleDto());
 const resultDto: Ref<SearchTimerYoteiResultDtoInterface> = ref(new SearchTimerYoteiResultDto());
@@ -54,6 +57,24 @@ function recievePagingNumber(selecteddNumber: number) {
 }
 
 function onSearch() {
+
+    title.value = "予約実行検索";
+
+    // 日時コンポーネントエラー検出
+    if (capsuleDto.value.startDateTime <= LIMIT_DATE) {
+        infoLevel.value = MessageConstants.LEVEL_WARNING;
+        messageType.value = MessageConstants.VIEW_OK;
+        message.value = "開始日時入力が不正です。入力しなおしてください";
+        return;
+    }
+    if (capsuleDto.value.endDateTime <= LIMIT_DATE) {
+        infoLevel.value = MessageConstants.LEVEL_WARNING;
+        messageType.value = MessageConstants.VIEW_OK;
+        message.value = "終了日時入力が不正です。入力しなおしてください";
+        return;
+    }
+
+
     // 初期化して選択された予定区分定数のみをリストに複写
     capsuleDto.value.listYoteiKbn.splice(0);
     for (const row of options.value) {
@@ -63,10 +84,6 @@ function onSearch() {
             }
         }
     }
-    // resultDto.value.listEntity = mockGetTimerYoteiList();
-    // resultDto.value.allCount = resultDto.value.listEntity.length;
-    // pageNumber.value = 2;
-    // allCount.value = resultDto.value.allCount;
 
     capsuleDto.value.allCount = allCount.value;
     capsuleDto.value.limit = limit.value;
@@ -87,7 +104,6 @@ function onSearch() {
                 if (0 == resultDto.value.listEntity.length) {
                     infoLevel.value = MessageConstants.LEVEL_INFO;
                     messageType.value = MessageConstants.VIEW_TOAST;
-                    title.value = "予約実行検索";
                     message.value = "検索結果が0件でした";
                 }
                 allCount.value = resultDto.value.allCount;
@@ -128,8 +144,34 @@ const isYoyakuEdit: Ref<Boolean> = ref(false);
 const editYoyakId: Ref<number> = ref(INIT_NUMBER);
 
 function onEdit(editId: number) {
-    if (undefined !== resultDto.value.listEntity.filter((e) => editId === e.timerYoteiId)[0]) {
-        timerYoyakuEntity.value = resultDto.value.listEntity.filter((e) => editId === e.timerYoteiId)[0] as TimerYoteiEntityInterface;
+
+    const tempEntity: TimerYoteiEntityInterface | undefined = resultDto.value.listEntity.filter((e) => editId === e.timerYoteiId)[0];
+
+    if (undefined !== tempEntity) {
+
+        timerYoyakuEntity.value = {
+
+            timerYoteiId: tempEntity.timerYoteiId,
+            timerYoteiCode: tempEntity.timerYoteiCode,
+            timerYoteiName: tempEntity.timerYoteiName,
+            isLatest: tempEntity.isLatest,
+            yoyakuTaskKbn: tempEntity.yoyakuTaskKbn,
+            nextTimestamp: tempEntity.nextTimestamp ? new Date(tempEntity.nextTimestamp) : new Date(),
+            previousTimestamp: tempEntity.previousTimestamp ? new Date(tempEntity.previousTimestamp) : new Date(),
+            isRepeat: tempEntity.isRepeat,
+            isPause: tempEntity.isPause,
+            endTimestamp: tempEntity.endTimestamp ? new Date(tempEntity.endTimestamp) : new Date(),
+            sabunTimestamp: tempEntity.sabunTimestamp ? new Date(tempEntity.sabunTimestamp) : new Date(),
+            isPeriod: tempEntity.isPeriod,
+            yearPeriod: tempEntity.yearPeriod,
+            monthPeriod: tempEntity.monthPeriod,
+            dayPeriod: tempEntity.dayPeriod,
+            hourPeriod: tempEntity.hourPeriod,
+            yearPointed: tempEntity.yearPointed,
+            monthPointed: tempEntity.monthPointed,
+            dayPointed: tempEntity.dayPointed,
+            hourPointed: tempEntity.hourPointed,
+        };
         editYoyakId.value = editId;
         timerYoyakuEntityBackup.value = structuredClone(toRaw(timerYoyakuEntity.value));
         isYoyakuEdit.value = true;
@@ -171,6 +213,16 @@ function recieveSubmit(button: string) {
     infoLevel.value = 0;
     messageType.value = 0;
 }
+
+
+function recieveDateTime(date: Date, index: number) {
+    if (0 == index) {
+        capsuleDto.value.startDateTime = date;
+    }
+    if (1 == index) {
+        capsuleDto.value.endDateTime = date;
+    }
+}
 </script>
 <template>
     <!-- SE権限 -->
@@ -201,8 +253,10 @@ function recieveSubmit(button: string) {
             検索期間
         </div>
         <div class="right-area">
-            <InputDatetime :datetime="capsuleDto.startDateTime" :index="0" :isEdit="true"></InputDatetime>から
-            <InputDatetime :datetime="capsuleDto.endDateTime" :index="1" :isEdit="true"></InputDatetime>まで
+            <InputDatetime :datetime="capsuleDto.startDateTime" :index="0" :isEdit="true"
+                @send-date-time="recieveDateTime"></InputDatetime>から
+            <InputDatetime :datetime="capsuleDto.endDateTime" :index="1" :isEdit="true"
+                @send-date-time="recieveDateTime"></InputDatetime>まで
         </div>
     </div>
 

@@ -1,6 +1,6 @@
 ﻿<script setup lang="ts">
 import { ref, type Ref } from 'vue';
-import { InputAddressDto, InputCompareAddress, InputDate, MessageConstants, MessageView, PagingControl, type FrameworkMessageAndResultDtoInterface, type InputAddressDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
+import { DtoEntityConstants, InputAddressDto, InputCompareAddress, InputDate, MessageConstants, MessageView, PagingControl, type FrameworkMessageAndResultDtoInterface, type InputAddressDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import { SearchWorksApprovalCapsuleDto, type SearchWorksApprovalCapsuleDtoInterfce } from '../../dto/works_approval/searchWorksApprovalCapsuleDto';
 import type { KanrenshaAddressBaseEntityInterface } from '../../entity/kanrenshaAddressBaseEntity';
 import { SearchWorksApprovalResultDto, type SearchWorksApprovalResultDtoInterface } from '../../dto/works_approval/searchWorksApprovalResultDto';
@@ -34,6 +34,8 @@ const limit: Ref<number> = ref(SEARCH_LIMIT);
 // back側アクセス
 const urlBack: string = RoutePathConstants.DOMAIN + RoutePathConstants.BASE_PATH;
 
+// 日付コンポーネント不正値
+const LIMIT_DATE = DtoEntityConstants.INIT_DATETIME_LIMIT;
 
 // 検索期間
 const isPortalAddressInput: Ref<boolean> = ref(INIT_BOOLEAN);
@@ -41,11 +43,23 @@ const editDto: Ref<InputAddressDtoInterface> = ref(new InputAddressDto());
 const capsuleDto: Ref<SearchWorksApprovalCapsuleDtoInterfce> = ref(new SearchWorksApprovalCapsuleDto());
 const resultDto: Ref<SearchWorksApprovalResultDtoInterface> = ref(new SearchWorksApprovalResultDto());
 
-
-
 function onSearch() {
-    //listPersonAdsdress.value = mockGetPersonApprovalAddressList();
-    //allCount.value = listPersonAdsdress.value.length;
+
+    title.value = "個人住所作業初認処理";
+
+    // 日時コンポーネントエラー検出
+    if (capsuleDto.value.startDate <= LIMIT_DATE) {
+        infoLevel.value = MessageConstants.LEVEL_WARNING;
+        messageType.value = MessageConstants.VIEW_OK;
+        message.value = "開始日時入力が不正です。入力しなおしてください";
+        return;
+    }
+    if (capsuleDto.value.endDate <= LIMIT_DATE) {
+        infoLevel.value = MessageConstants.LEVEL_WARNING;
+        messageType.value = MessageConstants.VIEW_OK;
+        message.value = "終了日時入力が不正です。入力しなおしてください";
+        return;
+    }
 
     // 検索実行
     capsuleDto.value.limit = limit.value;

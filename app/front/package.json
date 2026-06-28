@@ -15,7 +15,7 @@
     "pinia": "^3.0.4",
     "pinia-plugin-persistedstate": "^4.7.1",
     "seijishikin-jp-normalize": "file:lib/seijishikin-jp-normalize-0.5.0.tgz",
-    "seijishikin-jp-normalize_common-tool": "file:lib/seijishikin-jp-normalize_common-tool-0.0.1.tgz",
+    "seijishikin-jp-normalize_common-tool": "file:lib/seijishikin-jp-normalize_common-tool-0.0.2.tgz",
     "vue": "^3.5.22"
   },
   "devDependencies": {

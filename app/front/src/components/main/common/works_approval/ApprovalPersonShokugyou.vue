@@ -1,7 +1,7 @@
 ﻿<script setup lang="ts">
 import { ref, type Ref } from 'vue';
 import type { KanrenshaPersonPropertyEntityInterface } from '../../entity/kanrenshaPersonPropertyEntity';
-import { InputCompareShokugyou, InputDate, InputShokugyouDto, MessageConstants, MessageView, PagingControl, type FrameworkMessageAndResultDtoInterface, type InputShokugyouDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
+import { DtoEntityConstants, InputCompareShokugyou, InputDate, InputShokugyouDto, MessageConstants, MessageView, PagingControl, type FrameworkMessageAndResultDtoInterface, type InputShokugyouDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import getAuthorizedPromiseArea from '../../dto/login/getAuthorizedPromiseArea';
 import RoutePathConstants from '../../../../routePathConstants';
 import { AccessTokenNotFoundError, TokenRefreshError } from '../../dto/login/errors';
@@ -31,14 +31,30 @@ const props = defineProps<{ userDto: LeastUserDtoInterface }>()
 
 // back側アクセス
 const urlBack: string = RoutePathConstants.DOMAIN + RoutePathConstants.BASE_PATH;
-
-//const listPersonShokugyou: Ref<KanrenshaPersonPropertyEntityInterface[]> = ref([]);
+// 日付コンポーネント不正値
+const LIMIT_DATE = DtoEntityConstants.INIT_DATETIME_LIMIT;
 
 const capsuleDto: Ref<SearchWorksApprovalCapsuleDtoInterfce> = ref(new SearchWorksApprovalCapsuleDto());
 const resultDto: Ref<SearchApprovalShokugyouResultDtoInterface> = ref(new SearchApprovalShokugyouResultDto());
 
 function onSearch() {
-    //    listPersonShokugyou.value = mockGetPersonApprovaShokugyouList();
+
+    title.value = "個人作業承認";
+
+    // 日時コンポーネントエラー検出
+    if (capsuleDto.value.startDate <= LIMIT_DATE) {
+        infoLevel.value = MessageConstants.LEVEL_WARNING;
+        messageType.value = MessageConstants.VIEW_OK;
+        message.value = "開始日時入力が不正です。入力しなおしてください";
+        return;
+    }
+    if (capsuleDto.value.endDate <= LIMIT_DATE) {
+        infoLevel.value = MessageConstants.LEVEL_WARNING;
+        messageType.value = MessageConstants.VIEW_OK;
+        message.value = "終了日時入力が不正です。入力しなおしてください";
+        return;
+    }
+
 
     capsuleDto.value.limit = limit.value;
     capsuleDto.value.allCount = allCount.value;
@@ -56,7 +72,6 @@ function onSearch() {
             .then(async (response) => {
                 resultDto.value = await response.json();
                 if (SERVER_STATUS_OK === response.status) {
-                    //listPersonShokugyou.value = resultDto.value.listShokugyou;
                     //ページング
                     allCount.value = resultDto.value.allCount;
                     pageNumber.value = resultDto.value.pageNumber;

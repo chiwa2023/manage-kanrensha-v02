@@ -2,7 +2,7 @@
 import { ref, watch, type Ref } from 'vue';
 import { getLoginUser } from '../../utils/getLoginUser';
 import { ForceDumpCapsuleDto, type ForceDumpCapsuleDtoInterface } from '../../dto/z_force_dump/forceDumpCapsuleDto';
-import { InputDate, MessageConstants, MessageView, type FrameworkMessageAndResultDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
+import { DtoEntityConstants, InputDate, MessageConstants, MessageView, type FrameworkMessageAndResultDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import AdminInfo from '../../common/user_info/AdminInfo.vue';
 import getAuthorizedPromiseArea from '../../dto/login/getAuthorizedPromiseArea';
 import RoutePathConstants from '../../../../routePathConstants';
@@ -26,6 +26,9 @@ const urlBack: string = RoutePathConstants.DOMAIN + RoutePathConstants.BASE_PATH
 
 // ユーザ呼び出し
 const userDto: Ref<LeastUserDtoInterface> = ref(getLoginUser());
+
+    // 日付コンポーネント不正値
+const LIMIT_DATE = DtoEntityConstants.INIT_DATETIME_LIMIT;
 
 // 実行条件
 const capsuleDto: Ref<ForceDumpCapsuleDtoInterface> = ref(new ForceDumpCapsuleDto());
@@ -62,8 +65,23 @@ function onCancel() {
 }
 function onSave() {
 
-    capsuleDto.value.userDto = userDto.value;
     title.value = "差分履歴強制ダンプ処理";
+
+    // 日時コンポーネントエラー検出
+    if (capsuleDto.value.dateStart <= LIMIT_DATE) {
+        infoLevel.value = MessageConstants.LEVEL_WARNING;
+        messageType.value = MessageConstants.VIEW_OK;
+        message.value = "開始日時入力が不正です。入力しなおしてください";
+        return;
+    }
+    if (capsuleDto.value.dateEnd <= LIMIT_DATE) {
+        infoLevel.value = MessageConstants.LEVEL_WARNING;
+        messageType.value = MessageConstants.VIEW_OK;
+        message.value = "終了日時入力が不正です。入力しなおしてください";
+        return;
+    }
+
+    capsuleDto.value.userDto = userDto.value;
     getAuthorizedPromiseArea().then(token => {
         const url = urlBack + "/dump-history-sabun/execute";
         const method = "POST";

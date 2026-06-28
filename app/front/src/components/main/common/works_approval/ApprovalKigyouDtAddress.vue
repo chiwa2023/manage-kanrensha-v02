@@ -1,6 +1,6 @@
 ﻿<script setup lang="ts">
 import { ref, type Ref } from 'vue';
-import { InputAddressDto, InputCompareAddress, InputDate, MessageConstants, MessageView, PagingControl, type FrameworkMessageAndResultDtoInterface, type InputAddressDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
+import { DtoEntityConstants, InputAddressDto, InputCompareAddress, InputDate, MessageConstants, MessageView, PagingControl, type FrameworkMessageAndResultDtoInterface, type InputAddressDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import getAuthorizedPromiseArea from '../../dto/login/getAuthorizedPromiseArea';
 import RoutePathConstants from '../../../../routePathConstants';
 import { AccessTokenNotFoundError, TokenRefreshError } from '../../dto/login/errors';
@@ -28,6 +28,9 @@ const props = defineProps<{ userDto: LeastUserDtoInterface }>()
 // back側アクセス
 const urlBack: string = RoutePathConstants.DOMAIN + RoutePathConstants.BASE_PATH;
 
+// 日付コンポーネント不正値
+const LIMIT_DATE = DtoEntityConstants.INIT_DATETIME_LIMIT;
+
 // Paging
 const pageNumber: Ref<number> = ref(INIT_NUMBER);
 const allCount: Ref<number> = ref(INIT_NUMBER);
@@ -41,8 +44,22 @@ const capsuleDto: Ref<SearchWorksApprovalCapsuleDtoInterfce> = ref(new SearchWor
 const resultDto: Ref<SearchWorksApprovalResultDtoInterface> = ref(new SearchWorksApprovalResultDto());
 
 function onSearch() {
-    //listPersonAdsdress.value = mockGetKigyouDtApprovalList();
-    //allCount.value = listPersonAdsdress.value.length;
+
+    title.value = "企業団体住所作業承認処理";
+
+    // 日時コンポーネントエラー検出
+    if (capsuleDto.value.startDate <= LIMIT_DATE) {
+        infoLevel.value = MessageConstants.LEVEL_WARNING;
+        messageType.value = MessageConstants.VIEW_OK;
+        message.value = "開始日時入力が不正です。入力しなおしてください";
+        return;
+    }
+    if (capsuleDto.value.endDate <= LIMIT_DATE) {
+        infoLevel.value = MessageConstants.LEVEL_WARNING;
+        messageType.value = MessageConstants.VIEW_OK;
+        message.value = "終了日時入力が不正です。入力しなおしてください";
+        return;
+    }
 
     // 検索実行
     capsuleDto.value.limit = limit.value;

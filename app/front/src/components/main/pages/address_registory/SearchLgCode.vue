@@ -1,5 +1,5 @@
 ﻿<script setup lang="ts">
-import { convertDateText, MessageConstants, MessageView, PagingControl, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
+import { convertDateText, InputPref, MessageConstants, MessageView, PagingControl, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import { ref, type Ref } from 'vue';
 import { getLoginUser } from '../../utils/getLoginUser';
 import { SearchLgCodeCapsuleDto, type SearchLgCodeCapsuleDtoInterface } from '../../dto/address_registory/searchLgCodeCapsuleDto';
@@ -7,6 +7,7 @@ import { SearchLgCodeResultDto, type SearchLgCodeResultDtoInterface } from '../.
 import getAuthorizedPromiseArea from '../../dto/login/getAuthorizedPromiseArea';
 import RoutePathConstants from '../../../../routePathConstants';
 import { AccessTokenNotFoundError, TokenRefreshError } from '../../dto/login/errors';
+import type { SelectOptionStringDtoInterface } from '../../dto/select_options/selectOptionStringDto';
 
 
 // よく使う定数
@@ -95,8 +96,6 @@ function onSearch() {
 
 }
 
-
-
 function onCancel() {
     history.back();
 }
@@ -114,6 +113,9 @@ function recieveSubmit(button: string) {
     messageType.value = 0;
 }
 
+function recievePrefCode(optionDto: SelectOptionStringDtoInterface) {
+    capsuleDto.value.prefCode = optionDto.value;
+}
 </script>
 <template>
 
@@ -124,11 +126,10 @@ function recieveSubmit(button: string) {
 
     <div class="one-line">
         <div class="left-area">
-            県選択;
+            県選択
         </div>
         <div class="right-area">
-            県選択
-            <input type="text" v-model="capsuleDto.prefCode">
+            <InputPref :lg-code="capsuleDto.prefCode" @send-pref-code="recievePrefCode"></InputPref>
         </div>
     </div>
 

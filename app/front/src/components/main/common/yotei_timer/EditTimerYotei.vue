@@ -1,5 +1,5 @@
 ﻿<script setup lang="ts">
-import { InputDatetime, type LeastUserDtoInterface, InputDatetimeAndNull, MessageConstants, MessageView, type FrameworkMessageAndResultDtoInterface } from 'seijishikin-jp-normalize_common-tool';
+import { InputDatetime, type LeastUserDtoInterface, InputDatetimeAndNull, MessageConstants, MessageView, type FrameworkMessageAndResultDtoInterface, DtoEntityConstants } from 'seijishikin-jp-normalize_common-tool';
 import { TimerYoteiEntity, type TimerYoteiEntityInterface } from '../../entity/timerYoteiEntity';
 import { onMounted, ref, toRaw, watch, type Ref } from 'vue';
 import { EditTimerYoteiCapsuleDto, type EditTimerYoteiCapsuleDtoInterface } from '../../dto/yoyaku_timer/editTimerYoteiCapsuleDto';
@@ -26,6 +26,9 @@ const message: Ref<string> = ref(BLANK);
 // back側アクセス
 const urlBack: string = RoutePathConstants.DOMAIN + RoutePathConstants.BASE_PATH;
 
+// 日付コンポーネント不正値
+const LIMIT_DATE = DtoEntityConstants.INIT_DATETIME_LIMIT;
+
 const editEntity: Ref<TimerYoteiEntityInterface> = ref(new TimerYoteiEntity());
 const editEntityBackup: Ref<TimerYoteiEntityInterface> = ref(new TimerYoteiEntity());
 
@@ -45,6 +48,30 @@ function onCancel() {
 
 let actionState: number = INIT_NUMBER;
 function onSave() {
+
+    title.value = "予定実行編集処理";
+
+    // 日時コンポーネントエラー検出
+    if (null !== editEntity.value.nextTimestamp && editEntity.value.nextTimestamp <= LIMIT_DATE) {
+        infoLevel.value = MessageConstants.LEVEL_WARNING;
+        messageType.value = MessageConstants.VIEW_OK;
+        message.value = "次回日時入力が不正です。入力しなおしてください";
+        return;
+    }
+    if (null !== editEntity.value.endTimestamp && editEntity.value.endTimestamp <= LIMIT_DATE) {
+        infoLevel.value = MessageConstants.LEVEL_WARNING;
+        messageType.value = MessageConstants.VIEW_OK;
+        message.value = "終了日時入力が不正です。入力しなおしてください";
+        return;
+    }
+
+    if (null !== editEntity.value.sabunTimestamp && editEntity.value.sabunTimestamp <= LIMIT_DATE) {
+        infoLevel.value = MessageConstants.LEVEL_WARNING;
+        messageType.value = MessageConstants.VIEW_OK;
+        message.value = "差分日時入力が不正です。入力しなおしてください";
+        return;
+    }
+
     const capsuleDto: EditTimerYoteiCapsuleDtoInterface = new EditTimerYoteiCapsuleDto();
     capsuleDto.userDto = props.userDto;
     capsuleDto.timerYoteiEntity = editEntity.value;
@@ -78,7 +105,6 @@ function onSave() {
                 alert(error);
                 infoLevel.value = MessageConstants.LEVEL_ERROR;
                 messageType.value = MessageConstants.VIEW_OK;
-                title.value = "作業承認登録";
                 message.value = "システムエラーが発生しました。システム管理者にお問い合わせください";
             });
     }).catch((e) => {

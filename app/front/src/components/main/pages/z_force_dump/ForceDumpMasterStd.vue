@@ -2,7 +2,7 @@
 import { ref, watch, type Ref } from 'vue';
 import { ForceDumpCapsuleDto, type ForceDumpCapsuleDtoInterface } from '../../dto/z_force_dump/forceDumpCapsuleDto';
 import { getLoginUser } from '../../utils/getLoginUser';
-import { InputDate, MessageConstants, MessageView, type FrameworkMessageAndResultDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
+import { DtoEntityConstants, InputDate, MessageConstants, MessageView, type FrameworkMessageAndResultDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import AdminInfo from '../../common/user_info/AdminInfo.vue';
 import RoutePathConstants from '../../../../routePathConstants';
 import { AccessTokenNotFoundError, TokenRefreshError } from '../../dto/login/errors';
@@ -30,6 +30,9 @@ const userDto: Ref<LeastUserDtoInterface> = ref(getLoginUser());
 
 // 実行条件
 const capsuleDto: Ref<ForceDumpCapsuleDtoInterface> = ref(new ForceDumpCapsuleDto());
+
+    // 日付コンポーネント不正値
+const LIMIT_DATE = DtoEntityConstants.INIT_DATETIME_LIMIT;
 
 const isExecuteAll: Ref<boolean> = ref(true);
 
@@ -59,29 +62,18 @@ function onCancel() {
     history.back();
 }
 function onSave() {
-    alert("実行");
-    // getAuthorizedPromiseArea().then(token => {
-    //     // 処理条件再設定なしでそのまま
-    //     const url = urlBack + "/dump-master-std/execute";
-    //     const method = "POST";
-    //     const body = JSON.stringify(capsuleDto.value);
-    //     const headers = {
-    //         'Accept': 'application/json',
-    //         'Content-Type': 'application/json',
-    //         'X-AUTH-TOKEN': 'Bearer ' + token
-    //     };
-    //     fetch(url, { method, headers, body })
-    //         .then(async (response) => {
-    //             const resultDto: FrameworkResultInterface = await response.json();
-    //             alert(resultDto.message);
-    //         })
-    //         .catch((error) => { alert(error); });
-    // });
+
+    // 日時コンポーネントエラー検出
+    title.value = "マスタ標準強制ダンプ処理";
+    if (capsuleDto.value.dateEnd <= LIMIT_DATE) {
+        infoLevel.value = MessageConstants.LEVEL_WARNING;
+        messageType.value = MessageConstants.VIEW_OK;
+        message.value = "終了日時入力が不正です。入力しなおしてください";
+        return;
+    }
 
     capsuleDto.value.userDto = userDto.value;
 
-
-    title.value = "マスタ標準強制ダンプ処理";
     getAuthorizedPromiseArea().then(token => {
         const url = urlBack + "/dump-master-std/execute";
         const method = "POST";

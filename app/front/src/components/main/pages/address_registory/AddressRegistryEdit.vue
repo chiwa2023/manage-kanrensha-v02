@@ -1,5 +1,5 @@
 ﻿<script setup lang="ts">
-import { InputDate, InputDateAndNull, InputLgcode, MessageConstants, MessageView, PagingControl, type FrameworkMessageAndResultDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
+import { DtoEntityConstants, InputDate, InputDateAndNull, InputLgcode, MessageConstants, MessageView, PagingControl, type FrameworkMessageAndResultDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import { ref, type Ref } from 'vue';
 import { getLoginUser } from '../../utils/getLoginUser';
 import { AddressRsdtTemplateEntity, type AddressRsdtTemplateEntityInterface } from '../../entity/addressRsdtTemplateEntity';
@@ -10,6 +10,7 @@ import RoutePathConstants from '../../../../routePathConstants.ts';
 import { SearchAddressRsdtCapsuleDto, type SearchAddressRsdtCapsuleDtoInterface } from '../../dto/address_registory/searchAddressRsdtCapsuleDto.ts';
 import { SearchAddressRsdtResultDto, type SearchAddressRsdtResultDtoInterface } from '../../dto/address_registory/searchAddressRsdtResultDto.ts';
 import { EditAddressRsdtCapsuleDto, type EditAddressRsdtCapsuleDtoInterface } from '../../dto/address_registory/editAddressRsdtCapsuleDto.ts';
+import type { SelectOptionStringDtoInterface } from '../../dto/select_options/selectOptionStringDto.ts';
 
 // よく使う定数
 const BLANK: string = "";
@@ -40,6 +41,9 @@ const capsuleDto: Ref<SearchAddressRsdtCapsuleDtoInterface> = ref(new SearchAddr
 capsuleDto.value.allCount = allCount.value;
 capsuleDto.value.limit = limit.value;
 capsuleDto.value.pageNumber = pageNumber.value;
+
+// 日付コンポーネント不正値
+const LIMIT_DATE = DtoEntityConstants.INIT_DATETIME_LIMIT;
 
 const resultDto: Ref<SearchAddressRsdtResultDtoInterface> = ref(new SearchAddressRsdtResultDto());
 
@@ -116,6 +120,25 @@ function onCancel() {
     history.back();
 }
 function onSave() {
+
+    title.value = "アドレス・ベース・レジストリ編集";
+    // 日時コンポーネントエラー検出
+    if (editEntity.value.effectDate <= LIMIT_DATE) {
+        message.value = "発効日が不正です。入力しなおしてください";
+        infoLevel.value = MessageConstants.LEVEL_ERROR;
+        messageType.value = MessageConstants.VIEW_OK;
+        return;
+    }
+    // null許容の日付コンポーネントでは途中かけの不正っぽい入力もnullとなる
+    // if (null !== editEntity.value.abolishDate) {
+    //     if (editEntity.value.abolishDate <= LIMIT_DATE) {
+    //         infoLevel.value = MessageConstants.LEVEL_WARNING;
+    //         messageType.value = MessageConstants.VIEW_OK;
+    //         message.value = "廃止日が不正です。入力しなおしてください";
+    //         return;
+    //     }
+    // }
+
     // アドレス・ベース・レジストリ住居　保存処理
     const capsuleDto: EditAddressRsdtCapsuleDtoInterface = new EditAddressRsdtCapsuleDto();
     capsuleDto.userDto = userDto.value;
@@ -136,7 +159,6 @@ function onSave() {
                 const resultDto: FrameworkMessageAndResultDtoInterface = await response.json();
                 message.value = resultDto.message;
                 if (resultDto.isFailure) {
-                    title.value = "アドレス・ベース・レジストリ編集";
                     infoLevel.value = MessageConstants.LEVEL_WARNING;
                     messageType.value = MessageConstants.VIEW_OK;
                 } else {
@@ -184,7 +206,29 @@ function onEdit(selectedId: number) {
 
     if (tempEntity !== undefined) {
         storedId.value = selectedId;
-        editEntity.value = tempEntity;
+
+        editEntity.value = {
+            addressRsdtId: tempEntity.addressRsdtId,
+            isLatest: tempEntity.isLatest,
+            addressAll: tempEntity.addressAll,
+            orginAddressAll: tempEntity.orginAddressAll,
+            postalcode1: tempEntity.postalcode1,
+            postalcode2: tempEntity.postalcode2,
+            addressPostal: tempEntity.addressPostal,
+            addressBlock: tempEntity.addressBlock,
+            addressBuilding: tempEntity.addressBuilding,
+
+            lgCode: tempEntity.lgCode,
+            machiazaId: tempEntity.machiazaId,
+            blkId: tempEntity.blkId,
+            prcId: tempEntity.prcId,
+            rsdtId: tempEntity.rsdtId,
+            rsdt2Id: tempEntity.rsdt2Id,
+
+            effectDate: tempEntity.effectDate ? new Date(tempEntity.effectDate) : new Date(),
+            abolishDate: tempEntity.abolishDate ? new Date(tempEntity.abolishDate) : null
+        };
+
         isAddressEdit.value = true;
     }
 }
@@ -212,7 +256,7 @@ function onDelete(selectedId: number) {
     const tempEntity: AddressRsdtTemplateEntityInterface | undefined =
         resultDto.value.listEntity.filter((e) => selectedId === e.addressRsdtId)[0];
     if (tempEntity !== undefined) {
-        capsuleDto.editEntity = tempEntity;
+        capsuleDto.editEntity = editEntity.value;
     }
 
     // 編集された郵便番号を削除
@@ -273,8 +317,8 @@ function recievePagingNumber(selecteddNumber: number) {
 }
 
 // 地方自治体コードを受信
-function recieveLgCode(data: string) {
-    capsuleDto.value.searchLgCode = data;
+function recieveLgCode(dto: SelectOptionStringDtoInterface) {
+    capsuleDto.value.searchLgCode = dto.value;
 }
 
 function recieveSubmit(button: string) {
@@ -285,15 +329,17 @@ function recieveSubmit(button: string) {
     }
 
     // 非表示
-    infoLevel.value = 0;
-    messageType.value = 0;
+    infoLevel.value = MessageConstants.LEVEL_NONE;
+    messageType.value = MessageConstants.VIEW_NONE;
 }
 
 function recieveDateAndNull(data: Date | null) {
     editEntity.value.abolishDate = data;
+    alert(editEntity.value.abolishDate);
 }
 function recieveDate(data: Date) {
     editEntity.value.effectDate = data;
+    alert(editEntity.value.effectDate);
 }
 
 

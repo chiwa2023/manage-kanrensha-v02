@@ -1,10 +1,9 @@
 <script setup lang="ts">
 import { onBeforeMount, ref, type Ref } from 'vue';
-import { InputDatetime, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
+import { FrameworkCapsuleDto, InputDatetime, type FrameworkCapsuleDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import { getLoginUser } from '../../utils/getLoginUser';
 import router from '../../../../router';
 import { PartnerAccessTokenStateDto, type PartnerAccessTokenStateDtoInterface } from '../../dto/user/partnerAccessTokenStateDto';
-import mockGetPartnerApiForNewToken from '../../../test/common/user/mock/mockGetPartnerApiForNewToken';
 import IpAddress from '../../common/util/IpAddress.vue';
 import RoutePathConstants from '../../../../routePathConstants';
 import { PartnerApiTokenCapsuleDto, type PartnerApiTokenCapsuleDtoInterface } from '../../dto/user/partnerApiTokenCapsuleDto';
@@ -24,12 +23,6 @@ const INIT_NUMBER: number = 0;
 // const SERVER_STATUS_OK: number = 200;
 // const SERVER_STATUS_ERROR: number = 400;
 // メッセージボックス表示定数
-//const infoLevel: Ref<number> = ref(MessageConstants.LEVEL_NONE);
-//const messageType: Ref<number> = ref(MessageConstants.VIEW_NONE);
-//const title: Ref<string> = ref(BLANK);
-//const message: Ref<string> = ref(BLANK);
-
-// メッセージ表示定数
 const infoLevel: Ref<number> = ref(MessageConstants.LEVEL_NONE);
 const messageType: Ref<number> = ref(MessageConstants.VIEW_NONE);
 const title: Ref<string> = ref(BLANK);
@@ -44,7 +37,51 @@ const stateDto: Ref<PartnerAccessTokenStateDtoInterface> = ref(new PartnerAccess
 const newToken: Ref<string> = ref("");
 
 onBeforeMount(() => {
-    stateDto.value = mockGetPartnerApiForNewToken();
+    // 前回トークン状態(トークン自身は除く)を取得
+    getAuthorizedPromiseArea().then(token => {
+        const capsuleDto: FrameworkCapsuleDtoInterface = new FrameworkCapsuleDto();
+        capsuleDto.userDto = userDto.value;
+
+        const url = urlBack + "/partner-api/get-state";
+        const method = "POST";
+        const body = JSON.stringify(capsuleDto);
+        const headers = {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'X-AUTH-TOKEN': 'Bearer ' + token
+        };
+        fetch(url, { method, headers, body })
+            .then(async (response) => {
+                // 取得できないときはステータス500
+                stateDto.value = await response.json();
+            })
+            .catch((error) => {
+                alert(error);
+                infoLevel.value = MessageConstants.LEVEL_ERROR;
+                messageType.value = MessageConstants.VIEW_OK;
+                message.value = "システム管理者にお問い合わせください";
+                return;
+            });
+    }).catch((e) => {
+        infoLevel.value = MessageConstants.LEVEL_ERROR;
+        messageType.value = MessageConstants.VIEW_OK;
+
+        if (e instanceof AccessTokenNotFoundError) {
+            // トークン保持ができていない場合
+            title.value = "現在トークンが存在しません";
+            message.value = e.message;
+            return;
+        }
+        if (e instanceof TokenRefreshError) {
+            // 取得に失敗している場合
+            title.value = "有効期限まじかのトークンを再取得できませんでした";
+            message.value = e.message;
+            return;
+        }
+        title.value = "システムエラーが発生しました";
+        message.value = "システム管理者にお問い合わせください";
+        return;
+    });
 });
 
 function recieveIpAddress(ipAddress: string) {
@@ -56,10 +93,7 @@ function onCancel() {
 }
 
 async function onSave() {
-    //newToken.value = mockGetNewToken();
-
     getAuthorizedPromiseArea().then(token => {
-        // TODO 選択されたUserEntityを最小限ユーザに変換して削除対象、操作者はメニューから取得する
         const capsuleDto: PartnerApiTokenCapsuleDtoInterface = new PartnerApiTokenCapsuleDto();
         capsuleDto.userDto = userDto.value;
         capsuleDto.ipAddress = stateDto.value.ipAddress;
@@ -90,23 +124,32 @@ async function onSave() {
                     newToken.value = resultDto.token;
                 }
             })
-            .catch((e) => {
-                if (e instanceof AccessTokenNotFoundError) {
-                    infoLevel.value = MessageConstants.LEVEL_ERROR;
-                    // トークン保持ができていない場合
-                    messageType.value = MessageConstants.VIEW_OK;
-                    title.value = "現在トークンが存在しません";
-                    messageIndex.value = 1;
-                    message.value = e.message;
-                }
-                if (e instanceof TokenRefreshError) {
-                    // 取得に失敗している場合
-                    infoLevel.value = MessageConstants.LEVEL_ERROR;
-                    messageType.value = MessageConstants.VIEW_OK;
-                    title.value = "有効期限まじかのトークンを再取得できませんでした";
-                    message.value = e.message;
-                }
+            .catch((error) => {
+                alert(error);
+                infoLevel.value = MessageConstants.LEVEL_ERROR;
+                messageType.value = MessageConstants.VIEW_OK;
+                message.value = "システム管理者にお問い合わせください";
+                return;
             });
+    }).catch((e) => {
+        infoLevel.value = MessageConstants.LEVEL_ERROR;
+        messageType.value = MessageConstants.VIEW_OK;
+
+        if (e instanceof AccessTokenNotFoundError) {
+            // トークン保持ができていない場合
+            title.value = "現在トークンが存在しません";
+            message.value = e.message;
+            return;
+        }
+        if (e instanceof TokenRefreshError) {
+            // 取得に失敗している場合
+            title.value = "有効期限まじかのトークンを再取得できませんでした";
+            message.value = e.message;
+            return;
+        }
+        title.value = "システムエラーが発生しました";
+        message.value = "システム管理者にお問い合わせください";
+        return;
     });
 
 }
@@ -161,7 +204,7 @@ function recieveSubmit(button: string) {
             有効期限
         </div>
         <div class="right-area">
-            <InputDatetime :datetime="stateDto.createdAt" :index="2" :is-edit="false"></InputDatetime>
+            <InputDatetime :datetime="stateDto.expiresAt" :index="2" :is-edit="false"></InputDatetime>
         </div>
     </div>
 
@@ -179,7 +222,7 @@ function recieveSubmit(button: string) {
             失効時間
         </div>
         <div class="right-area">
-            <InputDatetime :datetime="stateDto.lastUsedAt" :index="4" :is-edit="false"></InputDatetime>
+            <InputDatetime :datetime="stateDto.revokedAt" :index="4" :is-edit="false"></InputDatetime>
         </div>
     </div>
 

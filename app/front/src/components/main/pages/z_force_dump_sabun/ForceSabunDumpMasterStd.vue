@@ -2,7 +2,7 @@
 import { ref, watch, type Ref } from 'vue';
 import { getLoginUser } from '../../utils/getLoginUser';
 import { ForceDumpCapsuleDto, type ForceDumpCapsuleDtoInterface } from '../../dto/z_force_dump/forceDumpCapsuleDto';
-import { InputDate, MessageConstants, MessageView, type FrameworkMessageAndResultDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
+import { DtoEntityConstants, InputDate, MessageConstants, MessageView, type FrameworkMessageAndResultDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import AdminInfo from '../../common/user_info/AdminInfo.vue';
 import RoutePathConstants from '../../../../routePathConstants';
 import { AccessTokenNotFoundError, TokenRefreshError } from '../../dto/login/errors';
@@ -33,6 +33,9 @@ const capsuleDto: Ref<ForceDumpCapsuleDtoInterface> = ref(new ForceDumpCapsuleDt
 
 const isExecuteAll: Ref<boolean> = ref(true);
 
+// 日付コンポーネント不正値
+const LIMIT_DATE = DtoEntityConstants.INIT_DATETIME_LIMIT;
+
 const isDisabledKigyouDt: Ref<boolean> = ref(true);
 const isDisabledPerson: Ref<boolean> = ref(true);
 const isDisabledSeijidantai: Ref<boolean> = ref(true);
@@ -62,9 +65,25 @@ function onCancel() {
     history.back();
 }
 function onSave() {
-    capsuleDto.value.userDto = userDto.value;
 
     title.value = "差分マスタ標準強制ダンプ処理";
+
+    // 日時コンポーネントエラー検出
+    if (capsuleDto.value.dateStart <= LIMIT_DATE) {
+        infoLevel.value = MessageConstants.LEVEL_WARNING;
+        messageType.value = MessageConstants.VIEW_OK;
+        message.value = "開始日時入力が不正です。入力しなおしてください";
+        return;
+    }
+    if (capsuleDto.value.dateEnd <= LIMIT_DATE) {
+        infoLevel.value = MessageConstants.LEVEL_WARNING;
+        messageType.value = MessageConstants.VIEW_OK;
+        message.value = "終了日時入力が不正です。入力しなおしてください";
+        return;
+    }
+
+    capsuleDto.value.userDto = userDto.value;
+
     getAuthorizedPromiseArea().then(token => {
         const url = urlBack + "/dump-master-std-sabun/execute";
         const method = "POST";

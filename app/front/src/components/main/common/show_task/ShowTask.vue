@@ -1,7 +1,7 @@
 ﻿<script setup lang="ts">
 import { computed, onBeforeMount, ref, type ComputedRef, type Ref } from 'vue';
 import { SearchTaskPlanCapsuleDto, type SearchTaskPlanCapsuleDtoInterface } from '../../dto/task_plan/searchTaskPlanCapsuleDto';
-import { convertDatetimeText, InputDatetime, MessageConstants, MessageView, PagingControl, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
+import { convertDatetimeText, DtoEntityConstants, InputDatetime, MessageConstants, MessageView, PagingControl, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import UserRoleConstants from '../../dto/user/userRoleConstants';
 import { SearchTaskPlanResultDto, type SearchTaskPlanResultDtoInterface } from '../../dto/task_plan/searchTaskPlanResultDto';
 import { SearchTaskHistoryResultDto, type SearchTaskHistoryResultDtoInterface } from '../../dto/task_plan/searchTaskHistoryResultDto';
@@ -47,9 +47,8 @@ capsuleDto.value.limit = SEARCH_LIMIT;
 const isGetTrace: ComputedRef<boolean> = computed(
     () => props.userDto.listRoles.includes(UserRoleConstants.ROLE_ADMIN));
 
-
-// ページング
-
+    // 日付コンポーネント不正値
+const LIMIT_DATE = DtoEntityConstants.INIT_DATETIME_LIMIT;
 
 // 検索結果リスト
 const resultDto: Ref<SearchTaskPlanResultDtoInterface> = ref(new SearchTaskPlanResultDto());
@@ -57,6 +56,25 @@ const resultDto: Ref<SearchTaskPlanResultDtoInterface> = ref(new SearchTaskPlanR
 const resultHistoryDto: Ref<SearchTaskHistoryResultDtoInterface> = ref(new SearchTaskHistoryResultDto());
 
 function onSearch() {
+
+
+    title.value = "タスク計画表示処理";
+
+    // 日時コンポーネントエラー検出
+    if (capsuleDto.value.startDate <= LIMIT_DATE) {
+        infoLevel.value = MessageConstants.LEVEL_WARNING;
+        messageType.value = MessageConstants.VIEW_OK;
+        message.value = "開始日時入力が不正です。入力しなおしてください";
+        return;
+    }
+    if (capsuleDto.value.endDate <= LIMIT_DATE) {
+        infoLevel.value = MessageConstants.LEVEL_WARNING;
+        messageType.value = MessageConstants.VIEW_OK;
+        message.value = "終了日時入力が不正です。入力しなおしてください";
+        return;
+    }
+
+
 
     // タスクコードリストを設定
     capsuleDto.value.infoCodeList.splice(0);
@@ -190,10 +208,6 @@ onBeforeMount(() => {
 
 });
 
-
-
-
-
 function onCancel() {
     emits("sendCanceelShowTask");
 }
@@ -264,9 +278,11 @@ function onAllCheck9() {
 function recieveDatetime(date: Date, index: number) {
     if (1 == index) {
         capsuleDto.value.startDate = date;
+        alert(capsuleDto.value.startDate);
     }
     if (2 == index) {
         capsuleDto.value.endDate = date;
+        alert(capsuleDto.value.endDate);
     }
 }
 
