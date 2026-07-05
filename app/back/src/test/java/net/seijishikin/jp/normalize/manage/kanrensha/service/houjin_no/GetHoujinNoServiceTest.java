@@ -1,6 +1,8 @@
 package net.seijishikin.jp.normalize.manage.kanrensha.service.houjin_no;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import java.util.List;
 
@@ -131,6 +133,7 @@ class GetHoujinNoServiceTest {
         capsuleDto.setAppId(APP_ID);
         capsuleDto.setName("国税商事"); // default_csv
         capsuleDto.setType("02");
+        capsuleDto.setDivide(2);
 
         final SearchHoujinNoResultDto resultDto = getHoujinNoService.pratice(capsuleDto);
         assertFalse(resultDto.getIsFailure());
@@ -149,8 +152,9 @@ class GetHoujinNoServiceTest {
         assertEquals("8:1234567", dto1.getHoujinNo());
         assertEquals("13:国税商事", dto1.getHoujinName());
         assertEquals("15:401", dto1.getKind());
-
-        fail("Not yet implemented");
+        assertEquals("9:3", dto1.getProcess());
+        assertEquals("16:和歌山県", dto1.getPrefectureName());
+        assertEquals("17:架空市", dto1.getCityName());
     }
 
     /**
@@ -164,6 +168,7 @@ class GetHoujinNoServiceTest {
         capsuleDto.setAppId(APP_ID);
         capsuleDto.setName("国税あいがも商事"); // 01_csv
         capsuleDto.setType("02");
+        capsuleDto.setDivide(2);
 
         final SearchHoujinNoResultDto resultDto = getHoujinNoService.pratice(capsuleDto);
         assertFalse(resultDto.getIsFailure());

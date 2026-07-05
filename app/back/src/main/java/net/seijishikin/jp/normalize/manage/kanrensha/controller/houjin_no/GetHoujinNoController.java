@@ -35,6 +35,7 @@ public class GetHoujinNoController {
 
         // Serviceで処理全体をtry-catchでくくっているのでControllerでtry-catchは不要
         SearchHoujinNoResultDto resultDto = getHoujinNoService.pratice(capsuleDto);
+
         if (resultDto.getIsFailure()) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(resultDto);
 

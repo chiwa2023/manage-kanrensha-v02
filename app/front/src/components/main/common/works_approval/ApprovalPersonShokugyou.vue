@@ -31,6 +31,10 @@ const props = defineProps<{ userDto: LeastUserDtoInterface }>()
 
 // back側アクセス
 const urlBack: string = RoutePathConstants.DOMAIN + RoutePathConstants.BASE_PATH;
+
+// 法人番号APIキー
+const houjinAppId: string = import.meta.env.VITE_HOUJIN_NO_API;
+
 // 日付コンポーネント不正値
 const LIMIT_DATE = DtoEntityConstants.INIT_DATETIME_LIMIT;
 
@@ -322,7 +326,7 @@ function recievePagingNumber(selecteddNumber: number) {
     <!-- 職業入力(紐づけなし) -->
     <div v-if="isShokugyouInput" class="overBackground"></div>
     <div v-if="isShokugyouInput" class="overComponent">
-        <InputCompareShokugyou :edit-dto="inputShokugyouDto" :isfooter="true"
+        <InputCompareShokugyou :edit-dto="inputShokugyouDto" :isfooter="true" :houjin-api-key="houjinAppId"
             @send-cancel-input-shokugyou="recieveCancelInputShokugyou"
             @send-input-shokugyou-interface="recieveInputShokugyouInterface">
         </InputCompareShokugyou>

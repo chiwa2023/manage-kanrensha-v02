@@ -59,8 +59,14 @@ public class GetHoujinNoService {
     /** 読み取り位置6 */
     private static final int POS_6 = 6;
 
-    /** 読み取り位置6 */
+    /** 読み取り位置8 */
     private static final int POS_8 = 8;
+
+    /** 読み取り位置9 */
+    private static final int POS_9 = 9;
+
+    /** 読み取り位置10 */
+    private static final int POS_10 = 10;
 
     /** 法人番号APIアクセスUrl作成Logic */
     @Autowired
@@ -75,7 +81,8 @@ public class GetHoujinNoService {
     private SaveStackTraceService saveStackTraceService;
 
     /** 接続ドメイン */
-    private static final String DOMAIN_URL = "http://localhost:7080/4/name?";
+    // private static final String DOMAIN_URL = "https://api.houjin-bangou.nta.go.jp/4/name?"; // 本番
+    private static final String DOMAIN_URL = "http://localhost:7080/4/name?"; // テスト
 
     /**
      * 処理を行う
@@ -84,17 +91,17 @@ public class GetHoujinNoService {
      * @return 検索結果Dto
      */
     public SearchHoujinNoResultDto pratice(final SearchHoujinNoCapsuleDto capsuleDto) { // NOPMD CyclomaticComplexity
-
         final SearchHoujinNoResultDto resultDto = new SearchHoujinNoResultDto();
 
         try {
             validateCreateSearchHoujinNoUrlLogic.practice(DOMAIN_URL, capsuleDto);
             final URI uri = new URI(createSearchHoujinNoUrlLogic.pracctice(DOMAIN_URL, capsuleDto));
             final URL url = uri.toURL();
-
             // URLに紐づいたHttpURLConnectionインスタンスを生成 (http,
             // https両対応のためHttpsURLConnectionではなくHttpURLConnectionにする)
             final HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            //final HttpsURLConnection conn = (HttpsURLConnection) url.openConnection();
+            
             // メソッドを設定
             conn.setRequestMethod("GET");
             // 接続を確立する
@@ -113,8 +120,8 @@ public class GetHoujinNoService {
             } else {
                 return this.handleErrorResponse(statusCode);
             }
-        } catch (Exception exception) { // NOPMD
 
+        } catch (Exception exception) { // NOPMD
             saveStackTraceService.practice(exception, Year.now().getValue(), 0);
 
             resultDto.setIsFailure(true);
@@ -231,8 +238,11 @@ public class GetHoujinNoService {
     private HoujinNoDto convertHoujinNo(final String[] cell) { // NOPMD UseVarArgs
         HoujinNoDto dto = new HoujinNoDto();
         dto.setHoujinNo(cell[POS_1]);
+        dto.setProcess(cell[POS_2]);
         dto.setHoujinName(cell[POS_6]);
         dto.setKind(cell[POS_8]);
+        dto.setPrefectureName(cell[POS_9]);
+        dto.setCityName(cell[POS_10]);
 
         return dto;
     }

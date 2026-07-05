@@ -114,7 +114,11 @@ const inputAddressDto: Ref<InputAddressDtoInterface> = ref(new InputAddressDto()
 const inputAddressDtoShort: Ref<InputAddressDtoInterface> = ref(new InputAddressDto());
 const inputShokugyouDto: Ref<InputShokugyouDtoInterface> = ref(new InputShokugyouDto());
 
-const longToken:Ref<string> = ref(BLANK);
+const longToken: Ref<string> = ref(BLANK);
+
+// 法人番号APIキー
+const houjinAppId: string = import.meta.env.VITE_HOUJIN_NO_API;
+
 </script>
 <template>
     <div class="container">
@@ -345,7 +349,7 @@ const longToken:Ref<string> = ref(BLANK);
         <ViewInputAccess :edit-dto="inputAccessDto" :long-token="longToken"></ViewInputAccess>
 
         <!-- 職業 -->
-        <ViewInputShokugyou :edit-dto="inputShokugyouDto"></ViewInputShokugyou>
+        <ViewInputShokugyou :edit-dto="inputShokugyouDto" :houjin-api-key="houjinAppId"></ViewInputShokugyou>
 
         <div class="footer">
             <button class="footer-button">キャンセル</button>
@@ -357,8 +361,9 @@ const longToken:Ref<string> = ref(BLANK);
     <div v-if="isKigyouDtSearch" class="overBackground"></div>
     <div v-if="isKigyouDtSearch">
         <div class="overComponent">
-            <SearchHoujinNo v-if="isKigyouDtSearch" @send-cancel-houjin-no="recieveCancelKigyouDtNo"
-                @send-houjin-no-interface="recieveKigyouDtNoInterface"></SearchHoujinNo>
+            <SearchHoujinNo v-if="isKigyouDtSearch" :houjin-api-key="houjinAppId"
+                @send-cancel-houjin-no="recieveCancelKigyouDtNo" @send-houjin-no-interface="recieveKigyouDtNoInterface">
+            </SearchHoujinNo>
         </div>
     </div>
 

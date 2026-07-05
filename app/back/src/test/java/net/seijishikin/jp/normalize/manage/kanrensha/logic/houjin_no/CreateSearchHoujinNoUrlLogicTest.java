@@ -76,7 +76,6 @@ class CreateSearchHoujinNoUrlLogicTest {
         // private Integer divide;
 
         String urlAns = createSearchHoujinNoUrlLogic.pracctice(domainUrl, capsuleDto02);
-        System.out.println(urlAns);
 
         assertTrue(urlAns.startsWith(domainUrl));
         assertTrue(urlAns.contains("?id=3456789012"));

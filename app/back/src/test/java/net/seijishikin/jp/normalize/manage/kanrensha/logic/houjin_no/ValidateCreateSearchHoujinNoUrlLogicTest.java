@@ -1,6 +1,6 @@
 package net.seijishikin.jp.normalize.manage.kanrensha.logic.houjin_no;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals; // NOPMD StaticImport
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.mockito.Mockito.when;
@@ -26,7 +26,7 @@ import net.seijishikin.jp.normalize.manage.kanrensha.repository.AddressAllCityRe
 /**
  * ValidateCreateSearchHoujinNoUrlLogic単体テスト
  */
-class ValidateCreateSearchHoujinNoUrlLogicTest {
+class ValidateCreateSearchHoujinNoUrlLogicTest { // NOPMD ManyMethods
     // CHECKSTYLE:OFF MagicNumber
 
     /** テスト対象 */
@@ -208,7 +208,7 @@ class ValidateCreateSearchHoujinNoUrlLogicTest {
 
     @Test
     void testAddressCityCode6Valid() {
-        validDto.setAddress("131016"); // 6桁
+        validDto.setAddress("131016"); // 6桁 // NOPMD
         when(addressAllCityRepository.findByLgCodeAndIsLatestTrue("131016"))
                 .thenReturn(List.of(new AddressAllCityEntity()));
 
@@ -303,44 +303,44 @@ class ValidateCreateSearchHoujinNoUrlLogicTest {
 
     @Test
     void testFromDateInvalidOnEffectDate() {
-        validDto.setFrom(LocalDate.of(2025, 10, 5)); // 制度開始日当日（法施行前2025-10-05以前を指定するとエラー）
+        validDto.setFrom(LocalDate.of(2015, 10, 5)); // 制度開始日当日（法施行前2015-10-05以前を指定するとエラー）
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
             validateLogic.practice(VALID_URL, validDto);
         });
-        assertEquals("指定年月日開始に2025-10-05以前の日付は指定できません", exception.getMessage());
+        assertEquals("指定年月日開始に2015-10-05以前の日付は指定できません", exception.getMessage());
     }
 
     @Test
     void testFromDateInvalidBeforeEffectDate() {
-        validDto.setFrom(LocalDate.of(2025, 10, 4)); // 制度開始日の前日
+        validDto.setFrom(LocalDate.of(2015, 10, 4)); // 制度開始日の前日
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
             validateLogic.practice(VALID_URL, validDto);
         });
-        assertEquals("指定年月日開始に2025-10-05以前の日付は指定できません", exception.getMessage());
+        assertEquals("指定年月日開始に2015-10-05以前の日付は指定できません", exception.getMessage());
     }
 
     @Test
     void testToDateValid() {
-        validDto.setTo(LocalDate.of(2025, 10, 6)); // 制度開始日の翌日
+        validDto.setTo(LocalDate.of(2015, 10, 6)); // 制度開始日の翌日
         assertDoesNotThrow(() -> validateLogic.practice(VALID_URL, validDto));
     }
 
     @Test
     void testToDateInvalidOnEffectDate() {
-        validDto.setTo(LocalDate.of(2025, 10, 5)); // 制度開始日当日
+        validDto.setTo(LocalDate.of(2015, 10, 5)); // 制度開始日当日
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
             validateLogic.practice(VALID_URL, validDto);
         });
-        assertEquals("指定年月日終了に2025-10-05以前の日付は指定できません", exception.getMessage());
+        assertEquals("指定年月日終了に2015-10-05以前の日付は指定できません", exception.getMessage());
     }
 
     @Test
     void testToDateInvalidBeforeEffectDate() {
-        validDto.setTo(LocalDate.of(2025, 10, 4)); // 制度開始日の前日
+        validDto.setTo(LocalDate.of(2015, 10, 4)); // 制度開始日の前日
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
             validateLogic.practice(VALID_URL, validDto);
         });
-        assertEquals("指定年月日終了に2025-10-05以前の日付は指定できません", exception.getMessage());
+        assertEquals("指定年月日終了に2015-10-05以前の日付は指定できません", exception.getMessage());
     }
 
     @Test

@@ -97,6 +97,7 @@ function onSearch() {
 }
 
 function recievePagingNumber(selecteddNumber: number) {
+    console.log(selecteddNumber);
     //capsuleDto.value.pageNumber = selecteddNumber;
     //onSearch();
     alert("ページング");

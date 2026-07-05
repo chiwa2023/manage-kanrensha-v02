@@ -26,6 +26,9 @@ const message: Ref<string> = ref(BLANK);
 // back側アクセス
 const urlBack: string = RoutePathConstants.DOMAIN + RoutePathConstants.BASE_PATH;
 
+// 法人番号APIキー
+const houjinAppId: string = import.meta.env.VITE_HOUJIN_NO_API;
+
 // 編集Dto
 const editPersonDto: Ref<KanrenshaPersonDtoInterface> = ref(new KanrenshaPersonDto());
 
@@ -188,7 +191,7 @@ function recieveSubmit(button: string) {
     <!-- 住所入力 -->
     <ViewInputAddress :edit-dto="editPersonDto.inputAddressDto"></ViewInputAddress>
     <!-- 職業入力 -->
-    <ViewInputShokugyou :edit-dto="editPersonDto.inputShokugyouDto"></ViewInputShokugyou>
+    <ViewInputShokugyou :edit-dto="editPersonDto.inputShokugyouDto" :houjin-api-key="houjinAppId"></ViewInputShokugyou>
     <!-- 連絡先入力 -->
     <ViewInputAccess :edit-dto="editPersonDto.inputAccessDto"></ViewInputAccess>
 

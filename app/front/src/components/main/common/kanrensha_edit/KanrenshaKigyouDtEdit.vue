@@ -34,6 +34,9 @@ const message: Ref<string> = ref(BLANK);
 // back側アクセス
 const urlBack: string = RoutePathConstants.DOMAIN + RoutePathConstants.BASE_PATH;
 
+// 法人番号APIキー
+const houjinAppId: string = import.meta.env.VITE_HOUJIN_NO_API;
+
 watch(props, () => {
     load();
 });
@@ -118,11 +121,10 @@ function recieveHoujinNoInterface(selectedDto: HoujinNoDtoInterface) {
     isHoujinNoSearch.value = false;
     editKigyouDtDto.value.houjinNo = selectedDto.houjinNo;
     houjinNoName.value = selectedDto.houjinName;
-    houjinNoAddress.value = selectedDto.addressPrefecture + selectedDto.addressCity + selectedDto.addressBlock;
-    editKigyouDtDto.value.houjinSbts = selectedDto.houjinSbts;
+    houjinNoAddress.value = selectedDto.prefectureName + selectedDto.cityName;
+    editKigyouDtDto.value.houjinSbts = selectedDto.kind;
     // 名称が未入力の場合のみ補足
     if (BLANK === editKigyouDtDto.value.inputOrgNameDto.orgName && BLANK === editKigyouDtDto.value.inputOrgNameDto.orgNameKana) {
-        editKigyouDtDto.value.inputOrgNameDto.orgNameKana = selectedDto.houjinNameKana;
         editKigyouDtDto.value.inputOrgNameDto.orgName = selectedDto.houjinName;
     }
 }
@@ -291,7 +293,7 @@ function recieveSubmit(button: string) {
     <div v-if="isHoujinNoSearch" class="overBackground"></div>
     <div v-if="isHoujinNoSearch">
         <div class="overComponent">
-            <SearchHoujinNo @send-cancel-houjin-no="recieveCancelHoujinNo"
+            <SearchHoujinNo :houjin-api-key="houjinAppId" @send-cancel-houjin-no="recieveCancelHoujinNo"
                 @send-houjin-no-interface="recieveHoujinNoInterface"></SearchHoujinNo>
         </div>
     </div>

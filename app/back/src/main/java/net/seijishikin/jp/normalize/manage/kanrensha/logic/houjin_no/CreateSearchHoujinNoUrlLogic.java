@@ -67,8 +67,7 @@ public class CreateSearchHoujinNoUrlLogic {
         this.appendQueryParam(builder, "close", this.getValue(capsuleDto.getClose()));
         this.appendQueryParam(builder, "from", this.getDateValue(capsuleDto.getFrom()));
         this.appendQueryParam(builder, "to", this.getDateValue(capsuleDto.getTo()));
-
-        // TODO divideは方針が決定次第実装する
+        this.appendQueryParam(builder, "divide", this.getIntValue(capsuleDto.getDivide()));
 
         return builder.toString();
     }
@@ -108,6 +107,18 @@ public class CreateSearchHoujinNoUrlLogic {
         }
 
         return data;
+    }
+
+    private String getIntValue(final Integer data) {
+        if (Objects.isNull(data)) {
+            return BLANK;
+        }
+        final Integer ZERO = 0;
+        if (ZERO.equals(data)) {
+            return BLANK;
+        }
+
+        return String.valueOf(data);
     }
 
     private String getDateValue(final LocalDate localDate) {

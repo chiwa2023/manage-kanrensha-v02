@@ -201,6 +201,20 @@ function changeVisiblePassword() {
                     <RouterLink :to="RoutePathConstants.PAGE_ADD_ACCOUNT">新規登録ですか?</RouterLink>
                     <RouterLink :to="RoutePathConstants.PAGE_RESET_PASSWORD">※パスワードを忘れたので再発行</RouterLink>
                 </div>
+
+                <div class="links">
+                    <div style="text-align: left;">
+                        <ul>
+                            <li><a href="https://www.houjin-bangou.nta.go.jp/webapi/index.html">法人番号システム
+                                    Web-API</a>を利用した独自サービスを提供しています。このサービスは、国税庁法人番号システムのWeb-API機能を利用して取得した情報をもとに作成していますが、サービスの内容は国税庁によって保証されたものではありません
+                            </li>
+                            <li><a
+                                    href="https://www.digital.go.jp/policies/base_registry_address">アドレス・ベース・レジストリ</a>を加工して作成したデータに基づき独自サービスを提供しています。サービスの内容はデジタル庁によって保証されたものではありません
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
             </div>
         </div>
 
@@ -228,7 +242,7 @@ function changeVisiblePassword() {
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     width: 100%;
-    max-width: 400px;
+    max-width: 600px;
     text-align: center;
 }
 

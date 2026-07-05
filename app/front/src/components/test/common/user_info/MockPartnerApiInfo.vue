@@ -1,6 +1,6 @@
 ﻿<script setup lang="ts">
 import { ref, type Ref } from 'vue';
-import { LeastUserDto, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
+import { type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import { MessageConstants, MessageView } from 'seijishikin-jp-normalize_common-tool';
 import router from '../../../../router';
 import RoutePathConstants from '../../../../routePathConstants';
@@ -117,7 +117,8 @@ function recieveSubmit(button: string) {
 
     <!-- 個人メニュー表示 -->
     <div class="personMenuLayer" v-if="isVewPersonMenu">
-        <PersonMenu :view-role="UserRoleConstants.ROLE_PARTNER_API" @send-canceel-menu="recieveCanceelPersonMenu">
+        <PersonMenu :view-role="UserRoleConstants.ROLE_PARTNER_API" :user-dto="userDto"
+            @send-canceel-menu="recieveCanceelPersonMenu">
         </PersonMenu>
     </div>
 

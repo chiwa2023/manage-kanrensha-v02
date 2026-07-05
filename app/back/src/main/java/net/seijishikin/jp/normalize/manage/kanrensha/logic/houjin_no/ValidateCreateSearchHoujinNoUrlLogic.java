@@ -24,13 +24,13 @@ public class ValidateCreateSearchHoujinNoUrlLogic {
     private static final String BLANK = "";
 
     /** 制度開始日（法施行日） */
-    private static final LocalDate LAW_EFFECT_DATE = LocalDate.of(2025, 10, 5);
+    private static final LocalDate LAW_EFFECT_DATE = LocalDate.of(2015, 10, 5);
 
     /** 地方自治体コード制限桁数 */
-    private static final int LG_CODE_LIMIT  = 5;
+    private static final int LG_CODE_LIMIT = 5;
 
     /** 地方自治体コード制限桁数 */
-    private static final int LG_CODE_LIMIT_MYAPP  = 6;
+    private static final int LG_CODE_LIMIT_MYAPP = 6;
 
     /**
      * 検索条件を検証する
@@ -39,7 +39,7 @@ public class ValidateCreateSearchHoujinNoUrlLogic {
      * @param capsuleDto 検索条件
      */
     public void practice(final String domainUrl, final SearchHoujinNoCapsuleDto capsuleDto) {
-        
+
         if (BLANK.equals(this.getValue(domainUrl))) {
             throw new IllegalArgumentException("接続URLが未指定です");
         }
@@ -48,7 +48,7 @@ public class ValidateCreateSearchHoujinNoUrlLogic {
         if (Objects.isNull(capsuleDto)) {
             throw new IllegalArgumentException("検索条件が未指定です");
         }
-        
+
         String appId = this.getValue(capsuleDto.getAppId());
         if (BLANK.equals(appId)) {
             throw new IllegalArgumentException("アプリケーションIdが未指定です");
@@ -58,7 +58,7 @@ public class ValidateCreateSearchHoujinNoUrlLogic {
         if (BLANK.equals(nameWord)) {
             throw new IllegalArgumentException("検索条件名称が未指定です");
         }
-        
+
         // 各種項目の個別検証メソッドを呼び出すことでNPath複雑度を低減する
         this.validateMode(this.getValue(capsuleDto.getMode()));
         this.validateTarget(this.getValue(capsuleDto.getTarget()));
@@ -68,6 +68,7 @@ public class ValidateCreateSearchHoujinNoUrlLogic {
         this.validateClose(this.getValue(capsuleDto.getClose()));
         this.validateDate(capsuleDto.getFrom(), "指定年月日開始");
         this.validateDate(capsuleDto.getTo(), "指定年月日終了");
+        this.validateDivide(capsuleDto.getDivide());
     }
 
     /**
@@ -171,7 +172,23 @@ public class ValidateCreateSearchHoujinNoUrlLogic {
     }
 
     /**
-     * 日付指定（法施行前2025-10-05以前を指定するとエラー）を検証する
+     * 分割番号を検証する
+     * 
+     * @param divide 分割番号
+     */
+    private void validateDivide(final Integer divide) {
+        final Integer ZERO = 0;
+        if (ZERO.equals(divide)) {
+            return;
+        }
+        final Integer LIMIT = 100000; // API仕様最大値+1
+        if (divide <= ZERO || divide >= LIMIT) {
+            throw new IllegalArgumentException("分割番号の指定値が不正です");
+        }
+    }
+
+    /**
+     * 日付指定（法施行前2015-10-05以前を指定するとエラー）を検証する
      * 
      * @param localDate 検査対象日付
      * @param label     項目名
@@ -181,7 +198,7 @@ public class ValidateCreateSearchHoujinNoUrlLogic {
             return;
         }
         if (!localDate.isAfter(LAW_EFFECT_DATE)) {
-            throw new IllegalArgumentException(label + "に2025-10-05以前の日付は指定できません");
+            throw new IllegalArgumentException(label + "に2015-10-05以前の日付は指定できません");
         }
     }
 

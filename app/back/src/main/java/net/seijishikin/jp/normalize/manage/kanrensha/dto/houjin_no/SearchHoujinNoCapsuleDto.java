@@ -104,7 +104,7 @@ public class SearchHoujinNoCapsuleDto implements Serializable, PagingIntegerDtoI
     private LocalDate to = INIT_DATE; // NOPMD ShortValiable(外部仕様がその指定なので・・・)
 
     /** 分割番号(ページングのページ番号) */
-    private Integer divide;
+    private Integer divide = INIT_INTEGER;
 
     /**
      * アプリケーションIdを取得する

@@ -22,6 +22,15 @@ public class HoujinNoDto // NOPMD DataClass
     /** 法人種別 (CSVの8項目目) */
     private String kind = INIT_STRING;
 
+    /** 処理区分 (CSVの2項目目) */
+    private String process = INIT_STRING;
+
+    /** 所在地県名 (CSVの9項目目) */
+    private String prefectureName = INIT_STRING;
+
+    /** 所在地市町村 (CSVの10項目目) */
+    private String cityName = INIT_STRING;
+
     /**
      * 法人番号を取得する
      * 
@@ -75,4 +84,59 @@ public class HoujinNoDto // NOPMD DataClass
     public void setKind(final String kind) {
         this.kind = kind;
     }
+
+    /**
+     * 処理区分を取得する
+     * 
+     * @return 処理区分
+     */
+    public String getProcess() {
+        return process;
+    }
+
+    /**
+     * 処理区分を設定する
+     * 
+     * @param process 処理区分
+     */
+    public void setProcess(final String process) {
+        this.process = process;
+    }
+
+    /**
+     * 所在地県名を取得する
+     * 
+     * @return 所在地県名
+     */
+    public String getPrefectureName() {
+        return prefectureName;
+    }
+
+    /**
+     * 所在地県名を設定する
+     * 
+     * @param prefectureName 所在地県名
+     */
+    public void setPrefectureName(final String prefectureName) {
+        this.prefectureName = prefectureName;
+    }
+
+    /**
+     * 所在地市町村を取得する
+     * 
+     * @return 所在地市町村
+     */
+    public String getCityName() {
+        return cityName;
+    }
+
+    /**
+     * 所在地市町村を設定する
+     * 
+     * @param cityName 所在地市町村
+     */
+    public void setCityName(final String cityName) {
+        this.cityName = cityName;
+    }
+
 }

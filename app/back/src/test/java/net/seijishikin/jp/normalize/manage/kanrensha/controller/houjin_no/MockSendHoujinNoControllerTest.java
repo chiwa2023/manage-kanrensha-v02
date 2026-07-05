@@ -29,6 +29,9 @@ class MockSendHoujinNoControllerTest {
     /** MockMvc */
     private MockMvc mockMvc;
 
+    /**
+     * mockのセットアップ
+     */
     @BeforeEach
     public void setup() {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(context) //

@@ -52,7 +52,7 @@ class ClearRsdtTableTaskletAllTest {
     private StepExecution getStepExecution() {
 
         JobParameters jobParameters = new JobParametersBuilder() // NOPMD
-                .addLocalDate("abolishDate", LocalDate.of(2022, 12, 5)).toJobParameters();
+                .addLocalDate("abolishDate", LocalDate.of(2025, 1, 1)).toJobParameters();
 
         // 起動引数付きのStepExecutionを作成
         return MetaDataInstanceFactory.createStepExecution(jobParameters);

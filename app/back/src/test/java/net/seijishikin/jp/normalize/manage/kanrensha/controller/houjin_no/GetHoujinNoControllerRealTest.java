@@ -8,9 +8,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-
+import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
@@ -29,13 +28,13 @@ import net.seijishikin.jp.normalize.manage.kanrensha.controller.PathRouteConstan
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.houjin_no.SearchHoujinNoCapsuleDto;
 
 /**
- * GetHoujinNoController単体テスト
+ * 法人番号取得API実接続用テスト
  */
 @SpringJUnitConfig
 @AutoConfigureMockMvc
 @SpringBootTest
 @DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
-class GetHoujinNoControllerTest {
+class GetHoujinNoControllerRealTest {
 
     /** WebApplicationContext */
     @Autowired
@@ -43,7 +42,6 @@ class GetHoujinNoControllerTest {
 
     /** MockMvc */
     private MockMvc mockMvc;
-
 
     /**
      * mockのセットアップ
@@ -61,8 +59,8 @@ class GetHoujinNoControllerTest {
 
         // csv形式のボディを解析
         final SearchHoujinNoCapsuleDto capsuleDto = new SearchHoujinNoCapsuleDto();
-        capsuleDto.setAppId("9191919");
-        capsuleDto.setName("国税あいがも商事"); // 01_csv:2000行
+        capsuleDto.setAppId("houjin-no-api-key"); // TODO 自身のAPIキーを設定してからテスト、テストが終わったらキーを消す
+        capsuleDto.setName("工業");
         capsuleDto.setType("02");
         capsuleDto.setDivide(1);
 
