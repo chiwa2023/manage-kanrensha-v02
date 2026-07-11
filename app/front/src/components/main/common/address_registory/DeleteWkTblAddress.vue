@@ -3,7 +3,7 @@ import { ref, type Ref } from 'vue';
 import { WkTblAddressRsdtDeleteEntity, type WkTblAddressRsdtDeleteEntityInterface } from '../../entity/wkTblAddressRsdtDeleteEntity';
 import SearchDeleteWkTblAddress from './SearchDeleteWkTblAddress.vue';
 import { SearchWkTblAddressRsdtCapsuleDto, type SearchWkTblAddressRsdtCapsuleDtoInterface } from '../../dto/address_registory/searchWkTblAddressRsdtCapsuleDto.ts';
-import { MessageConstants, MessageView, PagingControl, type FrameworkMessageAndResultDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
+import { getErrorMessage, MessageConstants, MessageView, PagingControl, type FrameworkMessageAndResultDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import { AccessTokenNotFoundError, TokenRefreshError } from '../../dto/login/errors.ts';
 import getAuthorizedPromiseArea from '../../dto/login/getAuthorizedPromiseArea.ts';
 import { SearchWkTblRsdtDeleteResultDto, type SearchWkTblRsdtDeleteResultDtoInterface } from '../../dto/address_registory/searchWkTblRsdtDeleteResultDto.ts';
@@ -16,14 +16,17 @@ const props = defineProps<{ userDto: LeastUserDtoInterface }>();
 // よく使う定数
 const BLANK: string = "";
 const INIT_NUMBER: number = 0;
-const INIT_BOOLEAN: boolean = false;
-// const SERVER_STATUS_OK: number = 200;
-// const SERVER_STATUS_ERROR: number = 400;
+// const INIT_BOOLEAN: boolean = false;
 const SEARCH_LIMIT: number = 20;
+const INQUIRE_FLG: boolean = false;
+const ERR_MESS_ONLY: boolean = true;
+const MESS_PAGE_NAME: string = "アドレス・ベース・レジストリ削除";
+const INIT_CALLER: string = "no branch";
+
 // メッセージボックス表示定数
 const infoLevel: Ref<number> = ref(MessageConstants.LEVEL_NONE);
 const messageType: Ref<number> = ref(MessageConstants.VIEW_NONE);
-const title: Ref<string> = ref(BLANK);
+const caller: Ref<string> = ref(INIT_CALLER);
 const message: Ref<string> = ref(BLANK);
 
 // back側アクセス
@@ -70,30 +73,22 @@ function onSearch() {
                 }
             })
             .catch((error) => {
-                alert(error);
+                message.value = getErrorMessage(error, ERR_MESS_ONLY);
                 infoLevel.value = MessageConstants.LEVEL_ERROR;
                 messageType.value = MessageConstants.VIEW_OK;
-                message.value = "システム管理者にお問い合わせください";
                 return;
             });
     }).catch((e) => {
         infoLevel.value = MessageConstants.LEVEL_ERROR;
         messageType.value = MessageConstants.VIEW_OK;
 
-        if (e instanceof AccessTokenNotFoundError) {
-            // トークン保持ができていない場合
-            title.value = "現在トークンが存在しません";
+        // トークン保持または取得に失敗している場合
+        if (e instanceof AccessTokenNotFoundError || e instanceof TokenRefreshError) {
             message.value = e.message;
             return;
         }
-        if (e instanceof TokenRefreshError) {
-            // 取得に失敗している場合
-            title.value = "有効期限まじかのトークンを再取得できませんでした";
-            message.value = e.message;
-            return;
-        }
-        title.value = "システムエラーが発生しました";
-        message.value = "システム管理者にお問い合わせください";
+
+        message.value = getErrorMessage(e, INQUIRE_FLG);
         return;
     });
 
@@ -102,7 +97,8 @@ function onSearch() {
 
 function recievePagingNumber(selecteddNumber: number) {
     pageNumber.value = selecteddNumber;
-    alert("ページ情報受信");
+    // onSearchでページング複写
+    onSearch();
 }
 
 
@@ -112,27 +108,25 @@ const entityEdit: Ref<WkTblAddressRsdtDeleteEntityInterface> = ref(new WkTblAddr
 //     entityEdit.value = structuredClone(toRaw(entity));
 // }
 
-const isDelete: Ref<boolean> = ref(INIT_BOOLEAN);
+const deleteText: string = "delete";
 function recieveDelete(entity: WkTblAddressRsdtDeleteEntityInterface) {
     entityEdit.value = entity;
-    isDelete.value = true;
     infoLevel.value = MessageConstants.LEVEL_WARNING;
-    title.value = "データ削除";
     message.value = "このデータを削除してよいですか？";
     messageType.value = MessageConstants.VIEW_YES_NO;
+    caller.value = deleteText;
 }
 
-function recieveSubmit(button: string) {
+function recieveSubmit(button: string, callerMethod: string) {
 
-    if (isDelete.value) {
-        if ("yes" === button) {
-            onDelete();
-        }
+    if (MessageConstants.BUTTON_YES === button && callerMethod === deleteText) {
+        onDelete();
     }
 
     // 非表示
     infoLevel.value = 0;
     messageType.value = 0;
+    caller.value = INIT_CALLER;
 }
 function onDelete() {
 
@@ -154,7 +148,6 @@ function onDelete() {
             .then(async (response) => {
                 const resultDto: FrameworkMessageAndResultDtoInterface = await response.json();
                 message.value = resultDto.message;
-                title.value = "アドレス・ベース・レジストリデータ削除";
                 if (resultDto.isFailure) {
                     infoLevel.value = MessageConstants.LEVEL_WARNING;
                     messageType.value = MessageConstants.VIEW_OK;
@@ -164,97 +157,30 @@ function onDelete() {
                 }
             })
             .catch((error) => {
-                alert(error);
+                message.value = getErrorMessage(error, ERR_MESS_ONLY);
                 infoLevel.value = MessageConstants.LEVEL_ERROR;
                 messageType.value = MessageConstants.VIEW_OK;
-                message.value = "システム管理者にお問い合わせください";
                 return;
             });
     }).catch((e) => {
         infoLevel.value = MessageConstants.LEVEL_ERROR;
         messageType.value = MessageConstants.VIEW_OK;
 
-        if (e instanceof AccessTokenNotFoundError) {
-            // トークン保持ができていない場合
-            title.value = "現在トークンが存在しません";
+        // トークン保持または取得に失敗している場合
+        if (e instanceof AccessTokenNotFoundError || e instanceof TokenRefreshError) {
             message.value = e.message;
             return;
         }
-        if (e instanceof TokenRefreshError) {
-            // 取得に失敗している場合
-            title.value = "有効期限まじかのトークンを再取得できませんでした";
-            message.value = e.message;
-            return;
-        }
-        title.value = "システムエラーが発生しました";
-        message.value = "システム管理者にお問い合わせください";
+
+        message.value = getErrorMessage(e, INQUIRE_FLG);
         return;
     });
 }
-
-
 
 function onCancel() {
     history.back();
 }
 
-// function onSave() {
-
-//     const capsuleDto: EditWktblRsdtDeleteCapsuleDtoInterface = new EditWktblRsdtDeleteCapsuleDto();
-//     capsuleDto.userDto = props.userDto;
-//     capsuleDto.editEntity = entityEdit.value;
-
-//     getAuthorizedPromiseArea().then(token => {
-//         const url = urlBack + "/wktbl-address-rsdt/edit-delete";
-//         const method = "POST";
-//         const body = JSON.stringify(capsuleDto);
-//         const headers = {
-//             'Accept': 'application/json',
-//             'Content-Type': 'application/json',
-//             'X-AUTH-TOKEN': 'Bearer ' + token
-//         };
-//         fetch(url, { method, headers, body })
-//             .then(async (response) => {
-//                 const resultDto: FrameworkMessageAndResultDtoInterface = await response.json();
-//                 message.value = resultDto.message;
-//                 if (resultDto.isFailure) {
-//                     title.value = "アドレス・ベース・レジストリ編集";
-//                     infoLevel.value = MessageConstants.LEVEL_WARNING;
-//                     messageType.value = MessageConstants.VIEW_OK;
-//                 } else {
-//                     title.value = "アドレス・ベース・レジストリ編集";
-//                     infoLevel.value = MessageConstants.LEVEL_INFO;
-//                     messageType.value = MessageConstants.VIEW_TOAST;
-//                 }
-//             })
-//             .catch((error) => {
-//                 alert(error);
-//                 infoLevel.value = MessageConstants.LEVEL_ERROR;
-//                 messageType.value = MessageConstants.VIEW_OK;
-//                 message.value = "システム管理者にお問い合わせください";
-//                 return;
-//             });
-//     }).catch((e) => {
-//         infoLevel.value = MessageConstants.LEVEL_ERROR;
-//         messageType.value = MessageConstants.VIEW_OK;
-
-//         if (e instanceof AccessTokenNotFoundError) {
-//             // トークン保持ができていない場合
-//             title.value = "現在トークンが存在しません";
-//             message.value = e.message;
-//             return;
-//         }
-//         if (e instanceof TokenRefreshError) {
-//             // 取得に失敗している場合
-//             title.value = "有効期限まじかのトークンを再取得できませんでした";
-//             message.value = e.message;
-//             return;
-//         }
-//         title.value = "システムエラーが発生しました";
-//         message.value = "システム管理者にお問い合わせください";
-//         return;
-//     });
-// }
 </script>
 <template>
     <h3>アドレス・ベース・レジストリ差分削除対象</h3>
@@ -291,8 +217,8 @@ function onCancel() {
 
     <!-- メッセージ表示    -->
     <div class="overMessage" v-if="messageType !== MessageConstants.VIEW_NONE">
-        <MessageView :info-level="infoLevel" :message-type="messageType" :title="title" :message="message"
-            @send-submit="recieveSubmit">
+        <MessageView :info-level="infoLevel" :message-type="messageType" :title="MESS_PAGE_NAME" :message="message"
+            :caller="caller" @send-submit="recieveSubmit">
         </MessageView>
     </div>
 

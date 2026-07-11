@@ -4,7 +4,7 @@ import router from '../../../../router';
 import RoutePathConstants from '../../../../routePathConstants';
 import type { FrameworkMessageAndResultDtoInterface, LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import { getLoginUser } from '../../utils/getLoginUser';
-import { MessageConstants, MessageView } from 'seijishikin-jp-normalize_common-tool';
+import { getErrorMessage, MessageConstants, MessageView } from 'seijishikin-jp-normalize_common-tool';
 import { RefreshPasswordCapsuleDto, type RefreshPasswordCapsuleDtoInterface } from '../../dto/user/refreshPasswordCapsuleDto';
 import PasswordInput from '../../common/user/PasswordInput.vue';
 import AllUserInfo from '../../common/user_info/AllUserInfo.vue';
@@ -20,6 +20,10 @@ const BLANK: string = "";
 // const SERVER_STATUS_OK: number = 200;
 const SERVER_ACCEPTED: number = 201;
 // const SERVER_STATUS_ERROR: number = 400;
+const INQUIRE_FLG: boolean = false;
+const ERR_MESS_ONLY: boolean = true;
+const MESS_PAGE_NAME: string = "パスワード更新";
+const INIT_CALLER: string = "no branch";
 
 // ユーザ呼び出し
 const userDto: Ref<LeastUserDtoInterface> = ref(getLoginUser());
@@ -27,7 +31,7 @@ const userDto: Ref<LeastUserDtoInterface> = ref(getLoginUser());
 // メッセージ表示定数
 const infoLevel: Ref<number> = ref(MessageConstants.LEVEL_NONE);
 const messageType: Ref<number> = ref(MessageConstants.VIEW_NONE);
-const title: Ref<string> = ref(BLANK);
+const caller: Ref<string> = ref(INIT_CALLER);
 const message: Ref<string> = ref(BLANK);
 
 // パスワード再入力
@@ -41,7 +45,6 @@ function onSave() {
     if (reInputPassword.value !== capsuleDto.value.newPassword) {
         // パスワードの再入力が異なる場合はメッセージを出して離脱
         infoLevel.value = MessageConstants.LEVEL_ERROR;
-        title.value = "新しいパスワード入力ミス";
         message.value = "新しいパスワードと再入力の値が異なります。入力をやり直してください";
         // 表示
         messageType.value = MessageConstants.VIEW_OK;
@@ -61,7 +64,6 @@ function onSave() {
             .then(async (response) => {
                 const resultDto: FrameworkMessageAndResultDtoInterface = await response.json();
                 messageType.value = MessageConstants.VIEW_OK;
-                title.value = "パスワード更新処理";
                 message.value = resultDto.message;
                 if (SERVER_ACCEPTED == response.status) {
                     infoLevel.value = MessageConstants.LEVEL_ERROR;
@@ -69,28 +71,24 @@ function onSave() {
                     infoLevel.value = MessageConstants.LEVEL_INFO;
                 }
             })
-            .catch((e) => {
-                if (e instanceof AccessTokenNotFoundError) {
-                    infoLevel.value = MessageConstants.LEVEL_ERROR;
-                    // トークン保持ができていない場合
-                    messageType.value = MessageConstants.VIEW_OK;
-                    title.value = "現在トークンが存在しません";
-                    message.value = e.message;
-                    return;
-                }
-                if (e instanceof TokenRefreshError) {
-                    // 取得に失敗している場合
-                    infoLevel.value = MessageConstants.LEVEL_ERROR;
-                    messageType.value = MessageConstants.VIEW_OK;
-                    title.value = "有効期限まじかのトークンを再取得できませんでした";
-                    message.value = e.message;
-                    return;
-                }
+            .catch((error) => {
+                message.value = getErrorMessage(error, ERR_MESS_ONLY);
                 infoLevel.value = MessageConstants.LEVEL_ERROR;
                 messageType.value = MessageConstants.VIEW_OK;
-                title.value = "システムエラーが発生しました";
-                message.value = "システム管理者にお問い合わせください";
+                return;
             });
+    }).catch((e) => {
+        infoLevel.value = MessageConstants.LEVEL_ERROR;
+        messageType.value = MessageConstants.VIEW_OK;
+
+        // トークン保持または取得に失敗している場合
+        if (e instanceof AccessTokenNotFoundError || e instanceof TokenRefreshError) {
+            message.value = e.message;
+            return;
+        }
+
+        message.value = getErrorMessage(e, INQUIRE_FLG);
+        return;
     });
 }
 
@@ -98,8 +96,7 @@ function onCancel() {
     router.back();
 }
 
-function recieveSubmit(button: string) {
-    console.log(button);
+function recieveSubmit() {
     infoLevel.value = 0;
     messageType.value = 0;
 }
@@ -158,10 +155,10 @@ function recievePasswordReInput(password: string) {
         <button @click="onSave" class="footer-button left-space">保存</button>
     </div>
 
-    <!-- メッセージ表示 -->
+    <!-- メッセージ表示    -->
     <div class="overMessage" v-if="messageType !== MessageConstants.VIEW_NONE">
-        <MessageView :info-level="infoLevel" :message-type="messageType" :title="title" :message="message"
-            @send-submit="recieveSubmit">
+        <MessageView :info-level="infoLevel" :message-type="messageType" :title="MESS_PAGE_NAME" :message="message"
+            :caller="caller" @send-submit="recieveSubmit">
         </MessageView>
     </div>
 

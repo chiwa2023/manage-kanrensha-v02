@@ -18,11 +18,13 @@ const BLANK: string = "";
 // const INIT_NUMBER: number = 0;
 // const SERVER_STATUS_OK: number = 200;
 // const SERVER_STATUS_ERROR: number = 400;
+const MESS_PAGE_NAME: string = "ユーザ登録";
+const INIT_CALLER: string = "no branch";
 
 // メッセージ表示定数
 const infoLevel: Ref<number> = ref(MessageConstants.LEVEL_NONE);
 const messageType: Ref<number> = ref(MessageConstants.VIEW_NONE);
-const title: Ref<string> = ref(BLANK);
+const caller: Ref<string> = ref(INIT_CALLER);
 const message: Ref<string> = ref(BLANK);
 
 // 入力用Dto
@@ -76,18 +78,16 @@ async function onRegistUser() {
             default:
                 infoLevel.value = MessageConstants.LEVEL_ERROR;
                 messageType.value = MessageConstants.VIEW_OK;
-                title.value = "権限者未登録";
                 if (addUserError.value !== null) {
-                    message.value = addUserError.value;
+                    message.value = "権限者未登録：" + addUserError.value;
                 }
                 break;
         }
     } else {
         infoLevel.value = MessageConstants.LEVEL_ERROR;
         messageType.value = MessageConstants.VIEW_OK;
-        title.value = "システムエラー";
         if (addUserError.value !== null) {
-            message.value = addUserError.value;
+            message.value = "システムエラー：" + addUserError.value;
         }
     }
 }
@@ -108,8 +108,7 @@ function onCancel() {
     history.back();
 }
 
-function recieveSubmit(button: string) {
-    console.log(button);
+function recieveSubmit() {
     infoLevel.value = 0;
     messageType.value = 0;
 }
@@ -237,10 +236,10 @@ function recieveSubmit(button: string) {
         <button class="footer-button left-space" @click="onRegistUser" :disabled="addUserLoading">送信</button>
     </div>
 
-    <!-- メッセージ表示 -->
+    <!-- メッセージ表示    -->
     <div class="overMessage" v-if="messageType !== MessageConstants.VIEW_NONE">
-        <MessageView :info-level="infoLevel" :message-type="messageType" :title="title" :message="message"
-            @send-submit="recieveSubmit">
+        <MessageView :info-level="infoLevel" :message-type="messageType" :title="MESS_PAGE_NAME" :message="message"
+            :caller="caller" @send-submit="recieveSubmit">
         </MessageView>
     </div>
 

@@ -2,7 +2,7 @@
 import { computed, ref, toRaw, type ComputedRef, type Ref } from 'vue';
 import { SearchWkTblPagingCapsuleDto, type SearchWkTblPagingCapsuleDtoInterface } from '../../dto/add_xml/searchWkTbPagingCapsuleDto';
 import { SearchWkTblCombineOrgPagingResultDto, type SearchWkTblCombineOrgPagingResultDtoInterface } from '../../dto/wktbl_combine/searchWkTblCombineOrgPagingResultDto';
-import { MessageConstants, MessageView, PagingControl, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
+import { getErrorMessage, getErrorUniqueIdMessage, MessageConstants, MessageView, PagingControl, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import KanrenshaKbnConstants from '../../dto/kanrensha/kanrenshaKbnConstants';
 import RoutePathConstants from '../../../../routePathConstants';
 import { WkTblKanrenshaCombineOrgEntity, type WkTblKanrenshaCombineOrgEntityInterface } from '../../entity/wkTblKanrenshaCombineOrgEntity';
@@ -22,10 +22,15 @@ const INIT_NUMBER: number = 0;
 // const SERVER_STATUS_OK: number = 200;
 // const SERVER_STATUS_ERROR: number = 400;
 const SEARCH_LIMIT: number = 20;
+const INQUIRE_FLG: boolean = false;
+const ERR_MESS_ONLY: boolean = true;
+const MESS_PAGE_NAME: string = "関連者企業団体履歴ワークテーブル編集";
+const INIT_CALLER: string = "no branch";
+
 // メッセージボックス表示定数
 const infoLevel: Ref<number> = ref(MessageConstants.LEVEL_NONE);
 const messageType: Ref<number> = ref(MessageConstants.VIEW_NONE);
-const title: Ref<string> = ref(BLANK);
+const caller: Ref<string> = ref(INIT_CALLER);
 const message: Ref<string> = ref(BLANK);
 
 // Paging
@@ -57,7 +62,6 @@ function onSearch() {
     combineCapsuleDto.value.limit = limit.value;
     combineCapsuleDto.value.pageNumber = pageNumber.value;
 
-    title.value = "関連者個人－企業紐づけ検索";
     getAuthorizedPromiseArea().then(token => {
         const url = urlBack + "/regist-combine/search-" + props.orgType;
         const method = "POST";
@@ -81,30 +85,22 @@ function onSearch() {
                 pageNumber.value = combineResultDto.value.pageNumber;
             })
             .catch((error) => {
-                alert(error);
+                message.value = getErrorMessage(error, ERR_MESS_ONLY);
                 infoLevel.value = MessageConstants.LEVEL_ERROR;
                 messageType.value = MessageConstants.VIEW_OK;
-                title.value = "タスク情報検索";
-                message.value = "システムエラーが発生しました。システム管理者にお問い合わせください";
+                return;
             });
     }).catch((e) => {
         infoLevel.value = MessageConstants.LEVEL_ERROR;
         messageType.value = MessageConstants.VIEW_OK;
 
-        if (e instanceof AccessTokenNotFoundError) {
-            // トークン保持ができていない場合
-            title.value = "現在トークンが存在しません";
+        // トークン保持または取得に失敗している場合
+        if (e instanceof AccessTokenNotFoundError || e instanceof TokenRefreshError) {
             message.value = e.message;
             return;
         }
-        if (e instanceof TokenRefreshError) {
-            // 取得に失敗している場合
-            title.value = "有効期限まじかのトークンを再取得できませんでした";
-            message.value = e.message;
-            return;
-        }
-        title.value = "システムエラーが発生しました";
-        message.value = "システム管理者にお問い合わせください";
+
+        message.value = getErrorMessage(e, INQUIRE_FLG);
         return;
     });
 
@@ -123,7 +119,8 @@ const editCapsuleDto: Ref<UpdateWkTblCombineOrgCapsuleDtoInterface> = ref(new Up
 editCapsuleDto.value.userDto = props.userDto;
 
 function onEditData(editId: number) {
-    const tempEntity: WkTblKanrenshaCombineOrgEntityInterface | undefined = combineResultDto.value.listCombineOrg.filter((e) => e.wkTblKanrenshaCombineOrgId === editId)[0];
+    const tempEntity: WkTblKanrenshaCombineOrgEntityInterface | undefined =
+        combineResultDto.value.listCombineOrg.filter((e) => e.wkTblKanrenshaCombineOrgId === editId)[0];
     if (undefined !== tempEntity) {
         entityEdit.value = structuredClone(toRaw(tempEntity));
 
@@ -135,6 +132,11 @@ function onEditData(editId: number) {
             }
             isEditData.value = true;
         }
+    } else {
+        infoLevel.value = MessageConstants.LEVEL_ERROR;
+        messageType.value = MessageConstants.VIEW_OK;
+        message.value = getErrorUniqueIdMessage(editId);
+        return;
     }
 }
 
@@ -162,7 +164,6 @@ function onEditUpdate() {
     entityEdit.value.yearArrayText = data;
     editCapsuleDto.value.wkTblKanrenshaCombineOrgEntity = entityEdit.value;
 
-    title.value = "関連者企業団体履歴ワークテーブル更新";
     getAuthorizedPromiseArea().then(token => {
         const url = urlBack + "/regist-combine/update";
         const method = "POST";
@@ -189,29 +190,22 @@ function onEditUpdate() {
                 }
             })
             .catch((error) => {
-                alert(error);
+                message.value = getErrorMessage(error, ERR_MESS_ONLY);
                 infoLevel.value = MessageConstants.LEVEL_ERROR;
                 messageType.value = MessageConstants.VIEW_OK;
-                message.value = "システムエラーが発生しました。システム管理者にお問い合わせください";
+                return;
             });
     }).catch((e) => {
         infoLevel.value = MessageConstants.LEVEL_ERROR;
         messageType.value = MessageConstants.VIEW_OK;
 
-        if (e instanceof AccessTokenNotFoundError) {
-            // トークン保持ができていない場合
-            title.value = "現在トークンが存在しません";
+        // トークン保持または取得に失敗している場合
+        if (e instanceof AccessTokenNotFoundError || e instanceof TokenRefreshError) {
             message.value = e.message;
             return;
         }
-        if (e instanceof TokenRefreshError) {
-            // 取得に失敗している場合
-            title.value = "有効期限まじかのトークンを再取得できませんでした";
-            message.value = e.message;
-            return;
-        }
-        title.value = "システムエラーが発生しました";
-        message.value = "システム管理者にお問い合わせください";
+
+        message.value = getErrorMessage(e, INQUIRE_FLG);
         return;
     });
 
@@ -236,12 +230,11 @@ const isEdit: ComputedRef<string> = computed(() => {
 
 function recievePagingNumber(selecteddNumber: number) {
     pageNumber.value = selecteddNumber;
-    alert("ページ情報受信");
+    // onSearchでページング複写
+    onSearch();
 }
 
-
-function recieveSubmit(button: string) {
-    console.log(button); // 警告除け
+function recieveSubmit() {
     infoLevel.value = 0;
     messageType.value = 0;
 }
@@ -435,10 +428,10 @@ function recieveSubmit(button: string) {
         </div>
     </div>
 
-    <!-- メッセージ表示 -->
+    <!-- メッセージ表示    -->
     <div class="overMessage" v-if="messageType !== MessageConstants.VIEW_NONE">
-        <MessageView :info-level="infoLevel" :message-type="messageType" :title="title" :message="message"
-            @send-submit="recieveSubmit">
+        <MessageView :info-level="infoLevel" :message-type="messageType" :title="MESS_PAGE_NAME" :message="message"
+            :caller="caller" @send-submit="recieveSubmit">
         </MessageView>
     </div>
 

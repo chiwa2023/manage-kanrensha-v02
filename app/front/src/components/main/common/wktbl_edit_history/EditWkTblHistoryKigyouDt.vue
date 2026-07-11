@@ -1,5 +1,5 @@
 ﻿<script setup lang="ts">
-import { MessageConstants, MessageView, PagingControl, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
+import { getErrorMessage, MessageConstants, MessageView, PagingControl, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import { computed, ref, toRaw, type ComputedRef, type Ref } from 'vue';
 import { WkTblKanrenshaKigyouDtHistoryEntity, type WkTblKanrenshaKigyouDtHistoryEntityInterface } from '../../entity/wkTblKanrenshaKigyouDtHistoryEntity';
 import { SearchWkTblHistoryKigyouDtPagingResultDto, type SearchWkTblHistoryKigyouDtPagingResultDtoInterface } from '../../dto/wktbl_history/searchWkTblHistoryKigyouDtPagingResultDto';
@@ -21,10 +21,15 @@ const INIT_BOOLEAN: boolean = false;
 // const SERVER_STATUS_OK: number = 200;
 // const SERVER_STATUS_ERROR: number = 400;
 const SEARCH_LIMIT: number = 20;
+const INQUIRE_FLG: boolean = false;
+const ERR_MESS_ONLY: boolean = true;
+const MESS_PAGE_NAME: string = "関連者企業団体履歴ワークテーブル更新";
+const INIT_CALLER: string = "no branch";
+
 // メッセージボックス表示定数
 const infoLevel: Ref<number> = ref(MessageConstants.LEVEL_NONE);
 const messageType: Ref<number> = ref(MessageConstants.VIEW_NONE);
-const title: Ref<string> = ref(BLANK);
+const caller: Ref<string> = ref(INIT_CALLER);
 const message: Ref<string> = ref(BLANK);
 // Paging
 const pageNumber: Ref<number> = ref(INIT_NUMBER);
@@ -62,7 +67,6 @@ function onSearchKigyouDt() {
                 if (0 == kigyouDtResultDto.value.listWktblKigyouDt.length) {
                     infoLevel.value = MessageConstants.LEVEL_INFO;
                     messageType.value = MessageConstants.VIEW_TOAST;
-                    title.value = "タスク情報検索";
                     message.value = "検索結果が0件でした";
                 }
                 allCount.value = kigyouDtResultDto.value.allCount;
@@ -70,30 +74,22 @@ function onSearchKigyouDt() {
                 pageNumber.value = kigyouDtResultDto.value.pageNumber;
             })
             .catch((error) => {
-                alert(error);
+                message.value = getErrorMessage(error, ERR_MESS_ONLY);
                 infoLevel.value = MessageConstants.LEVEL_ERROR;
                 messageType.value = MessageConstants.VIEW_OK;
-                title.value = "タスク情報検索";
-                message.value = "システムエラーが発生しました。システム管理者にお問い合わせください";
+                return;
             });
     }).catch((e) => {
         infoLevel.value = MessageConstants.LEVEL_ERROR;
         messageType.value = MessageConstants.VIEW_OK;
 
-        if (e instanceof AccessTokenNotFoundError) {
-            // トークン保持ができていない場合
-            title.value = "現在トークンが存在しません";
+        // トークン保持または取得に失敗している場合
+        if (e instanceof AccessTokenNotFoundError || e instanceof TokenRefreshError) {
             message.value = e.message;
             return;
         }
-        if (e instanceof TokenRefreshError) {
-            // 取得に失敗している場合
-            title.value = "有効期限まじかのトークンを再取得できませんでした";
-            message.value = e.message;
-            return;
-        }
-        title.value = "システムエラーが発生しました";
-        message.value = "システム管理者にお問い合わせください";
+
+        message.value = getErrorMessage(e, INQUIRE_FLG);
         return;
     });
 }
@@ -122,7 +118,6 @@ function onEditUpdate() {
     // 編集中のEntityを編集のためにBack側に受け渡し
     editCapsuleDto.value.wkTblKanrenshaKigyouDtHistoryEntity = entityEdit.value;
 
-    title.value = "関連者企業団体履歴ワークテーブル更新";
     getAuthorizedPromiseArea().then(token => {
         const url = urlBack + "/regist-bulk-history/update-kigyou-dt";
         const method = "POST";
@@ -148,29 +143,22 @@ function onEditUpdate() {
                 }
             })
             .catch((error) => {
-                alert(error);
+                message.value = getErrorMessage(error, ERR_MESS_ONLY);
                 infoLevel.value = MessageConstants.LEVEL_ERROR;
                 messageType.value = MessageConstants.VIEW_OK;
-                message.value = "システムエラーが発生しました。システム管理者にお問い合わせください";
+                return;
             });
     }).catch((e) => {
         infoLevel.value = MessageConstants.LEVEL_ERROR;
         messageType.value = MessageConstants.VIEW_OK;
 
-        if (e instanceof AccessTokenNotFoundError) {
-            // トークン保持ができていない場合
-            title.value = "現在トークンが存在しません";
+        // トークン保持または取得に失敗している場合
+        if (e instanceof AccessTokenNotFoundError || e instanceof TokenRefreshError) {
             message.value = e.message;
             return;
         }
-        if (e instanceof TokenRefreshError) {
-            // 取得に失敗している場合
-            title.value = "有効期限まじかのトークンを再取得できませんでした";
-            message.value = e.message;
-            return;
-        }
-        title.value = "システムエラーが発生しました";
-        message.value = "システム管理者にお問い合わせください";
+
+        message.value = getErrorMessage(e, INQUIRE_FLG);
         return;
     });
 
@@ -203,11 +191,11 @@ function onHideData() {
 
 function recievePagingNumber(selecteddNumber: number) {
     pageNumber.value = selecteddNumber;
-    alert("ページ情報受信");
+    // onSearchでページング複写
+    onSearchKigyouDt();
 }
 
-function recieveSubmit(button: string) {
-    console.log(button); // 警告除け
+function recieveSubmit() {
     infoLevel.value = 0;
     messageType.value = 0;
 }
@@ -335,16 +323,16 @@ function recieveSubmit(button: string) {
 
             <div class="footer">
                 <button @click="onEditClose" class="footer-button">キャンセル</button>
-                <button @click="onEditUpdate" class="left-space"  :class="onSaveClassName">送信</button>
+                <button @click="onEditUpdate" class="left-space" :class="onSaveClassName">送信</button>
             </div>
 
         </div>
     </div>
 
-    <!-- メッセージ表示 -->
+    <!-- メッセージ表示    -->
     <div class="overMessage" v-if="messageType !== MessageConstants.VIEW_NONE">
-        <MessageView :info-level="infoLevel" :message-type="messageType" :title="title" :message="message"
-            @send-submit="recieveSubmit">
+        <MessageView :info-level="infoLevel" :message-type="messageType" :title="MESS_PAGE_NAME" :message="message"
+            :caller="caller" @send-submit="recieveSubmit">
         </MessageView>
     </div>
 

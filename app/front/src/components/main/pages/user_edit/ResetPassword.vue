@@ -15,6 +15,8 @@ const BLANK: string = "";
 // const INIT_NUMBER: number = 0;
 // const SERVER_STATUS_OK: number = 200;
 // const SERVER_STATUS_ERROR: number = 400;
+const MESS_PAGE_NAME: string = "パスワードリセット";
+const INIT_CALLER: string = "no branch";
 
 // ユーザログインできていない状態なのでユーザ呼び出しなし
 // const userDto: Ref<LeastUserDtoInterface> = ref(getLoginUser());
@@ -22,7 +24,7 @@ const BLANK: string = "";
 // メッセージ表示定数
 const infoLevel: Ref<number> = ref(MessageConstants.LEVEL_NONE);
 const messageType: Ref<number> = ref(MessageConstants.VIEW_NONE);
-const title: Ref<string> = ref(BLANK);
+const caller: Ref<string> = ref(INIT_CALLER);
 const message: Ref<string> = ref(BLANK);
 
 // その他入力補助 
@@ -53,7 +55,6 @@ async function onSendEmail() {
 
     const resultDto: FrameworkMessageAndResultDtoInterface | null = await fetchLogin(url, config);
     messageType.value = MessageConstants.VIEW_OK;
-    title.value = "パスワードリセット(コード送信)";
     if (resultDto !== null) {
         if (resultDto.isFailure) {
             infoLevel.value = MessageConstants.LEVEL_WARNING;
@@ -67,13 +68,11 @@ async function onSendEmail() {
     } else {
         infoLevel.value = MessageConstants.LEVEL_ERROR;
         if (sendError.value != null) {
-            message.value = sendError.value;
+            message.value = "パスワードリセット(コード送信)" + sendError.value;
         } else {
-            message.value = "システムエラーが発生しました";
+            message.value = "パスワードリセット(コード送信)" + "システムエラーが発生しました";
         }
-
     }
-
 }
 
 async function onSendCode() {
@@ -92,7 +91,6 @@ async function onSendCode() {
 
     const resultDto: FrameworkMessageAndResultDtoInterface | null = await fetchLogin(url, config);
     messageType.value = MessageConstants.VIEW_OK;
-    title.value = "パスワードリセット(コード照合)";
     if (resultDto !== null) {
         if (resultDto.isFailure) {
             infoLevel.value = MessageConstants.LEVEL_WARNING;
@@ -102,23 +100,22 @@ async function onSendCode() {
             inputStage.value = 3;
             stageClass2.value = "stage-complete";
         }
-        message.value = resultDto.message;
+        message.value = "パスワードリセット(コード照合)：" + resultDto.message;
     } else {
         infoLevel.value = MessageConstants.LEVEL_ERROR;
         if (sendError.value != null) {
-            message.value = sendError.value;
+            message.value = "パスワードリセット(コード照合)：" + sendError.value;
         } else {
-            message.value = "システムエラーが発生しました";
+            message.value = "パスワードリセット(コード照合)：" + "システムエラーが発生しました";
         }
     }
 }
 
-
+const completKey: string = "stage-complete";
 async function onSavePassword() {
     if (reInputPassword.value !== capsuleDto.value.password) {
         // パスワードの再入力が異なる場合はメッセージを出して離脱
         infoLevel.value = MessageConstants.LEVEL_ERROR;
-        title.value = "パスワード入力に問題があります";
         message.value = "新しいパスワードが再入力と異なります。入力をやり直してください";
         // 表示
         messageType.value = MessageConstants.VIEW_OK;
@@ -140,22 +137,22 @@ async function onSavePassword() {
 
     const resultDto: FrameworkMessageAndResultDtoInterface | null = await fetchLogin(url, config);
     messageType.value = MessageConstants.VIEW_OK;
-    title.value = "パスワードリセット(パスワード設定)";
     if (resultDto !== null) {
         if (resultDto.isFailure) {
             infoLevel.value = MessageConstants.LEVEL_WARNING;
         } else {
             infoLevel.value = MessageConstants.LEVEL_INFO;
             // ページ編集
-            stageClass3.value = "stage-complete";
+            stageClass3.value = completKey;
+            caller.value = completKey;
         }
-        message.value = resultDto.message;
+        message.value = "パスワードリセット(パスワード設定)" + resultDto.message;
     } else {
         infoLevel.value = MessageConstants.LEVEL_ERROR;
         if (sendError.value != null) {
-            message.value = sendError.value;
+            message.value = "パスワードリセット(パスワード設定)" + sendError.value;
         } else {
-            message.value = "システムエラーが発生しました";
+            message.value = "パスワードリセット(パスワード設定)" + "システムエラーが発生しました";
         }
     }
 
@@ -165,15 +162,16 @@ function onCancel() {
     router.back();
 }
 
-function recieveSubmit(button: string) {
-    console.log(button);
+function recieveSubmit(button: string, callerMethod: string) {
 
-    if(stageClass3.value == "stage-complete" && button == "yes"){
+    if (callerMethod == completKey && button === MessageConstants.BUTTON_YES) {
         // パスワード設定成功時にはログインページに遷移
-         router.push(RoutePathConstants.PAGE_LOGIN);
+        router.push(RoutePathConstants.PAGE_LOGIN);
     }
+
     infoLevel.value = 0;
     messageType.value = 0;
+    caller.value = INIT_CALLER;
 }
 
 function recievePassword1(password: string) {
@@ -269,10 +267,10 @@ function recievePassword2(password: string) {
         <button @click="onCancel" class="footer-button">キャンセル</button>
     </div>
 
-    <!-- メッセージ表示 -->
+    <!-- メッセージ表示    -->
     <div class="overMessage" v-if="messageType !== MessageConstants.VIEW_NONE">
-        <MessageView :info-level="infoLevel" :message-type="messageType" :title="title" :message="message"
-            @send-submit="recieveSubmit">
+        <MessageView :info-level="infoLevel" :message-type="messageType" :title="MESS_PAGE_NAME" :message="message"
+            :caller="caller" @send-submit="recieveSubmit">
         </MessageView>
     </div>
 

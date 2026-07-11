@@ -14,12 +14,13 @@ import PersonMenu from '../../../main/common/menu/PersonMenu.vue';
 const BLANK: string = "";
 const INIT_NUMBER: number = 0;
 const INIT_BOOLEAN: boolean = false;
-// const SERVER_STATUS_OK: number = 200;
-// const SERVER_STATUS_ERROR: number = 400;
+const MESS_PAGE_NAME: string = "関連者情報";
+const INIT_CALLER: string = "no branch";
+
 // メッセージ表示定数
 const infoLevel: Ref<number> = ref(MessageConstants.LEVEL_NONE);
 const messageType: Ref<number> = ref(MessageConstants.VIEW_NONE);
-const title: Ref<string> = ref(BLANK);
+const caller: Ref<string> = ref(INIT_CALLER);
 const message: Ref<string> = ref(BLANK);
 
 
@@ -36,7 +37,6 @@ if (INIT_NUMBER === props.userDto.userPersonId
 
     infoLevel.value = MessageConstants.LEVEL_ERROR;
     messageType.value = MessageConstants.VIEW_OK;
-    title.value = "ログイン状態または関連者権限が確認できませんでした";
     message.value = "ログアウト処理をします。再度ログイン処理をするかシステム担当者にお問い合わせください";
 }
 
@@ -75,9 +75,7 @@ function viewPersonMenu() {
 
 
 // メッセージからの反応受け取り
-function recieveSubmit(button: string) {
-    console.log(button); // 警告除け
-    // TODO ボタンタイプ別の挙動はこの中で変える
+function recieveSubmit() {
 
     // 非表示
     infoLevel.value = 0;
@@ -108,10 +106,10 @@ function recieveSubmit(button: string) {
         </div>
     </div>
 
-    <!-- メッセージ表示 -->
+    <!-- メッセージ表示    -->
     <div class="overMessage" v-if="messageType !== MessageConstants.VIEW_NONE">
-        <MessageView :info-level="infoLevel" :message-type="messageType" :title="title" :message="message"
-            @send-submit="recieveSubmit">
+        <MessageView :info-level="infoLevel" :message-type="messageType" :title="MESS_PAGE_NAME" :message="message"
+            :caller="caller" @send-submit="recieveSubmit">
         </MessageView>
     </div>
 

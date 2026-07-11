@@ -15,7 +15,6 @@ const props = defineProps<{ taskPlanCode: number, taskYear: number, userDto: Lea
  * ファイルダウンロード
  */
 async function onDownload() {
-    alert(props.taskPlanCode);
     const capsuleDto: GetTaskStackTraceCapsuleDtoInterface = new GetTaskStackTraceCapsuleDto();
     capsuleDto.taskPlanCode = props.taskPlanCode;
     capsuleDto.taskYear = props.taskYear;

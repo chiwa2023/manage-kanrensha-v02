@@ -1,5 +1,5 @@
 ﻿<script setup lang="ts">
-import { FrameworkPagingDto, InputAddressDto, InputBuildingAddress, MessageConstants, MessageView, PagingControl, type FrameworkMessageAndResultDtoInterface, type FrameworkPagingDtoInterface, type InputAddressDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
+import { FrameworkPagingDto, getErrorMessage, getErrorUniqueIdMessage, InputAddressDto, InputBuildingAddress, MessageConstants, MessageView, PagingControl, type FrameworkMessageAndResultDtoInterface, type FrameworkPagingDtoInterface, type InputAddressDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import { onMounted, ref, type Ref } from 'vue';
 import { getLoginUser } from '../../utils/getLoginUser';
 import { SearchPostalIllegularResultDto, type SearchPostalIllegularResultDtoInterface } from '../../dto/address_postal/searchPostalIllegularResultDto';
@@ -19,10 +19,15 @@ const INIT_BOOLEAN: boolean = false;
 // const SERVER_STATUS_OK: number = 200;
 // const SERVER_STATUS_ERROR: number = 400;
 const SEARCH_LIMIT: number = 20;
+const INQUIRE_FLG: boolean = false;
+const ERR_MESS_ONLY: boolean = true;
+const MESS_PAGE_NAME: string = "フロア郵便番号追加";
+const INIT_CALLER: string = "no branch";
+
 // メッセージ表示定数
 const infoLevel: Ref<number> = ref(MessageConstants.LEVEL_NONE);
 const messageType: Ref<number> = ref(MessageConstants.VIEW_NONE);
-const title: Ref<string> = ref(BLANK);
+const caller: Ref<string> = ref(INIT_CALLER);
 const message: Ref<string> = ref(BLANK);
 
 // back側アクセス
@@ -40,13 +45,20 @@ const isAddressInput: Ref<boolean> = ref(INIT_BOOLEAN);
 const commonAddress: Ref<string> = ref("");
 
 
+const capsuleDtoItem: Ref<FrameworkPagingDtoInterface> = ref(new FrameworkPagingDto());
 const resultDtoItem: Ref<SearchPostalIllegularResultDtoInterface> = ref(new SearchPostalIllegularResultDto());
 onMounted(() => {
 
     // 初期で建物住所を取得する
+    onSearch();
+});
+
+function onSearch() {
+
     // 建物の地階データを取得する
-    const capsuleDtoItem: Ref<FrameworkPagingDtoInterface> = ref(new FrameworkPagingDto());
-    capsuleDtoItem.value.limit = SEARCH_LIMIT;
+    capsuleDtoItem.value.allCount = allCount.value;
+    capsuleDtoItem.value.limit = limit.value;
+    capsuleDtoItem.value.pageNumber = pageNumber.value;
 
     getAuthorizedPromiseArea().then(token => {
         const url = urlBack + "/postal-irregular/building";
@@ -71,35 +83,25 @@ onMounted(() => {
                 }
             })
             .catch((error) => {
-                alert(error);
+                message.value = getErrorMessage(error, ERR_MESS_ONLY);
                 infoLevel.value = MessageConstants.LEVEL_ERROR;
                 messageType.value = MessageConstants.VIEW_OK;
-                message.value = "システム管理者にお問い合わせください";
                 return;
             });
     }).catch((e) => {
         infoLevel.value = MessageConstants.LEVEL_ERROR;
         messageType.value = MessageConstants.VIEW_OK;
 
-        if (e instanceof AccessTokenNotFoundError) {
-            // トークン保持ができていない場合
-            title.value = "現在トークンが存在しません";
+        // トークン保持または取得に失敗している場合
+        if (e instanceof AccessTokenNotFoundError || e instanceof TokenRefreshError) {
             message.value = e.message;
             return;
         }
-        if (e instanceof TokenRefreshError) {
-            // 取得に失敗している場合
-            title.value = "有効期限まじかのトークンを再取得できませんでした";
-            message.value = e.message;
-            return;
-        }
-        title.value = "システムエラーが発生しました";
-        message.value = "システム管理者にお問い合わせください";
+
+        message.value = getErrorMessage(e, INQUIRE_FLG);
         return;
     });
-});
-
-
+}
 
 // 編集対象の詳細リスト
 const resultDtoIllegular: Ref<GetDetailPostalIllegularResultDtoInterface> = ref(new GetDetailPostalIllegularResultDto());
@@ -109,15 +111,16 @@ const editAddressDto: Ref<InputAddressDtoInterface> = ref(new InputAddressDto())
 const entityEdit: Ref<AddressPostalIrregularEntityInterface> = ref(new AddressPostalIrregularEntity());
 
 const storeId: Ref<number> = ref(INIT_NUMBER);
+const showText: string = "show";
 function onChangeEdit(id: number) {
 
     // 住所入力がされている場合は保存せずに消去していいか確認
     if (BLANK !== commonAddress.value) {
         storeId.value = id;
         infoLevel.value = MessageConstants.LEVEL_WARNING;
-        title.value = "未保存データが存在";
-        message.value = "住所入力がされています。保存せず新たな編集対象を表示してよいですか?";
+        message.value = "住所入力がされて未保存データです。保存せず新たな編集対象を表示してよいですか?";
         messageType.value = MessageConstants.VIEW_YES_NO;
+        caller.value = showText;
         return;
     } else {
         onShowDetail(id);
@@ -129,8 +132,12 @@ function onShowDetail(id: number) {
     const tempDto: AddressPostalIrregularEntityInterface | undefined
         = resultDtoItem.value.listItem.filter(e => e.addressPostalIrregularId === id)[0];
     if (tempDto === undefined) {
+        infoLevel.value = MessageConstants.LEVEL_ERROR;
+        messageType.value = MessageConstants.VIEW_OK;
+        message.value = getErrorUniqueIdMessage(id);
         return;
     }
+
     entityEdit.value = tempDto;
 
     // 同一建物のデータをすべて取得
@@ -157,30 +164,22 @@ function onShowDetail(id: number) {
                 }
             })
             .catch((error) => {
-                alert(error);
+                message.value = getErrorMessage(error, ERR_MESS_ONLY);
                 infoLevel.value = MessageConstants.LEVEL_ERROR;
                 messageType.value = MessageConstants.VIEW_OK;
-                message.value = "システム管理者にお問い合わせください";
                 return;
             });
     }).catch((e) => {
         infoLevel.value = MessageConstants.LEVEL_ERROR;
         messageType.value = MessageConstants.VIEW_OK;
 
-        if (e instanceof AccessTokenNotFoundError) {
-            // トークン保持ができていない場合
-            title.value = "現在トークンが存在しません";
+        // トークン保持または取得に失敗している場合
+        if (e instanceof AccessTokenNotFoundError || e instanceof TokenRefreshError) {
             message.value = e.message;
             return;
         }
-        if (e instanceof TokenRefreshError) {
-            // 取得に失敗している場合
-            title.value = "有効期限まじかのトークンを再取得できませんでした";
-            message.value = e.message;
-            return;
-        }
-        title.value = "システムエラーが発生しました";
-        message.value = "システム管理者にお問い合わせください";
+
+        message.value = getErrorMessage(e, INQUIRE_FLG);
         return;
     });
     commonAddress.value = BLANK;
@@ -222,30 +221,22 @@ function onSave() {
                 }
             })
             .catch((error) => {
-                alert(error);
+                message.value = getErrorMessage(error, ERR_MESS_ONLY);
                 infoLevel.value = MessageConstants.LEVEL_ERROR;
                 messageType.value = MessageConstants.VIEW_OK;
-                message.value = "システム管理者にお問い合わせください";
                 return;
             });
     }).catch((e) => {
         infoLevel.value = MessageConstants.LEVEL_ERROR;
         messageType.value = MessageConstants.VIEW_OK;
 
-        if (e instanceof AccessTokenNotFoundError) {
-            // トークン保持ができていない場合
-            title.value = "現在トークンが存在しません";
+        // トークン保持または取得に失敗している場合
+        if (e instanceof AccessTokenNotFoundError || e instanceof TokenRefreshError) {
             message.value = e.message;
             return;
         }
-        if (e instanceof TokenRefreshError) {
-            // 取得に失敗している場合
-            title.value = "有効期限まじかのトークンを再取得できませんでした";
-            message.value = e.message;
-            return;
-        }
-        title.value = "システムエラーが発生しました";
-        message.value = "システム管理者にお問い合わせください";
+
+        message.value = getErrorMessage(e, INQUIRE_FLG);
         return;
     });
 
@@ -254,7 +245,8 @@ function onSave() {
 
 function recievePagingNumber(selecteddNumber: number) {
     pageNumber.value = selecteddNumber;
-    alert("ページ情報受信");
+    // onSearchでページング複写
+    onSearch();
 }
 
 function onAddressInput() {
@@ -279,15 +271,16 @@ function recieveCancelInputAddress() {
     isAddressInput.value = false;
 }
 
-function recieveSubmit(button: string) {
+function recieveSubmit(button: string, callerMethod: string) {
     // 住所入力が存在するときだけは確認する
-    if ("yes" === button) {
+    if (MessageConstants.BUTTON_YES === button && callerMethod === showText) {
         onShowDetail(storeId.value);
     }
 
     // 非表示
     infoLevel.value = 0;
     messageType.value = 0;
+    caller.value = INIT_CALLER;
 }
 </script>
 <template>
@@ -370,10 +363,10 @@ function recieveSubmit(button: string) {
             @send-input-address-interface="recieveInputAddressInterface"></InputBuildingAddress>
     </div>
 
-    <!-- メッセージ表示 -->
+    <!-- メッセージ表示    -->
     <div class="overMessage" v-if="messageType !== MessageConstants.VIEW_NONE">
-        <MessageView :info-level="infoLevel" :message-type="messageType" :title="title" :message="message"
-            @send-submit="recieveSubmit">
+        <MessageView :info-level="infoLevel" :message-type="messageType" :title="MESS_PAGE_NAME" :message="message"
+            :caller="caller" @send-submit="recieveSubmit">
         </MessageView>
     </div>
 

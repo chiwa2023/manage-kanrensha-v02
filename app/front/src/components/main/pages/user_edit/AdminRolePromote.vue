@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, type Ref } from 'vue';
 import router from '../../../../router';
-import { MessageConstants, MessageView, type FrameworkMessageAndResultDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
+import { getErrorMessage, getErrorUniqueIdMessage, MessageConstants, MessageView, type FrameworkMessageAndResultDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import { getLoginUser } from '../../utils/getLoginUser';
 import UserRoleConstants from '../../dto/user/userRoleConstants';
 import { SearchUserCapsuleDto, type SearchUserCapsuleDtoInterface } from '../../dto/user/searchUserCapsuleDto';
@@ -21,10 +21,14 @@ const BLANK: string = "";
 // const INIT_NUMBER: number = 0;
 // const SERVER_STATUS_OK: number = 200;
 // const SERVER_STATUS_ERROR: number = 400;
+const INQUIRE_FLG: boolean = false;
+const MESS_PAGE_NAME: string = "SE権限追加推薦処理";
+const INIT_CALLER: string = "no branch";
+
 // メッセージボックス表示定数
 const infoLevel: Ref<number> = ref(MessageConstants.LEVEL_NONE);
 const messageType: Ref<number> = ref(MessageConstants.VIEW_NONE);
-const title: Ref<string> = ref(BLANK);
+const caller: Ref<string> = ref(INIT_CALLER);
 const message: Ref<string> = ref(BLANK);
 
 // ユーザ呼び出し
@@ -54,26 +58,17 @@ function onSearch() {
                 resultDto.value = await response.json();
             })
             .catch((e) => {
-                if (e instanceof AccessTokenNotFoundError) {
-                    infoLevel.value = MessageConstants.LEVEL_ERROR;
-                    // トークン保持ができていない場合
-                    messageType.value = MessageConstants.VIEW_OK;
-                    title.value = "現在トークンが存在しません";
-                    message.value = e.message;
-                    return;
-                }
-                if (e instanceof TokenRefreshError) {
-                    // 取得に失敗している場合
-                    infoLevel.value = MessageConstants.LEVEL_ERROR;
-                    messageType.value = MessageConstants.VIEW_OK;
-                    title.value = "有効期限まじかのトークンを再取得できませんでした";
-                    message.value = e.message;
-                    return;
-                }
                 infoLevel.value = MessageConstants.LEVEL_ERROR;
                 messageType.value = MessageConstants.VIEW_OK;
-                title.value = "システムエラーが発生しました";
-                message.value = "システム管理者にお問い合わせください";
+
+                // トークン保持または取得に失敗している場合
+                if (e instanceof AccessTokenNotFoundError || e instanceof TokenRefreshError) {
+                    message.value = e.message;
+                    return;
+                }
+
+                message.value = getErrorMessage(e, INQUIRE_FLG);
+                return;
             });
     });
 
@@ -85,7 +80,8 @@ function onCancel() {
 }
 
 async function onAdminPromote(userId: number) {
-    const userEntityPromote: UserPersonEntityInterface | undefined = resultDto.value.listPersonEntity.filter((e) => userId === e.userPersonId)[0];
+    const userEntityPromote: UserPersonEntityInterface | undefined = resultDto.value.listPersonEntity.filter(
+        (e) => userId === e.userPersonId)[0];
 
     const capsuleDto: PromoteUserAdminCapsuleDtoInterface = new PromoteUserAdminCapsuleDto();
     if (userEntityPromote !== undefined) {
@@ -108,38 +104,32 @@ async function onAdminPromote(userId: number) {
                     infoLevel.value = MessageConstants.LEVEL_INFO;
                     // トークン保持ができていない場合
                     messageType.value = MessageConstants.VIEW_TOAST;
-                    title.value = "SE権限追加推薦処理";
-                    message.value = resultDto.message;
+                    message.value = "SE権限追加推薦処理" + resultDto.message;
                 })
                 .catch((e) => {
-                    if (e instanceof AccessTokenNotFoundError) {
-                        infoLevel.value = MessageConstants.LEVEL_ERROR;
-                        // トークン保持ができていない場合
-                        messageType.value = MessageConstants.VIEW_OK;
-                        title.value = "現在トークンが存在しません";
-                        message.value = e.message;
-                        return;
-                    }
-                    if (e instanceof TokenRefreshError) {
-                        // 取得に失敗している場合
-                        infoLevel.value = MessageConstants.LEVEL_ERROR;
-                        messageType.value = MessageConstants.VIEW_OK;
-                        title.value = "有効期限まじかのトークンを再取得できませんでした";
-                        message.value = e.message;
-                        return;
-                    }
                     infoLevel.value = MessageConstants.LEVEL_ERROR;
                     messageType.value = MessageConstants.VIEW_OK;
-                    title.value = "システムエラーが発生しました";
-                    message.value = "システム管理者にお問い合わせください";
+
+                    // トークン保持または取得に失敗している場合
+                    if (e instanceof AccessTokenNotFoundError || e instanceof TokenRefreshError) {
+                        message.value = e.message;
+                        return;
+                    }
+
+                    message.value = getErrorMessage(e, INQUIRE_FLG);
+                    return;
                 });
         });
+    } else {
+        infoLevel.value = MessageConstants.LEVEL_ERROR;
+        messageType.value = MessageConstants.VIEW_OK;
+        message.value = getErrorUniqueIdMessage(userId);
+        return;
 
     }
 }
 
-function recieveSubmit(button: string) {
-    console.log(button); // 警告除け
+function recieveSubmit() {
     infoLevel.value = 0;
     messageType.value = 0;
 }
@@ -194,10 +184,10 @@ function recieveSubmit(button: string) {
         <button @click="onCancel" class="footer-button">キャンセル</button>
     </div>
 
-    <!-- メッセージ表示 -->
+    <!-- メッセージ表示    -->
     <div class="overMessage" v-if="messageType !== MessageConstants.VIEW_NONE">
-        <MessageView :info-level="infoLevel" :message-type="messageType" :title="title" :message="message"
-            @send-submit="recieveSubmit">
+        <MessageView :info-level="infoLevel" :message-type="messageType" :title="MESS_PAGE_NAME" :message="message"
+            :caller="caller" @send-submit="recieveSubmit">
         </MessageView>
     </div>
 

@@ -1,6 +1,6 @@
 ﻿<script setup lang="ts">
 import { computed, onBeforeMount, ref, type ComputedRef, type Ref } from 'vue';
-import { FrameworkCapsuleDto, type FrameworkCapsuleDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
+import { FrameworkCapsuleDto, getErrorMessage, getErrorUniqueIdMessage, type FrameworkCapsuleDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import { MessageConstants, MessageView } from 'seijishikin-jp-normalize_common-tool';
 import router from '../../../../router';
 import RoutePathConstants from '../../../../routePathConstants';
@@ -26,10 +26,15 @@ const BLANK: string = "";
 const INIT_NUMBER: number = 0;
 const SERVER_STATUS_OK: number = 200;
 // const SERVER_STATUS_ERROR: number = 400;
+const INQUIRE_FLG: boolean = false;
+const ERR_MESS_ONLY: boolean = true;
+const MESS_PAGE_NAME: string = "利用者SE権限ヘッダ";
+const INIT_CALLER: string = "no branch";
+
 // メッセージ表示定数
 const infoLevel: Ref<number> = ref(MessageConstants.LEVEL_NONE);
 const messageType: Ref<number> = ref(MessageConstants.VIEW_NONE);
-const title: Ref<string> = ref(BLANK);
+const caller: Ref<string> = ref(INIT_CALLER);
 const message: Ref<string> = ref(BLANK);
 
 // back側アクセス
@@ -93,8 +98,7 @@ onBeforeMount(async () => {
     if (INIT_NUMBER === props.userDto.userPersonId || !props.userDto.listRoles.includes(UserRoleConstants.ROLE_ADMIN)) {
         infoLevel.value = MessageConstants.LEVEL_ERROR;
         messageType.value = MessageConstants.VIEW_OK;
-        title.value = "ログイン状態またはAPIパートナー権限が確認できませんでした";
-        message.value = "ログアウト処理をします。再度ログイン処理をするかシステム担当者にお問い合わせください";
+        message.value = "ログイン状態またはAPIパートナー権限が確認できませんでした。ログアウト処理をします。再度ログイン処理をするかシステム担当者にお問い合わせください";
     }
 
     // 未処理タスクが最新でなければ更新
@@ -120,7 +124,6 @@ onBeforeMount(async () => {
                         if (resultDtoTask.value.listThisYear.length === 0 && resultDtoTask.value.listLastYear.length === 0) {
                             infoLevel.value = MessageConstants.LEVEL_INFO;
                             messageType.value = MessageConstants.VIEW_TOAST;
-                            title.value = "未処理タスク確認";
                             message.value = "未処理タスクは存在しませんでした";
                             notCompletedTaskInfo.notCompleteTaskDto.isRefreshed = true; // 毎回更新しにいかないように
                             actionStatus = SERVER_STATUS_OK;
@@ -131,33 +134,24 @@ onBeforeMount(async () => {
                             switchYear.value = "1";
                         }
                     })
-                    .catch((e) => {
+                    .catch((error) => {
+                        message.value = getErrorMessage(error, ERR_MESS_ONLY);
                         infoLevel.value = MessageConstants.LEVEL_ERROR;
                         messageType.value = MessageConstants.VIEW_OK;
-                        title.value = "システムエラーが発生しました";
-                        message.value = e.message;
+                        return;
                     });
             }).catch((e) => {
-                if (e instanceof AccessTokenNotFoundError) {
-                    // トークン保持ができていない場合
-                    infoLevel.value = MessageConstants.LEVEL_ERROR;
-                    messageType.value = MessageConstants.VIEW_OK;
-                    title.value = "現在トークンが存在しません";
-                    message.value = e.message;
-                    return;
-                }
-                if (e instanceof TokenRefreshError) {
-                    // 取得に失敗している場合
-                    infoLevel.value = MessageConstants.LEVEL_ERROR;
-                    messageType.value = MessageConstants.VIEW_OK;
-                    title.value = "有効期限まじかのトークンを再取得できませんでした";
-                    message.value = e.message;
-                    return;
-                }
                 infoLevel.value = MessageConstants.LEVEL_ERROR;
                 messageType.value = MessageConstants.VIEW_OK;
-                title.value = "システムエラーが発生しました";
-                message.value = "システム管理者にお問い合わせください";
+
+                // トークン保持または取得に失敗している場合
+                if (e instanceof AccessTokenNotFoundError || e instanceof TokenRefreshError) {
+                    message.value = e.message;
+                    return;
+                }
+
+                message.value = getErrorMessage(e, INQUIRE_FLG);
+                return;
             });
         } else {
             optionsThisYear.value = convertTaskToOption(notCompletedTaskInfo.notCompleteTaskDto.listThisYear);
@@ -170,19 +164,17 @@ onBeforeMount(async () => {
 });
 
 // メッセージからの反応受け取り
-function recieveSubmit(button: string) {
-    console.log(button); // 警告除け
-    // TODO ボタンタイプ別の挙動はこの中で変える
-
-    // 非表示
-    infoLevel.value = 0;
-    messageType.value = 0;
+function recieveSubmit() {
 
     // 正常アクセスができないときはログアウトする
     if (SERVER_STATUS_OK !== actionStatus) {
         router.push(RoutePathConstants.PAGE_LOGOUT);
     }
     actionStatus = INIT_NUMBER;
+
+    // 非表示
+    infoLevel.value = 0;
+    messageType.value = 0;
 }
 
 // タスク表示
@@ -205,6 +197,11 @@ function onTransfer() {
 
         // ページ遷移
         router.push(RoutePathConstants.BASE_PATH + selectedDto.value);
+    } else {
+        infoLevel.value = MessageConstants.LEVEL_ERROR;
+        messageType.value = MessageConstants.VIEW_OK;
+        message.value = getErrorUniqueIdMessage(selectedTask.value);
+        return;
     }
 }
 
@@ -233,7 +230,8 @@ const notHasDetailInfo: ComputedRef<boolean> = computed(
             <!-- 遷移メニュー -->
             <div class="user-role-menu-wrapper">
                 <div class="left-space">
-                    遷移メニュー <select class="left-space" v-model="viewMenuRole" @change="viewAllMenu" :disabled="notHasDetailInfo">
+                    遷移メニュー <select class="left-space" v-model="viewMenuRole" @change="viewAllMenu"
+                        :disabled="notHasDetailInfo">
                         <option v-for="dto of listMenuRoleOptions" :key="dto.value" :value="dto.value">{{ dto.text }}
                         </option>
                     </select>&nbsp;
@@ -245,10 +243,10 @@ const notHasDetailInfo: ComputedRef<boolean> = computed(
         </div>
     </div>
 
-    <!-- メッセージ表示 -->
+    <!-- メッセージ表示    -->
     <div class="overMessage" v-if="messageType !== MessageConstants.VIEW_NONE">
-        <MessageView :info-level="infoLevel" :message-type="messageType" :title="title" :message="message"
-            @send-submit="recieveSubmit">
+        <MessageView :info-level="infoLevel" :message-type="messageType" :title="MESS_PAGE_NAME" :message="message"
+            :caller="caller" @send-submit="recieveSubmit">
         </MessageView>
     </div>
 

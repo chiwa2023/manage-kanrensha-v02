@@ -2,7 +2,7 @@
 import { ref, type Ref } from 'vue';
 import RoutePathConstants from '../../../../routePathConstants';
 import router from '../../../../router';
-import { LeastUserDto, MessageConstants, MessageView, PagingControl, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
+import { getErrorMessage, getErrorUniqueIdMessage, LeastUserDto, MessageConstants, MessageView, PagingControl, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import { getLoginUser } from '../../utils/getLoginUser';
 import type { UserPersonEntityInterface } from '../../entity/userPersonEntity';
 import UserDetailEdit from '../../common/user/UserDetailEdit.vue';
@@ -22,6 +22,10 @@ const BLANK: string = "";
 // const SERVER_STATUS_ERROR: number = 400;
 const SERVER_STATUS_ACCEPTED: number = 201;
 const SEARCH_LIMIT: number = 20;
+const INQUIRE_FLG: boolean = false;
+const ERR_MESS_ONLY: boolean = true;
+const MESS_PAGE_NAME: string = "ユーザ詳細変更";
+const INIT_CALLER: string = "no branch";
 
 // back側アクセス
 const urlBack: string = RoutePathConstants.DOMAIN + RoutePathConstants.BASE_PATH;
@@ -29,7 +33,7 @@ const urlBack: string = RoutePathConstants.DOMAIN + RoutePathConstants.BASE_PATH
 // メッセージボックス表示定数
 const infoLevel: Ref<number> = ref(MessageConstants.LEVEL_NONE);
 const messageType: Ref<number> = ref(MessageConstants.VIEW_NONE);
-const title: Ref<string> = ref(BLANK);
+const caller: Ref<string> = ref(INIT_CALLER);
 const message: Ref<string> = ref(BLANK);
 
 // Paging
@@ -89,7 +93,6 @@ function onSearch() {
                     infoLevel.value = MessageConstants.LEVEL_INFO;
                     // トークン保持ができていない場合
                     messageType.value = MessageConstants.VIEW_TOAST;
-                    title.value = "ユーザ検索";
                     message.value = "検索結果が0件でした";
 
                 } else {
@@ -99,26 +102,17 @@ function onSearch() {
                 }
             })
             .catch((e) => {
-                if (e instanceof AccessTokenNotFoundError) {
-                    infoLevel.value = MessageConstants.LEVEL_ERROR;
-                    // トークン保持ができていない場合
-                    messageType.value = MessageConstants.VIEW_OK;
-                    title.value = "現在トークンが存在しません";
-                    message.value = e.message;
-                    return;
-                }
-                if (e instanceof TokenRefreshError) {
-                    // 取得に失敗している場合
-                    infoLevel.value = MessageConstants.LEVEL_ERROR;
-                    messageType.value = MessageConstants.VIEW_OK;
-                    title.value = "有効期限まじかのトークンを再取得できませんでした";
-                    message.value = e.message;
-                    return;
-                }
                 infoLevel.value = MessageConstants.LEVEL_ERROR;
                 messageType.value = MessageConstants.VIEW_OK;
-                title.value = "システムエラーが発生しました";
-                message.value = "システム管理者にお問い合わせください";
+
+                // トークン保持または取得に失敗している場合
+                if (e instanceof AccessTokenNotFoundError || e instanceof TokenRefreshError) {
+                    message.value = e.message;
+                    return;
+                }
+
+                message.value = getErrorMessage(e, INQUIRE_FLG);
+                return;
             });
     });
 }
@@ -131,16 +125,15 @@ function onEdit(selectedId: number) {
 }
 
 const deleteUserDto: LeastUserDtoInterface = new LeastUserDto();
+const deleteText: string = "delete";
 function onDelete(selectedId: number) {
 
-    const entityDelete: UserPersonEntityInterface | undefined = listEntity.value.filter((e) => e.userPersonId === selectedId)[0];
+    const entityDelete: UserPersonEntityInterface | undefined = listEntity.value.filter(
+        (e) => e.userPersonId === selectedId)[0];
     if (entityDelete === undefined) {
         infoLevel.value = MessageConstants.LEVEL_ERROR;
-        // トークン保持ができていない場合
         messageType.value = MessageConstants.VIEW_OK;
-        title.value = "ユーザ削除処理";
-        message.value = "削除するユーザが指定できませんでした。";
-        // ユーザが指定できない場合はメッセージを出して離脱
+        message.value = getErrorUniqueIdMessage(selectedId);
         return;
     } else {
         deleteUserDto.userPersonId = entityDelete.userPersonId;
@@ -150,8 +143,8 @@ function onDelete(selectedId: number) {
         infoLevel.value = MessageConstants.LEVEL_WARNING;
         // トークン保持ができていない場合
         messageType.value = MessageConstants.VIEW_YES_NO;
-        title.value = "ユーザ削除処理";
         message.value = entityDelete.userPersonName + "を削除します。戻すことはできません。よろしいですか";
+        caller.value = deleteText;
     }
 }
 
@@ -172,9 +165,10 @@ function onCancel() {
     router.push(RoutePathConstants.PAGE_LOGIN);
 }
 
-function recieveSubmit(button: string) {
+function recieveSubmit(button: string, callerMethod: string) {
+
     // 削除前の確認
-    if (button === "yes") {
+    if (button === MessageConstants.BUTTON_YES && callerMethod === deleteText) {
 
         const capsuleDtoDelete: DeleteUserCapsuleDtoInterface = new DeleteUserCapsuleDto();
         capsuleDtoDelete.userDto = deleteUserDto;
@@ -192,7 +186,6 @@ function recieveSubmit(button: string) {
             fetch(url, { method, headers, body })
                 .then(async (response) => {
                     const resultDto = await response.json();
-                    title.value = "ユーザ削除処理";
                     if (SERVER_STATUS_ACCEPTED == response.status) {
                         infoLevel.value = MessageConstants.LEVEL_ERROR;
                         messageType.value = MessageConstants.VIEW_OK;
@@ -204,33 +197,30 @@ function recieveSubmit(button: string) {
                         onSearch();
                     }
                 })
-                .catch((e) => {
-                    if (e instanceof AccessTokenNotFoundError) {
-                        infoLevel.value = MessageConstants.LEVEL_ERROR;
-                        // トークン保持ができていない場合
-                        messageType.value = MessageConstants.VIEW_OK;
-                        title.value = "現在トークンが存在しません";
-                        message.value = e.message;
-                        return;
-                    }
-                    if (e instanceof TokenRefreshError) {
-                        // 取得に失敗している場合
-                        infoLevel.value = MessageConstants.LEVEL_ERROR;
-                        messageType.value = MessageConstants.VIEW_OK;
-                        title.value = "有効期限まじかのトークンを再取得できませんでした";
-                        message.value = e.message;
-                        return;
-                    }
+                .catch((error) => {
+                    message.value = getErrorMessage(error, ERR_MESS_ONLY);
                     infoLevel.value = MessageConstants.LEVEL_ERROR;
                     messageType.value = MessageConstants.VIEW_OK;
-                    title.value = "システムエラーが発生しました";
-                    message.value = "システム管理者にお問い合わせください";
+                    return;
                 });
+        }).catch((e) => {
+            infoLevel.value = MessageConstants.LEVEL_ERROR;
+            messageType.value = MessageConstants.VIEW_OK;
+
+            // トークン保持または取得に失敗している場合
+            if (e instanceof AccessTokenNotFoundError || e instanceof TokenRefreshError) {
+                message.value = e.message;
+                return;
+            }
+
+            message.value = getErrorMessage(e, INQUIRE_FLG);
+            return;
         });
     }
 
     infoLevel.value = 0;
     messageType.value = 0;
+    caller.value = INIT_CALLER;
 }
 
 function recievePagingNumber(selecteddNumber: number) {
@@ -319,10 +309,10 @@ function recievePagingNumber(selecteddNumber: number) {
         </UserDetailEdit>
     </div>
 
-    <!-- メッセージ表示 -->
+    <!-- メッセージ表示    -->
     <div class="overMessage" v-if="messageType !== MessageConstants.VIEW_NONE">
-        <MessageView :info-level="infoLevel" :message-type="messageType" :title="title" :message="message"
-            @send-submit="recieveSubmit">
+        <MessageView :info-level="infoLevel" :message-type="messageType" :title="MESS_PAGE_NAME" :message="message"
+            :caller="caller" @send-submit="recieveSubmit">
         </MessageView>
     </div>
 

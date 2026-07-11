@@ -11,6 +11,8 @@ const route = useRoute();
 const router = useRouter();
 
 const BLANK: string = "";
+const MESS_PAGE_NAME: string = "ユーザ登録コード送信";
+const INIT_CALLER: string = "no branch";
 
 const sessionStorage = window["sessionStorage"];
 const newComer: Ref<NewComerDtoInterface> = ref(new NewComerDto());
@@ -22,12 +24,12 @@ const urlBack: string = RoutePathConstants.DOMAIN + RoutePathConstants.BASE_PATH
 
 const infoLevel: Ref<number> = ref(MessageConstants.LEVEL_NONE);
 const messageType: Ref<number> = ref(MessageConstants.VIEW_NONE);
-const title: Ref<string> = ref(BLANK);
+const caller: Ref<string> = ref(INIT_CALLER);
 const message: Ref<string> = ref(BLANK);
 
 // API呼び出し用Composable
-const {  loading: verifyLoading, error: verifyError, fetchData: fetchVerify } = useApi<NewComerDtoInterface>();
-const {  loading: publishLoading, error: publishError, fetchData: fetchPublish } = useApi<NewComerDtoInterface>();
+const { loading: verifyLoading, error: verifyError, fetchData: fetchVerify } = useApi<NewComerDtoInterface>();
+const { loading: publishLoading, error: publishError, fetchData: fetchPublish } = useApi<NewComerDtoInterface>();
 
 onBeforeMount(async () => {
     const token = route.query.token;
@@ -92,8 +94,7 @@ async function onCheckSendCode() {
     if (newComer.value.registCode === BLANK) {
         infoLevel.value = MessageConstants.LEVEL_ERROR;
         messageType.value = MessageConstants.VIEW_OK;
-        title.value = "入力エラー";
-        message.value = "認証コードは必須です。";
+        message.value = "入力エラー：認証コードは必須です。";
         return;
     }
 
@@ -113,7 +114,6 @@ async function onCheckSendCode() {
         if (resultDto.isFailure) {
             infoLevel.value = MessageConstants.LEVEL_ERROR;
             messageType.value = MessageConstants.VIEW_OK;
-            title.value = "認証エラー";
             message.value = resultDto.message || "認証コードの検証に失敗しました。";
         }
         else {
@@ -123,8 +123,7 @@ async function onCheckSendCode() {
     } else if (verifyError.value) {
         infoLevel.value = MessageConstants.LEVEL_ERROR;
         messageType.value = MessageConstants.VIEW_OK;
-        title.value = "システムエラー";
-        message.value = verifyError.value;
+        message.value = "システムエラー：" + verifyError.value;
     }
 }
 
@@ -136,8 +135,7 @@ async function onResendCode() {
     if (newComer.value.mailAddress === BLANK) {
         infoLevel.value = MessageConstants.LEVEL_ERROR;
         messageType.value = MessageConstants.VIEW_OK;
-        title.value = "入力エラー";
-        message.value = "メールアドレスは必須です。";
+        message.value = "入力エラー：メールアドレスは必須です。";
         return;
     }
 
@@ -157,18 +155,15 @@ async function onResendCode() {
         sessionStorage.setItem("new-comer", JSON.stringify(resultDto));
         infoLevel.value = MessageConstants.LEVEL_INFO;
         messageType.value = MessageConstants.VIEW_TOAST;
-        title.value = "コード発行完了";
         message.value = "認証コードを発行しました。指定のアドレスにメールを送信しましたのでご確認ください";
     } else if (publishError.value) {
         infoLevel.value = MessageConstants.LEVEL_ERROR;
         messageType.value = MessageConstants.VIEW_OK;
-        title.value = "コード発行エラー";
-        message.value = publishError.value;
+        message.value = "コード発行エラー：" + publishError.value;
     }
 }
 
-function recieveSubmit(button: string) {
-    console.log(button);
+function recieveSubmit() {
     infoLevel.value = 0;
     messageType.value = 0;
 }
@@ -240,12 +235,13 @@ function recieveSubmit(button: string) {
         </div>
     </div>
 
-    <!-- メッセージ表示 -->
+    <!-- メッセージ表示    -->
     <div class="overMessage" v-if="messageType !== MessageConstants.VIEW_NONE">
-        <MessageView :info-level="infoLevel" :message-type="messageType" :title="title" :message="message"
-            @send-submit="recieveSubmit">
+        <MessageView :info-level="infoLevel" :message-type="messageType" :title="MESS_PAGE_NAME" :message="message"
+            :caller="caller" @send-submit="recieveSubmit">
         </MessageView>
     </div>
+
 </template>
 <style scoped>
 .error-message {

@@ -17,10 +17,13 @@ const INIT_BOOLEAN: boolean = false;
 const SEARCH_LIMIT: number = 20;
 // const SERVER_STATUS_OK: number = 200;
 // const SERVER_STATUS_ERROR: number = 400;
+const INIT_CALLER: string = "no branch";
+
 // メッセージ表示定数
 const infoLevel: Ref<number> = ref(MessageConstants.LEVEL_NONE);
 const messageType: Ref<number> = ref(MessageConstants.VIEW_NONE);
 const title: Ref<string> = ref(BLANK);
+const caller: Ref<string> = ref(INIT_CALLER);
 const message: Ref<string> = ref(BLANK);
 
 // Paging
@@ -97,13 +100,14 @@ function onError() {
     messageType.value = MessageConstants.VIEW_OK;
 }
 
-function recieveSubmit(button: string) {
-    alert(button);
+function recieveSubmit(button: string, callerMethod: string) {
     // TODO ボタンタイプ別の挙動はこの中で変える
+    alert(button + callerMethod);
 
-    // 非表示
+    // 非表示(呼び出し元は初期化)
     infoLevel.value = 0;
     messageType.value = 0;
+    caller.value = INIT_CALLER;
 }
 
 // 共通入力用変数
@@ -370,7 +374,7 @@ const houjinAppId: string = import.meta.env.VITE_HOUJIN_NO_API;
     <!-- メッセージ表示 -->
     <div class="overMessage" v-if="messageType !== MessageConstants.VIEW_NONE">
         <MessageView :info-level="infoLevel" :message-type="messageType" :title="title" :message="message"
-            @send-submit="recieveSubmit">
+            :caller="caller" @send-submit="recieveSubmit">
         </MessageView>
     </div>
 

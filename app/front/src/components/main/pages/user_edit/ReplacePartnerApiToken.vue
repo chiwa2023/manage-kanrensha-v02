@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onBeforeMount, ref, type Ref } from 'vue';
-import { FrameworkCapsuleDto, InputDatetime, type FrameworkCapsuleDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
+import { FrameworkCapsuleDto, getErrorMessage, InputDatetime, type FrameworkCapsuleDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import { getLoginUser } from '../../utils/getLoginUser';
 import router from '../../../../router';
 import { PartnerAccessTokenStateDto, type PartnerAccessTokenStateDtoInterface } from '../../dto/user/partnerAccessTokenStateDto';
@@ -19,15 +19,17 @@ const urlBack: string = RoutePathConstants.DOMAIN + RoutePathConstants.BASE_PATH
 
 // よく使う定数
 const BLANK: string = "";
-const INIT_NUMBER: number = 0;
-// const SERVER_STATUS_OK: number = 200;
-// const SERVER_STATUS_ERROR: number = 400;
+// const INIT_NUMBER: number = 0;
+const INQUIRE_FLG: boolean = false;
+const ERR_MESS_ONLY: boolean = true;
+const MESS_PAGE_NAME: string = "長期トークン作成";
+const INIT_CALLER: string = "no branch";
+
 // メッセージボックス表示定数
 const infoLevel: Ref<number> = ref(MessageConstants.LEVEL_NONE);
 const messageType: Ref<number> = ref(MessageConstants.VIEW_NONE);
-const title: Ref<string> = ref(BLANK);
+const caller: Ref<string> = ref(INIT_CALLER);
 const message: Ref<string> = ref(BLANK);
-const messageIndex: Ref<number> = ref(INIT_NUMBER);
 
 // ユーザ呼び出し
 const userDto: Ref<LeastUserDtoInterface> = ref(getLoginUser());
@@ -35,7 +37,7 @@ const userDto: Ref<LeastUserDtoInterface> = ref(getLoginUser());
 // 表示内容
 const stateDto: Ref<PartnerAccessTokenStateDtoInterface> = ref(new PartnerAccessTokenStateDto());
 const newToken: Ref<string> = ref("");
-
+const hasNotToken: string = "hasNotToken";
 onBeforeMount(() => {
     // 前回トークン状態(トークン自身は除く)を取得
     getAuthorizedPromiseArea().then(token => {
@@ -56,30 +58,23 @@ onBeforeMount(() => {
                 stateDto.value = await response.json();
             })
             .catch((error) => {
-                alert(error);
+                message.value = getErrorMessage(error, ERR_MESS_ONLY);
                 infoLevel.value = MessageConstants.LEVEL_ERROR;
                 messageType.value = MessageConstants.VIEW_OK;
-                message.value = "システム管理者にお問い合わせください";
+                caller.value = hasNotToken;
                 return;
             });
     }).catch((e) => {
         infoLevel.value = MessageConstants.LEVEL_ERROR;
         messageType.value = MessageConstants.VIEW_OK;
 
-        if (e instanceof AccessTokenNotFoundError) {
-            // トークン保持ができていない場合
-            title.value = "現在トークンが存在しません";
+        // トークン保持または取得に失敗している場合
+        if (e instanceof AccessTokenNotFoundError || e instanceof TokenRefreshError) {
             message.value = e.message;
             return;
         }
-        if (e instanceof TokenRefreshError) {
-            // 取得に失敗している場合
-            title.value = "有効期限まじかのトークンを再取得できませんでした";
-            message.value = e.message;
-            return;
-        }
-        title.value = "システムエラーが発生しました";
-        message.value = "システム管理者にお問い合わせください";
+
+        message.value = getErrorMessage(e, INQUIRE_FLG);
         return;
     });
 });
@@ -113,57 +108,49 @@ async function onSave() {
                     // 取得に失敗している場合
                     infoLevel.value = MessageConstants.LEVEL_ERROR;
                     messageType.value = MessageConstants.VIEW_OK;
-                    title.value = "長期トークン作成失敗";
                     message.value = "長期トークンが作成できませんでした。もう一度やり直してください" + resultDto.message;
                 } else {
                     // 取得に成功している場合
                     infoLevel.value = MessageConstants.LEVEL_INFO;
                     messageType.value = MessageConstants.VIEW_TOAST;
-                    title.value = "長期トークンの作成に成功しました";
-                    message.value = resultDto.message;
+                    message.value = "長期トークンの作成に成功しました：" + resultDto.message;
                     newToken.value = resultDto.token;
                 }
             })
             .catch((error) => {
-                alert(error);
+                message.value = getErrorMessage(error, ERR_MESS_ONLY);
                 infoLevel.value = MessageConstants.LEVEL_ERROR;
                 messageType.value = MessageConstants.VIEW_OK;
-                message.value = "システム管理者にお問い合わせください";
                 return;
             });
     }).catch((e) => {
         infoLevel.value = MessageConstants.LEVEL_ERROR;
         messageType.value = MessageConstants.VIEW_OK;
 
-        if (e instanceof AccessTokenNotFoundError) {
-            // トークン保持ができていない場合
-            title.value = "現在トークンが存在しません";
+        // トークン保持または取得に失敗している場合
+        if (e instanceof AccessTokenNotFoundError || e instanceof TokenRefreshError) {
             message.value = e.message;
             return;
         }
-        if (e instanceof TokenRefreshError) {
-            // 取得に失敗している場合
-            title.value = "有効期限まじかのトークンを再取得できませんでした";
-            message.value = e.message;
-            return;
-        }
-        title.value = "システムエラーが発生しました";
-        message.value = "システム管理者にお問い合わせください";
+
+        message.value = getErrorMessage(e, INQUIRE_FLG);
         return;
     });
 
 }
 
-function recieveSubmit(button: string) {
-    // 非表示
-    infoLevel.value = 0;
-    messageType.value = 0;
+function recieveSubmit(button: string, callerMethod: string) {
 
     // 現在トークンを所持していない場合はログアウト
-    if ("ok" === button && 1 === messageIndex.value) {
+    if (MessageConstants.BUTTON_OK === button && callerMethod === hasNotToken) {
         logout();
         router.push(RoutePathConstants.PAGE_LOGOUT);
     }
+
+    // 非表示
+    infoLevel.value = 0;
+    messageType.value = 0;
+    caller.value = INIT_CALLER;
 }
 </script>
 <template>
@@ -244,10 +231,10 @@ function recieveSubmit(button: string) {
         <button @click="onSave" class="footer-button left-space">長期トークン発行</button>
     </div>
 
-    <!-- メッセージ表示 -->
+    <!-- メッセージ表示    -->
     <div class="overMessage" v-if="messageType !== MessageConstants.VIEW_NONE">
-        <MessageView :info-level="infoLevel" :message-type="messageType" :title="title" :message="message"
-            @send-submit="recieveSubmit">
+        <MessageView :info-level="infoLevel" :message-type="messageType" :title="MESS_PAGE_NAME" :message="message"
+            :caller="caller" @send-submit="recieveSubmit">
         </MessageView>
     </div>
 

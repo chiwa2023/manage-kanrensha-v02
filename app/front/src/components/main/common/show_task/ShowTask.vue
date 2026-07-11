@@ -1,7 +1,7 @@
 ﻿<script setup lang="ts">
 import { computed, onBeforeMount, ref, type ComputedRef, type Ref } from 'vue';
 import { SearchTaskPlanCapsuleDto, type SearchTaskPlanCapsuleDtoInterface } from '../../dto/task_plan/searchTaskPlanCapsuleDto';
-import { convertDatetimeText, DtoEntityConstants, InputDatetime, MessageConstants, MessageView, PagingControl, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
+import { convertDatetimeText, DtoEntityConstants, getErrorMessage, InputDatetime, MessageConstants, MessageView, PagingControl, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import UserRoleConstants from '../../dto/user/userRoleConstants';
 import { SearchTaskPlanResultDto, type SearchTaskPlanResultDtoInterface } from '../../dto/task_plan/searchTaskPlanResultDto';
 import { SearchTaskHistoryResultDto, type SearchTaskHistoryResultDtoInterface } from '../../dto/task_plan/searchTaskHistoryResultDto';
@@ -27,11 +27,17 @@ const INIT_NUMBER: number = 0;
 const SEARCH_LIMIT: number = 20;
 const SERVER_STATUS_OK: number = 200;
 // const SERVER_STATUS_ERROR: number = 400;
+const INQUIRE_FLG: boolean = false;
+const ERR_MESS_ONLY: boolean = true;
+const MESS_PAGE_NAME: string = "タスク計画表示";
+const INIT_CALLER: string = "no branch";
+
 // メッセージボックス表示定数
 const infoLevel: Ref<number> = ref(MessageConstants.LEVEL_NONE);
 const messageType: Ref<number> = ref(MessageConstants.VIEW_NONE);
-const title: Ref<string> = ref(BLANK);
+const caller: Ref<string> = ref(INIT_CALLER);
 const message: Ref<string> = ref(BLANK);
+
 // Paging
 const pageNumber: Ref<number> = ref(INIT_NUMBER);
 const allCount: Ref<number> = ref(INIT_NUMBER);
@@ -47,7 +53,7 @@ capsuleDto.value.limit = SEARCH_LIMIT;
 const isGetTrace: ComputedRef<boolean> = computed(
     () => props.userDto.listRoles.includes(UserRoleConstants.ROLE_ADMIN));
 
-    // 日付コンポーネント不正値
+// 日付コンポーネント不正値
 const LIMIT_DATE = DtoEntityConstants.INIT_DATETIME_LIMIT;
 
 // 検索結果リスト
@@ -56,9 +62,6 @@ const resultDto: Ref<SearchTaskPlanResultDtoInterface> = ref(new SearchTaskPlanR
 const resultHistoryDto: Ref<SearchTaskHistoryResultDtoInterface> = ref(new SearchTaskHistoryResultDto());
 
 function onSearch() {
-
-
-    title.value = "タスク計画表示処理";
 
     // 日時コンポーネントエラー検出
     if (capsuleDto.value.startDate <= LIMIT_DATE) {
@@ -73,8 +76,6 @@ function onSearch() {
         message.value = "終了日時入力が不正です。入力しなおしてください";
         return;
     }
-
-
 
     // タスクコードリストを設定
     capsuleDto.value.infoCodeList.splice(0);
@@ -99,32 +100,27 @@ function onSearch() {
                 } else {
                     infoLevel.value = MessageConstants.LEVEL_INFO;
                     messageType.value = MessageConstants.VIEW_TOAST;
-                    title.value = "検索結果が存在しませんでした";
-                    message.value = "検索条件を変えて試してください";
+                    message.value = "検索結果が存在しませんでした。検索条件を変えて試してください";
                 }
             })
-            .catch((e) => {
-                if (e instanceof AccessTokenNotFoundError) {
-                    infoLevel.value = MessageConstants.LEVEL_ERROR;
-                    // トークン保持ができていない場合
-                    messageType.value = MessageConstants.VIEW_OK;
-                    title.value = "現在トークンが存在しません";
-                    message.value = e.message;
-                    return;
-                }
-                if (e instanceof TokenRefreshError) {
-                    // 取得に失敗している場合
-                    infoLevel.value = MessageConstants.LEVEL_ERROR;
-                    messageType.value = MessageConstants.VIEW_OK;
-                    title.value = "有効期限まじかのトークンを再取得できませんでした";
-                    message.value = e.message;
-                    return;
-                }
+            .catch((error) => {
+                message.value = getErrorMessage(error, ERR_MESS_ONLY);
                 infoLevel.value = MessageConstants.LEVEL_ERROR;
                 messageType.value = MessageConstants.VIEW_OK;
-                title.value = "システムエラーが発生しました";
-                message.value = "システム管理者にお問い合わせください";
+                return;
             });
+    }).catch((e) => {
+        infoLevel.value = MessageConstants.LEVEL_ERROR;
+        messageType.value = MessageConstants.VIEW_OK;
+
+        // トークン保持または取得に失敗している場合
+        if (e instanceof AccessTokenNotFoundError || e instanceof TokenRefreshError) {
+            message.value = e.message;
+            return;
+        }
+
+        message.value = getErrorMessage(e, INQUIRE_FLG);
+        return;
     });
 }
 
@@ -149,26 +145,17 @@ function onShowHistory(selectedCode: number, taskYear: number) {
                 resultHistoryDto.value = await response.json();
             })
             .catch((e) => {
-                if (e instanceof AccessTokenNotFoundError) {
-                    infoLevel.value = MessageConstants.LEVEL_ERROR;
-                    // トークン保持ができていない場合
-                    messageType.value = MessageConstants.VIEW_OK;
-                    title.value = "現在トークンが存在しません";
-                    message.value = e.message;
-                    return;
-                }
-                if (e instanceof TokenRefreshError) {
-                    // 取得に失敗している場合
-                    infoLevel.value = MessageConstants.LEVEL_ERROR;
-                    messageType.value = MessageConstants.VIEW_OK;
-                    title.value = "有効期限まじかのトークンを再取得できませんでした";
-                    message.value = e.message;
-                    return;
-                }
                 infoLevel.value = MessageConstants.LEVEL_ERROR;
                 messageType.value = MessageConstants.VIEW_OK;
-                title.value = "システムエラーが発生しました";
-                message.value = "システム管理者にお問い合わせください";
+
+                // トークン保持または取得に失敗している場合
+                if (e instanceof AccessTokenNotFoundError || e instanceof TokenRefreshError) {
+                    message.value = e.message;
+                    return;
+                }
+
+                message.value = getErrorMessage(e, INQUIRE_FLG);
+                return;
             });
     });
 
@@ -212,8 +199,7 @@ function onCancel() {
     emits("sendCanceelShowTask");
 }
 
-function recieveSubmit(button: string) {
-    console.log(button); // 警告除け
+function recieveSubmit() {
     infoLevel.value = 0;
     messageType.value = 0;
 }
@@ -278,11 +264,9 @@ function onAllCheck9() {
 function recieveDatetime(date: Date, index: number) {
     if (1 == index) {
         capsuleDto.value.startDate = date;
-        alert(capsuleDto.value.startDate);
     }
     if (2 == index) {
         capsuleDto.value.endDate = date;
-        alert(capsuleDto.value.endDate);
     }
 }
 
@@ -481,10 +465,10 @@ function onTransfer(path: string) {
         <button @click="onCancel" class="footer-button">キャンセル</button>
     </div>
 
-    <!-- メッセージ表示 -->
+    <!-- メッセージ表示    -->
     <div class="overMessage" v-if="messageType !== MessageConstants.VIEW_NONE">
-        <MessageView :info-level="infoLevel" :message-type="messageType" :title="title" :message="message"
-            @send-submit="recieveSubmit">
+        <MessageView :info-level="infoLevel" :message-type="messageType" :title="MESS_PAGE_NAME" :message="message"
+            :caller="caller" @send-submit="recieveSubmit">
         </MessageView>
     </div>
 

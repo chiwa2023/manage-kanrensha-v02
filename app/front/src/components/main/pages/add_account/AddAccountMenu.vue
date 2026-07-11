@@ -12,11 +12,13 @@ const urlBack: string = RoutePathConstants.DOMAIN + RoutePathConstants.BASE_PATH
 
 // よく使う定数
 const BLANK: string = "";
+const MESS_PAGE_NAME: string = "新規登録(アカウント入力)";
+const INIT_CALLER: string = "no branch";
 
 // メッセージ表示定数
 const infoLevel: Ref<number> = ref(MessageConstants.LEVEL_NONE);
 const messageType: Ref<number> = ref(MessageConstants.VIEW_NONE);
-const title: Ref<string> = ref(BLANK);
+const caller: Ref<string> = ref(INIT_CALLER);
 const message: Ref<string> = ref(BLANK);
 
 // 入力用Dto
@@ -30,8 +32,7 @@ async function onRegistMail() {
     if (newComer.value.mailAddress === BLANK) {
         infoLevel.value = MessageConstants.LEVEL_ERROR;
         messageType.value = MessageConstants.VIEW_OK;
-        title.value = "入力エラー";
-        message.value = "メールアドレスは必須です。";
+        message.value = "入力エラー：メールアドレスは必須です。";
         return;
     }
 
@@ -54,13 +55,11 @@ async function onRegistMail() {
     } else if (publishError.value) {
         infoLevel.value = MessageConstants.LEVEL_ERROR;
         messageType.value = MessageConstants.VIEW_OK;
-        title.value = "コード発行エラー";
-        message.value = publishError.value;
+        message.value = "コード発行エラー：" + publishError.value;
     }
 }
 
-function recieveSubmit(button: string) {
-    console.log(button);
+function recieveSubmit() {
     infoLevel.value = 0;
     messageType.value = 0;
 }
@@ -91,10 +90,10 @@ function onCancel() {
         <button class="footer-button left-space" @click="onRegistMail" :disabled="publishLoading">送信</button>
     </div>
 
-    <!-- メッセージ表示 -->
+    <!-- メッセージ表示    -->
     <div class="overMessage" v-if="messageType !== MessageConstants.VIEW_NONE">
-        <MessageView :info-level="infoLevel" :message-type="messageType" :title="title" :message="message"
-            @send-submit="recieveSubmit">
+        <MessageView :info-level="infoLevel" :message-type="messageType" :title="MESS_PAGE_NAME" :message="message"
+            :caller="caller" @send-submit="recieveSubmit">
         </MessageView>
     </div>
 

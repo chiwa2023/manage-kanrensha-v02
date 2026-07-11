@@ -1,7 +1,7 @@
 ﻿<script setup lang="ts">
 import { ref, type Ref } from 'vue';
 import { SearchAddressCityDeleteResultDto, type SearchAddressCityDeleteResultDtoInterface } from '../../dto/address_registory/searchAddressCityDeleteResultDto';
-import { FrameworkPagingDto, InputLgcode, MessageConstants, MessageView, PagingControl, type FrameworkMessageAndResultDtoInterface, type FrameworkPagingDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
+import { FrameworkPagingDto, getErrorMessage, getErrorUniqueIdMessage, InputLgcode, MessageConstants, MessageView, PagingControl, type FrameworkMessageAndResultDtoInterface, type FrameworkPagingDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import { AddressCityDeleteEntity, type AddressCityDeleteEntityInterface } from '../../entity/addressCityDeleteEntity';
 import { EditAddressCityDeleteCapsuleDto, type EditAddressCityDeleteCapsuleDtoInterface } from '../../dto/address_registory/editAddressCityDeleteCapsuleDto';
 import RoutePathConstants from '../../../../routePathConstants';
@@ -18,10 +18,15 @@ const INIT_NUMBER: number = 0;
 // const SERVER_STATUS_OK: number = 200;
 // const SERVER_STATUS_ERROR: number = 400;
 const SEARCH_LIMIT: number = 20;
+const INQUIRE_FLG: boolean = false;
+const ERR_MESS_ONLY: boolean = true;
+const MESS_PAGE_NAME: string = "地方自治体コード差分編集";
+const INIT_CALLER: string = "no branch";
+
 // メッセージボックス表示定数
 const infoLevel: Ref<number> = ref(MessageConstants.LEVEL_NONE);
 const messageType: Ref<number> = ref(MessageConstants.VIEW_NONE);
-const title: Ref<string> = ref(BLANK);
+const caller: Ref<string> = ref(INIT_CALLER);
 const message: Ref<string> = ref(BLANK);
 
 // Paging
@@ -70,47 +75,41 @@ function onSearch() {
                 }
             })
             .catch((error) => {
-                alert(error);
+                message.value = getErrorMessage(error, ERR_MESS_ONLY);
                 infoLevel.value = MessageConstants.LEVEL_ERROR;
                 messageType.value = MessageConstants.VIEW_OK;
-                message.value = "システム管理者にお問い合わせください";
                 return;
             });
     }).catch((e) => {
         infoLevel.value = MessageConstants.LEVEL_ERROR;
         messageType.value = MessageConstants.VIEW_OK;
 
-        if (e instanceof AccessTokenNotFoundError) {
-            // トークン保持ができていない場合
-            title.value = "現在トークンが存在しません";
+        // トークン保持または取得に失敗している場合
+        if (e instanceof AccessTokenNotFoundError || e instanceof TokenRefreshError) {
             message.value = e.message;
             return;
         }
-        if (e instanceof TokenRefreshError) {
-            // 取得に失敗している場合
-            title.value = "有効期限まじかのトークンを再取得できませんでした";
-            message.value = e.message;
-            return;
-        }
-        title.value = "システムエラーが発生しました";
-        message.value = "システム管理者にお問い合わせください";
+
+        message.value = getErrorMessage(e, INQUIRE_FLG);
         return;
     });
 }
 
 function recievePagingNumber(selecteddNumber: number) {
     pageNumber.value = selecteddNumber;
-    alert("ページ情報送信");
+    // onSearchでページング複写
+    onSearch();
 }
 
-function recieveSubmit(button: string) {
+function recieveSubmit(button: string, callerMethod: string) {
 
-    if ("yes" === button) {
+    if (MessageConstants.BUTTON_YES === button && callerMethod === deleteText) {
         deleteData();
     }
     // 非表示
     infoLevel.value = 0;
     messageType.value = 0;
+    caller.value = INIT_CALLER;
 }
 
 
@@ -122,7 +121,6 @@ function deleteData() {
     // 異動先の指定の必要はない
 
     // 削除処理
-    title.value = "地方自治体コード差分削除";
     getAuthorizedPromiseArea().then(token => {
         const url = urlBack + "/lgcode-delete/delete";
         const method = "POST";
@@ -145,37 +143,29 @@ function deleteData() {
                 }
             })
             .catch((error) => {
-                alert(error);
+                message.value = getErrorMessage(error, ERR_MESS_ONLY);
                 infoLevel.value = MessageConstants.LEVEL_ERROR;
                 messageType.value = MessageConstants.VIEW_OK;
-                message.value = "システム管理者にお問い合わせください";
                 return;
             });
     }).catch((e) => {
         infoLevel.value = MessageConstants.LEVEL_ERROR;
         messageType.value = MessageConstants.VIEW_OK;
 
-        if (e instanceof AccessTokenNotFoundError) {
-            // トークン保持ができていない場合
-            title.value = "現在トークンが存在しません";
+        // トークン保持または取得に失敗している場合
+        if (e instanceof AccessTokenNotFoundError || e instanceof TokenRefreshError) {
             message.value = e.message;
             return;
         }
-        if (e instanceof TokenRefreshError) {
-            // 取得に失敗している場合
-            title.value = "有効期限まじかのトークンを再取得できませんでした";
-            message.value = e.message;
-            return;
-        }
-        title.value = "システムエラーが発生しました";
-        message.value = "システム管理者にお問い合わせください";
+
+        message.value = getErrorMessage(e, INQUIRE_FLG);
         return;
     });
 
 
 }
 
-
+const deleteText: string = "delete";
 function onDelete(editId: number) {
     const tempEntity: AddressCityDeleteEntityInterface | undefined =
         resultDto.value.listEntity.filter((e) => editId === e.addressCityDeleteId)[0];
@@ -185,6 +175,12 @@ function onDelete(editId: number) {
         infoLevel.value = MessageConstants.LEVEL_WARNING;
         messageType.value = MessageConstants.VIEW_YES_NO;
         message.value = "削除すると戻すことができません。よろしいですか？";
+        caller.value = deleteText;
+    } else {
+        infoLevel.value = MessageConstants.LEVEL_ERROR;
+        messageType.value = MessageConstants.VIEW_OK;
+        message.value = getErrorUniqueIdMessage(editId);
+        return;
     }
 }
 
@@ -194,6 +190,11 @@ function onMove(editId: number) {
     if (undefined !== tempEntity) {
         editCapsuleDto.value.editEntity = tempEntity;
         editCapsuleDto.value.srcLgName = tempEntity.orgName;
+    } else {
+        infoLevel.value = MessageConstants.LEVEL_ERROR;
+        messageType.value = MessageConstants.VIEW_OK;
+        message.value = getErrorUniqueIdMessage(editId);
+        return;
     }
 }
 
@@ -203,10 +204,8 @@ function onCancel() {
 }
 
 function onSave() {
-    alert("保存");
 
     // 地方自治体コード移行処理
-    title.value = "地方自治体コード移動";
     getAuthorizedPromiseArea().then(token => {
         const url = urlBack + "/lgcode-delete/move";
         const method = "POST";
@@ -229,30 +228,22 @@ function onSave() {
                 }
             })
             .catch((error) => {
-                alert(error);
+                message.value = getErrorMessage(error, ERR_MESS_ONLY);
                 infoLevel.value = MessageConstants.LEVEL_ERROR;
                 messageType.value = MessageConstants.VIEW_OK;
-                message.value = "システム管理者にお問い合わせください";
                 return;
             });
     }).catch((e) => {
         infoLevel.value = MessageConstants.LEVEL_ERROR;
         messageType.value = MessageConstants.VIEW_OK;
 
-        if (e instanceof AccessTokenNotFoundError) {
-            // トークン保持ができていない場合
-            title.value = "現在トークンが存在しません";
+        // トークン保持または取得に失敗している場合
+        if (e instanceof AccessTokenNotFoundError || e instanceof TokenRefreshError) {
             message.value = e.message;
             return;
         }
-        if (e instanceof TokenRefreshError) {
-            // 取得に失敗している場合
-            title.value = "有効期限まじかのトークンを再取得できませんでした";
-            message.value = e.message;
-            return;
-        }
-        title.value = "システムエラーが発生しました";
-        message.value = "システム管理者にお問い合わせください";
+
+        message.value = getErrorMessage(e, INQUIRE_FLG);
         return;
     });
 }
@@ -335,10 +326,10 @@ function recieveLgCode(optionDto: SelectOptionStringDtoInterface) {
         <button @click="onSave" class="footer-button left-space">送信</button>
     </div>
 
-    <!-- メッセージ表示 -->
+    <!-- メッセージ表示    -->
     <div class="overMessage" v-if="messageType !== MessageConstants.VIEW_NONE">
-        <MessageView :info-level="infoLevel" :message-type="messageType" :title="title" :message="message"
-            @send-submit="recieveSubmit">
+        <MessageView :info-level="infoLevel" :message-type="messageType" :title="MESS_PAGE_NAME" :message="message"
+            :caller="caller" @send-submit="recieveSubmit">
         </MessageView>
     </div>
 

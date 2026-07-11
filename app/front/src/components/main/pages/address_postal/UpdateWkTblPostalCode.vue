@@ -1,5 +1,5 @@
 ﻿<script setup lang="ts">
-import { MessageConstants, MessageView, PagingControl, type FrameworkMessageAndResultDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
+import { getErrorMessage, getErrorUniqueIdMessage, MessageConstants, MessageView, PagingControl, type FrameworkMessageAndResultDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import { ref, type Ref } from 'vue';
 import { getLoginUser } from '../../utils/getLoginUser';
 import ManagerInfo from '../../common/user_info/ManagerInfo.vue';
@@ -19,11 +19,15 @@ const INIT_NUMBER: number = 0;
 // const SERVER_STATUS_OK: number = 200;
 // const SERVER_STATUS_ERROR: number = 400;
 const SEARCH_LIMIT: number = 20;
+const INQUIRE_FLG: boolean = false;
+const ERR_MESS_ONLY: boolean = true;
+const MESS_PAGE_NAME: string = "郵便番号差分処理結果";
+const INIT_CALLER: string = "no branch";
 
 //メッセージボックス表示定数
 const infoLevel: Ref<number> = ref(MessageConstants.LEVEL_NONE);
 const messageType: Ref<number> = ref(MessageConstants.VIEW_NONE);
-const title: Ref<string> = ref(BLANK);
+const caller: Ref<string> = ref(INIT_CALLER);
 const message: Ref<string> = ref(BLANK);
 
 // Paging
@@ -45,8 +49,6 @@ capsuleDto.value.pageNumber = pageNumber.value;
 capsuleDto.value.userDto = userDto.value;
 
 const resultDto: Ref<SearchWkTblPostalCodeResultDtoInterface> = ref(new SearchWkTblPostalCodeResultDto());
-
-title.value = "郵便番号差分処理結果";
 
 const entityEdit: Ref<WkTblPostalEditEntityInterface> = ref(new WkTblPostalEditEntity());
 
@@ -74,30 +76,22 @@ function onSearch() {
                 }
             })
             .catch((error) => {
-                alert(error);
+                message.value = getErrorMessage(error, ERR_MESS_ONLY);
                 infoLevel.value = MessageConstants.LEVEL_ERROR;
                 messageType.value = MessageConstants.VIEW_OK;
-                message.value = "システム管理者にお問い合わせください";
                 return;
             });
     }).catch((e) => {
         infoLevel.value = MessageConstants.LEVEL_ERROR;
         messageType.value = MessageConstants.VIEW_OK;
 
-        if (e instanceof AccessTokenNotFoundError) {
-            // トークン保持ができていない場合
-            title.value = "現在トークンが存在しません";
+        // トークン保持または取得に失敗している場合
+        if (e instanceof AccessTokenNotFoundError || e instanceof TokenRefreshError) {
             message.value = e.message;
             return;
         }
-        if (e instanceof TokenRefreshError) {
-            // 取得に失敗している場合
-            title.value = "有効期限まじかのトークンを再取得できませんでした";
-            message.value = e.message;
-            return;
-        }
-        title.value = "システムエラーが発生しました";
-        message.value = "システム管理者にお問い合わせください";
+
+        message.value = getErrorMessage(e, INQUIRE_FLG);
         return;
     });
 }
@@ -107,6 +101,7 @@ function onCancel() {
 
 }
 
+const deleteText: string = "delete";
 function onDelete(editId: number) {
 
     const tempEntity: WkTblPostalEditEntityInterface | undefined =
@@ -117,6 +112,12 @@ function onDelete(editId: number) {
         infoLevel.value = MessageConstants.LEVEL_WARNING;
         messageType.value = MessageConstants.VIEW_YES_NO;
         message.value = "削除すると戻すことができません。よろしいですか？";
+        caller.value = deleteText;
+    } else {
+        infoLevel.value = MessageConstants.LEVEL_ERROR;
+        messageType.value = MessageConstants.VIEW_OK;
+        message.value = getErrorUniqueIdMessage(editId);
+        return;
     }
 }
 
@@ -125,6 +126,11 @@ function onEditSelect(editId: number) {
         resultDto.value.listEntity.filter((e) => editId === e.wkTblPostalEditId)[0];
     if (undefined !== tempEntity) {
         entityEdit.value = tempEntity;
+    } else {
+        infoLevel.value = MessageConstants.LEVEL_ERROR;
+        messageType.value = MessageConstants.VIEW_OK;
+        message.value = getErrorUniqueIdMessage(editId);
+        return;
     }
 }
 
@@ -154,30 +160,22 @@ function onUpdate(capsuleDto: SaveWktblPostalCapsuleDtoInterface) {
                 }
             })
             .catch((error) => {
-                alert(error);
+                message.value = getErrorMessage(error, ERR_MESS_ONLY);
                 infoLevel.value = MessageConstants.LEVEL_ERROR;
                 messageType.value = MessageConstants.VIEW_OK;
-                message.value = "システム管理者にお問い合わせください";
                 return;
             });
     }).catch((e) => {
         infoLevel.value = MessageConstants.LEVEL_ERROR;
         messageType.value = MessageConstants.VIEW_OK;
 
-        if (e instanceof AccessTokenNotFoundError) {
-            // トークン保持ができていない場合
-            title.value = "現在トークンが存在しません";
+        // トークン保持または取得に失敗している場合
+        if (e instanceof AccessTokenNotFoundError || e instanceof TokenRefreshError) {
             message.value = e.message;
             return;
         }
-        if (e instanceof TokenRefreshError) {
-            // 取得に失敗している場合
-            title.value = "有効期限まじかのトークンを再取得できませんでした";
-            message.value = e.message;
-            return;
-        }
-        title.value = "システムエラーが発生しました";
-        message.value = "システム管理者にお問い合わせください";
+
+        message.value = getErrorMessage(e, INQUIRE_FLG);
         return;
     });
 
@@ -194,9 +192,9 @@ function onSave() {
     onUpdate(capsuleDto);
 }
 
-function recieveSubmit(button: string) {
+function recieveSubmit(button: string, callerMethod: string) {
 
-    if ("yes" === button) {
+    if (MessageConstants.BUTTON_YES === button && callerMethod === deleteText) {
         const capsuleDto: SaveWktblPostalCapsuleDtoInterface = new SaveWktblPostalCapsuleDto();
         capsuleDto.userDto = userDto.value;
         capsuleDto.editEntity = entityEdit.value;
@@ -206,6 +204,7 @@ function recieveSubmit(button: string) {
     // 非表示
     infoLevel.value = 0;
     messageType.value = 0;
+    caller.value = INIT_CALLER;
 }
 
 function recievePagingNumber(selecteddNumber: number) {
@@ -320,7 +319,8 @@ function onMovePostal(entity: WkTblPostalEditEntityInterface) {
                         <button @click="onMovePostal(entity)">移動</button>
                     </span>
                 </td>
-                <td><button @click="onEditSelect(entity.wkTblPostalEditId)" :disabled="!entity.isLatest">編集</button> </td>
+                <td><button @click="onEditSelect(entity.wkTblPostalEditId)" :disabled="!entity.isLatest">編集</button>
+                </td>
                 <td><button @click="onDelete(entity.wkTblPostalEditId)" :disabled="!entity.isLatest">削除</button> </td>
             </tr>
         </tbody>
@@ -383,10 +383,10 @@ function onMovePostal(entity: WkTblPostalEditEntityInterface) {
         <button @click="onSave" class="footer-button left-space">送信</button>
     </div>
 
-    <!-- メッセージ表示 -->
+    <!-- メッセージ表示    -->
     <div class="overMessage" v-if="messageType !== MessageConstants.VIEW_NONE">
-        <MessageView :info-level="infoLevel" :message-type="messageType" :title="title" :message="message"
-            @send-submit="recieveSubmit">
+        <MessageView :info-level="infoLevel" :message-type="messageType" :title="MESS_PAGE_NAME" :message="message"
+            :caller="caller" @send-submit="recieveSubmit">
         </MessageView>
     </div>
 

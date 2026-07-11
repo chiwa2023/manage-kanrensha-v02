@@ -1,5 +1,5 @@
 ﻿<script setup lang="ts">
-import { MessageConstants, MessageView, PagingControl, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
+import { getErrorMessage, getErrorUniqueIdMessage, MessageConstants, MessageView, PagingControl, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import { ref, toRaw, type Ref } from 'vue';
 import RoutePathConstants from '../../../../routePathConstants';
 import EditTaskInfo from '../../common/task_info/EditTaskInfo.vue';
@@ -18,11 +18,15 @@ const INIT_BOOLEAN: boolean = false;
 // const SERVER_STATUS_OK: number = 200;
 // const SERVER_STATUS_ERROR: number = 400;
 const SEARCH_LIMIT: number = 20;
+const INQUIRE_FLG: boolean = false;
+const ERR_MESS_ONLY: boolean = true;
+const MESS_PAGE_NAME: string = "タスク情報検索";
+const INIT_CALLER: string = "no branch";
 
 // メッセージボックス表示定数
 const infoLevel: Ref<number> = ref(MessageConstants.LEVEL_NONE);
 const messageType: Ref<number> = ref(MessageConstants.VIEW_NONE);
-const title: Ref<string> = ref(BLANK);
+const caller: Ref<string> = ref(INIT_CALLER);
 const message: Ref<string> = ref(BLANK);
 
 // ユーザ呼び出し
@@ -60,7 +64,6 @@ function onSearch() {
                 if (0 == resultDto.value.listTask.length) {
                     infoLevel.value = MessageConstants.LEVEL_INFO;
                     messageType.value = MessageConstants.VIEW_TOAST;
-                    title.value = "タスク情報検索";
                     message.value = "検索結果が0件でした";
                 }
                 allCount.value = resultDto.value.allCount;
@@ -68,39 +71,30 @@ function onSearch() {
                 pageNumber.value = resultDto.value.pageNumber;
             })
             .catch((error) => {
-                alert(error);
+                message.value = getErrorMessage(error, ERR_MESS_ONLY);
                 infoLevel.value = MessageConstants.LEVEL_ERROR;
                 messageType.value = MessageConstants.VIEW_OK;
-                title.value = "タスク情報検索";
-                message.value = "システムエラーが発生しました。システム管理者にお問い合わせください";
+                return;
             });
     }).catch((e) => {
         infoLevel.value = MessageConstants.LEVEL_ERROR;
         messageType.value = MessageConstants.VIEW_OK;
 
-        if (e instanceof AccessTokenNotFoundError) {
-            // トークン保持ができていない場合
-            title.value = "現在トークンが存在しません";
+        // トークン保持または取得に失敗している場合
+        if (e instanceof AccessTokenNotFoundError || e instanceof TokenRefreshError) {
             message.value = e.message;
             return;
         }
-        if (e instanceof TokenRefreshError) {
-            // 取得に失敗している場合
-            title.value = "有効期限まじかのトークンを再取得できませんでした";
-            message.value = e.message;
-            return;
-        }
-        title.value = "システムエラーが発生しました";
-        message.value = "システム管理者にお問い合わせください";
+
+        message.value = getErrorMessage(e, INQUIRE_FLG);
         return;
     });
 }
 
 function recievePagingNumber(selecteddNumber: number) {
-    console.log(selecteddNumber);
-    //capsuleDto.value.pageNumber = selecteddNumber;
-    //onSearch();
-    alert("ページング");
+    pageNumber.value = selecteddNumber;
+    // onSearchでページング複写
+    onSearch();
 }
 
 function onCancel() {
@@ -119,7 +113,10 @@ function onEdit(editId: number) {
         taskInfoEntityBackup.value = structuredClone(toRaw(taskInfoEntity.value));
         isTaskEdit.value = true;
     } else {
-        alert("取得できませんでした");
+        infoLevel.value = MessageConstants.LEVEL_ERROR;
+        messageType.value = MessageConstants.VIEW_OK;
+        message.value = getErrorUniqueIdMessage(editId);
+        return;
     }
 }
 
@@ -133,8 +130,7 @@ function recieveTaskInfoInterface() {
     isTaskEdit.value = false;
 }
 
-function recieveSubmit(button: string) {
-    console.log(button); // 警告除け
+function recieveSubmit() {
     infoLevel.value = 0;
     messageType.value = 0;
 }
@@ -169,7 +165,7 @@ function recieveSubmit(button: string) {
     <!-- ページング -->
     <PagingControl :all-count="allCount" :limit="limit" :page-number="pageNumber"
         @send-paging-number="recievePagingNumber"></PagingControl>
-        
+
     <div class="one-line-scroll">
         <!-- ページング -->
         <table>
@@ -204,10 +200,10 @@ function recieveSubmit(button: string) {
         </EditTaskInfo>
     </div>
 
-    <!-- メッセージ表示 -->
+    <!-- メッセージ表示    -->
     <div class="overMessage" v-if="messageType !== MessageConstants.VIEW_NONE">
-        <MessageView :info-level="infoLevel" :message-type="messageType" :title="title" :message="message"
-            @send-submit="recieveSubmit">
+        <MessageView :info-level="infoLevel" :message-type="messageType" :title="MESS_PAGE_NAME" :message="message"
+            :caller="caller" @send-submit="recieveSubmit">
         </MessageView>
     </div>
 

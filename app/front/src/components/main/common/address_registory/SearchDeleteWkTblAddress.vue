@@ -1,38 +1,44 @@
 ﻿<script setup lang="ts">
-import { computed, type ComputedRef } from 'vue';
+import { computed, ref, type ComputedRef, type Ref } from 'vue';
 import type { WkTblAddressRsdtDeleteEntityInterface } from '../../entity/wkTblAddressRsdtDeleteEntity';
+import { getErrorUniqueIdMessage, MessageConstants, MessageView } from 'seijishikin-jp-normalize_common-tool';
 
 // props,emit
 const props = defineProps<{ listEntity: WkTblAddressRsdtDeleteEntityInterface[], isEdit: boolean }>();
 const emits = defineEmits(["sendEdit", "sendDelete"]);
 
 // よく使う定数
-// const BLANK: string = "";
+const BLANK: string = "";
 // const INIT_NUMBER: number = 0;
 // const SERVER_STATUS_OK: number = 200;
 // const SERVER_STATUS_ERROR: number = 400;
 // const SEARCH_LIMIT: number = 20;
+const MESS_PAGE_NAME: string = "関連者個人編集";
+const INIT_CALLER: string = "no branch";
+
 // メッセージボックス表示定数
-//const infoLevel: Ref<number> = ref(MessageConstants.LEVEL_NONE);
-//const messageType: Ref<number> = ref(MessageConstants.VIEW_NONE);
-//const title: Ref<string> = ref(BLANK);
-//const message: Ref<string> = ref(BLANK);
+const infoLevel: Ref<number> = ref(MessageConstants.LEVEL_NONE);
+const messageType: Ref<number> = ref(MessageConstants.VIEW_NONE);
+const caller: Ref<string> = ref(INIT_CALLER);
+const message: Ref<string> = ref(BLANK);
 
 const listEdit: ComputedRef<WkTblAddressRsdtDeleteEntityInterface[]> = computed(() => props.listEntity);
 
-// function onEdit(selectedId: number) {
-//     const entity: WkTblAddressRsdtDeleteEntityInterface | undefined
-//         = listEdit.value.filter((e) => selectedId === e.wkTblAddressRsdtDeleteId)[0];
-//     if (undefined !== entity) {
-//         emits("sendEdit", entity);
-//     }
-// }
 function onDelete(selectedId: number) {
     const entity: WkTblAddressRsdtDeleteEntityInterface | undefined
         = listEdit.value.filter((e) => selectedId === e.wkTblAddressRsdtDeleteId)[0];
     if (undefined !== entity) {
         emits("sendDelete", entity);
+    } else {
+        infoLevel.value = MessageConstants.LEVEL_ERROR;
+        messageType.value = MessageConstants.VIEW_OK;
+        message.value = getErrorUniqueIdMessage(selectedId);
+        return;
     }
+}
+function recieveSubmit() {
+    infoLevel.value = 0;
+    messageType.value = 0;
 }
 </script>
 <template>
@@ -55,5 +61,13 @@ function onDelete(selectedId: number) {
             </tr>
         </tbody>
     </table>
+
+    <!-- メッセージ表示    -->
+    <div class="overMessage" v-if="messageType !== MessageConstants.VIEW_NONE">
+        <MessageView :info-level="infoLevel" :message-type="messageType" :title="MESS_PAGE_NAME" :message="message"
+            :caller="caller" @send-submit="recieveSubmit">
+        </MessageView>
+    </div>
+
 </template>
 <style scoped></style>

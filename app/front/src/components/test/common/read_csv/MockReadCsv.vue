@@ -10,11 +10,13 @@ const emits = defineEmits(["sendStorageFileInterface"]);
 
 // よく使う定数
 const BLANK: string = "";
+const MESS_PAGE_NAME: string = "CSV読み取りコンポーネント";
+const INIT_CALLER: string = "no branch";
 
 // メッセージ表示定数
 const infoLevel: Ref<number> = ref(MessageConstants.LEVEL_NONE);
 const messageType: Ref<number> = ref(MessageConstants.VIEW_NONE);
-const title: Ref<string> = ref(BLANK);
+const caller: Ref<string> = ref(INIT_CALLER);
 const message: Ref<string> = ref(BLANK);
 
 // 文字コード
@@ -74,16 +76,12 @@ function removeQuote(data: string): string {
 // メッセージ表示
 function onError() {
     infoLevel.value = MessageConstants.LEVEL_ERROR;
-    title.value = "ファイル指定例外";
     message.value = "ファイルが読み取れませんでした";
     // 表示
     messageType.value = MessageConstants.VIEW_OK;
 }
 
-function recieveSubmit(button: string) {
-    alert(button);
-    // TODO ボタンタイプ別の挙動はこの中で変える
-
+function recieveSubmit() {
     // 非表示
     infoLevel.value = 0;
     messageType.value = 0;
@@ -122,10 +120,10 @@ function recieveSubmit(button: string) {
         </table>
     </div>
 
-    <!-- メッセージ表示 -->
+    <!-- メッセージ表示    -->
     <div class="overMessage" v-if="messageType !== MessageConstants.VIEW_NONE">
-        <MessageView :info-level="infoLevel" :message-type="messageType" :title="title" :message="message"
-            @send-submit="recieveSubmit">
+        <MessageView :info-level="infoLevel" :message-type="messageType" :title="MESS_PAGE_NAME" :message="message"
+            :caller="caller" @send-submit="recieveSubmit">
         </MessageView>
     </div>
 

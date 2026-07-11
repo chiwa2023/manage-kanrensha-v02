@@ -20,11 +20,13 @@ const BLANK: string = "";
 const SERVER_STATUS_OK: number = 200;
 // const SERVER_STATUS_ERROR: number = 400;
 const SERVER_STATUS_UNAUTHORIZED: number = 401;
+const MESS_PAGE_NAME: string = "ユーザログイン";
+const INIT_CALLER: string = "no branch";
 
 // メッセージ表示定数
 const infoLevel: Ref<number> = ref(MessageConstants.LEVEL_NONE);
 const messageType: Ref<number> = ref(MessageConstants.VIEW_NONE);
-const title: Ref<string> = ref(BLANK);
+const caller: Ref<string> = ref(INIT_CALLER);
 const message: Ref<string> = ref(BLANK);
 // pinia
 const userInfo = useUserInfoStore();
@@ -44,9 +46,7 @@ onBeforeMount(() => {
     passStore.fullPath = BLANK;
 });
 
-function recieveSubmit(button: string) {
-    console.log(button); // 警告除け
-    // このページではメッセージに対して挙動を変える必要はない
+function recieveSubmit() {
     // 非表示
     infoLevel.value = 0;
     messageType.value = 0;
@@ -61,8 +61,7 @@ async function onLogin() {
     if (user.value.userId === BLANK || user.value.password === BLANK) {
         infoLevel.value = MessageConstants.LEVEL_ERROR;
         messageType.value = MessageConstants.VIEW_OK;
-        title.value = "入力エラー";
-        message.value = "メールアドレスとパスワードは必須です。";
+        message.value = "入力エラー：メールアドレスとパスワードは必須です。";
         return;
     }
 
@@ -127,15 +126,13 @@ async function onLogin() {
                 default:
                     infoLevel.value = MessageConstants.LEVEL_ERROR;
                     messageType.value = MessageConstants.VIEW_OK;
-                    title.value = "権限取得エラー";
                     message.value = "権限取得でエラーが発生しています";
                     break;
             }
         } catch {
-            // レスポンスは正常だがSJONが合わない→実装ミス
+            // レスポンスは正常だがSJONが合わない等→実装ミス
             infoLevel.value = MessageConstants.LEVEL_ERROR;
             messageType.value = MessageConstants.VIEW_OK;
-            title.value = "システムエラー";
             message.value = "システムエラーが発生しました";
         }
 
@@ -144,14 +141,12 @@ async function onLogin() {
     if (SERVER_STATUS_UNAUTHORIZED === response.status) {
         infoLevel.value = MessageConstants.LEVEL_ERROR;
         messageType.value = MessageConstants.VIEW_OK;
-        title.value = "ログイン失敗";
-        message.value = "パスワードまたはメールアドレスに誤りがあります。再入力してください";
+        message.value = "ログイン失敗しました。パスワードまたはメールアドレスに誤りがあります。再入力してください";
         return;
     }
 
     infoLevel.value = MessageConstants.LEVEL_ERROR;
     messageType.value = MessageConstants.VIEW_OK;
-    title.value = "システムエラー";
     message.value = "システムエラーが発生しました";
 }
 
@@ -218,12 +213,12 @@ function changeVisiblePassword() {
             </div>
         </div>
 
-        <!-- メッセージ表示 -->
-        <div class="overMessage" v-if="messageType !== MessageConstants.VIEW_NONE">
-            <MessageView :info-level="infoLevel" :message-type="messageType" :title="title" :message="message"
-                @send-submit="recieveSubmit">
-            </MessageView>
-        </div>
+    <!-- メッセージ表示    -->
+    <div class="overMessage" v-if="messageType !== MessageConstants.VIEW_NONE">
+        <MessageView :info-level="infoLevel" :message-type="messageType" :title="MESS_PAGE_NAME" :message="message"
+            :caller="caller" @send-submit="recieveSubmit">
+        </MessageView>
+    </div>
     </div>
 </template>
 

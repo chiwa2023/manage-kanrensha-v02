@@ -38,7 +38,13 @@ function readXmlFile() {
         if (selectFileInput.value !== undefined) {
             if (selectFileInput.value.files !== null && selectFileInput.value.files !== undefined) {
                 const file: File | undefined = selectFileInput.value.files[0];
-                if (file !== undefined) {
+
+                if(file === undefined){
+                    alert("編集対象が特定できない");
+
+
+
+                }else {
                     capsuleDto.value.uploadFileDto.fileName = file.name;
                     // ファイルをバイト取得
                     const reader: FileReader = new FileReader();

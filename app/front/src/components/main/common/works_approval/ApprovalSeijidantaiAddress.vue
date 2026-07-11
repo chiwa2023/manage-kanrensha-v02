@@ -1,6 +1,6 @@
 ﻿<script setup lang="ts">
 import { ref, type Ref } from 'vue';
-import { DtoEntityConstants, InputAddressDto, InputCompareAddress, InputDate, MessageConstants, MessageView, PagingControl, type FrameworkMessageAndResultDtoInterface, type InputAddressDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
+import { DtoEntityConstants, getErrorMessage, getErrorUniqueIdMessage, InputAddressDto, InputCompareAddress, InputDate, MessageConstants, MessageView, PagingControl, type FrameworkMessageAndResultDtoInterface, type InputAddressDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import { SearchWorksApprovalCapsuleDto, type SearchWorksApprovalCapsuleDtoInterfce } from '../../dto/works_approval/searchWorksApprovalCapsuleDto';
 import type { KanrenshaAddressBaseEntityInterface } from '../../entity/kanrenshaAddressBaseEntity';
 import { SearchWorksApprovalResultDto, type SearchWorksApprovalResultDtoInterface } from '../../dto/works_approval/searchWorksApprovalResultDto';
@@ -19,10 +19,15 @@ const INIT_BOOLEAN: boolean = false;
 const SERVER_STATUS_OK: number = 200;
 // const SERVER_STATUS_ERROR: number = 400;
 const SEARCH_LIMIT: number = 20;
+const INQUIRE_FLG: boolean = false;
+const ERR_MESS_ONLY: boolean = true;
+const MESS_PAGE_NAME: string = "政治団体住所承認";
+const INIT_CALLER: string = "no branch";
+
 // メッセージボックス表示定数
 const infoLevel: Ref<number> = ref(MessageConstants.LEVEL_NONE);
 const messageType: Ref<number> = ref(MessageConstants.VIEW_NONE);
-const title: Ref<string> = ref(BLANK);
+const caller: Ref<string> = ref(INIT_CALLER);
 const message: Ref<string> = ref(BLANK);
 
 // Paging
@@ -44,7 +49,6 @@ const resultDto: Ref<SearchWorksApprovalResultDtoInterface> = ref(new SearchWork
 
 
 function onSearch() {
-    title.value = "政治団体住所承認処理";
 
     // 日時コンポーネントエラー検出
     if (capsuleDto.value.startDate <= LIMIT_DATE) {
@@ -84,36 +88,27 @@ function onSearch() {
                 } else {
                     infoLevel.value = MessageConstants.LEVEL_WARNING;
                     messageType.value = MessageConstants.VIEW_OK;
-                    title.value = "作業承認を検索しました";
                     message.value = "検索結果を取得できませんでした";
                     return;
                 }
             })
             .catch((error) => {
-                alert(error);
+                message.value = getErrorMessage(error, ERR_MESS_ONLY);
                 infoLevel.value = MessageConstants.LEVEL_ERROR;
                 messageType.value = MessageConstants.VIEW_OK;
-                title.value = "システムエラーが発生しました";
-                message.value = "システム管理者にお問い合わせください";
+                return;
             });
     }).catch((e) => {
         infoLevel.value = MessageConstants.LEVEL_ERROR;
         messageType.value = MessageConstants.VIEW_OK;
 
-        if (e instanceof AccessTokenNotFoundError) {
-            // トークン保持ができていない場合
-            title.value = "現在トークンが存在しません";
+        // トークン保持または取得に失敗している場合
+        if (e instanceof AccessTokenNotFoundError || e instanceof TokenRefreshError) {
             message.value = e.message;
             return;
         }
-        if (e instanceof TokenRefreshError) {
-            // 取得に失敗している場合
-            title.value = "有効期限まじかのトークンを再取得できませんでした";
-            message.value = e.message;
-            return;
-        }
-        title.value = "システムエラーが発生しました";
-        message.value = "システム管理者にお問い合わせください";
+
+        message.value = getErrorMessage(e, INQUIRE_FLG);
         return;
     });
 }
@@ -141,6 +136,11 @@ function onPortalAddressInput(selectedId: number) {
         editDto.value.isBlockEdit = tempEntity.isBlockEdit;
         editDto.value.isBuildingEdit = tempEntity.isBuildingEdit;
         isPortalAddressInput.value = true;
+    } else {
+        infoLevel.value = MessageConstants.LEVEL_ERROR;
+        messageType.value = MessageConstants.VIEW_OK;
+        message.value = getErrorUniqueIdMessage(selectedId);
+        return;
     }
 
 }
@@ -167,13 +167,20 @@ function recieveInputPortalAddressInterface(addressDto: InputAddressDtoInterface
         tempEntity.isPostalEdit = addressDto.isPostalEdit;
         tempEntity.isBlockEdit = addressDto.isBlockEdit;
         tempEntity.isBuildingEdit = addressDto.isBuildingEdit;
+    } else {
+        infoLevel.value = MessageConstants.LEVEL_ERROR;
+        messageType.value = MessageConstants.VIEW_OK;
+        message.value = getErrorUniqueIdMessage(storedId.value);
+        return;
     }
+
     isPortalAddressInput.value = false;
 }
 
 function recievePagingNumber(selecteddNumber: number) {
     pageNumber.value = selecteddNumber;
-    alert("ページ情報受信");
+    // onSearchでページング複写
+    onSearch();
 }
 
 function onCancel() {
@@ -198,7 +205,6 @@ function onSave() {
             .then(async (response) => {
 
                 const resultDtoSave: FrameworkMessageAndResultDtoInterface = await response.json();
-                title.value = "作業承認登録";
                 message.value = resultDtoSave.message;
                 if (resultDtoSave.isFailure) {
                     infoLevel.value = MessageConstants.LEVEL_WARNING;
@@ -211,30 +217,22 @@ function onSave() {
                 }
             })
             .catch((error) => {
-                alert(error);
+                message.value = getErrorMessage(error, ERR_MESS_ONLY);
                 infoLevel.value = MessageConstants.LEVEL_ERROR;
                 messageType.value = MessageConstants.VIEW_OK;
-                title.value = "システムエラーが発生しました";
-                message.value = "システム管理者にお問い合わせください";
+                return;
             });
     }).catch((e) => {
         infoLevel.value = MessageConstants.LEVEL_ERROR;
         messageType.value = MessageConstants.VIEW_OK;
 
-        if (e instanceof AccessTokenNotFoundError) {
-            // トークン保持ができていない場合
-            title.value = "現在トークンが存在しません";
+        // トークン保持または取得に失敗している場合
+        if (e instanceof AccessTokenNotFoundError || e instanceof TokenRefreshError) {
             message.value = e.message;
             return;
         }
-        if (e instanceof TokenRefreshError) {
-            // 取得に失敗している場合
-            title.value = "有効期限まじかのトークンを再取得できませんでした";
-            message.value = e.message;
-            return;
-        }
-        title.value = "システムエラーが発生しました";
-        message.value = "システム管理者にお問い合わせください";
+
+        message.value = getErrorMessage(e, INQUIRE_FLG);
         return;
     });
 }
@@ -248,8 +246,7 @@ function recieveDate(date: Date, index: number) {
         capsuleDto.value.endDate = date;
     }
 }
-function recieveSubmit(button: string) {
-    console.log(button); // 警告除け
+function recieveSubmit() {
     infoLevel.value = 0;
     messageType.value = 0;
 }
@@ -342,10 +339,10 @@ function recieveSubmit(button: string) {
         <button @click="onSave" class="footer-button left-space">送信</button>
     </div>
 
-    <!-- メッセージ表示 -->
+    <!-- メッセージ表示    -->
     <div class="overMessage" v-if="messageType !== MessageConstants.VIEW_NONE">
-        <MessageView :info-level="infoLevel" :message-type="messageType" :title="title" :message="message"
-            @send-submit="recieveSubmit">
+        <MessageView :info-level="infoLevel" :message-type="messageType" :title="MESS_PAGE_NAME" :message="message"
+            :caller="caller" @send-submit="recieveSubmit">
         </MessageView>
     </div>
 

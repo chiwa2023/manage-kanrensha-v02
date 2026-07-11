@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, type Ref } from 'vue';
 import RiyoushaOrgEdit from '../../common/riyousha_edit/RiyoushaOrgEdit.vue';
-import { MessageConstants, MessageView, PagingControl, type FrameworkMessageAndResultDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
+import { getErrorMessage, getErrorUniqueIdMessage, MessageConstants, MessageView, PagingControl, type FrameworkMessageAndResultDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import { getLoginUser } from '../../utils/getLoginUser';
 import AdminInfo from '../../common/user_info/AdminInfo.vue';
 import getAuthorizedPromiseArea from '../../dto/login/getAuthorizedPromiseArea';
@@ -21,10 +21,15 @@ const INIT_BOOLEAN: boolean = false;
 const SEARCH_LIMIT: number = 20;
 // const SERVER_STATUS_OK: number = 200;
 // const SERVER_STATUS_ERROR: number = 400;
+const INQUIRE_FLG: boolean = false;
+const ERR_MESS_ONLY: boolean = true;
+const MESS_PAGE_NAME: string = "利用者組織検索";
+const INIT_CALLER: string = "no branch";
+
 // メッセージボックス表示定数
 const infoLevel: Ref<number> = ref(MessageConstants.LEVEL_NONE);
 const messageType: Ref<number> = ref(MessageConstants.VIEW_NONE);
-const title: Ref<string> = ref(BLANK);
+const caller: Ref<string> = ref(INIT_CALLER);
 const message: Ref<string> = ref(BLANK);
 
 // Paging
@@ -50,7 +55,6 @@ function onSearch() {
     capsuleDto.value.pageNumber = pageNumber.value;
     capsuleDto.value.limit = limit.value;
 
-    title.value = "利用者組織検索";
     getAuthorizedPromiseArea().then(token => {
         const url = urlBack + "/riyousha-org/search";
         const method = "POST";
@@ -74,30 +78,22 @@ function onSearch() {
                 }
             })
             .catch((error) => {
-                alert(error);
+                message.value = getErrorMessage(error, ERR_MESS_ONLY);
                 infoLevel.value = MessageConstants.LEVEL_ERROR;
                 messageType.value = MessageConstants.VIEW_OK;
-                message.value = "システム管理者にお問い合わせください";
                 return;
             });
     }).catch((e) => {
         infoLevel.value = MessageConstants.LEVEL_ERROR;
         messageType.value = MessageConstants.VIEW_OK;
 
-        if (e instanceof AccessTokenNotFoundError) {
-            // トークン保持ができていない場合
-            title.value = "現在トークンが存在しません";
+        // トークン保持または取得に失敗している場合
+        if (e instanceof AccessTokenNotFoundError || e instanceof TokenRefreshError) {
             message.value = e.message;
             return;
         }
-        if (e instanceof TokenRefreshError) {
-            // 取得に失敗している場合
-            title.value = "有効期限まじかのトークンを再取得できませんでした";
-            message.value = e.message;
-            return;
-        }
-        title.value = "システムエラーが発生しました";
-        message.value = "システム管理者にお問い合わせください";
+
+        message.value = getErrorMessage(e, INQUIRE_FLG);
         return;
     });
 
@@ -111,12 +107,13 @@ function onEdit(selectedId: number) {
 }
 
 let orgDeleteId: number = 0;
+const deleteText: string = "delete";
 function onDelete(editIndex: number) {
-    title.value = "利用者組織削除";
     infoLevel.value = MessageConstants.LEVEL_WARNING;
     messageType.value = MessageConstants.VIEW_YES_NO;
     message.value = "削除すると戻すことができません。よろしいですか？";
     orgDeleteId = editIndex;
+    caller.value = deleteText;
 }
 
 function recieveCancelRiyoushaOrg() {
@@ -130,7 +127,6 @@ function recieveRiyoushaOrgInterface(editDto: RiyoushaOrgDtoInterface) {
     capsuleDto.userDto = userDto.value;
     capsuleDto.riyoushaOrgDto = editDto;
 
-    title.value = "利用者組織更新";
     getAuthorizedPromiseArea().then(token => {
         const url = urlBack + "/riyousha-org/update";
         const method = "POST";
@@ -152,30 +148,22 @@ function recieveRiyoushaOrgInterface(editDto: RiyoushaOrgDtoInterface) {
                 }
             })
             .catch((error) => {
-                alert(error);
+                message.value = getErrorMessage(error, ERR_MESS_ONLY);
                 infoLevel.value = MessageConstants.LEVEL_ERROR;
                 messageType.value = MessageConstants.VIEW_OK;
-                message.value = "システム管理者にお問い合わせください";
                 return;
             });
     }).catch((e) => {
         infoLevel.value = MessageConstants.LEVEL_ERROR;
         messageType.value = MessageConstants.VIEW_OK;
 
-        if (e instanceof AccessTokenNotFoundError) {
-            // トークン保持ができていない場合
-            title.value = "現在トークンが存在しません";
+        // トークン保持または取得に失敗している場合
+        if (e instanceof AccessTokenNotFoundError || e instanceof TokenRefreshError) {
             message.value = e.message;
             return;
         }
-        if (e instanceof TokenRefreshError) {
-            // 取得に失敗している場合
-            title.value = "有効期限まじかのトークンを再取得できませんでした";
-            message.value = e.message;
-            return;
-        }
-        title.value = "システムエラーが発生しました";
-        message.value = "システム管理者にお問い合わせください";
+
+        message.value = getErrorMessage(e, INQUIRE_FLG);
         return;
     });
     isOrgEdit.value = false;
@@ -190,7 +178,6 @@ function doDelete() {
         capsuleDtoDelete.userDto = userDto.value;
         capsuleDtoDelete.masterEntity = deleteEntity;
 
-        title.value = "利用者組織削除";
         getAuthorizedPromiseArea().then(token => {
             const url = urlBack + "/riyousha-org/delete";
             const method = "POST";
@@ -215,56 +202,51 @@ function doDelete() {
                     orgDeleteId = INIT_NUMBER;
                 })
                 .catch((error) => {
-                    alert(error);
+                    message.value = getErrorMessage(error, ERR_MESS_ONLY);
                     infoLevel.value = MessageConstants.LEVEL_ERROR;
                     messageType.value = MessageConstants.VIEW_OK;
-                    message.value = "システム管理者にお問い合わせください";
                     return;
                 });
         }).catch((e) => {
             infoLevel.value = MessageConstants.LEVEL_ERROR;
             messageType.value = MessageConstants.VIEW_OK;
 
-            if (e instanceof AccessTokenNotFoundError) {
-                // トークン保持ができていない場合
-                title.value = "現在トークンが存在しません";
+            // トークン保持または取得に失敗している場合
+            if (e instanceof AccessTokenNotFoundError || e instanceof TokenRefreshError) {
                 message.value = e.message;
                 return;
             }
-            if (e instanceof TokenRefreshError) {
-                // 取得に失敗している場合
-                title.value = "有効期限まじかのトークンを再取得できませんでした";
-                message.value = e.message;
-                return;
-            }
-            title.value = "システムエラーが発生しました";
-            message.value = "システム管理者にお問い合わせください";
+
+            message.value = getErrorMessage(e, INQUIRE_FLG);
             return;
         });
+    } else {
+        infoLevel.value = MessageConstants.LEVEL_ERROR;
+        messageType.value = MessageConstants.VIEW_OK;
+        message.value = getErrorUniqueIdMessage(orgDeleteId);
+        return;
     }
 }
-
-
-
-
 
 function onCancel() {
     history.back();
 }
 function recievePagingNumber(selecteddNumber: number) {
     pageNumber.value = selecteddNumber;
-    alert("ページ情報受信");
+    // onSearchでページング複写
+    onSearch();
 }
 
-function recieveSubmit(button: string) {
+function recieveSubmit(button: string, callerMethod: string) {
 
     // ダイアログでyesなら削除
-    if (orgDeleteId !== INIT_NUMBER && "yes" === button) {
+    if (callerMethod === deleteText && MessageConstants.BUTTON_YES === button) {
         doDelete();
     }
 
     infoLevel.value = 0;
     messageType.value = 0;
+    caller.value = INIT_CALLER;
 }
 </script>
 <template>
@@ -322,10 +304,10 @@ function recieveSubmit(button: string) {
             @send-riyousha-org-interface="recieveRiyoushaOrgInterface"></RiyoushaOrgEdit>
     </div>
 
-    <!-- メッセージ表示 -->
+    <!-- メッセージ表示    -->
     <div class="overMessage" v-if="messageType !== MessageConstants.VIEW_NONE">
-        <MessageView :info-level="infoLevel" :message-type="messageType" :title="title" :message="message"
-            @send-submit="recieveSubmit">
+        <MessageView :info-level="infoLevel" :message-type="messageType" :title="MESS_PAGE_NAME" :message="message"
+            :caller="caller" @send-submit="recieveSubmit">
         </MessageView>
     </div>
 

@@ -2,7 +2,7 @@
 import { computed, onMounted, ref, type ComputedRef, type Ref } from 'vue';
 import RoutePathConstants from '../../../../routePathConstants';
 import ManagerInfo from '../../common/user_info/ManagerInfo.vue';
-import { FrameworkCapsuleDto, MessageConstants, MessageView, type FrameworkCapsuleDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
+import { FrameworkCapsuleDto, getErrorMessage, getErrorUniqueIdMessage, MessageConstants, MessageView, type FrameworkCapsuleDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import { getLoginUser } from '../../utils/getLoginUser';
 import UserRoleConstants from '../../dto/user/userRoleConstants';
 import { GetRiyoushaMasterCapsuleDto, type GetRiyoushaMasterCapsuleDtoInterface } from '../../dto/riyousha/getRiyoushaMasterCapsuleDto';
@@ -18,14 +18,17 @@ import PartnerApiInfo from '../../common/user_info/PartnerApiInfo.vue';
 // よく使う定数
 const BLANK: string = "";
 const INIT_NUMBER: number = 0;
-const INIT_BOOLEAN: boolean = false;
-// const SERVER_STATUS_OK: number = 200;
-// const SERVER_STATUS_ERROR: number = 400;
+// const INIT_BOOLEAN: boolean = false;
 // const SEARCH_LIMIT: number = 20;
+const INQUIRE_FLG: boolean = false;
+const ERR_MESS_ONLY: boolean = true;
+const MESS_PAGE_NAME: string = "利用者組織招待";
+const INIT_CALLER: string = "no branch";
+
 // メッセージボックス表示定数
 const infoLevel: Ref<number> = ref(MessageConstants.LEVEL_NONE);
 const messageType: Ref<number> = ref(MessageConstants.VIEW_NONE);
-const title: Ref<string> = ref(BLANK);
+const caller: Ref<string> = ref(INIT_CALLER);
 const message: Ref<string> = ref(BLANK);
 
 // back側アクセス
@@ -43,10 +46,10 @@ const capsuleDtoEdit: Ref<RiyoushaCombinePersonCapsuleDtoInterface> = ref(new Ri
 const isManagerView: ComputedRef<boolean> = computed(() => userDto.value.riyoushaRole === UserRoleConstants.MANAGER);
 const riyoushaCode: Ref<number> = ref(INIT_NUMBER);
 const riyoushaName: Ref<string> = ref(BLANK);
-let disableCallMyself: boolean = INIT_BOOLEAN;
 
 const route = useRoute();
 const userRole: Ref<string> = ref(BLANK);
+const logoutText = "logout";
 onMounted(() => {
 
     if (route.query.userRole !== null && undefined !== route.query.userRole) {
@@ -56,11 +59,10 @@ onMounted(() => {
 
     // 利用者設定がない場合はこのページかたたき出す(基本的にデッドコードのはず)
     if (0 == userDto.value.riyoushaCode) {
-        disableCallMyself = true;
-        title.value = "利用者組織自分自身を所属させる";
         infoLevel.value = MessageConstants.LEVEL_ERROR;
         messageType.value = MessageConstants.VIEW_OK;
         message.value = "利用者の詳細登録を行ってください。ログアウトします。";
+        caller.value = logoutText;
         return;
     }
     const capsuleDtoMyself: GetRiyoushaMasterCapsuleDtoInterface = new GetRiyoushaMasterCapsuleDto();
@@ -68,7 +70,6 @@ onMounted(() => {
     capsuleDtoMyself.riyoushaCode = userDto.value.riyoushaCode;
 
     // 利用者自身を読み込み
-    title.value = "利用者マスタ取得";
     getAuthorizedPromiseArea().then(token => {
         const url = urlBack + "/riyousha/get-myself";
         const method = "POST";
@@ -97,30 +98,22 @@ onMounted(() => {
                 }
             })
             .catch((error) => {
-                alert(error);
+                message.value = getErrorMessage(error, ERR_MESS_ONLY);
                 infoLevel.value = MessageConstants.LEVEL_ERROR;
                 messageType.value = MessageConstants.VIEW_OK;
-                message.value = "システム管理者にお問い合わせください";
                 return;
             });
     }).catch((e) => {
         infoLevel.value = MessageConstants.LEVEL_ERROR;
         messageType.value = MessageConstants.VIEW_OK;
 
-        if (e instanceof AccessTokenNotFoundError) {
-            // トークン保持ができていない場合
-            title.value = "現在トークンが存在しません";
+        // トークン保持または取得に失敗している場合
+        if (e instanceof AccessTokenNotFoundError || e instanceof TokenRefreshError) {
             message.value = e.message;
             return;
         }
-        if (e instanceof TokenRefreshError) {
-            // 取得に失敗している場合
-            title.value = "有効期限まじかのトークンを再取得できませんでした";
-            message.value = e.message;
-            return;
-        }
-        title.value = "システムエラーが発生しました";
-        message.value = "システム管理者にお問い合わせください";
+
+        message.value = getErrorMessage(e, INQUIRE_FLG);
         return;
     });
 
@@ -128,7 +121,6 @@ onMounted(() => {
     const capsuleDtoOption: FrameworkCapsuleDtoInterface = new FrameworkCapsuleDto();
     capsuleDtoOption.userDto = userDto.value;
 
-    title.value = "所属組織項目取得";
     getAuthorizedPromiseArea().then(token => {
         const url = urlBack + "/riyousha-org/get-org-options";
         const method = "POST";
@@ -150,30 +142,22 @@ onMounted(() => {
                 }
             })
             .catch((error) => {
-                alert(error);
+                message.value = getErrorMessage(error, ERR_MESS_ONLY);
                 infoLevel.value = MessageConstants.LEVEL_ERROR;
                 messageType.value = MessageConstants.VIEW_OK;
-                message.value = "システム管理者にお問い合わせください";
                 return;
             });
     }).catch((e) => {
         infoLevel.value = MessageConstants.LEVEL_ERROR;
         messageType.value = MessageConstants.VIEW_OK;
 
-        if (e instanceof AccessTokenNotFoundError) {
-            // トークン保持ができていない場合
-            title.value = "現在トークンが存在しません";
+        // トークン保持または取得に失敗している場合
+        if (e instanceof AccessTokenNotFoundError || e instanceof TokenRefreshError) {
             message.value = e.message;
             return;
         }
-        if (e instanceof TokenRefreshError) {
-            // 取得に失敗している場合
-            title.value = "有効期限まじかのトークンを再取得できませんでした";
-            message.value = e.message;
-            return;
-        }
-        title.value = "システムエラーが発生しました";
-        message.value = "システム管理者にお問い合わせください";
+
+        message.value = getErrorMessage(e, INQUIRE_FLG);
         return;
     });
 });
@@ -182,12 +166,18 @@ onMounted(() => {
 function onSave() {
 
     // 保存処理
-    title.value = "利用者組織所属招待";
     capsuleDtoEdit.value.combineEntity.orgRiyoushaCode = selectedOrgCode.value;
-    const name: undefined | string = riyoshaOrgoptions.value.filter((e) => selectedOrgCode.value === e.value)[0]?.text;
+    const name: undefined | string = riyoshaOrgoptions.value.filter
+        ((e) => selectedOrgCode.value === e.value)[0]?.text;
     if (undefined !== name) {
         capsuleDtoEdit.value.combineEntity.orgName = name;
+    } else {
+        infoLevel.value = MessageConstants.LEVEL_ERROR;
+        messageType.value = MessageConstants.VIEW_OK;
+        message.value = getErrorUniqueIdMessage(selectedOrgCode.value);
+        return;
     }
+    
     capsuleDtoEdit.value.userDto = userDto.value;
 
     message.value = "自分が所属する組織に利用者を招待";
@@ -213,30 +203,22 @@ function onSave() {
                 }
             })
             .catch((error) => {
-                alert(error);
+                message.value = getErrorMessage(error, ERR_MESS_ONLY);
                 infoLevel.value = MessageConstants.LEVEL_ERROR;
                 messageType.value = MessageConstants.VIEW_OK;
-                message.value = "システム管理者にお問い合わせください";
                 return;
             });
     }).catch((e) => {
         infoLevel.value = MessageConstants.LEVEL_ERROR;
         messageType.value = MessageConstants.VIEW_OK;
 
-        if (e instanceof AccessTokenNotFoundError) {
-            // トークン保持ができていない場合
-            title.value = "現在トークンが存在しません";
+        // トークン保持または取得に失敗している場合
+        if (e instanceof AccessTokenNotFoundError || e instanceof TokenRefreshError) {
             message.value = e.message;
             return;
         }
-        if (e instanceof TokenRefreshError) {
-            // 取得に失敗している場合
-            title.value = "有効期限まじかのトークンを再取得できませんでした";
-            message.value = e.message;
-            return;
-        }
-        title.value = "システムエラーが発生しました";
-        message.value = "システム管理者にお問い合わせください";
+
+        message.value = getErrorMessage(e, INQUIRE_FLG);
         return;
     });
 }
@@ -245,15 +227,15 @@ function onCancel() {
     history.back();
 }
 
-function recieveSubmit(button: string) {
+function recieveSubmit(button: string, callerMethod: string) {
     // OKボタンのうち、利用者情報が取れないことによる場合はログアウト
-
-    if ("OK" === button && disableCallMyself) {
+    if (MessageConstants.BUTTON_OK === button && callerMethod === logoutText) {
         router.push(RoutePathConstants.PAGE_LOGOUT);
     }
 
     infoLevel.value = 0;
     messageType.value = 0;
+    caller.value = INIT_CALLER;
 }
 </script>
 <template>
@@ -323,10 +305,10 @@ function recieveSubmit(button: string) {
         <button class="footer-button left-space" @click="onSave" :disabled="!isEnableInvite">送信</button>
     </div>
 
-    <!-- メッセージ表示 -->
+    <!-- メッセージ表示    -->
     <div class="overMessage" v-if="messageType !== MessageConstants.VIEW_NONE">
-        <MessageView :info-level="infoLevel" :message-type="messageType" :title="title" :message="message"
-            @send-submit="recieveSubmit">
+        <MessageView :info-level="infoLevel" :message-type="messageType" :title="MESS_PAGE_NAME" :message="message"
+            :caller="caller" @send-submit="recieveSubmit">
         </MessageView>
     </div>
 
