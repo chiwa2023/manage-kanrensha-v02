@@ -63,7 +63,7 @@ class WalkDirectoryParcelAddressInsertBatchConfigurationAllTest {
                 "/config/file_address/base_registory/parcel/");
 
         // 処理する県の地方自治体コード
-        final String prefCode = "28";
+        final String prefCode = "45";
 
         Path path = Paths.get(pathBase.toString(), prefCode);
 

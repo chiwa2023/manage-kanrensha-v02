@@ -93,7 +93,7 @@ public class RepairPostalCodeIrregularBatchConfiguration { // NOPMD CouplingBetw
     public static final String STEP_CLEAN6 = FUNCTION_NAME + "Clean6" + STEP;
 
     /** 処理単位数 */
-    private static final int CHUNK_SIZE = 1000;
+    private static final int CHUNK_SIZE = 20;
 
     /* その他は住居に対応データが存在するのを確認して有効にする */
 

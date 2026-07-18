@@ -21,7 +21,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.jdbc.Sql;
+// import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
@@ -47,7 +47,7 @@ import net.seijishikin.jp.normalize.manage.kanrensha.constants.GetCurrentResourc
 @SpringBatchTest
 @ContextConfiguration(classes = BackApplication.class) // 全体起動
 @DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
-@Sql("RebuildAddressPostalCodeBatchConfigurationAllTest.sql")
+// @Sql("RebuildAddressPostalCodeBatchConfigurationAllTest.sql")
 class RebuildAddressPostalCodeBatchConfigurationAllTest {
 
     /** テストユーティリティ */
@@ -85,7 +85,7 @@ class RebuildAddressPostalCodeBatchConfigurationAllTest {
                 rebuildAddressPostalCode.getJobParametersIncrementer().getNext(new JobParameters())) // NOPMD
                 .addLocalDateTime("executeTime", LocalDateTime.now())
                 .addString("readFilePathOneLine", pathOneLine.toString())
-                .addString("readFilePathJigyousha", pathJigyousha.toString()).addString("lgCode", "131")
+                .addString("readFilePathJigyousha", pathJigyousha.toString()).addString("lgCode", "13")
                 .addLong("userId", (long) userDto.getUserPersonId())
                 .addLong("userCode", (long) userDto.getUserPersonCode())
                 .addString("userName", userDto.getUserPersonName()).toJobParameters();

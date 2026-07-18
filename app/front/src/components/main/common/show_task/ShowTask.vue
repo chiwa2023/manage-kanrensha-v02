@@ -158,8 +158,6 @@ function onShowHistory(selectedCode: number, taskYear: number) {
                 return;
             });
     });
-
-
 }
 
 function getStateText(isState: boolean, column: string): string {

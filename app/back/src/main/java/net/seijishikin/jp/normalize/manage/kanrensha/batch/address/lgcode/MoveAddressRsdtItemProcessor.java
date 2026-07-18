@@ -28,6 +28,7 @@ public class MoveAddressRsdtItemProcessor
      * 必要パラメータの取得
      */
     @BeforeStep
+    @Override
     public void beforeStep(final StepExecution stepExecution) {
         copyLgCode = stepExecution.getJobParameters().getString("copyLgCode");
         copyLgName = stepExecution.getJobParameters().getString("copyLgName");

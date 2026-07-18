@@ -6,7 +6,6 @@ import org.springframework.stereotype.Component;
 
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.AddressRsdtBaseEntity;
 
-
 /**
  * アドレス・ベース・レジストリ地番データEntity変換Processor
  */
@@ -16,8 +15,8 @@ public class ParcelAddressCsvProcessor implements ItemProcessor<ParcelAddressCsv
     /** 空白文字 */
     private static final String BLANK = "";
 
-    /** 空白文字 */
-    private static final int HAS_NOT_JUKYO = 0;
+    // /** 住居ありファイルフラグ */
+    // private static final int HAS_NOT_JUKYO = 0;
 
     /**
      * 変換処理を実行する
@@ -31,12 +30,13 @@ public class ParcelAddressCsvProcessor implements ItemProcessor<ParcelAddressCsv
         // サイトにはこれで仕様確定とされているが、最終的にはすべての住所が住居データに集約されるものと思われる
         // (そうしないとアパート住みの市民の住所が表現できないから)
         // それまでは住居データをすべて収録、住居データ化されていない場合は地番データを参照するようにする
-        if(HAS_NOT_JUKYO == item.getRsdtAddrFlg()) {
-            BeanUtils.copyProperties(item, entity);
-            
-            // 地番までの住所変換
-            entity.setAddressBlock(this.convertBlockAddress(item));
-        }
+        // → フラグはそのままにしたうえでparcelとrsdtで重複しないよう整頓されたっぽい
+        // if(HAS_NOT_JUKYO == item.getRsdtAddrFlg()) {
+        BeanUtils.copyProperties(item, entity);
+
+        // 地番までの住所変換
+        entity.setAddressBlock(this.convertBlockAddress(item));
+        // }
         return entity;
     }
 
@@ -59,6 +59,5 @@ public class ParcelAddressCsvProcessor implements ItemProcessor<ParcelAddressCsv
 
         return builder.toString();
     }
-
 
 }

@@ -42,6 +42,7 @@ const capsuleDto: Ref<ResetPassswordCapsuleDtoInterface> = ref(new ResetPassswor
 async function onSendEmail() {
 
     const { loading: sendLoading, error: sendError, fetchData: fetchLogin } = useApi<FrameworkMessageAndResultDtoInterface>();
+    console.log(sendLoading); // TODO 警告除け
 
     const url = urlBack + "/reset-password/send-code";
     const config = {
@@ -78,6 +79,7 @@ async function onSendEmail() {
 async function onSendCode() {
 
     const { loading: sendLoading, error: sendError, fetchData: fetchLogin } = useApi<FrameworkMessageAndResultDtoInterface>();
+   console.log(sendLoading); // TODO 警告除け
 
     const url = urlBack + "/reset-password/check-code";
     const config = {
@@ -124,6 +126,7 @@ async function onSavePassword() {
 
 
     const { loading: sendLoading, error: sendError, fetchData: fetchLogin } = useApi<FrameworkMessageAndResultDtoInterface>();
+   console.log(sendLoading); // TODO 警告除け
 
     const url = urlBack + "/reset-password/save";
     const config = {

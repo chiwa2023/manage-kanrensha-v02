@@ -61,7 +61,7 @@ class RepairPostalCodeIrregularBatchConfigurationAllTest {
         JobParameters jobParameters = new JobParametersBuilder(
                 repairPostalCodeIrregularBatchConfiguration.getJobParametersIncrementer().getNext(new JobParameters())) // NOPMD
                 .addLocalDateTime("executeTime", LocalDateTime.now()) //
-                .addString("lgCodePref", "131") //
+                .addString("lgCodePref", "022") //
                 .addLong("userId", (long) userDto.getUserPersonId())
                 .addLong("userCode", (long) userDto.getUserPersonCode())
                 .addString("userName", userDto.getUserPersonName()).toJobParameters();

@@ -50,6 +50,7 @@ class GetRoleSomeoneTaskControllerTest {
     /** MockMvc */
     private MockMvc mockMvc;
 
+    /** MockMvc setup */
     @BeforeEach
     public void setup() {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(context) //

@@ -64,7 +64,7 @@ class WalkDirectoryRsdtAddressInsertBatchConfigurationAllTest {
                 "/config/file_address/base_registory/rsdt/");
 
         // 処理する県の地方自治体コード
-        final String prefCode = "47";
+        final String prefCode = "35";
 
         Path path = Paths.get(pathBase.toString(), prefCode);
 

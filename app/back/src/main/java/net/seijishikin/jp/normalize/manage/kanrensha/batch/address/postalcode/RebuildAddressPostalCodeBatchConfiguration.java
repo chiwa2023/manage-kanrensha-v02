@@ -84,8 +84,10 @@ public class RebuildAddressPostalCodeBatchConfiguration {
     protected Job getJob(final JobRepository jobRepository, @Qualifier(STEP_CLEAR) final Step stepCrean,
             @Qualifier(STEP_ONLINE) final Step stepOneLine, @Qualifier(STEP_JIGYOUSHA) final Step stepJigyousha) {
 
-        return new JobBuilder(JOB_NAME, jobRepository).incrementer(new RunIdIncrementer()).flow(stepCrean)
-                .next(stepOneLine) //
+        return new JobBuilder(JOB_NAME, jobRepository).incrementer(new RunIdIncrementer()) //
+                // .flow(stepCrean) 
+                .flow(stepOneLine) //
+                //.next(stepOneLine) //
                 // .next(stepJigyousha) //
                 .end().build();
     }
