@@ -141,7 +141,10 @@ const houjinAppId: string = import.meta.env.VITE_HOUJIN_NO_API;
                 <div class="user-role-menu-wrapper">
                     <!-- 必要アイコンはここに追加 -->
                     <div class="left-space user-role-icon-container">
+                        必要アイコンを設置
+                        <!--
                         <img src="#" class="user-role-icon">
+                        -->
                     </div>
                 </div>
             </div>

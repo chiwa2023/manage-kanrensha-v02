@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Service;
 
@@ -27,9 +28,9 @@ import net.seijishikin.jp.normalize.manage.kanrensha.repository.UserNewRepositor
 @Service
 public class PublishNewUserCodeService {
 
-    // TODO 正しいアドレスに修正する
     /** 送信メールアドレス */
-    private static final String sendEmail = "test@example.com";
+    @Value("${app.send.mail.address:test@example.com}")
+    private String sendEmail;
 
     /** 新規登録中ユーザRepository */
     @Autowired

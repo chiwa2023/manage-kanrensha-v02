@@ -1,6 +1,9 @@
 package net.seijishikin.jp.normalize.manage.kanrensha.config; // NOPMD
 
+import java.util.List; // NOPMD ExcessiveImports
+
 import org.springframework.beans.factory.annotation.Autowired; // NOPMD
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -51,6 +54,10 @@ public class SecurityConfig {
     /** jwt鍵 */
     @Autowired
     private JwtKeyProperties jwtKeyProperties;
+
+    /** ドメイン(frontend)URL */
+    @Value("${app.cors.allowed-origins:http://localhost:5173}")
+    private List<String> allowedOrigins;
 
     /**
      * AuthenticationManagerをBeanとする
@@ -167,9 +174,7 @@ public class SecurityConfig {
         corsConfiguration.addAllowedMethod(CorsConfiguration.ALL);
         corsConfiguration.addAllowedHeader(CorsConfiguration.ALL);
         corsConfiguration.addExposedHeader("X-AUTH-TOKEN");
-        corsConfiguration.addAllowedOrigin(CorsConfig.ALLOW_URL_KANRENSHA);
-        corsConfiguration.addAllowedOrigin(CorsConfig.ALLOW_URL_PORT);
-        corsConfiguration.addAllowedOrigin(CorsConfig.ALLOW_URL_DOCKER);
+        corsConfiguration.setAllowedOrigins(allowedOrigins);
         corsConfiguration.setAllowCredentials(true);
         UrlBasedCorsConfigurationSource corsSource = new UrlBasedCorsConfigurationSource();
         corsSource.registerCorsConfiguration("/**", corsConfiguration);

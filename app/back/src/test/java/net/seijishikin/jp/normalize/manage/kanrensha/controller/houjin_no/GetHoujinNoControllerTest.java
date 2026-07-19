@@ -44,7 +44,6 @@ class GetHoujinNoControllerTest {
     /** MockMvc */
     private MockMvc mockMvc;
 
-
     /**
      * mockのセットアップ
      */

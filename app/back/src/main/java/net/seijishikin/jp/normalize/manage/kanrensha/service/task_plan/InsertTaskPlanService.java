@@ -8,6 +8,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.mail.SimpleMailMessage;
@@ -30,9 +31,9 @@ import net.seijishikin.jp.normalize.manage.kanrensha.service.year.SwitchYearInse
 @ConfigurationProperties(prefix = "net.seijishikin.jp.normalize.kanrensha")
 public class InsertTaskPlanService {
 
-    // TODO 正しいアドレスに修正する
     /** 送信メールアドレス */
-    private static final String sendEmail = "test@example.com";
+    @Value("${app.send.mail.address:test@example.com}")
+    private String sendEmail;
 
     /** ユーザ個人Repository */
     @Autowired

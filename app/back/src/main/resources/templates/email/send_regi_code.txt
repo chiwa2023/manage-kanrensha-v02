@@ -9,7 +9,7 @@
 発行から2時間
 
 リンク：
-http://localhost:5173/manage-kanrensha/send-access-code?token=【verifyToken】
+https://normalize.jp.seijishikin.net/manage-kanrensha/send-access-code?token=【verifyToken】
 
 ---
 もし上記リンクからアクセスできない、または手動で認証コードを入力する場合は、
@@ -19,7 +19,7 @@ http://localhost:5173/manage-kanrensha/send-access-code?token=【verifyToken】
 発行から2時間 (【limitTime】)
 
 認証コード入力ページ:
-http://localhost:5173/manage-kanrensha/send-access-code
+https://normalize.jp.seijishikin.net/manage-kanrensha/send-access-code
 
 メールアドレス: 【email】
 認証コード: 【regiCode】

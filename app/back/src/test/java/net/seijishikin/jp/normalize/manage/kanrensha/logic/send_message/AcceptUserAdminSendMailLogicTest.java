@@ -56,15 +56,15 @@ class AcceptUserAdminSendMailLogicTest {
         assertEquals("作業者のメールアドレスが取得できませんでした", resultDto.getMessage());
     }
 
-    @Test
-    @Tag("ExternalService")
-    void testSendFlgOff() throws Exception {
-
-        LeastUserDto userDto = CreateLeastUserForTestUtil.practice();
-        userDto.setUserPersonId(621);
-        SendMaileResultDto resultDto = acceptUserAdminSendMailLogic.pracitce(userDto.getUserPersonId());
-        // 取得できないユーザを呼び出そうとしても落ちない
-        assertEquals(false, resultDto.getIsFailure());
-    }
-
+    // MEMO:gitリポジトリのテスト全体でメール送信をしないフラグがあったが、削除したため不要になった
+    //    @Test
+    //    @Tag("ExternalService")
+    //    void testSendFlgOff() throws Exception {
+    //
+    //        LeastUserDto userDto = CreateLeastUserForTestUtil.practice();
+    //        userDto.setUserPersonId(621);
+    //        SendMaileResultDto resultDto = acceptUserAdminSendMailLogic.pracitce(userDto.getUserPersonId());
+    //        // 取得できないユーザを呼び出そうとしても落ちない
+    //        assertEquals(false, resultDto.getIsFailure());
+    //    }
 }

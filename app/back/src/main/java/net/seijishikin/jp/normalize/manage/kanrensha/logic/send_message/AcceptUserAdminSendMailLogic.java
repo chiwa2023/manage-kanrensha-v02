@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Component;
@@ -25,9 +26,9 @@ import net.seijishikin.jp.normalize.manage.kanrensha.repository.UserPersonReposi
 @ConfigurationProperties(prefix = "net.seijishikin.jp.normalize.kanrensha")
 public class AcceptUserAdminSendMailLogic {
 
-    // TODO 正しいアドレスに修正する
     /** 送信メールアドレス */
-    private static final String sendEmail = "test@example.com";
+    @Value("${app.send.mail.address:test@example.com}")
+    private String sendEmail;
 
     /** mail送信Logic */
     @Autowired

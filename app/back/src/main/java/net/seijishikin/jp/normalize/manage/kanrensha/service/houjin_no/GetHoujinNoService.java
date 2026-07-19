@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.opencsv.CSVReader;
@@ -81,8 +82,9 @@ public class GetHoujinNoService {
     private SaveStackTraceService saveStackTraceService;
 
     /** 接続ドメイン */
-    // private static final String DOMAIN_URL = "https://api.houjin-bangou.nta.go.jp/4/name?"; // 本番
-    private static final String DOMAIN_URL = "http://localhost:7080/4/name?"; // テスト
+    @Value("${app.houjinno.url:http://localhost:7080/4/name?}")
+    private String DOMAIN_URL;
+    // private String DOMAIN_URL = "https://api.houjin-bangou.nta.go.jp/4/name?"; // 本番
 
     /**
      * 処理を行う
