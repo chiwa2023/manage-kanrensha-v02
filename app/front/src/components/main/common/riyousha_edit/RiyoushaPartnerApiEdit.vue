@@ -1,14 +1,15 @@
 ﻿<script setup lang="ts">
 import { onMounted, ref, watch, type Ref } from 'vue';
-import { getErrorMessage, MessageConstants, MessageView, ViewInputAccess, ViewInputAddress, ViewInputPersonName, } from 'seijishikin-jp-normalize_common-tool';
+import { getErrorMessage, MessageConstants, MessageView, ViewInputAccess, ViewInputAddress, ViewInputPersonName, type LeastUserDtoInterface, } from 'seijishikin-jp-normalize_common-tool';
 import { RiyoushaPartnerApiDto, type RiyoushaPartnerApiDtoInterface } from '../../dto/riyousha/riyoushaPartnerApiDto';
 import getAuthorizedPromiseArea from '../../dto/login/getAuthorizedPromiseArea';
 import RoutePathConstants from '../../../../routePathConstants';
 import { AccessTokenNotFoundError, TokenRefreshError } from '../../dto/login/errors';
 import type { RiyoushaPartnerApiMasterEntityInterface } from '../../entity/riyoushaPartnerApiMasterEntity';
+import { GetRiyoushaPartnerApiByEntityCapsuleDto, type GetRiyoushaPartnerApiByEntityCapsuleDtoInterface } from '../../dto/riyousha/getRiyoushaPartnerApiByEntityCapsuleDto';
 
 // props,emmits
-const props = defineProps<{ editEntity: RiyoushaPartnerApiMasterEntityInterface }>();
+const props = defineProps<{ userDto: LeastUserDtoInterface, editEntity: RiyoushaPartnerApiMasterEntityInterface }>();
 const emits = defineEmits(["sendCancelPartnerApi", "sendPartnerApiInterface"]);
 
 // よく使う定数
@@ -47,10 +48,14 @@ function onChangeEntity() {
     // 編集しないときはgetしない    
     if (props.editEntity.riyoushaPartnerApiMasterId !== 0) {
 
+        const capsuleDto: GetRiyoushaPartnerApiByEntityCapsuleDtoInterface = new GetRiyoushaPartnerApiByEntityCapsuleDto();
+        capsuleDto.userDto = props.userDto;
+        capsuleDto.masterEntity = props.editEntity;
+
         getAuthorizedPromiseArea().then(token => {
             const url = urlBack + "/riyousha/get-partner-api";
             const method = "POST";
-            const body = JSON.stringify(props.editEntity);
+            const body = JSON.stringify(capsuleDto);
             const headers = {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',

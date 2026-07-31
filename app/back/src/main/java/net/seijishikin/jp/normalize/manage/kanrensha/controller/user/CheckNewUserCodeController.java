@@ -39,9 +39,10 @@ public class CheckNewUserCodeController {
      */
     @PostMapping("/check-code")
     public ResponseEntity<NewComerDto> practice(final @RequestBody NewComerDto newComerDto) {
-        // 比較日時はサーバ側で設定
-        newComerDto.setLimitDateTime(LocalDateTime.now());
         try {
+            // 比較日時はサーバ側で設定
+            newComerDto.setLimitDateTime(LocalDateTime.now());
+
             return ResponseEntity.status(HttpStatus.OK).body(checkNewUserCodeService.practice(newComerDto));
 
         } catch (Exception exception) { // NOPMD 業務上の理由から積極的に許容

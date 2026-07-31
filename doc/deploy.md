@@ -5,12 +5,33 @@
 
 ## 開発ソースからのコンパイル準備
 
-記述省略
+### front側
+
+ソースコピーをする
+
+### back側
+
+```
+mvnw clean package -Dmaven.test.skip=true
+```
 
 ## dokcer imageを起動して自PCで動作確認
 
 ```
 docker-compose up --build
+```
+
+## データベースデータを複写
+
+```
+docker cp <sqlファイル> <コンテナイメージId>:<ディレクトリ>
+
+mysql -u <ユーザ> -p --database manage_kanrensha_v02 < <イメージ内sqlファイル>
+
+// 住所県ファイル一軽
+cd /sqlファイルのフォルダパス/
+for f in *.sql; do mysql -u <ユーザー名> -p<パスワード> <データベース名> < "$f"; done
+
 ```
 
 ## AWS CLIの起動

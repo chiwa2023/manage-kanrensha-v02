@@ -13,7 +13,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
@@ -27,8 +30,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import net.seijishikin.jp.normalize.common_tool.dto.FrameworkCapsuleDto;
 import net.seijishikin.jp.normalize.common_tool.utils.GetObjectMapperWithTimeModuleUtil;
+import net.seijishikin.jp.normalize.manage.kanrensha.constants.UserRoleConstants;
 import net.seijishikin.jp.normalize.manage.kanrensha.controller.PathRouteConstants;
-import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateLeastUserForTestUtil;
 
 /**
  * GetRiyoushaOrgCombinOptionsController単体テスト
@@ -39,6 +42,7 @@ import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateLeastUserForTes
 @DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
 @Sql("../../service/riyousha/GetRiyoushaOrgCombinOptionsServiceTest.sql")
 class GetRiyoushaOrgCombinOptionsControllerTest {
+    // CHECKSTYLE:OFF MagicNumber
 
     /** WebApplicationContext */
     @Autowired
@@ -47,19 +51,34 @@ class GetRiyoushaOrgCombinOptionsControllerTest {
     /** MockMvc */
     private MockMvc mockMvc;
 
+    /** setup */
     @BeforeEach
     public void setup() {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(context) //
                 .apply(SecurityMockMvcConfigurers.springSecurity()).build();
     }
 
+    /** 認証プロバイダ */
+    @Autowired
+    private AuthenticationManager authenticationManager;
+
     @Test
     @Tag("TableTruncate")
-    @WithMockUser
     void test() throws Exception {
 
+        String mail = "aaa@politician.balanse.report.net";
+        String password = "qwerty1234";
+
+        // ログイン処理(SE権限)他者でも編集可能
+        Authentication authentication = authenticationManager
+                .authenticate(new UsernamePasswordAuthenticationToken(mail, password));
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
         FrameworkCapsuleDto capsuleDto = new FrameworkCapsuleDto();
-        capsuleDto.setUserDto(CreateLeastUserForTestUtil.practice());
+        capsuleDto.getUserDto().setUserPersonId(81);
+        capsuleDto.getUserDto().setUserPersonCode(80);
+        capsuleDto.getUserDto().setUserPersonName("aaa");
+        capsuleDto.getUserDto().getListRoles().add("ROLE_" + UserRoleConstants.ADMIN);
 
         String path = PathRouteConstants.ROOT + "/riyousha-org/get-org-options";
 

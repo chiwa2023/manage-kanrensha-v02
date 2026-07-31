@@ -23,6 +23,8 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import org.springframework.transaction.annotation.Transactional;
 
+import net.seijishikin.jp.normalize.manage.kanrensha.dto.sequrity.CustomUserDetails;
+
 /**
  * CustomUserDetailsManager単体テスト
  */
@@ -33,6 +35,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 @Sql("CustomUserDetailsManagerTest.sql")
 class CustomUserDetailsManagerTest {
+    // CHECKSTYLE:OFF MagicNumber
 
     /** テスト対象 */
     @Autowired
@@ -44,13 +47,17 @@ class CustomUserDetailsManagerTest {
 
         // 正常ケース
         String mail = "aaa@politician.balanse.report.net";
-        UserDetails userDetails = customUserDetailsManager.loadUserByUsername(mail);
+        CustomUserDetails userDetails = (CustomUserDetails)customUserDetailsManager.loadUserByUsername(mail);
 
         assertEquals(mail, userDetails.getUsername());
         assertTrue(userDetails.isAccountNonExpired());
         assertTrue(userDetails.isAccountNonLocked());
         assertTrue(userDetails.isCredentialsNonExpired());
         assertTrue(userDetails.isEnabled());
+        
+        assertEquals(81, userDetails.getUserPersonId());
+        assertEquals(80, userDetails.getUserPersonCode());
+        assertEquals("aaa", userDetails.getUserPersonName());
 
         List<GrantedAuthority> listAuthority = new ArrayList<>(userDetails.getAuthorities());
 

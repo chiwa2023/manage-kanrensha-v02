@@ -63,8 +63,6 @@ class RefreshAccessTokenControllerTest {
         Authentication authentication = daoAuthenticationProvider
                 .authenticate(new UsernamePasswordAuthenticationToken(mail, pass));
         JwtTokenDto jwtTokenDto = jwtService.generateToken(authentication);
-        
-        
 
         ObjectMapper objectMapper = GetObjectMapperWithTimeModuleUtil.practice();
 

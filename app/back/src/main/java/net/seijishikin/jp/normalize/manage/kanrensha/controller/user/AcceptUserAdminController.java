@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import net.seijishikin.jp.normalize.common_tool.dto.FrameworkMessageAndResultDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.controller.PathRouteConstants;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.task.AcceptUserAdminCapsuleDto;
+import net.seijishikin.jp.normalize.manage.kanrensha.logic.user.ValidateAuthoraizeUserDetailLogic;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.user.AcceptUserAdminService;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.util.SaveStackTraceService;
 
@@ -31,6 +33,10 @@ public class AcceptUserAdminController {
     @Autowired
     private SaveStackTraceService stackTraceService;
 
+    /** ユーザ妥当性検証Logic */
+    @Autowired
+    private ValidateAuthoraizeUserDetailLogic validateAuthoraizeUserDetailLogic;
+
     /**
      * 処理を行う
      * 
@@ -41,9 +47,12 @@ public class AcceptUserAdminController {
     public ResponseEntity<FrameworkMessageAndResultDto> practice(
             final @RequestBody AcceptUserAdminCapsuleDto capsuleDto) {
         LocalDateTime now = LocalDateTime.now();
-        
+
         FrameworkMessageAndResultDto resultDto = new FrameworkMessageAndResultDto();
         try {
+            // ユーザチェック
+            validateAuthoraizeUserDetailLogic.practice(capsuleDto.getUserDto());
+
             Integer savedCount = acceptUserAdminService.practice(capsuleDto, now);
 
             if (0 == savedCount) {
@@ -55,6 +64,10 @@ public class AcceptUserAdminController {
                 return ResponseEntity.status(HttpStatus.OK).body(resultDto);
             }
 
+        } catch (UsernameNotFoundException exception) {
+            resultDto.setIsFailure(true);
+            resultDto.setMessage("tokenとユーザ(userDto)が不整合です");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(resultDto);
         } catch (Exception exception) { // NOPMD 業務上の理由で積極的許容
             stackTraceService.practice(exception, now.getYear(), 0);
             resultDto.setIsFailure(true);

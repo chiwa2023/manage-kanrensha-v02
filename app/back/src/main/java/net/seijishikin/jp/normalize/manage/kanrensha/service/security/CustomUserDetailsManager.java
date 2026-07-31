@@ -1,14 +1,16 @@
 package net.seijishikin.jp.normalize.manage.kanrensha.service.security;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.provisioning.UserDetailsManager;
@@ -16,6 +18,7 @@ import org.springframework.stereotype.Component;
 
 import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
 import net.seijishikin.jp.normalize.common_tool.utils.SetTableDataHistoryUtil;
+import net.seijishikin.jp.normalize.manage.kanrensha.dto.sequrity.CustomUserDetails;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.LoginStatusEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.UserPersonEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.UserRoleEntity;
@@ -60,14 +63,34 @@ public class CustomUserDetailsManager implements UserDetailsManager {
         LoginStatusEntity statusEntity = loginStatusRepository.findById(username).get();
         LocalDateTime now = LocalDateTime.now();
 
+        UserPersonEntity personEntity = userPersonRepository.findByEmailAndIsLatestTrue(username).get();
+
         // 権限を呼び出してUserDetailを作成する
         List<String> listRole = userRoleRepository.findLatestRoleByMail(username);
 
-        return User.builder().username(statusEntity.getEmail()).password(statusEntity.getPassword())
-                .accountExpired(statusEntity.getLoginTime().plusYears(LIMIT_ACTIVE).isBefore(now)) // x年無活動なのでアカウントロックしたなど
-                .accountLocked(false) // 現状未使用
-                .credentialsExpired(statusEntity.getPassChangeTime().plusMonths(LIMIT_PASS_CHANGE).isBefore(now)) // xか月パスワード更新なしなのでアカウントロックしたなど
-                .disabled(statusEntity.getDisabled()).roles(listRole.toArray(new String[listRole.size()])).build(); // NOPMD
+        return new CustomUserDetails( //
+                personEntity.getUserPersonId(), // ログインユーザId
+                personEntity.getUserPersonCode(), // ログインユーザCode
+                personEntity.getUserPersonName(), // ログインユーザId
+                statusEntity.getEmail(), //
+                statusEntity.getPassword(), //
+                this.createListAuthority(listRole), //
+                !statusEntity.getLoginTime().plusYears(LIMIT_ACTIVE).isBefore(now), // x年無活動なのでアカウントロックしたなど
+                true, // 現状未使用
+                !statusEntity.getPassChangeTime().plusMonths(LIMIT_PASS_CHANGE).isBefore(now), // xか月パスワード更新なしなのでアカウントロックしたなど
+                !statusEntity.getDisabled() // 保存した値をそのまま
+        );
+
+        // return
+        // User.builder().username(statusEntity.getEmail()).password(statusEntity.getPassword())
+        // .accountExpired(statusEntity.getLoginTime().plusYears(LIMIT_ACTIVE).isBefore(now))
+        // // x年無活動なのでアカウントロックしたなど
+        // .accountLocked(false) // 現状未使用
+        // .credentialsExpired(statusEntity.getPassChangeTime().plusMonths(LIMIT_PASS_CHANGE).isBefore(now))
+        // // xか月パスワード更新なしなのでアカウントロックしたなど
+        // .disabled(statusEntity.getDisabled()).roles(listRole.toArray(new
+        // String[listRole.size()])).build(); // NOPMD
+
     }
 
     /**
@@ -94,9 +117,9 @@ public class CustomUserDetailsManager implements UserDetailsManager {
      */
     @Override
     public void updateUser(final UserDetails user) {
-        
+
         String email = user.getUsername();
-        
+
         if (loginStatusRepository.findById(email).isEmpty()) {
             throw new UsernameNotFoundException("User not found");
         }
@@ -110,7 +133,7 @@ public class CustomUserDetailsManager implements UserDetailsManager {
 
         // ログイン中の操作ユーザを取得
         LeastUserDto operatorUserDto = this.getCurrentUser(user.getUsername());
-        
+
         // 既存のロールを無効化
         List<UserRoleEntity> oldRoles = userRoleRepository.findByEmailAndIsLatestTrue(user.getUsername());
         for (UserRoleEntity oldRole : oldRoles) {
@@ -230,4 +253,15 @@ public class CustomUserDetailsManager implements UserDetailsManager {
 
         return userDto;
     }
+
+    private List<GrantedAuthority> createListAuthority(final List<String> listRole) {
+        List<GrantedAuthority> list = new ArrayList<>();
+
+        for (String role : listRole) {
+            list.add(new SimpleGrantedAuthority("ROLE_" + role));
+        }
+
+        return list;
+    }
+
 }

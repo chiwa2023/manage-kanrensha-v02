@@ -1,12 +1,14 @@
 package net.seijishikin.jp.normalize.manage.kanrensha.controller.address_rsdt;
 
 import java.time.LocalDateTime;
+import java.time.Year;
 import java.util.Map;
 import java.util.TreeMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,7 +19,9 @@ import net.seijishikin.jp.normalize.manage.kanrensha.constants.TaskInfoConstants
 import net.seijishikin.jp.normalize.manage.kanrensha.controller.PathRouteConstants;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.add_xml.RetryWktblBatchCapsuleDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.task.InsertTaskPlanResultDto;
+import net.seijishikin.jp.normalize.manage.kanrensha.logic.user.ValidateAuthoraizeUserDetailLogic;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.address_rsdt.UpdateWkTblAddressRsdtService;
+import net.seijishikin.jp.normalize.manage.kanrensha.service.util.SaveStackTraceService;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.year.SwitchYearInsertTaskPlanService;
 
 /**
@@ -35,6 +39,14 @@ public class UpdateWkTblAddressRsdtController {
     @Autowired
     private SwitchYearInsertTaskPlanService switchYearInsertTaskPlanService;
 
+    /** StackTrace保存Service */
+    @Autowired
+    private SaveStackTraceService saveStackTraceService;
+
+    /** ユーザ妥当性検証Logic */
+    @Autowired
+    private ValidateAuthoraizeUserDetailLogic validateAuthoraizeUserDetailLogic;
+
     /**
      * 処理を行う
      *
@@ -46,20 +58,33 @@ public class UpdateWkTblAddressRsdtController {
             final @RequestBody RetryWktblBatchCapsuleDto capsuleDto) {
 
         FrameworkMessageAndResultDto resultDto = new FrameworkMessageAndResultDto();
-        resultDto.setMessage("処理を開始しました。完了までしばらくお待ちください。");
+        try {
+            // ユーザチェック
+            validateAuthoraizeUserDetailLogic.practice(capsuleDto.getUserDto());
+            resultDto.setMessage("処理を開始しました。完了までしばらくお待ちください。");
 
-        LocalDateTime dateTimeStart = LocalDateTime.now();
+            LocalDateTime dateTimeStart = LocalDateTime.now();
 
-        // タスクを登録してバッチ実行
-        // TODO Queryはfront連結後決定
-        Map<String, String> mapParam = new TreeMap<>();
+            // タスクを登録してバッチ実行
+            // TODO Queryはfront連結後決定
+            Map<String, String> mapParam = new TreeMap<>();
 
-        InsertTaskPlanResultDto planDto = switchYearInsertTaskPlanService.practice(null, capsuleDto.getUserDto(),
-                dateTimeStart, TaskInfoConstants.CHANGE_ADDRESS_BASE_CSV, mapParam);
+            InsertTaskPlanResultDto planDto = switchYearInsertTaskPlanService.practice(null, capsuleDto.getUserDto(),
+                    dateTimeStart, TaskInfoConstants.CHANGE_ADDRESS_BASE_CSV, mapParam);
 
-        updateWkTblAddressRsdtService.practice(capsuleDto.getUserDto(), planDto);
+            updateWkTblAddressRsdtService.practice(capsuleDto.getUserDto(), planDto);
 
-        return ResponseEntity.status(HttpStatus.OK).body(resultDto);
+            return ResponseEntity.status(HttpStatus.OK).body(resultDto);
+            
+        } catch (UsernameNotFoundException exception) {
+            resultDto.setIsFailure(true);
+            resultDto.setMessage("tokenとユーザ(userDto)が不整合です");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(resultDto);
+        } catch (Exception exception) { // NOPMD 業務上の理由で積極的に許容
+            saveStackTraceService.practice(exception, Year.now().getValue(), 0);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+
     }
 
 }

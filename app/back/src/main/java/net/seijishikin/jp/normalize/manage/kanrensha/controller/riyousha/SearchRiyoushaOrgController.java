@@ -59,9 +59,7 @@ public class SearchRiyoushaOrgController {
             resultDto.setIsFailure(true);
             resultDto.setMessage(exception.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(resultDto);
-
         }
-
     }
 
 }

@@ -85,7 +85,7 @@ class RebuildAddressPostalCodeBatchConfigurationAllTest {
                 rebuildAddressPostalCode.getJobParametersIncrementer().getNext(new JobParameters())) // NOPMD
                 .addLocalDateTime("executeTime", LocalDateTime.now())
                 .addString("readFilePathOneLine", pathOneLine.toString())
-                .addString("readFilePathJigyousha", pathJigyousha.toString()).addString("lgCode", "13")
+                .addString("readFilePathJigyousha", pathJigyousha.toString()).addString("lgCode", "16201")
                 .addLong("userId", (long) userDto.getUserPersonId())
                 .addLong("userCode", (long) userDto.getUserPersonCode())
                 .addString("userName", userDto.getUserPersonName()).toJobParameters();

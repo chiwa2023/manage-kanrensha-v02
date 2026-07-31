@@ -6,13 +6,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import net.seijishikin.jp.normalize.manage.kanrensha.dto.sequrity.CustomUserDetails;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.sequrity.JwtTokenDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.security.CustomUserDetailsManager;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.security.JwtService;
@@ -38,7 +38,7 @@ public class RefreshAccessTokenController {
     @Autowired
     private JwtService jwtService;
 
-    /** JwtService */
+    /** StackTrace保存Service */
     @Autowired
     private SaveStackTraceService saveStackTraceService;
 
@@ -58,10 +58,15 @@ public class RefreshAccessTokenController {
             String username = jwt.getSubject();
 
             // ユーザー情報の取得
-            UserDetails userDetails = customUserDetailsManager.loadUserByUsername(username);
+            CustomUserDetails userDetails = (CustomUserDetails) customUserDetailsManager.loadUserByUsername(username);
 
             // 新しいトークンの生成
             JwtTokenDto jwtToken = jwtService.generateToken(userDetails);
+
+            // 共通ツールでアクセストークンが欲しい場合
+            // System.out.println("-------------------");
+            // System.out.println(jwtToken.getRefreshToken());
+            // System.out.println("-------------------");
 
             return ResponseEntity.status(HttpStatus.OK).body(jwtToken);
 

@@ -43,7 +43,6 @@ public class GetLeastUserByMailService {
         // ユーザ呼び出し
         Optional<UserPersonEntity> optional = userPersonRepository.findLatestByMail(email);
         if (!optional.isEmpty()) {
-
             UserPersonEntity entity = optional.get();
             personDto.setUserPersonId(entity.getUserPersonId());
             personDto.setUserPersonCode(entity.getUserPersonCode());
@@ -53,6 +52,7 @@ public class GetLeastUserByMailService {
         // 権限呼び出し
         List<String> listAuh = authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority)
                 .collect(Collectors.toList());
+        listAuh.remove("FACTOR_PASSWORD"); // 権限でない値は消す
         personDto.setListRoles(listAuh);
 
         List<UserRoleEntity> listEntity = userRoleRepository.findByEmailAndIsLatestTrue(email);

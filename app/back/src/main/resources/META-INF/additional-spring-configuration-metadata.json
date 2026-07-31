@@ -58,5 +58,10 @@
     "name": "app.send.mail.address",
     "type": "java.lang.String",
     "description": "A description for 'app.send.mail.address'"
+  },
+  {
+    "name": "app.cors.allowed-origins",
+    "type": "java.lang.String",
+    "description": "A description for 'app.cors.allowed-origins'"
   }
 ]}

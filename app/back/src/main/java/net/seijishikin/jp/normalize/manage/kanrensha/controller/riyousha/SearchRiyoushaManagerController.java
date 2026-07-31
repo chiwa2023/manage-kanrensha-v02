@@ -62,7 +62,6 @@ public class SearchRiyoushaManagerController {
             resultDto.setMessage(FrameworkMessageAndResultDto.MESSAGE_INTERNAL_ERROR);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(resultDto);
         }
-
     }
 
 }

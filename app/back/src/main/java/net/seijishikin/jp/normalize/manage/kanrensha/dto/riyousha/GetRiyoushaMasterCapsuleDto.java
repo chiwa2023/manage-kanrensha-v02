@@ -3,11 +3,12 @@ package net.seijishikin.jp.normalize.manage.kanrensha.dto.riyousha;
 import java.io.Serializable;
 
 import net.seijishikin.jp.normalize.common_tool.dto.DtoEntityInitialValueInterface;
+import net.seijishikin.jp.normalize.common_tool.dto.FrameworkCapsuleDto;
 
 /**
  * 利用者マスタ取得条件Dto
  */
-public class GetRiyoushaMasterCapsuleDto // NOPMD DataClass
+public class GetRiyoushaMasterCapsuleDto extends FrameworkCapsuleDto // NOPMD DataClass
         implements Serializable, DtoEntityInitialValueInterface {
 
     /** Serialize id */

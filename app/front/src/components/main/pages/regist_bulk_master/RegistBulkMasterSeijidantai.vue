@@ -462,7 +462,7 @@ function recieveSubmit() {
                             <td>北海道札幌市中央区北1条西2丁目</td>
                             <td>高橋さくら</td>
                             <td>05</td>
-                            <td>67890</td>
+                            <td></td>
                             <td>北海道札幌市中央区北1条西2丁目</td>
                             <td></td>
                             <td>札幌市時計台ビル</td>

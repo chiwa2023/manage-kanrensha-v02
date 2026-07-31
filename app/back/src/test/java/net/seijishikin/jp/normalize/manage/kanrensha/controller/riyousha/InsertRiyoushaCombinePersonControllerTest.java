@@ -1,6 +1,6 @@
 package net.seijishikin.jp.normalize.manage.kanrensha.controller.riyousha;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals; // NOPMD HighImport
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -13,7 +13,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
@@ -40,7 +43,7 @@ import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateLeastUserForTes
 @AutoConfigureMockMvc
 @SpringBootTest
 @DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
-@Sql("../../service/riyousha/InsertRiyoushaCombinePersonServiceTest.sql")
+@Sql("InsertRiyoushaCombinePersonServiceTest.sql")
 class InsertRiyoushaCombinePersonControllerTest {
     // CHECKSTYLE:OFF MagicNumber
 
@@ -51,16 +54,28 @@ class InsertRiyoushaCombinePersonControllerTest {
     /** MockMvc */
     private MockMvc mockMvc;
 
+    /** setup */
     @BeforeEach
     public void setup() {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(context) //
                 .apply(SecurityMockMvcConfigurers.springSecurity()).build();
     }
 
+    /** 認証プロバイダ */
+    @Autowired
+    private AuthenticationManager authenticationManager;
+
     @Test
     @Tag("TableTruncate")
-    @WithMockUser
     void test() throws Exception {
+
+        String mail = "aaa@politician.balanse.report.net";
+        String password = "qwerty1234";
+
+        // ログイン処理(SE権限)他者でも編集可能
+        Authentication authentication = authenticationManager
+                .authenticate(new UsernamePasswordAuthenticationToken(mail, password));
+        SecurityContextHolder.getContext().setAuthentication(authentication);
 
         // APIパートナーで保存
         RiyoushaCombinePersonCapsuleDto capsuleDto = new RiyoushaCombinePersonCapsuleDto();
@@ -70,10 +85,14 @@ class InsertRiyoushaCombinePersonControllerTest {
         capsuleDto.setUserDto(userDto);
         RiyoushaCombineOrgEntity orgEntity4 = new RiyoushaCombineOrgEntity();
         orgEntity4.setOrgRiyoushaCode(216);
-        orgEntity4.setPersonCode(315);
+        orgEntity4.setPersonRiyoushaCode(315);
         orgEntity4.setPersonRiyoushaName("管理者 マリア花子");
         orgEntity4.setOrgName("利用者IT組織");
         capsuleDto.setCombineEntity(orgEntity4);
+        capsuleDto.getUserDto().setUserPersonId(81);
+        capsuleDto.getUserDto().setUserPersonCode(80);
+        capsuleDto.getUserDto().setUserPersonName("aaa");
+        capsuleDto.getUserDto().getListRoles().add("ROLE_" + UserRoleConstants.ADMIN);
 
         String path = PathRouteConstants.ROOT + "/riyousha-org/insert-combine";
 

@@ -43,7 +43,7 @@ public class RebuildAddressPostalCodeBatchConfiguration {
     public static final String STEP_JIGYOUSHA = FUNCTION_NAME + "InsertJigyousha" + STEP;
 
     /** 処理単位数 */
-    private static final int CHUNK_SIZE = 250;
+    private static final int CHUNK_SIZE = 50;
 
     /** 郵便番号消去Tasklet */
     @Autowired

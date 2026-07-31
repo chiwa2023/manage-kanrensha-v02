@@ -1,6 +1,7 @@
 package net.seijishikin.jp.normalize.manage.kanrensha.controller.user;
 
 import java.time.LocalDate;
+import java.time.Year;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,6 +21,7 @@ import net.seijishikin.jp.normalize.common_tool.dto.FrameworkMessageAndResultDto
 import net.seijishikin.jp.normalize.manage.kanrensha.controller.PathRouteConstants;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.sequrity.RefreshPasswordCapsuleDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.UserPersonEntity;
+import net.seijishikin.jp.normalize.manage.kanrensha.logic.user.ValidateAuthoraizeUserDetailLogic;
 import net.seijishikin.jp.normalize.manage.kanrensha.repository.UserPersonRepository;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.user.RefreshPasswordService;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.util.SaveStackTraceService;
@@ -46,6 +49,10 @@ public class RefreshPasswordController {
     @Autowired
     private SaveStackTraceService saveStackTraceService;
 
+    /** ユーザ妥当性検証Logic */
+    @Autowired
+    private ValidateAuthoraizeUserDetailLogic validateAuthoraizeUserDetailLogic;
+
     /**
      * 処理を行う
      *
@@ -56,13 +63,29 @@ public class RefreshPasswordController {
     public ResponseEntity<FrameworkMessageAndResultDto> practice(
             @RequestBody final RefreshPasswordCapsuleDto capsuleDto) {
 
-        Optional<UserPersonEntity> optional = userPersonRepository.findById(capsuleDto.getUserDto().getUserPersonId());
-
         FrameworkMessageAndResultDto resultDto = new FrameworkMessageAndResultDto();
-        if (optional.isEmpty()) {
+        Optional<UserPersonEntity> optional;
+        try {
+
+            // ユーザチェック
+            validateAuthoraizeUserDetailLogic.practice(capsuleDto.getUserDto());
+
+            optional = userPersonRepository.findById(capsuleDto.getUserDto().getUserPersonId());
+
+            if (optional.isEmpty()) {
+                resultDto.setIsFailure(true);
+                resultDto.setMessage("指定されたユーザが存在しません");
+                return ResponseEntity.status(HttpStatus.ACCEPTED).body(resultDto);
+            }
+
+        } catch (UsernameNotFoundException exception) {
             resultDto.setIsFailure(true);
-            resultDto.setMessage("指定されたユーザが存在しません");
-            return ResponseEntity.status(HttpStatus.ACCEPTED).body(resultDto);
+            resultDto.setMessage("tokenとユーザ(userDto)が不整合です");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(resultDto);
+
+        } catch (Exception exception) { // NOPMD 業務上の理由で積極的に許容
+            saveStackTraceService.practice(exception, Year.now().getValue(), 0);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
 
         String email = optional.get().getEmail();

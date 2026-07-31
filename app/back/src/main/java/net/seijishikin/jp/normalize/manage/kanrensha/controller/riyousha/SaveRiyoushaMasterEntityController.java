@@ -4,6 +4,7 @@ import java.time.Year;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,8 +13,10 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.http.HttpStatus;
 import net.seijishikin.jp.normalize.common_tool.dto.FrameworkMessageAndResultDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.riyousha.SaveRiyoushaManagerCapsuleDto;
+import net.seijishikin.jp.normalize.manage.kanrensha.logic.user.ValidateAuthoraizeUserDetailLogic;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.riyousha.SaveRiyoushaManagerEntityService;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.util.SaveStackTraceService;
+import net.seijishikin.jp.normalize.manage.kanrensha.constants.UserRoleConstants;
 import net.seijishikin.jp.normalize.manage.kanrensha.controller.PathRouteConstants;
 
 /**
@@ -31,6 +34,10 @@ public class SaveRiyoushaMasterEntityController {
     @Autowired
     private SaveStackTraceService saveStackTraceService;
 
+    /** ユーザ妥当性検証Logic */
+    @Autowired
+    private ValidateAuthoraizeUserDetailLogic validateAuthoraizeUserDetailLogic;
+
     /**
      * 処理を行う
      * 
@@ -42,6 +49,21 @@ public class SaveRiyoushaMasterEntityController {
             @RequestBody final SaveRiyoushaManagerCapsuleDto capsuleDto) {
 
         FrameworkMessageAndResultDto resultDto = new FrameworkMessageAndResultDto();
+        try {
+            // ユーザチェック
+            if (!validateAuthoraizeUserDetailLogic.practiceRiyousha(capsuleDto.getUserDto(),
+                    capsuleDto.getRiyoushaManagerDto().getRiyoushaManagerMasterCode(), UserRoleConstants.MANAGER,
+                    UserRoleConstants.ADMIN)) {
+                resultDto.setIsFailure(true);
+                resultDto.setMessage("他者情報を編集するのはSE権限がないとできません");
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(resultDto);
+            }
+        } catch (UsernameNotFoundException exception) {
+            resultDto.setIsFailure(true);
+            resultDto.setMessage("tokenとユーザ(userDto)が不整合です");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(resultDto);
+        }
+
         try {
 
             final Integer zero = 0;

@@ -106,7 +106,7 @@ function recieveManagerInterface(editDto: RiyoushaManagerDtoInterface) {
             message.value = e.message;
             return;
         }
-        
+
         message.value = getErrorMessage(e, INQUIRE_FLG);
         return;
     });
@@ -130,7 +130,7 @@ function recieveSubmit() {
     <h1>運営者追加</h1><br>
 
     <!-- 運営者編集 -->
-    <RiyoushaManagerEdit :edit-entity="editEntity" @send-cancel-manager="recieveCancelManager"
+    <RiyoushaManagerEdit :user-dto="userDto" :edit-entity="editEntity" @send-cancel-manager="recieveCancelManager"
         @send-manager-interface="recieveManagerInterface">
     </RiyoushaManagerEdit>
 

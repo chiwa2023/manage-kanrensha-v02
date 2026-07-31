@@ -1,14 +1,15 @@
 ﻿<script setup lang="ts">
 import { onMounted, ref, watch, type Ref } from 'vue';
-import { getErrorMessage, MessageConstants, MessageView, ViewInputAccess, ViewInputAddress, ViewInputPersonName } from 'seijishikin-jp-normalize_common-tool';
+import { getErrorMessage, MessageConstants, MessageView, ViewInputAccess, ViewInputAddress, ViewInputPersonName, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import { RiyoushaManagerDto, type RiyoushaManagerDtoInterface } from '../../dto/riyousha/riyoushaManagerDto';
 import type { RiyoushaManagerMasterEntityInterface } from '../../entity/riyoushaManagerMasterEntity';
 import getAuthorizedPromiseArea from '../../dto/login/getAuthorizedPromiseArea';
 import RoutePathConstants from '../../../../routePathConstants';
 import { AccessTokenNotFoundError, TokenRefreshError } from '../../dto/login/errors';
+import { GetRiyoushaManagerByEntityCapsuleDto, type GetRiyoushaManagerByEntityCapsuleDtoInterface } from '../../dto/riyousha/getRiyoushaManagerByEntityCapsuleDto';
 
 // props,emit
-const props = defineProps<{ editEntity: RiyoushaManagerMasterEntityInterface }>();
+const props = defineProps<{ userDto: LeastUserDtoInterface, editEntity: RiyoushaManagerMasterEntityInterface }>();
 const emits = defineEmits(["sendCancelManager", "sendManagerInterface"]);
 
 // よく使う定数
@@ -44,13 +45,18 @@ watch(props, () => {
 
 
 function onChangeEntity() {
+
+    const capsuleDto: GetRiyoushaManagerByEntityCapsuleDtoInterface = new GetRiyoushaManagerByEntityCapsuleDto();
+    capsuleDto.userDto = props.userDto;
+    capsuleDto.masterEntity = props.editEntity;
+
     // 編集しないときはgetしない    
     if (props.editEntity.riyoushaManagerMasterId !== 0) {
 
         getAuthorizedPromiseArea().then(token => {
             const url = urlBack + "/riyousha/get-manager";
             const method = "POST";
-            const body = JSON.stringify(props.editEntity);
+            const body = JSON.stringify(capsuleDto);
             const headers = {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
@@ -66,23 +72,23 @@ function onChangeEntity() {
                     }
                 })
                 .catch((error) => {
-                message.value = getErrorMessage(error, ERR_MESS_ONLY);
-                infoLevel.value = MessageConstants.LEVEL_ERROR;
-                messageType.value = MessageConstants.VIEW_OK;
-                return;
+                    message.value = getErrorMessage(error, ERR_MESS_ONLY);
+                    infoLevel.value = MessageConstants.LEVEL_ERROR;
+                    messageType.value = MessageConstants.VIEW_OK;
+                    return;
                 });
         }).catch((e) => {
-        infoLevel.value = MessageConstants.LEVEL_ERROR;
-        messageType.value = MessageConstants.VIEW_OK;
+            infoLevel.value = MessageConstants.LEVEL_ERROR;
+            messageType.value = MessageConstants.VIEW_OK;
 
-        // トークン保持または取得に失敗している場合
-        if (e instanceof AccessTokenNotFoundError || e instanceof TokenRefreshError) {
-            message.value = e.message;
+            // トークン保持または取得に失敗している場合
+            if (e instanceof AccessTokenNotFoundError || e instanceof TokenRefreshError) {
+                message.value = e.message;
+                return;
+            }
+
+            message.value = getErrorMessage(e, INQUIRE_FLG);
             return;
-        }
-        
-        message.value = getErrorMessage(e, INQUIRE_FLG);
-        return;
         });
     }
 }

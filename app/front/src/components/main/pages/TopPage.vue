@@ -199,6 +199,13 @@ function changeVisiblePassword() {
 
                 <div class="links">
                     <div style="text-align: left;">
+                        下記マスタはすでにWebで公開済の公開情報となり、どなたでもご利用いただけます
+                        <ul>
+                        <li><RouterLink :to="RoutePathConstants.PAGE_DOWNLOAD_MASTER_MIN">関連者最小登録マスタ(公開情報)</RouterLink></li>
+                        <li><RouterLink :to="RoutePathConstants.PAGE_DOWNLOAD_HISTORY">関連者履歴マスタ(公開情報)</RouterLink></li>
+                        </ul>
+                    </div>
+                    <div style="text-align: left;">
                         <ul>
                             <li><a href="https://www.houjin-bangou.nta.go.jp/webapi/index.html">法人番号システム
                                     Web-API</a>を利用した独自サービスを提供しています。このサービスは、国税庁法人番号システムのWeb-API機能を利用して取得した情報をもとに作成していますが、サービスの内容は国税庁によって保証されたものではありません
@@ -213,12 +220,12 @@ function changeVisiblePassword() {
             </div>
         </div>
 
-    <!-- メッセージ表示    -->
-    <div class="overMessage" v-if="messageType !== MessageConstants.VIEW_NONE">
-        <MessageView :info-level="infoLevel" :message-type="messageType" :title="MESS_PAGE_NAME" :message="message"
-            :caller="caller" @send-submit="recieveSubmit">
-        </MessageView>
-    </div>
+        <!-- メッセージ表示    -->
+        <div class="overMessage" v-if="messageType !== MessageConstants.VIEW_NONE">
+            <MessageView :info-level="infoLevel" :message-type="messageType" :title="MESS_PAGE_NAME" :message="message"
+                :caller="caller" @send-submit="recieveSubmit">
+            </MessageView>
+        </div>
     </div>
 </template>
 

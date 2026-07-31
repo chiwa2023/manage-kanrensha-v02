@@ -1,4 +1,6 @@
-interface GetRiyoushaMasterCapsuleDtoInterface {
+import { FrameworkCapsuleDto, type FrameworkCapsuleDtoInterface } from "seijishikin-jp-normalize_common-tool";
+
+interface GetRiyoushaMasterCapsuleDtoInterface extends FrameworkCapsuleDtoInterface {
 
     /** 利用者コード */
     riyoushaCode: number;
@@ -7,7 +9,8 @@ interface GetRiyoushaMasterCapsuleDtoInterface {
     riyoushaRole: string;
 }
 
-class GetRiyoushaMasterCapsuleDto implements GetRiyoushaMasterCapsuleDtoInterface {
+class GetRiyoushaMasterCapsuleDto extends FrameworkCapsuleDto
+    implements GetRiyoushaMasterCapsuleDtoInterface {
 
     /** 利用者コード */
     riyoushaCode: number;
@@ -16,6 +19,8 @@ class GetRiyoushaMasterCapsuleDto implements GetRiyoushaMasterCapsuleDtoInterfac
     riyoushaRole: string;
 
     constructor() {
+        super();
+
         this.riyoushaCode = 0;
         this.riyoushaRole = "";
     }

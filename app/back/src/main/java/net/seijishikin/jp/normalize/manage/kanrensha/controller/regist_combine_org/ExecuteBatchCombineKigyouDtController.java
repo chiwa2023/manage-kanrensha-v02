@@ -6,6 +6,7 @@ import java.util.TreeMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -74,6 +75,10 @@ public class ExecuteBatchCombineKigyouDtController {
 
             return ResponseEntity.status(HttpStatus.OK).body(resultDto);
 
+        } catch (UsernameNotFoundException exception) {
+            resultDto.setIsFailure(true);
+            resultDto.setMessage("tokenとユーザ(userDto)が不整合です");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(resultDto);
         } catch (Exception exception) { // NOPMD 業務的な理由から積極的に許容
             saveStackTraceService.practice(exception, year, taskPlanCode);
             resultDto.setIsFailure(true);

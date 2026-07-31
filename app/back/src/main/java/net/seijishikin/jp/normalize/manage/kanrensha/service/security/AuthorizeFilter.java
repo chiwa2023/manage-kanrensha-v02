@@ -7,6 +7,7 @@ import java.util.Objects;
 
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
@@ -20,6 +21,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import net.seijishikin.jp.normalize.manage.kanrensha.controller.PathRouteConstants;
+import net.seijishikin.jp.normalize.manage.kanrensha.dto.sequrity.CustomUserDetails;
 
 /**
  * トークンからログインするフィルタ
@@ -74,13 +76,46 @@ public class AuthorizeFilter extends OncePerRequestFilter {
             // tokenの検証と認証
             Jwt jwt = jwtDecoder.decode(xAuthToken.substring(POS_TOKEN));
 
+            // クレームから各パラメータを取得
+            Number userPersonIdNumber = jwt.getClaim("userPersonId");
+            Integer userPersonId;
+            if (Objects.isNull(userPersonIdNumber)) {
+                userPersonId = null; // NOPMD
+            } else {
+                userPersonId = userPersonIdNumber.intValue();
+            }
+
+            Number userPersonCodeNumber = jwt.getClaim("userPersonCode");
+            Integer userPersonCode;
+            if (Objects.isNull(userPersonCodeNumber)) {
+                userPersonCode = null; // NOPMD
+            } else {
+                userPersonCode = userPersonCodeNumber.intValue();
+            }
+
+            String userPersonName = jwt.getClaim("userPersonName");
+
+            // ロールの復元
+            List<String> roles = jwt.getClaim("roles");
+            List<SimpleGrantedAuthority> authorities = new ArrayList<>();
+            if (roles != null) {
+                for (String role : roles) {
+                    authorities.add(new SimpleGrantedAuthority(role));
+                }
+            }
+
             // usernameの取得
             String username = jwt.getSubject();
-            jwt.getClaim("roles");
+
+            // JWTのクレーム情報から CustomUserDetails をインスタンス化
+            CustomUserDetails userDetails = new CustomUserDetails(userPersonId, userPersonCode, userPersonName,
+                    username, "", // パスワードは不要なため空文字
+                    authorities, true, true, true, true // アカウントステータスは有効として復元
+            );
 
             // ログイン状態の設定
             SecurityContextHolder.getContext()
-                    .setAuthentication(new UsernamePasswordAuthenticationToken(username, null, new ArrayList<>()));
+                    .setAuthentication(new UsernamePasswordAuthenticationToken(userDetails, null, authorities));
 
         }
 

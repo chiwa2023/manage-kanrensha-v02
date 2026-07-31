@@ -102,7 +102,7 @@ function recievePartnerApiInterface(editDto: RiyoushaPartnerApiDtoInterface) {
             message.value = e.message;
             return;
         }
-        
+
         message.value = getErrorMessage(e, INQUIRE_FLG);
         return;
     });
@@ -120,15 +120,15 @@ function recieveSubmit() {
 
 </script>
 <template>
-    
+
     <!-- APIパートナー -->
     <PartnerApiInfo :user-dto="userDto"></PartnerApiInfo>
 
     <h1>APIパートナー追加</h1><br>
 
     <!-- 運営者編集 -->
-    <RiyoushaPartnerApiEdit :edit-entity="editEntity" @send-cancel-partner-api="recieveCancelPartnerApi"
-        @send-partner-api-interface="recievePartnerApiInterface">
+    <RiyoushaPartnerApiEdit :user-dto="userDto" :edit-entity="editEntity"
+        @send-cancel-partner-api="recieveCancelPartnerApi" @send-partner-api-interface="recievePartnerApiInterface">
     </RiyoushaPartnerApiEdit>
 
     <!-- メッセージ表示    -->

@@ -158,8 +158,9 @@ function recieveSubmit() {
     <h1>API接続者編集</h1><br>
 
     <!-- API接続者編集 -->
-    <RiyoushaPartnerApiEdit :edit-entity="editEntity" @send-cancel-partner-api="recieveCancelPartnerApi"
-        @send-partner-api-interface="recievePartnerApiInterface"></RiyoushaPartnerApiEdit>
+    <RiyoushaPartnerApiEdit :user-dto="userDto" :edit-entity="editEntity"
+        @send-cancel-partner-api="recieveCancelPartnerApi" @send-partner-api-interface="recievePartnerApiInterface">
+    </RiyoushaPartnerApiEdit>
 
     <!-- メッセージ表示    -->
     <div class="overMessage" v-if="messageType !== MessageConstants.VIEW_NONE">

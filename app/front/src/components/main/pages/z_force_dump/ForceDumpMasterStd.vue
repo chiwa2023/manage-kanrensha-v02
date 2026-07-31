@@ -76,7 +76,6 @@ function onSave() {
     }
 
     capsuleDto.value.userDto = userDto.value;
-
     getAuthorizedPromiseArea().then(token => {
         const url = urlBack + "/dump-master-std/execute";
         const method = "POST";

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import net.seijishikin.jp.normalize.common_tool.dto.FrameworkMessageAndResultDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.controller.PathRouteConstants;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.user.DeleteUserCapsuleDto;
+import net.seijishikin.jp.normalize.manage.kanrensha.logic.user.ValidateAuthoraizeUserDetailLogic;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.user.DeleteUserService;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.util.SaveStackTraceService;
 
@@ -32,6 +33,10 @@ public class DeleteUserController {
     @Autowired
     private SaveStackTraceService stackTraceService;
 
+    /** ユーザ妥当性検証Logic */
+    @Autowired
+    private ValidateAuthoraizeUserDetailLogic validateAuthoraizeUserDetailLogic;
+
     /**
      * 処理を行う
      *
@@ -42,8 +47,12 @@ public class DeleteUserController {
     public ResponseEntity<FrameworkMessageAndResultDto> practice(@RequestBody final DeleteUserCapsuleDto capsuleDto) {
 
         // 削除作業
+        FrameworkMessageAndResultDto resultDto = new FrameworkMessageAndResultDto();
         try {
-            FrameworkMessageAndResultDto resultDto = deleteUserService.practice(capsuleDto);
+            // ユーザチェック
+            validateAuthoraizeUserDetailLogic.practice(capsuleDto.getUserDto());
+
+            resultDto = deleteUserService.practice(capsuleDto);
             if (resultDto.getIsFailure()) {
                 return ResponseEntity.status(HttpStatus.ACCEPTED).body(resultDto);
             } else {
@@ -52,14 +61,11 @@ public class DeleteUserController {
 
         } catch (IllegalStateException | UsernameNotFoundException e) {
             stackTraceService.practice(e, LocalDate.now().getYear(), 0);
-            FrameworkMessageAndResultDto resultDto = new FrameworkMessageAndResultDto();
             resultDto.setIsFailure(true);
             resultDto.setMessage("ユーザ名が見つかりません");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(resultDto);
-
         } catch (Exception exception) { // NOPMD GenericException 業務的な理由から積極的に許容
             stackTraceService.practice(exception, LocalDate.now().getYear(), 0);
-            FrameworkMessageAndResultDto resultDto = new FrameworkMessageAndResultDto();
             resultDto.setIsFailure(true);
             resultDto.setMessage("システムエラーが発生しました");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(resultDto);

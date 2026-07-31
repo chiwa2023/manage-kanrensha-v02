@@ -6,6 +6,7 @@ import java.util.TreeMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,6 +17,7 @@ import net.seijishikin.jp.normalize.common_tool.dto.FrameworkMessageAndResultDto
 import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.add_xml.RetryWktblBatchCapsuleDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.task.InsertTaskPlanResultDto;
+import net.seijishikin.jp.normalize.manage.kanrensha.logic.user.ValidateAuthoraizeUserDetailLogic;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.regist_bulk_history.RetryBatchHistoryPersonService;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.util.SaveStackTraceService;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.year.SwitchYearInsertTaskPlanService;
@@ -41,6 +43,10 @@ public class RetryBatchHistoryPersonController {
     @Autowired
     private SaveStackTraceService saveStackTraceService;
 
+    /** ユーザ妥当性検証Logic */
+    @Autowired
+    private ValidateAuthoraizeUserDetailLogic validateAuthoraizeUserDetailLogic;
+
     /**
      * 処理を行う
      *
@@ -58,6 +64,9 @@ public class RetryBatchHistoryPersonController {
         Integer taskPlanCode = 0;
         FrameworkMessageAndResultDto resultDto = new FrameworkMessageAndResultDto();
         try {
+            // ユーザチェック
+            validateAuthoraizeUserDetailLogic.practice(capsuleDto.getUserDto());
+
             resultDto.setMessage("処理を開始しました。完了までしばらくお待ちください。");
 
             // 非同期処理はタスク登録をする
@@ -73,6 +82,10 @@ public class RetryBatchHistoryPersonController {
 
             return ResponseEntity.status(HttpStatus.OK).body(resultDto);
 
+        } catch (UsernameNotFoundException exception) {
+            resultDto.setIsFailure(true);
+            resultDto.setMessage("tokenとユーザ(userDto)が不整合です");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(resultDto);
         } catch (Exception exception) { // NOPMD 業務上の理由で積極的に許容
             saveStackTraceService.practice(exception, year, taskPlanCode);
             resultDto.setIsFailure(true);

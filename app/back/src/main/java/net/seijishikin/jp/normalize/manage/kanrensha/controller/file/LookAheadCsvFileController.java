@@ -7,6 +7,7 @@ import java.util.NoSuchElementException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import net.seijishikin.jp.normalize.manage.kanrensha.controller.PathRouteConstants;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.storage_file.LookAheadCsvResultDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.storage_file.UploadContentCapsuleDto;
+import net.seijishikin.jp.normalize.manage.kanrensha.logic.user.ValidateAuthoraizeUserDetailLogic;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.file.LookAheadCsvFileService;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.util.SaveStackTraceService;
 
@@ -33,6 +35,10 @@ public class LookAheadCsvFileController {
     @Autowired
     private SaveStackTraceService saveStackTraceService;
 
+    /** ユーザ妥当性検証Logic */
+    @Autowired
+    private ValidateAuthoraizeUserDetailLogic validateAuthoraizeUserDetailLogic;
+
     /**
      * 処理を行う
      *
@@ -46,12 +52,15 @@ public class LookAheadCsvFileController {
         Integer year = now.getYear();
         LookAheadCsvResultDto resultDto = new LookAheadCsvResultDto();
         try {
+            // ユーザチェック
+            validateAuthoraizeUserDetailLogic.practice(capsuleDto.getUserDto());
+
             resultDto = lookAheadCsvFileService.practice(now.getMonthValue(), capsuleDto.getUploadFileDto());
-            
-            if(resultDto.getIsFailure()) {
+
+            if (resultDto.getIsFailure()) {
                 return ResponseEntity.status(HttpStatus.ACCEPTED).body(resultDto);
-                
-            }else {
+
+            } else {
                 // 正常取得できたらそのまま返却
                 return ResponseEntity.status(HttpStatus.OK).body(resultDto);
             }
@@ -66,6 +75,10 @@ public class LookAheadCsvFileController {
             resultDto.setIsFailure(true);
             resultDto.setMessage("csv解析が正常にできませんでした");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(resultDto);
+        } catch (UsernameNotFoundException exception) {
+            resultDto.setIsFailure(true);
+            resultDto.setMessage("tokenとユーザ(userDto)が不整合です");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(resultDto);
         } catch (Exception exception) { // NOPMD 業務的な理由から積極的に許容
             saveStackTraceService.practice(exception, year, 0);
             resultDto.setIsFailure(true);

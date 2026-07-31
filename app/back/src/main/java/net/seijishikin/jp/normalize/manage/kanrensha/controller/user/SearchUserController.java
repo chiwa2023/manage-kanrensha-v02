@@ -44,8 +44,7 @@ public class SearchUserController {
 
         } catch (Exception exception) { // NOPMD
             saveStackTraceService.practice(exception, LocalDate.now().getYear(), 0);
-            SearchUserEntityResultDto resultDto = new SearchUserEntityResultDto();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(resultDto);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 

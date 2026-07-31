@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,6 +17,7 @@ import net.seijishikin.jp.normalize.common_tool.dto.select_options.SelectOptionI
 import net.seijishikin.jp.normalize.manage.kanrensha.service.riyousha.GetRiyoushaOrgCombinOptionsService;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.util.SaveStackTraceService;
 import net.seijishikin.jp.normalize.manage.kanrensha.controller.PathRouteConstants;
+import net.seijishikin.jp.normalize.manage.kanrensha.logic.user.ValidateAuthoraizeUserDetailLogic;
 
 /**
  * 利用者紐づけ組織選択肢取得Controller
@@ -32,6 +34,10 @@ public class GetRiyoushaOrgCombinOptionsController {
     @Autowired
     private SaveStackTraceService saveStackTraceService;
 
+    /** ユーザ妥当性検証Logic */
+    @Autowired
+    private ValidateAuthoraizeUserDetailLogic validateAuthoraizeUserDetailLogic;
+
     /**
      * 処理を行う
      * 
@@ -41,10 +47,17 @@ public class GetRiyoushaOrgCombinOptionsController {
     @PostMapping("/get-org-options")
     public ResponseEntity<List<SelectOptionIntegerDto>> practice(@RequestBody final FrameworkCapsuleDto capsuleDto) {
         try {
-            // 必ずサイズ1以上のリストが返ってくる
-            return ResponseEntity.status(HttpStatus.OK)
-                    .body(getRiyoushaOrgCombinOptionsService.practice(capsuleDto));
+            // ユーザチェック
+            // 利用者組織はconfig設定
+            validateAuthoraizeUserDetailLogic.practice(capsuleDto.getUserDto());
 
+            // 必ずサイズ1以上のリストが返ってくる
+            return ResponseEntity.status(HttpStatus.OK).body(getRiyoushaOrgCombinOptionsService.practice(capsuleDto));
+
+        } catch (UsernameNotFoundException exception) {
+            // resultDto.setIsFailure(true);
+            // resultDto.setMessage("tokenとユーザ(userDto)が不整合です");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         } catch (Exception exception) { // NOPMD 業務上の理由で積極的許容
             saveStackTraceService.practice(exception, Year.now().getValue(), 0);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();

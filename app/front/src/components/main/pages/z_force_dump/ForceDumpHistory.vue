@@ -88,6 +88,7 @@ function onSave() {
         fetch(url, { method, headers, body })
             .then(async (response) => {
                 const resultDto: FrameworkMessageAndResultDtoInterface = await response.json();
+
                 message.value = resultDto.message;
                 if (resultDto.isFailure) {
                     infoLevel.value = MessageConstants.LEVEL_WARNING;
@@ -114,7 +115,7 @@ function onSave() {
             message.value = e.message;
             return;
         }
-        
+
         message.value = getErrorMessage(e, INQUIRE_FLG);
         return;
     });

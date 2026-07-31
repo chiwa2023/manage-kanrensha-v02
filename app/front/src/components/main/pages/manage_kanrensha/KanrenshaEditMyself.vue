@@ -75,6 +75,7 @@ onMounted(() => {
         const capsuleDto: GetKanrenshaMasterCapsuleDtoInterface = new GetKanrenshaMasterCapsuleDto();
         capsuleDto.kanrenshaRole = userDto.value.kanrenshaRole;
         capsuleDto.kanrenshaCode = userDto.value.kanrenshaCode;
+        capsuleDto.userDto = userDto.value;
 
         getAuthorizedPromiseArea().then(token => {
             const url = urlBack + "/user-kanrensha/get-myself";

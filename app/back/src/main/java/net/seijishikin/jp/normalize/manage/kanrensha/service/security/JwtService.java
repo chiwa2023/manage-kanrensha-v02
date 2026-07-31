@@ -10,13 +10,13 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.jwt.JwtClaimsSet;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
 import org.springframework.stereotype.Service;
 
 import net.seijishikin.jp.normalize.manage.kanrensha.config.JwtConfig;
+import net.seijishikin.jp.normalize.manage.kanrensha.dto.sequrity.CustomUserDetails;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.sequrity.JwtTokenDto;
 
 /**
@@ -40,19 +40,59 @@ public class JwtService {
      * @return トークン
      */
     public JwtTokenDto generateToken(final Authentication authentication) {
+        Object principal = authentication.getPrincipal(); // NOPMD
+        if (principal instanceof CustomUserDetails) {
+            return generateToken((CustomUserDetails) principal);
+        }
         return generateToken(authentication.getName(), authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority).collect(Collectors.toList()));
     }
 
+    //    /**
+    //     * ユーザ情報からトークンを生成する
+    //     *
+    //     * @param userDetails ユーザ情報
+    //     * @return トークンDto
+    //     */
+    //    public JwtTokenDto generateToken(final UserDetails userDetails) {
+    //        if (userDetails instanceof CustomUserDetails) {
+    //            return generateToken((CustomUserDetails) userDetails);
+    //        }
+    //        return generateToken(userDetails.getUsername(),
+    //                userDetails.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()));
+    //    }
+
     /**
-     * ユーザ情報からトークンを生成する
+     * 独自ログインユーザ詳細からトークンを作成する
      *
-     * @param userDetails ユーザ情報
-     * @return トークンDto
+     * @param userDetails 独自ログインユーザ詳細
+     * @return トークン
      */
-    public JwtTokenDto generateToken(final UserDetails userDetails) {
-        return generateToken(userDetails.getUsername(),
-                userDetails.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()));
+    public JwtTokenDto generateToken(final CustomUserDetails userDetails) {
+        // 現在の時刻
+        Instant now = Instant.now();
+
+        // アクセストークンの有効期限
+        Instant accessTokenExpiry = now.plus(jwtConfig.getExpiration(), ChronoUnit.MILLIS);
+
+        // リフレッシュトークンの有効期限
+        Instant refreshTokenExpiry = now.plus(jwtConfig.getRefreshExpiration(), ChronoUnit.MILLIS);
+
+        // アクセストークンに含めるクレーム
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("roles", userDetails.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority).collect(Collectors.toList()));
+        claims.put("userPersonId", userDetails.getUserPersonId());
+        claims.put("userPersonCode", userDetails.getUserPersonCode());
+        claims.put("userPersonName", userDetails.getUserPersonName());
+
+        // アクセストークンの生成
+        String accessToken = createToken(userDetails.getUsername(), now, accessTokenExpiry, claims);
+
+        // リフレッシュトークンの生成（権限情報は含めない）
+        String refreshToken = createToken(userDetails.getUsername(), now, refreshTokenExpiry, new HashMap<>());
+
+        return new JwtTokenDto(accessToken, refreshToken, Date.from(accessTokenExpiry));
     }
 
     /**

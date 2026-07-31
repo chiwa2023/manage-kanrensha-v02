@@ -40,7 +40,6 @@ public class SearchApprovalShokugyouControler {
     @PostMapping("/search-shokugyou")
     public ResponseEntity<SearchApprovalShokugyouResultDto> practice(
             final @RequestBody SearchWorksApprovalCapsuleDto capsuleDto) {
-        
         try {
             return ResponseEntity.status(HttpStatus.OK).body(searchApprovalShokugyouService.practice(capsuleDto));
         } catch (Exception exception) { // NOPMD 業務的な理由から積極的に許容

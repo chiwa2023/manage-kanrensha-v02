@@ -53,7 +53,7 @@ public class ResetPasswordMailInputController {
             saveStackTraceService.practice(exception, LocalDate.now().getYear(), 0);
             FrameworkMessageAndResultDto resultDto = new FrameworkMessageAndResultDto();
             resultDto.setIsFailure(true);
-            resultDto.setMessage("システム例外が発生しました");
+            resultDto.setMessage(FrameworkMessageAndResultDto.MESSAGE_INTERNAL_ERROR);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(resultDto);
         }
     }

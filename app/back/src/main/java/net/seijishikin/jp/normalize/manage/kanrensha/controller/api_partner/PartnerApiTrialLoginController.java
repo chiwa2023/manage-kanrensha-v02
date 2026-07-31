@@ -27,7 +27,7 @@ public class PartnerApiTrialLoginController {
     /** APIパートナー接続Service */
     @Autowired
     private PartnerApiLoginService partnerApiLoginService;
-
+    
     /**
      * 処理を行う
      * 

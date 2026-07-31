@@ -31,6 +31,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import net.seijishikin.jp.normalize.common_tool.utils.GetObjectMapperWithTimeModuleUtil;
 import net.seijishikin.jp.normalize.manage.kanrensha.controller.PathRouteConstants;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.task.SearchTaskPlanCapsuleDto;
+import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateLeastUserForTestUtil;
 
 /**
  * SearchTaskPlanController単体テスト
@@ -69,6 +70,7 @@ class SearchTaskPlanControllerTest {
         capsuleDto.setPageNumber(0);
         capsuleDto.setStartDate(LocalDateTime.of(2025, 5, 2, 0, 0, 0));
         capsuleDto.setEndDate(LocalDateTime.of(2025, 12, 31, 23, 59, 59));
+        capsuleDto.setUserDto(CreateLeastUserForTestUtil.practice());
 
         ObjectMapper objectMapper = GetObjectMapperWithTimeModuleUtil.practice();
 

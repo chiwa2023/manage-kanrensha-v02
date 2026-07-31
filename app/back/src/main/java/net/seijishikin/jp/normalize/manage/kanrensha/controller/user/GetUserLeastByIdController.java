@@ -42,7 +42,7 @@ public class GetUserLeastByIdController {
 
         try {
             GetUserDtoResultDto resultDto = getUserLeastByIdService.practcie(capsuleDto.getEditUserid());
-            
+
             if (resultDto.getIsFailure()) {
                 return ResponseEntity.status(HttpStatus.ACCEPTED).body(resultDto);
             } else {

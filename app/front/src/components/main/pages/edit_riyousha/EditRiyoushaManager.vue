@@ -67,23 +67,23 @@ onMounted(() => {
                     }
                 })
                 .catch((error) => {
-                message.value = getErrorMessage(error, ERR_MESS_ONLY);
-                infoLevel.value = MessageConstants.LEVEL_ERROR;
-                messageType.value = MessageConstants.VIEW_OK;
-                return;
+                    message.value = getErrorMessage(error, ERR_MESS_ONLY);
+                    infoLevel.value = MessageConstants.LEVEL_ERROR;
+                    messageType.value = MessageConstants.VIEW_OK;
+                    return;
                 });
         }).catch((e) => {
-        infoLevel.value = MessageConstants.LEVEL_ERROR;
-        messageType.value = MessageConstants.VIEW_OK;
+            infoLevel.value = MessageConstants.LEVEL_ERROR;
+            messageType.value = MessageConstants.VIEW_OK;
 
-        // トークン保持または取得に失敗している場合
-        if (e instanceof AccessTokenNotFoundError || e instanceof TokenRefreshError) {
-            message.value = e.message;
+            // トークン保持または取得に失敗している場合
+            if (e instanceof AccessTokenNotFoundError || e instanceof TokenRefreshError) {
+                message.value = e.message;
+                return;
+            }
+
+            message.value = getErrorMessage(e, INQUIRE_FLG);
             return;
-        }
-        
-        message.value = getErrorMessage(e, INQUIRE_FLG);
-        return;
         });
     }
 });
@@ -139,7 +139,7 @@ function recieveManagerInterface(editDto: RiyoushaManagerDtoInterface) {
             message.value = e.message;
             return;
         }
-        
+
         message.value = getErrorMessage(e, INQUIRE_FLG);
         return;
     });
@@ -158,7 +158,7 @@ function recieveSubmit() {
     <h1>運営者編集</h1><br>
 
     <!-- 運営者編集-->
-    <RiyoushaManagerEdit :edit-entity="editEntity" @send-cancel-manager="recieveCancelManager"
+    <RiyoushaManagerEdit :user-dto="userDto" :edit-entity="editEntity" @send-cancel-manager="recieveCancelManager"
         @send-manager-interface="recieveManagerInterface">
     </RiyoushaManagerEdit>
 

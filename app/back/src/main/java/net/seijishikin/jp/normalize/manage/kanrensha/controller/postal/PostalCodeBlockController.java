@@ -1,6 +1,9 @@
 package net.seijishikin.jp.normalize.manage.kanrensha.controller.postal;
 
+import java.time.Year;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -10,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.postal.PostalCodeBlockResultDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.postal.PostalCodeCapsuleDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.postal.SearchAddressBlockService;
+import net.seijishikin.jp.normalize.manage.kanrensha.service.util.SaveStackTraceService;
 import net.seijishikin.jp.normalize.manage.kanrensha.controller.PathRouteConstants;
 
 /**
@@ -23,6 +27,10 @@ public class PostalCodeBlockController {
     @Autowired
     private SearchAddressBlockService searchAddressBlockService;
 
+    /** StackTrace保存Service */
+    @Autowired
+    private SaveStackTraceService saveStackTraceService;
+
     /**
      * 処理を行う
      *
@@ -31,8 +39,14 @@ public class PostalCodeBlockController {
      */
     @PostMapping("/block")
     public ResponseEntity<PostalCodeBlockResultDto> practice(final @RequestBody PostalCodeCapsuleDto capsuleDto) {
+        try {
 
-        return ResponseEntity.ok(
-                searchAddressBlockService.practice(capsuleDto.getSelectedPostal(), capsuleDto.getIsGyouseikuData()));
+            return ResponseEntity.ok(searchAddressBlockService.practice(capsuleDto.getSelectedPostal(),
+                    capsuleDto.getIsGyouseikuData()));
+        } catch (Exception exception) { // NOPMD 業務上の理由で積極的に許容
+            saveStackTraceService.practice(exception, Year.now().getValue(), 0);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+
     }
 }

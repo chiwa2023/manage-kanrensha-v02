@@ -33,6 +33,8 @@ public class GetHoujinNoController {
     @PostMapping("/get-external")
     public ResponseEntity<SearchHoujinNoResultDto> practice(final @RequestBody SearchHoujinNoCapsuleDto capsuleDto) {
 
+        // 法人番号キーを使うのでこのサイト特有のログイン状態の確認は不要
+        
         // Serviceで処理全体をtry-catchでくくっているのでControllerでtry-catchは不要
         SearchHoujinNoResultDto resultDto = getHoujinNoService.pratice(capsuleDto);
 

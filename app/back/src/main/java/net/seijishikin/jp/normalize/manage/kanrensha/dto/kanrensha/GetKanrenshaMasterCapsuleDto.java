@@ -2,10 +2,13 @@ package net.seijishikin.jp.normalize.manage.kanrensha.dto.kanrensha;
 
 import java.io.Serializable;
 
+import net.seijishikin.jp.normalize.common_tool.dto.FrameworkCapsuleDto;
+
 /**
  * 関連者マスタ取得条件Dto
  */
-public class GetKanrenshaMasterCapsuleDto implements Serializable { // NOPMD DataClass
+public class GetKanrenshaMasterCapsuleDto extends FrameworkCapsuleDto // NOPMD DataClass
+        implements Serializable {
 
     /** Serialize id */
     private static final long serialVersionUID = 1L;

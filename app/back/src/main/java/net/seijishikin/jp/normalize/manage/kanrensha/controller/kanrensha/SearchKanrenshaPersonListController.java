@@ -42,7 +42,9 @@ public class SearchKanrenshaPersonListController {
             final @RequestBody SearchKanrenshaPersonCapsuleDto capsuleDto) {
 
         try {
+
             return ResponseEntity.status(HttpStatus.OK).body(searchKanrenshaPersonListService.practice(capsuleDto));
+
         } catch (Exception exception) { // NOPMD 業務的な理由から積極的に許容
             saveStackTraceService.practice(exception, Year.now().getValue(), 0);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();

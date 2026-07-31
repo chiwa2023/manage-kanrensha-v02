@@ -42,10 +42,10 @@ public class PublishNewUserCodeController {
     @PostMapping("/publish-code")
     public ResponseEntity<NewComerDto> practice(final @RequestBody NewComerDto newComerDto) {
 
-        // 有効期限2時間(サーバ側で設定)
-        newComerDto.setLimitDateTime(LocalDateTime.now().plusHours(2));
-        
         try {
+            // 有効期限2時間(サーバ側で設定)
+            newComerDto.setLimitDateTime(LocalDateTime.now().plusHours(2));
+
             NewComerDto resultDto = publishNewUserCodeService.practice(newComerDto);
 
             if (Objects.isNull(resultDto)) {

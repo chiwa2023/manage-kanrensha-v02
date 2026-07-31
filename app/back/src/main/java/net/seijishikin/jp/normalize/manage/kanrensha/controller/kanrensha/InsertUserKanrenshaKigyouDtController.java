@@ -5,14 +5,17 @@ import java.time.Year;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import net.seijishikin.jp.normalize.common_tool.dto.FrameworkMessageAndResultDto;
+import net.seijishikin.jp.normalize.manage.kanrensha.constants.UserRoleConstants;
 import net.seijishikin.jp.normalize.manage.kanrensha.controller.PathRouteConstants;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.kanrensha.SaveKanrenshaKigyouDtCapsuleDto;
+import net.seijishikin.jp.normalize.manage.kanrensha.logic.user.ValidateAuthoraizeUserDetailLogic;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.kanrensha.InsertKanrenshaKigyouDtService;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.util.SaveStackTraceService;
 
@@ -31,6 +34,10 @@ public class InsertUserKanrenshaKigyouDtController {
     @Autowired
     private SaveStackTraceService saveStackTraceService;
 
+    /** ユーザ妥当性検証Logic */
+    @Autowired
+    private ValidateAuthoraizeUserDetailLogic validateAuthoraizeUserDetailLogic;
+
     /**
      * 処理を行う
      *
@@ -44,6 +51,17 @@ public class InsertUserKanrenshaKigyouDtController {
         // 更新処理に対して処理結果を返す
         FrameworkMessageAndResultDto resultDto = new FrameworkMessageAndResultDto();
         try {
+            // ユーザチェック
+            // 利用者は許可
+            if (!validateAuthoraizeUserDetailLogic.practiceKanrensha(capsuleDto.getUserDto(),
+                    capsuleDto.getKanrenshaKigyouDtDto().getKigyouDtKanrenshaCode(),
+                    UserRoleConstants.KANRENSHA_KIGYOU_DT, UserRoleConstants.MANAGER, UserRoleConstants.PARTNER_API,
+                    UserRoleConstants.ADMIN)) {
+                resultDto.setIsFailure(true);
+                resultDto.setMessage("所持している権限では本人の編集しかできません");
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(resultDto);
+            }
+
             Integer newId = insertKanrenshaKigyouDtService.practice(capsuleDto);
             if (0 == newId) {
                 resultDto.setMessage("登録できませんでした");
@@ -52,6 +70,10 @@ public class InsertUserKanrenshaKigyouDtController {
                 resultDto.setMessage("登録できました");
                 return ResponseEntity.status(HttpStatus.OK).body(resultDto);
             }
+        } catch (UsernameNotFoundException exception) {
+            resultDto.setIsFailure(true);
+            resultDto.setMessage("tokenとユーザ(userDto)が不整合です");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(resultDto);
         } catch (Exception exception) { // NOPMD 業務的な理由から積極的に許容
             saveStackTraceService.practice(exception, Year.now().getValue(), 0);
             resultDto.setMessage(FrameworkMessageAndResultDto.MESSAGE_INTERNAL_ERROR);

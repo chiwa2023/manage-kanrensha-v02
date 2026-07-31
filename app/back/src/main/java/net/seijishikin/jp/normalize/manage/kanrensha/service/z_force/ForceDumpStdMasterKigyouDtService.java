@@ -11,6 +11,7 @@ import org.springframework.batch.core.job.parameters.JobParametersBuilder;
 import org.springframework.batch.core.launch.JobOperator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +19,6 @@ import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
 import net.seijishikin.jp.normalize.common_tool.utils.CreateUserLeastDtoByBatchParamUtil;
 import net.seijishikin.jp.normalize.manage.kanrensha.batch.kanrensha.dump.all.master.DumpMasterKigyouDtBatchConfiguration;
 import net.seijishikin.jp.normalize.manage.kanrensha.batch.task_plan.RecordTaskPlanJobExecutionListner;
-import net.seijishikin.jp.normalize.manage.kanrensha.constants.GetCurrentResourcePath;
 import net.seijishikin.jp.normalize.manage.kanrensha.constants.MasterCsvFileNameConstants;
 import net.seijishikin.jp.normalize.manage.kanrensha.constants.MasterCsvFileNameConstants.MasterStd;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.task.InsertTaskPlanResultDto;
@@ -41,25 +41,12 @@ public class ForceDumpStdMasterKigyouDtService {
     private Job dumpMasterKigyouDtoration;
 
     /** propertiesからインジェクションされたフロントの共通ダンプCSV保存先 */
+    @Value("${net.seijishikin.jp.normalize.kanrensha.front_dump_folder:/front/public/dump}")
     private String frontDumpFolder;
 
-    /**
-     * フロントの共通ダンプCSV保存先を取得する
-     *
-     * @return フロントの共通ダンプCSV保存先
-     */
-    public String getFrontDumpFolder() {
-        return frontDumpFolder;
-    }
-
-    /**
-     * フロントの共通ダンプCSV保存先を設定する
-     *
-     * @param frontDumpFolder フロントの共通ダンプCSV保存先
-     */
-    public void setFrontDumpFolder(final String frontDumpFolder) {
-        this.frontDumpFolder = frontDumpFolder;
-    }
+    /** propertiesからインジェクションされた最上位保存フォルダ絶対パス */
+    @Value("${net.seijishikin.jp.normalize.kanrensha.storage_folder:/home/app/store_storage/kanrensha-v02}")
+    private String storageFolder;
 
     /** StackTrace保存Service */
     @Autowired
@@ -73,8 +60,8 @@ public class ForceDumpStdMasterKigyouDtService {
     public void practice(final Integer year, final InsertTaskPlanResultDto planDto, final LocalDate endDate,
             final LeastUserDto userDto) {
 
-        final String pathSaved = Paths.get(GetCurrentResourcePath.getBackSrcPath("")).getParent().getParent()
-                .toString();
+        final String pathSaved = storageFolder;
+
         final String folder = frontDumpFolder + MasterCsvFileNameConstants.FOLDER_MASTER;
 
         JobParameters jobParameters = new JobParametersBuilder(

@@ -43,6 +43,8 @@ public class GetRiyoushaOrgDtoByCodeController {
 
         RiyoushaOrgDto resultDto;
         try {
+            // 利用者組織はconfig設定
+            
             resultDto = getRiyoushaOrgDtoService.practiceByCode(capsuleDto);
             final Integer zero = 0;
             if (zero.equals(resultDto.getRiyoushaOrgMasterId())) {

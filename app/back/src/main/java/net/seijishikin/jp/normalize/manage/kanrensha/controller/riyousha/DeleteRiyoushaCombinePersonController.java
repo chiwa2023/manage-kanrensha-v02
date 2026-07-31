@@ -4,6 +4,7 @@ import java.time.Year;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.http.HttpStatus;
 import net.seijishikin.jp.normalize.common_tool.dto.FrameworkMessageAndResultDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.riyousha.RiyoushaCombinePersonCapsuleDto;
+import net.seijishikin.jp.normalize.manage.kanrensha.logic.user.ValidateAuthoraizeUserDetailLogic;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.riyousha.DeleteRiyoushaCombinePersonService;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.util.SaveStackTraceService;
 import net.seijishikin.jp.normalize.manage.kanrensha.controller.PathRouteConstants;
@@ -31,6 +33,10 @@ public class DeleteRiyoushaCombinePersonController {
     @Autowired
     private SaveStackTraceService saveStackTraceService;
 
+    /** ユーザ妥当性検証Logic */
+    @Autowired
+    private ValidateAuthoraizeUserDetailLogic validateAuthoraizeUserDetailLogic;
+
     /**
      * 処理を行う
      * 
@@ -41,8 +47,12 @@ public class DeleteRiyoushaCombinePersonController {
     public ResponseEntity<FrameworkMessageAndResultDto> practice(
             @RequestBody final RiyoushaCombinePersonCapsuleDto capsuleDto) {
 
-        FrameworkMessageAndResultDto resultDto;
+        FrameworkMessageAndResultDto resultDto = new FrameworkMessageAndResultDto();
         try {
+            // ユーザチェック
+            // 利用者組織はconfig通り
+            validateAuthoraizeUserDetailLogic.practice(capsuleDto.getUserDto());
+
             resultDto = deleteRiyoushaCombinePersonService.practice(capsuleDto);
 
             if (resultDto.getIsFailure()) {
@@ -53,9 +63,12 @@ public class DeleteRiyoushaCombinePersonController {
                 return ResponseEntity.status(HttpStatus.OK).body(resultDto);
             }
 
+        } catch (UsernameNotFoundException exception) {
+            resultDto.setIsFailure(true);
+            resultDto.setMessage("tokenとユーザ(userDto)が不整合です");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(resultDto);
         } catch (Exception exception) { // NOPMD 業務上の理由で積極的許容
             saveStackTraceService.practice(exception, Year.now().getValue(), 0);
-            resultDto = new FrameworkMessageAndResultDto();
             resultDto.setIsFailure(true);
             resultDto.setMessage(exception.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(resultDto);

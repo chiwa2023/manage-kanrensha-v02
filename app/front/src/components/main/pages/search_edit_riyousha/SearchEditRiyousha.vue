@@ -446,15 +446,16 @@ function recievePartnerApiInterface(editDto: RiyoushaPartnerApiDtoInterface) {
 
     <!-- 運営者編集 -->
     <div v-if="isManagerEdit">
-        <RiyoushaManagerEdit :edit-entity="editEntityManager" @send-cancel-manager="recieveCancelManager"
-            @send-manager-interface="recieveManagerInterface">
+        <RiyoushaManagerEdit :user-dto="userDto" :edit-entity="editEntityManager"
+            @send-cancel-manager="recieveCancelManager" @send-manager-interface="recieveManagerInterface">
         </RiyoushaManagerEdit>
     </div>
 
     <!-- API接続者編集 -->
     <div v-if="isPartnerEdit">
-        <RiyoushaPartnerApiEdit :edit-entity="editEntityPartner" @send-cancel-partner-api="recieveCancelPartnerApi"
-            @send-partner-api-interface="recievePartnerApiInterface"></RiyoushaPartnerApiEdit>
+        <RiyoushaPartnerApiEdit :user-dto="userDto" :edit-entity="editEntityPartner"
+            @send-cancel-partner-api="recieveCancelPartnerApi" @send-partner-api-interface="recievePartnerApiInterface">
+        </RiyoushaPartnerApiEdit>
     </div>
 
     <div v-if="!isManagerEdit && !isPartnerEdit" class="footer">

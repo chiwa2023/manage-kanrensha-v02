@@ -1,5 +1,7 @@
 package net.seijishikin.jp.normalize.manage.kanrensha.controller.postal;
 
+import java.time.Year;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +14,7 @@ import net.seijishikin.jp.normalize.manage.kanrensha.controller.PathRouteConstan
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.postal.SearchPostalIllegularCapsuleDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.postal.SearchPostalIllegularResultDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.postal.SearchPostalIrregularBuildingDelegateService;
-
+import net.seijishikin.jp.normalize.manage.kanrensha.service.util.SaveStackTraceService;
 
 /**
  * 郵便番号不規則検索Controller
@@ -25,6 +27,10 @@ public class SearchPostalIrregularBuildingDelegateController {
     @Autowired
     private SearchPostalIrregularBuildingDelegateService searchPostalIrregularBuildingDelegateService;
 
+    /** StackTrace保存Service */
+    @Autowired
+    private SaveStackTraceService saveStackTraceService;
+
     /**
      * 処理を行う
      *
@@ -35,13 +41,21 @@ public class SearchPostalIrregularBuildingDelegateController {
     public ResponseEntity<SearchPostalIllegularResultDto> practice(
             final @RequestBody SearchPostalIllegularCapsuleDto capsuleDto) {
 
-        SearchPostalIllegularResultDto resultDto = searchPostalIrregularBuildingDelegateService.practice(capsuleDto);
+        try {
+            SearchPostalIllegularResultDto resultDto = searchPostalIrregularBuildingDelegateService
+                    .practice(capsuleDto);
+            if (resultDto.getIsFailure()) {
+                // ユーザチェック
+                return ResponseEntity.status(HttpStatus.ACCEPTED).body(resultDto);
+            } else {
+                return ResponseEntity.ok(resultDto);
+            }
 
-        if (resultDto.getIsFailure()) {
-            return ResponseEntity.status(HttpStatus.ACCEPTED).body(resultDto);
-        } else {
-            return ResponseEntity.ok(resultDto);
+        } catch (Exception exception) { // NOPMD 業務上の理由で積極的に許容
+            saveStackTraceService.practice(exception, Year.now().getValue(), 0);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
+
     }
 
 }

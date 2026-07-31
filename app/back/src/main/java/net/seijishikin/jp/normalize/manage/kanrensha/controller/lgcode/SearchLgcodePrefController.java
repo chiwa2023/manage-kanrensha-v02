@@ -1,5 +1,6 @@
 package net.seijishikin.jp.normalize.manage.kanrensha.controller.lgcode;
 
+import java.time.Year;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import net.seijishikin.jp.normalize.common_tool.dto.select_options.SelectOptionStringDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.controller.PathRouteConstants;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.util.GetPrefectureLgCodeService;
+import net.seijishikin.jp.normalize.manage.kanrensha.service.util.SaveStackTraceService;
 
 /**
  * 兼政治団体コードoption取得Controller
@@ -24,15 +26,26 @@ public class SearchLgcodePrefController {
     @Autowired
     private GetPrefectureLgCodeService getPrefectureLgCodeService;
 
+    /** StackTrace保存Service */
+    @Autowired
+    private SaveStackTraceService saveStackTraceService;
+
     /**
      * 処理を行う
      * 
      * @return レスポンス
      */
     @PostMapping("/search")
-    public ResponseEntity<List<SelectOptionStringDto>> practoice() {
+    public ResponseEntity<List<SelectOptionStringDto>> practice() {
 
-        return ResponseEntity.status(HttpStatus.OK).body(getPrefectureLgCodeService.getOptions());
+        try {
+
+            return ResponseEntity.status(HttpStatus.OK).body(getPrefectureLgCodeService.getOptions());
+
+        } catch (Exception exception) { // NOPMD 業務上の理由で積極的に許容
+            saveStackTraceService.practice(exception, Year.now().getValue(), 0);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
 
     }
 

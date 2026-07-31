@@ -1,6 +1,9 @@
 package net.seijishikin.jp.normalize.manage.kanrensha.controller.postal;
 
+import java.time.Year;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -11,6 +14,7 @@ import net.seijishikin.jp.normalize.manage.kanrensha.controller.PathRouteConstan
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.postal.GetDetailPostalIllegularCapsuleDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.postal.GetDetailPostalIllegularResultDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.postal.SearchPostalIrregularBuildingAllFloorService;
+import net.seijishikin.jp.normalize.manage.kanrensha.service.util.SaveStackTraceService;
 
 /**
  * 同一建物取得Controller
@@ -23,6 +27,10 @@ public class SearchPostalIrregularBuildingAllFloorController {
     @Autowired
     private SearchPostalIrregularBuildingAllFloorService searchPostalIrregularBuildingAllFloor;
 
+    /** StackTrace保存Service */
+    @Autowired
+    private SaveStackTraceService saveStackTraceService;
+
     /**
      * 処理を行う
      *
@@ -33,6 +41,13 @@ public class SearchPostalIrregularBuildingAllFloorController {
     public ResponseEntity<GetDetailPostalIllegularResultDto> practice(
             final @RequestBody GetDetailPostalIllegularCapsuleDto capsuleDto) {
 
-        return ResponseEntity.ok(searchPostalIrregularBuildingAllFloor.practice(capsuleDto));
+        try {
+            return ResponseEntity.ok(searchPostalIrregularBuildingAllFloor.practice(capsuleDto));
+
+        } catch (Exception exception) { // NOPMD 業務上の理由で積極的に許容
+            saveStackTraceService.practice(exception, Year.now().getValue(), 0);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+
     }
 }

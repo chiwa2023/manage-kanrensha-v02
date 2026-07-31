@@ -215,7 +215,7 @@ const notHasDetailInfo: ComputedRef<boolean> = computed(
                 </div>
             </div>
             <div class="left-space user-role-icon-container" @click="viewPersonMenu">
-                <img src="" class="user-role-icon">
+                <img src="/all_user.png" class="user-role-icon">
             </div>
         </div>
     </div>

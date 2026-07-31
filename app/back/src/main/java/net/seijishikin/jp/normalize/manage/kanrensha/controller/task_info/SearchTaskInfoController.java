@@ -45,9 +45,8 @@ public class SearchTaskInfoController {
             return ResponseEntity.status(HttpStatus.OK).body(searchTaskInfoService.practice(capsuleDto));
 
         } catch (Exception exception) { // NOPMD 業務的な理由から積極的に許容
-
             saveStackTraceService.practice(exception, year, 0);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new SearchTaskInfoResultDto());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 
