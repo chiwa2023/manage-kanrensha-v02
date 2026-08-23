@@ -1,6 +1,5 @@
 package net.seijishikin.jp.normalize.manage.kanrensha.service.z_force;
 
-import java.io.IOException;
 import java.time.LocalDate;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,7 +73,7 @@ public class AsyncForceDumpMinMasterService {
                     createMasterCompressFilePathLogic.practiceFileList(MasterCsvFileNameConstants.FOLDER_MASTER,
                             MasterMin.MASTER_MIN_KIGYOU, MasterMin.MASTER_MIN_PERSON,
                             MasterMin.MASTER_MIN_SEIJIDANTAI));
-        } catch (IOException exception) {
+        } catch (Exception exception) { // NOPMD 業務的な理由から積極的に許容
             saveStackTraceService.practice(exception, year, planDto1.getTaskPlanCode());
         }
     }

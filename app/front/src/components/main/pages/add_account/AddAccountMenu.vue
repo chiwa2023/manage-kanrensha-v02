@@ -23,6 +23,7 @@ const message: Ref<string> = ref(BLANK);
 
 // 入力用Dto
 const newComer: Ref<NewComerDtoInterface> = ref(new NewComerDto());
+const kiyakuCheck: Ref<boolean> = ref(false);
 
 // API呼び出し用Composable
 const { loading: publishLoading, error: publishError, fetchData: fetchPublish } = useApi<NewComerDtoInterface>();
@@ -33,6 +34,13 @@ async function onRegistMail() {
         infoLevel.value = MessageConstants.LEVEL_ERROR;
         messageType.value = MessageConstants.VIEW_OK;
         message.value = "入力エラー：メールアドレスは必須です。";
+        return;
+    }
+
+    if (kiyakuCheck.value !== true) {
+        infoLevel.value = MessageConstants.LEVEL_ERROR;
+        messageType.value = MessageConstants.VIEW_OK;
+        message.value = "入力エラー：利用規約への同意をお願いします。";
         return;
     }
 
@@ -74,6 +82,19 @@ function onCancel() {
 
     <div class="one-line">
         連絡用メールアドレスの疎通確認をします。
+    </div>
+
+    <div class="one-line">
+        <div class="left-area">
+            利用規約同意
+        </div>
+        <div class="right-area">
+            <div class="form-group-vertical">
+                <span><input type="checkbox" v-model="kiyakuCheck">利用規約に同意する</span>
+                <a href="https://www.normalize-jp-seijishikin.net/terms.html" target="BLANK">利用規約を参照する</a>
+                <a href="https://www.normalize-jp-seijishikin.net/privacy.html" target="BLANK">プライバシーポリシーを参照する</a>
+            </div>
+        </div>
     </div>
 
     <div class="one-line">

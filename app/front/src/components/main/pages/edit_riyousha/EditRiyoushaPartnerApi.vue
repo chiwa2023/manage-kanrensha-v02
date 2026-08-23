@@ -60,6 +60,7 @@ onMounted(() => {
                     if (resultDto.isFailure) {
                         infoLevel.value = MessageConstants.LEVEL_WARNING;
                         messageType.value = MessageConstants.VIEW_OK;
+                        return;
                     } else {
                         // editEntityを変更すると自動で呼び出し
                         editEntity.value = resultDto.partnerApiMasterEntity;
@@ -119,9 +120,11 @@ function recievePartnerApiInterface(editDto: RiyoushaPartnerApiDtoInterface) {
                 if (resultDto.isFailure) {
                     infoLevel.value = MessageConstants.LEVEL_WARNING;
                     messageType.value = MessageConstants.VIEW_OK;
+                    return;
                 } else {
                     infoLevel.value = MessageConstants.LEVEL_INFO;
                     messageType.value = MessageConstants.VIEW_TOAST;
+                    return;
                 }
             })
             .catch((error) => {

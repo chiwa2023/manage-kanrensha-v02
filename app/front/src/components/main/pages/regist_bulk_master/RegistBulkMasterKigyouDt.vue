@@ -125,7 +125,7 @@ function onSave() {
             message.value = e.message;
             return;
         }
-        
+
         message.value = getErrorMessage(e, INQUIRE_FLG);
         return;
     });
@@ -159,10 +159,12 @@ function onBatchByFile() {
                 if (resultDto.isFailure) {
                     infoLevel.value = MessageConstants.LEVEL_WARNING;
                     messageType.value = MessageConstants.VIEW_OK;
+                    return;
                 } else {
                     capsuleDto.value.storageFileDto = new StorageFileDto();
                     infoLevel.value = MessageConstants.LEVEL_INFO;
                     messageType.value = MessageConstants.VIEW_TOAST;
+                    return;
                 }
             })
             .catch((error) => {
@@ -180,7 +182,7 @@ function onBatchByFile() {
             message.value = e.message;
             return;
         }
-        
+
         message.value = getErrorMessage(e, INQUIRE_FLG);
         return;
     });

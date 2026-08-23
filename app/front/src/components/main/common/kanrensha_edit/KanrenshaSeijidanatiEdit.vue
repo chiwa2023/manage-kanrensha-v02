@@ -66,6 +66,7 @@ function load() {
                 if (resultDto.isFailure) {
                     infoLevel.value = MessageConstants.LEVEL_WARNING;
                     messageType.value = MessageConstants.VIEW_OK;
+                    return;
                 } else {
                     editSeijidantaiDto.value = resultDto.kanrenshaSeijidantaiDto;
                 }

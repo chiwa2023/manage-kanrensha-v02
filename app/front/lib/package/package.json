@@ -1,0 +1,37 @@
+{
+  "name": "seijishikin-jp-normalize_common-tool",
+  "private": false,
+  "version": "0.0.3",
+  "type": "commonjs",
+  "main": "./dist/index.umd.cjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc -b && vite build",
+    "preview": "vite preview",
+    "test": "vitest"
+  },
+  "peerDependencies": {
+    "pinia": "^3.0.4",
+    "pinia-plugin-persistedstate": "^4.7.1",
+    "vue": "^3.5.22"
+  },
+  "devDependencies": {
+    "@types/node": "^24.6.0",
+    "@vitejs/plugin-vue": "^6.0.1",
+    "@vue/test-utils": "^2.4.6",
+    "@vue/tsconfig": "^0.8.1",
+    "eslint": "^9.38.0",
+    "jsdom": "^27.1.0",
+    "typescript": "~5.9.3",
+    "vite": "^8.0.16",
+    "vite-plugin-dts": "^4.5.4",
+    "vitest": "^4.0.3",
+    "vue-router": "^4.6.3",
+    "vue-tsc": "^3.1.0"
+  }
+}

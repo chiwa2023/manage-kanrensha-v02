@@ -68,11 +68,13 @@ function onSave() {
                 if (resultDto.isFailure) {
                     infoLevel.value = MessageConstants.LEVEL_WARNING;
                     messageType.value = MessageConstants.VIEW_OK;
+                    return;
                 } else {
                     // 処理が成功したら再登録できないようにアップロードファイル情報を初期化
                     capsuleDto.value = new PrepareSabunWktblPostalCodeCapsuleDto();
                     infoLevel.value = MessageConstants.LEVEL_INFO;
                     messageType.value = MessageConstants.VIEW_TOAST;
+                    return;
                 }
             })
             .catch((error) => {

@@ -86,6 +86,7 @@ function onSave() {
                     messageType.value = MessageConstants.VIEW_OK;
                     message.value = resultDto.message;
                     return;
+                    return;
                 } else {
                     infoLevel.value = MessageConstants.LEVEL_INFO;
                     messageType.value = MessageConstants.VIEW_TOAST;

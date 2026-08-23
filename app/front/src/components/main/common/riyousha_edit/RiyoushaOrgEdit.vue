@@ -147,9 +147,11 @@ function doDelete() {
                     if (resultDto.isFailure) {
                         infoLevel.value = MessageConstants.LEVEL_WARNING;
                         messageType.value = MessageConstants.VIEW_OK;
+                        return;
                     } else {
                         message.value = editDto.value.message;
                         infoLevel.value = MessageConstants.LEVEL_INFO;
+                        return;
                     }
                     // 削除が終わったら初期化
                     combineDeleteId = INIT_NUMBER;

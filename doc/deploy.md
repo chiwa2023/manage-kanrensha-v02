@@ -3,6 +3,10 @@
 成果物をAWSに配備・更新する手順
 実際のこのプロジェクトでの配備は行っていないので、実際に行ったときに再修正
 
+> 💡 **重要（サブドメイン分離 ＋ ALB構成への移行）：**
+> 現在は、複数のシステム（関連者・書面作成・調査）をサブドメインで分離し、前段の ALB（Application Load Balancer）で SSL 通信を終端して各コンテナへルーティングする構成を採用しています。
+> ネットワーク、Route 53、ACM、ALB、およびセキュリティグループの設定手順については、新たに作成された **[AWS インフラ構築・ネットワーク設定手順書](aws_infrastructure_setup.md)** を参照してください。本手順書と併せてインフラの構築を進める必要があります。
+
 ## 開発ソースからのコンパイル準備
 
 ### front側
@@ -11,6 +15,8 @@
 
 ### back側
 
+build-package処理
+
 ```
 mvnw clean package -Dmaven.test.skip=true
 ```
@@ -18,6 +24,7 @@ mvnw clean package -Dmaven.test.skip=true
 ## dokcer imageを起動して自PCで動作確認
 
 ```
+docker compose down
 docker-compose up --build
 ```
 
@@ -28,11 +35,197 @@ docker cp <sqlファイル> <コンテナイメージId>:<ディレクトリ>
 
 mysql -u <ユーザ> -p --database manage_kanrensha_v02 < <イメージ内sqlファイル>
 
-// 住所県ファイル一軽
-cd /sqlファイルのフォルダパス/
+```
+
+## ローカルの住居SQLをaws上DBに複写
+
+```
+scp -i <接続キー> -r <複写元> ec2-user@<EC2のIP>:<複写先>
+
+// 住所県ファイル一括
+cd <複写先>
 for f in *.sql; do mysql -u <ユーザー名> -p<パスワード> <データベース名> < "$f"; done
 
 ```
+
+## デプロイ処理・実装の更新のみ
+
+### 1. 共通ツールの接続先を本番環境に向ける
+
+```
+# docker image作成用にbuild-packするときは有効にする
+VITE_API_DOMAIN=https://kanrensha.normalize-jp-seijishikin.net/api
+
+# 開発用
+# VITE_API_DOMAIN=http://localhost:6180/api
+```
+
+### 2.共通ツール コンパイルしてpackする
+
+```
+npm run build
+npm pack
+```
+
+### 3.共通ツールを関連者に適用する
+
+- libディレクトリにseijishikin-jp-normalize_common-tool-x.x.x.tgz を複写する
+
+```
+npm install seijishikin-jp-normalize_common-tool-x.x.x.tgz
+npm install
+```
+
+### 4. 関連者の接続先を本番環境に向ける
+
+```
+# docker image作成用にbuild-packするときは有効にする
+VITE_API_DOMAIN=https://kanrensha.normalize-jp-seijishikin.net/api
+
+# 開発用
+# VITE_API_DOMAIN=http://localhost:6180/api
+```
+
+### 5. ECRへのログイン認証
+
+```
+aws ecr get-login-password --region <リージョン> | docker login --username AWS --password-stdin <ログイン文字列>
+```
+
+### 6. イメージにECR用のタグを付与
+
+```
+docker tag kanrensha-db:latest <ログイン文字列>/kanrensha-db:latest
+docker tag kanrensha-back:latest <ログイン文字列>/kanrensha-back:latest
+docker tag kanrensha-front:latest <ログイン文字列>/kanrensha-front:latest
+```
+
+### 7. ECRへpush
+
+```
+docker push 343771139194.dkr.ecr.ap-northeast-3.amazonaws.com/kanrensha-db:latest
+docker push 343771139194.dkr.ecr.ap-northeast-3.amazonaws.com/kanrensha-back:latest
+docker push 343771139194.dkr.ecr.ap-northeast-3.amazonaws.com/kanrensha-front:latest
+```
+
+### 8.SSH接続(ElasticIP)
+
+```
+ssh -i "C:\key\kanrensha-v02.pem" ec2-user@<IPアドレス>
+```
+
+### 9. EC2でプルして実行
+
+```
+
+aws ecr get-login-password --region <リージョン> | docker login --username AWS --password-stdin <ログイン文字列>
+
+docker pull <ログイン文字列>/kanrensha-db:latest
+docker pull <ログイン文字列>/kanrensha-back:latest
+docker pull <ログイン文字列>/kanrensha-front:latest
+
+```
+
+### 10. EC2で実行
+
+現状本番環境ではdbを先に立ち上げてから後からfront/backを立ち上げないとタイミングが合わない
+
+```
+docker compose down
+docker compose up -d db
+docker compose up -d back front
+
+# ログ表示
+docker compose logs -f
+```
+
+## (参考)デプロイEC2作成も含む処理
+
+### 1. ECRリポジトリの作成(powershell・1回限り)
+
+```
+aws ecr create-repository --repository-name kanrensha-db --region ap-northeast-3
+aws ecr create-repository --repository-name kanrensha-back  --region ap-northeast-3
+aws ecr create-repository --repository-name kanrensha-front  --region ap-northeast-3
+```
+
+### 2. ECRへのログイン認証
+
+```
+aws ecr get-login-password --region <リージョン> | docker login --username AWS --password-stdin <ログイン文字列>
+```
+
+### 3. イメージにECR用のタグを付与
+
+```
+docker tag kanrensha-db:latest <ログイン文字列>/kanrensha-db:latest
+docker tag kanrensha-back:latest <ログイン文字列>/kanrensha-back:latest
+docker tag kanrensha-front:latest <ログイン文字列>/kanrensha-front:latest
+```
+
+### 4. ECRへプッシュ
+
+```
+docker push 343771139194.dkr.ecr.ap-northeast-3.amazonaws.com/kanrensha-db:latest
+docker push 343771139194.dkr.ecr.ap-northeast-3.amazonaws.com/kanrensha-back:latest
+docker push 343771139194.dkr.ecr.ap-northeast-3.amazonaws.com/kanrensha-front:latest
+```
+
+### 5. コンソール上からインスタンスを作成
+
+### 6. 鍵(.pem)をダウンロードする
+
+- 作成したpemは利用中のユーザ(xxxxxx)だけが利用できるように権限を変更する必要がある(administratorなども削除!)
+
+### 7. docker と docker compose のインストール
+
+```
+sudo yum update -y
+
+sudo yum install docker -y
+sudo systemctl start docker
+sudo systemctl enable docker
+
+sudo usermod -a -G docker ec2-user
+
+sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o  /usr/local/bin/docker-compose
+sudo chmod +x /usr/local/bin/docker-compose
+sudo ln -s /usr/local/bin/docker-compose /usr/libexec/docker/cli-plugins/docker-compose
+```
+
+### 5.SSH接続(ElasticIP)
+
+```
+ssh -i "C:\key\kanrensha-v02.pem" ec2-user@<IPアドレス>
+```
+
+### 6. EC2でプルして実行
+
+  EC2にSSHログイン後、ECRにログインしてイメージを取得します。(※更新push作業)
+
+```
+
+aws ecr get-login-password --region <リージョン> | docker login --username AWS --password-stdin <ログイン文字列>
+
+docker pull <ログイン文字列>/kanrensha-db:latest
+docker pull <ログイン文字列>/kanrensha-back:latest
+docker pull <ログイン文字列>/kanrensha-front:latest
+
+```
+
+### 6. EC2で実行
+
+現状本番環境ではdbを先に立ち上げてから後からfront/backを立ち上げないとタイミングが合わない
+
+```
+docker compose down
+docker compose up -d db
+docker compose up -d back front
+# ログ表示
+docker compose logs -f
+```
+
+<!--- 
 
 ## AWS CLIの起動
 
@@ -310,3 +503,4 @@ aws iam delete-role --role-name EC2ECRReadAccess
 ```
 aws ec2 delete-key-pair --key-name (キーペア名)  
 ```
+-->

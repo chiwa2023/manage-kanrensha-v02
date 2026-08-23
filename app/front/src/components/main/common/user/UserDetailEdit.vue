@@ -64,6 +64,7 @@ onBeforeMount(() => {
                     messageType.value = MessageConstants.VIEW_OK;
                     message.value = resultDto.message;
                     return;
+                    return;
                 } else {
                     editUserDto.value.userDto = resultDto.userDto;
                     editUserDto.value.isAlertTaskStart = resultDto.isAlertTaskStart;

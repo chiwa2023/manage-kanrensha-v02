@@ -1,0 +1,453 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'ALB, Route53, ACM, and Security Groups for Multi-Subdomain System (Kanrensha, CreateDoc, Investigate)'
+
+Parameters:
+  EnvironmentName:
+    Type: String
+    Default: prod
+    Description: Environment name (e.g., prod, dev, stg)
+
+  HostedZoneId:
+    Type: AWS::Route53::HostedZone::Id
+    Description: Route 53 Hosted Zone ID for your domain (e.g., Z0123456789ABCDEF)
+
+  DomainName:
+    Type: String
+    Description: Base domain name (e.g., example.com)
+
+  VpcId:
+    Type: AWS::EC2::VPC::Id
+    Description: VPC ID where the ALB and EC2 instance are located
+
+  PublicSubnet1:
+    Type: AWS::EC2::Subnet::Id
+    Description: Public Subnet 1 for ALB (must be in a different AZ than Subnet 2)
+
+  PublicSubnet2:
+    Type: AWS::EC2::Subnet::Id
+    Description: Public Subnet 2 for ALB (must be in a different AZ than Subnet 1)
+
+  TargetEc2InstanceId:
+    Type: String
+    Description: The EC2 Instance ID where Docker containers are running
+
+Resources:
+  # -----------------------------------------------------------------
+  # 1. ACM Certificate (Wildcard *.domain)
+  # -----------------------------------------------------------------
+  WildcardCertificate:
+    Type: AWS::CertificateManager::Certificate
+    Properties:
+      DomainName: !Sub "*.${DomainName}"
+      SubjectAlternativeNames:
+        - !Ref DomainName
+      ValidationMethod: DNS
+      DomainValidationOptions:
+        - DomainName: !Ref DomainName
+          HostedZoneId: !Ref HostedZoneId
+      Tags:
+        - Key: Name
+          Value: !Sub "${EnvironmentName}-wildcard-cert"
+
+  # -----------------------------------------------------------------
+  # 2. Security Groups
+  # -----------------------------------------------------------------
+  # Security Group for ALB (Allows HTTPS and HTTP from internet)
+  ALBSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Security Group for Application Load Balancer
+      VpcId: !Ref VpcId
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 443
+          ToPort: 443
+          CidrIp: 0.0.0.0/0
+          Description: 'Allow HTTPS from internet'
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: 0.0.0.0/0
+          Description: 'Allow HTTP from internet (for redirection)'
+      Tags:
+        - Key: Name
+          Value: !Sub "${EnvironmentName}-alb-sg"
+
+  # Security Group Rule for EC2 (Allows only traffic from ALB to application ports)
+  EC2AppSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Security Group for EC2 to allow traffic from ALB
+      VpcId: !Ref VpcId
+      SecurityGroupIngress:
+        # Kanrensha Front (8010) & Back (6180)
+        - IpProtocol: tcp
+          FromPort: 8010
+          ToPort: 8010
+          SourceSecurityGroupId: !Ref ALBSecurityGroup
+          Description: 'Allow Kanrensha Front from ALB'
+        - IpProtocol: tcp
+          FromPort: 6180
+          ToPort: 6180
+          SourceSecurityGroupId: !Ref ALBSecurityGroup
+          Description: 'Allow Kanrensha Back from ALB'
+        
+        # [未実装のためコメントアウト] 書面作成システム(create-doc) 用ルール
+        # - IpProtocol: tcp
+        #   FromPort: 8020
+        #   ToPort: 8020
+        #   SourceSecurityGroupId: !Ref ALBSecurityGroup
+        #   Description: 'Allow Create-Doc Front from ALB'
+        # - IpProtocol: tcp
+        #   FromPort: 6280
+        #   ToPort: 6280
+        #   SourceSecurityGroupId: !Ref ALBSecurityGroup
+        #   Description: 'Allow Create-doc Back from ALB'
+        
+        # [未実装のためコメントアウト] 調査システム(investigate) 用ルール
+        # - IpProtocol: tcp
+        #   FromPort: 8030
+        #   ToPort: 8030
+        #   SourceSecurityGroupId: !Ref ALBSecurityGroup
+        #   Description: 'Allow Investigate Front from ALB'
+        # - IpProtocol: tcp
+        #   FromPort: 6380
+        #   ToPort: 6380
+        #   SourceSecurityGroupId: !Ref ALBSecurityGroup
+        #   Description: 'Allow Investigate Back from ALB'
+      Tags:
+        - Key: Name
+          Value: !Sub "${EnvironmentName}-ec2-app-sg"
+
+  # -----------------------------------------------------------------
+  # 3. Application Load Balancer
+  # -----------------------------------------------------------------
+  PublicALB:
+    Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+    Properties:
+      Name: !Sub "${EnvironmentName}-multisys-alb"
+      Scheme: internet-facing
+      Type: application
+      Subnets:
+        - !Ref PublicSubnet1
+        - !Ref PublicSubnet2
+      SecurityGroups:
+        - !Ref ALBSecurityGroup
+      Tags:
+        - Key: Name
+          Value: !Sub "${EnvironmentName}-multisys-alb"
+
+  # -----------------------------------------------------------------
+  # 4. Target Groups
+  # -----------------------------------------------------------------
+  # --- Kanrensha ---
+  TGKanrenshaFront:
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+    Properties:
+      Name: !Sub "${EnvironmentName}-tg-kanrensha-front"
+      Port: 8010
+      Protocol: HTTP
+      VpcId: !Ref VpcId
+      TargetType: instance
+      HealthCheckPath: /
+      HealthCheckIntervalSeconds: 30
+      HealthCheckTimeoutSeconds: 5
+      HealthyThresholdCount: 2
+      UnhealthyThresholdCount: 3
+      Matcher:
+        HttpCode: '200'
+      Targets:
+        - Id: !Ref TargetEc2InstanceId
+          Port: 8010
+
+  TGKanrenshaBack:
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+    Properties:
+      Name: !Sub "${EnvironmentName}-tg-kanrensha-back"
+      Port: 6180
+      Protocol: HTTP
+      VpcId: !Ref VpcId
+      TargetType: instance
+      HealthCheckPath: /api/actuator/health
+      HealthCheckIntervalSeconds: 30
+      HealthCheckTimeoutSeconds: 5
+      HealthyThresholdCount: 2
+      UnhealthyThresholdCount: 5
+      Matcher:
+        HttpCode: '200,401'
+      Targets:
+        - Id: !Ref TargetEc2InstanceId
+          Port: 6180
+
+  # --- [未実装のためコメントアウト] 書面作成システム(create-doc) ---
+  # TGCreateDocFront:
+  #   Type: AWS::ElasticLoadBalancingV2::TargetGroup
+  #   Properties:
+  #     Name: !Sub "${EnvironmentName}-tg-create-doc-front"
+  #     Port: 8020
+  #     Protocol: HTTP
+  #     VpcId: !Ref VpcId
+  #     TargetType: instance
+  #     HealthCheckPath: /
+  #     HealthCheckIntervalSeconds: 30
+  #     HealthCheckTimeoutSeconds: 5
+  #     HealthyThresholdCount: 2
+  #     UnhealthyThresholdCount: 3
+  #     Matcher:
+  #       HttpCode: '200'
+  #     Targets:
+  #       - Id: !Ref TargetEc2InstanceId
+  #         Port: 8020
+
+  # TGCreateDocBack:
+  #   Type: AWS::ElasticLoadBalancingV2::TargetGroup
+  #   Properties:
+  #     Name: !Sub "${EnvironmentName}-tg-create-doc-back"
+  #     Port: 6280
+  #     Protocol: HTTP
+  #     VpcId: !Ref VpcId
+  #     TargetType: instance
+  #     HealthCheckPath: /api/actuator/health
+  #     HealthCheckIntervalSeconds: 30
+  #     HealthCheckTimeoutSeconds: 5
+  #     HealthyThresholdCount: 2
+  #     UnhealthyThresholdCount: 5
+  #     Matcher:
+  #       HttpCode: '200,401'
+  #     Targets:
+  #       - Id: !Ref TargetEc2InstanceId
+  #         Port: 6280
+
+  # --- [未実装のためコメントアウト] 調査システム(investigate) ---
+  # TGInvestigateFront:
+  #   Type: AWS::ElasticLoadBalancingV2::TargetGroup
+  #   Properties:
+  #     Name: !Sub "${EnvironmentName}-tg-investigate-front"
+  #     Port: 8030
+  #     Protocol: HTTP
+  #     VpcId: !Ref VpcId
+  #     TargetType: instance
+  #     HealthCheckPath: /
+  #     HealthCheckIntervalSeconds: 30
+  #     HealthCheckTimeoutSeconds: 5
+  #     HealthyThresholdCount: 2
+  #     UnhealthyThresholdCount: 3
+  #     Matcher:
+  #       HttpCode: '200'
+  #     Targets:
+  #       - Id: !Ref TargetEc2InstanceId
+  #         Port: 8030
+
+  # TGInvestigateBack:
+  #   Type: AWS::ElasticLoadBalancingV2::TargetGroup
+  #   Properties:
+  #     Name: !Sub "${EnvironmentName}-tg-investigate-back"
+  #     Port: 6380
+  #     Protocol: HTTP
+  #     VpcId: !Ref VpcId
+  #     TargetType: instance
+  #     HealthCheckPath: /api/actuator/health
+  #     HealthCheckIntervalSeconds: 30
+  #     HealthCheckTimeoutSeconds: 5
+  #     HealthyThresholdCount: 2
+  #     UnhealthyThresholdCount: 5
+  #     Matcher:
+  #       HttpCode: '200,401'
+  #     Targets:
+  #       - Id: !Ref TargetEc2InstanceId
+  #         Port: 6380
+
+  # -----------------------------------------------------------------
+  # 5. ALB Listeners & Rules
+  # -----------------------------------------------------------------
+  # HTTP Listener (Redirects to HTTPS)
+  ALBListenerHTTP:
+    Type: AWS::ElasticLoadBalancingV2::Listener
+    Properties:
+      DefaultActions:
+        - Type: redirect
+          RedirectConfig:
+            Protocol: HTTPS
+            Port: '443'
+            Host: '#{host}'
+            Path: '/#{path}'
+            Query: '#{query}'
+            StatusCode: HTTP_301
+      LoadBalancerArn: !Ref PublicALB
+      Port: 80
+      Protocol: HTTP
+
+  # HTTPS Listener with ACM Certificate
+  ALBListenerHTTPS:
+    Type: AWS::ElasticLoadBalancingV2::Listener
+    Properties:
+      Certificates:
+        - CertificateArn: !Ref WildcardCertificate
+      DefaultActions:
+        - Type: fixed-response
+          FixedResponseConfig:
+            ContentType: text/plain
+            MessageBody: 'Host Not Found'
+            StatusCode: '404'
+      LoadBalancerArn: !Ref PublicALB
+      Port: 443
+      Protocol: HTTPS
+
+  # --- Listener Rules for Routing ---
+
+  # Rule 1: Kanrensha API (kanrensha.domain.com/api/*)
+  RuleKanrenshaBack:
+    Type: AWS::ElasticLoadBalancingV2::ListenerRule
+    Properties:
+      Actions:
+        - Type: forward
+          TargetGroupArn: !Ref TGKanrenshaBack
+      Conditions:
+        - Field: host-header
+          HostHeaderConfig:
+            Values:
+              - !Sub "kanrensha.${DomainName}"
+        - Field: path-pattern
+          PathPatternConfig:
+            Values:
+              - "/api/*"
+      ListenerArn: !Ref ALBListenerHTTPS
+      Priority: 10
+
+  # Rule 2: Kanrensha Front (kanrensha.domain.com/*)
+  RuleKanrenshaFront:
+    Type: AWS::ElasticLoadBalancingV2::ListenerRule
+    Properties:
+      Actions:
+        - Type: forward
+          TargetGroupArn: !Ref TGKanrenshaFront
+      Conditions:
+        - Field: host-header
+          HostHeaderConfig:
+            Values:
+              - !Sub "kanrensha.${DomainName}"
+      ListenerArn: !Ref ALBListenerHTTPS
+      Priority: 11
+
+  # --- [未実装のためコメントアウト] 書面作成システム(create-doc) ルーティング ---
+  # RuleCreateDocBack:
+  #   Type: AWS::ElasticLoadBalancingV2::ListenerRule
+  #   Properties:
+  #     Actions:
+  #       - Type: forward
+  #         TargetGroupArn: !Ref TGCreateDocBack
+  #     Conditions:
+  #       - Field: host-header
+  #         HostHeaderConfig:
+  #           Values:
+  #             - !Sub "create-doc.${DomainName}"
+  #       - Field: path-pattern
+  #         PathPatternConfig:
+  #           Values:
+  #             - "/api/*"
+  #     ListenerArn: !Ref ALBListenerHTTPS
+  #     Priority: 20
+
+  # RuleCreateDocFront:
+  #   Type: AWS::ElasticLoadBalancingV2::ListenerRule
+  #   Properties:
+  #     Actions:
+  #       - Type: forward
+  #         TargetGroupArn: !Ref TGCreateDocFront
+  #     Conditions:
+  #       - Field: host-header
+  #         HostHeaderConfig:
+  #           Values:
+  #             - !Sub "create-doc.${DomainName}"
+  #     ListenerArn: !Ref ALBListenerHTTPS
+  #     Priority: 21
+
+  # --- [未実装のためコメントアウト] 調査システム(investigate) ルーティング ---
+  # RuleInvestigateBack:
+  #   Type: AWS::ElasticLoadBalancingV2::ListenerRule
+  #   Properties:
+  #     Actions:
+  #       - Type: forward
+  #         TargetGroupArn: !Ref TGInvestigateBack
+  #     Conditions:
+  #       - Field: host-header
+  #         HostHeaderConfig:
+  #           Values:
+  #             - !Sub "investigate.${DomainName}"
+  #       - Field: path-pattern
+  #         PathPatternConfig:
+  #           Values:
+  #             - "/api/*"
+  #     ListenerArn: !Ref ALBListenerHTTPS
+  #     Priority: 30
+
+  # RuleInvestigateFront:
+  #   Type: AWS::ElasticLoadBalancingV2::ListenerRule
+  #   Properties:
+  #     Actions:
+  #       - Type: forward
+  #         TargetGroupArn: !Ref TGInvestigateFront
+  #     Conditions:
+  #       - Field: host-header
+  #         HostHeaderConfig:
+  #           Values:
+  #             - !Sub "investigate.${DomainName}"
+  #     ListenerArn: !Ref ALBListenerHTTPS
+  #     Priority: 31
+
+  # -----------------------------------------------------------------
+  # 6. Route 53 Records
+  # -----------------------------------------------------------------
+  KanrenshaDNSRecord:
+    Type: AWS::Route53::RecordSet
+    Properties:
+      HostedZoneId: !Ref HostedZoneId
+      Name: !Sub "kanrensha.${DomainName}."
+      Type: A
+      AliasTarget:
+        DNSName: !GetAtt PublicALB.DNSName
+        HostedZoneId: !GetAtt PublicALB.CanonicalHostedZoneID
+        EvaluateTargetHealth: true
+
+  # --- [未実装のためコメントアウト] 書面作成システム(create-doc) DNS レコード ---
+  # CreateDocDNSRecord:
+  #   Type: AWS::Route53::RecordSet
+  #   Properties:
+  #     HostedZoneId: !Ref HostedZoneId
+  #     Name: !Sub "create-doc.${DomainName}."
+  #     Type: A
+  #     AliasTarget:
+  #       DNSName: !GetAtt PublicALB.DNSName
+  #       HostedZoneId: !GetAtt PublicALB.CanonicalHostedZoneID
+  #       EvaluateTargetHealth: true
+
+  # --- [未実装のためコメントアウト] 調査システム(investigate) DNS レコード ---
+  # InvestigateDNSRecord:
+  #   Type: AWS::Route53::RecordSet
+  #   Properties:
+  #     HostedZoneId: !Ref HostedZoneId
+  #     Name: !Sub "investigate.${DomainName}."
+  #     Type: A
+  #     AliasTarget:
+  #       DNSName: !GetAtt PublicALB.DNSName
+  #       HostedZoneId: !GetAtt PublicALB.CanonicalHostedZoneID
+  #       EvaluateTargetHealth: true
+
+Outputs:
+  ALBDNSName:
+    Description: DNS Name of the Application Load Balancer
+    Value: !GetAtt PublicALB.DNSName
+    Export:
+      Name: !Sub "${EnvironmentName}-ALB-DNSName"
+
+  ALBSecurityGroupId:
+    Description: Security Group ID of the ALB
+    Value: !Ref ALBSecurityGroup
+    Export:
+      Name: !Sub "${EnvironmentName}-ALB-SecurityGroupId"
+
+  EC2AppSecurityGroupId:
+    Description: Security Group ID for EC2 App port access (only from ALB)
+    Value: !Ref EC2AppSecurityGroup
+    Export:
+      Name: !Sub "${EnvironmentName}-EC2-App-SecurityGroupId"

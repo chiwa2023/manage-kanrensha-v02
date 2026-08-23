@@ -13,6 +13,6 @@ public final class PathRouteConstants {
     }
 
     /** 接続先のルート */
-    public static final String ROOT = "/manage-kanrensha";
+    public static final String ROOT = "/api";
 
 }

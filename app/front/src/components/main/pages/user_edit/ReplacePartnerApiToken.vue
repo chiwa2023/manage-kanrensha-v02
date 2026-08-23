@@ -109,12 +109,14 @@ async function onSave() {
                     infoLevel.value = MessageConstants.LEVEL_ERROR;
                     messageType.value = MessageConstants.VIEW_OK;
                     message.value = "長期トークンが作成できませんでした。もう一度やり直してください" + resultDto.message;
+                    return;
                 } else {
                     // 取得に成功している場合
                     infoLevel.value = MessageConstants.LEVEL_INFO;
                     messageType.value = MessageConstants.VIEW_TOAST;
                     message.value = "長期トークンの作成に成功しました：" + resultDto.message;
                     newToken.value = resultDto.token;
+                    return;
                 }
             })
             .catch((error) => {

@@ -203,9 +203,11 @@ function doDelete() {
                     if (resultDto.isFailure) {
                         infoLevel.value = MessageConstants.LEVEL_WARNING;
                         messageType.value = MessageConstants.VIEW_OK;
+                        return;
                     } else {
                         infoLevel.value = MessageConstants.LEVEL_INFO;
                         messageType.value = MessageConstants.VIEW_TOAST;
+                        return;
                     }
                     // 削除が終わったら初期化
                     personDeleteIndex = INIT_NUMBER;
@@ -298,10 +300,12 @@ function recieveManagerInterface(editDto: RiyoushaManagerDtoInterface) {
                     infoLevel.value = MessageConstants.LEVEL_WARNING;
                     messageType.value = MessageConstants.VIEW_OK;
                     isManagerEdit.value = false;
+                    return;
                 } else {
                     infoLevel.value = MessageConstants.LEVEL_INFO;
                     messageType.value = MessageConstants.VIEW_TOAST;
                     isManagerEdit.value = false;
+                    return;
                 }
             })
             .catch((error) => {
@@ -353,10 +357,12 @@ function recievePartnerApiInterface(editDto: RiyoushaPartnerApiDtoInterface) {
                     infoLevel.value = MessageConstants.LEVEL_WARNING;
                     messageType.value = MessageConstants.VIEW_OK;
                     isManagerEdit.value = false;
+                    return;
                 } else {
                     infoLevel.value = MessageConstants.LEVEL_INFO;
                     messageType.value = MessageConstants.VIEW_TOAST;
                     isManagerEdit.value = false;
+                    return;
                 }
             })
             .catch((error) => {

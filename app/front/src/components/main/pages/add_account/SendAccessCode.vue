@@ -115,6 +115,7 @@ async function onCheckSendCode() {
             infoLevel.value = MessageConstants.LEVEL_ERROR;
             messageType.value = MessageConstants.VIEW_OK;
             message.value = resultDto.message || "認証コードの検証に失敗しました。";
+            return;
         }
         else {
             sessionStorage.setItem("new-comer", JSON.stringify(resultDto));

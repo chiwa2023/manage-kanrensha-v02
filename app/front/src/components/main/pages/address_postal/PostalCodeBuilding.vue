@@ -214,10 +214,12 @@ function onSave() {
                     infoLevel.value = MessageConstants.LEVEL_WARNING;
                     messageType.value = MessageConstants.VIEW_OK;
                     message.value = resultDto.message;
+                    return;
                 } else {
                     infoLevel.value = MessageConstants.LEVEL_INFO;
                     messageType.value = MessageConstants.VIEW_TOAST;
                     message.value = resultDto.message;
+                    return;
                 }
             })
             .catch((error) => {

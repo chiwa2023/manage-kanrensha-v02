@@ -142,9 +142,11 @@ function recieveRiyoushaOrgInterface(editDto: RiyoushaOrgDtoInterface) {
                 if (resultDto.isFailure) {
                     infoLevel.value = MessageConstants.LEVEL_WARNING;
                     messageType.value = MessageConstants.VIEW_OK;
+                    return;
                 } else {
                     infoLevel.value = MessageConstants.LEVEL_INFO;
                     messageType.value = MessageConstants.VIEW_TOAST;
+                    return;
                 }
             })
             .catch((error) => {
@@ -194,9 +196,11 @@ function doDelete() {
                     if (resultDto.isFailure) {
                         infoLevel.value = MessageConstants.LEVEL_WARNING;
                         messageType.value = MessageConstants.VIEW_OK;
+                        return;
                     } else {
                         infoLevel.value = MessageConstants.LEVEL_INFO;
                         messageType.value = MessageConstants.VIEW_TOAST;
+                        return;
                     }
                     // 削除が終わったら初期化
                     orgDeleteId = INIT_NUMBER;

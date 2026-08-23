@@ -177,7 +177,7 @@ function onSave() {
         message.value = getErrorUniqueIdMessage(selectedOrgCode.value);
         return;
     }
-    
+
     capsuleDtoEdit.value.userDto = userDto.value;
 
     message.value = "自分が所属する組織に利用者を招待";
@@ -197,9 +197,11 @@ function onSave() {
                 if (resultDto.isFailure) {
                     infoLevel.value = MessageConstants.LEVEL_WARNING;
                     messageType.value = MessageConstants.VIEW_OK;
+                    return;
                 } else {
                     infoLevel.value = MessageConstants.LEVEL_INFO;
                     messageType.value = MessageConstants.VIEW_TOAST;
+                    return;
                 }
             })
             .catch((error) => {

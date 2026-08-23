@@ -15,6 +15,7 @@ import net.seijishikin.jp.normalize.manage.kanrensha.entity.AddressPostalEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.WkTblPostalCommonEntity;
 // import net.seijishikin.jp.normalize.manage.kanrensha.logic.address.registory.WriteLogAddressFormatLogic;
 import net.seijishikin.jp.normalize.manage.kanrensha.repository.AddressPostalRepository;
+import net.seijishikin.jp.normalize.manage.kanrensha.service.util.WriteLogService;
 
 /**
  * 郵便番号不規則データのうち１種類の範囲データを自動で修正する
@@ -47,6 +48,10 @@ public class CopyPostalCodeByRangeNameLogic {
     /** から記号 */
     private static final String NAMI_DASH = "〜";
 
+    /** ログ書き出しService */
+    @Autowired
+    private WriteLogService writeLogService;
+    
     /**
      * 処理を行う
      *
@@ -55,6 +60,8 @@ public class CopyPostalCodeByRangeNameLogic {
      */
     public List<AddressPostalEntity> practice( // SUPPRESS CHECKSTYLE Return Number NOPMD
             final WkTblPostalCommonEntity irregularEntity, final LeastUserDto userDto) {
+        
+        writeLogService.writeInfo("---search" + irregularEntity.getAddressOrg());
 
         String postalAddressName = irregularEntity.getAddressOrg();
         int posNamiDash = postalAddressName.indexOf(NAMI_DASH);
@@ -108,8 +115,13 @@ public class CopyPostalCodeByRangeNameLogic {
         String address = irregularEntity.getAddressName();
         final int dataAri = 0;
         boolean isHosei = false;
+        final int logLimit = 100;
         for (int index = startIndex; index <= endIndex; index++) {
 
+            if(0 == index % logLimit) {
+                writeLogService.writeInfo(table + "---loopindex" + index);
+            }
+            
             String newAddress = this.getNewAddress(address, index, key);
             String sql = "SELECT COUNT(*) FROM " + table + " WHERE address_block LIKE '" + newAddress + "%'";
             Query query = entityManager.createNativeQuery(sql, Integer.class);
@@ -135,6 +147,7 @@ public class CopyPostalCodeByRangeNameLogic {
                 }
             }
         }
+
         return list;
     }
 

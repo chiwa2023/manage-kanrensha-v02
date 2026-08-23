@@ -66,6 +66,7 @@ async function onSendEmail() {
             stageClass1.value = "stage-complete";
         }
         message.value = resultDto.message;
+        return;
     } else {
         infoLevel.value = MessageConstants.LEVEL_ERROR;
         if (sendError.value != null) {
@@ -79,7 +80,7 @@ async function onSendEmail() {
 async function onSendCode() {
 
     const { loading: sendLoading, error: sendError, fetchData: fetchLogin } = useApi<FrameworkMessageAndResultDtoInterface>();
-   console.log(sendLoading); // TODO 警告除け
+    console.log(sendLoading); // TODO 警告除け
 
     const url = urlBack + "/reset-password/check-code";
     const config = {
@@ -103,6 +104,7 @@ async function onSendCode() {
             stageClass2.value = "stage-complete";
         }
         message.value = "パスワードリセット(コード照合)：" + resultDto.message;
+        return;
     } else {
         infoLevel.value = MessageConstants.LEVEL_ERROR;
         if (sendError.value != null) {
@@ -126,7 +128,7 @@ async function onSavePassword() {
 
 
     const { loading: sendLoading, error: sendError, fetchData: fetchLogin } = useApi<FrameworkMessageAndResultDtoInterface>();
-   console.log(sendLoading); // TODO 警告除け
+    console.log(sendLoading); // TODO 警告除け
 
     const url = urlBack + "/reset-password/save";
     const config = {
@@ -150,6 +152,7 @@ async function onSavePassword() {
             caller.value = completKey;
         }
         message.value = "パスワードリセット(パスワード設定)" + resultDto.message;
+        return;
     } else {
         infoLevel.value = MessageConstants.LEVEL_ERROR;
         if (sendError.value != null) {

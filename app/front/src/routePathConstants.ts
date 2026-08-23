@@ -1,10 +1,10 @@
 export default class RoutePathConstants {
 
     /** ドメイン */
-    static readonly DOMAIN: string = "http://localhost:6180";
+    static readonly DOMAIN: string = import.meta.env.VITE_API_DOMAIN;
 
     /** ベース */
-    static readonly BASE_PATH: string = "/manage-kanrensha";
+    static readonly BASE_PATH: string = "";
 
     /** ログインページ */
     static readonly PAGE_LOGIN: string = this.BASE_PATH + "/";
@@ -83,11 +83,11 @@ export default class RoutePathConstants {
 
     /** アドレス・ベース・レジストリ編集 */
     static readonly PAGE_ADDRESS_REGI_EDIT: string = this.BASE_PATH + "/address-registry-edit";
-   /** アドレス・ベース・レジストリ差分編集 */
+    /** アドレス・ベース・レジストリ差分編集 */
     static readonly PAGE_ADDRESS_SABUN_EDIT: string = this.BASE_PATH + "/address-wktbl-edit";
-   /** アドレス・ベース・レジストリ差分一括更新 */
+    /** アドレス・ベース・レジストリ差分一括更新 */
     static readonly PAGE_ADDRESS_SABUN_UPDATE: string = this.BASE_PATH + "/address-wktbl-update";
- 
+
     /** アドレス・ベース・レジストリ差分 */
     static readonly PAGE_ADDRESS_REGI_SABUN: string = this.BASE_PATH + "/address-registry-sabun";
 

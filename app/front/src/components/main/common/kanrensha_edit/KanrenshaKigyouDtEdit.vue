@@ -71,6 +71,7 @@ function load() {
                 if (resultDto.isFailure) {
                     infoLevel.value = MessageConstants.LEVEL_WARNING;
                     messageType.value = MessageConstants.VIEW_OK;
+                    return;
                 } else {
                     editKigyouDtDto.value = resultDto.kanrenshaKigyouDtDto;
                 }
@@ -90,7 +91,7 @@ function load() {
             message.value = e.message;
             return;
         }
-        
+
         message.value = getErrorMessage(e, INQUIRE_FLG);
         return;
     });

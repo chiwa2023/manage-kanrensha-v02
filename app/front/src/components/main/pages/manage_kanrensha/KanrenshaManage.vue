@@ -93,19 +93,19 @@ const isEditSeijidantai: ComputedRef<boolean> = computed(() => {
 
 const editEntityKigyouDt: Ref<KanrenshaKigyouDtMasterEntityInterface> = ref(new KanrenshaKigyouDtMasterEntity());
 function recieveKigyouDtInterface(entity: KanrenshaKigyouDtMasterEntityInterface) {
-    window.location.href = '#sectionEdit';
+    document.getElementById('sectionEdit')?.scrollIntoView();
     editEntityKigyouDt.value = entity;
 }
 
 const editEntityPerson: Ref<KanrenshaPersonMasterEntityInterface> = ref(new KanrenshaPersonMasterEntity());
 function recievePersonInterface(entity: KanrenshaPersonMasterEntityInterface) {
-    window.location.href = "#sectionEdit";
+    document.getElementById('sectionEdit')?.scrollIntoView();
     editEntityPerson.value = entity;
 }
 
 const editEntitySeijidantai: Ref<KanrenshaSeijidantaiMasterEntityInterface> = ref(new KanrenshaSeijidantaiMasterEntity());
 function recieveSeijidantaiInterface(entity: KanrenshaSeijidantaiMasterEntityInterface) {
-    window.location.href = "#sectionEdit";
+    document.getElementById('sectionEdit')?.scrollIntoView();
     editEntitySeijidantai.value = entity;
 }
 
@@ -144,9 +144,11 @@ function recieveKigyouDtInterfaceEdit(editDto: KanrenshaKigyouDtDtoInterface) {
                 if (resultDto.isFailure) {
                     infoLevel.value = MessageConstants.LEVEL_WARNING;
                     messageType.value = MessageConstants.VIEW_OK;
+                    return;
                 } else {
                     infoLevel.value = MessageConstants.LEVEL_INFO;
                     messageType.value = MessageConstants.VIEW_TOAST;
+                    return;
                 }
             })
             .catch((error) => {

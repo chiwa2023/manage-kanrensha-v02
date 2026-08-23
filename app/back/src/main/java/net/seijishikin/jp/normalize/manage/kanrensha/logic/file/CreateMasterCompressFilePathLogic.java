@@ -8,9 +8,6 @@ import java.util.List;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
-import net.seijishikin.jp.normalize.manage.kanrensha.constants.GetCurrentResourcePath;
-
-
 /**
  * マスタZip圧縮用ファイルPathを生成する
  */
@@ -39,15 +36,25 @@ public class CreateMasterCompressFilePathLogic {
         this.frontDumpFolder = frontDumpFolder;
     }
 
-    /** 全体保存ディレクトリ */
-    private final String pathSaved;
+    /** propertiesからインジェクションされた最上位保存フォルダ絶対パス */
+    private String storageFolder;
 
     /**
-     * コンストラクタ
+     * 最上位保存フォルダ絶対パスを取得する
+     *
+     * @return 最上位保存フォルダ絶対パス
      */
-    public CreateMasterCompressFilePathLogic() {
-        pathSaved = Paths.get(GetCurrentResourcePath.getBackSrcPath("")).getParent().getParent().toString();
+    public String getStorageFolder() {
+        return storageFolder;
+    }
 
+    /**
+     * 最上位保存フォルダ絶対パスを設定する
+     *
+     * @param storageFolder 最上位保存フォルダ絶対パス
+     */
+    public void setStorageFolder(final String storageFolder) {
+        this.storageFolder = storageFolder;
     }
 
     /**
@@ -58,7 +65,7 @@ public class CreateMasterCompressFilePathLogic {
      */
     public Path practiceZipFile(final String fileName) {
 
-        return Paths.get(pathSaved, frontDumpFolder, fileName);
+        return Paths.get(storageFolder, frontDumpFolder, fileName);
     }
 
     /**
@@ -74,11 +81,11 @@ public class CreateMasterCompressFilePathLogic {
             final String pathPerson, final String pathPoliOrg) {
 
         List<Path> listFiles = new ArrayList<>();
-        Path pathFileCorp = Paths.get(pathSaved, frontDumpFolder, folder, pathCorp);
+        Path pathFileCorp = Paths.get(storageFolder, frontDumpFolder, folder, pathCorp);
         listFiles.add(pathFileCorp);
-        Path pathFilePerson = Paths.get(pathSaved, frontDumpFolder, folder, pathPerson);
+        Path pathFilePerson = Paths.get(storageFolder, frontDumpFolder, folder, pathPerson);
         listFiles.add(pathFilePerson);
-        Path pathFilePoliOrg = Paths.get(pathSaved, frontDumpFolder, folder, pathPoliOrg);
+        Path pathFilePoliOrg = Paths.get(storageFolder, frontDumpFolder, folder, pathPoliOrg);
         listFiles.add(pathFilePoliOrg);
 
         return listFiles;

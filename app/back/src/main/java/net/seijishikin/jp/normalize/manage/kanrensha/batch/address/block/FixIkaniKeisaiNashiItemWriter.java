@@ -77,7 +77,7 @@ public class FixIkaniKeisaiNashiItemWriter extends JpaItemWriter<WkTblPostalComm
     @Override
     public void write(final Chunk<? extends WkTblPostalCommonEntity> items) {
 
-        writeLogService.writeInfo("---"+items.getItems().get(0).getLgCode());
+        writeLogService.writeInfo("---nashi"+items.getItems().get(0).getLgCode());
 
         List<WkTblPostalCommonEntity> list = new ArrayList<>();
         for (WkTblPostalCommonEntity entity : items) {

@@ -64,21 +64,21 @@ public class TaskInfoConstants { // NOPMD DataClass
 
     /** 関連者個人標準ファイル登録 */
     public static final int FILE_PERSON_STD = 351;
-    /** 関連者企業団体標準再分類 */
+    /** 関連者企業団体標準ファイル登録 */
     public static final int FILE_KIGYOU_STD = 352;
-    /** 関連者政治団体標準再分類 */
+    /** 関連者政治団体標準ファイル登録 */
     public static final int FILE_SEIJIDANTAI_STD = 353;
-    /** 関連者個人最小再分類 */
+    /** 関連者個人最小ファイル登録 */
     public static final int FILE_PERSON_MIN = 354;
-    /** 関連者企業団体最小再分類 */
+    /** 関連者企業団体最小ファイル登録 */
     public static final int FILE_KIGYOU_MIN = 355;
-    /** 関連者政治団体最小再分類 */
+    /** 関連者政治団体最小ファイル登録 */
     public static final int FILE_SEIJIDANTAI_MIN = 356;
-    /** 関連者個人履歴再分類 */
+    /** 関連者個人履歴ファイル登録 */
     public static final int FILE_PERSON_HISTORY = 357;
-    /** 関連者企業団体履歴再分類 */
+    /** 関連者企業団体履歴フファイル登録 */
     public static final int FILE_KIGYOU_HISTORY = 358;
-    /** 関連者政治団体履歴再分類 */
+    /** 関連者政治団体履歴ファイル登録 */
     public static final int FILE_SEIJIDANTAI_HISTORY = 359;
 
     /** 関連者個人標準再分類 */

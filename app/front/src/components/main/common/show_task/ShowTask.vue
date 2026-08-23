@@ -25,7 +25,7 @@ const urlBack: string = RoutePathConstants.DOMAIN + RoutePathConstants.BASE_PATH
 const BLANK: string = "";
 const INIT_NUMBER: number = 0;
 const SEARCH_LIMIT: number = 20;
-const SERVER_STATUS_OK: number = 200;
+// const SERVER_STATUS_OK: number = 200;
 // const SERVER_STATUS_ERROR: number = 400;
 const INQUIRE_FLG: boolean = false;
 const ERR_MESS_ONLY: boolean = true;
@@ -94,7 +94,7 @@ function onSearch() {
         fetch(url, { method, headers, body })
             .then(async (response) => {
                 resultDto.value = await response.json();
-                if (SERVER_STATUS_OK === response.status) {
+                if (resultDto.value.allCount > 0) {
                     allCount.value = resultDto.value.allCount;
                     pageNumber.value = resultDto.value.pageNumber;
                 } else {

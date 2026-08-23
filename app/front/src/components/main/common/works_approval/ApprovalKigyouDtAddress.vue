@@ -13,7 +13,7 @@ import { SearchWorksApprovalResultDto, type SearchWorksApprovalResultDtoInterfac
 const BLANK: string = "";
 const INIT_NUMBER: number = 0;
 const INIT_BOOLEAN: boolean = false;
-const SERVER_STATUS_OK: number = 200;
+// const SERVER_STATUS_OK: number = 200;
 // const SERVER_STATUS_ERROR: number = 400;
 const SEARCH_LIMIT: number = 20;
 const INQUIRE_FLG: boolean = false;
@@ -80,7 +80,7 @@ function onSearch() {
         fetch(url, { method, headers, body })
             .then(async (response) => {
                 resultDto.value = await response.json();
-                if (SERVER_STATUS_OK === response.status) {
+                if (resultDto.value.resultDtoAddress.allCount > 0) {
                     //ページング
                     allCount.value = resultDto.value.resultDtoAddress.allCount;
                     pageNumber.value = resultDto.value.resultDtoAddress.pageNumber;

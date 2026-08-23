@@ -26,6 +26,7 @@ public interface KanrenshaKigyouDtHistory01Repository extends JpaRepository<Kanr
      */
     @Query(value = "SELECT * FROM kanrensha_kigyou_dt_history_01"
             + " WHERE search_text like ?1 AND is_latest=1", nativeQuery = true) // TODO MATCH AGAINST
+    //            + " WHERE MATCH(search_text) AGAINST (?1 IN NATURAL LANGUAGE MODE) AND is_latest=1", nativeQuery = true)
     List<KanrenshaKigyouDtHistory01Entity> findFullText(String searchWords);
 
     /**

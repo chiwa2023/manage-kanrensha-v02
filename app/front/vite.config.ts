@@ -14,7 +14,7 @@ export default defineConfig(({ mode }) => {
 
   return {
     plugins: [vue()],
-    base: '/manage-kanrensha',
+    base: '/',
     // エイリアスの設定
     resolve: {
       alias: {
