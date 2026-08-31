@@ -60,7 +60,7 @@ public class GetUserLeastByIdService {
         final String BLANK = "";
         for (UserRoleEntity entity : listEntity) {
             String role = entity.getRole();
-            listRole.add(role);
+            listRole.add("ROLE_"+role);
             if (role.startsWith("kanrensha_")) {
                 String kanrenshaCode = entity.getKanrenshaCode();
                 if (!BLANK.equals(kanrenshaCode)) {

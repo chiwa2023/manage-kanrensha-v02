@@ -9,7 +9,7 @@
 発行から2時間
 
 リンク：
-https://normalize.jp.seijishikin.net/manage-kanrensha/send-access-code?token=【verifyToken】
+https://kanrensha-normalize-jp-seijishikin.net/api/send-access-code?token=【verifyToken】
 
 ---
 もし上記リンクからアクセスできない、または手動で認証コードを入力する場合は、
@@ -19,11 +19,11 @@ https://normalize.jp.seijishikin.net/manage-kanrensha/send-access-code?token=【
 発行から2時間 (【limitTime】)
 
 認証コード入力ページ:
-https://normalize.jp.seijishikin.net/manage-kanrensha/send-access-code
+https://kanrensha-normalize-jp-seijishikin.net/api/send-access-code
 
 メールアドレス: 【email】
 認証コード: 【regiCode】
 ---
 
 政治資金関連者標準化サイト
-https://normalize.jp.seijishikin.net/
+https://normalize-jp-seijishikin.net/

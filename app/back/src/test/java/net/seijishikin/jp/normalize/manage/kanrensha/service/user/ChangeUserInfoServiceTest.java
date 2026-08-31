@@ -57,7 +57,7 @@ class ChangeUserInfoServiceTest {
     private UserRoleRepository userRoleRepository;
 
     @Test
-    @Tag("TableTruncate")
+    @Tag("TableTruncate") // NOPMD
     void testNoRoleChange() throws Exception {
 
         // 他人編集
@@ -74,7 +74,7 @@ class ChangeUserInfoServiceTest {
         EditUserPersonCapsuleDto capsuleDto = new EditUserPersonCapsuleDto();
         capsuleDto.getUserDto().setUserPersonId(82);
         capsuleDto.getUserDto().setUserPersonCode(83);
-        final String name = "abcdefg";
+        final String name = "abcdefg"; // NOPMD
         capsuleDto.getUserDto().setUserPersonName(name);
         capsuleDto.getUserDto().getListRoles().add(role);
         capsuleDto.setIsAlertTaskEnd(true);

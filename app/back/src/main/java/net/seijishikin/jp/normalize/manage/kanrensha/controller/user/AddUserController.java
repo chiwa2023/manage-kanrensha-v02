@@ -1,6 +1,7 @@
 package net.seijishikin.jp.normalize.manage.kanrensha.controller.user;
 
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -67,6 +68,7 @@ public class AddUserController {
     @PostMapping("/user")
     public ResponseEntity<LoginUserResultDto> practice(final @RequestBody NewComerDto newComerDto) {
         NewComerDto responseDto = addUserService.practice(newComerDto);
+        LocalDate now = LocalDate.now();
 
         try {
             // ログイン処理
@@ -89,6 +91,14 @@ public class AddUserController {
 
             List<String> listAuh = authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority)
                     .collect(Collectors.toList());
+
+            // MEMO 4.1からログイン方法が追加になるらしい
+            final String factor = "FACTOR_PASSWORD";
+            
+            if(listAuh.contains(factor)) {
+                listAuh.remove(factor);
+            }
+            
             personDto.setListRoles(listAuh);
 
             resultDto.setUserDto(personDto);
@@ -96,10 +106,10 @@ public class AddUserController {
             return ResponseEntity.status(HttpStatus.OK).body(resultDto);
 
         } catch (AuthenticationException e) {
+            saveStackTraceService.practice(e, now.getYear(), 0);
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         } catch (Exception exception) { // NOPMD 業務的な理由から積極的に許容
             // exceptionが出所不明のためstack traceを取る
-            LocalDate now = LocalDate.now();
             saveStackTraceService.practice(exception, now.getYear(), 0);
 
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();

@@ -1,6 +1,6 @@
 package net.seijishikin.jp.normalize.manage.kanrensha.controller.works_approval; // NOPMD HighImport
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals; // NOPMD HighImport
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -60,6 +60,7 @@ class SaveApprovalAddressControlerTest {
     /** MockMvc */
     private MockMvc mockMvc;
 
+    /** setup */
     @BeforeEach
     public void setup() {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(context) //

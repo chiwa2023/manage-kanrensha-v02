@@ -71,7 +71,7 @@ class SendMailUserLogicTest {
         mailMessage.setFrom("testA" + index + "t@test.jp"); // 送信元メールアドレス
         mailMessage.setTo("testB" + index + "@test.jp");
         mailMessage.setCc("testC" + index + "@test.jp");
-        mailMessage.setBcc("testD" + index + "@test.jp");
+        mailMessage.setBcc("testD" + index + "@test.jp" + "\t");
         mailMessage.setSubject("テスト用表題");
         mailMessage.setText("ローカルから送る用テストメッセージ");
         mailMessage.setReplyTo("テスト用表題" + index);

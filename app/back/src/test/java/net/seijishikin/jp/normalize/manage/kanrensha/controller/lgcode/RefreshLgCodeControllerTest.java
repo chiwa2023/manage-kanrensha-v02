@@ -1,6 +1,6 @@
 package net.seijishikin.jp.normalize.manage.kanrensha.controller.lgcode;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals; // NOPMD HighImport
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -55,6 +55,7 @@ class RefreshLgCodeControllerTest {
     /** MockMvc */
     private MockMvc mockMvc;
 
+    /** seetup */
     @BeforeEach
     public void setup() {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(context) //

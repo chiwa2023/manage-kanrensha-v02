@@ -62,6 +62,8 @@ public class ChangeUserInfoController {
             }
 
         } catch (UsernameNotFoundException exception) {
+            saveStackTraceService.practice(exception, LocalDate.now().getYear(), 0);
+            exception.printStackTrace();
             resultDto.setIsFailure(true);
             resultDto.setMessage("tokenとユーザ(userDto)が不整合です");
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(resultDto);

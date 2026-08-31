@@ -58,6 +58,8 @@ public class PublishNewUserCodeController {
 
         } catch (IOException ioException) {
             // メールテンプレート呼び出し不可
+            LocalDate now = LocalDate.now();
+            saveStackTraceService.practice(ioException, now.getYear(), 0);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new NewComerDto());
 
         } catch (Exception exception) { // NOPMD Avoid Catch General Exception

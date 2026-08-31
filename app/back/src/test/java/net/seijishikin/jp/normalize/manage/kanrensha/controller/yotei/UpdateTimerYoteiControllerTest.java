@@ -54,6 +54,7 @@ class UpdateTimerYoteiControllerTest {
     /** MockMvc */
     private MockMvc mockMvc;
 
+    /** SetUp */
     @BeforeEach
     public void setup() {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(context) //

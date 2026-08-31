@@ -1,8 +1,8 @@
 package net.seijishikin.jp.normalize.manage.kanrensha.service.security;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -11,12 +11,13 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import net.seijishikin.jp.normalize.common_tool.dto.FrameworkMessageAndResultDto;
-import net.seijishikin.jp.normalize.manage.kanrensha.constants.GetCurrentResourcePath;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.send_message.MailDataDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.send_message.SendMaileResultDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.sequrity.ResetPassswordCapsuleDto;
@@ -48,6 +49,10 @@ public class ResetPasswordMailInputService {
     @Autowired
     private LoginStatusRepository loginStatusRepository;
 
+    /** ResourceLoader */
+    @Autowired
+    private ResourceLoader resourceLoader;
+
     /**
      * 処理を行う
      * 
@@ -69,8 +74,8 @@ public class ResetPasswordMailInputService {
             return resultDto;
         }
 
-        //userPasswordResetRepository.flush();
-        
+        // userPasswordResetRepository.flush();
+
         // エンティティにセットして登録
         UserPasswordResetEntity restEntity = new UserPasswordResetEntity();
         restEntity.setEmail(email);
@@ -112,12 +117,19 @@ public class ResetPasswordMailInputService {
         // mailMessage.setCc(""); // cc不要
         // mailMessage.setBcc(""); // bcc不要
         mailMessage.setSubject("パスワードリセット認証コード送信：政治資金関連者標準化サイト");
-        mailMessage.setReplyTo("このアドレスに返信はできません");
+        // mailMessage.setReplyTo("このアドレスに返信はできません");
 
-        String pathString = GetCurrentResourcePath
-                .getBackSrcPath("/main/resources/templates/email/send_password_reset_code.txt");
+        // String pathString = GetCurrentResourcePath
+        // .getBackSrcPath("/main/resources/templates/email/send_password_reset_code.txt");
+        // String body = Files.readString(Paths.get(pathString));
 
-        String body = Files.readString(Paths.get(pathString));
+        Resource resource = resourceLoader.getResource("classpath:templates/email/send_password_reset_code.txt");
+
+        String body;
+        try (InputStream inputStream = resource.getInputStream()) {
+            body = new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
+        }
+
         body = body.replaceAll("【email】", email);
         body = body.replaceAll("【regiCode】", regiCode);
         body = body.replaceAll("【limitTime】", limitTime.format(DateTimeFormatter.ISO_DATE_TIME));

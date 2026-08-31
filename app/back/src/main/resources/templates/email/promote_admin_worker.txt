@@ -12,4 +12,4 @@ SE権限が付与されているかを確認してください。
 ---
 
 政治資金関連者標準化サイト
-https://normalize.jp.seijishikin.net/
+https://normalize-jp-seijishikin.net/

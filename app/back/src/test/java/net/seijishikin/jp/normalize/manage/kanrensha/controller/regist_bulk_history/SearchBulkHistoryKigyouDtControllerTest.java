@@ -50,6 +50,7 @@ class SearchBulkHistoryKigyouDtControllerTest {
     /** MockMvc */
     private MockMvc mockMvc;
 
+    /** setup */
     @BeforeEach
     public void setup() {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(context) //

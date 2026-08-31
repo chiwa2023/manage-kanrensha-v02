@@ -119,7 +119,7 @@ function recieveSubmit() {
 
     // 登録成功時のみ運営者メニューに遷移
     if (isSaveSuccess) {
-        router.push(RoutePathConstants.PAGE_MENU_MANAGER);
+        router.push(RoutePathConstants.PAGE_LOGOUT);
     }
 }
 </script>

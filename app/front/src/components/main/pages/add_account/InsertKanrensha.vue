@@ -246,13 +246,13 @@ function recieveSubmit() {
     infoLevel.value = 0;
     messageType.value = 0;
     if (isSuccessUpdate) {
-        router.push(RoutePathConstants.PAGE_MENU_KANRENSHA);
+        router.push(RoutePathConstants.PAGE_LOGOUT);
     }
 }
 </script>
 <template>
 
-    <!-- 関連者 -->
+    <!-- 関連者メニュー  -->
     <KanrenshaInfo :user-dto="userDto"></KanrenshaInfo>
 
     <h1>関連者新規追加</h1>

@@ -9,6 +9,7 @@ import org.springframework.mail.MailException;
 import org.springframework.mail.MailParseException;
 import org.springframework.mail.MailSendException;
 import org.springframework.mail.MailSender;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Component;
 
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.send_message.MailDataDto;
@@ -54,9 +55,58 @@ public class SendMailUserLogic {
 
             try {
                 MailDataDto dataDto = listMailData.get(index);
-
+                SimpleMailMessage mailMessage = dataDto.getSimpleMailMessage();
+                if (mailMessage != null) {
+                    // 送信元(From)のサニタイズ（制御文字やスペースを除去）
+                    String from = mailMessage.getFrom();
+                    if (from != null) {
+                        
+                        String cleanFrom = from.replaceAll("[\\s\\p{Cntrl}]", "");
+                        mailMessage.setFrom(cleanFrom);
+                    }
+                    // 送信先(To)のサニタイズ
+                    String[] to = mailMessage.getTo();
+                    if (to != null) {
+                        String[] cleanTo = new String[to.length];
+                        for (int i = 0; i < to.length; i++) {
+                            if (to[i] != null) {
+                                cleanTo[i] = to[i].replaceAll("[\\s\\p{Cntrl}]", "");
+                            }
+                        }
+                        mailMessage.setTo(cleanTo);
+                        
+                        for (String clean :cleanTo) {
+                            if (clean != null) {
+                            }
+                        }
+                        
+                    }
+                    // CCのサニタイズ
+                    String[] cc = mailMessage.getCc();
+                    if (cc != null) {
+                        String[] cleanCc = new String[cc.length];
+                        for (int i = 0; i < cc.length; i++) {
+                            if (cc[i] != null) {
+                                cleanCc[i] = cc[i].replaceAll("[\\s\\p{Cntrl}]", "");
+                            }
+                        }
+                        mailMessage.setCc(cleanCc);
+                    }
+                    // BCCのサニタイズ
+                    String[] bcc = mailMessage.getBcc();
+                    if (bcc != null) {
+                        String[] cleanBcc = new String[bcc.length];
+                        for (int i = 0; i < bcc.length; i++) {
+                            if (bcc[i] != null) {
+                                cleanBcc[i] = bcc[i].replaceAll("[\\s\\p{Cntrl}]", "");
+                            }
+                        }
+                        mailMessage.setBcc(cleanBcc);
+                    }
+                }
+                
                 // TODO 環境が替わるたびに動作テストする。現在smtp4devをテストして動作
-                mailSender.send(dataDto.getSimpleMailMessage());
+                mailSender.send(mailMessage);
                 resultDto.getListSuccess().add(dataDto);
 
             } catch (MailAuthenticationException mailAuthenticationException) {

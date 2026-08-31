@@ -40,6 +40,21 @@ if (null !== dtoJson) {
 // API呼び出し用Composable
 const { loading: addUserLoading, error: addUserError, fetchData: fetchAddUser } = useApi<LoginUserResultDtoInterface>();
 async function onRegistUser() {
+
+    if (newComer.value.nickName === null || newComer.value.nickName === BLANK) {
+        infoLevel.value = MessageConstants.LEVEL_ERROR;
+        messageType.value = MessageConstants.VIEW_OK;
+        message.value = "このサイトだけで使用する名前を入力してください";
+        return;
+    }
+
+    if (newComer.value.password === null || newComer.value.password === BLANK) {
+        infoLevel.value = MessageConstants.LEVEL_ERROR;
+        messageType.value = MessageConstants.VIEW_OK;
+        message.value = "パスワードを入力してください";
+        return;
+    }
+
     // パスワード、権限、ニックネームを登録
 
     const url = urlBack + "/add-user/user";

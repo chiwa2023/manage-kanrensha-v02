@@ -45,7 +45,7 @@ onBeforeMount(() => {
 
     const capsuleDto: GetUserDtoCapsuleDtoInterface = new GetUserDtoCapsuleDto();
     capsuleDto.editUserid = props.editUserId;
-
+    
     // 取得実行
     getAuthorizedPromiseArea().then(token => {
         const url = urlBack + "/edit-user/get";
@@ -70,22 +70,22 @@ onBeforeMount(() => {
                     editUserDto.value.isAlertTaskStart = resultDto.isAlertTaskStart;
                     editUserDto.value.isAlertTaskEnd = resultDto.isAlertTaskEnd;
                     // 利用者権限設定
-                    if (editUserDto.value.userDto.listRoles.includes(UserRoleConstants.MANAGER)) {
+                    if (editUserDto.value.userDto.listRoles.includes(UserRoleConstants.ROLE_MANAGER)) {
                         hasRoleManager.value = true;
                     }
-                    if (editUserDto.value.userDto.listRoles.includes(UserRoleConstants.PARTNER_API)) {
+                    if (editUserDto.value.userDto.listRoles.includes(UserRoleConstants.ROLE_PARTNER_API)) {
                         hasRolePartnerApi.value = true;
                     }
                     // 関連者者権限設定
-                    if (editUserDto.value.userDto.listRoles.includes(UserRoleConstants.KANRENSHA_PERSON)) {
+                    if (editUserDto.value.userDto.listRoles.includes(UserRoleConstants.ROLE_KANRENSHA_PERSON)) {
                         kanrenshaRole.value = UserRoleConstants.KANRENSHA_PERSON;
                     }
-                    if (editUserDto.value.userDto.listRoles.includes(UserRoleConstants.KANRENSHA_KIGYOU_DT)) {
+                    if (editUserDto.value.userDto.listRoles.includes(UserRoleConstants.ROLE_KANRENSHA_KIGYOU_DT)) {
                         kanrenshaRole.value = UserRoleConstants.KANRENSHA_KIGYOU_DT;
                         disabledKanrensha.value = true;
                         disabledRiyousha.value = true;
                     }
-                    if (editUserDto.value.userDto.listRoles.includes(UserRoleConstants.KANRENSHA_SEIJIDANTAI)) {
+                    if (editUserDto.value.userDto.listRoles.includes(UserRoleConstants.ROLE_KANRENSHA_SEIJIDANTAI)) {
                         kanrenshaRole.value = UserRoleConstants.KANRENSHA_SEIJIDANTAI;
                         disabledKanrensha.value = true;
                         disabledRiyousha.value = true;
@@ -123,58 +123,51 @@ function onSave() {
         return;
     }
 
-    // // 更新実行
-    // getAuthorizedPromiseArea().then(token => {
-    //     const url = urlBack + "/edit-user/change";
-    //     const method = "POST";
-    //     const body = JSON.stringify(editUserDto.value);
-    //     const headers = {
-    //         'Accept': 'application/json',
-    //         'Content-Type': 'application/json',
-    //         'X-AUTH-TOKEN': 'Bearer ' + token
-    //     };
-    //     fetch(url, { method, headers, body })
-    //         .then(async (response) => {
-    //             const resultDto: GetUserDtoResultDtoInterface = await response.json();
-    //             if (resultDto.isFailure) {
-    //                 title.value = "更新処理失敗";
-    //                 infoLevel.value = MessageConstants.LEVEL_ERROR;
-    //                 messageType.value = MessageConstants.VIEW_OK;
-    //                 message.value = resultDto.message;
-    //                 return;
-    //             } else {
-    //                 title.value = "ユーザ更新処理";
-    //                 infoLevel.value = MessageConstants.LEVEL_INFO;
-    //                 messageType.value = MessageConstants.VIEW_TOAST;
-    //                 message.value = "ユーザ更新処理が正常にできました";
-    //                 actionStatus = SERVER_STATUS_OK;
-    //                 return;
-    //             }
-    //         })
-    //         .catch((e) => {
-    //             if (e instanceof AccessTokenNotFoundError) {
-    //                 infoLevel.value = MessageConstants.LEVEL_ERROR;
-    //                 // トークン保持ができていない場合
-    //                 messageType.value = MessageConstants.VIEW_OK;
-    //                 title.value = "現在トークンが存在しません";
-    //                 message.value = e.message;
-    //                 return;
-    //             }
-    //             if (e instanceof TokenRefreshError) {
-    //                 // 取得に失敗している場合
-    //                 infoLevel.value = MessageConstants.LEVEL_ERROR;
-    //                 messageType.value = MessageConstants.VIEW_OK;
-    //                 title.value = "有効期限まじかのトークンを再取得できませんでした";
-    //                 message.value = e.message;
-    //                 return;
-    //             }
-    //             infoLevel.value = MessageConstants.LEVEL_ERROR;
-    //             messageType.value = MessageConstants.VIEW_OK;
-    //             title.value = "システムエラーが発生しました";
-    //             message.value = "システム管理者にお問い合わせください";
-    //             return;
-    //         });
-    // });
+    // 更新実行
+    getAuthorizedPromiseArea().then(token => {
+        const url = urlBack + "/edit-user/change";
+        const method = "POST";
+        const body = JSON.stringify(editUserDto.value);
+        const headers = {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'X-AUTH-TOKEN': 'Bearer ' + token
+        };
+        fetch(url, { method, headers, body })
+            .then(async (response) => {
+                const resultDto: GetUserDtoResultDtoInterface = await response.json();
+                if (resultDto.isFailure) {
+                    infoLevel.value = MessageConstants.LEVEL_ERROR;
+                    messageType.value = MessageConstants.VIEW_OK;
+                    message.value = resultDto.message;
+                    return;
+                } else {
+                    infoLevel.value = MessageConstants.LEVEL_INFO;
+                    messageType.value = MessageConstants.VIEW_TOAST;
+                    message.value = "ユーザ更新処理が正常にできました";
+                    actionStatus = SERVER_STATUS_OK;
+                    return;
+                }
+            })
+            .catch((error) => {
+                message.value = getErrorMessage(error, ERR_MESS_ONLY);
+                infoLevel.value = MessageConstants.LEVEL_ERROR;
+                messageType.value = MessageConstants.VIEW_OK;
+                return;
+            });
+    }).catch((e) => {
+        infoLevel.value = MessageConstants.LEVEL_ERROR;
+        messageType.value = MessageConstants.VIEW_OK;
+
+        // トークン保持または取得に失敗している場合
+        if (e instanceof AccessTokenNotFoundError || e instanceof TokenRefreshError) {
+            message.value = e.message;
+            return;
+        }
+
+        message.value = getErrorMessage(e, INQUIRE_FLG);
+        return;
+    });
 }
 
 function onCancel() {

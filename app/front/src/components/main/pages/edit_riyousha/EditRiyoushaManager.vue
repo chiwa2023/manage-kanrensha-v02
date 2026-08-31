@@ -44,6 +44,7 @@ onMounted(() => {
         const capsuleDto: GetRiyoushaMasterCapsuleDtoInterface = new GetRiyoushaMasterCapsuleDto();
         capsuleDto.riyoushaRole = userDto.value.riyoushaRole;
         capsuleDto.riyoushaCode = userDto.value.riyoushaCode;
+        capsuleDto.userDto = userDto.value;
 
         getAuthorizedPromiseArea().then(token => {
             const url = urlBack + "/riyousha/get-myself";
@@ -155,7 +156,7 @@ function recieveSubmit() {
 }
 </script>
 <template>
-    <!-- 運営者編集-->
+    <!-- 運営者メニュー兼チェック -->
     <ManagerInfo :user-dto="userDto"></ManagerInfo>
 
     <h1>運営者編集</h1><br>

@@ -115,19 +115,19 @@ function recieveSubmit() {
 
     // 登録成功時のみ運営者メニューに遷移
     if (isSaveSuccess) {
-        router.push(RoutePathConstants.PAGE_MENU_PARTNER_API);
+        router.push(RoutePathConstants.PAGE_LOGOUT);
     }
 }
 
 </script>
 <template>
 
-    <!-- APIパートナー -->
+    <!-- APIパートナーメニュー兼チェック -->
     <PartnerApiInfo :user-dto="userDto"></PartnerApiInfo>
 
     <h1>APIパートナー追加</h1><br>
 
-    <!-- 運営者編集 -->
+    <!-- APIパートナー編集 -->
     <RiyoushaPartnerApiEdit :user-dto="userDto" :edit-entity="editEntity"
         @send-cancel-partner-api="recieveCancelPartnerApi" @send-partner-api-interface="recievePartnerApiInterface">
     </RiyoushaPartnerApiEdit>

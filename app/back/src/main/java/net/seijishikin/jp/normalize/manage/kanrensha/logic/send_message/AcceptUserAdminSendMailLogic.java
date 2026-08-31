@@ -1,8 +1,8 @@
 package net.seijishikin.jp.normalize.manage.kanrensha.logic.send_message;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -10,10 +10,11 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Component;
 
-import net.seijishikin.jp.normalize.manage.kanrensha.constants.GetCurrentResourcePath;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.send_message.MailDataDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.send_message.SendMaileResultDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.UserPersonEntity;
@@ -37,6 +38,10 @@ public class AcceptUserAdminSendMailLogic {
     /** ユーザ個人Repository */
     @Autowired
     private UserPersonRepository userPersonRepository;
+
+    /** ResourceLoader */
+    @Autowired
+    private ResourceLoader resourceLoader;
 
     /**
      * 処理を行う
@@ -82,12 +87,20 @@ public class AcceptUserAdminSendMailLogic {
         // mailMessage.setCc(""); // cc不要
         // mailMessage.setBcc(""); // bcc不要
         mailMessage.setSubject("SE権限推薦に諾否回答がありました：政治資金関連者標準化サイト");
-        mailMessage.setReplyTo("このアドレスに返信はできません");
+        // mailMessage.setReplyTo("このアドレスに返信はできません");
 
-        String pathString = GetCurrentResourcePath
-                .getBackSrcPath("/main/resources/templates/email/accept_admin_worker.txt");
+        // String pathString = GetCurrentResourcePath
+        // .getBackSrcPath("/main/resources/templates/email/accept_admin_worker.txt");
+        //
+        // String body = Files.readString(Paths.get(pathString));
 
-        String body = Files.readString(Paths.get(pathString));
+        Resource resource = resourceLoader.getResource("classpath:templates/email/accept_admin_worker.txt");
+
+        String body;
+        try (InputStream inputStream = resource.getInputStream()) {
+            body = new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
+        }
+
         mailMessage.setText(body);
 
         MailDataDto mailDataDto = new MailDataDto();

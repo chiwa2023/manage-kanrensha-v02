@@ -133,7 +133,7 @@ public class InsertTaskPlanService {
             // mailMessage.setCc(""); // cc不要
             // mailMessage.setBcc(""); // bcc不要
             mailMessage.setSubject(resultDto.getTaskPlanName() + "：政治資金関連者標準化サイト");
-            mailMessage.setReplyTo("このアドレスに返信はできません");
+            // mailMessage.setReplyTo("このアドレスに返信はできません");
 
             String body = resultDto.getMessageTemplate();
             body = body.replaceAll("【paramQuery】", resultDto.getParamQuery());

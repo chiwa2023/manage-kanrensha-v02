@@ -1,6 +1,7 @@
 package net.seijishikin.jp.normalize.manage.kanrensha.logic.user;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
@@ -40,7 +41,9 @@ public class ValidateAuthoraizeUserDetailLogic {
 
         // テストで@withMockUserを使用し、仮ログイン状態でなければ有効
         if (userDetails instanceof CustomUserDetails) {
+
             CustomUserDetails customUserDetails = (CustomUserDetails) userDetails;
+
             this.checkUserInfo(customUserDetails, userDto);
         }
 
@@ -144,17 +147,22 @@ public class ValidateAuthoraizeUserDetailLogic {
         if (roleList.size() != userDto.getListRoles().size()) {
             throw new UsernameNotFoundException("トークンと権限が一致しません(リストサイズ)");
         }
+
         for (String role : userDto.getListRoles()) {
+
             if (!roleList.contains(role)) {
                 throw new UsernameNotFoundException("トークンと権限が一致しません");
             }
         }
+
         return true;
     }
 
     private List<String> convertRoleList(final Collection<? extends GrantedAuthority> collections) {
         List<String> list = new ArrayList<>();
         for (GrantedAuthority authority : collections) {
+            // TODO 両方チェック対象にするのは不細工なので修正を考慮する
+            // list.add("ROLE_" + authority.getAuthority());
             list.add(authority.getAuthority());
         }
         return list;

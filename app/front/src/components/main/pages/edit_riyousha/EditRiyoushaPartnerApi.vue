@@ -155,7 +155,7 @@ function recieveSubmit() {
 </script>
 <template>
 
-    <!-- 運営者編集-->
+    <!-- APIパートナーメニュー兼チェック -->
     <PartnerApiInfo :user-dto="userDto"></PartnerApiInfo>
 
     <h1>API接続者編集</h1><br>
