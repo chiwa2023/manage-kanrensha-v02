@@ -1,9 +1,9 @@
 package net.seijishikin.jp.normalize.manage.kanrensha.batch.kanrensha.kigyou_dt.history;
 
-import org.springframework.batch.core.Job;
-import org.springframework.batch.core.Step;
+import org.springframework.batch.core.job.Job;
+import org.springframework.batch.core.step.Step;
 import org.springframework.batch.core.job.builder.JobBuilder;
-import org.springframework.batch.core.launch.support.RunIdIncrementer;
+import org.springframework.batch.core.job.parameters.RunIdIncrementer;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.PlatformTransactionManager;
 
+import net.seijishikin.jp.normalize.manage.kanrensha.batch.task_plan.RecordTaskPlanJobExecutionListner;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.WkTblKanrenshaKigyouDtHistoryEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.WkTblKanrenshaKigyouDtHistoryResultEntity;
 
@@ -95,6 +96,10 @@ public class InsertKanrenshaKigyouDtHistoryBatchConfiguration {
     @Autowired
     private KanrenshaKigyouDtWkTblFixProcessor kanrenshaKigyouDtWkTblFixProcessor;
 
+    /** バッチジョブ実行リスナ */
+    @Autowired
+    private RecordTaskPlanJobExecutionListner recordTaskPlanJobExecutionListner;
+
     /**
      * Jobを返却する
      *
@@ -107,8 +112,9 @@ public class InsertKanrenshaKigyouDtHistoryBatchConfiguration {
             @Qualifier(STEP_HISTORY) final Step stepHistory, @Qualifier(STEP_SUSPEND) final Step stepSuspend,
             @Qualifier(STEP_JUDGE) final Step stepJudge, @Qualifier(STEP_FIX) final Step stepFix) {
 
-        return new JobBuilder(JOB_NAME, jobRepository).incrementer(new RunIdIncrementer()).flow(stepErase)
-                .next(stepHistory).next(stepSuspend).next(stepJudge).next(stepFix).end().build();
+        return new JobBuilder(JOB_NAME, jobRepository).incrementer(new RunIdIncrementer())
+                .listener(recordTaskPlanJobExecutionListner).flow(stepErase).next(stepHistory).next(stepSuspend)
+                .next(stepJudge).next(stepFix).end().build();
     }
 
     /**
@@ -138,7 +144,7 @@ public class InsertKanrenshaKigyouDtHistoryBatchConfiguration {
             final PlatformTransactionManager transactionManager) {
 
         return new StepBuilder(STEP_HISTORY, jobRepository)
-                .<KanrenshaKigyouDtHistoryDto, WkTblKanrenshaKigyouDtHistoryEntity>chunk(CHUNK_SIZE, transactionManager)
+                .<KanrenshaKigyouDtHistoryDto, WkTblKanrenshaKigyouDtHistoryEntity>chunk(CHUNK_SIZE)
                 .reader(kanrenshaKigyouDtHistoryItemReader).processor(kanrenshaKigyouDtHistoryProcessor)
                 .writer(kanrenshaKigyouDtHistoryItemWriter).build();
     }
@@ -170,7 +176,7 @@ public class InsertKanrenshaKigyouDtHistoryBatchConfiguration {
             final PlatformTransactionManager transactionManager) {
 
         return new StepBuilder(STEP_JUDGE, jobRepository)
-                .<WkTblKanrenshaKigyouDtHistoryEntity, WkTblKanrenshaKigyouDtHistoryResultEntity>chunk(CHUNK_SIZE, transactionManager)
+                .<WkTblKanrenshaKigyouDtHistoryEntity, WkTblKanrenshaKigyouDtHistoryResultEntity>chunk(CHUNK_SIZE)
                 .reader(kanrenshaKigyouDtResultItemReader).processor(kanrenshaKigyouDtResultProcessor)
                 .writer(kanrenshaKigyouDtResultItemWriter).build();
     }
@@ -186,7 +192,7 @@ public class InsertKanrenshaKigyouDtHistoryBatchConfiguration {
     protected Step getStepFix(final JobRepository jobRepository, final PlatformTransactionManager transactionManager) {
 
         return new StepBuilder(STEP_FIX, jobRepository)
-                .<WkTblKanrenshaKigyouDtHistoryResultEntity, WkTblKanrenshaKigyouDtHistoryEntity>chunk(CHUNK_SIZE, transactionManager)
+                .<WkTblKanrenshaKigyouDtHistoryResultEntity, WkTblKanrenshaKigyouDtHistoryEntity>chunk(CHUNK_SIZE)
                 .reader(kanrenshaKigyouDtWkTblFixItemReader).processor(kanrenshaKigyouDtWkTblFixProcessor)
                 .writer(kanrenshaKigyouDtWkTblFixItemWriter).build();
     }

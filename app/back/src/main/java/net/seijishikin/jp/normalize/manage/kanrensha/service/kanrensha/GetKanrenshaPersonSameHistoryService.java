@@ -1,6 +1,6 @@
 package net.seijishikin.jp.normalize.manage.kanrensha.service.kanrensha; // NOPMD
 
-import java.util.List;
+import java.util.List; // NOPMD
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -60,7 +60,7 @@ import net.seijishikin.jp.normalize.manage.kanrensha.repository.lgcode.Kanrensha
  * 関連者個人の同属性リスト取得Service
  */
 @Service
-public class GetKanrenshaPersonSameHistoryService {
+public class GetKanrenshaPersonSameHistoryService { // NOPMD
 
     /** 住所から県 地方公共団体コード(2桁)取得Service */
     @Autowired

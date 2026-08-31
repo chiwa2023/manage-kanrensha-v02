@@ -1,9 +1,9 @@
 package net.seijishikin.jp.normalize.manage.kanrensha.batch.kanrensha.kigyou_dt.add_std;
 
-import org.springframework.batch.core.Job;
-import org.springframework.batch.core.Step;
+import org.springframework.batch.core.job.Job;
+import org.springframework.batch.core.step.Step;
 import org.springframework.batch.core.job.builder.JobBuilder;
-import org.springframework.batch.core.launch.support.RunIdIncrementer;
+import org.springframework.batch.core.job.parameters.RunIdIncrementer;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,9 +12,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.PlatformTransactionManager;
 
+import net.seijishikin.jp.normalize.manage.kanrensha.batch.task_plan.RecordTaskPlanJobExecutionListner;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.WkTblKanrenshaKigyouDtMasterEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.WkTblKanrenshaKigyouDtMasterResultEntity;
-
 
 /**
  * 関連者企業・団体標準登録BatchConfig
@@ -92,6 +92,10 @@ public class AddStdKanrenshaKigyouDtMasterBatchConfiguration {
     @Autowired
     private MasterKigyouDtAddStdWkTblFixItemWriter masterKigyouDtAddStdWkTblFixItemWriter;
 
+    /** バッチジョブ実行リスナ */
+    @Autowired
+    private RecordTaskPlanJobExecutionListner recordTaskPlanJobExecutionListner;
+
     /**
      * Jobを返却する
      *
@@ -104,8 +108,9 @@ public class AddStdKanrenshaKigyouDtMasterBatchConfiguration {
             @Qualifier(STEP_CSV) final Step stepCsv, @Qualifier(STEP_SUSPEND) final Step stepSuspend,
             @Qualifier(STEP_RECORD) final Step stepRecord, @Qualifier(STEP_FIX) final Step stepFix) {
 
-        return new JobBuilder(JOB_NAME, jobRepository).incrementer(new RunIdIncrementer()).flow(stepErase).next(stepCsv)
-                .next(stepSuspend).next(stepRecord).next(stepFix).end().build();
+        return new JobBuilder(JOB_NAME, jobRepository).incrementer(new RunIdIncrementer())
+                .listener(recordTaskPlanJobExecutionListner).flow(stepErase).next(stepCsv).next(stepSuspend)
+                .next(stepRecord).next(stepFix).end().build();
     }
 
     /**
@@ -134,7 +139,7 @@ public class AddStdKanrenshaKigyouDtMasterBatchConfiguration {
     protected Step getStepCsv(final JobRepository jobRepository, final PlatformTransactionManager transactionManager) {
 
         return new StepBuilder(STEP_CSV, jobRepository)
-                .<KanrenshaKigyouDtAddStdDto, WkTblKanrenshaKigyouDtMasterEntity>chunk(CHUNK_SIZE, transactionManager)
+                .<KanrenshaKigyouDtAddStdDto, WkTblKanrenshaKigyouDtMasterEntity>chunk(CHUNK_SIZE)
                 .reader(masterKigyouDtAddStdCsvItemReader).processor(kanrenshaKigyouDtAddStdCsvProcessor)
                 .writer(masterKigyouDtAddStdCsvItemWriter).build();
     }
@@ -166,7 +171,7 @@ public class AddStdKanrenshaKigyouDtMasterBatchConfiguration {
             final PlatformTransactionManager transactionManager) {
 
         return new StepBuilder(STEP_RECORD, jobRepository)
-                .<WkTblKanrenshaKigyouDtMasterEntity, WkTblKanrenshaKigyouDtMasterEntity>chunk(CHUNK_SIZE, transactionManager)
+                .<WkTblKanrenshaKigyouDtMasterEntity, WkTblKanrenshaKigyouDtMasterEntity>chunk(CHUNK_SIZE)
                 .reader(masterKigyouDtAddStdRecordItemReader).writer(masterKigyouDtAddStdRecordItemWriter).build();
     }
 
@@ -181,7 +186,7 @@ public class AddStdKanrenshaKigyouDtMasterBatchConfiguration {
     protected Step getStepFix(final JobRepository jobRepository, final PlatformTransactionManager transactionManager) {
 
         return new StepBuilder(STEP_FIX, jobRepository)
-                .<WkTblKanrenshaKigyouDtMasterResultEntity, WkTblKanrenshaKigyouDtMasterEntity>chunk(CHUNK_SIZE, transactionManager)
+                .<WkTblKanrenshaKigyouDtMasterResultEntity, WkTblKanrenshaKigyouDtMasterEntity>chunk(CHUNK_SIZE)
                 .reader(masterKigyouDtAddStdWkTblFixItemReader).processor(masterKigyouDtAddStdWkTblFixProcessor)
                 .writer(masterKigyouDtAddStdWkTblFixItemWriter).build();
     }

@@ -2,10 +2,10 @@ package net.seijishikin.jp.normalize.manage.kanrensha.batch.kanrensha.kigyou_dt.
 
 import java.util.Optional;
 
-import org.springframework.batch.core.StepExecution;
+import org.springframework.batch.core.step.StepExecution;
 import org.springframework.batch.core.annotation.BeforeStep;
-import org.springframework.batch.item.Chunk;
-import org.springframework.batch.item.database.JpaItemWriter;
+import org.springframework.batch.infrastructure.item.Chunk;
+import org.springframework.batch.infrastructure.item.database.JpaItemWriter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -43,8 +43,7 @@ public class KanrenshaKigyouDtAddMiniCsvItemWriter extends JpaItemWriter<WkTblKa
      * @param entityManagerFactory entityManagerFactory
      */
     public KanrenshaKigyouDtAddMiniCsvItemWriter(final @Autowired EntityManagerFactory entityManagerFactory) {
-        super();
-        super.setEntityManagerFactory(entityManagerFactory);
+        super(entityManagerFactory);
     }
 
     /**
@@ -66,19 +65,19 @@ public class KanrenshaKigyouDtAddMiniCsvItemWriter extends JpaItemWriter<WkTblKa
 
         int code = 0;
 
-//        Optional<WkTblKanrenshaKigyouDtAddMinEntity> optional = wkTblKanrenshaKigyouDtAddMinRepository
-//                .findFirstByOrderByWkTblKanrenshaKigyouDtAddMinCodeDesc();
-//        if (!optional.isEmpty()) {
-//            code = optional.get().getWkTblKanrenshaKigyouDtAddMinCode();
-//        }
-//
-//        for (WkTblKanrenshaKigyouDtAddMinEntity entity : items) {
-//            code++;
-//            setTableDataHistoryUtil.practiceInsert(userDto, entity);
-//            entity.setWkTblKanrenshaKigyouDtAddMinCode(code);
-//        }
-//
-//        wkTblKanrenshaKigyouDtAddMinRepository.saveAll(items);
+        Optional<WkTblKanrenshaKigyouDtAddMinEntity> optional = wkTblKanrenshaKigyouDtAddMinRepository
+                .findFirstByOrderByWkTblKanrenshaKigyouDtAddMinCodeDesc();
+        if (!optional.isEmpty()) {
+            code = optional.get().getWkTblKanrenshaKigyouDtAddMinCode();
+        }
+
+        for (WkTblKanrenshaKigyouDtAddMinEntity entity : items) {
+            code++;
+            setTableDataHistoryUtil.practiceInsert(userDto, entity);
+            entity.setWkTblKanrenshaKigyouDtAddMinCode(code);
+        }
+
+        wkTblKanrenshaKigyouDtAddMinRepository.saveAll(items);
     }
 
 }

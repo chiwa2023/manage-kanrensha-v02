@@ -3,11 +3,10 @@ package net.seijishikin.jp.normalize.manage.kanrensha.batch.kanrensha.person.his
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.batch.core.StepExecution;
+import org.springframework.batch.core.step.StepExecution;
 import org.springframework.batch.core.annotation.BeforeStep;
-import org.springframework.batch.item.Chunk;
-import org.springframework.batch.item.database.JpaItemWriter;
-import org.springframework.beans.BeanUtils;
+import org.springframework.batch.infrastructure.item.Chunk;
+import org.springframework.batch.infrastructure.item.database.JpaItemWriter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -51,8 +50,7 @@ public class KanrenshaPersonWkTblFixItemWriter extends JpaItemWriter<WkTblKanren
      * @param entityManagerFactory entityManagerFactory
      */
     public KanrenshaPersonWkTblFixItemWriter(final @Autowired EntityManagerFactory entityManagerFactory) {
-        super();
-        super.setEntityManagerFactory(entityManagerFactory);
+        super(entityManagerFactory);
     }
 
     /**
@@ -101,7 +99,12 @@ public class KanrenshaPersonWkTblFixItemWriter extends JpaItemWriter<WkTblKanren
     private void insertHistoryTable(final WkTblKanrenshaPersonHistoryEntity entityWkTbl) {
 
         KanrenshaPersonHistoryBaseEntity entity = new KanrenshaPersonHistoryBaseEntity();
-        BeanUtils.copyProperties(entityWkTbl, entity);
+
+        entity.setAllName(entityWkTbl.getKanrenshaName());
+        entity.setAllAddress(entityWkTbl.getAllAddress());
+        entity.setPersonShokugyou(entityWkTbl.getPersonShokugyou());
+        entity.setPersonKanrenshaCode(entityWkTbl.getPersonKanrenshaCode());
+
         insertKanrenshaPersonHistoryService.practice(userDto, entity);
     }
 

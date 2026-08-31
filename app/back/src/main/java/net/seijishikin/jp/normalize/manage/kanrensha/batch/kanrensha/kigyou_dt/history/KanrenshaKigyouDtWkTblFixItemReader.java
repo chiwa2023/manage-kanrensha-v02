@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import org.springframework.batch.core.StepExecution;
+import org.springframework.batch.core.step.StepExecution;
 import org.springframework.batch.core.annotation.BeforeStep;
-import org.springframework.batch.item.data.RepositoryItemReader;
+import org.springframework.batch.infrastructure.item.data.RepositoryItemReader;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort.Direction;
+
 import org.springframework.stereotype.Component;
 
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.WkTblKanrenshaKigyouDtHistoryResultEntity;
@@ -18,7 +18,8 @@ import net.seijishikin.jp.normalize.manage.kanrensha.repository.WkTblKanrenshaKi
  * 関連者企業・団体ワークテーブル修正ItemReader
  */
 @Component
-public class KanrenshaKigyouDtWkTblFixItemReader extends RepositoryItemReader<WkTblKanrenshaKigyouDtHistoryResultEntity> {
+public class KanrenshaKigyouDtWkTblFixItemReader
+        extends RepositoryItemReader<WkTblKanrenshaKigyouDtHistoryResultEntity> {
 
     /**
      * コンストラクタ
@@ -28,9 +29,7 @@ public class KanrenshaKigyouDtWkTblFixItemReader extends RepositoryItemReader<Wk
     public KanrenshaKigyouDtWkTblFixItemReader(
             final @Autowired WkTblKanrenshaKigyouDtHistoryResultRepository wkTblKanrenshaKigyouDtResultRepository) {
 
-        super();
-        super.setRepository(wkTblKanrenshaKigyouDtResultRepository);
-        super.setSort(new HashMap<String, Direction>()); // NOPMD
+        super(wkTblKanrenshaKigyouDtResultRepository, new HashMap<>());
         super.setMethodName("findByInsertUserCode");
 
         List<Object> list = new ArrayList<>();
@@ -38,7 +37,7 @@ public class KanrenshaKigyouDtWkTblFixItemReader extends RepositoryItemReader<Wk
     }
 
     /**
-     * BeforeStep(読み取りファイル指定)
+     * BeforeStep
      *
      * @param stepExecution stepExecution
      */

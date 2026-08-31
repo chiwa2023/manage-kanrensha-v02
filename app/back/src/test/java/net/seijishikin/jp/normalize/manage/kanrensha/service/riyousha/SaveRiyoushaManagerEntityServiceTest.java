@@ -3,12 +3,14 @@ package net.seijishikin.jp.normalize.manage.kanrensha.service.riyousha;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
+import java.util.List;
+
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.jdbc.Sql;
@@ -17,11 +19,14 @@ import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import net.seijishikin.jp.normalize.common_tool.dto.input.InputAccessDto;
 import net.seijishikin.jp.normalize.common_tool.dto.input.InputAddressDto;
 import net.seijishikin.jp.normalize.common_tool.dto.input.InputPersonNameDto;
+import net.seijishikin.jp.normalize.manage.kanrensha.constants.UserRoleConstants;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.riyousha.SaveRiyoushaManagerCapsuleDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.RiyoushaManagerMasterEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.RiyoushaPersonPropertyEntity;
+import net.seijishikin.jp.normalize.manage.kanrensha.entity.UserRoleEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.repository.RiyoushaManagerMasterRepository;
 import net.seijishikin.jp.normalize.manage.kanrensha.repository.RiyoushaPersonPropertyRepository;
+import net.seijishikin.jp.normalize.manage.kanrensha.repository.UserRoleRepository;
 import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateLeastUserForTestUtil;
 
 /**
@@ -29,7 +34,7 @@ import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateLeastUserForTes
  */
 @SpringJUnitConfig
 @AutoConfigureMockMvc
-@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
+@SpringBootTest
 @DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
 @Sql("SaveRiyoushaManagerEntityServiceTest.sql")
 class SaveRiyoushaManagerEntityServiceTest {
@@ -47,6 +52,10 @@ class SaveRiyoushaManagerEntityServiceTest {
     @Autowired
     private RiyoushaManagerMasterRepository riyoushaManagerMasterRepository;
 
+    /** ユーザ権限Repository */
+    @Autowired
+    private UserRoleRepository userRoleRepository;
+
     @Test
     @Tag("TableTruncate")
     void testAdd() throws Exception {
@@ -62,6 +71,7 @@ class SaveRiyoushaManagerEntityServiceTest {
         capsuleDto.getRiyoushaManagerDto().setInputAddressDto(addressDto);
         capsuleDto.getRiyoushaManagerDto().setInputAccessDto(accessDto);
         // その他のidなどは空にすると新規登録
+        capsuleDto.getRiyoushaManagerDto().setIsCombineUser(true);
 
         // マスタ
         Integer newId = saveRiyoushaManagerEntityService.practice(capsuleDto);
@@ -108,6 +118,14 @@ class SaveRiyoushaManagerEntityServiceTest {
         assertEquals(accessDto.getSnsServiceName(), savedPropertyEntity.getSnsServiceName());
         assertEquals(accessDto.getSnsPortalUrl(), savedPropertyEntity.getSnsPortalUrl());
         assertEquals(accessDto.getSnsAccount(), savedPropertyEntity.getSnsAccount());
+
+        // 自身データで新規追加の場合roleを紐づけのために更新
+        List<UserRoleEntity> listRole = userRoleRepository
+                .findByEmailAndRoleAndIsLatestTrue("ccc@politician.balanse.report.net", UserRoleConstants.MANAGER);
+        assertEquals(1, listRole.size());
+
+        UserRoleEntity roleEntity = listRole.get(0);
+        assertEquals(savedMasterEntity.getRiyoushaManagerMasterCode(), roleEntity.getRiyoushaCode());
 
     }
 

@@ -18,7 +18,7 @@ public interface SampleTableRepository extends JpaRepository<SampleTableEntity, 
      * @return 存在する場合はテーブル名
      */
     @Query(value = "SELECT table_name FROM INFORMATION_SCHEMA.TABLES"
-            + "    WHERE table_schema = 'manage_kanrensha' AND table_name = 'sample_table' ", nativeQuery = true)
+            + "    WHERE table_schema = 'manage_kanrensha_v02' AND table_name = 'sample_table' ", nativeQuery = true)
     List<String> findMyself();
 
 }

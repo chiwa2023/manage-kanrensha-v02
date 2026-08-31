@@ -1,9 +1,13 @@
 package net.seijishikin.jp.normalize.manage.kanrensha.repository.lgcode;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.KanrenshaSeijidantaiHistoryBaseEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.lgcode.KanrenshaSeijidantaiHistory03Entity;
@@ -12,7 +16,8 @@ import net.seijishikin.jp.normalize.manage.kanrensha.entity.lgcode.KanrenshaSeij
  * kanrensha_seijidantai_history_03接続用Repository
  */
 public interface KanrenshaSeijidantaiHistory03Repository
-        extends JpaRepository<KanrenshaSeijidantaiHistory03Entity, Integer> {
+        extends JpaRepository<KanrenshaSeijidantaiHistory03Entity, Integer>,
+        PagingAndSortingRepository<KanrenshaSeijidantaiHistory03Entity, Integer> {
 
     /**
      * 名称を検索対象として全文検索をする
@@ -32,8 +37,31 @@ public interface KanrenshaSeijidantaiHistory03Repository
      * @param delegate 代表者名
      * @return 検索結果
      */
-    @Query(value = "SELECT * FROM partner_poli_org_history_01 " + " WHERE partner_name = ?1 AND all_address = ?2 "
-            + "   AND poli_org_delegate = ?3 AND is_latest=1", nativeQuery = true)
+    @Query(value = "SELECT * FROM kanrensha_seijidantai_history_03 " + " WHERE all_name = ?1 AND all_address = ?2 "
+            + "   AND org_delegate_name = ?3 AND is_latest=1", nativeQuery = true)
     List<KanrenshaSeijidantaiHistoryBaseEntity> selectByProperty(String name, String address, String delegate);
+
+    /**
+     * 基準時間より前の最新データを取得する
+     *
+     * @param dateTime 基準日時開始
+     * @param isLatest 最新該否
+     * @param pageable ページング条件
+     * @return 検索結果
+     */
+    Page<KanrenshaSeijidantaiHistory03Entity> findByInsertTimestampLessThanAndIsLatest(LocalDateTime dateTime,
+            boolean isLatest, Pageable pageable);
+
+    /**
+     * 基準時間開始以上かつ終了より前の最新を取得する
+     *
+     * @param dateTimeStart 基準日時開始
+     * @param dateTimeEnd   基準日時終了
+     * @param isLatest      最新該否
+     * @param pageable      ページング条件
+     * @return 検索結果
+     */
+    Page<KanrenshaSeijidantaiHistory03Entity> findByInsertTimestampGreaterThanEqualAndInsertTimestampLessThanAndIsLatest(
+            LocalDateTime dateTimeStart, LocalDateTime dateTimeEnd, boolean isLatest, Pageable pageable);
 
 }

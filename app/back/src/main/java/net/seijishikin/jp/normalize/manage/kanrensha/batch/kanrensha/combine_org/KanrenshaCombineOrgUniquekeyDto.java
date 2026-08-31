@@ -21,10 +21,10 @@ public class KanrenshaCombineOrgUniquekeyDto implements Serializable { // NOPMD 
      * @param orgKanrenshaCode    関連者コード団体
      * @param yearArrayText       登録年配列
      */
-    public KanrenshaCombineOrgUniquekeyDto(final Long kanrenshaKbn, final String personKanrenshaCode,
+    public KanrenshaCombineOrgUniquekeyDto(final Short kanrenshaKbn, final String personKanrenshaCode,
             final String orgKanrenshaCode, final String yearArrayText) {
         super();
-        this.kanrenshaKbn = (short)Math.toIntExact(kanrenshaKbn); // 業務的に0,1,2,3のみ
+        this.kanrenshaKbn = kanrenshaKbn; // 業務的に0,1,2,3のみ
         this.personKanrenshaCode = personKanrenshaCode;
         this.orgKanrenshaCode = orgKanrenshaCode;
         this.yearArrayText = yearArrayText;

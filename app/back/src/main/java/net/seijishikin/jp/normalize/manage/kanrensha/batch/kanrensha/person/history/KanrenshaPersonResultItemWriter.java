@@ -1,10 +1,9 @@
 package net.seijishikin.jp.normalize.manage.kanrensha.batch.kanrensha.person.history;
 
-
-import org.springframework.batch.core.StepExecution;
+import org.springframework.batch.core.step.StepExecution;
 import org.springframework.batch.core.annotation.BeforeStep;
-import org.springframework.batch.item.Chunk;
-import org.springframework.batch.item.database.JpaItemWriter;
+import org.springframework.batch.infrastructure.item.Chunk;
+import org.springframework.batch.infrastructure.item.database.JpaItemWriter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -21,12 +20,10 @@ import net.seijishikin.jp.normalize.manage.kanrensha.repository.WkTblKanrenshaPe
 @Component
 public class KanrenshaPersonResultItemWriter extends JpaItemWriter<WkTblKanrenshaPersonHistoryResultEntity> {
 
-
     /** 関連者個人ワークテーブル判定Repository */
     @Autowired
     private WkTblKanrenshaPersonHistoryResultRepository wkTblKanrenshaPersonResultRepository;
 
-    
     /** テーブル履歴設定Utility */
     @Autowired
     private SetTableDataHistoryUtil setTableDataHistoryUtil;
@@ -37,15 +34,14 @@ public class KanrenshaPersonResultItemWriter extends JpaItemWriter<WkTblKanrensh
 
     /** ユーザ最低限Dto */
     private LeastUserDto userDto;
-    
+
     /**
      * コンストラクタ
      *
      * @param entityManagerFactory entityManagerFactory
      */
     public KanrenshaPersonResultItemWriter(final @Autowired EntityManagerFactory entityManagerFactory) {
-        super();
-        super.setEntityManagerFactory(entityManagerFactory);
+        super(entityManagerFactory);
     }
 
     /**
@@ -64,7 +60,7 @@ public class KanrenshaPersonResultItemWriter extends JpaItemWriter<WkTblKanrensh
      */
     @Override
     public void write(final Chunk<? extends WkTblKanrenshaPersonHistoryResultEntity> items) {
-
+        
         for (WkTblKanrenshaPersonHistoryResultEntity entity : items) {
             setTableDataHistoryUtil.practiceInsert(userDto, entity);
         }

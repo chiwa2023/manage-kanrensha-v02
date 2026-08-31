@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import org.springframework.batch.core.StepExecution;
+import org.springframework.batch.core.step.StepExecution;
 import org.springframework.batch.core.annotation.BeforeStep;
-import org.springframework.batch.item.data.RepositoryItemReader;
+import org.springframework.batch.infrastructure.item.data.RepositoryItemReader;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort.Direction;
+
 import org.springframework.stereotype.Component;
 
 import net.seijishikin.jp.normalize.common_tool.utils.SetTableDataHistoryUtil;
@@ -24,14 +24,12 @@ public class MasterPersonAddStdRecordItemReader extends RepositoryItemReader<WkT
     /**
      * コンストラクタ
      *
-     * @param wkTblMasterPersonRepository 関連者個人標準登録ワークテーブルRepository
+     * @param wkTblKanrenshaPersonMasterRepository 関連者個人標準登録ワークテーブルRepository
      */
     public MasterPersonAddStdRecordItemReader(
-            final @Autowired WkTblKanrenshaPersonMasterRepository wTblKanrenshaPersonMasterRepository) {
+            final @Autowired WkTblKanrenshaPersonMasterRepository wkTblKanrenshaPersonMasterRepository) {
 
-        super();
-        super.setRepository(wTblKanrenshaPersonMasterRepository);
-        super.setSort(new HashMap<String, Direction>()); // NOPMD
+        super(wkTblKanrenshaPersonMasterRepository, new HashMap<>());
         super.setMethodName("findByInsertUserCodeAndIsLatestAndIsAffected");
 
         List<Object> list = new ArrayList<>();

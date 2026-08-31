@@ -1,14 +1,16 @@
 package net.seijishikin.jp.normalize.manage.kanrensha.service.riyousha;
 
-import org.springframework.beans.BeanUtils;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import net.seijishikin.jp.normalize.manage.kanrensha.dto.riyousha.SearchRiyoushaAdminCapsuleDto;
+import net.seijishikin.jp.normalize.manage.kanrensha.constants.UserRoleConstants;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.riyousha.SearchRiyoushaAllCapsuleDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.riyousha.SearchRiyoushaAllResultDto;
-import net.seijishikin.jp.normalize.manage.kanrensha.dto.riyousha.SearchRiyoushaManagerCapsuleDto;
-import net.seijishikin.jp.normalize.manage.kanrensha.dto.riyousha.SearchRiyoushaPartnerApiCapsuleDto;
+import net.seijishikin.jp.normalize.manage.kanrensha.repository.ViewCombineAliveRiyoushaRepository;
 
 /**
  * 利用者(APIユーザ・運営者・管理者)全検索Service
@@ -16,17 +18,9 @@ import net.seijishikin.jp.normalize.manage.kanrensha.dto.riyousha.SearchRiyousha
 @Service
 public class SearchRiyoushaAllService {
 
-    /** 利用者API検索Service */
+    /** 最新全権限利用者Repository */
     @Autowired
-    private SearchRiyoushaPartnerAppiService searchRiyoushaPartnerAppiService;
-
-    /** 利用者運営者検索Service */
-    @Autowired
-    private SearchRiyoushaManagerService searchRiyoushaManagerService;
-
-    /** 利用者管理者検索Service */
-    @Autowired
-    private SearchRiyoushaAdminService searchRiyoushaAdminService;
+    private ViewCombineAliveRiyoushaRepository viewCombineAliveRiyoushaRepository;
 
     /**
      * 処理を行う
@@ -36,43 +30,45 @@ public class SearchRiyoushaAllService {
      */
     public SearchRiyoushaAllResultDto practice(final SearchRiyoushaAllCapsuleDto capsuleDto) {
 
-        // 検索条件を各capsuleDtoに複写
-        this.copyCapsuleDto(capsuleDto);
-
         SearchRiyoushaAllResultDto resultDto = new SearchRiyoushaAllResultDto();
+        resultDto.setLimit(capsuleDto.getLimit());
+        resultDto.setPageNumber(capsuleDto.getPageNumber());
 
-        if (capsuleDto.getIsPartnerApiSearch()) {
-
-            resultDto.setSearchRiyoushaPartnerApiResultDto(
-                    searchRiyoushaPartnerAppiService.practice(capsuleDto.getSearchRiyoushaPartnerApiCapsuleDto()));
-        }
-
-        if (capsuleDto.getIsManagerSearch()) {
-            resultDto.setSearchRiyoushaManagerResultDto(
-                    searchRiyoushaManagerService.practice(capsuleDto.getSearchRiyoushaManagerCapsuleDto()));
-        }
-
+        // 検索権限リストを作成
+        List<String> listRole = new ArrayList<>();
         if (capsuleDto.getIsAdminSearch()) {
-            resultDto.setSearchRiyoushaAdminResultDto(
-                    searchRiyoushaAdminService.practice(capsuleDto.getSearchRiyoushaAdminCapsuleDto()));
+            listRole.add(UserRoleConstants.ADMIN);
         }
+        if (capsuleDto.getIsManagerSearch()) {
+            listRole.add(UserRoleConstants.MANAGER);
+        }
+        if (capsuleDto.getIsPartnerApiSearch()) {
+            listRole.add(UserRoleConstants.PARTNER_API);
+        }
+
+        // 想定数が少ないので自然検索するほどではない
+        String words = "%" + capsuleDto.getSearchNaturalWords() + "%";
+
+        resultDto.setAllCount(viewCombineAliveRiyoushaRepository.countByFullTextAndRole(words, listRole));
+
+        // 全件数が0の場合は結果を返却
+        final Integer zero = 0;
+        if (zero.equals(resultDto.getAllCount())) {
+            resultDto.setPageNumber(0);
+            return resultDto;
+        }
+
+        // 検索語を変更するなど、ページング条件で齟齬が発生した場合はページ番号を初期化
+        if (resultDto.getAllCount() < resultDto.getLimit() * resultDto.getPageNumber()) {
+            resultDto.setPageNumber(0);
+        }
+
+        // 実検索
+        Pageable pageable = Pageable.ofSize(resultDto.getLimit()).withPage(resultDto.getPageNumber());
+        resultDto.setListAllRiyousha(
+                viewCombineAliveRiyoushaRepository.findByFullTextAndRole(words, listRole, pageable));
 
         return resultDto;
-    }
-
-    private void copyCapsuleDto(final SearchRiyoushaAllCapsuleDto capsuleDto) {
-
-        SearchRiyoushaPartnerApiCapsuleDto capsuleDtoPartner = new SearchRiyoushaPartnerApiCapsuleDto();
-        BeanUtils.copyProperties(capsuleDto, capsuleDtoPartner);
-        capsuleDto.setSearchRiyoushaPartnerApiCapsuleDto(capsuleDtoPartner);
-
-        SearchRiyoushaManagerCapsuleDto capsuleDtoManager = new SearchRiyoushaManagerCapsuleDto();
-        BeanUtils.copyProperties(capsuleDto, capsuleDtoManager);
-        capsuleDto.setSearchRiyoushaManagerCapsuleDto(capsuleDtoManager);
-
-        SearchRiyoushaAdminCapsuleDto capsuleDtoAdmin = new SearchRiyoushaAdminCapsuleDto();
-        BeanUtils.copyProperties(capsuleDto, capsuleDtoAdmin);
-        capsuleDto.setSearchRiyoushaAdminCapsuleDto(capsuleDtoAdmin);
     }
 
 }

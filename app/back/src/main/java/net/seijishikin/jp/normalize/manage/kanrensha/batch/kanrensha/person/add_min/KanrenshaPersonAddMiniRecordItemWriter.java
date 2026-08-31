@@ -3,23 +3,23 @@ package net.seijishikin.jp.normalize.manage.kanrensha.batch.kanrensha.person.add
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.batch.core.StepExecution;
+import org.springframework.batch.core.step.StepExecution;
 import org.springframework.batch.core.annotation.BeforeStep;
-import org.springframework.batch.item.Chunk;
-import org.springframework.batch.item.database.JpaItemWriter;
+import org.springframework.batch.infrastructure.item.Chunk;
+import org.springframework.batch.infrastructure.item.database.JpaItemWriter;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import jakarta.persistence.EntityManagerFactory;
 import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
+import net.seijishikin.jp.normalize.manage.kanrensha.entity.KanrenshaPersonHistoryBaseEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.KanrenshaPersonMasterEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.WkTblKanrenshaPersonAddMinEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.WkTblKanrenshaPersonAddMinResultEntity;
-import net.seijishikin.jp.normalize.manage.kanrensha.entity.lgcode.KanrenshaPersonHistory01Entity;
 import net.seijishikin.jp.normalize.manage.kanrensha.repository.KanrenshaPersonMasterRepository;
 import net.seijishikin.jp.normalize.manage.kanrensha.repository.WkTblKanrenshaPersonAddMinResultRepository;
-import net.seijishikin.jp.normalize.manage.kanrensha.repository.lgcode.KanrenshaPersonHistory01Repository;
+import net.seijishikin.jp.normalize.manage.kanrensha.service.kanrensha.InsertKanrenshaPersonHistoryService;
 import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateDokujiCodeForPersonUtil;
 import net.seijishikin.jp.normalize.common_tool.utils.CreateUserLeastDtoByBatchParamUtil;
 import net.seijishikin.jp.normalize.common_tool.utils.FormatNaturalSearchTextUtil;
@@ -30,10 +30,6 @@ import net.seijishikin.jp.normalize.common_tool.utils.SetTableDataHistoryUtil;
  */
 @Component
 public class KanrenshaPersonAddMiniRecordItemWriter extends JpaItemWriter<WkTblKanrenshaPersonAddMinEntity> {
-
-    /** 関連者個人履歴(01)Repository */
-    @Autowired
-    private KanrenshaPersonHistory01Repository kanrenshaPersonHistory01Repository;
 
     /** 関連者個人マスタRepository */
     @Autowired
@@ -59,6 +55,10 @@ public class KanrenshaPersonAddMiniRecordItemWriter extends JpaItemWriter<WkTblK
     @Autowired
     private CreateDokujiCodeForPersonUtil createDokujiCodeForPersonUtil;
 
+    /** 関連者個人履歴登録Service */
+    @Autowired
+    private InsertKanrenshaPersonHistoryService insertKanrenshaPersonHistoryService;
+
     /** ユーザ最低限Dto */
     private LeastUserDto userDto;
 
@@ -68,8 +68,7 @@ public class KanrenshaPersonAddMiniRecordItemWriter extends JpaItemWriter<WkTblK
      * @param entityManagerFactory entityManagerFactory
      */
     public KanrenshaPersonAddMiniRecordItemWriter(final @Autowired EntityManagerFactory entityManagerFactory) {
-        super();
-        super.setEntityManagerFactory(entityManagerFactory);
+        super(entityManagerFactory);
     }
 
     /**
@@ -106,7 +105,7 @@ public class KanrenshaPersonAddMiniRecordItemWriter extends JpaItemWriter<WkTblK
             }
         }
 
-        wkTblKanrenshaPersonAddMinResultRepository.saveAllAndFlush(list);
+        wkTblKanrenshaPersonAddMinResultRepository.saveAll(list);
     }
 
     private int insertMaster(final WkTblKanrenshaPersonAddMinEntity entityWkTbl, final String kanrenshaCode) {
@@ -125,16 +124,16 @@ public class KanrenshaPersonAddMiniRecordItemWriter extends JpaItemWriter<WkTblK
 
     private int insertHistory(final WkTblKanrenshaPersonAddMinEntity entityWkTbl, final String kanrenshaCode) {
 
-        // TODO 47都道府県とそれ以外に分割して登録する
-        KanrenshaPersonHistory01Entity entity = new KanrenshaPersonHistory01Entity();
-        BeanUtils.copyProperties(entityWkTbl, entity);
+        KanrenshaPersonHistoryBaseEntity entity = new KanrenshaPersonHistoryBaseEntity();
+        entity.setAllName(entityWkTbl.getKanrenshaName());
+        entity.setAllAddress(entityWkTbl.getAllAddress());
+        entity.setPersonShokugyou(entityWkTbl.getPersonShokugyou());
         entity.setPersonKanrenshaCode(kanrenshaCode);
 
         setTableDataHistoryUtil.practiceInsert(userDto, entity);
         entity.setKanrenshaPersonHistoryId(0); // auto_increment明示
 
-        return kanrenshaPersonHistory01Repository.save(entity).getKanrenshaPersonHistoryId();
-
+        return insertKanrenshaPersonHistoryService.practice(userDto, entity);
     }
 
     private WkTblKanrenshaPersonAddMinResultEntity createResult(final WkTblKanrenshaPersonAddMinEntity entityWkTbl) {

@@ -1,0 +1,21 @@
+CREATE TABLE `riyousha_org_master` (
+  `riyousha_org_master_id` int NOT NULL AUTO_INCREMENT COMMENT 'テーブルId',
+  `riyousha_org_master_code` int DEFAULT NULL COMMENT '利用者組織コード',
+  `riyousha_org_property_id` int DEFAULT NULL COMMENT '利用者組織属性id',
+  `riyousha_org_property_code` int DEFAULT NULL COMMENT '利用者組織属性コード',
+  `is_latest` tinyint DEFAULT NULL COMMENT '最新フラグ',
+  `all_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '組織名称',
+  `all_name_kana` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '組織名称かな',
+  `address_all` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '住所全体',
+  `search_text` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin COMMENT '全文検索用カラム',
+  `insert_user_id` int DEFAULT NULL COMMENT '挿入ユーザId',
+  `insert_user_code` int DEFAULT NULL COMMENT '挿入ユーザコード',
+  `insert_user_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '挿入ユーザ名称',
+  `insert_timestamp` datetime DEFAULT NULL COMMENT '挿入日時',
+  `delete_user_id` int DEFAULT NULL COMMENT '無効ユーザId',
+  `delete_user_code` int DEFAULT NULL COMMENT '無効ユーザコード',
+  `delete_user_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '無効ユーザ名称',
+  `delete_timestamp` datetime DEFAULT NULL COMMENT '無効日時',
+  PRIMARY KEY (`riyousha_org_master_id`),
+  FULLTEXT KEY `search_text_index` (`search_text`) /*!50100 WITH PARSER `ngram` */ 
+) ENGINE=InnoDB AUTO_INCREMENT=319 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;

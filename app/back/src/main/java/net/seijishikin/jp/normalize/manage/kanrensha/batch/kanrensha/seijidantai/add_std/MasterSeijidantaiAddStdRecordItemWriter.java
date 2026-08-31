@@ -3,10 +3,10 @@ package net.seijishikin.jp.normalize.manage.kanrensha.batch.kanrensha.seijidanta
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.batch.core.StepExecution;
+import org.springframework.batch.core.step.StepExecution;
 import org.springframework.batch.core.annotation.BeforeStep;
-import org.springframework.batch.item.Chunk;
-import org.springframework.batch.item.database.JpaItemWriter;
+import org.springframework.batch.infrastructure.item.Chunk;
+import org.springframework.batch.infrastructure.item.database.JpaItemWriter;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -35,7 +35,7 @@ import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateDokujiCodeForSe
  * 関連者個人標準登録マスタ複写ItemWriter
  */
 @Component
-public class MasterSeijidantaiAddStdRecordItemWriter extends JpaItemWriter<WkTblKanrenshaSeijidantaiMasterEntity> {
+public class MasterSeijidantaiAddStdRecordItemWriter extends JpaItemWriter<WkTblKanrenshaSeijidantaiMasterEntity> { // NOPMD
 
     /** 関連者個人マスタ標準判定結果Repository */
     @Autowired
@@ -80,18 +80,13 @@ public class MasterSeijidantaiAddStdRecordItemWriter extends JpaItemWriter<WkTbl
     /** ユーザ最低限Dto */
     private LeastUserDto userDto;
 
-    /** 空文字 */
-    private static final String EMPTY = "";
-
     /**
      * コンストラクタ
      *
      * @param entityManagerFactory entityManagerFactory
      */
-    public MasterSeijidantaiAddStdRecordItemWriter(
-            final @Autowired EntityManagerFactory entityManagerFactory) {
-        super();
-        super.setEntityManagerFactory(entityManagerFactory);
+    public MasterSeijidantaiAddStdRecordItemWriter(final @Autowired EntityManagerFactory entityManagerFactory) {
+        super(entityManagerFactory);
     }
 
     /**
@@ -117,7 +112,7 @@ public class MasterSeijidantaiAddStdRecordItemWriter extends JpaItemWriter<WkTbl
         for (WkTblKanrenshaSeijidantaiMasterEntity entity : items) {
 
             // 関連者コードを設定
-            String kanrenshaCode = createDokujiCodeForSeijidantaiUtil.practice("");
+            String kanrenshaCode = createDokujiCodeForSeijidantaiUtil.practice(entity.getPoliOrgNo());
 
             // マスタ登録
             int masterId = this.insertMaster(entity, kanrenshaCode);
@@ -130,7 +125,7 @@ public class MasterSeijidantaiAddStdRecordItemWriter extends JpaItemWriter<WkTbl
             }
         }
 
-        wkTblKanrenshaSeijidantaiMasterResultRepository.saveAllAndFlush(list);
+        wkTblKanrenshaSeijidantaiMasterResultRepository.saveAll(list);
     }
 
     /* マスタ登録処理を行う */
@@ -140,8 +135,8 @@ public class MasterSeijidantaiAddStdRecordItemWriter extends JpaItemWriter<WkTbl
         KanrenshaSeijidantaiMasterEntity masterSeijidantaiEntity = new KanrenshaSeijidantaiMasterEntity();
         BeanUtils.copyProperties(entityWkTbl, masterSeijidantaiEntity);
         masterSeijidantaiEntity.setSeijidantaiKanrenshaCode(kanrenshaCode);
-        masterSeijidantaiEntity.setCompareNameText(
-                formatNaturalSearchTextUtil.practice(masterSeijidantaiEntity.getKanrenshaName()));
+        masterSeijidantaiEntity
+                .setCompareNameText(formatNaturalSearchTextUtil.practice(masterSeijidantaiEntity.getKanrenshaName()));
         setTableDataHistoryUtil.practiceInsert(userDto, masterSeijidantaiEntity);
         int masterId = kanrenshaSeijidantaiMasterRepository.save(masterSeijidantaiEntity)
                 .getKanrenshaSeijidantaiMasterId();
@@ -151,19 +146,14 @@ public class MasterSeijidantaiAddStdRecordItemWriter extends JpaItemWriter<WkTbl
         addressEntity.setSeijidantaiKanrenshaCode(kanrenshaCode);
         addressEntity.setKanrenshaSeijidantaiId(masterId);
         BeanUtils.copyProperties(entityWkTbl, addressEntity);
-        // 各住所項目に記載がある場合はチェック対象とする
-//        if (!EMPTY.equals(entityWkTbl.getAddressPostal())) {
-//            addressEntity.setIsPostalEdit(true);
-//            addressEntity.setIsPostalAccept(false);
-//        }
-//        if (!EMPTY.equals(entityWkTbl.getAddressBlock())) {
-//            addressEntity.setIsBlockEdit(true);
-//            addressEntity.setIsBlockAccept(false);
-//        }
-//        if (!EMPTY.equals(entityWkTbl.getAddressBuilding())) {
-//            addressEntity.setIsBuildingEdit(true);
-//            addressEntity.setIsBuildingAccept(false);
-//        }
+
+        // TODO 住所整形済は自社サイト独自形式であることが周知しできた時点でcsvにフラグとして追加
+        boolean isEdit = !entityWkTbl.getIsJushoFormat();
+        addressEntity.setIsPostalEdit(isEdit);
+        addressEntity.setIsBlockEdit(isEdit);
+        addressEntity.setIsBuildingEdit(isEdit);
+        // 整形済、整形済でないにかかわらず承認はしていない
+
         setTableDataHistoryUtil.practiceInsert(userDto, addressEntity);
         kanrenshaSeijidantaiAddressRepository.save(addressEntity);
 
@@ -175,15 +165,7 @@ public class MasterSeijidantaiAddStdRecordItemWriter extends JpaItemWriter<WkTbl
         setTableDataHistoryUtil.practiceInsert(userDto, accessEntity);
         kanrenshaSeijidantaiAccessRepository.save(accessEntity);
 
-        // マスタ基本登録
-        //MasterSeijidantaiBaseEntity baseEntity = new MasterSeijidantaiBaseEntity();
-        //baseEntity.setSeijidantaiKanrenshaCode(kanrenshaCode);
-        //baseEntity.setMasterSeijidantaiId(masterId);
-        //BeanUtils.copyProperties(entityWkTbl, baseEntity);
-        //setTableDataHistoryUtil.practiceInsert(userDto, baseEntity);
-        //masterSeijidantaiBaseRepository.save(baseEntity);
-
-        // マスタ(その他)属性登録
+        // マスタ属性登録
         KanrenshaSeijidantaiPropertyEntity propertyEntity = new KanrenshaSeijidantaiPropertyEntity();
         propertyEntity.setSeijidantaiKanrenshaCode(kanrenshaCode);
         propertyEntity.setKanrenshaSeijidantaiId(masterId);
@@ -198,14 +180,19 @@ public class MasterSeijidantaiAddStdRecordItemWriter extends JpaItemWriter<WkTbl
     private int insertHistory(final WkTblKanrenshaSeijidantaiMasterEntity entityWkTbl, final String kanrenshaCode) {
 
         KanrenshaSeijidantaiHistoryBaseEntity entity = new KanrenshaSeijidantaiHistoryBaseEntity();
-        BeanUtils.copyProperties(entityWkTbl, entity);
+        entity.setAllName(entityWkTbl.getKanrenshaName());
+        entity.setAllAddress(entityWkTbl.getAllAddress());
+        entity.setOrgDelegateName(entityWkTbl.getSeijidantaiDelegate());
+        entity.setOrgDelegateCode(entityWkTbl.getOrgDelegateCode());
+
         entity.setSeijidantaiKanrenshaCode(kanrenshaCode);
 
         return insertKanrenshaSeijidantaiHistoryService.practice(userDto, entity);
     }
 
     /* ワークテーブル処理結果Entityを作成する */
-    private WkTblKanrenshaSeijidantaiMasterResultEntity createJudge(final WkTblKanrenshaSeijidantaiMasterEntity entityWkTbl) {
+    private WkTblKanrenshaSeijidantaiMasterResultEntity createJudge(
+            final WkTblKanrenshaSeijidantaiMasterEntity entityWkTbl) {
 
         WkTblKanrenshaSeijidantaiMasterResultEntity entity = new WkTblKanrenshaSeijidantaiMasterResultEntity();
         setTableDataHistoryUtil.practiceInsert(userDto, entity);

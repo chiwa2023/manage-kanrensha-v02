@@ -2,7 +2,7 @@ package net.seijishikin.jp.normalize.manage.kanrensha.batch.kanrensha.kigyou_dt.
 
 import java.util.Optional;
 
-import org.springframework.batch.item.ItemProcessor;
+import org.springframework.batch.infrastructure.item.ItemProcessor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -30,13 +30,13 @@ public class MasterKigyouDtAddStdWkTblFixProcessor
 
         WkTblKanrenshaKigyouDtMasterEntity entity = new WkTblKanrenshaKigyouDtMasterEntity();
 
-//        Optional<WkTblKanrenshaKigyouDtMasterEntity> optional = wkTblKanrenshaKigyouDtMasterRepository
-//                .findById(item.getWkTblMasterKigyouDtId());
-//        if (!optional.isEmpty()) {
-//            entity = optional.get();
-//            entity.setIsFinish(true);
-//            entity.setJudgeReason("正常終了");
-//        }
+        Optional<WkTblKanrenshaKigyouDtMasterEntity> optional = wkTblKanrenshaKigyouDtMasterRepository
+                .findById(item.getWkTblKanrenshaKigyouDtMasterId());
+        if (!optional.isEmpty()) {
+            entity = optional.get();
+            entity.setIsFinish(true);
+            entity.setJudgeReason("正常終了");
+        }
 
         return entity;
     }

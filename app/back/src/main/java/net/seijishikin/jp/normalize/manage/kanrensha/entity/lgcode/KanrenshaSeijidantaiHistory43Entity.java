@@ -93,25 +93,25 @@ public class KanrenshaSeijidantaiHistory43Entity // NOPMD DataClass
     }
 
     /** 関連者政治団体名 */
-    @Column(name = "partner_name")
-    private String partnerName = INIT_STRING;
+    @Column(name = "all_name")
+    private String allName = INIT_STRING;
 
     /**
      * 関連者政治団体名を取得する
      *
      * @return 関連者政治団体名
      */
-    public String getPartnerName() {
-        return partnerName;
+    public String getAllName() {
+        return allName;
     }
 
     /**
      * 関連者政治団体名を設定する
      *
-     * @param partnerName 関連者政治団体名
+     * @param allName 関連者政治団体名
      */
-    public void setPartnerName(final String partnerName) {
-        this.partnerName = partnerName;
+    public void setAllName(final String allName) {
+        this.allName = allName;
     }
 
     /** 関連者政治団体全住所 */

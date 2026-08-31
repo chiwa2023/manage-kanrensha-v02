@@ -1,9 +1,9 @@
 package net.seijishikin.jp.normalize.manage.kanrensha.batch.kanrensha.person.history;
 
-import org.springframework.batch.core.Job;
-import org.springframework.batch.core.Step;
+import org.springframework.batch.core.job.Job;
+import org.springframework.batch.core.step.Step;
 import org.springframework.batch.core.job.builder.JobBuilder;
-import org.springframework.batch.core.launch.support.RunIdIncrementer;
+import org.springframework.batch.core.job.parameters.RunIdIncrementer;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.PlatformTransactionManager;
 
+import net.seijishikin.jp.normalize.manage.kanrensha.batch.task_plan.RecordTaskPlanJobExecutionListner;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.WkTblKanrenshaPersonHistoryEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.WkTblKanrenshaPersonHistoryResultEntity;
 
@@ -95,6 +96,10 @@ public class InsertKanrenshaPersonHistoryBatchConfiguration {
     @Autowired
     private KanrenshaPersonWkTblFixProcessor kanrenshaPersonWkTblFixProcessor;
 
+    /** バッチジョブ実行リスナ */
+    @Autowired
+    private RecordTaskPlanJobExecutionListner recordTaskPlanJobExecutionListner;
+
     /**
      * Jobを返却する
      *
@@ -107,8 +112,9 @@ public class InsertKanrenshaPersonHistoryBatchConfiguration {
             @Qualifier(STEP_HISTORY) final Step stepHistory, @Qualifier(STEP_SUSPEND) final Step stepSuspend,
             @Qualifier(STEP_JUDGE) final Step stepJudge, @Qualifier(STEP_FIX) final Step stepFix) {
 
-        return new JobBuilder(JOB_NAME, jobRepository).incrementer(new RunIdIncrementer()).flow(stepErase)
-                .next(stepHistory).next(stepSuspend).next(stepJudge).next(stepFix).end().build();
+        return new JobBuilder(JOB_NAME, jobRepository).incrementer(new RunIdIncrementer())
+                .listener(recordTaskPlanJobExecutionListner).flow(stepErase).next(stepHistory).next(stepSuspend)
+                .next(stepJudge).next(stepFix).end().build();
     }
 
     /**
@@ -138,7 +144,7 @@ public class InsertKanrenshaPersonHistoryBatchConfiguration {
             final PlatformTransactionManager transactionManager) {
 
         return new StepBuilder(STEP_HISTORY, jobRepository)
-                .<KanrenshaPersonHistoryDto, WkTblKanrenshaPersonHistoryEntity>chunk(CHUNK_SIZE, transactionManager)
+                .<KanrenshaPersonHistoryDto, WkTblKanrenshaPersonHistoryEntity>chunk(CHUNK_SIZE)
                 .reader(kanrenshaPersonHistoryItemReader).processor(kanrenshaPersonHistoryProcessor)
                 .writer(kanrenshaPersonHistoryItemWriter).build();
     }
@@ -170,7 +176,7 @@ public class InsertKanrenshaPersonHistoryBatchConfiguration {
             final PlatformTransactionManager transactionManager) {
 
         return new StepBuilder(STEP_JUDGE, jobRepository)
-                .<WkTblKanrenshaPersonHistoryEntity, WkTblKanrenshaPersonHistoryResultEntity>chunk(CHUNK_SIZE, transactionManager)
+                .<WkTblKanrenshaPersonHistoryEntity, WkTblKanrenshaPersonHistoryResultEntity>chunk(CHUNK_SIZE)
                 .reader(kanrenshaPersonResultItemReader).processor(kanrenshaPersonResultProcessor)
                 .writer(kanrenshaPersonResultItemWriter).build();
     }
@@ -186,7 +192,7 @@ public class InsertKanrenshaPersonHistoryBatchConfiguration {
     protected Step getStepFix(final JobRepository jobRepository, final PlatformTransactionManager transactionManager) {
 
         return new StepBuilder(STEP_FIX, jobRepository)
-                .<WkTblKanrenshaPersonHistoryResultEntity, WkTblKanrenshaPersonHistoryEntity>chunk(CHUNK_SIZE, transactionManager)
+                .<WkTblKanrenshaPersonHistoryResultEntity, WkTblKanrenshaPersonHistoryEntity>chunk(CHUNK_SIZE)
                 .reader(kanrenshaPersonWkTblFixItemReader).processor(kanrenshaPersonWkTblFixProcessor)
                 .writer(kanrenshaPersonWkTblFixItemWriter).build();
     }

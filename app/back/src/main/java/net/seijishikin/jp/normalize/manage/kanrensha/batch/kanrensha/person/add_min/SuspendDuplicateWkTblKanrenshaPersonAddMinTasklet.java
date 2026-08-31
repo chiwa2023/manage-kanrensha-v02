@@ -2,13 +2,13 @@ package net.seijishikin.jp.normalize.manage.kanrensha.batch.kanrensha.person.add
 
 import java.util.List;
 
-import org.springframework.batch.core.StepContribution;
-import org.springframework.batch.core.StepExecution;
-import org.springframework.batch.core.StepExecutionListener;
+import org.springframework.batch.core.step.StepContribution;
+import org.springframework.batch.core.step.StepExecution;
+import org.springframework.batch.core.listener.StepExecutionListener;
 import org.springframework.batch.core.annotation.BeforeStep;
 import org.springframework.batch.core.scope.context.ChunkContext;
 import org.springframework.batch.core.step.tasklet.Tasklet;
-import org.springframework.batch.repeat.RepeatStatus;
+import org.springframework.batch.infrastructure.repeat.RepeatStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -58,22 +58,22 @@ public class SuspendDuplicateWkTblKanrenshaPersonAddMinTasklet implements Taskle
 
         Integer userCode = userDto.getUserPersonCode();
 
-//        List<KanrenshaPersonMasterUniquekeyDto> listKeyGroup = wkTblKanrenshaPersonAddMinRepository
-//                .findDuplicateUniqueKey(userCode);
-//
-//        for (KanrenshaPersonMasterUniquekeyDto uniqueDto : listKeyGroup) {
-//            List<WkTblKanrenshaPersonAddMinEntity> list = wkTblKanrenshaPersonAddMinRepository
-//                    .findByKanrenshaNameAndAllAddressAndPersonShokugyouAndInsertUserCodeOrderByWkTblKanrenshaPersonAddMinIdAsc(
-//                            uniqueDto.getKanrenshaName(), uniqueDto.getAllAddress(), uniqueDto.getPersonShokugyou(),
-//                            userCode);
-//            list.remove(0); // 1行だけは処理実行行として残す
-//            for (WkTblKanrenshaPersonAddMinEntity entity : list) {
-//                setTableDataHistoryUtil.practiceDelete(userDto, entity); // 削除
-//                entity.setIsFinish(true);
-//                entity.setJudgeReason("アップロードファイル内で重複しているデータです");
-//            }
-//            wkTblKanrenshaPersonAddMinRepository.saveAllAndFlush(list);
-//        }
+        List<KanrenshaPersonMasterUniquekeyDto> listKeyGroup = wkTblKanrenshaPersonAddMinRepository
+                .findDuplicateUniqueKey(userCode);
+
+        for (KanrenshaPersonMasterUniquekeyDto uniqueDto : listKeyGroup) {
+            List<WkTblKanrenshaPersonAddMinEntity> list = wkTblKanrenshaPersonAddMinRepository
+                    .findByKanrenshaNameAndAllAddressAndPersonShokugyouAndInsertUserCodeOrderByWkTblKanrenshaPersonAddMinIdAsc(
+                            uniqueDto.getKanrenshaName(), uniqueDto.getAllAddress(), uniqueDto.getPersonShokugyou(),
+                            userCode);
+            list.remove(0); // 1行だけは処理実行行として残す
+            for (WkTblKanrenshaPersonAddMinEntity entity : list) {
+                setTableDataHistoryUtil.practiceDelete(userDto, entity); // 削除
+                entity.setIsFinish(true);
+                entity.setJudgeReason("アップロードファイル内で重複しているデータです");
+            }
+            wkTblKanrenshaPersonAddMinRepository.saveAll(list);
+        }
 
         // 処理終了
         return RepeatStatus.FINISHED;

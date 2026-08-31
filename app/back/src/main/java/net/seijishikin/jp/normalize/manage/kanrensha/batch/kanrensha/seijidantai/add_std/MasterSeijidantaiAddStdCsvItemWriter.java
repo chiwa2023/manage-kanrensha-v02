@@ -2,10 +2,10 @@ package net.seijishikin.jp.normalize.manage.kanrensha.batch.kanrensha.seijidanta
 
 import java.util.Optional;
 
-import org.springframework.batch.core.StepExecution;
+import org.springframework.batch.core.step.StepExecution;
 import org.springframework.batch.core.annotation.BeforeStep;
-import org.springframework.batch.item.Chunk;
-import org.springframework.batch.item.database.JpaItemWriter;
+import org.springframework.batch.infrastructure.item.Chunk;
+import org.springframework.batch.infrastructure.item.database.JpaItemWriter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -43,8 +43,7 @@ public class MasterSeijidantaiAddStdCsvItemWriter extends JpaItemWriter<WkTblKan
      * @param entityManagerFactory entityManagerFactory
      */
     public MasterSeijidantaiAddStdCsvItemWriter(final @Autowired EntityManagerFactory entityManagerFactory) {
-        super();
-        super.setEntityManagerFactory(entityManagerFactory);
+        super(entityManagerFactory);
     }
 
     /**
@@ -66,19 +65,19 @@ public class MasterSeijidantaiAddStdCsvItemWriter extends JpaItemWriter<WkTblKan
 
         int code = 0;
 
-//        Optional<WkTblKanrenshaSeijidantaiMasterEntity> optional = wkTblKanrenshaSeijidantaiMasterRepository
-//                .findFirstByOrderByWkTblMasterSeijidantaiCodeDesc();
-//        if (!optional.isEmpty()) {
-//            code = optional.get().getWkTblMasterSeijidantaiCode();
-//        }
-//
-//        for (WkTblKanrenshaSeijidantaiMasterEntity entity : items) {
-//            code++;
-//            setTableDataHistoryUtil.practiceInsert(userDto, entity);
-//            entity.setWkTblMasterSeijidantaiCode(code);
-//        }
-//
-//        wkTblKanrenshaSeijidantaiMasterRepository.saveAll(items);
+        Optional<WkTblKanrenshaSeijidantaiMasterEntity> optional = wkTblKanrenshaSeijidantaiMasterRepository
+                .findFirstByOrderByWkTblKanrenshaSeijidantaiMasterCodeDesc();
+        if (!optional.isEmpty()) {
+            code = optional.get().getWkTblKanrenshaSeijidantaiMasterCode();
+        }
+
+        for (WkTblKanrenshaSeijidantaiMasterEntity entity : items) {
+            code++;
+            setTableDataHistoryUtil.practiceInsert(userDto, entity);
+            entity.setWkTblKanrenshaSeijidantaiMasterCode(code);
+        }
+
+        wkTblKanrenshaSeijidantaiMasterRepository.saveAll(items);
     }
 
 }

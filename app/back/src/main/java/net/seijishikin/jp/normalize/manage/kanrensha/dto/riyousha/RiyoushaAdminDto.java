@@ -24,6 +24,7 @@ public class RiyoushaAdminDto extends FrameworkMessageAndResultDto // NOPMD Data
      * テーブルIdを取得する
      *
      * @return テーブルId
+     * 
      */
     public Integer getRiyoushaAdminMasterId() {
         return riyoushaAdminMasterId;
@@ -163,4 +164,26 @@ public class RiyoushaAdminDto extends FrameworkMessageAndResultDto // NOPMD Data
     public void setInputAccessDto(final InputAccessDto inputAccessDto) {
         this.inputAccessDto = inputAccessDto;
     }
+
+    /** 利用者ユーザ紐づけ該否 */
+    private Boolean isCombineUser = INIT_BOOLEAN;
+
+    /**
+     * 利用者ユーザ紐づけ該否を取得する
+     *
+     * @return 関連者ユーザ紐づけ該否
+     */
+    public Boolean getIsCombineUser() {
+        return isCombineUser;
+    }
+
+    /**
+     * 利用者ユーザ紐づけ該否を設定する
+     *
+     * @param isCombineUser 関連者ユーザ紐づけ該否
+     */
+    public void setIsCombineUser(final Boolean isCombineUser) {
+        this.isCombineUser = isCombineUser;
+    }
+
 }

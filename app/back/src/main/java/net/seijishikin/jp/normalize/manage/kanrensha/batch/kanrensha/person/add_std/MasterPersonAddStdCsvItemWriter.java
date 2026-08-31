@@ -2,10 +2,10 @@ package net.seijishikin.jp.normalize.manage.kanrensha.batch.kanrensha.person.add
 
 import java.util.Optional;
 
-import org.springframework.batch.core.StepExecution;
+import org.springframework.batch.core.step.StepExecution;
 import org.springframework.batch.core.annotation.BeforeStep;
-import org.springframework.batch.item.Chunk;
-import org.springframework.batch.item.database.JpaItemWriter;
+import org.springframework.batch.infrastructure.item.Chunk;
+import org.springframework.batch.infrastructure.item.database.JpaItemWriter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -43,8 +43,7 @@ public class MasterPersonAddStdCsvItemWriter extends JpaItemWriter<WkTblKanrensh
      * @param entityManagerFactory entityManagerFactory
      */
     public MasterPersonAddStdCsvItemWriter(final @Autowired EntityManagerFactory entityManagerFactory) {
-        super();
-        super.setEntityManagerFactory(entityManagerFactory);
+        super(entityManagerFactory);
     }
 
     /**
@@ -66,19 +65,19 @@ public class MasterPersonAddStdCsvItemWriter extends JpaItemWriter<WkTblKanrensh
 
         int code = 0;
 
-//        Optional<WkTblKanrenshaPersonMasterEntity> optional = wkTblKanrenshaPersonMasterRepository
-//                .findFirstByOrderByWkTblMasterPersonCodeDesc();
-//        if (!optional.isEmpty()) {
-//            code = optional.get().getWkTblMasterPersonCode();
-//        }
-//
-//        for (WkTblKanrenshaPersonMasterEntity entity : items) {
-//            code++;
-//            setTableDataHistoryUtil.practiceInsert(userDto, entity);
-//            entity.setWkTblMasterPersonCode(code);
-//        }
-//
-//        wkTblKanrenshaPersonMasterRepository.saveAll(items);
+        Optional<WkTblKanrenshaPersonMasterEntity> optional = wkTblKanrenshaPersonMasterRepository
+                .findFirstByOrderByWkTblKanrenshaPersonMasterCodeDesc();
+        if (!optional.isEmpty()) {
+            code = optional.get().getWkTblKanrenshaPersonMasterCode();
+        }
+
+        for (WkTblKanrenshaPersonMasterEntity entity : items) {
+            code++;
+            setTableDataHistoryUtil.practiceInsert(userDto, entity);
+            entity.setWkTblKanrenshaPersonMasterCode(code);
+        }
+
+        wkTblKanrenshaPersonMasterRepository.saveAll(items);
     }
 
 }

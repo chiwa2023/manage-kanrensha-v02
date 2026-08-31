@@ -1,9 +1,9 @@
 package net.seijishikin.jp.normalize.manage.kanrensha.batch.kanrensha.kigyou_dt.add_std;
 
-import org.springframework.batch.core.StepExecution;
+import org.springframework.batch.core.step.StepExecution;
 import org.springframework.batch.core.annotation.BeforeStep;
-import org.springframework.batch.item.Chunk;
-import org.springframework.batch.item.database.JpaItemWriter;
+import org.springframework.batch.infrastructure.item.Chunk;
+import org.springframework.batch.infrastructure.item.database.JpaItemWriter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -33,7 +33,7 @@ public class MasterKigyouDtAddStdWkTblFixItemWriter extends JpaItemWriter<WkTblK
     private CreateUserLeastDtoByBatchParamUtil createUserLeastDtoByBatchParamUtil;
 
     /** ユーザ最低限Dto */
-    private LeastUserDto userDto;
+    private LeastUserDto userDto = new LeastUserDto();
 
     /**
      * コンストラクタ
@@ -41,8 +41,7 @@ public class MasterKigyouDtAddStdWkTblFixItemWriter extends JpaItemWriter<WkTblK
      * @param entityManagerFactory entityManagerFactory
      */
     public MasterKigyouDtAddStdWkTblFixItemWriter(final @Autowired EntityManagerFactory entityManagerFactory) {
-        super();
-        super.setEntityManagerFactory(entityManagerFactory);
+        super(entityManagerFactory);
     }
 
     /**

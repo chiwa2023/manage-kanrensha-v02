@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import org.springframework.batch.core.StepExecution;
+import org.springframework.batch.core.step.StepExecution;
 import org.springframework.batch.core.annotation.BeforeStep;
-import org.springframework.batch.item.data.RepositoryItemReader;
+import org.springframework.batch.infrastructure.item.data.RepositoryItemReader;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort.Direction;
+
 import org.springframework.stereotype.Component;
 
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.WkTblKanrenshaPersonHistoryEntity;
@@ -29,9 +29,7 @@ public class KanrenshaPersonResultItemReader extends RepositoryItemReader<WkTblK
     public KanrenshaPersonResultItemReader(
             final @Autowired WkTblKanrenshaPersonHistoryRepository wkTblKanrenshaPersonHistoryRepository) {
 
-        super();
-        super.setRepository(wkTblKanrenshaPersonHistoryRepository);
-        super.setSort(new HashMap<String, Direction>()); // NOPMD
+        super(wkTblKanrenshaPersonHistoryRepository, new HashMap<>());
         super.setMethodName("findByInsertUserCodeAndIsLatestAndIsAffectedAndIsFinish");
 
         List<Object> list = new ArrayList<>();
@@ -39,7 +37,7 @@ public class KanrenshaPersonResultItemReader extends RepositoryItemReader<WkTblK
     }
 
     /**
-     * BeforeStep(読み取りファイル指定)
+     * BeforeStep
      *
      * @param stepExecution stepExecution
      */

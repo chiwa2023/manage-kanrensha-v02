@@ -5,11 +5,12 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.time.LocalDateTime;
 
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
@@ -18,7 +19,10 @@ import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import org.springframework.transaction.annotation.Transactional;
 
 import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
+import net.seijishikin.jp.normalize.manage.kanrensha.constants.TaskInfoConstants;
+import net.seijishikin.jp.normalize.manage.kanrensha.dto.task.InsertTaskPlanResultDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.year.y2025.TaskPlan2025Entity;
+import net.seijishikin.jp.normalize.manage.kanrensha.logic.task_plan.CreateQueryParamDummyUtil;
 import net.seijishikin.jp.normalize.manage.kanrensha.repository.year.y2025.TaskPlan2025Repository;
 import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateLeastUserForTestUtil;
 
@@ -27,10 +31,10 @@ import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateLeastUserForTes
  */
 @SpringJUnitConfig
 @AutoConfigureMockMvc
-@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
+@SpringBootTest
 @DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
-@Sql("InsertTaskPlanY2025LogicTest.sql")
 @Transactional
+@Sql("InsertTaskPlanY2025LogicTest.sql")
 class UpdateTaskPlanY2025LogicTest {
     // CHECKSTYLE:OFF MagicNumber
 
@@ -38,7 +42,7 @@ class UpdateTaskPlanY2025LogicTest {
     @Autowired
     private UpdateTaskPlanY2025Logic updateTaskPlanY2025Logic;
 
-    /** テスト対象 */
+    /** タスク挿入Logic(2025) */
     @Autowired
     private InsertTaskPlanY2025Logic insertTaskPlanY2025Logic;
 
@@ -47,13 +51,21 @@ class UpdateTaskPlanY2025LogicTest {
     private TaskPlan2025Repository taskPlan2025Repository;
 
     @Test
+    @Tag("TableTruncate")
     void test() throws Exception {
 
-        Integer taskCode = 101;
+        Integer taskCode = TaskInfoConstants.SAVE_POSTAL_REPAIR_CSV;
         LeastUserDto userDto = CreateLeastUserForTestUtil.practice();
-        Integer newId = insertTaskPlanY2025Logic.practice(userDto, taskCode);
+        LocalDateTime datetimeStart = LocalDateTime.of(2025, 1, 5, 11, 22, 33);
+        LeastUserDto workUserDto = new LeastUserDto(); 
+        workUserDto.setUserPersonCode(854);
+        workUserDto.setUserPersonName("利用者　直子");
 
-        LocalDateTime datetime = LocalDateTime.of(2022, 12, 5, 12, 34, 56);
+        InsertTaskPlanResultDto dto = insertTaskPlanY2025Logic.practice(workUserDto,userDto, datetimeStart, taskCode,
+                CreateQueryParamDummyUtil.practice());
+        Integer newId = dto.getTaskPlanId();
+
+        LocalDateTime datetime = LocalDateTime.of(2026, 12, 5, 12, 34, 56);
         Boolean isFinished = true;
         Integer updateId = updateTaskPlanY2025Logic.practice(userDto, newId, datetime, isFinished);
 
@@ -66,9 +78,12 @@ class UpdateTaskPlanY2025LogicTest {
         assertEquals(updateId, updateEntity.getTaskPlanId());
         assertEquals(updateEntity.getTaskPlanCode(), updateEntity.getTaskPlanCode());
         assertEquals(updateEntity.getTaskInfoCode(), updateEntity.getTaskInfoCode());
+        assertEquals(workUserDto.getUserPersonCode(), updateEntity.getTaskUserCode());
+        assertEquals(workUserDto.getUserPersonName(), updateEntity.getTaskUserName());
         assertEquals(datetime, updateEntity.getEndDateimte());
         assertEquals(isFinished, updateEntity.getIsFinished());
         assertEquals(!isFinished, updateEntity.getIsSuspended());
+        assertEquals(true, updateEntity.getIsLatest());
 
         assertThrows(EmptyResultDataAccessException.class,
                 () -> updateTaskPlanY2025Logic.practice(userDto, 691, datetime, isFinished));

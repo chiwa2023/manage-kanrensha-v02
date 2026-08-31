@@ -1,0 +1,84 @@
+TRUNCATE TABLE kanrensha_seijidantai_master;
+
+
+INSERT INTO kanrensha_seijidantai_master (
+  kanrensha_seijidantai_master_id,
+  seijidantai_kanrensha_code,
+  poli_org_no,
+  is_latest,
+  kanrensha_name,
+  all_address,
+  seijidantai_delegate,
+  dantai_kbn,
+  compare_name_text,
+  insert_user_id,
+  insert_user_code,
+  insert_user_name,
+  insert_timestamp
+) VALUES (
+  7654,
+  '3-1310-12-345678-9876543',
+  '987654321',
+  1,
+  '同じ名前の政治団体',
+  '東京都架空市',
+  '代表者B',
+  '01',
+  '同じ名前の政治団体',
+  1,
+  1,
+  'テストユーザー',
+  '2022-12-13 12:00:00'
+),(
+  7655,
+  '3-1310-12-345678-9876543',
+  '987654321',
+  1,
+  '同じ名前の政治団体',
+  '東京都架空市',
+  '代表者B',
+  '02',
+  '同じ名前の政治団体',
+  1,
+  1,
+  'テストユーザー',
+  '2024-12-13 12:00:00'
+),(
+  7656,
+  '3-1310-12-345678-9876543',
+  '987654321',
+  1,
+  '同じ名前の政治団体',
+  '東京都架空市',
+  '代表者B',
+  '03',
+  '同じ名前の政治団体',
+  1,
+  1,
+  'テストユーザー',
+  '2027-12-13 12:00:00'
+),(
+  7657,
+  '3-1310-12-345678-9876543',
+  '987654321',
+  0,
+  '同じ名前の政治団体',
+  '東京都架空市',
+  '代表者B',
+  '04',
+  '同じ名前の政治団体',
+  1,
+  1,
+  'テストユーザー',
+  '2023-12-13 12:00:00'
+);
+
+
+DELETE FROM `task_plan_2026`;
+ALTER TABLE `task_plan_2026` auto_increment = 0;
+
+INSERT INTO `task_plan_2026` (`task_plan_id`,`task_plan_code`,`task_info_code`,`task_plan_name`,`table_year`,`is_latest`,`is_start`,`is_finished`,`is_suspended`,`start_datetime`,`end_dateimte`,`role_list`,`transfer_pass`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`)
+  VALUES 
+    (453,187,24,'タスク名称1',2026,1,1,0,0,'1990-07-24 23:34:56','1947-07-29 00:00:00','manager','pass',213,190,'ユーザ','2026-4-05 12:34:56',231,190,'ユーザ','1947-07-28 23:59:59')
+   ,(459,187,24,'タスク名称1',2025,1,1,0,0,'1990-07-24 23:34:56','1947-07-29 00:00:00','manager','pass',213,190,'ユーザ','2026-4-05 12:34:56',231,190,'ユーザ','1947-07-28 23:59:59')
+

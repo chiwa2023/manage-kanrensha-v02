@@ -26,8 +26,8 @@ public class KanrenshaKigyouDtUniquekeyDto implements Serializable { // NOPMD Da
         super();
         this.kanrenshaName = kanrenshaName;
         this.allAddress = allAddress;
-        this.KigyouDtDelegate = KigyouDtDelegate;
-        this.KigyouDtKanrenshaCode = KigyouDtKanrenshaCode;
+        this.kigyouDtDelegate = KigyouDtDelegate;
+        this.kigyouDtKanrenshaCode = KigyouDtKanrenshaCode;
     }
 
     /** 企業・団体名 */
@@ -78,8 +78,8 @@ public class KanrenshaKigyouDtUniquekeyDto implements Serializable { // NOPMD Da
 
     /** 企業・団体代表者 */
     @Id
-    @Column(name = "KigyouDt_delegate")
-    private String KigyouDtDelegate;
+    @Column(name = "kigyou_dt_delegate")
+    private String kigyouDtDelegate;
 
     /**
      * 企業・団体代表者を取得する
@@ -87,22 +87,22 @@ public class KanrenshaKigyouDtUniquekeyDto implements Serializable { // NOPMD Da
      * @return 企業・団体代表者
      */
     public String getKigyouDtDelegate() {
-        return KigyouDtDelegate;
+        return kigyouDtDelegate;
     }
 
     /**
      * 企業・団体代表者を設定する
      *
-     * @param KigyouDtDelegate 企業・団体代表者
+     * @param kigyouDtDelegate 企業・団体代表者
      */
-    public void setKigyouDtDelegate(final String KigyouDtDelegate) {
-        this.KigyouDtDelegate = KigyouDtDelegate;
+    public void setKigyouDtDelegate(final String kigyouDtDelegate) {
+        this.kigyouDtDelegate = kigyouDtDelegate;
     }
 
     /** 企業・団体関連者コード */
     @Id
-    @Column(name = "KigyouDt_kanrensha_code")
-    private String KigyouDtKanrenshaCode;
+    @Column(name = "kigyouDt_kanrensha_code")
+    private String kigyouDtKanrenshaCode;
 
     /**
      * 企業・団体関連者コードを取得する
@@ -110,16 +110,16 @@ public class KanrenshaKigyouDtUniquekeyDto implements Serializable { // NOPMD Da
      * @return 企業・団体関連者コード
      */
     public String getKigyouDtKanrenshaCode() {
-        return KigyouDtKanrenshaCode;
+        return kigyouDtKanrenshaCode;
     }
 
     /**
      * 企業・団体関連者コードを設定する
      *
-     * @param KigyouDtKanrenshaCode 企業・団体関連者コード
+     * @param kigyouDtKanrenshaCode 企業・団体関連者コード
      */
-    public void setKigyouDtKanrenshaCode(final String KigyouDtKanrenshaCode) {
-        this.KigyouDtKanrenshaCode = KigyouDtKanrenshaCode;
+    public void setKigyouDtKanrenshaCode(final String kigyouDtKanrenshaCode) {
+        this.kigyouDtKanrenshaCode = kigyouDtKanrenshaCode;
     }
 
 }

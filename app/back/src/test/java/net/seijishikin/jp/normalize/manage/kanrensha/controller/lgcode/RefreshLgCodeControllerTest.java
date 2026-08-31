@@ -1,0 +1,122 @@
+package net.seijishikin.jp.normalize.manage.kanrensha.controller.lgcode;
+
+import static org.junit.jupiter.api.Assertions.assertEquals; // NOPMD HighImport
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
+import org.springframework.test.context.jdbc.Sql;
+import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import net.seijishikin.jp.normalize.common_tool.utils.GetObjectMapperWithTimeModuleUtil;
+import net.seijishikin.jp.normalize.manage.kanrensha.constants.GetCurrentResourcePath;
+import net.seijishikin.jp.normalize.manage.kanrensha.controller.PathRouteConstants;
+import net.seijishikin.jp.normalize.manage.kanrensha.dto.kanrensha.RegistDataByCsvFileCapsuleDto;
+import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateLeastUserForTestUtil;
+
+/**
+ * RefreshLgCodeController単体テスト
+ */
+@SpringJUnitConfig
+@AutoConfigureMockMvc
+@SpringBootTest
+@DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
+@Sql("../../service/lgcode/RefreshLgCodeServiceTest.sql")
+@ConfigurationProperties(prefix = "net.seijishikin.jp.normalize.kanrensha")
+class RefreshLgCodeControllerTest {
+
+    /** WebApplicationContext */
+    @Autowired
+    private WebApplicationContext context;
+
+    /** MockMvc */
+    private MockMvc mockMvc;
+
+    /** seetup */
+    @BeforeEach
+    public void setup() {
+        this.mockMvc = MockMvcBuilders.webAppContextSetup(context) //
+                .apply(SecurityMockMvcConfigurers.springSecurity()).build();
+    }
+
+    /** propertiesからインジェクションされた最上位保存フォルダ絶対パス */
+    private String storageFolder;
+
+    /**
+     * 最上位保存フォルダ絶対パスを取得する
+     *
+     * @return 最上位保存フォルダ絶対パス
+     */
+    public String getStorageFolder() {
+        return storageFolder;
+    }
+
+    /**
+     * 最上位保存フォルダ絶対パスを設定する
+     *
+     * @param storageFolder 最上位保存フォルダ絶対パス
+     */
+    public void setStorageFolder(final String storageFolder) {
+        this.storageFolder = storageFolder;
+    }
+
+    @Test
+    @Tag("TableTruncate")
+    @WithMockUser
+    void test() throws Exception {
+
+        final String fileName = "mt_city_all_sample.csv";
+        final String dirName = "190/test/";
+
+        Path readFilePath = Paths.get(dirName, fileName);
+
+        Path readFilePathAbs = Paths.get(storageFolder, readFilePath.toString());
+
+        // サンプルファイルが存在しないときは複写
+        if (!Files.exists(readFilePathAbs)) {
+            Path pathSrc = Paths.get(GetCurrentResourcePath.getBackTestResourcePath(), "/file/batch/address_base/",
+                    fileName);
+            Files.copy(pathSrc, readFilePathAbs);
+        }
+        assertTrue(Files.exists(readFilePathAbs));
+
+        RegistDataByCsvFileCapsuleDto capsuleDto = new RegistDataByCsvFileCapsuleDto();
+        capsuleDto.setUserDto(CreateLeastUserForTestUtil.practice());
+        capsuleDto.getStorageFileDto().setSavedDir(dirName);
+        capsuleDto.getStorageFileDto().setFileName(fileName);
+        capsuleDto.setUserDto(CreateLeastUserForTestUtil.practice());
+
+        String path = PathRouteConstants.ROOT + "/city-lgcode-all/reflesh";
+
+        ObjectMapper objectMapper = GetObjectMapperWithTimeModuleUtil.practice();
+
+        assertEquals(HttpStatus.OK.value(), mockMvc // NOPMD LawOfDemeter
+                .perform(post(path).content(objectMapper.writeValueAsString(capsuleDto)) //
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)) //
+                .andExpect(status().isOk()).andReturn().getResponse().getStatus());
+    }
+
+}

@@ -13,7 +13,6 @@ import net.seijishikin.jp.normalize.manage.kanrensha.entity.RiyoushaPersonProper
  */
 public interface RiyoushaPersonPropertyRepository extends JpaRepository<RiyoushaPersonPropertyEntity, Integer> {
 
-
     /**
      * 最大コードをもつEntityを取得する
      *
@@ -21,5 +20,4 @@ public interface RiyoushaPersonPropertyRepository extends JpaRepository<Riyousha
      */
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     Optional<RiyoushaPersonPropertyEntity> findFirstByOrderByRiyoushaPersonPropertyCodeDesc();
-
 }

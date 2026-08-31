@@ -24,7 +24,7 @@ public class KanrenshaKigyouDtMasterUniquekeyDto implements Serializable { // NO
         super();
         this.kanrenshaName = kanrenshaName;
         this.allAddress = allAddress;
-        this.KigyouDtDelegate = KigyouDtDelegate;
+        this.kigyouDtDelegate = KigyouDtDelegate;
     }
 
     /** 企業・団体名 */
@@ -75,8 +75,8 @@ public class KanrenshaKigyouDtMasterUniquekeyDto implements Serializable { // NO
 
     /** 企業・団体代表者 */
     @Id
-    @Column(name = "KigyouDt_delegate")
-    private String KigyouDtDelegate;
+    @Column(name = "kigyouDt_delegate")
+    private String kigyouDtDelegate;
 
     /**
      * 企業・団体代表者を取得する
@@ -84,15 +84,15 @@ public class KanrenshaKigyouDtMasterUniquekeyDto implements Serializable { // NO
      * @return 企業・団体代表者
      */
     public String getKigyouDtDelegate() {
-        return KigyouDtDelegate;
+        return kigyouDtDelegate;
     }
 
     /**
      * 企業・団体代表者を設定する
      *
-     * @param KigyouDtDelegate 企業・団体代表者
+     * @param kigyouDtDelegate 企業・団体代表者
      */
-    public void setKigyouDtDelegate(final String KigyouDtDelegate) {
-        this.KigyouDtDelegate = KigyouDtDelegate;
+    public void setKigyouDtDelegate(final String kigyouDtDelegate) {
+        this.kigyouDtDelegate = kigyouDtDelegate;
     }
 }

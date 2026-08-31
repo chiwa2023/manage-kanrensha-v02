@@ -3,10 +3,10 @@ package net.seijishikin.jp.normalize.manage.kanrensha.batch.kanrensha.kigyou_dt.
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.batch.core.StepExecution;
+import org.springframework.batch.core.step.StepExecution;
 import org.springframework.batch.core.annotation.BeforeStep;
-import org.springframework.batch.item.Chunk;
-import org.springframework.batch.item.database.JpaItemWriter;
+import org.springframework.batch.infrastructure.item.Chunk;
+import org.springframework.batch.infrastructure.item.database.JpaItemWriter;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -35,7 +35,7 @@ import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateDokujiCodeForKi
  * 関連者企業・団体標準登録マスタ複写ItemWriter
  */
 @Component
-public class MasterKigyouDtAddStdRecordItemWriter extends JpaItemWriter<WkTblKanrenshaKigyouDtMasterEntity> {
+public class MasterKigyouDtAddStdRecordItemWriter extends JpaItemWriter<WkTblKanrenshaKigyouDtMasterEntity> { // NOPMD
 
     /** 関連者企業・団体マスタ標準判定結果Repository */
     @Autowired
@@ -73,7 +73,6 @@ public class MasterKigyouDtAddStdRecordItemWriter extends JpaItemWriter<WkTblKan
     @Autowired
     private FormatNaturalSearchTextUtil formatNaturalSearchTextUtil;
 
-    
     /** 関連者コード企業・団体用発行Utility */
     @Autowired
     private CreateDokujiCodeForKigyouDtUtil createDokujiCodeForKigyouDtUtil;
@@ -81,16 +80,13 @@ public class MasterKigyouDtAddStdRecordItemWriter extends JpaItemWriter<WkTblKan
     /** ユーザ最低限Dto */
     private LeastUserDto userDto;
 
-    /** 空文字 */
-    private static final String EMPTY = "";
-
     /**
      * コンストラクタ
      *
      * @param entityManagerFactory entityManagerFactory
      */
     public MasterKigyouDtAddStdRecordItemWriter(final @Autowired EntityManagerFactory entityManagerFactory) {
-        super();
+        super(entityManagerFactory);
         super.setEntityManagerFactory(entityManagerFactory);
     }
 
@@ -130,7 +126,7 @@ public class MasterKigyouDtAddStdRecordItemWriter extends JpaItemWriter<WkTblKan
             }
         }
 
-        wkTblKanrenshaKigyouDtMasterResultRepository.saveAllAndFlush(list);
+        wkTblKanrenshaKigyouDtMasterResultRepository.saveAll(list);
     }
 
     /* マスタ登録処理を行う */
@@ -141,28 +137,30 @@ public class MasterKigyouDtAddStdRecordItemWriter extends JpaItemWriter<WkTblKan
         BeanUtils.copyProperties(entityWkTbl, KanrenshaKigyouDtMasterEntity);
         KanrenshaKigyouDtMasterEntity.setKigyouDtKanrenshaCode(kanrenshaCode);
         setTableDataHistoryUtil.practiceInsert(userDto, KanrenshaKigyouDtMasterEntity);
-        KanrenshaKigyouDtMasterEntity.setCompareNameText(formatNaturalSearchTextUtil.practice(KanrenshaKigyouDtMasterEntity.getKanrenshaName()));
-        int masterId = kanrenshaKigyouDtMasterRepository.save(KanrenshaKigyouDtMasterEntity).getKanrenshaKigyouDtMasterId();
+        KanrenshaKigyouDtMasterEntity.setCompareNameText(
+                formatNaturalSearchTextUtil.practice(KanrenshaKigyouDtMasterEntity.getKanrenshaName()));
+        int masterId = kanrenshaKigyouDtMasterRepository.save(KanrenshaKigyouDtMasterEntity)
+                .getKanrenshaKigyouDtMasterId();
 
         // マスタ住所登録
         KanrenshaKigyouDtAddressEntity addressEntity = new KanrenshaKigyouDtAddressEntity();
         addressEntity.setKigyouDtKanrenshaCode(kanrenshaCode);
         addressEntity.setKanrenshaKigyouDtId(masterId);
         BeanUtils.copyProperties(entityWkTbl, addressEntity);
+
+        // TODO 住所が自サイト独自形式になっているか？は利用の動向を見ながら再検討
+        // 現状はフォーマットされていないのがほとんどなの自動でfalse,周知されたらcsvにフラグを載せてその内容を反映
+        boolean isEdit = !entityWkTbl.getIsJushoFormat();
+        addressEntity.setIsPostalEdit(isEdit);
+        addressEntity.setIsBlockEdit(isEdit);
+        addressEntity.setIsBuildingEdit(isEdit);
+
+        // 編集がの必要の有無にかかわらず承諾はfalse
+        addressEntity.setIsPostalAccept(false);
+        addressEntity.setIsBlockAccept(false);
+        addressEntity.setIsBuildingAccept(false);
+
         setTableDataHistoryUtil.practiceInsert(userDto, addressEntity);
-        // 各住所項目に記載がある場合はチェック対象とする
-//        if (!EMPTY.equals(entityWkTbl.getAddressPostal())) {
-//            addressEntity.setIsPostalEdit(true);
-//            addressEntity.setIsPostalAccept(false);
-//        }
-//        if (!EMPTY.equals(entityWkTbl.getAddressBlock())) {
-//            addressEntity.setIsBlockEdit(true);
-//            addressEntity.setIsBlockAccept(false);
-//        }
-//        if (!EMPTY.equals(entityWkTbl.getAddressBuilding())) {
-//            addressEntity.setIsBuildingEdit(true);
-//            addressEntity.setIsBuildingAccept(false);
-//        }
         kanrenshaKigyouDtAddressRepository.save(addressEntity);
 
         // マスタ連絡先登録
@@ -173,15 +171,7 @@ public class MasterKigyouDtAddStdRecordItemWriter extends JpaItemWriter<WkTblKan
         setTableDataHistoryUtil.practiceInsert(userDto, accessEntity);
         kanrenshaKigyouDtAccessRepository.save(accessEntity);
 
-        // マスタ基本登録
-//        KanrenshaKigyouDtMasterBaseEntity baseEntity = new KanrenshaKigyouDtMasterBaseEntity();
-//        baseEntity.setKigyouDtKanrenshaCode(kanrenshaCode);
-//        baseEntity.setKanrenshaKigyouDtMasterId(masterId);
-//        BeanUtils.copyProperties(entityWkTbl, baseEntity);
-//        setTableDataHistoryUtil.practiceInsert(userDto, baseEntity);
-//        kanrenshaKigyouDtMasterBaseRepository.save(baseEntity);
-
-        // マスタ(その他)属性登録
+        // マスタ属性登録
         KanrenshaKigyouDtPropertyEntity propertyEntity = new KanrenshaKigyouDtPropertyEntity();
         propertyEntity.setKigyouDtKanrenshaCode(kanrenshaCode);
         propertyEntity.setKanrenshaKigyouDtId(masterId);
@@ -197,8 +187,15 @@ public class MasterKigyouDtAddStdRecordItemWriter extends JpaItemWriter<WkTblKan
 
         KanrenshaKigyouDtHistoryBaseEntity entity = new KanrenshaKigyouDtHistoryBaseEntity();
         BeanUtils.copyProperties(entityWkTbl, entity);
+        entity.setAllName(entityWkTbl.getKanrenshaName());
+        entity.setAllAddress(entityWkTbl.getAllAddress());
+        entity.setOrgDelegateName(entityWkTbl.getKigyouDtDelegate());
+        entity.setKigyouDtKanrenshaCode(kanrenshaCode);
+        entity.setOrgDelegateCode(entityWkTbl.getOrgDelegateCode());
+
         entity.setKigyouDtKanrenshaCode(kanrenshaCode);
 
+        // 検索テキストはServiceで設定
         return insertKanrenshaKigyouDtHistoryService.practice(userDto, entity);
     }
 

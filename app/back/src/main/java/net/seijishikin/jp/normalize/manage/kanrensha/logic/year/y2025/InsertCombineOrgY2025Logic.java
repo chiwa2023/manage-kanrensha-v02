@@ -12,7 +12,6 @@ import net.seijishikin.jp.normalize.manage.kanrensha.entity.WkTblKanrenshaCombin
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.year.y2025.KanrenshaCombineOrg2025Entity;
 import net.seijishikin.jp.normalize.manage.kanrensha.repository.year.y2025.KanrenshaCombineOrg2025Repository;
 
-
 /**
  * 紺団体紐づけテーブル挿入Logic(2025)
  */
@@ -22,7 +21,7 @@ public class InsertCombineOrgY2025Logic {
     /** 個人団体紐づけRepository(2025) */
     @Autowired
     private KanrenshaCombineOrg2025Repository kanrenshaCombineOrg2025Repository;
-    
+
     /** テーブル履歴設定Util */
     @Autowired
     private SetTableDataHistoryUtil setTableDataHistoryUtil;
@@ -33,24 +32,22 @@ public class InsertCombineOrgY2025Logic {
      * @param entityWkTbl 複写元ワークテーブルEntity
      * @return 登録完了Id
      */
-    public Integer practice(final WkTblKanrenshaCombineOrgEntity entityWkTbl,final LeastUserDto userDto) {
+    public Integer practice(final WkTblKanrenshaCombineOrgEntity entityWkTbl, final LeastUserDto userDto) {
 
-//        Optional<KanrenshaCombineOrg2025Entity> optional = kanrenshaCombineOrg2025Repository
-//                .findFirstByOrderByPartnerCombineOrgCodeDesc();
-//        Integer code = 1;
-//        if (!optional.isEmpty()) {
-//            code = optional.get().getKanrenshaCombineOrgCode();
-//        }
-//
-//        KanrenshaCombineOrg2025Entity entity = new KanrenshaCombineOrg2025Entity();
-//        BeanUtils.copyProperties(entityWkTbl, entity);
-//        setTableDataHistoryUtil.practiceInsert(userDto, entity);
-//        entity.setKanrenshaCombineOrgCode(code);
-//        entity.setKanrenshaCombineOrgId(0); // auto_increment明示
-//
-//        return kanrenshaCombineOrg2025Repository.save(entity).getKanrenshaCombineOrgId();
+        Optional<KanrenshaCombineOrg2025Entity> optional = kanrenshaCombineOrg2025Repository
+                .findFirstByOrderByKanrenshaCombineOrgCode();
+        Integer code = 1;
+        if (!optional.isEmpty()) {
+            code = optional.get().getKanrenshaCombineOrgCode();
+        }
 
-        return null;
+        KanrenshaCombineOrg2025Entity entity = new KanrenshaCombineOrg2025Entity();
+        BeanUtils.copyProperties(entityWkTbl, entity);
+        setTableDataHistoryUtil.practiceInsert(userDto, entity);
+        entity.setKanrenshaCombineOrgCode(code);
+        entity.setKanrenshaCombineOrgId(0); // auto_increment明示
+
+        return kanrenshaCombineOrg2025Repository.save(entity).getKanrenshaCombineOrgId();
     }
 
 }

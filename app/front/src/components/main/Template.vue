@@ -12,19 +12,24 @@ import {
 
 // よく使う定数
 const BLANK: string = "";
-//const INIT_NUMBER: number = 0;
+const INIT_NUMBER: number = 0;
+const INIT_BOOLEAN: boolean = false;
+const SEARCH_LIMIT: number = 20;
 // const SERVER_STATUS_OK: number = 200;
 // const SERVER_STATUS_ERROR: number = 400;
+const INIT_CALLER: string = "no branch";
+
 // メッセージ表示定数
 const infoLevel: Ref<number> = ref(MessageConstants.LEVEL_NONE);
 const messageType: Ref<number> = ref(MessageConstants.VIEW_NONE);
 const title: Ref<string> = ref(BLANK);
+const caller: Ref<string> = ref(INIT_CALLER);
 const message: Ref<string> = ref(BLANK);
 
 // Paging
-const pageNumber: Ref<number> = ref(6); // Mock data
-const allCount: Ref<number> = ref(123); // Mock data
-const limit: Ref<number> = ref(10); // Mock data
+const pageNumber: Ref<number> = ref(INIT_NUMBER);
+const allCount: Ref<number> = ref(INIT_NUMBER);
+const limit: Ref<number> = ref(SEARCH_LIMIT);
 
 // ラジオボタン入力サンプル
 const radioInputData: Ref<string> = ref("");
@@ -38,30 +43,30 @@ const viewStatus1: Ref<string> = ref(showContentA);
 const viewStatus2: Ref<string> = ref(showContentA);
 
 // 法人検索
-const isCorpSearch: Ref<boolean> = ref(false);
-const houjinNo:Ref<string> = ref(BLANK);
-const houjinName:Ref<string> = ref(BLANK);
+const isKigyouDtSearch: Ref<boolean> = ref(INIT_BOOLEAN);
+const houjinNo: Ref<string> = ref(BLANK);
+const houjinName: Ref<string> = ref(BLANK);
 
-function onRaiseCorpNoSearch() {
-    isCorpSearch.value = true;
+function onRaiseKigyouDtNoSearch() {
+    isKigyouDtSearch.value = true;
 }
 
 /**
 * 法人番号キャンセル選択なし
 */
-function recieveCancelCorpNo() {
+function recieveCancelKigyouDtNo() {
     // 非表示
-    isCorpSearch.value = false;
+    isKigyouDtSearch.value = false;
 }
 
 /**
 * 法人番号選択データ受信
 */
-function recieveCorpNoInterface(sendDto:HoujinNoDtoInterface) {
+function recieveKigyouDtNoInterface(sendDto: HoujinNoDtoInterface) {
     houjinNo.value = sendDto.houjinNo;
-    houjinName.value = sendDto.houjinName;    
+    houjinName.value = sendDto.houjinName;
     // 非表示
-    isCorpSearch.value = false;
+    isKigyouDtSearch.value = false;
 }
 
 function recievePagingNumber(selecteddNumber: number) {
@@ -95,13 +100,14 @@ function onError() {
     messageType.value = MessageConstants.VIEW_OK;
 }
 
-function recieveSubmit(button: string) {
-    alert(button);
+function recieveSubmit(button: string, callerMethod: string) {
     // TODO ボタンタイプ別の挙動はこの中で変える
+    alert(button + callerMethod);
 
-    // 非表示
+    // 非表示(呼び出し元は初期化)
     infoLevel.value = 0;
     messageType.value = 0;
+    caller.value = INIT_CALLER;
 }
 
 // 共通入力用変数
@@ -112,11 +118,16 @@ const inputAddressDto: Ref<InputAddressDtoInterface> = ref(new InputAddressDto()
 const inputAddressDtoShort: Ref<InputAddressDtoInterface> = ref(new InputAddressDto());
 const inputShokugyouDto: Ref<InputShokugyouDtoInterface> = ref(new InputShokugyouDto());
 
+const longToken: Ref<string> = ref(BLANK);
+
+// 法人番号APIキー
+const houjinAppId: string = import.meta.env.VITE_HOUJIN_NO_API;
+
 </script>
 <template>
     <div class="container">
         <!-- ユーザrole別制御コンポーネント -->
-        <div class="user-role-container">
+        <div class="user-role-container-admin">
             <div class="user-role-content">
                 <div class="user-role-title">
                     SE権限
@@ -130,7 +141,10 @@ const inputShokugyouDto: Ref<InputShokugyouDtoInterface> = ref(new InputShokugyo
                 <div class="user-role-menu-wrapper">
                     <!-- 必要アイコンはここに追加 -->
                     <div class="left-space user-role-icon-container">
+                        必要アイコンを設置
+                        <!--
                         <img src="#" class="user-role-icon">
+                        -->
                     </div>
                 </div>
             </div>
@@ -163,7 +177,7 @@ const inputShokugyouDto: Ref<InputShokugyouDtoInterface> = ref(new InputShokugyo
             <div class="right-area">
                 コード：<input type="text" v-model="houjinNo" class="short-input" :disabled="true">
                 名：<input type="text" v-model="houjinName" class="name-input left-space" :disabled="true"></input>
-                <button class="left-space" @click="onRaiseCorpNoSearch">検索</button>
+                <button class="left-space" @click="onRaiseKigyouDtNoSearch">検索</button>
             </div>
         </div>
 
@@ -339,10 +353,10 @@ const inputShokugyouDto: Ref<InputShokugyouDtoInterface> = ref(new InputShokugyo
         <MockViewInputAddressShort :edit-dto="inputAddressDtoShort"></MockViewInputAddressShort>
 
         <!-- 連絡先 -->
-        <ViewInputAccess :edit-dto="inputAccessDto"></ViewInputAccess>
+        <ViewInputAccess :edit-dto="inputAccessDto" :long-token="longToken"></ViewInputAccess>
 
         <!-- 職業 -->
-        <ViewInputShokugyou :edit-dto="inputShokugyouDto"></ViewInputShokugyou>
+        <ViewInputShokugyou :edit-dto="inputShokugyouDto" :houjin-api-key="houjinAppId"></ViewInputShokugyou>
 
         <div class="footer">
             <button class="footer-button">キャンセル</button>
@@ -351,18 +365,19 @@ const inputShokugyouDto: Ref<InputShokugyouDtoInterface> = ref(new InputShokugyo
 
     </div>
     <!-- 検索コンポーネント -->
-    <div v-if="isCorpSearch" class="overBackground"></div>
-    <div v-if="isCorpSearch">
+    <div v-if="isKigyouDtSearch" class="overBackground"></div>
+    <div v-if="isKigyouDtSearch">
         <div class="overComponent">
-            <SearchHoujinNo v-if="isCorpSearch" @send-cancel-houjin-no="recieveCancelCorpNo"
-                @send-houjin-no-interface="recieveCorpNoInterface"></SearchHoujinNo>
+            <SearchHoujinNo v-if="isKigyouDtSearch" :houjin-api-key="houjinAppId"
+                @send-cancel-houjin-no="recieveCancelKigyouDtNo" @send-houjin-no-interface="recieveKigyouDtNoInterface">
+            </SearchHoujinNo>
         </div>
     </div>
 
     <!-- メッセージ表示 -->
     <div class="overMessage" v-if="messageType !== MessageConstants.VIEW_NONE">
         <MessageView :info-level="infoLevel" :message-type="messageType" :title="title" :message="message"
-            @send-submit="recieveSubmit">
+            :caller="caller" @send-submit="recieveSubmit">
         </MessageView>
     </div>
 

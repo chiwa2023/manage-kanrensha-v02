@@ -2,13 +2,13 @@ package net.seijishikin.jp.normalize.manage.kanrensha.batch.kanrensha.combine_or
 
 import java.util.List;
 
-import org.springframework.batch.core.StepContribution;
-import org.springframework.batch.core.StepExecution;
-import org.springframework.batch.core.StepExecutionListener;
+import org.springframework.batch.core.step.StepContribution;
+import org.springframework.batch.core.step.StepExecution;
+import org.springframework.batch.core.listener.StepExecutionListener;
 import org.springframework.batch.core.annotation.BeforeStep;
 import org.springframework.batch.core.scope.context.ChunkContext;
 import org.springframework.batch.core.step.tasklet.Tasklet;
-import org.springframework.batch.repeat.RepeatStatus;
+import org.springframework.batch.infrastructure.repeat.RepeatStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -56,25 +56,25 @@ public class SuspendDuplicateWkTblCombineOrgTasklet implements Tasklet, StepExec
     @Override
     public RepeatStatus execute(final StepContribution contribution, final ChunkContext chunkContext) throws Exception {
 
-//        Integer userCode = userDto.getUserPersonCode();
-//
-//        List<KanrenshaCombineOrgUniquekeyDto> listKeyGroup = wkTblKanrenshaCombineOrgRepository
-//                .findDuplicateUniqueKey(userCode);
-//
-//        for (KanrenshaCombineOrgUniquekeyDto uniqueDto : listKeyGroup) {
-//            List<WkTblKanrenshaCombineOrgEntity> list = wkTblKanrenshaCombineOrgRepository
-//                    .findByPersonKanrenshaCodeAndOrgKanrenshaCodeAndYearArrayTextAndKanrenshaKbnAndInsertUserCodeOrderByWkTblKanrenshaCombineOrgIdAsc(
-//                            uniqueDto.getPersonKanrenshaCode(), uniqueDto.getOrgKanrenshaCode(), uniqueDto.getYearArrayText(),
-//                            uniqueDto.getKanrenshaKbn(), userCode);
-//            list.remove(0); // 1行だけは処理実行行として残す
-//            for (WkTblKanrenshaCombineOrgEntity entity : list) {
-//                setTableDataHistoryUtil.practiceDelete(userDto, entity); // 削除
-//                entity.setIsLatest(SetTableDataHistoryUtil.DELETE_STATE);
-//                entity.setIsFinish(true);
-//                entity.setJudgeReason("アップロードファイル内で重複しているデータです");
-//            }
-//            wkTblKanrenshaCombineOrgRepository.saveAllAndFlush(list);
-//        }
+        Integer userCode = userDto.getUserPersonCode();
+
+        List<KanrenshaCombineOrgUniquekeyDto> listKeyGroup = wkTblKanrenshaCombineOrgRepository
+                .findDuplicateUniqueKey(userCode);
+
+        for (KanrenshaCombineOrgUniquekeyDto uniqueDto : listKeyGroup) {
+            List<WkTblKanrenshaCombineOrgEntity> list = wkTblKanrenshaCombineOrgRepository
+                    .findByPersonKanrenshaCodeAndOrgKanrenshaCodeAndYearArrayTextAndKanrenshaKbnAndInsertUserCodeOrderByWkTblKanrenshaCombineOrgIdAsc(
+                            uniqueDto.getPersonKanrenshaCode(), uniqueDto.getOrgKanrenshaCode(), uniqueDto.getYearArrayText(),
+                            uniqueDto.getKanrenshaKbn(), userCode);
+            list.remove(0); // 1行だけは処理実行行として残す
+            for (WkTblKanrenshaCombineOrgEntity entity : list) {
+                setTableDataHistoryUtil.practiceDelete(userDto, entity); // 削除
+                entity.setIsLatest(SetTableDataHistoryUtil.DELETE_STATE);
+                entity.setIsFinish(true);
+                entity.setJudgeReason("アップロードファイル内で重複しているデータです");
+            }
+            wkTblKanrenshaCombineOrgRepository.saveAllAndFlush(list);
+        }
 
         // 処理終了
         return RepeatStatus.FINISHED;

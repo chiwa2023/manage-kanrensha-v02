@@ -3,7 +3,14 @@ package net.seijishikin.jp.normalize.manage.kanrensha.constants;
 /**
  * 関連者区分定数
  */
-public class KanrenshaKbnConstants {
+public final class KanrenshaKbnConstants {
+
+    /**
+     * コンストラクタ
+     */
+    private KanrenshaKbnConstants() {
+
+    }
 
     /** 個人 */
     public static final short PERSON = 1;

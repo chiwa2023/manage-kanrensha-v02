@@ -2,10 +2,10 @@ package net.seijishikin.jp.normalize.manage.kanrensha.batch.kanrensha.person.his
 
 import java.util.Optional;
 
-import org.springframework.batch.core.StepExecution;
+import org.springframework.batch.core.step.StepExecution;
 import org.springframework.batch.core.annotation.BeforeStep;
-import org.springframework.batch.item.Chunk;
-import org.springframework.batch.item.database.JpaItemWriter;
+import org.springframework.batch.infrastructure.item.Chunk;
+import org.springframework.batch.infrastructure.item.database.JpaItemWriter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -43,8 +43,7 @@ public class KanrenshaPersonHistoryItemWriter extends JpaItemWriter<WkTblKanrens
      * @param entityManagerFactory entityManagerFactory
      */
     public KanrenshaPersonHistoryItemWriter(final @Autowired EntityManagerFactory entityManagerFactory) {
-        super();
-        super.setEntityManagerFactory(entityManagerFactory);
+        super(entityManagerFactory);
     }
 
     /**
@@ -65,20 +64,20 @@ public class KanrenshaPersonHistoryItemWriter extends JpaItemWriter<WkTblKanrens
     public void write(final Chunk<? extends WkTblKanrenshaPersonHistoryEntity> items) {
 
         int code = 0;
-//
-//        Optional<WkTblKanrenshaPersonHistoryEntity> optional = wkTbKanrenshaPersonHistoryRepository
-//                .findFirstByOrderByWkKanrenshaPersonHistoryCodeDesc();
-//        if (!optional.isEmpty()) {
-//            code = optional.get().getWkKanrenshaPersonHistoryCode();
-//        }
-//
-//        for (WkTblKanrenshaPersonHistoryEntity entity : items) {
-//            code++;
-//            setTableDataHistoryUtil.practiceInsert(userDto, entity);
-//            entity.setWkKanrenshaPersonHistoryCode(code);
-//        }
-//
-//        wkTbKanrenshaPersonHistoryRepository.saveAll(items);
+
+        Optional<WkTblKanrenshaPersonHistoryEntity> optional = wkTbKanrenshaPersonHistoryRepository
+                .findFirstByOrderByWkKanrenshaPersonHistoryCodeDesc();
+        if (!optional.isEmpty()) {
+            code = optional.get().getWkKanrenshaPersonHistoryCode();
+        }
+
+        for (WkTblKanrenshaPersonHistoryEntity entity : items) {
+            code++;
+            setTableDataHistoryUtil.practiceInsert(userDto, entity);
+            entity.setWkKanrenshaPersonHistoryCode(code);
+        }
+
+        wkTbKanrenshaPersonHistoryRepository.saveAll(items);
     }
 
 }

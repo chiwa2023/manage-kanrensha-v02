@@ -142,7 +142,7 @@
         </rule>
         <rule>
             <name>AvoidCatchingGenericException</name>
-            <ruleset>Design</ruleset>
+            <ruleset>Error Prone</ruleset>
         </rule>
         <rule>
             <name>AvoidCatchingNPE</name>

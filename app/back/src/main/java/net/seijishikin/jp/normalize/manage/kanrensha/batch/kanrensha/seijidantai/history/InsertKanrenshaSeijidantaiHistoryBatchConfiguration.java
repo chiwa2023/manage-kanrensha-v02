@@ -1,9 +1,9 @@
 package net.seijishikin.jp.normalize.manage.kanrensha.batch.kanrensha.seijidantai.history;
 
-import org.springframework.batch.core.Job;
-import org.springframework.batch.core.Step;
+import org.springframework.batch.core.job.Job;
+import org.springframework.batch.core.step.Step;
 import org.springframework.batch.core.job.builder.JobBuilder;
-import org.springframework.batch.core.launch.support.RunIdIncrementer;
+import org.springframework.batch.core.job.parameters.RunIdIncrementer;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.PlatformTransactionManager;
 
+import net.seijishikin.jp.normalize.manage.kanrensha.batch.task_plan.RecordTaskPlanJobExecutionListner;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.WkTblKanrenshaSeijidantaiHistoryEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.WkTblKanrenshaSeijidantaiHistoryResultEntity;
 
@@ -95,6 +96,10 @@ public class InsertKanrenshaSeijidantaiHistoryBatchConfiguration {
     @Autowired
     private KanrenshaSeijidantaiWkTblFixProcessor kanrenshaSeijidantaiWkTblFixProcessor;
 
+    /** バッチジョブ実行リスナ */
+    @Autowired
+    private RecordTaskPlanJobExecutionListner recordTaskPlanJobExecutionListner;
+
     /**
      * Jobを返却する
      *
@@ -107,8 +112,9 @@ public class InsertKanrenshaSeijidantaiHistoryBatchConfiguration {
             @Qualifier(STEP_HISTORY) final Step stepHistory, @Qualifier(STEP_SUSPEND) final Step stepSuspend,
             @Qualifier(STEP_JUDGE) final Step stepJudge, @Qualifier(STEP_FIX) final Step stepFix) {
 
-        return new JobBuilder(JOB_NAME, jobRepository).incrementer(new RunIdIncrementer()).flow(stepErase)
-                .next(stepHistory).next(stepSuspend).next(stepJudge).next(stepFix).end().build();
+        return new JobBuilder(JOB_NAME, jobRepository).incrementer(new RunIdIncrementer())
+                .listener(recordTaskPlanJobExecutionListner).flow(stepErase).next(stepHistory).next(stepSuspend)
+                .next(stepJudge).next(stepFix).end().build();
     }
 
     /**
@@ -138,7 +144,7 @@ public class InsertKanrenshaSeijidantaiHistoryBatchConfiguration {
             final PlatformTransactionManager transactionManager) {
 
         return new StepBuilder(STEP_HISTORY, jobRepository)
-                .<KanrenshaSeijidantaiHistoryDto, WkTblKanrenshaSeijidantaiHistoryEntity>chunk(CHUNK_SIZE, transactionManager)
+                .<KanrenshaSeijidantaiHistoryDto, WkTblKanrenshaSeijidantaiHistoryEntity>chunk(CHUNK_SIZE)
                 .reader(kanrenshaSeijidantaiHistoryItemReader).processor(kanrenshaSeijidantaiHistoryProcessor)
                 .writer(kanrenshaSeijidantaiHistoryItemWriter).build();
     }
@@ -170,7 +176,7 @@ public class InsertKanrenshaSeijidantaiHistoryBatchConfiguration {
             final PlatformTransactionManager transactionManager) {
 
         return new StepBuilder(STEP_JUDGE, jobRepository)
-                .<WkTblKanrenshaSeijidantaiHistoryEntity, WkTblKanrenshaSeijidantaiHistoryResultEntity>chunk(CHUNK_SIZE, transactionManager)
+                .<WkTblKanrenshaSeijidantaiHistoryEntity, WkTblKanrenshaSeijidantaiHistoryResultEntity>chunk(CHUNK_SIZE)
                 .reader(kanrenshaSeijidantaiResultItemReader).processor(kanrenshaSeijidantaiResultProcessor)
                 .writer(kanrenshaSeijidantaiResultItemWriter).build();
     }
@@ -186,7 +192,7 @@ public class InsertKanrenshaSeijidantaiHistoryBatchConfiguration {
     protected Step getStepFix(final JobRepository jobRepository, final PlatformTransactionManager transactionManager) {
 
         return new StepBuilder(STEP_FIX, jobRepository)
-                .<WkTblKanrenshaSeijidantaiHistoryResultEntity, WkTblKanrenshaSeijidantaiHistoryEntity>chunk(CHUNK_SIZE, transactionManager)
+                .<WkTblKanrenshaSeijidantaiHistoryResultEntity, WkTblKanrenshaSeijidantaiHistoryEntity>chunk(CHUNK_SIZE)
                 .reader(kanrenshaSeijidantaiWkTblFixItemReader).processor(kanrenshaSeijidantaiWkTblFixProcessor)
                 .writer(kanrenshaSeijidantaiWkTblFixItemWriter).build();
     }

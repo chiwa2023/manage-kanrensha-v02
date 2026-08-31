@@ -1,13 +1,18 @@
 package net.seijishikin.jp.normalize.manage.kanrensha.repository;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.PagingAndSortingRepository;
+
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.WkTblKanrenshaPersonAddMinResultEntity;
 
 /**
  * wk_tbl_kanrensha_person_add_min_result接続用Repository
  */
 public interface WkTblKanrenshaPersonAddMinResultRepository
-        extends JpaRepository<WkTblKanrenshaPersonAddMinResultEntity, Integer> {
+        extends JpaRepository<WkTblKanrenshaPersonAddMinResultEntity, Integer>,
+        PagingAndSortingRepository<WkTblKanrenshaPersonAddMinResultEntity, Integer> {
 
     /**
      * ユーザが同一であるデータを削除する
@@ -16,5 +21,15 @@ public interface WkTblKanrenshaPersonAddMinResultRepository
      * @return 削除行数
      */
     int deleteByInsertUserCode(Integer userCode);
+
+    /**
+     * 操作者のコードで検索する
+     *
+     * @param userCode ユーザコード
+     * @param pageable ページング条件
+     * @return 検索結果
+     */
+    Page<WkTblKanrenshaPersonAddMinResultEntity> findByInsertUserCodeAndIsLatest(Integer userCode, boolean isLatest,
+            Pageable pageable);
 
 }

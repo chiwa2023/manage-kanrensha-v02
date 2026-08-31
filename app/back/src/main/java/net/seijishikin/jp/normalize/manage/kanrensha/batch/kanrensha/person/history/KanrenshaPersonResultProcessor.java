@@ -2,7 +2,7 @@ package net.seijishikin.jp.normalize.manage.kanrensha.batch.kanrensha.person.his
 
 import java.util.List;
 
-import org.springframework.batch.item.ItemProcessor;
+import org.springframework.batch.infrastructure.item.ItemProcessor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -39,7 +39,8 @@ public class KanrenshaPersonResultProcessor
      * 変換処理を実行する
      */
     @Override
-    public WkTblKanrenshaPersonHistoryResultEntity process(final WkTblKanrenshaPersonHistoryEntity item) throws Exception {
+    public WkTblKanrenshaPersonHistoryResultEntity process(final WkTblKanrenshaPersonHistoryEntity item)
+            throws Exception {
 
         WkTblKanrenshaPersonHistoryResultEntity entity = new WkTblKanrenshaPersonHistoryResultEntity();
         BeanUtils.copyProperties(item, entity);
@@ -97,16 +98,16 @@ public class KanrenshaPersonResultProcessor
             stringBuilder.append("関連者コードが入力されていません;");
         }
 
-//        if (stringBuilder.isEmpty()) {
-//            // 少なくとも団体名と関連者コードが同一でない場合は未登録とみなす
-//            List<KanrenshaPersonMasterEntity> listMaster = kanrenshaPersonMasterRepository
-//                    .findByPersonKanrenshaCodeAndCompareNameTextAndIsLatest(entity.getPersonKanrenshaCode(),
-//                            formatNaturalSearchTextUtil.practice(entity.getKanrenshaName()),
-//                            SetTableDataHistoryUtil.INSERT_STATE);
-//            if (listMaster.isEmpty()) {
-//                stringBuilder.append("コードと名称に合致する関連者が存在しません;");
-//            }
-//        }
+        if (stringBuilder.isEmpty()) {
+            // 少なくとも団体名と関連者コードが同一でない場合は未登録とみなす
+            List<KanrenshaPersonMasterEntity> listMaster = kanrenshaPersonMasterRepository
+                    .findByPersonKanrenshaCodeAndCompareNameTextAndIsLatest(entity.getPersonKanrenshaCode(),
+                            formatNaturalSearchTextUtil.practice(entity.getKanrenshaName()),
+                            SetTableDataHistoryUtil.INSERT_STATE);
+            if (listMaster.isEmpty()) {
+                stringBuilder.append("コードと名称に合致する関連者が存在しません;");
+            }
+        }
 
         return stringBuilder;
     }

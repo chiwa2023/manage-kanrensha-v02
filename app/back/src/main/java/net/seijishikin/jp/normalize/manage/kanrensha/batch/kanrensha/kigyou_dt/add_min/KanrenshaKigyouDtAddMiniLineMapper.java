@@ -2,7 +2,7 @@ package net.seijishikin.jp.normalize.manage.kanrensha.batch.kanrensha.kigyou_dt.
 
 import java.text.Normalizer;
 
-import org.springframework.batch.item.file.LineMapper;
+import org.springframework.batch.infrastructure.item.file.LineMapper;
 import org.springframework.stereotype.Component;
 
 /**

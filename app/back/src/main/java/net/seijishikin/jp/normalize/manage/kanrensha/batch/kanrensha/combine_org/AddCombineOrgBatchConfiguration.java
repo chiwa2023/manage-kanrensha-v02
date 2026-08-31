@@ -1,9 +1,9 @@
 package net.seijishikin.jp.normalize.manage.kanrensha.batch.kanrensha.combine_org;
 
-import org.springframework.batch.core.Job;
-import org.springframework.batch.core.Step;
+import org.springframework.batch.core.job.Job;
+import org.springframework.batch.core.step.Step;
 import org.springframework.batch.core.job.builder.JobBuilder;
-import org.springframework.batch.core.launch.support.RunIdIncrementer;
+import org.springframework.batch.core.job.parameters.RunIdIncrementer;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.PlatformTransactionManager;
 
+import net.seijishikin.jp.normalize.manage.kanrensha.batch.task_plan.RecordTaskPlanJobExecutionListner;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.WkTblKanrenshaCombineOrgEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.WkTblKanrenshaCombineOrgResultEntity;
 
@@ -91,6 +92,10 @@ public class AddCombineOrgBatchConfiguration {
     @Autowired
     private CombineOrgWkTblFixItemWriter combineOrgWkTblFixItemWriter;
 
+    /** バッチジョブ実行リスナ */
+    @Autowired
+    private RecordTaskPlanJobExecutionListner recordTaskPlanJobExecutionListner;
+
     /**
      * Jobを返却する
      *
@@ -103,8 +108,9 @@ public class AddCombineOrgBatchConfiguration {
             @Qualifier(STEP_CSV) final Step stepCsv, @Qualifier(STEP_SUSPEND) final Step stepSuspend,
             @Qualifier(STEP_RECORD) final Step stepRecord, @Qualifier(STEP_FIX) final Step stepFix) {
 
-        return new JobBuilder(JOB_NAME, jobRepository).incrementer(new RunIdIncrementer()).flow(stepErase).next(stepCsv)
-                .next(stepSuspend).next(stepRecord).next(stepFix).end().build();
+        return new JobBuilder(JOB_NAME, jobRepository).incrementer(new RunIdIncrementer())
+                .listener(recordTaskPlanJobExecutionListner).flow(stepErase).next(stepCsv).next(stepSuspend)
+                .next(stepRecord).next(stepFix).end().build();
     }
 
     /**
@@ -133,7 +139,7 @@ public class AddCombineOrgBatchConfiguration {
     protected Step getStepCsv(final JobRepository jobRepository, final PlatformTransactionManager transactionManager) {
 
         return new StepBuilder(STEP_CSV, jobRepository)
-                .<KanrenshaCombineOrgDto, WkTblKanrenshaCombineOrgEntity>chunk(CHUNK_SIZE, transactionManager)
+                .<KanrenshaCombineOrgDto, WkTblKanrenshaCombineOrgEntity>chunk(CHUNK_SIZE)
                 .reader(combineOrgCsvItemReader).processor(combineOrgCsvProcessor).writer(combineOrgCsvItemWriter)
                 .build();
     }
@@ -165,7 +171,7 @@ public class AddCombineOrgBatchConfiguration {
             final PlatformTransactionManager transactionManager) {
 
         return new StepBuilder(STEP_RECORD, jobRepository)
-                .<WkTblKanrenshaCombineOrgEntity, WkTblKanrenshaCombineOrgEntity>chunk(CHUNK_SIZE, transactionManager)
+                .<WkTblKanrenshaCombineOrgEntity, WkTblKanrenshaCombineOrgEntity>chunk(CHUNK_SIZE)
                 .reader(combineOrgRecordItemReader).writer(combineOrgRecordItemWriter).build();
     }
 
@@ -180,7 +186,7 @@ public class AddCombineOrgBatchConfiguration {
     protected Step getStepFix(final JobRepository jobRepository, final PlatformTransactionManager transactionManager) {
 
         return new StepBuilder(STEP_FIX, jobRepository)
-                .<WkTblKanrenshaCombineOrgResultEntity, WkTblKanrenshaCombineOrgEntity>chunk(CHUNK_SIZE, transactionManager)
+                .<WkTblKanrenshaCombineOrgResultEntity, WkTblKanrenshaCombineOrgEntity>chunk(CHUNK_SIZE)
                 .reader(combineOrgWkTblFixItemReader).processor(combineOrgWkTblFixProcessor)
                 .writer(combineOrgWkTblFixItemWriter).build();
     }

@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import net.seijishikin.jp.normalize.manage.kanrensha.service.z_trial.CreateTableNotExistService;
+import net.seijishikin.jp.normalize.manage.kanrensha.controller.PathRouteConstants;
 
 /**
  * 作成されていないテーブルを補充するController
@@ -23,13 +24,13 @@ public class CreateTableNotExistController {
      * 
      * @return 処理受付メッセージ
      */
-    @GetMapping("/create-table")
+    @GetMapping(PathRouteConstants.ROOT + "/create-table")
     public ResponseEntity<String> practice() {
 
         try {
             createTableNotExistService.practice();
         } catch (Exception e) { // NOPMD GeneralException
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).body("作成作業を起動できませんでした");
+            return ResponseEntity.status(HttpStatus.ACCEPTED).body("作成作業を起動できませんでした");
         }
 
         return ResponseEntity.status(HttpStatus.OK).body("作業を開始しています。終了までお待ちください");

@@ -1,6 +1,6 @@
 package net.seijishikin.jp.normalize.manage.kanrensha.service.kanrensha; // NOPMD
 
-import java.util.List;
+import java.util.List; // NOPMD
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -60,7 +60,7 @@ import net.seijishikin.jp.normalize.manage.kanrensha.repository.lgcode.Kanrensha
  * 関連者企業・団体の同属性リスト取得Service
  */
 @Service
-public class GetKanrenshaKigyouDtSameHistoryService {
+public class GetKanrenshaKigyouDtSameHistoryService { // NOPMD
 
     /** 住所から県 地方公共団体コード(2桁)取得Service */
     @Autowired
@@ -213,11 +213,11 @@ public class GetKanrenshaKigyouDtSameHistoryService {
 
     /**
      * 処理を行う
-     *
-     * @param name     団体名
+     * 
+     * @param name     名称
      * @param address  住所
-     * @param delegate 代表者名
-     * @return 検索結果
+     * @param delegate 代表者
+     * @return 関連者企業団体履歴リスト
      */
     public List<KanrenshaKigyouDtHistoryBaseEntity> practice( // SUPPRESS CHECKSTYLE ReturnCount NOPMD
             final String name, final String address, final String delegate) {
