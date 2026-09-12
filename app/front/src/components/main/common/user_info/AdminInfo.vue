@@ -17,6 +17,7 @@ import { AccessTokenNotFoundError, TokenRefreshError } from '../../dto/login/err
 import ShowTask from '../show_task/ShowTask.vue';
 import type { SelectOptionsTaskPlanDtoInterface } from '../../dto/select_options/selectOptionsTaskPlanDto';
 import { useTaskPlan } from '../../stores/storeTaskPlan';
+import { notCompletedTaskSomeoneStore } from '../../stores/notCompletedSomeoneTask.ts';
 
 // props,emmits
 const props = defineProps<{ userDto: LeastUserDtoInterface }>();
@@ -42,6 +43,7 @@ const urlBack: string = RoutePathConstants.DOMAIN + RoutePathConstants.BASE_PATH
 
 // pinia
 const notCompletedTaskInfo = notCompletedTaskStore();
+const someoneTaskInfo = notCompletedTaskSomeoneStore();
 
 const listMenuRoleOptions: Ref<SelectOptionStringDtoInterface[]> = ref(createListRoleOptions(props.userDto.listRoles));
 
@@ -79,19 +81,46 @@ function viewPersonMenu() {
 
 
 // 未処理タスク表示
-const resultDtoTask: Ref<TaskListForUserInfoResultDtoInterface> = ref(new TaskListForUserInfoResultDto());
-const optionsThisYear: Ref<SelectOptionsTaskPlanDtoInterface[]> = ref([]);
-const optionsLastYear: Ref<SelectOptionsTaskPlanDtoInterface[]> = ref([]);
-const optionsView: ComputedRef<SelectOptionsTaskPlanDtoInterface[]> = computed(() => {
-    if ("1" === switchYear.value) {
-        return optionsThisYear.value;
+const resultDtoTaskPerson: Ref<TaskListForUserInfoResultDtoInterface> = ref(new TaskListForUserInfoResultDto());
+const resultDtoTaskRole: Ref<TaskListForUserInfoResultDtoInterface> = ref(new TaskListForUserInfoResultDto());
+
+const optionsThisYearPerson: Ref<SelectOptionsTaskPlanDtoInterface[]> = ref([]);
+const optionsLastYearPerson: Ref<SelectOptionsTaskPlanDtoInterface[]> = ref([]);
+
+const optionsThisYearRole: Ref<SelectOptionsTaskPlanDtoInterface[]> = ref([]);
+const optionsLastYearRole: Ref<SelectOptionsTaskPlanDtoInterface[]> = ref([]);
+
+
+
+
+
+const optionsViewPerson: ComputedRef<SelectOptionsTaskPlanDtoInterface[]> = computed(() => {
+    if ("1" === switchYearPerson.value) {
+        return optionsThisYearPerson.value;
     } else {
-        return optionsLastYear.value;
+        return optionsLastYearPerson.value;
     }
 });
-const selectedTask: Ref<number> = ref(0);
-const switchYear: Ref<string> = ref("");
-const tansferDisabled: ComputedRef<boolean> = computed(() => 0 === selectedTask.value);
+
+const optionsViewRole: ComputedRef<SelectOptionsTaskPlanDtoInterface[]> = computed(() => {
+    if ("1" === switchYearRole.value) {
+        return optionsThisYearRole.value;
+    } else {
+        return optionsLastYearRole.value;
+    }
+});
+
+const selectedTaskPerson: Ref<number> = ref(0);
+const selectedTaskRole: Ref<number> = ref(0);
+
+const switchYearPerson: Ref<string> = ref("");
+const switchYearRole: Ref<string> = ref("");
+
+const tansferDisabledPerson: ComputedRef<boolean> = computed(() => 0 === selectedTaskPerson.value);
+const tansferDisabledRole: ComputedRef<boolean> = computed(() => 0 === selectedTaskRole.value);
+
+
+
 let actionStatus = INIT_NUMBER;
 onBeforeMount(async () => {
     // ログインと権限チェック
@@ -120,18 +149,18 @@ onBeforeMount(async () => {
                 fetch(url, { method, headers, body })
                     .then(async (response) => {
 
-                        resultDtoTask.value = await response.json();
-                        if (resultDtoTask.value.listThisYear.length === 0 && resultDtoTask.value.listLastYear.length === 0) {
+                        resultDtoTaskPerson.value = await response.json();
+                        if (resultDtoTaskPerson.value.listThisYear.length === 0 && resultDtoTaskPerson.value.listLastYear.length === 0) {
                             infoLevel.value = MessageConstants.LEVEL_INFO;
                             messageType.value = MessageConstants.VIEW_TOAST;
                             message.value = "未処理タスクは存在しませんでした";
                             notCompletedTaskInfo.notCompleteTaskDto.isRefreshed = true; // 毎回更新しにいかないように
                             actionStatus = SERVER_STATUS_OK;
                         } else {
-                            notCompletedTaskInfo.notCompleteTaskDto = resultDtoTask.value;
-                            optionsThisYear.value = convertTaskToOption(resultDtoTask.value.listThisYear);
-                            optionsLastYear.value = convertTaskToOption(resultDtoTask.value.listLastYear);
-                            switchYear.value = "1";
+                            notCompletedTaskInfo.notCompleteTaskDto = resultDtoTaskPerson.value;
+                            optionsThisYearPerson.value = convertTaskToOption(resultDtoTaskPerson.value.listThisYear);
+                            optionsLastYearPerson.value = convertTaskToOption(resultDtoTaskPerson.value.listLastYear);
+                            switchYearPerson.value = "1";
                         }
                     })
                     .catch((error) => {
@@ -154,13 +183,68 @@ onBeforeMount(async () => {
                 return;
             });
         } else {
-            optionsThisYear.value = convertTaskToOption(notCompletedTaskInfo.notCompleteTaskDto.listThisYear);
-            optionsLastYear.value = convertTaskToOption(notCompletedTaskInfo.notCompleteTaskDto.listLastYear);
+            optionsThisYearPerson.value = convertTaskToOption(notCompletedTaskInfo.notCompleteTaskDto.listThisYear);
+            optionsLastYearPerson.value = convertTaskToOption(notCompletedTaskInfo.notCompleteTaskDto.listLastYear);
             notCompletedTaskInfo.notCompleteTaskDto.isRefreshed = true;
-            switchYear.value = "1";
+            switchYearPerson.value = "1";
         }
     }
 
+    if (!someoneTaskInfo.notCompleteTaskDto.isRefreshed) {
+        // 更新処理
+        const capsuleDto: FrameworkCapsuleDtoInterface = new FrameworkCapsuleDto();
+        capsuleDto.userDto = props.userDto;
+        // 検索実行
+        getAuthorizedPromiseArea().then(token => {
+            const url = urlBack + "/task-plan/get-someone";
+            const method = "POST";
+            const body = JSON.stringify(capsuleDto);
+            const headers = {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'X-AUTH-TOKEN': 'Bearer ' + token
+            };
+            fetch(url, { method, headers, body })
+                .then(async (response) => {
+                    resultDtoTaskRole.value = await response.json();
+                    if (resultDtoTaskRole.value.listThisYear.length === 0 && resultDtoTaskRole.value.listLastYear.length === 0) {
+                        infoLevel.value = MessageConstants.LEVEL_INFO;
+                        messageType.value = MessageConstants.VIEW_TOAST;
+                        message.value = "未処理タスクは存在しませんでした";
+                        someoneTaskInfo.notCompleteTaskDto.isRefreshed = true; // 毎回更新しにいかないように
+                        actionStatus = SERVER_STATUS_OK;
+                    } else {
+                        someoneTaskInfo.notCompleteTaskDto = resultDtoTaskRole.value;
+                        optionsThisYearRole.value = convertTaskToOption(resultDtoTaskRole.value.listThisYear);
+                        optionsLastYearRole.value = convertTaskToOption(resultDtoTaskRole.value.listLastYear);
+                        switchYearRole.value = "1";
+                    }
+                })
+                .catch((error) => {
+                    message.value = getErrorMessage(error, ERR_MESS_ONLY);
+                    infoLevel.value = MessageConstants.LEVEL_ERROR;
+                    messageType.value = MessageConstants.VIEW_OK;
+                    return;
+                });
+        }).catch((e) => {
+            infoLevel.value = MessageConstants.LEVEL_ERROR;
+            messageType.value = MessageConstants.VIEW_OK;
+
+            // トークン保持または取得に失敗している場合
+            if (e instanceof AccessTokenNotFoundError || e instanceof TokenRefreshError) {
+                message.value = e.message;
+                return;
+            }
+
+            message.value = getErrorMessage(e, INQUIRE_FLG);
+            return;
+        });
+    } else {
+        optionsThisYearRole.value = convertTaskToOption(someoneTaskInfo.notCompleteTaskDto.listThisYear);
+        optionsLastYearRole.value = convertTaskToOption(someoneTaskInfo.notCompleteTaskDto.listLastYear);
+        someoneTaskInfo.notCompleteTaskDto.isRefreshed = true;
+        switchYearRole.value = "1";
+    }
 });
 
 // メッセージからの反応受け取り
@@ -186,9 +270,10 @@ function recieveCancelShowTask() {
     isShowTask.value = false;
 }
 
-function onTransfer() {
+function onTransferPerson() {
+
     const selectedDto: SelectOptionsTaskPlanDtoInterface | undefined =
-        optionsView.value.filter((e) => e.taskPlanId == selectedTask.value)[0];
+        optionsViewPerson.value.filter((e) => e.taskPlanId == selectedTaskPerson.value)[0];
 
     if (undefined !== selectedDto) {
         const storesTaskPlan = useTaskPlan();
@@ -200,7 +285,27 @@ function onTransfer() {
     } else {
         infoLevel.value = MessageConstants.LEVEL_ERROR;
         messageType.value = MessageConstants.VIEW_OK;
-        message.value = getErrorUniqueIdMessage(selectedTask.value);
+        message.value = getErrorUniqueIdMessage(selectedTaskPerson.value);
+        return;
+    }
+}
+
+function onTransferRole() {
+
+    const selectedDto: SelectOptionsTaskPlanDtoInterface | undefined =
+        optionsViewRole.value.filter((e) => e.taskPlanId == selectedTaskRole.value)[0];
+
+    if (undefined !== selectedDto) {
+        const storesTaskPlan = useTaskPlan();
+        storesTaskPlan.taskPlanId = selectedDto.taskPlanId;
+        storesTaskPlan.taskYear = selectedDto.taskYear;
+
+        // ページ遷移
+        router.push(RoutePathConstants.BASE_PATH + selectedDto.value);
+    } else {
+        infoLevel.value = MessageConstants.LEVEL_ERROR;
+        messageType.value = MessageConstants.VIEW_OK;
+        message.value = getErrorUniqueIdMessage(selectedTaskPerson.value);
         return;
     }
 }
@@ -217,16 +322,32 @@ const notHasDetailInfo: ComputedRef<boolean> = computed(
                 {{ props.userDto.userPersonName }}さん
             </div>
             <div class="user-role-task left-space">
-                <input type="radio" v-model="switchYear" value="1" id="test">本年{{ optionsThisYear.length - 1 }}件
-                <input type="radio" v-model="switchYear" value="2" id="test">前年{{ optionsLastYear.length - 1 }}件
-                <select v-model="selectedTask" class="left-space">
-                    <option v-for="option in optionsView" :value="option.taskPlanId">{{ option.text }}</option>
+                <input type="radio" v-model="switchYearPerson" value="1" id="test">本年{{ optionsThisYearPerson.length - 1 }}件
+                <input type="radio" v-model="switchYearPerson" value="2" id="test">前年{{ optionsLastYearPerson.length - 1 }}件
+                <select v-model="selectedTaskPerson" class="left-space">
+                    <option v-for="option in optionsViewPerson" :value="option.taskPlanId">{{ option.text }}</option>
                 </select>
-                <button @click="onTransfer" :disabled="tansferDisabled"
+                <button @click="onTransferPerson" :disabled="tansferDisabledPerson"
                     class="left-space-narrow user-role-transfer-button">遷移</button><br>
                 <button @click="onTaskView"
                     class="user-role-transfer-button user-role-transfer-button-margin-top">未処理タスクをもっと見る</button>
             </div>
+
+            <div class="user-role-task left-space">
+                <input type="radio" v-model="switchYearRole" value="1" id="test">本年{{ optionsThisYearRole.length - 1 }}件
+                <input type="radio" v-model="switchYearRole" value="2" id="test">前年{{ optionsLastYearRole.length - 1 }}件
+                <select v-model="selectedTaskRole" class="left-space">
+                    <option v-for="option in optionsViewRole" :value="option.taskPlanId">{{ option.text }}</option>
+                </select>
+                <button @click="onTransferRole" :disabled="tansferDisabledRole"
+                    class="left-space-narrow user-role-transfer-button">遷移</button>
+                <!--
+                <br>
+                <button @click="onTaskViewRole"
+                    class="user-role-transfer-button user-role-transfer-button-margin-top">権限タスクをもっと見る</button>
+                -->
+            </div>
+
             <!-- 遷移メニュー -->
             <div class="user-role-menu-wrapper">
                 <div class="left-space">

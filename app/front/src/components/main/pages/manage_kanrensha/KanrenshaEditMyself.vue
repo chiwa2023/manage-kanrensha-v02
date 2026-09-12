@@ -4,7 +4,7 @@ import RoutePathConstants from '../../../../routePathConstants';
 import {
     getErrorMessage,
     KanrenshaKigyouDtMasterEntity, KanrenshaPersonMasterEntity, KanrenshaSeijidantaiMasterEntity,
-    MessageConstants, MessageView, useUserInfoStoreCommon, type FrameworkMessageAndResultDtoInterface,
+    MessageConstants, MessageView, type FrameworkMessageAndResultDtoInterface,
     type KanrenshaKigyouDtMasterEntityInterface, type KanrenshaPersonMasterEntityInterface,
     type KanrenshaSeijidantaiMasterEntityInterface, type LeastUserDtoInterface
 } from 'seijishikin-jp-normalize_common-tool';
@@ -20,8 +20,6 @@ import { SaveKanrenshaKigyouDtCapsuleDto, type SaveKanrenshaKigyouDtCapsuleDtoIn
 import type { KanrenshaPersonDtoInterface } from '../../dto/kanrensha/kanrenshaPersonDto';
 import type { KanrenshaSeijidantaiDtoInterface } from '../../dto/kanrensha/kanrenshaSeijidantaiDto';
 import { SaveKanrenshaSeijidantaiCapsuleDto, type SaveKanrenshaSeijidantaiCapsuleDtoInterface } from '../../dto/kanrensha/saveKanrenshaSeijidantaiCapsuleDto';
-import { getActivePinia } from 'pinia';
-import { useUserInfoStore } from '../../stores/storeUserInfo';
 import KanrenshaInfo from '../../common/user_info/KanrenshaInfo.vue';
 import UserRoleConstants from '../../dto/user/userRoleConstants';
 import { GetKanrenshaMasterCapsuleDto, type GetKanrenshaMasterCapsuleDtoInterface } from '../../dto/kanrensha/getKanrenshaMasterCapsuleDto';
@@ -51,13 +49,6 @@ const userDto: Ref<LeastUserDtoInterface> = ref(getLoginUser());
 
 const nowRoleStatus: Ref<string> = ref(BLANK);
 onMounted(() => {
-    // 保存していたアクセストークンと有効期限を取得
-    const userInfo = useUserInfoStore();
-
-    // common-toolにアクセス情報を渡す
-    const userInfoCommon = useUserInfoStoreCommon(getActivePinia());
-    userInfoCommon.jwtDto = userInfo.jwtDto;
-    userInfoCommon.userDto = userInfo.userDto;
 
     // 編集するroleを確定
     nowRoleStatus.value = pickupRole();
@@ -89,11 +80,10 @@ onMounted(() => {
             fetch(url, { method, headers, body })
                 .then(async (response) => {
                     const resultDto: GetKanrenshaMasterResultDtoInterface = await response.json();
-                    message.value = resultDto.message;
-                    // 処理が成功したら再登録できないようにアップロードファイル情報を初期化
                     if (resultDto.isFailure) {
                         infoLevel.value = MessageConstants.LEVEL_WARNING;
                         messageType.value = MessageConstants.VIEW_OK;
+                        message.value = resultDto.message;
                         return;
                     } else {
                         // editEntityを変更すると自動で呼び出し
@@ -106,6 +96,7 @@ onMounted(() => {
                         if (UserRoleConstants.KANRENSHA_SEIJIDANTAI == userDto.value.kanrenshaRole) {
                             editEntitySeijidantai.value = resultDto.masterSeijidantaiEntity;
                         }
+                        return;
                     }
                 })
                 .catch((error) => {
@@ -192,7 +183,6 @@ function recieveKigyouDtInterfaceEdit(editDto: KanrenshaKigyouDtDtoInterface) {
             .then(async (response) => {
                 const resultDto: FrameworkMessageAndResultDtoInterface = await response.json();
                 message.value = resultDto.message;
-                // 処理が成功したら再登録できないようにアップロードファイル情報を初期化
                 if (resultDto.isFailure) {
                     infoLevel.value = MessageConstants.LEVEL_WARNING;
                     messageType.value = MessageConstants.VIEW_OK;
@@ -362,7 +352,6 @@ function pickupRole(): string {
             return roleString;
         }
     }
-
     return BLANK; // 非ログイン状態でないとここには来ない
 }
 
@@ -373,7 +362,7 @@ function recieveSubmit() {
 </script>
 <template>
 
-    <!-- 関連者 -->
+    <!-- 関連者メニュー兼チェック -->
     <KanrenshaInfo :user-dto="userDto"></KanrenshaInfo>
 
     <h1>関連者自分自身編集({{ UserRoleConstants.getLabel(nowRoleStatus) }})</h1>

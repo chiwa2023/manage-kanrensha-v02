@@ -1,5 +1,5 @@
 ﻿<script setup lang="ts">
-import { onMounted, ref, watch, type Ref } from 'vue';
+import { ref, watch, type Ref } from 'vue';
 import { KanrenshaPersonDto, type KanrenshaPersonDtoInterface } from '../../dto/kanrensha/kanrenshaPersonDto';
 import RoutePathConstants from '../../../../routePathConstants';
 import { GetKanrenshaPersonCapsuleDto, type GetKanrenshaPersonCapsuleDtoInterface } from '../../dto/kanrensha/getKanrenshaPersonCapsuleDto';
@@ -37,9 +37,6 @@ const houjinAppId: string = import.meta.env.VITE_HOUJIN_NO_API;
 const editPersonDto: Ref<KanrenshaPersonDtoInterface> = ref(new KanrenshaPersonDto());
 
 watch(props, () => {
-    load();
-});
-onMounted(() => {
     load();
 });
 

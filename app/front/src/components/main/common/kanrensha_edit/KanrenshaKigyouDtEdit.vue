@@ -6,7 +6,7 @@ import {
     type KanrenshaKigyouDtMasterEntityInterface,
     getErrorMessage,
 } from 'seijishikin-jp-normalize_common-tool';
-import { computed, onMounted, ref, watch, type ComputedRef, type Ref } from 'vue';
+import { computed, ref, watch, type ComputedRef, type Ref } from 'vue';
 import { KanrenshaKigyouDtDto, type KanrenshaKigyouDtDtoInterface } from '../../dto/kanrensha/kanrenshaKigyouDtDto';
 import getAuthorizedPromiseArea from '../../dto/login/getAuthorizedPromiseArea';
 import RoutePathConstants from '../../../../routePathConstants';
@@ -43,9 +43,6 @@ const urlBack: string = RoutePathConstants.DOMAIN + RoutePathConstants.BASE_PATH
 const houjinAppId: string = import.meta.env.VITE_HOUJIN_NO_API;
 
 watch(props, () => {
-    load();
-});
-onMounted(() => {
     load();
 });
 
