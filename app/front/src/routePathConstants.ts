@@ -33,6 +33,15 @@ export default class RoutePathConstants {
 
     /** 関連者追加 */
     static readonly PAGE_INSERT_KANRENSHA: string = this.BASE_PATH + "/insert-kanrensha";
+
+
+    /** 関連者コード変更申請 */
+    static readonly PAGE_MOVE_CODE_PROMOTE: string = this.BASE_PATH + "/move-code-promote";
+
+    /** 関連者コード変更承認 */
+    static readonly PAGE_MOVE_CODE_ACCEPT: string = this.BASE_PATH + "/move-code-accept";
+
+
     /** APIパートナー追加 */
     static readonly PAGE_INSERT_PARTNER_API: string = this.BASE_PATH + "/insert-partner";
     /** 運営者追加 */

@@ -112,7 +112,7 @@ public class PublishNewUserCodeService {
         Resource resource = resourceLoader.getResource("classpath:templates/email/send_regi_code.txt");
 
         String body;
-        try (InputStream inputStream = resource.getInputStream()) {
+        try (InputStream inputStream = resource.getInputStream()) { // NOPMD LawDemeter
             body = new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
         }
 

@@ -26,7 +26,7 @@ class SearchWorksApprovalCapsuleDto extends FrameworkPagingDto implements Search
     constructor() {
         super();
 
-        this.startDate = new Date;
+        this.startDate = new Date();
         this.endDate = new Date();
         this.isExcludeFinishedTask = true; // 基本的に作業が必要なデータしか呼ばない
         this.startDate.setDate(this.endDate.getDate() - 28)

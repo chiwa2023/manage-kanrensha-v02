@@ -47,6 +47,11 @@ public class UpdateTaskPlanY2025Logic {
         TaskPlan2025Entity deleteEntity = new TaskPlan2025Entity();
         BeanUtils.copyProperties(optional.get(), deleteEntity);
 
+        // すでに削除状態であれば作業中断
+        if (!deleteEntity.getIsLatest()) {
+            return 0;
+        }
+
         setTableDataHistoryUtil.practiceDelete(userDto, deleteEntity);
         taskPlan2025Repository.save(deleteEntity);
 

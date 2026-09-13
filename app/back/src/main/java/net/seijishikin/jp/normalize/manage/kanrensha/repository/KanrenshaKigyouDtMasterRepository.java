@@ -110,4 +110,14 @@ public interface KanrenshaKigyouDtMasterRepository extends JpaRepository<Kanrens
             , nativeQuery = true)
     Integer countSearchCondition(String houjinNo, String name, String address, String delegate); // NOPMD CleanerAPI
 
+    /**
+     * 関連者コードで検索する
+     * 
+     * @param kanrenshaCode 関連者コード
+     * @param isLatest      最新フラグ
+     * @return 検索結果
+     */
+    List<KanrenshaKigyouDtMasterEntity> findByKigyouDtKanrenshaCodeAndIsLatestOrderByKanrenshaKigyouDtMasterIdDesc(
+            String kanrenshaCode, Boolean isLatest);
+
 }

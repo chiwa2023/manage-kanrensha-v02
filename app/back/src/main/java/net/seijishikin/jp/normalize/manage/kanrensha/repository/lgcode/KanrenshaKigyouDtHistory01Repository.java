@@ -26,7 +26,8 @@ public interface KanrenshaKigyouDtHistory01Repository extends JpaRepository<Kanr
      */
     @Query(value = "SELECT * FROM kanrensha_kigyou_dt_history_01"
             + " WHERE search_text like ?1 AND is_latest=1", nativeQuery = true) // TODO MATCH AGAINST
-    //            + " WHERE MATCH(search_text) AGAINST (?1 IN NATURAL LANGUAGE MODE) AND is_latest=1", nativeQuery = true)
+    // + " WHERE MATCH(search_text) AGAINST (?1 IN NATURAL LANGUAGE MODE) AND
+    // is_latest=1", nativeQuery = true)
     List<KanrenshaKigyouDtHistory01Entity> findFullText(String searchWords);
 
     /**
@@ -63,5 +64,13 @@ public interface KanrenshaKigyouDtHistory01Repository extends JpaRepository<Kanr
      */
     Page<KanrenshaKigyouDtHistory01Entity> findByInsertTimestampGreaterThanEqualAndInsertTimestampLessThanAndIsLatest(
             LocalDateTime dateTimeStart, LocalDateTime dateTimeEnd, boolean isLatest, Pageable pageable);
+
+    /**
+     * 関連者コードが一致かつ最新
+     * 
+     * @param code 関連者コード
+     * @return 検索結果
+     */
+    List<KanrenshaKigyouDtHistory01Entity> findByKigyouDtKanrenshaCodeAndIsLatestTrue(String code);
 
 }

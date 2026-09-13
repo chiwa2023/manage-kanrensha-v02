@@ -107,4 +107,13 @@ public interface KanrenshaPersonMasterRepository extends JpaRepository<Kanrensha
             , nativeQuery = true)
     Integer countSearchCondition(String name, String address, String shokugyou);
 
+    
+    /**
+     * 関連者コードで検索する
+     * 
+     * @param kanrenshaCode 関連者コード
+     * @return 検索結果
+     */
+    List<KanrenshaPersonMasterEntity> findByPersonKanrenshaCodeAndIsLatestOrderByKanrenshaPersonMasterIdDesc(String kanrenshaCode,Boolean isLatest);
+
 }

@@ -73,4 +73,28 @@ public class ModifyTempToStorageFileService {
 
         return path.toString();
     }
+
+    /**
+     * 処理を行う(登録Idを返却)
+     * 
+     * @param year          発生年
+     * @param userDtoユーザ最小限
+     * @param fileDto       ファイルDto
+     * @param fileType      ファイタイプ
+     * @return 登録DbのId
+     * @throws IOException ファイル保存例外
+     */
+    public Integer practiceId(final Integer year, final LeastUserDto userDto, final StorageFileDto fileDto,
+            final Short fileType) throws IOException {
+
+        // 仮ファイルから本ファイルに複写
+        Path pathTempFull = Paths.get(storageFolder, fileDto.getSavedDir(), fileDto.getFileName());
+        Path pathSavedFull = Paths.get(storageFolder, getStoragePathLogic.practice(userDto).toString(),
+                fileDto.getFileName());
+        Files.copy(pathTempFull, pathSavedFull);
+
+        // ファイルが保存出来たら保存場所を記録
+        return switchYearInsertSaveStorageService.practice(year, userDto, pathSavedFull, fileType);
+    }
+
 }

@@ -56,13 +56,10 @@ public class InsertTaskPlanOtherPersonService {
         FrameworkMessageAndResultDto resultDto = new FrameworkMessageAndResultDto();
 
         try {
+
             insertTaskPlanResultDto = switchYearInsertTaskPlanInsertService.practice(userDtoTask, userDto,
                     createDatetime, taskInfoCode, mapParam);
-        } catch (EmptyResultDataAccessException exception) {
-            resultDto.setIsFailure(true);
-            resultDto.setMessage(exception.getMessage());
-            return resultDto;
-        } catch (IllegalArgumentException exception) { // NOPMD 業務的な理由から積極的に許容
+        } catch (IllegalArgumentException | EmptyResultDataAccessException exception) {
             resultDto.setIsFailure(true);
             resultDto.setMessage(exception.getMessage());
             return resultDto;
