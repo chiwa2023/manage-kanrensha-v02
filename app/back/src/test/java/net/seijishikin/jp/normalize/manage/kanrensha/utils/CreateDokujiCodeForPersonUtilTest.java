@@ -1,6 +1,7 @@
 package net.seijishikin.jp.normalize.manage.kanrensha.utils;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -8,18 +9,31 @@ import java.util.regex.Pattern;
 
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.dao.DuplicateKeyException;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
+import org.springframework.test.context.jdbc.Sql;
+import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 /**
  * CreateDokujiCodeForPersonUtil単体テスト
  */
+@SpringJUnitConfig
+@SpringBootTest
+@DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
+@Sql("CreateDokujiCodeForPersonUtilTest.sql")
 class CreateDokujiCodeForPersonUtilTest {
-    // CHECKSTYLE:OFF
+    // CHECKSTYLE:OFF MagicNumber
+    
+    /** テスト対象 */
+    @Autowired
+    private CreateDokujiCodeForPersonUtil createDokujiCodeForPoliOrgUtil;
 
     @Test
     @Tag("TableTruncate")
     void test() throws Exception {
-
-        CreateDokujiCodeForPersonUtil createDokujiCodeForPoliOrgUtil = new CreateDokujiCodeForPersonUtil();
 
         assertDoesNotThrow(() -> createDokujiCodeForPoliOrgUtil.practice(null), "積極的ではないがnull許容");
         assertDoesNotThrow(() -> createDokujiCodeForPoliOrgUtil.practice(""), "正規コードが存在しない場合");
@@ -49,6 +63,15 @@ class CreateDokujiCodeForPersonUtilTest {
         assertEquals(24, answer4.length(), length24);
         assertTrue(answer4.startsWith("あい-ウエお67-890"), "正規コードにひらがなカタカナが存在(ないと思うけど)");
         assertTrue(pattern.matcher(answer4).find(), match);
+    }
+
+
+    @Test
+    @Tag("TableTruncate")
+    void testDuplicate() throws Exception {
+        // ランダム文字を付加する余地(文字数)がないと、完全に同一のコードしか戻らないので重複となる
+        assertThrows(DuplicateKeyException.class,
+                () -> createDokujiCodeForPoliOrgUtil.practice("1234567890abcdefghij"));
     }
 
 }

@@ -2,24 +2,38 @@ package net.seijishikin.jp.normalize.manage.kanrensha.utils;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.regex.Pattern;
 
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.dao.DuplicateKeyException;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
+import org.springframework.test.context.jdbc.Sql;
+import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 /**
  * CreateDokujiCodeForCorpUtil単体テスト
  */
+@SpringJUnitConfig
+@SpringBootTest
+@DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
+@Sql("CreateDokujiCodeForKigyouDtUtilTest.sql")
 class CreateDokujiCodeForKigyouDtUtilTest {
-    // CHECKSTYLE:OFF
+    // CHECKSTYLE:OFF MagicNumber
+
+    /** テスト対象 */
+    @Autowired
+    private CreateDokujiCodeForKigyouDtUtil createDokujiCodeForKigyouDtUtil;
 
     @Test
     @Tag("TableTruncate")
     void test() throws Exception {
-
-        CreateDokujiCodeForKigyouDtUtil createDokujiCodeForKigyouDtUtil = new CreateDokujiCodeForKigyouDtUtil();
 
         assertDoesNotThrow(() -> createDokujiCodeForKigyouDtUtil.practice(null), "積極的ではないがnull許容");
         assertDoesNotThrow(() -> createDokujiCodeForKigyouDtUtil.practice(""), "正規コードが存在しない場合");
@@ -51,6 +65,14 @@ class CreateDokujiCodeForKigyouDtUtilTest {
         // assertTrue(answer4.startsWith("あ-いウエお-67-890123"),
         // "正規コードにひらがなカタカナが存在(ないと思うけど)");
         // assertTrue(p.matcher(answer4).find(), match);
+    }
+
+    @Test
+    @Tag("TableTruncate")
+    void testDuplicate() throws Exception {
+        // ランダム文字を付加する余地(文字数)がないと、完全に同一のコードしか戻らないので重複となる
+        assertThrows(DuplicateKeyException.class,
+                () -> createDokujiCodeForKigyouDtUtil.practice("1234567890abcdefghij"));
     }
 
 }
