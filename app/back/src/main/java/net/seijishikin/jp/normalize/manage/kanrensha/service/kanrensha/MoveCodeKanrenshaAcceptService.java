@@ -17,7 +17,6 @@ import net.seijishikin.jp.normalize.common_tool.utils.SetTableDataHistoryUtil;
 import net.seijishikin.jp.normalize.manage.kanrensha.constants.KanrenshaKbnConstants;
 import net.seijishikin.jp.normalize.manage.kanrensha.constants.ShinseiStatusConstants;
 import net.seijishikin.jp.normalize.manage.kanrensha.constants.TaskInfoConstants;
-import net.seijishikin.jp.normalize.manage.kanrensha.constants.UserRoleConstants;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.kanrensha.MoveKanrenshaCodeAcceptCapsuleDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.KanrenshaCodeMoveEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.UserPersonEntity;
@@ -31,7 +30,7 @@ import net.seijishikin.jp.normalize.manage.kanrensha.service.task_plan.InsertTas
  * 関連者コード移動承認Service
  */
 @Service
-public class MoveCodeKanrenshaAcceptService {
+public class MoveCodeKanrenshaAcceptService { // NOPMD CouplingWithin
 
     /** 関連者個人コード移動Service */
     @Autowired
@@ -85,72 +84,55 @@ public class MoveCodeKanrenshaAcceptService {
      */
     @Transactional
     public Integer practice(final MoveKanrenshaCodeAcceptCapsuleDto capsuleDto, final LocalDateTime createDatetime) {
-        
+
         // final short kbnPerson = KanrenshaKbnConstants.PERSON;
 
-        Optional<KanrenshaCodeMoveEntity> optional = kanrenshaCodeMoveRepository
+        Optional<KanrenshaCodeMoveEntity> optionalPromote = kanrenshaCodeMoveRepository
                 .findById(capsuleDto.getKanrenshaCodeMoveEntity().getKanrenshaCodeMoveId());
-        if (optional.isEmpty()) {
+        if (optionalPromote.isEmpty()) {
             throw new EmptyResultDataAccessException("関連者移動申請が取得できませんでした", 1);
         }
 
-        KanrenshaCodeMoveEntity oldEntity = optional.get();
-        final LeastUserDto taskUserDto = new LeastUserDto();
-        taskUserDto.setUserPersonId(oldEntity.getInsertUserId());
-        taskUserDto.setUserPersonCode(oldEntity.getInsertUserCode());
-        taskUserDto.setUserPersonName(oldEntity.getInsertUserName());
+        KanrenshaCodeMoveEntity oldEntity = optionalPromote.get();
+        // 第三者が申請している場合があるので前回作業者ではユーザコードは取得できない
+        // また紐づけユーザが存在していない可能性がある
 
-        Optional<UserPersonEntity> optionalPerson = userPersonRepository.findById(taskUserDto.getUserPersonId());
-        if (optional.isEmpty()) {
-            throw new EmptyResultDataAccessException("ユーザが存在しませんでした", 1);
-        }
-
-        final String email = optionalPerson.get().getEmail();
+        String role = KanrenshaKbnConstants.getUserRole(oldEntity.getKanrenshaKbn());
 
         // 申請承認の場合は移動処理
         KanrenshaCodeMoveEntity newEntity = capsuleDto.getKanrenshaCodeMoveEntity();
-        final String BLANK = "";
+
+        Optional<UserPersonEntity> optionalOrgin = userPersonRepository
+                .findKanrenshaCode(oldEntity.getOriginKanrenshaCode(), role);
+
+        Optional<UserPersonEntity> optionalAbolish = userPersonRepository
+                .findKanrenshaCode(oldEntity.getAbolishKanrenshaCode(), role);
+
         if (ShinseiStatusConstants.ACCEPT == (short) newEntity.getMoveStatus()) { // NOPMD
-            String role = BLANK;
             // 関連者区分に合わせてコード移行処理を行う
             switch ((short) capsuleDto.getKanrenshaCodeMoveEntity().getKanrenshaKbn()) { // NOPMD
                 case KanrenshaKbnConstants.PERSON:
                     moveCodeMasterPersonService.practice(capsuleDto);
                     moveCodeHistoryPersonService.practice(capsuleDto);
-                    role = UserRoleConstants.KANRENSHA_PERSON;
                     break;
                 case KanrenshaKbnConstants.KIGYOU_DT:
                     moveCodeMasterKigyouDtService.practice(capsuleDto);
                     moveCodeHistoryKigyouDtService.practice(capsuleDto);
-                    role = UserRoleConstants.KANRENSHA_KIGYOU_DT;
                     break;
                 case KanrenshaKbnConstants.SEIJIDANTAI:
                     moveCodeMasterSeijidantaiService.practice(capsuleDto);
                     moveCodeHistorySeijidantaiService.practice(capsuleDto);
-                    role = UserRoleConstants.KANRENSHA_SEIJIDANTAI;
                     break;
                 default:
                     throw new IllegalArgumentException("関連者区分が想定される値ではありません");
             }
 
-            // ユーザ権限のコードを変更する
-            if (!BLANK.equals(role)) {
-                List<UserRoleEntity> listOldRole = userRoleRepository.findByEmailAndRoleAndIsLatestTrue(email, role);
-                List<UserRoleEntity> listEdit = new ArrayList<>();
-                for (UserRoleEntity entity : listOldRole) {
-                    setTableDataHistoryUtil.practiceDelete(capsuleDto.getUserDto(), entity);
-                    listEdit.add(entity);
-                }
-                UserRoleEntity newRoleEntity = new UserRoleEntity();
-                newRoleEntity.setEmail(email);
-                newRoleEntity.setRole(role);
-                newRoleEntity.setKanrenshaCode(capsuleDto.getKanrenshaCodeMoveEntity().getOriginKanrenshaCode());
-                setTableDataHistoryUtil.practiceInsert(capsuleDto.getUserDto(), newRoleEntity);
-                newRoleEntity.setUserRoleId(0); // auto increment明記
-                listEdit.add(newRoleEntity);
-
-                userRoleRepository.saveAll(listEdit);
+            // 廃止コードにユーザが紐づいている場合、廃止コードユーザ権限のコードを変更する
+            // 廃止コードのユーザが存在しない場合はなにもしなくてよい
+            if (!optionalAbolish.isEmpty()) {
+                this.modifyRole(role, optionalOrgin, optionalAbolish, capsuleDto);
             }
+
         }
 
         // 戻りを待って承認テーブルを更新する
@@ -166,10 +148,60 @@ public class MoveCodeKanrenshaAcceptService {
 
         // 対象ユーザのユーザ設定を変更し、対象ユーザのタスク計画を挿入しメールを送る
         Map<String, String> map = new TreeMap<>();
-        
-        insertTaskPlanOtherPersonService.practice(email, taskUserDto, capsuleDto.getUserDto(), createDatetime,
-                TaskInfoConstants.MOVE_KANRENSHA_CODE_RESULT, map);
+
+        // 存続コードに紐づくユーザが存在すればタスク計画を作成しメールを送る
+        if (!optionalOrgin.isEmpty()) {
+            UserPersonEntity personEntiy = optionalOrgin.get();
+            insertTaskPlanOtherPersonService.practice(personEntiy.getEmail(), this.createUserDto(personEntiy),
+                    capsuleDto.getUserDto(), createDatetime, TaskInfoConstants.MOVE_KANRENSHA_CODE_RESULT, map);
+        }
+
+        // 廃止コードに紐づくユーザが存在すればタスク計画を作成しメールを送る
+        if (!optionalAbolish.isEmpty()) {
+            UserPersonEntity personEntiy = optionalAbolish.get();
+            insertTaskPlanOtherPersonService.practice(personEntiy.getEmail(), this.createUserDto(personEntiy),
+                    capsuleDto.getUserDto(), createDatetime, TaskInfoConstants.MOVE_KANRENSHA_CODE_RESULT, map);
+        }
 
         return kanrenshaCodeMoveRepository.save(newEntity).getKanrenshaCodeMoveId();
+    }
+
+    private void modifyRole(final String role,final Optional<UserPersonEntity> optionalOrgin,
+            final Optional<UserPersonEntity> optionalAbolish,final MoveKanrenshaCodeAcceptCapsuleDto capsuleDto) {
+
+        // (1)存続コードユーザが存在し、廃止コードのユーザが存在する
+        // 廃止コードユーザの権限剥奪
+        String email = optionalAbolish.get().getEmail();
+        List<UserRoleEntity> listOldRole = userRoleRepository.findByEmailAndRoleAndIsLatestTrue(email, role);
+        List<UserRoleEntity> listEdit = new ArrayList<>();
+        for (UserRoleEntity entity : listOldRole) {
+            setTableDataHistoryUtil.practiceDelete(capsuleDto.getUserDto(), entity);
+            listEdit.add(entity);
+        }
+
+        // (2)存続コードユーザが存在せず、廃止コードのユーザが存在する
+        // 廃止コードユーザの廃止コード権限を存続コードでの権限に積み替え
+        if (optionalOrgin.isEmpty()) {
+            UserRoleEntity newRoleEntity = new UserRoleEntity();
+            newRoleEntity.setEmail(email);
+            newRoleEntity.setRole(role);
+            newRoleEntity.setKanrenshaCode(capsuleDto.getKanrenshaCodeMoveEntity().getOriginKanrenshaCode());
+            setTableDataHistoryUtil.practiceInsert(capsuleDto.getUserDto(), newRoleEntity);
+            newRoleEntity.setUserRoleId(0); // auto increment明記
+            listEdit.add(newRoleEntity);
+        }
+
+        userRoleRepository.saveAll(listEdit);
+
+    }
+
+    private LeastUserDto createUserDto(final UserPersonEntity entity) {
+        LeastUserDto userDto = new LeastUserDto();
+
+        userDto.setUserPersonId(entity.getInsertUserId());
+        userDto.setUserPersonCode(entity.getInsertUserCode());
+        userDto.setUserPersonName(entity.getInsertUserName());
+
+        return userDto;
     }
 }

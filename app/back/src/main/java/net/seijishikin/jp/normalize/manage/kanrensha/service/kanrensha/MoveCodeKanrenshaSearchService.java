@@ -13,6 +13,7 @@ import net.seijishikin.jp.normalize.manage.kanrensha.constants.ShinseiStatusCons
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.kanrensha.MoveKanrenshaCodeSearchCapsuleDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.kanrensha.MoveKanrenshaCodeSearchResultDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.repository.KanrenshaCodeMoveRepository;
+import net.seijishikin.jp.normalize.manage.kanrensha.utils.ConvertDatetimeToLocalUtil;
 
 /**
  * 関連者コード移動申請検索Service
@@ -51,8 +52,10 @@ public class MoveCodeKanrenshaSearchService {
             listStatus.add(ShinseiStatusConstants.RESEARCH);
         }
 
-        LocalDateTime startDatetime = LocalDateTime.of(capsuleDto.getStartDate(), LocalTime.MIN);
-        LocalDateTime endDatetime = LocalDateTime.of(capsuleDto.getEndDate(), LocalTime.MAX);
+        LocalDateTime startDatetime = LocalDateTime.of(ConvertDatetimeToLocalUtil.practice(capsuleDto.getStartDate()),
+                LocalTime.MIN);
+        LocalDateTime endDatetime = LocalDateTime.of(ConvertDatetimeToLocalUtil.practice(capsuleDto.getEndDate()),
+                LocalTime.MAX);
 
         resultDto.setAllCount(kanrenshaCodeMoveRepository
                 .countByIsLatestTrueAndInsertTimestampBetweenAndMoveStatusIn(startDatetime, endDatetime, listStatus));

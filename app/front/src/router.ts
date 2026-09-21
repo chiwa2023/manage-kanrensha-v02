@@ -46,8 +46,10 @@ const routes = [
     { path: RoutePathConstants.PAGE_INSERT_MANAGER, name: "InsertRiyoushaManager", component: () => import("./components/main/pages/add_account/InsertRiyoushaManager.vue") },
 
     // 関連者コード変更
+    { path: RoutePathConstants.PAGE_MOVE_CODE_MANAGER, name: "MoveCodeForManager", component: () => import("./components/main/pages/move_code/MoveCodeForManager.vue") },
     { path: RoutePathConstants.PAGE_MOVE_CODE_PROMOTE, name: "MoveCodePromote", component: () => import("./components/main/pages/move_code/MoveCodePromote.vue") },
     { path: RoutePathConstants.PAGE_MOVE_CODE_ACCEPT, name: "MoveCodeAccept", component: () => import("./components/main/pages/move_code/MoveCodeAccept.vue") },
+    { path: RoutePathConstants.PAGE_MOVE_CODE_MYSELF, name: "MoveCodeMySelf", component: () => import("./components/main/pages/move_code/MoveCodeMySelf.vue") },
 
     // 利用者検索
     { path: RoutePathConstants.PAGE_RIYOUSHA_SEARCH, name: "SearchEditRiyousha", component: () => import("./components/main/pages/search_edit_riyousha/SearchEditRiyousha.vue") },

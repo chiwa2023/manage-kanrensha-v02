@@ -14,11 +14,13 @@ import { AccessTokenNotFoundError, TokenRefreshError } from '../../dto/login/err
 import { useTaskPlan } from '../../stores/storeTaskPlan.ts';
 import type { OneFileBlobResultDtoInterface } from '../../dto/storage_file/oneFileBlobResultDto.ts';
 import { DownloadFileCapsuleDto, type DownloadFileCapsuleDtoInterface } from '../../dto/file/downloadFileCapsuleDto.ts';
+import KanrenshaCodeHistory from '../../common/kanrensha_edit/KanrenshaCodeHistory.vue';
 
 
 // よく使う定数
 const BLANK: string = "";
 const INIT_NUMBER: number = 0;
+const INIT_BOOLEAN: boolean = false;
 // const SERVER_STATUS_OK: number = 200;
 // const SERVER_STATUS_ERROR: number = 400;
 const SEARCH_LIMIT: number = 20;
@@ -172,11 +174,8 @@ function onSave() {
         message.value = getErrorMessage(e, INQUIRE_FLG);
         return;
     });
-
-
-
-
 }
+
 function recieveSubmit() {
     infoLevel.value = 0;
     messageType.value = 0;
@@ -272,6 +271,66 @@ function onDownloadFile() {
 
 }
 
+
+const isShowHistory: Ref<boolean> = ref(INIT_BOOLEAN);
+const kanrenshaKbn: Ref<number> = ref(INIT_NUMBER);
+const codeOrgin: Ref<string> = ref(BLANK);
+const codeAbolish: Ref<string> = ref(BLANK);
+
+function recieveCancelKanrenshaCodeHistory() {
+    // 履歴コンポーネントを閉じる
+    isShowHistory.value = false;
+}
+
+function onHistory(index: number) {
+
+    const entity: KanrenshaCodeMoveEntityInterface | undefined
+        = resultDtoSearch.value.listEntity[index];
+    if (undefined !== entity) {
+        // 選択された値をpropsで引き渡す
+        kanrenshaKbn.value = entity.kanrenshaKbn;
+        codeAbolish.value = entity.abolishKanrenshaCode;
+        codeOrgin.value = entity.originKanrenshaCode;
+
+        // コンポーネントを開く
+        isShowHistory.value = true;
+    } else {
+        infoLevel.value = MessageConstants.LEVEL_ERROR;
+        messageType.value = MessageConstants.VIEW_OK;
+        message.value = getErrorUniqueIdMessage(index);
+        return;
+    }
+
+}
+
+
+
+function getStatus(status: number): string {
+    switch (status) {
+        //  未定 
+        case 0:
+            return "未定";
+
+        // 申請中 
+        case 1:
+            return "申請中";
+
+        // 却下 
+        case 2:
+            return "却下";
+
+        // 承認 
+        case 3:
+            return "承認";
+
+        // 追加調査 
+        case 4:
+            return "追加調査";
+        default:
+            return "";
+    }
+}
+
 </script>
 <template>
 
@@ -320,22 +379,26 @@ function onDownloadFile() {
         </div>
     </div>
 
-    <h3 class="accent-h3">申請中リスト</h3>
+    <h3 class="accent-h3">検索結果</h3>
 
     <div class="one-line">
         <table>
             <tbody>
                 <tr>
                     <th>関連者区分</th>
+                    <th>状態</th>
                     <th>廃止コード(申請者)</th>
                     <th>併合コード</th>
+                    <th>&nbsp;</th>
                     <th>&nbsp;</th>
                 </tr>
                 <tr v-for="(entity, index) of resultDtoSearch.listEntity" :key="index">
                     <td>{{ KanrenshaKbnConstants.getLabel(entity.kanrenshaKbn) }}</td>
+                    <td>{{ getStatus(entity.moveStatus) }}</td>
                     <td>{{ entity.abolishKanrenshaCode }} <br> {{ entity.abolishKanrenshaName }}</td>
                     <td>{{ entity.originKanrenshaCode }} <br> {{ entity.originName }} </td>
                     <td><button @click="onEdit(index)">編集</button></td>
+                    <td><button @click="onHistory(index)">履歴</button></td>
                 </tr>
             </tbody>
         </table>
@@ -417,6 +480,16 @@ function onDownloadFile() {
     <div class="footer">
         <button @click="onCancel" class="footer-button">キャンセル</button>
         <button @click="onSave" class="footer-button left-space">送信</button>
+    </div>
+
+    <!-- 関連者コード履歴 -->
+    <div v-if="isShowHistory" class="overBackground"></div>
+    <div v-if="isShowHistory">
+        <div class="overComponent">
+            <KanrenshaCodeHistory :user-dto="userDto" :kanrensha-kbn="kanrenshaKbn" :code-orgin="codeOrgin"
+                :code-abolish="codeAbolish" @send-cancel-kanrensha-code-history="recieveCancelKanrenshaCodeHistory">
+            </KanrenshaCodeHistory>
+        </div>
     </div>
 
     <!-- メッセージ表示    -->

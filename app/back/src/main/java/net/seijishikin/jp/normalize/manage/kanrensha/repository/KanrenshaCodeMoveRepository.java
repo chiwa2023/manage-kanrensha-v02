@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Lock;
+import org.springframework.data.jpa.repository.Query;
 
 import jakarta.persistence.LockModeType;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.KanrenshaCodeMoveEntity;
@@ -22,7 +23,7 @@ public interface KanrenshaCodeMoveRepository extends JpaRepository<KanrenshaCode
      * @return 最大コードをもつEntity
      */
     @Lock(LockModeType.PESSIMISTIC_WRITE)
-    Optional<KanrenshaCodeMoveEntity> findFirstByOrderByKanrenshaCodeMoveCode();
+    Optional<KanrenshaCodeMoveEntity> findFirstByOrderByKanrenshaCodeMoveCodeDesc();
 
     /**
      * 期間と申請状態で該当件数を取得する
@@ -45,4 +46,15 @@ public interface KanrenshaCodeMoveRepository extends JpaRepository<KanrenshaCode
      */
     List<KanrenshaCodeMoveEntity> findByIsLatestTrueAndInsertTimestampBetweenAndMoveStatusIn(LocalDateTime starDate,
             LocalDateTime endDate, List<Short> listStatus, Pageable pageable);
+
+    /**
+     * ユーザが申請履歴を取得する
+     * 
+     * @param kanrenshaCode 関連者コード
+     * @return 検索結果
+     */
+    @Query(value = "SELECT * FROM kanrensha_code_move WHERE is_latest = 1"
+            + "  and ( origin_kanrensha_code = ?1 or abolish_kanrensha_code = ?1)", nativeQuery = true)
+    List<KanrenshaCodeMoveEntity> findMyselfData(String kanrenshaCode);
+
 }

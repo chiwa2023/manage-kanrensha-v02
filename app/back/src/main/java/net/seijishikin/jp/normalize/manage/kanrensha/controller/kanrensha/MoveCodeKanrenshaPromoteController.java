@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.RestController;
 import net.seijishikin.jp.normalize.common_tool.dto.FrameworkMessageAndResultDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.controller.PathRouteConstants;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.kanrensha.MoveKanrenshaCodePromoteCapsuleDto;
+import net.seijishikin.jp.normalize.manage.kanrensha.dto.task.InsertTaskPlanResultDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.logic.user.ValidateAuthoraizeUserDetailLogic;
+import net.seijishikin.jp.normalize.manage.kanrensha.service.kanrensha.MoveCodeKanrenshaPromoteSendMessageService;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.kanrensha.MoveCodeKanrenshaPromoteService;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.util.SaveStackTraceService;
 
@@ -29,6 +31,10 @@ public class MoveCodeKanrenshaPromoteController {
     /** 関連者コード移動申請Service */
     @Autowired
     private MoveCodeKanrenshaPromoteService moveCodeKanrenshaPromoteService;
+
+    /** 関連者コード移動申請該当者メッセージ送信Service */
+    @Autowired
+    private MoveCodeKanrenshaPromoteSendMessageService moveCodeKanrenshaPromoteSendMessageService;
 
     /** 例外記録Service */
     @Autowired
@@ -51,15 +57,22 @@ public class MoveCodeKanrenshaPromoteController {
         FrameworkMessageAndResultDto resultDto = new FrameworkMessageAndResultDto();
         try {
             // ユーザチェック
-            // TODO 現在はfront側から本人申告だけを受け付けているが、将来他人のコード移動の可能性がありうる
             validateAuthoraizeUserDetailLogic.practice(capsuleDto.getUserDto());
 
             LocalDateTime createDatetime = LocalDateTime.now();
-            Integer newId = moveCodeKanrenshaPromoteService.practice(createDatetime, capsuleDto);
+
+            InsertTaskPlanResultDto planResultDto = moveCodeKanrenshaPromoteService.practice(createDatetime,
+                    capsuleDto);
+
+            Integer newId = planResultDto.getSavedId();
             if (0 == newId) {
                 resultDto.setMessage(FrameworkMessageAndResultDto.MESSAGE_NO_RECORD);
                 resultDto.setIsFailure(true);
+
             } else {
+                // 関係者にメール送信
+                moveCodeKanrenshaPromoteSendMessageService.practice(capsuleDto, planResultDto);
+                
                 resultDto.setMessage(FrameworkMessageAndResultDto.MESSAGE_EXPECTED);
                 return ResponseEntity.status(HttpStatus.OK).body(resultDto);
             }

@@ -34,6 +34,8 @@ export default class RoutePathConstants {
     /** 関連者追加 */
     static readonly PAGE_INSERT_KANRENSHA: string = this.BASE_PATH + "/insert-kanrensha";
 
+    /** 関連者コード運営者申請 */
+    static readonly PAGE_MOVE_CODE_MANAGER: string = this.BASE_PATH + "/move-code-manager";
 
     /** 関連者コード変更申請 */
     static readonly PAGE_MOVE_CODE_PROMOTE: string = this.BASE_PATH + "/move-code-promote";
@@ -41,6 +43,8 @@ export default class RoutePathConstants {
     /** 関連者コード変更承認 */
     static readonly PAGE_MOVE_CODE_ACCEPT: string = this.BASE_PATH + "/move-code-accept";
 
+    /** 関連者コード履歴 */
+    static readonly PAGE_MOVE_CODE_MYSELF: string = this.BASE_PATH + "/move-code-myself";
 
     /** APIパートナー追加 */
     static readonly PAGE_INSERT_PARTNER_API: string = this.BASE_PATH + "/insert-partner";

@@ -18,6 +18,7 @@ import RoutePathConstants from '../../../../routePathConstants';
         <div class="menu-section">
             <RouterLink class="menu-item" :to=RoutePathConstants.PAGE_KANRENSHA_MYSELF>本人情報編集</RouterLink>
             <RouterLink class="menu-item" :to=RoutePathConstants.PAGE_MOVE_CODE_PROMOTE>コード移行申請</RouterLink>
+            <RouterLink class="menu-item" :to=RoutePathConstants.PAGE_MOVE_CODE_MYSELF>コード移行自分の履歴</RouterLink>
         </div>
     </div>
 

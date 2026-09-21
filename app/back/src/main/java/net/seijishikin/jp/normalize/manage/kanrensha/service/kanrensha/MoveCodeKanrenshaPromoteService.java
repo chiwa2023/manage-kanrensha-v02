@@ -16,6 +16,7 @@ import net.seijishikin.jp.normalize.common_tool.utils.SetTableDataHistoryUtil;
 import net.seijishikin.jp.normalize.manage.kanrensha.constants.ShinseiStatusConstants;
 import net.seijishikin.jp.normalize.manage.kanrensha.constants.TaskInfoConstants;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.kanrensha.MoveKanrenshaCodePromoteCapsuleDto;
+import net.seijishikin.jp.normalize.manage.kanrensha.dto.task.InsertTaskPlanResultDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.KanrenshaCodeMoveEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.repository.KanrenshaCodeMoveRepository;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.file.ModifyTempToStorageFileService;
@@ -53,7 +54,7 @@ public class MoveCodeKanrenshaPromoteService {
      * @throws IOException ファイル保存例外
      */
     @Transactional
-    public Integer practice(final LocalDateTime createDateTime, final MoveKanrenshaCodePromoteCapsuleDto capsuleDto)
+    public InsertTaskPlanResultDto practice(final LocalDateTime createDateTime, final MoveKanrenshaCodePromoteCapsuleDto capsuleDto)
             throws IOException {
 
         // 一時フォルダからユーザ本フォルダに複写
@@ -63,22 +64,18 @@ public class MoveCodeKanrenshaPromoteService {
         Integer strageId = modifyTempToStorageFileService.practiceId(taskYear, userDto, capsuleDto.getStorageFileDto(),
                 (short) 0);
 
-        // 役割対象のタスク登録をする
-        Map<String, String> mapParam = new TreeMap<>();
-        insertTaskRoleOnlyService.practice(userDto, createDateTime, TaskInfoConstants.MOVE_KANRENSHA_CODE_ACCEPT,
-                mapParam);
-
+        
         // 関連者コード移動に登録
         KanrenshaCodeMoveEntity moveEntity = new KanrenshaCodeMoveEntity();
         BeanUtils.copyProperties(capsuleDto, moveEntity);
         moveEntity.setSaveFileStorageId(strageId);
         moveEntity.setMoveStatus(ShinseiStatusConstants.PROMOTE);
         moveEntity.setTaskYear(taskYear);
-        
+
         // コード発行
         Integer code = 1;
         Optional<KanrenshaCodeMoveEntity> optional = kanrenshaCodeMoveRepository
-                .findFirstByOrderByKanrenshaCodeMoveCode();
+                .findFirstByOrderByKanrenshaCodeMoveCodeDesc();
         if (!optional.isEmpty()) {
             code += optional.get().getKanrenshaCodeMoveCode();
         }
@@ -86,7 +83,14 @@ public class MoveCodeKanrenshaPromoteService {
         setTableDataHistoryUtil.practiceInsert(userDto, moveEntity);
         moveEntity.setKanrenshaCodeMoveId(0); // auto increment明記
 
-        return kanrenshaCodeMoveRepository.save(moveEntity).getKanrenshaCodeMoveId();
+        // 役割対象のタスク登録をする
+        Map<String, String> mapParam = new TreeMap<>();
+        InsertTaskPlanResultDto planResultDto = insertTaskRoleOnlyService.practice(userDto, createDateTime,
+                TaskInfoConstants.MOVE_KANRENSHA_CODE_ACCEPT, mapParam);
+
+        planResultDto.setSavedId(kanrenshaCodeMoveRepository.save(moveEntity).getKanrenshaCodeMoveId());
+        
+        return planResultDto;
     }
 
 }

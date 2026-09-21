@@ -27,6 +27,7 @@ import net.seijishikin.jp.normalize.manage.kanrensha.constants.KanrenshaKbnConst
 import net.seijishikin.jp.normalize.manage.kanrensha.constants.ShinseiStatusConstants;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.kanrensha.MoveKanrenshaCodePromoteCapsuleDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.storage_file.StorageFileDto;
+import net.seijishikin.jp.normalize.manage.kanrensha.dto.task.InsertTaskPlanResultDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.KanrenshaCodeMoveEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.repository.KanrenshaCodeMoveRepository;
 import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateLeastUserForTestUtil;
@@ -39,6 +40,7 @@ import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateLeastUserForTes
 @DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
 @ConfigurationProperties(prefix = "net.seijishikin.jp.normalize.kanrensha")
 @Sql("MoveCodeKanrenshaPromoteServiceTest.sql")
+@Transactional
 class MoveCodeKanrenshaPromoteServiceTest {
     // CHECKSTYLE:OFF MagicNumber
 
@@ -73,7 +75,6 @@ class MoveCodeKanrenshaPromoteServiceTest {
 
     @Test
     @Tag("TableTruncate")
-    @Transactional
     void test() throws Exception {
 
         LocalDateTime createDateTime = LocalDateTime.of(2025, 11, 13, 12, 34, 56);
@@ -94,7 +95,8 @@ class MoveCodeKanrenshaPromoteServiceTest {
         capsuleDto.setMoveReason("移動理由");
         capsuleDto.setIsAbolishLast(true);
 
-        Integer savedId = moveCodeKanrenshaPromoteService.practice(createDateTime, capsuleDto);
+        InsertTaskPlanResultDto planResultDto = moveCodeKanrenshaPromoteService.practice(createDateTime, capsuleDto);
+        Integer savedId = planResultDto.getSavedId();
 
         // 確かに保存されている
         assertNotEquals(0, savedId);
@@ -111,6 +113,10 @@ class MoveCodeKanrenshaPromoteServiceTest {
         assertEquals(createDateTime.getYear(), moveEntity.getTaskYear());
         assertEquals(true, moveEntity.getIsAbolishLast());
         assertEquals(ShinseiStatusConstants.PROMOTE, moveEntity.getMoveStatus());
+
+        // 登録したタスク計画のメール開始が取得できている
+        assertEquals("【transferPass】で作業を行ってください", planResultDto.getMessageTemplate());
+
     }
 
     private StorageFileDto createStorageFile(final String fileName) throws IOException {
