@@ -1,5 +1,7 @@
 package net.seijishikin.jp.normalize.manage.kanrensha.service.yotei;
 
+import java.time.LocalDateTime;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,8 +14,10 @@ import net.seijishikin.jp.normalize.manage.kanrensha.controller.z_force.ForceDum
 import net.seijishikin.jp.normalize.manage.kanrensha.controller.z_force.ForceDumpMinMasterSabunController;
 import net.seijishikin.jp.normalize.manage.kanrensha.controller.z_force.ForceDumpStdMasterController;
 import net.seijishikin.jp.normalize.manage.kanrensha.controller.z_force.ForceDumpStdMasterSabunController;
+import net.seijishikin.jp.normalize.manage.kanrensha.dto.user.NotifyPartnerApiLimitCapsuleDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.z_force.ForceDumpCapsuleDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.TimerYoteiEntity;
+import net.seijishikin.jp.normalize.manage.kanrensha.service.user.NotificationPartnerApiTokenLimitAsyncService;
 
 /**
  * 予定作業と定義されたタスクを起動する
@@ -48,6 +52,10 @@ public class WakeupTimerYoteiService {
     /** ストレージ一時ファイル削除Controller */
     @Autowired
     private DeleteStorageTempFileController deleteStorageTempFileController;
+
+    /** APIパートナ－長期トークン期限切れ通知非同期Service */
+    @Autowired
+    private NotificationPartnerApiTokenLimitAsyncService notificationPartnerApiTokenLimitAsyncService;
 
     /**
      * 処理を行う
@@ -86,6 +94,13 @@ public class WakeupTimerYoteiService {
 
                 /* TODO 長期アクセスなしユーザ対応 */
 
+                /* APIパートナートークン期限切れ通知 */
+                case YoteiTaskConstants.NOTIFY_TOKEN_LIMIT:
+                    LocalDateTime createDateTime = LocalDateTime.now();
+                    NotifyPartnerApiLimitCapsuleDto capsuleDto = new NotifyPartnerApiLimitCapsuleDto();
+                    capsuleDto.setCheckDate(createDateTime.toLocalDate());
+                    notificationPartnerApiTokenLimitAsyncService.practice(createDateTime, capsuleDto);
+                    return true;
                 default:
                     // その他の未指定は該当なしで何もしない
                     return false;

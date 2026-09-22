@@ -1,5 +1,6 @@
 package net.seijishikin.jp.normalize.manage.kanrensha.repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,4 +28,13 @@ public interface PartnerAccessTokenRepository extends JpaRepository<PartnerAcces
      * @return 検索結果
      */
     Optional<PartnerAccessTokenEntity> findByAccessTokenHash(String tokenHashed);
+
+    /**
+     * 終了時間が検索条件に該当するアクセストークンを取得する
+     * 
+     * @param startDatetime 検索条件開始日時
+     * @param endDatetime   検索条件終了日時
+     * @return 検索結果
+     */
+    List<PartnerAccessTokenEntity> findByExpiresAtBetween(LocalDateTime startDatetime, LocalDateTime endDatetime);
 }

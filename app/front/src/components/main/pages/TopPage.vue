@@ -166,7 +166,7 @@ function changeVisiblePassword() {
     <div class="container">
         <div class="login-page">
             <div class="form-container">
-                <h1>政治資金関連者標準化サイト</h1>
+                <h1>政治資金関連者標準化サイト(関連者管理)</h1>
                 <h2>ユーザログイン</h2>
 
                 <div class="form-group">

@@ -17,6 +17,7 @@ import net.seijishikin.jp.normalize.manage.kanrensha.dto.send_message.MailDataDt
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.send_message.SendMaileResultDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.task.InsertTaskPlanResultDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.logic.send_message.SendMailUserLogic;
+import net.seijishikin.jp.normalize.manage.kanrensha.logic.task_plan.ConvertFullWebPathLogic;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.year.SwitchYearInsertTaskPlanService;
 
 /**
@@ -32,6 +33,10 @@ public class InsertTaskPlanOtherPersonService {
     /** メール送信Logic */
     @Autowired
     private SendMailUserLogic sendMailUserLogic;
+
+    /** フルWebパス取得Logic */
+    @Autowired
+    private ConvertFullWebPathLogic convertFullWebPathLogic;
 
     /** 年切替タスク計画挿入Service */
     @Autowired
@@ -80,7 +85,8 @@ public class InsertTaskPlanOtherPersonService {
         // mailMessage.setReplyTo("このアドレスに返信はできません");
 
         String body = insertTaskPlanResultDto.getMessageTemplate();
-        body = body.replaceAll("【transferPass】", insertTaskPlanResultDto.getTransferPass());
+        body = body.replaceAll("【transferPass】",
+                convertFullWebPathLogic.practice(insertTaskPlanResultDto.getTransferPass()));
         mailMessage.setText(body);
 
         MailDataDto mailDataDto = new MailDataDto();

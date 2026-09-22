@@ -198,9 +198,9 @@ public class MoveCodeKanrenshaAcceptService { // NOPMD CouplingWithin
     private LeastUserDto createUserDto(final UserPersonEntity entity) {
         LeastUserDto userDto = new LeastUserDto();
 
-        userDto.setUserPersonId(entity.getInsertUserId());
-        userDto.setUserPersonCode(entity.getInsertUserCode());
-        userDto.setUserPersonName(entity.getInsertUserName());
+        userDto.setUserPersonId(entity.getUserPersonId());
+        userDto.setUserPersonCode(entity.getUserPersonCode());
+        userDto.setUserPersonName(entity.getUserPersonName());
 
         return userDto;
     }

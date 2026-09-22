@@ -113,6 +113,9 @@ public class TaskInfoConstants { // NOPMD DataClass
     /** 関連者コード移動結果 */
     public static final int MOVE_KANRENSHA_CODE_RESULT = 391;
 
+    /** APIパートナートークン期限切れ通知 */
+    public static final int NOTIFICATE_TOKEN_LIMIT = 401;
+    
     /** 関連者組織他者紐づけ */
     public static final int ORG_COMBINE_PERSON_KANRENSHA = 801;
 

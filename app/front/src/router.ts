@@ -134,6 +134,8 @@ const routes = [
 
     // トークン置き換え
     { path: RoutePathConstants.PAGE_PARTNER_TOKEN_REPLACE, name: "ReplacePartnerApiToken", component: () => import("./components/main/pages/user_edit/ReplacePartnerApiToken.vue") },
+    // トークン期限通知(強制)
+    { path: RoutePathConstants.PAGE_NOTIFY_LIMIT, name: "NotifyPartnerApiLimit", component: () => import("./components/main/pages/user_edit/NotifyPartnerApiLimit.vue") },
 
     // タスク計画
     { path: RoutePathConstants.PAGE_SEARCH_TASK_PLAN, name: "SearchTaskPlan", component: () => import("./components/main/pages/search_task_plan/SearchTaskPlan.vue") },

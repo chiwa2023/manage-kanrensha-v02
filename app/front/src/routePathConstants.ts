@@ -75,8 +75,11 @@ export default class RoutePathConstants {
     static readonly PAGE_ADMIN_ACCEPT: string = this.BASE_PATH + "/user/admin-accept";
 
 
-    /** APIパートナーTokenおきかえ */
+    /** APIパートナーToken置き換え    */
     static readonly PAGE_PARTNER_TOKEN_REPLACE: string = this.BASE_PATH + "/partner-api/token-replace";
+
+    /** APIパートナー期限切れ強制通知 */
+    static readonly PAGE_NOTIFY_LIMIT: string = this.BASE_PATH + "/partner-api/notify-limit";
 
     /** 利用者検索 */
     static readonly PAGE_RIYOUSHA_SEARCH: string = this.BASE_PATH + "/riyousha-search";

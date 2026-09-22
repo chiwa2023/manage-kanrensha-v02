@@ -128,4 +128,11 @@ public interface UserPersonRepository
             + "", nativeQuery = true)
     List<KanrenshaCodeMoveHistoryDto> getCodeHistoryList(String kanrenshaCode, String role);
 
+    /**
+     * ユーザコードが一致する最新を取得する
+     * 
+     * @param userCode ユーザコード
+     * @return 検索結果
+     */
+    Optional<UserPersonEntity> findFirstByUserPersonCodeAndIsLatestTrueOrderByInsertTimestampDesc(Integer userCode);
 }
