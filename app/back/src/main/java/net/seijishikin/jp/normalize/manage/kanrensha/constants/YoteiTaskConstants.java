@@ -17,4 +17,7 @@ public class YoteiTaskConstants { // NOPMD DataClass
     public static final short DUMP_STD = (short) 105;
     /** 履歴差分出力 */
     public static final short DUMP_STD_SABUN = (short) 106;
+    /** 一時ファイル削除 */
+    public static final short TEMP_FILE_DELETE = (short) 107;
+
 }

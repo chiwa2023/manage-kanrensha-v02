@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.constants.YoteiTaskConstants;
+import net.seijishikin.jp.normalize.manage.kanrensha.controller.file.DeleteStorageTempFileController;
 import net.seijishikin.jp.normalize.manage.kanrensha.controller.z_force.ForceDumpHistoryController;
 import net.seijishikin.jp.normalize.manage.kanrensha.controller.z_force.ForceDumpHistorySabunController;
 import net.seijishikin.jp.normalize.manage.kanrensha.controller.z_force.ForceDumpMinMasterController;
@@ -44,6 +45,10 @@ public class WakeupTimerYoteiService {
     @Autowired
     private ForceDumpStdMasterSabunController forceDumpStdMasterSabunController;
 
+    /** ストレージ一時ファイル削除Controller */
+    @Autowired
+    private DeleteStorageTempFileController deleteStorageTempFileController;
+
     /**
      * 処理を行う
      * 
@@ -75,7 +80,9 @@ public class WakeupTimerYoteiService {
                     return !forceDumpStdMasterSabunController.practice( // NOPMD LawOfDemeter
                             this.createDumpCapsuleDto(timerYoteiEntity, userDto)).getBody().getIsFailure();
 
-                /* TODO アップロード一時ファイル整理 */
+                /* アップロード一時ファイル整理 */
+                case YoteiTaskConstants.TEMP_FILE_DELETE:
+                    return deleteStorageTempFileController.practice();
 
                 /* TODO 長期アクセスなしユーザ対応 */
 
