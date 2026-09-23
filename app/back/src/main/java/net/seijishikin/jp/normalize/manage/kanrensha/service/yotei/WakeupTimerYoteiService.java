@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.constants.YoteiTaskConstants;
 import net.seijishikin.jp.normalize.manage.kanrensha.controller.file.DeleteStorageTempFileController;
+import net.seijishikin.jp.normalize.manage.kanrensha.controller.user.DeleteLimitOverTokenController;
 import net.seijishikin.jp.normalize.manage.kanrensha.controller.z_force.ForceDumpHistoryController;
 import net.seijishikin.jp.normalize.manage.kanrensha.controller.z_force.ForceDumpHistorySabunController;
 import net.seijishikin.jp.normalize.manage.kanrensha.controller.z_force.ForceDumpMinMasterController;
@@ -57,6 +58,10 @@ public class WakeupTimerYoteiService {
     @Autowired
     private NotificationPartnerApiTokenLimitAsyncService notificationPartnerApiTokenLimitAsyncService;
 
+    /** 期限切れトークン削除Controller */
+    @Autowired
+    private DeleteLimitOverTokenController deleteLimitOverTokenController;
+
     /**
      * 処理を行う
      * 
@@ -92,7 +97,9 @@ public class WakeupTimerYoteiService {
                 case YoteiTaskConstants.TEMP_FILE_DELETE:
                     return deleteStorageTempFileController.practice();
 
-                /* TODO 長期アクセスなしユーザ対応 */
+                /* 不要アクセストークン削除 */
+                case YoteiTaskConstants.EXPIRED_TOKEN_DELETE:
+                    return deleteLimitOverTokenController.practice();
 
                 /* APIパートナートークン期限切れ通知 */
                 case YoteiTaskConstants.NOTIFY_TOKEN_LIMIT:
@@ -101,6 +108,7 @@ public class WakeupTimerYoteiService {
                     capsuleDto.setCheckDate(createDateTime.toLocalDate());
                     notificationPartnerApiTokenLimitAsyncService.practice(createDateTime, capsuleDto);
                     return true;
+
                 default:
                     // その他の未指定は該当なしで何もしない
                     return false;

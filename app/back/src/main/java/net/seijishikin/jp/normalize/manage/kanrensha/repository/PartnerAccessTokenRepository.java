@@ -37,4 +37,13 @@ public interface PartnerAccessTokenRepository extends JpaRepository<PartnerAcces
      * @return 検索結果
      */
     List<PartnerAccessTokenEntity> findByExpiresAtBetween(LocalDateTime startDatetime, LocalDateTime endDatetime);
+
+    /**
+     * 期限切れを削除する
+     * 
+     * @param limitDatetime 期限日時
+     * @return 削除件数
+     */
+    Integer deleteByExpiresAtLessThan(LocalDateTime limitDatetime);
+
 }

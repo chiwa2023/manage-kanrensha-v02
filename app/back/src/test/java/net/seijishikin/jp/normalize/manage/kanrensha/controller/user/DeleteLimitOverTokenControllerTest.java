@@ -1,4 +1,4 @@
-package net.seijishikin.jp.normalize.manage.kanrensha.controller.file;
+package net.seijishikin.jp.normalize.manage.kanrensha.controller.user;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -8,29 +8,27 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
+import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 /**
- * DeleteStorageTempFileController単体テスト
+ * DeleteLimitOverTokenController単体テスト
  */
 @SpringJUnitConfig
 @SpringBootTest
 @DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
-class DeleteStorageTempFileControllerTest {
+@Sql("../../service/security/DeleteLimitOverTokenServiceTest.sql")
+class DeleteLimitOverTokenControllerTest {
 
     /** テスト対象 */
     @Autowired
-    private DeleteStorageTempFileController deleteStorageTempFileController;
+    private DeleteLimitOverTokenController deleteLimitOverTokenController;
 
     @Test
     @Tag("TableTruncate")
     void test() throws Exception {
 
-        // 起動時例外がなければTrueが戻る
-        assertTrue(deleteStorageTempFileController.practice());
-
-        // MEMO 重要：実行時の半年前(10月→4月)のフォルダがクリアされていることを目視で確認すること
-        // 削除ディレクトリが実行時基準で算出しているのはこのテストだけ
+        assertTrue(deleteLimitOverTokenController.practice());
     }
 
 }
