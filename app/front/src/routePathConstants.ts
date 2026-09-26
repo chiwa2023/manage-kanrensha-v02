@@ -194,6 +194,11 @@ export default class RoutePathConstants {
     /** 利用者組織に招待を個人が承認 */
     static readonly PAGE_ACCEPT_ORG_PERSON: string = this.BASE_PATH + "/accept-combine-riyousha";
 
+    /** 運営者に連絡(自分自身) */
+    static readonly PAGE_CONTACT_MANAGER_MYSELF: string = this.BASE_PATH + "/contact-myself";
+
+    /** 運営者に連絡(回答) */
+    static readonly PAGE_CONTACT_MANAGER_ANSWER: string = this.BASE_PATH + "/contact-answer";
 
 
     // /** 運営者による利用者検索編集 */

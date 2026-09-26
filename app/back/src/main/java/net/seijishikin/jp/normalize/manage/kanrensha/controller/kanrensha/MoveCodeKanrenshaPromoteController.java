@@ -72,7 +72,7 @@ public class MoveCodeKanrenshaPromoteController {
             } else {
                 // 関係者にメール送信
                 moveCodeKanrenshaPromoteSendMessageService.practice(capsuleDto, planResultDto);
-                
+
                 resultDto.setMessage(FrameworkMessageAndResultDto.MESSAGE_EXPECTED);
                 return ResponseEntity.status(HttpStatus.OK).body(resultDto);
             }
@@ -84,10 +84,10 @@ public class MoveCodeKanrenshaPromoteController {
             saveStackTraceService.practice(exception, Year.now().getValue(), 0);
             resultDto.setMessage(FrameworkMessageAndResultDto.MESSAGE_INTERNAL_ERROR);
             resultDto.setIsFailure(true);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(resultDto);
         }
 
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(resultDto);
-
     }
 
 }

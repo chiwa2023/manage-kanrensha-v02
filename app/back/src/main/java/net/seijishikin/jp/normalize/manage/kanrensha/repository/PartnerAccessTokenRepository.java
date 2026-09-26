@@ -22,7 +22,7 @@ public interface PartnerAccessTokenRepository extends JpaRepository<PartnerAcces
     List<PartnerAccessTokenEntity> findByUserCodeAndRevokedAtNull(Integer userCode);
 
     /**
-     * ハッシュ化されたトークンが一致するでーーたを取得する
+     * ハッシュ化されたトークンが一致するデータを取得する
      * 
      * @param tokenHashed ハッシュ化されたトークン
      * @return 検索結果

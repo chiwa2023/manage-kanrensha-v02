@@ -91,6 +91,9 @@ function onCancel() {
         <RouterLink class="menu-item" :to=personEditUrl>個人情報編集</RouterLink>
         <RouterLink class="menu-item" v-if="!notHasDetailInfo" :to=RoutePathConstants.PAGE_USER_EDIT>個人名・権限編集
         </RouterLink>
+
+        <RouterLink class="menu-item" :to=RoutePathConstants.PAGE_CONTACT_MANAGER_MYSELF>運営者に連絡を取る</RouterLink>
+
         <RouterLink class="menu-item" :to=RoutePathConstants.PAGE_REFRESH_PASSWORD>パスワード更新</RouterLink>
         <RouterLink :to="RoutePathConstants.PAGE_LOGOUT" class="menu-item">ログアウト</RouterLink>
         <RouterLink :to="RoutePathConstants.PAGE_USER_WITHDRAW" class="menu-item">退会</RouterLink>

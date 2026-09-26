@@ -115,6 +115,12 @@ public class TaskInfoConstants { // NOPMD DataClass
 
     /** APIパートナートークン期限切れ通知 */
     public static final int NOTIFICATE_TOKEN_LIMIT = 401;
+
+    /** 問い合わせ新規 */
+    public static final int CONTACT_FIRST = 411;
+    /** 問い合わせ回答 */
+    public static final int CONTACT_ADD = 412;
+
     
     /** 関連者組織他者紐づけ */
     public static final int ORG_COMBINE_PERSON_KANRENSHA = 801;

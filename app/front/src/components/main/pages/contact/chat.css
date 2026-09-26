@@ -1,0 +1,94 @@
+/* chat.css - Chat styled interface for Contact Answers and Histories */
+
+.chat-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  margin-left: 1.5rem;
+  margin-bottom: 2rem;
+  
+  /* レスポンシブ対応の幅設定 */
+  width: 75%; /* PCでの他の入力項目（.max-input などの 75%）に高さを揃えて統一感を持たせる */
+  max-width: 1200px; /* 広すぎるPCディスプレイでの表示崩れを防ぐ上限 */
+  box-sizing: border-box;
+
+  background-color: #f8f9fa;
+  border: 1px solid #e9ecef;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+/* タブレット・モバイル端末用のレスポンシブ幅調整 */
+@media (max-width: 1024px) {
+  .chat-container {
+    width: calc(100% - 3rem); /* タブレットやスマホでは画面の幅に合わせて広げる */
+  }
+}
+
+.chat-empty {
+  text-align: center;
+  color: #6c757d;
+  padding: 2.5rem 0;
+  font-style: italic;
+  font-size: 0.95rem;
+}
+
+.chat-message {
+  display: flex;
+  flex-direction: column;
+  max-width: 75%;
+}
+
+.chat-message.other {
+  align-self: flex-start;
+}
+
+.chat-message.self {
+  align-self: flex-end;
+}
+
+.chat-meta {
+  font-size: 0.80rem;
+  color: #6c757d;
+  margin-bottom: 0.3rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.chat-message.self .chat-meta {
+  justify-content: flex-end;
+}
+
+.chat-sender {
+  font-weight: 600;
+  color: #495057;
+}
+
+.chat-time {
+  color: #adb5bd;
+}
+
+.chat-bubble {
+  padding: 0.85rem 1.1rem;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  word-break: break-all;
+  white-space: pre-wrap;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+}
+
+.chat-message.other .chat-bubble {
+  background-color: #ffffff;
+  color: #212529;
+  border: 1px solid #dee2e6;
+  border-radius: 0px 14px 14px 14px;
+}
+
+.chat-message.self .chat-bubble {
+  background-color: #e8f0fe; /* Warm pleasant modern light blue */
+  color: #1a0dab;
+  border: 1px solid #d2e3fc;
+  border-radius: 14px 0px 14px 14px;
+}

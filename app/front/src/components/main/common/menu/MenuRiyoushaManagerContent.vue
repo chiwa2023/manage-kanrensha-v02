@@ -49,6 +49,11 @@ import RoutePathConstants from '../../../../routePathConstants';
         </div>
 
         <div class="menu-section">
+            <h4 class="menu-title">運営者への連絡回答</h4>
+            <RouterLink :to="RoutePathConstants.PAGE_CONTACT_MANAGER_ANSWER" class="menu-item">運営者への連絡回答</RouterLink>
+        </div>
+
+        <div class="menu-section">
             <h4 class="menu-title">関連者管理(新規・編集・削除)</h4>
             <RouterLink :to="RoutePathConstants.PAGE_KANRENSHA_MANAGE" class="menu-item">関連者管理</RouterLink>
             <RouterLink :to="RoutePathConstants.PAGE_MOVE_CODE_ACCEPT" class="menu-item">関連者コード移行承認</RouterLink>
