@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.task.SearchTaskHistoryCapsuleDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.TaskPlanBaseEntity;
+import net.seijishikin.jp.normalize.manage.kanrensha.logic.year.y2019.SearchTaskHistoryY2019Logic;
 import net.seijishikin.jp.normalize.manage.kanrensha.logic.year.y2025.SearchTaskHistoryY2025Logic;
 import net.seijishikin.jp.normalize.manage.kanrensha.logic.year.y2026.SearchTaskHistoryY2026Logic;
 
@@ -28,6 +29,12 @@ public class SwitchYearSearchTaskHistoryService {
     @Autowired
     private SearchTaskHistoryY2026Logic searchTaskHistoryY2026Logic;
 
+    /** 実施年(2019) */
+    private static final int YEAR_2019 = 2019;
+    /** タスク計画履歴取得Logic(2019) */
+    @Autowired
+    private SearchTaskHistoryY2019Logic searchTaskHistoryY2019Logic;    // field次回追加位置
+
     /**
      * 処理を行う
      *
@@ -43,9 +50,15 @@ public class SwitchYearSearchTaskHistoryService {
             case YEAR_2025:
                 return searchTaskHistoryY2025Logic.practice(planCode);
 
-            // 2025年
+            // 2026年
             case YEAR_2026:
                 return searchTaskHistoryY2026Logic.practice(planCode);
+
+            // 2019年
+            case YEAR_2019:
+                return searchTaskHistoryY2019Logic.practice(planCode);
+
+            // case次回追加位置
 
             default:
                 throw new IllegalArgumentException("Unexpected value: " + year);

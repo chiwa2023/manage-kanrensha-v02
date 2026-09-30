@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.storage_file.OneFileBlobResultDto;
+import net.seijishikin.jp.normalize.manage.kanrensha.logic.year.y2019.GetSaveStorageY2019Logic;
 import net.seijishikin.jp.normalize.manage.kanrensha.logic.year.y2025.GetSaveStorageY2025Logic;
 import net.seijishikin.jp.normalize.manage.kanrensha.logic.year.y2026.GetSaveStorageY2026Logic;
 
@@ -27,6 +28,14 @@ public class SwitchYearGetStorageFielByIdService {
     @Autowired
     private GetSaveStorageY2026Logic getSaveStorageY2026Logic;
 
+    /** 実施年(2019) */
+    private static final int YEAR_2019 = 2019;
+    /** タスク計画挿入Logic(2019) */
+    @Autowired
+    private GetSaveStorageY2019Logic getSaveStorageY2019Logic;
+
+    // field次回追加位置
+
     /**
      * 処理を行う
      * 
@@ -38,10 +47,20 @@ public class SwitchYearGetStorageFielByIdService {
     public OneFileBlobResultDto practice(final int year, final int taskId) throws IOException {
 
         switch (year) {
+
+            // 2025年
             case YEAR_2025:
                 return getSaveStorageY2025Logic.practice(taskId);
+
+            // 2026年
             case YEAR_2026:
                 return getSaveStorageY2026Logic.practice(taskId);
+
+            // 2019年
+            case YEAR_2019:
+                return getSaveStorageY2019Logic.practice(taskId);
+
+            // case次回追加位置
 
             default:
                 throw new IllegalArgumentException("Unexpected value: " + year);

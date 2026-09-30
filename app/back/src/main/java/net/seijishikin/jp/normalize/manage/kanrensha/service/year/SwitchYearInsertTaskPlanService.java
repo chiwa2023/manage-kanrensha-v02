@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
 
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.task.InsertTaskPlanResultDto;
+import net.seijishikin.jp.normalize.manage.kanrensha.logic.year.y2019.InsertTaskPlanY2019Logic;
 import net.seijishikin.jp.normalize.manage.kanrensha.logic.year.y2025.InsertTaskPlanY2025Logic;
 import net.seijishikin.jp.normalize.manage.kanrensha.logic.year.y2026.InsertTaskPlanY2026Logic;
 
@@ -30,6 +31,11 @@ public class SwitchYearInsertTaskPlanService {
     /** タスク計画追加Logic(2026) */
     @Autowired
     private InsertTaskPlanY2026Logic insertTaskPlanY2026Logic;
+    /** 実施年(2019) */
+    private static final int YEAR_2019 = 2019;
+    /** タスク計画挿入Logic(2019) */
+    @Autowired
+    private InsertTaskPlanY2019Logic insertTaskPlanY2019Logic;    // field次回追加位置
 
     /**
      * 処理を行う
@@ -46,12 +52,21 @@ public class SwitchYearInsertTaskPlanService {
 
         Integer year = startDatetime.getYear();
         switch (year) {
+
+            // 2025年
             case YEAR_2025:
                 return insertTaskPlanY2025Logic.practice(userDtoWork, userDtoInsert, startDatetime, taskPlanCode,
                         mapParam);
+            // 2026年
             case YEAR_2026:
                 return insertTaskPlanY2026Logic.practice(userDtoWork, userDtoInsert, startDatetime, taskPlanCode,
                         mapParam);
+                
+            // 2019年
+            case YEAR_2019:
+                return insertTaskPlanY2019Logic.practice(userDtoWork, userDtoInsert, startDatetime, taskPlanCode,
+                        mapParam);
+            // case次回追加位置
 
             default:
                 throw new IllegalArgumentException("Unexpected value: " + year);

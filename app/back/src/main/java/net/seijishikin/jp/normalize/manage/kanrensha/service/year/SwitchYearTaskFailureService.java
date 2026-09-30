@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
+import net.seijishikin.jp.normalize.manage.kanrensha.logic.year.y2019.UpdateTaskListFailureY2019Logic;
 import net.seijishikin.jp.normalize.manage.kanrensha.logic.year.y2025.UpdateTaskListFailureY2025Logic;
 import net.seijishikin.jp.normalize.manage.kanrensha.logic.year.y2026.UpdateTaskListFailureY2026Logic;
 
@@ -28,6 +29,14 @@ public class SwitchYearTaskFailureService {
     @Autowired
     private UpdateTaskListFailureY2026Logic updateTaskListFailureY2026Logic;
 
+    /** 実施年(2019) */
+    private static final int YEAR_2019 = 2019;
+    /** タスク計画挿入Logic(2019) */
+    @Autowired
+    private UpdateTaskListFailureY2019Logic updateTaskListFailureY2019Logic;
+
+    // field次回追加位置
+
     /**
      * 処理を行う
      * 
@@ -44,10 +53,17 @@ public class SwitchYearTaskFailureService {
         switch (year) {
             // 2025年
             case YEAR_2025:
-                return updateTaskListFailureY2025Logic.practice(userDto,taskId, taskCode, endDatetime);
+                return updateTaskListFailureY2025Logic.practice(userDto, taskId, taskCode, endDatetime);
+
             // 2026年
             case YEAR_2026:
-                return updateTaskListFailureY2026Logic.practice(userDto,taskId, taskCode, endDatetime);
+                return updateTaskListFailureY2026Logic.practice(userDto, taskId, taskCode, endDatetime);
+
+            // 2019年
+            case YEAR_2019:
+                return updateTaskListFailureY2019Logic.practice(userDto, taskId, taskCode, endDatetime);
+
+            // case次回追加位置
 
             default:
                 throw new IllegalArgumentException("Unexpected value: " + year);

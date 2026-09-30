@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
+import net.seijishikin.jp.normalize.manage.kanrensha.logic.year.y2019.InsertSaveStorageY2019Logic;
 import net.seijishikin.jp.normalize.manage.kanrensha.logic.year.y2025.InsertSaveStorageY2025Logic;
 import net.seijishikin.jp.normalize.manage.kanrensha.logic.year.y2026.InsertSaveStorageY2026Logic;
 
@@ -28,6 +29,14 @@ public class SwitchYearInsertSaveStorageService {
     @Autowired
     private InsertSaveStorageY2026Logic insertSaveStorageY2026Logic;
 
+    /** 実施年(2019) */
+    private static final int YEAR_2019 = 2019;
+    /** タスク計画挿入Logic(2019) */
+    @Autowired
+    private InsertSaveStorageY2019Logic insertSaveStorageY2019Logic;
+
+    // field次回追加位置
+
     /**
      * 処理を行う
      *
@@ -41,10 +50,19 @@ public class SwitchYearInsertSaveStorageService {
     public Integer practice(final int year, final LeastUserDto userDto, final Path path, final Short shoshouKbn) {
 
         switch (year) {
+            // 2025年
             case YEAR_2025:
                 return insertSaveStorageY2025Logic.practice(userDto, path, shoshouKbn);
+
+            // 2026年
             case YEAR_2026:
                 return insertSaveStorageY2026Logic.practice(userDto, path, shoshouKbn);
+
+            // 2019年
+            case YEAR_2019:
+                return insertSaveStorageY2019Logic.practice(userDto, path, shoshouKbn);
+
+            // case次回追加位置
 
             default:
                 throw new IllegalArgumentException("Unexpected value: " + year);

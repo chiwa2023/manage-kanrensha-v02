@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.TaskPlanBaseEntity;
+import net.seijishikin.jp.normalize.manage.kanrensha.logic.year.y2019.GetRoleSomeoneTaskY2019Logic;
 import net.seijishikin.jp.normalize.manage.kanrensha.logic.year.y2025.GetRoleSomeoneTaskY2025Logic;
 import net.seijishikin.jp.normalize.manage.kanrensha.logic.year.y2026.GetRoleSomeoneTaskY2026Logic;
 
@@ -16,7 +17,7 @@ import net.seijishikin.jp.normalize.manage.kanrensha.logic.year.y2026.GetRoleSom
 @Service
 public class SwitchYearGetRoleSomeoneTaskService {
 
-    /** 実施年(2026) */
+    /** 実施年(2025) */
     private static final int YEAR_2025 = 2025;
     /** タスク計画履歴取得Logic(2025) */
     @Autowired
@@ -27,6 +28,14 @@ public class SwitchYearGetRoleSomeoneTaskService {
     /** タスク計画履歴取得Logic(2026) */
     @Autowired
     private GetRoleSomeoneTaskY2026Logic getRoleSomeoneTaskY2026Logic;
+
+    /** 実施年(2019) */
+    private static final int YEAR_2019 = 2019;
+    /** タスク計画履歴取得Logic(2019) */
+    @Autowired
+    private GetRoleSomeoneTaskY2019Logic getRoleSomeoneTaskY2019Logic;
+
+    // field次回追加位置
 
     /**
      * 処理を行う
@@ -46,10 +55,15 @@ public class SwitchYearGetRoleSomeoneTaskService {
             case YEAR_2026:
                 return getRoleSomeoneTaskY2026Logic.practice(userDto);
 
+            // 2019年
+            case YEAR_2019:
+                return getRoleSomeoneTaskY2019Logic.practice(userDto);
+
+            // case次回追加位置
+
             default:
                 throw new IllegalArgumentException("Unexpected value: " + year);
         }
     }
 
-    
 }

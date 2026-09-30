@@ -10,6 +10,7 @@ import net.seijishikin.jp.normalize.common_tool.dto.paging.SwitchYearPagingInteg
 import net.seijishikin.jp.normalize.common_tool.logic.CreateSearchConditionMapByYearLogic;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.task.SearchTaskPlanCapsuleDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.task.SearchTaskPlanResultDto;
+import net.seijishikin.jp.normalize.manage.kanrensha.logic.year.y2019.SearchTaskPlanY2019Logic;
 import net.seijishikin.jp.normalize.manage.kanrensha.logic.year.y2025.SearchTaskPlanY2025Logic;
 import net.seijishikin.jp.normalize.manage.kanrensha.logic.year.y2026.SearchTaskPlanY2026Logic;
 
@@ -34,6 +35,14 @@ public class SwitchYearSearchTaskPlanService {
     /** タスク計画検索Logic(2026) */
     @Autowired
     private SearchTaskPlanY2026Logic searchTaskPlanY2026Logic;
+
+    /** 実施年(2019) */
+    private static final int YEAR_2019 = 2019;
+    /** タスク計画検索Logic(2019) */
+    @Autowired
+    private SearchTaskPlanY2019Logic searchTaskPlanY2019Logic;
+
+    // field次回追加位置
 
     /**
      * 処理を行う
@@ -71,6 +80,17 @@ public class SwitchYearSearchTaskPlanService {
                     resultDto.setAllCount(resultDto.getAllCount() + resultDto2026.getAllCount());
                     resultDto.setPageNumber(resultDto2026.getPageNumber());
                     break;
+
+                // 2019年
+                case YEAR_2019:
+                    SearchTaskPlanResultDto resultDto2019 = searchTaskPlanY2019Logic.practice(capsuleDto);
+                    resultDto.getListTaskPlan().addAll(resultDto2019.getListTaskPlan());
+                    resultDto.setLimit(resultDto2019.getLimit());
+                    resultDto.setAllCount(resultDto.getAllCount() + resultDto2019.getAllCount());
+                    resultDto.setPageNumber(resultDto2019.getPageNumber());
+                    break;
+
+                // case次回追加位置
 
                 default:
                     throw new IllegalArgumentException("Unexpected value: " + year);

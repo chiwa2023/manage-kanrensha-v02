@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.TaskPlanBaseEntity;
+import net.seijishikin.jp.normalize.manage.kanrensha.logic.year.y2019.GetNotCompletdTaskY2019Logic;
 import net.seijishikin.jp.normalize.manage.kanrensha.logic.year.y2025.GetNotCompletdTaskY2025Logic;
 import net.seijishikin.jp.normalize.manage.kanrensha.logic.year.y2026.GetNotCompletdTaskY2026Logic;
 
@@ -31,6 +32,14 @@ public class SwitchYearGetNotCompletdTaskForUserInfoService {
     @Autowired
     private GetNotCompletdTaskY2026Logic getNotCompletdTaskY2026Logic;
 
+    /** 実施年(2019) */
+    private static final int YEAR_2019 = 2019;
+    /** タスク計画履歴取得Logic(2019) */
+    @Autowired
+    private GetNotCompletdTaskY2019Logic getNotCompletdTaskY2019Logic;
+
+    // field次回追加位置
+
     /**
      * 処理を行う
      * 
@@ -48,6 +57,12 @@ public class SwitchYearGetNotCompletdTaskForUserInfoService {
             // 2026年
             case YEAR_2026:
                 return getNotCompletdTaskY2026Logic.practice(userDto, NOT_COMPLETE_TASK_LIMIT);
+
+            // 2019年
+            case YEAR_2019:
+                return getNotCompletdTaskY2019Logic.practice(userDto, NOT_COMPLETE_TASK_LIMIT);
+
+            // case次回追加位置
 
             default:
                 throw new IllegalArgumentException("Unexpected value: " + year);

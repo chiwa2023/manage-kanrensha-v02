@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.LoginHistoryBaseEntity;
+import net.seijishikin.jp.normalize.manage.kanrensha.logic.year.y2019.SaveLoginStatusHistoryY2019Logic;
 import net.seijishikin.jp.normalize.manage.kanrensha.logic.year.y2025.SaveLoginStatusHistoryY2025Logic;
 import net.seijishikin.jp.normalize.manage.kanrensha.logic.year.y2026.SaveLoginStatusHistoryY2026Logic;
 
@@ -16,17 +17,25 @@ import net.seijishikin.jp.normalize.manage.kanrensha.logic.year.y2026.SaveLoginS
 @Service
 public class SwitchYearLoginHistoryService {
 
-    /** 登録対応年(2025) */
+    /** 実施年(2025) */
     private static final int YEAR_2025 = 2025;
     /** ログイン履歴複写Logic(2025) */
     @Autowired
     private SaveLoginStatusHistoryY2025Logic saveLoginStatusHistoryY2025Logic;
 
-    /** 登録対応年(2026) */
+    /** 実施年(2026) */
     private static final int YEAR_2026 = 2026;
     /** ログイン履歴複写Logic(2026) */
     @Autowired
     private SaveLoginStatusHistoryY2026Logic saveLoginStatusHistoryY2026Logic;
+
+    /** 実施年(2019) */
+    private static final int YEAR_2019 = 2019;
+    /** ログイン履歴複写Logic(2019) */
+    @Autowired
+    private SaveLoginStatusHistoryY2019Logic saveLoginStatusHistoryY2019Logic;
+
+    // field次回追加位置
 
     /**
      * 処理を行う
@@ -48,10 +57,21 @@ public class SwitchYearLoginHistoryService {
         baseEntity.setAttemptTime(now);
 
         switch (now.getYear()) {
+
+            // 2025年
             case YEAR_2025:
                 return saveLoginStatusHistoryY2025Logic.practice(baseEntity);
+
+            // 2026年
             case YEAR_2026:
                 return saveLoginStatusHistoryY2026Logic.practice(baseEntity);
+
+            // 2019年
+            case YEAR_2019:
+                return saveLoginStatusHistoryY2019Logic.practice(baseEntity);
+
+            // case次回追加位置
+
             default:
                 throw new IllegalArgumentException("Unexpected value: " + now.getYear());
         }

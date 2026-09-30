@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
+import net.seijishikin.jp.normalize.manage.kanrensha.logic.year.y2019.UpdateTaskPlanY2019Logic;
 import net.seijishikin.jp.normalize.manage.kanrensha.logic.year.y2025.UpdateTaskPlanY2025Logic;
 import net.seijishikin.jp.normalize.manage.kanrensha.logic.year.y2026.UpdateTaskPlanY2026Logic;
 
@@ -28,6 +29,14 @@ public class SwitchYearTaskSuccessService {
     @Autowired
     private UpdateTaskPlanY2026Logic updateTaskPlanY2026Logic;
 
+    /** 実施年(2019) */
+    private static final int YEAR_2019 = 2019;
+    /** タスク計画挿入Logic(2019) */
+    @Autowired
+    private UpdateTaskPlanY2019Logic updateTaskPlanY2019Logic;
+
+    // field次回追加位置
+
     /**
      * 処理を行う
      * 
@@ -44,9 +53,16 @@ public class SwitchYearTaskSuccessService {
             // 2025年
             case YEAR_2025:
                 return updateTaskPlanY2025Logic.practice(userDto, taskId, endDatetime, true);
+
             // 2026年
             case YEAR_2026:
                 return updateTaskPlanY2026Logic.practice(userDto, taskId, endDatetime, true);
+
+            // 2019年
+            case YEAR_2019:
+                return updateTaskPlanY2019Logic.practice(userDto, taskId, endDatetime, true);
+
+            // case次回追加位置
 
             default:
                 throw new IllegalArgumentException("Unexpected value: " + year);
