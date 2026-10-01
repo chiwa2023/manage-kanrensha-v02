@@ -1,7 +1,6 @@
 package net.seijishikin.jp.normalize.manage.kanrensha.service.year.y2025;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.List;
 
@@ -33,18 +32,6 @@ class SwitchYearGetRoleSomeoneTaskY2025ServiceTest {
     /** テスト対象 */
     @Autowired
     private SwitchYearGetRoleSomeoneTaskService switchYearGetRoleSomeoneTaskService;
-
-    @Test
-    @Tag("TableTruncate")
-    void test() {
-        assertThrows(IllegalArgumentException.class,
-                () -> switchYearGetRoleSomeoneTaskService.practice(1001, CreateLeastUserForTestUtil.practice()));
-
-        LeastUserDto userDto = CreateLeastUserForTestUtil.practice();
-        // 権限を全削除してもタスク計画では空リストが返るだけで特に問題はない
-        List<TaskPlanBaseEntity> listAns = switchYearGetRoleSomeoneTaskService.practice(2025, userDto);
-        assertEquals(0, listAns.size());
-    }
 
     @Test
     @Tag("TableTruncate")

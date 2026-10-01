@@ -15,6 +15,7 @@ import net.seijishikin.jp.normalize.manage.kanrensha.logic.year.y2023.InsertComb
 import net.seijishikin.jp.normalize.manage.kanrensha.logic.year.y2024.InsertCombineOrgY2024Logic;
 import net.seijishikin.jp.normalize.manage.kanrensha.logic.year.y2025.InsertCombineOrgY2025Logic;
 import net.seijishikin.jp.normalize.manage.kanrensha.logic.year.y2026.InsertCombineOrgY2026Logic;
+import net.seijishikin.jp.normalize.manage.kanrensha.logic.year.y2027.InsertCombineOrgY2027Logic;
 
 /**
  * 年ごとで個人団体紐づけに挿入Service
@@ -76,6 +77,12 @@ public class SwitchYearInsertCombineOrgService {
     @Autowired
     private InsertCombineOrgY2026Logic insertCombineOrgY2026Logic;
 
+    /** 実施年(2027) */
+    private static final int YEAR_2027 = 2027;
+    /** タスク計画挿入Logic(2027) */
+    @Autowired
+    private InsertCombineOrgY2027Logic insertCombineOrgY2027Logic;
+
     // field次回追加位置
 
     /**
@@ -101,30 +108,35 @@ public class SwitchYearInsertCombineOrgService {
                             return false;
                         }
                         break;
+
                     // 2020年
                     case YEAR_2020:
                         if (noRecord.equals(insertCombineOrgY2020Logic.practice(entity, userDto))) {
                             return false;
                         }
                         break;
+
                     // 2021年
                     case YEAR_2021:
                         if (noRecord.equals(insertCombineOrgY2021Logic.practice(entity, userDto))) {
                             return false;
                         }
                         break;
+
                     // 2022年
                     case YEAR_2022:
                         if (noRecord.equals(insertCombineOrgY2022Logic.practice(entity, userDto))) {
                             return false;
                         }
                         break;
+
                     // 2023年
                     case YEAR_2023:
                         if (noRecord.equals(insertCombineOrgY2023Logic.practice(entity, userDto))) {
                             return false;
                         }
                         break;
+
                     // 2024年
                     case YEAR_2024:
                         if (noRecord.equals(insertCombineOrgY2024Logic.practice(entity, userDto))) {
@@ -142,6 +154,13 @@ public class SwitchYearInsertCombineOrgService {
                     // 2026年
                     case YEAR_2026:
                         if (noRecord.equals(insertCombineOrgY2026Logic.practice(entity, userDto))) {
+                            return false;
+                        }
+                        break;
+
+                    // 2027年
+                    case YEAR_2027:
+                        if (noRecord.equals(insertCombineOrgY2027Logic.practice(entity, userDto))) {
                             return false;
                         }
                         break;
