@@ -59,7 +59,7 @@ class RefleshYearSourceBatchConfigurationTest {
                 .getJobParametersIncrementer().getNext(new JobParameters()))
                 .addLocalDateTime("exe_datetitme", LocalDateTime.now()) //
                 .addLong(AddSwithYearCaseTasklet.KEY_SRC_YEAR, 2025L) //
-                .addLong(AddSwithYearCaseTasklet.KEY_COPY_YEAR, 2019L)
+                .addLong(AddSwithYearCaseTasklet.KEY_COPY_YEAR, 2020L)
                 .addString(AddSwithYearCaseTasklet.KEY_BACKUP, "c:/temp/service").toJobParameters();
 
         @SuppressWarnings("removal")

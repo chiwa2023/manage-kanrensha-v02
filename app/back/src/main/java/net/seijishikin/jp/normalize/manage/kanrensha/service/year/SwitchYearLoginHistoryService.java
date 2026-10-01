@@ -47,16 +47,15 @@ public class SwitchYearLoginHistoryService {
      */
     @Transactional
     public Integer practice(final String username, final String ipAddress, final String userAgent,
-            final boolean success) {
+            final boolean success,final LocalDateTime createDateTime) {
         LoginHistoryBaseEntity baseEntity = new LoginHistoryBaseEntity();
         baseEntity.setEmail(username);
         baseEntity.setIpAddress(ipAddress);
         baseEntity.setUserAgent(userAgent);
         baseEntity.setIsSuccess(success);
-        LocalDateTime now = LocalDateTime.now();
-        baseEntity.setAttemptTime(now);
+        baseEntity.setAttemptTime(createDateTime);
 
-        switch (now.getYear()) {
+        switch (createDateTime.getYear()) {
 
             // 2025年
             case YEAR_2025:
@@ -73,7 +72,7 @@ public class SwitchYearLoginHistoryService {
             // case次回追加位置
 
             default:
-                throw new IllegalArgumentException("Unexpected value: " + now.getYear());
+                throw new IllegalArgumentException("Unexpected value: " + createDateTime.getYear());
         }
 
     }

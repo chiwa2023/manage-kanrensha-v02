@@ -1,4 +1,4 @@
-package net.seijishikin.jp.normalize.manage.kanrensha.service.year;
+package net.seijishikin.jp.normalize.manage.kanrensha.service.year.y2026;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
@@ -21,8 +21,9 @@ import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import org.springframework.transaction.annotation.Transactional;
 
 import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
-import net.seijishikin.jp.normalize.manage.kanrensha.entity.year.y2025.SaveFileStorage2025Entity;
-import net.seijishikin.jp.normalize.manage.kanrensha.repository.year.y2025.SaveFileStorage2025Repository;
+import net.seijishikin.jp.normalize.manage.kanrensha.entity.year.y2026.SaveFileStorage2026Entity;
+import net.seijishikin.jp.normalize.manage.kanrensha.repository.year.y2026.SaveFileStorage2026Repository;
+import net.seijishikin.jp.normalize.manage.kanrensha.service.year.SwitchYearInsertSaveStorageService;
 import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateLeastUserForTestUtil;
 
 /**
@@ -32,10 +33,10 @@ import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateLeastUserForTes
 @AutoConfigureMockMvc
 @SpringBootTest
 @DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
-@Sql("SwitchYearInsertSaveStorageServiceTest.sql")
 @Transactional
 @ConfigurationProperties(prefix = "net.seijishikin.jp.normalize.kanrensha")
-class SwitchYearInsertSaveStorageServiceTest {
+@Sql("SwitchYearInsertSaveStorageY2026ServiceTest.sql")
+class SwitchYearInsertSaveStorageY2026ServiceTest {
     // CHECKSTYLE:OFF MagicNumber
 
     /** テスト対象 */
@@ -66,11 +67,11 @@ class SwitchYearInsertSaveStorageServiceTest {
 
     /** 書証保存Repository */
     @Autowired
-    private SaveFileStorage2025Repository saveFileStorage2025Repository;
+    private SaveFileStorage2026Repository saveFileStorage2026Repository;
 
     @Test
     @Tag("TableTruncate")
-    void test() throws Exception {
+    void test2026() throws Exception {
         
 
         LeastUserDto userDto = CreateLeastUserForTestUtil.practice();
@@ -79,11 +80,11 @@ class SwitchYearInsertSaveStorageServiceTest {
         Path path = Paths.get(storageFolder, childDir, fileName);
         Short shoshoKbn = Short.valueOf("123");
 
-        assertNotEquals(0, switchYearInsertSaveStorageService.practice(2025, userDto, path, shoshoKbn));
+        assertNotEquals(0, switchYearInsertSaveStorageService.practice(2026, userDto, path, shoshoKbn));
 
-        List<SaveFileStorage2025Entity> list = saveFileStorage2025Repository.findAll();
+        List<SaveFileStorage2026Entity> list = saveFileStorage2026Repository.findAll();
         assertEquals(1, list.size());
-        SaveFileStorage2025Entity entity = list.get(0);
+        SaveFileStorage2026Entity entity = list.get(0);
 
         assertEquals(childDir, entity.getChildDir());
         assertEquals(fileName, entity.getFileName());

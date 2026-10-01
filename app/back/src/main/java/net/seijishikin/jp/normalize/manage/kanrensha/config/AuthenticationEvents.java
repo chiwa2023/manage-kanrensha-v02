@@ -1,5 +1,6 @@
 package net.seijishikin.jp.normalize.manage.kanrensha.config;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,8 +41,8 @@ public class AuthenticationEvents {
         String username = event.getAuthentication().getName();
         String ipAddress = getIpAddressFromSuccessEvent(event);
         String userAgent = getUserAgent();
-
-        switchYearLoginHistoryService.practice(username, ipAddress, userAgent, true);
+        LocalDateTime now = LocalDateTime.now();
+        switchYearLoginHistoryService.practice(username, ipAddress, userAgent, true, now);
     }
 
     /**
@@ -55,7 +56,7 @@ public class AuthenticationEvents {
 
         String username = "N/A";
         if (event.getAuthentication() != null && event.getAuthentication().getPrincipal() != null) {
-            username = event.getAuthentication().getPrincipal().toString(); //NOPMD LowDemeter
+            username = event.getAuthentication().getPrincipal().toString(); // NOPMD LowDemeter
         }
 
         String ipAddress = getIpAddressFromFailureEvent(event);
@@ -64,7 +65,8 @@ public class AuthenticationEvents {
         // 失敗理由なども取得可能
         // String exceptionMessage = event.getException().getMessage();
 
-        switchYearLoginHistoryService.practice(username, ipAddress, userAgent, false);
+        LocalDateTime now = LocalDateTime.now();
+        switchYearLoginHistoryService.practice(username, ipAddress, userAgent, false, now);
     }
 
     /**

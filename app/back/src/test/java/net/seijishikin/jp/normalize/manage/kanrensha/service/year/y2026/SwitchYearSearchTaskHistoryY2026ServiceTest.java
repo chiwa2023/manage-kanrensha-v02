@@ -1,4 +1,4 @@
-package net.seijishikin.jp.normalize.manage.kanrensha.service.year;
+package net.seijishikin.jp.normalize.manage.kanrensha.service.year.y2026;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.task.SearchTaskHistoryCapsuleDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.TaskPlanBaseEntity;
+import net.seijishikin.jp.normalize.manage.kanrensha.service.year.SwitchYearSearchTaskHistoryService;
 
 
 /**
@@ -28,8 +29,8 @@ import net.seijishikin.jp.normalize.manage.kanrensha.entity.TaskPlanBaseEntity;
 @SpringBootTest
 @DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
 @Transactional
-@Sql("SwitchYearSearchTaskHistoryServiceTest.sql")
-class SwitchYearSearchTaskHistoryServiceTest {
+@Sql("SwitchYearSearchTaskHistoryY2026ServiceTest.sql")
+class SwitchYearSearchTaskHistoryY2026ServiceTest {
     // CHECKSTYLE:OFF MagicNumber
 
     /** テスト対象 */
@@ -38,10 +39,10 @@ class SwitchYearSearchTaskHistoryServiceTest {
 
     @Test
     @Tag("TableTruncate")
-    void test() {
+    void test2026() {
 
         SearchTaskHistoryCapsuleDto capsuleDto = new SearchTaskHistoryCapsuleDto();
-        capsuleDto.setTaskYear(2025);
+        capsuleDto.setTaskYear(2026);
         capsuleDto.setTaskPlanCode(187);
 
         List<TaskPlanBaseEntity> list = switchYearSearchTaskHistoryService.practice(capsuleDto);
@@ -50,11 +51,11 @@ class SwitchYearSearchTaskHistoryServiceTest {
 
         TaskPlanBaseEntity entity0 = list.get(0);
         assertEquals(202, entity0.getTaskPlanId());
-        assertEquals(2025, entity0.getTableYear());
+        assertEquals(2026, entity0.getTableYear());
 
         TaskPlanBaseEntity entity1 = list.get(1);
         assertEquals(203, entity1.getTaskPlanId());
-        assertEquals(2025, entity0.getTableYear());
+        assertEquals(2026, entity0.getTableYear());
     }
 
 }

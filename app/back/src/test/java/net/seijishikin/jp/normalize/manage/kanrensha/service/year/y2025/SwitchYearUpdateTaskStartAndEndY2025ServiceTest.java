@@ -1,4 +1,4 @@
-package net.seijishikin.jp.normalize.manage.kanrensha.service.year;
+package net.seijishikin.jp.normalize.manage.kanrensha.service.year.y2025;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
@@ -17,11 +17,11 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
-import org.springframework.transaction.annotation.Transactional;
 
 import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
-import net.seijishikin.jp.normalize.manage.kanrensha.entity.year.y2026.TaskPlan2026Entity;
-import net.seijishikin.jp.normalize.manage.kanrensha.repository.year.y2026.TaskPlan2026Repository;
+import net.seijishikin.jp.normalize.manage.kanrensha.entity.year.y2025.TaskPlan2025Entity;
+import net.seijishikin.jp.normalize.manage.kanrensha.repository.year.y2025.TaskPlan2025Repository;
+import net.seijishikin.jp.normalize.manage.kanrensha.service.year.SwitchYearUpdateTaskStartAndEndService;
 import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateLeastUserForTestUtil;
 
 /**
@@ -31,38 +31,37 @@ import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateLeastUserForTes
 @AutoConfigureMockMvc
 @SpringBootTest
 @DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
-@Transactional
-@Sql("SwitchYearUpdateTaskStartAndEndServiceTest.sql")
-class SwitchYearUpdateTaskStartAndEndServiceTest {
+@Sql("SwitchYearUpdateTaskStartAndEndY2025ServiceTest.sql")
+class SwitchYearUpdateTaskStartAndEndY2025ServiceTest {
     // CHECKSTYLE:OFF MagicNumber
 
     /** テスト対象 */
     @Autowired
     private SwitchYearUpdateTaskStartAndEndService switchYearUpdateTaskStartAndEndService;
 
-    /** タスク計画Repository(2026) */
+    /** タスク計画Repository(2025) */
     @Autowired
-    private TaskPlan2026Repository taskPlan2026Repository;
+    private TaskPlan2025Repository taskPlan2025Repository;
 
     @Test
     @Tag("TableTruncate")
-    void test() throws Exception {
+    void test2025() throws Exception {
 
         LeastUserDto userDto = CreateLeastUserForTestUtil.practice();
         LocalDateTime endTime = LocalDateTime.of(2028, 3, 21, 12, 34, 56); // あえて終了年を登録テーブルと異なる値にしている
 
         final Integer loadId = 203;
-        Integer savedId = switchYearUpdateTaskStartAndEndService.practice(userDto, 2026, loadId, endTime);
+        Integer savedId = switchYearUpdateTaskStartAndEndService.practice(userDto, 2025, loadId, endTime);
         // 履歴が積みあがっていること
         assertNotEquals(loadId, savedId);
 
-        TaskPlan2026Entity entityPre = taskPlan2026Repository.findById(loadId).get();
+        TaskPlan2025Entity entityPre = taskPlan2025Repository.findById(loadId).get();
         // 過去データに未使用フラグ以外の変更はないこと
         assertFalse(entityPre.getIsLatest());
         assertFalse(entityPre.getIsStart());
         assertFalse(entityPre.getIsFinished());
 
-        TaskPlan2026Entity entityPro = taskPlan2026Repository.findById(savedId).get();
+        TaskPlan2025Entity entityPro = taskPlan2025Repository.findById(savedId).get();
         assertEquals(entityPre.getTaskPlanCode(), entityPro.getTaskPlanCode()); // 同じコード
         // 積み上げた履歴は終了履歴であること
         assertTrue(entityPro.getIsLatest());

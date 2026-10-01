@@ -1,4 +1,4 @@
-package net.seijishikin.jp.normalize.manage.kanrensha.service.year;
+package net.seijishikin.jp.normalize.manage.kanrensha.service.year.y2025;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.task.SearchTaskPlanCapsuleDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.task.SearchTaskPlanResultDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.TaskPlanBaseEntity;
+import net.seijishikin.jp.normalize.manage.kanrensha.service.year.SwitchYearSearchTaskPlanService;
 
 
 /**
@@ -30,8 +31,8 @@ import net.seijishikin.jp.normalize.manage.kanrensha.entity.TaskPlanBaseEntity;
 @SpringBootTest
 @DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
 @Transactional
-@Sql("SwitchYearSearchTaskPlanServiceTest.sql")
-class SwitchYearSearchTaskPlanServiceTest {
+@Sql("SwitchYearSearchTaskPlanY2025ServiceTest.sql")
+class SwitchYearSearchTaskPlanY2025ServiceTest {
     // CHECKSTYLE:OFF MagicNumber
 
     /** テスト対象 */

@@ -1,4 +1,4 @@
-package net.seijishikin.jp.normalize.manage.kanrensha.service.year;
+package net.seijishikin.jp.normalize.manage.kanrensha.service.year.y2026;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -18,6 +18,7 @@ import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.PartnerAccessHistoryBaseEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.year.y2026.PartnerAccessHistory2026Entity;
 import net.seijishikin.jp.normalize.manage.kanrensha.repository.year.y2026.PartnerAccessHistory2026Repository;
+import net.seijishikin.jp.normalize.manage.kanrensha.service.year.SwitchYearSavePartnerApiLoginHistoryService;
 
 /**
  * SwitchYearSavePartnerApiLoginHistoryService単体テスト
@@ -27,8 +28,8 @@ import net.seijishikin.jp.normalize.manage.kanrensha.repository.year.y2026.Partn
 @SpringBootTest
 @DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
 // @Transactional
-@Sql("SwitchYearSavePartnerApiLoginHistoryServiceTest.sql")
-class SwitchYearSavePartnerApiLoginHistoryServiceTest {
+@Sql("SwitchYearSavePartnerApiLoginHistoryY2026ServiceTest.sql")
+class SwitchYearSavePartnerApiLoginHistoryY2026ServiceTest {
     // CHECKSTYLE:OFF MagicNumber
 
     /** テスト対象 */

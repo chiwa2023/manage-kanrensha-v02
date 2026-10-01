@@ -1,4 +1,4 @@
-package net.seijishikin.jp.normalize.manage.kanrensha.service.year;
+package net.seijishikin.jp.normalize.manage.kanrensha.service.year.y2025;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -24,10 +24,11 @@ import net.seijishikin.jp.normalize.manage.kanrensha.constants.GetCurrentResourc
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.storage_file.OneFileBlobResultDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.storage_file.UploadContentCapsuleDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.storage_file.UploadFileDto;
-import net.seijishikin.jp.normalize.manage.kanrensha.entity.year.y2026.SaveFileStorage2026Entity;
+import net.seijishikin.jp.normalize.manage.kanrensha.entity.year.y2025.SaveFileStorage2025Entity;
 import net.seijishikin.jp.normalize.manage.kanrensha.logic.task_plan.CreateQueryParamDummyUtil;
-import net.seijishikin.jp.normalize.manage.kanrensha.repository.year.y2026.SaveFileStorage2026Repository;
+import net.seijishikin.jp.normalize.manage.kanrensha.repository.year.y2025.SaveFileStorage2025Repository;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.file.FileUploadServcie;
+import net.seijishikin.jp.normalize.manage.kanrensha.service.year.SwitchYearGetStorageFielByIdService;
 import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateLeastUserForTestUtil;
 
 /**
@@ -36,8 +37,8 @@ import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateLeastUserForTes
 @SpringJUnitConfig
 @SpringBootTest
 @DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
-@Sql("SwitchYearGetStorageFielByIdServiceTest.sql")
-class SwitchYearGetStorageFielByIdServiceTest {
+@Sql("SwitchYearGetStorageFielByIdY2025ServiceTest.sql")
+class SwitchYearGetStorageFielByIdY2025ServiceTest {
     // CHECKSTYLE:OFF MagicNumber
 
     /** テスト対象 */
@@ -48,13 +49,13 @@ class SwitchYearGetStorageFielByIdServiceTest {
     @Autowired
     private FileUploadServcie fileUploadServcie;
 
-    /** 保存ファイルRepository(2026) */
+    /** 保存ファイルRepository(2025) */
     @Autowired
-    private SaveFileStorage2026Repository saveFileStorage2026Repository;
+    private SaveFileStorage2025Repository saveFileStorage2025Repository;
 
     @Test
     @Tag("TableTruncate")
-    void test2026() throws Exception {
+    void test2025() throws Exception {
 
         String fileName = "mt_city_all.csv";
 
@@ -68,20 +69,20 @@ class SwitchYearGetStorageFielByIdServiceTest {
         uploadFileDto.setFileContent(Base64.getEncoder().encodeToString(bytes));
         capsuleDto.setUploadFileDto(uploadFileDto);
 
-        LocalDateTime dateTimeStart = LocalDateTime.of(2026, 7, 26, 12, 22, 56);
+        LocalDateTime dateTimeStart = LocalDateTime.of(2025, 7, 26, 12, 22, 56);
 
         Path pathSaved = fileUploadServcie.practice(dateTimeStart, capsuleDto, CreateQueryParamDummyUtil.practice());
 
         // コピー成功
         assertTrue(Files.exists(pathSaved));
 
-        List<SaveFileStorage2026Entity> listSave = saveFileStorage2026Repository.findAll();
+        List<SaveFileStorage2025Entity> listSave = saveFileStorage2025Repository.findAll();
         assertEquals(1, listSave.size()); // 空に対して1件追加
         final Integer storageId = listSave.get(0).getSaveFileStorageId();
         assertEquals(111, storageId); // テスト前にストレージ情報をクリアしたときに auto incrementを110まで使用している設定
 
-        // 2026年で登録したので2026年で取得できる
-        OneFileBlobResultDto resultDto = switchYearGetStorageFielByIdService.practice(2026, storageId);
+        // 2025年で登録したので2025年で取得できる
+        OneFileBlobResultDto resultDto = switchYearGetStorageFielByIdService.practice(2025, storageId);
         assertNotEquals("", resultDto.getFileName());
         // アップロードファイルとダウンロードファイルのbase64バイナリ変換が同一
         assertEquals(uploadFileDto.getFileContent(), resultDto.getFileContentBase64());

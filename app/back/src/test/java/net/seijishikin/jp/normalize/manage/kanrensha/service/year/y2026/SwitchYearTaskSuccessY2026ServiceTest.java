@@ -1,4 +1,4 @@
-package net.seijishikin.jp.normalize.manage.kanrensha.service.year;
+package net.seijishikin.jp.normalize.manage.kanrensha.service.year.y2026;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -17,8 +17,9 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import org.springframework.transaction.annotation.Transactional;
 
-import net.seijishikin.jp.normalize.manage.kanrensha.entity.year.y2025.TaskPlan2025Entity;
-import net.seijishikin.jp.normalize.manage.kanrensha.repository.year.y2025.TaskPlan2025Repository;
+import net.seijishikin.jp.normalize.manage.kanrensha.entity.year.y2026.TaskPlan2026Entity;
+import net.seijishikin.jp.normalize.manage.kanrensha.repository.year.y2026.TaskPlan2026Repository;
+import net.seijishikin.jp.normalize.manage.kanrensha.service.year.SwitchYearTaskSuccessService;
 import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateLeastUserForTestUtil;
 
 /**
@@ -28,32 +29,32 @@ import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateLeastUserForTes
 @SpringBootTest
 @DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
 @Transactional
-@Sql("SwitchYearTaskSuccessServiceTest.sql")
-class SwitchYearTaskSuccessServiceTest {
+@Sql("SwitchYearTaskSuccessY2026ServiceTest.sql")
+class SwitchYearTaskSuccessY2026ServiceTest {
     // CHECKSTYLE:OFF MagicNumber
 
     /** テスト対象 */
     @Autowired
     private SwitchYearTaskSuccessService switchYearTaskSuccessService;
 
-    /** タスク計画Repository(2025) */
+    /** タスク計画Repository(2026) */
     @Autowired
-    private TaskPlan2025Repository taskPlan2025Repository;
+    private TaskPlan2026Repository taskPlan2026Repository;
 
     @Test
     @Tag("TableTruncate")
-    void test2025() throws Exception {
+    void test2026() throws Exception {
 
-        final Integer year = 2025;
+        final Integer year = 2026;
         final Integer taskId = 453;
         LocalDateTime endDateTime = LocalDateTime.of(2022, 12, 5, 12, 34, 56);
         Integer newId = switchYearTaskSuccessService.practice(year, CreateLeastUserForTestUtil.practice(), taskId,
                 endDateTime);
 
-        TaskPlan2025Entity oldEntity = taskPlan2025Repository.findById(taskId).get();
+        TaskPlan2026Entity oldEntity = taskPlan2026Repository.findById(taskId).get();
         assertFalse(oldEntity.getIsLatest()); // 履歴になった
 
-        TaskPlan2025Entity newEntity = taskPlan2025Repository.findById(newId).get();
+        TaskPlan2026Entity newEntity = taskPlan2026Repository.findById(newId).get();
         assertTrue(newEntity.getIsLatest());
         assertTrue(newEntity.getIsFinished());
         assertFalse(newEntity.getIsSuspended());

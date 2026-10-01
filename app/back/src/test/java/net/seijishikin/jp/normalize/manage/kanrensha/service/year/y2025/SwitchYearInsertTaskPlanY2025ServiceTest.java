@@ -1,4 +1,4 @@
-package net.seijishikin.jp.normalize.manage.kanrensha.service.year;
+package net.seijishikin.jp.normalize.manage.kanrensha.service.year.y2025;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -20,9 +20,10 @@ import net.seijishikin.jp.normalize.common_tool.dto.DtoEntityInitialValueInterfa
 import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.constants.TaskInfoConstants;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.task.InsertTaskPlanResultDto;
-import net.seijishikin.jp.normalize.manage.kanrensha.entity.year.y2026.TaskPlan2026Entity;
+import net.seijishikin.jp.normalize.manage.kanrensha.entity.year.y2025.TaskPlan2025Entity;
 import net.seijishikin.jp.normalize.manage.kanrensha.logic.task_plan.CreateQueryParamDummyUtil;
-import net.seijishikin.jp.normalize.manage.kanrensha.repository.year.y2026.TaskPlan2026Repository;
+import net.seijishikin.jp.normalize.manage.kanrensha.repository.year.y2025.TaskPlan2025Repository;
+import net.seijishikin.jp.normalize.manage.kanrensha.service.year.SwitchYearInsertTaskPlanService;
 import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateLeastUserForTestUtil;
 
 /**
@@ -33,25 +34,25 @@ import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateLeastUserForTes
 @SpringBootTest
 @DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
 @Transactional
-@Sql("SwitchYearInsertTaskPlanServiceTest.sql")
-class SwitchYearInsertTaskPlanServiceTest {
+@Sql("SwitchYearInsertTaskPlanY2025ServiceTest.sql")
+class SwitchYearInsertTaskPlanY2025ServiceTest {
     // CHECKSTYLE:OFF
 
     /** テスト対象 */
     @Autowired
     private SwitchYearInsertTaskPlanService switchYearInsertTaskPlanService;
 
-    /** タスク計画Repository(2026) */
+    /** タスク計画Repository(2025) */
     @Autowired
-    private TaskPlan2026Repository taskPlan2026Repository;
+    private TaskPlan2025Repository taskPlan2025Repository;
 
     @Test
     @Tag("TableTruncate")
-    void test2026() {
+    void test2025() {
 
         final Integer taskCode = TaskInfoConstants.SAVE_POSTAL_REPAIR_CSV;
         LeastUserDto userDto = CreateLeastUserForTestUtil.practice();
-        LocalDateTime dateTimeStart = LocalDateTime.of(2026, 12, 13, 11, 22, 33);
+        LocalDateTime dateTimeStart = LocalDateTime.of(2025, 12, 13, 11, 22, 33);
 
         LeastUserDto workUserDto = new LeastUserDto();
         workUserDto.setUserPersonCode(854);
@@ -60,7 +61,7 @@ class SwitchYearInsertTaskPlanServiceTest {
         InsertTaskPlanResultDto dto = switchYearInsertTaskPlanService.practice(workUserDto, userDto, dateTimeStart,
                 taskCode, CreateQueryParamDummyUtil.practice());
 
-        TaskPlan2026Entity entity = taskPlan2026Repository.findById(dto.getTaskPlanId()).get();
+        TaskPlan2025Entity entity = taskPlan2025Repository.findById(dto.getTaskPlanId()).get();
 
         assertEquals(true, entity.getIsLatest());
 

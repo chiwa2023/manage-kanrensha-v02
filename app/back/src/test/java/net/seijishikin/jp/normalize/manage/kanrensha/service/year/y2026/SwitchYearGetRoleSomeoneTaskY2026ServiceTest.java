@@ -1,4 +1,4 @@
-package net.seijishikin.jp.normalize.manage.kanrensha.service.year;
+package net.seijishikin.jp.normalize.manage.kanrensha.service.year.y2026;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -17,6 +17,7 @@ import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.TaskPlanBaseEntity;
+import net.seijishikin.jp.normalize.manage.kanrensha.service.year.SwitchYearGetRoleSomeoneTaskService;
 import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateLeastUserForTestUtil;
 
 /**
@@ -25,8 +26,8 @@ import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateLeastUserForTes
 @SpringJUnitConfig
 @SpringBootTest
 @DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
-@Sql("SwitchYearGetRoleSomeoneTaskServiceTest.sql")
-class SwitchYearGetRoleSomeoneTaskServiceTest {
+@Sql("SwitchYearGetRoleSomeoneTaskY2026ServiceTest.sql")
+class SwitchYearGetRoleSomeoneTaskY2026ServiceTest {
     // CHECKSTYLE:OFF MagicNumber
 
     /** テスト対象 */

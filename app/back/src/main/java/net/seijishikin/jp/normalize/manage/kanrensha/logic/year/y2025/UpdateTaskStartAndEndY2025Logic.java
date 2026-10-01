@@ -50,7 +50,6 @@ public class UpdateTaskStartAndEndY2025Logic {
         taskPlan2025Repository.save(entitySrc);
 
         entityNew.setIsStart(true);
-        entityNew.setStartDatetime(endTime);
         entityNew.setIsFinished(true);
         entityNew.setEndDateimte(endTime);
         setTableDataHistoryUtil.practiceInsert(userDto, entityNew); // タスク自体が終了が最新に変更

@@ -1,4 +1,4 @@
-package net.seijishikin.jp.normalize.manage.kanrensha.service.year;
+package net.seijishikin.jp.normalize.manage.kanrensha.service.year.y2025;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.year.y2025.TaskPlan2025Entity;
 import net.seijishikin.jp.normalize.manage.kanrensha.repository.year.y2025.TaskPlan2025Repository;
+import net.seijishikin.jp.normalize.manage.kanrensha.service.year.SwitchYearTaskFailureService;
 import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateLeastUserForTestUtil;
 
 /**
@@ -29,8 +30,8 @@ import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateLeastUserForTes
 @SpringBootTest
 @DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
 @Transactional
-@Sql("SwitchYearTaskFailureServiceTest.sql")
-class SwitchYearTaskFailureServiceTest {
+@Sql("SwitchYearTaskFailureY2025ServiceTest.sql")
+class SwitchYearTaskFailureY2025ServiceTest {
     // CHECKSTYLE:OFF MagicNumber
 
     /** テスト対象 */
