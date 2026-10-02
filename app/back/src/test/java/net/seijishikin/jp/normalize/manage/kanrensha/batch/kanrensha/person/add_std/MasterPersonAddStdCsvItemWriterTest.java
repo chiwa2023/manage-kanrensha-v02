@@ -20,7 +20,6 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
-import org.springframework.transaction.annotation.Transactional;
 
 import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.WkTblKanrenshaPersonMasterEntity;
@@ -48,7 +47,6 @@ class MasterPersonAddStdCsvItemWriterTest {
 
     @Test
     @Tag("TableTruncate")
-    @Transactional
     void testWrite() throws Exception {
 
         StepExecution stepExecution = getStepExecution();
@@ -75,7 +73,6 @@ class MasterPersonAddStdCsvItemWriterTest {
 
     @Test
     @Tag("TableTruncate")
-    @Transactional
     void testWriteWithExistingData() throws Exception {
         WkTblKanrenshaPersonMasterEntity existingEntity = createEntity("既存太郎", "福岡県", "自営業");
         existingEntity.setWkTblKanrenshaPersonMasterCode(100);

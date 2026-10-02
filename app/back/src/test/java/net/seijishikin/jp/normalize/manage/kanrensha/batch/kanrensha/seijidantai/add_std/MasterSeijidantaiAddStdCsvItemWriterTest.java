@@ -20,7 +20,6 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
-import org.springframework.transaction.annotation.Transactional;
 
 import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.WkTblKanrenshaSeijidantaiMasterEntity;
@@ -34,7 +33,6 @@ import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateLeastUserForTes
 @AutoConfigureMockMvc
 @SpringBootTest
 @DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
-@Transactional
 @Sql("MasterSeijidantaiAddStdCsvItemWriterTest.sql")
 class MasterSeijidantaiAddStdCsvItemWriterTest {
     // CHECKSTYLE:OFF MagicNumber
@@ -74,7 +72,6 @@ class MasterSeijidantaiAddStdCsvItemWriterTest {
 
     @Test
     @Tag("TableTruncate")
-    @Transactional
     void testWriteWithExistingData() throws Exception {
         WkTblKanrenshaSeijidantaiMasterEntity existingEntity = createEntity("既存政治団体", "既存住所", "既存代表", "01", "999");
         existingEntity.setWkTblKanrenshaSeijidantaiMasterCode(300);

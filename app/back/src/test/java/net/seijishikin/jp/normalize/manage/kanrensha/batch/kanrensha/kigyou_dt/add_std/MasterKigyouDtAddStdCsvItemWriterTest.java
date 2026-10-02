@@ -20,7 +20,6 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
-import org.springframework.transaction.annotation.Transactional;
 
 import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.WkTblKanrenshaKigyouDtMasterEntity;
@@ -48,7 +47,6 @@ class MasterKigyouDtAddStdCsvItemWriterTest {
 
     @Test
     @Tag("TableTruncate")
-    @Transactional
     void testWrite() throws Exception {
 
         // Call beforeStep to set userDto
@@ -84,7 +82,6 @@ class MasterKigyouDtAddStdCsvItemWriterTest {
 
     @Test
     @Tag("TableTruncate")
-    @Transactional
     void testWriteWithExistingData() throws Exception {
         // Insert some initial data to test code increment
         WkTblKanrenshaKigyouDtMasterEntity existingEntity = createTestEntity("既存団体", "既存住所", "既存代表", "9999999999999");
