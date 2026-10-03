@@ -22,7 +22,6 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
-import org.springframework.transaction.annotation.Transactional;
 
 import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.WkTblKanrenshaSeijidantaiHistoryEntity;
@@ -36,7 +35,6 @@ import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateLeastUserForTes
 @AutoConfigureMockMvc
 @SpringBootTest
 @DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
-@Transactional
 @Sql("KanrenshaSeijidantaiHistoryItemWriterTest.sql")
 class KanrenshaSeijidantaiHistoryItemWriterTest {
     // CHECKSTYLE:OFF
@@ -77,7 +75,6 @@ class KanrenshaSeijidantaiHistoryItemWriterTest {
 
     @Test
     @Tag("TableTruncate")
-    @Transactional
     void testWriteWithExistingData() throws Exception {
         WkTblKanrenshaSeijidantaiHistoryEntity existingEntity = createEntity("既存団体", "既存住所", "既存代表", "S-CODE-OLD",
                 "D-CODE-OLD");

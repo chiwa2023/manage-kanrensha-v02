@@ -65,7 +65,7 @@ public interface TimerYoteiRepository
      * @param dateTime 指定時間
      * @return 検索結果
      */
-    Optional<TimerYoteiEntity> findByNextTimestampLessThanEqualAndIsLatestTrueOrderByNextTimestampAscInsertTimestampAsc(
+    Optional<TimerYoteiEntity> findFirstByNextTimestampLessThanEqualAndIsLatestTrueOrderByNextTimestampAscInsertTimestampAsc(
             LocalDateTime dateTime);
 
     /**

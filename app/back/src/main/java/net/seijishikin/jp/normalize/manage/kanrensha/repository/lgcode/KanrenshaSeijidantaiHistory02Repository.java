@@ -64,4 +64,12 @@ public interface KanrenshaSeijidantaiHistory02Repository
     Page<KanrenshaSeijidantaiHistory02Entity> findByInsertTimestampGreaterThanEqualAndInsertTimestampLessThanAndIsLatest(
             LocalDateTime dateTimeStart, LocalDateTime dateTimeEnd, boolean isLatest, Pageable pageable);
 
+    /**
+     * 関連者コードが一致かつ最新
+     * 
+     * @param code 関連者コード
+     * @return 検索結果
+     */
+    List<KanrenshaSeijidantaiHistory02Entity> findBySeijidantaiKanrenshaCodeAndIsLatestTrue(String code);
+
 }

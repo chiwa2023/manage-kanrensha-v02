@@ -42,6 +42,9 @@ public class RefleshYearSourceTasklet implements Tasklet, StepExecutionListener 
     /** Logicディレクトリ */
     private static final String DIR_LOGIC = "/logic/year";
 
+    /** 年切り替えServiceディレクトリ */
+    private static final String DIR_SWITCH_SERVICE = "/service/year";
+
     /** 複写元年保存キー */
     public static final String KEY_SRC_YEAR = "srcYear";
     /** 複写元年保存キー */
@@ -82,11 +85,13 @@ public class RefleshYearSourceTasklet implements Tasklet, StepExecutionListener 
         //this.copy(DIR_TEST_ROOT + DIR_ENTITY);
         //this.copy(DIR_TEST_ROOT + DIR_REPOSITORY);
         this.copy(DIR_TEST_ROOT + DIR_LOGIC);
+        this.copy(DIR_TEST_ROOT + DIR_SWITCH_SERVICE);
 
         // テストリソース
         //this.copy(DIR_TEST_SOURCE_ROOT + DIR_ENTITY);
         //this.copy(DIR_TEST_SOURCE_ROOT + DIR_REPOSITORY);
         this.copy(DIR_TEST_SOURCE_ROOT + DIR_LOGIC);
+        this.copy(DIR_TEST_SOURCE_ROOT + DIR_SWITCH_SERVICE);
 
         // 処理終了
         return RepeatStatus.FINISHED;

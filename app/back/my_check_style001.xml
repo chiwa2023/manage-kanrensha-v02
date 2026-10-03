@@ -172,9 +172,6 @@
     <module name="IllegalImport"/>
     <module name="RedundantImport"/>
     <module name="UnusedImports"/>
-    <module name="JavadocStyle">
-      <property name="checkFirstSentence" value="false"/>
-    </module>
     <module name="NoClone"/>
     <module name="SuppressionCommentFilter"/>
     <module name="CovariantEquals"/>

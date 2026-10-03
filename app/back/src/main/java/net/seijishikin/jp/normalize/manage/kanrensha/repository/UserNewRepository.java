@@ -1,5 +1,7 @@
 package net.seijishikin.jp.normalize.manage.kanrensha.repository;
 
+import java.time.LocalDateTime;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.UserNewEntity;
@@ -16,4 +18,12 @@ public interface UserNewRepository extends JpaRepository<UserNewEntity, String> 
      * @return 該当エンティティ
      */
     UserNewEntity findByVerifyToken(String verifyToken);
+
+    /**
+     * 期限切れを削除する
+     * 
+     * @param limitDate 削除期限
+     * @return 削除件数
+     */
+    Integer deleteByVerifyLimitDateTimeIsNullOrVerifyLimitDateTimeLessThan(LocalDateTime limitDate);
 }

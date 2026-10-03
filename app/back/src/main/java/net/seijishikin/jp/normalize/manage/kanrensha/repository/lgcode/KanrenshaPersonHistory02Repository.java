@@ -63,4 +63,12 @@ public interface KanrenshaPersonHistory02Repository extends JpaRepository<Kanren
     Page<KanrenshaPersonHistory02Entity> findByInsertTimestampGreaterThanEqualAndInsertTimestampLessThanAndIsLatest(
             LocalDateTime dateTimeStart, LocalDateTime dateTimeEnd, boolean isLatest, Pageable pageable);
 
+    /**
+     * 関連者コードが一致かつ最新
+     * 
+     * @param code 関連者コード
+     * @return 検索結果
+     */
+    List<KanrenshaPersonHistory02Entity> findByPersonKanrenshaCodeAndIsLatestTrue(String code);
+
 }

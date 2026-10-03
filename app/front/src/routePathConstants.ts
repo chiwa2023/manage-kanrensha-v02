@@ -33,6 +33,19 @@ export default class RoutePathConstants {
 
     /** 関連者追加 */
     static readonly PAGE_INSERT_KANRENSHA: string = this.BASE_PATH + "/insert-kanrensha";
+
+    /** 関連者コード運営者申請 */
+    static readonly PAGE_MOVE_CODE_MANAGER: string = this.BASE_PATH + "/move-code-manager";
+
+    /** 関連者コード変更申請 */
+    static readonly PAGE_MOVE_CODE_PROMOTE: string = this.BASE_PATH + "/move-code-promote";
+
+    /** 関連者コード変更承認 */
+    static readonly PAGE_MOVE_CODE_ACCEPT: string = this.BASE_PATH + "/move-code-accept";
+
+    /** 関連者コード履歴 */
+    static readonly PAGE_MOVE_CODE_MYSELF: string = this.BASE_PATH + "/move-code-myself";
+
     /** APIパートナー追加 */
     static readonly PAGE_INSERT_PARTNER_API: string = this.BASE_PATH + "/insert-partner";
     /** 運営者追加 */
@@ -62,8 +75,11 @@ export default class RoutePathConstants {
     static readonly PAGE_ADMIN_ACCEPT: string = this.BASE_PATH + "/user/admin-accept";
 
 
-    /** APIパートナーTokenおきかえ */
+    /** APIパートナーToken置き換え    */
     static readonly PAGE_PARTNER_TOKEN_REPLACE: string = this.BASE_PATH + "/partner-api/token-replace";
+
+    /** APIパートナー期限切れ強制通知 */
+    static readonly PAGE_NOTIFY_LIMIT: string = this.BASE_PATH + "/partner-api/notify-limit";
 
     /** 利用者検索 */
     static readonly PAGE_RIYOUSHA_SEARCH: string = this.BASE_PATH + "/riyousha-search";
@@ -178,6 +194,11 @@ export default class RoutePathConstants {
     /** 利用者組織に招待を個人が承認 */
     static readonly PAGE_ACCEPT_ORG_PERSON: string = this.BASE_PATH + "/accept-combine-riyousha";
 
+    /** 運営者に連絡(自分自身) */
+    static readonly PAGE_CONTACT_MANAGER_MYSELF: string = this.BASE_PATH + "/contact-myself";
+
+    /** 運営者に連絡(回答) */
+    static readonly PAGE_CONTACT_MANAGER_ANSWER: string = this.BASE_PATH + "/contact-answer";
 
 
     // /** 運営者による利用者検索編集 */

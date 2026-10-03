@@ -51,4 +51,24 @@ public interface KanrenshaPersonPropertyRepository extends JpaRepository<Kanrens
      */
     Integer countByInsertTimestampBetweenAndIsShokyouAcceptInAndIsShokyouEditAndIsLatest(LocalDateTime startDatetime,
             LocalDateTime endDatetime, List<Boolean> listIsEdit, Boolean isAccept, Boolean isLatest);
+
+    /**
+     * マスタIdに紐づき最新を取得する
+     * 
+     * @param masterId マスタId
+     * @param isLatest 最新該非
+     * @return 検索結果リスト
+     */
+    List<KanrenshaPersonPropertyEntity> findByKanrenshaPersonIdAndIsLatest(Integer masterId, boolean isLatest);
+
+    /**
+     * 関連者コード紐づく最新を取得する
+     * 
+     * @param kanrenshaCode 関連者コード
+     * @param isLatest      最新該非
+     * @return 検索結果リスト
+     */
+    List<KanrenshaPersonPropertyEntity> findByPersonKanrenshaCodeAndIsLatestOrderByKanrenshaPersonPropertyIdDesc(
+            String kanrenshaCode, Boolean isLatest);
+
 }

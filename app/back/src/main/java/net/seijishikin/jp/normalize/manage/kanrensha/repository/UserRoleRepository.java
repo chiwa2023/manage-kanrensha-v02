@@ -57,4 +57,12 @@ public interface UserRoleRepository extends JpaRepository<UserRoleEntity, Intege
             + " user_role WHERE is_latest = 1 AND riyousha_code =?1 AND role = ?2)", nativeQuery = true)
     List<UserRoleEntity> findRiyoushaCodeAndRole(Integer riyoushaCode, String role);
 
+    /**
+     * 関連者コードに紐づくユーザ権限を抽出する
+     * 
+     * @param kanrenshaCode 関連者コード
+     * @return 検索結果
+     */
+    List<UserRoleEntity> findByKanrenshaCodeAndIsLatestTrue(String kanrenshaCode);
+
 }

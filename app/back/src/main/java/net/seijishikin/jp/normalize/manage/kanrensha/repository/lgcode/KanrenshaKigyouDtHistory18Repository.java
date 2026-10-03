@@ -63,4 +63,12 @@ public interface KanrenshaKigyouDtHistory18Repository extends JpaRepository<Kanr
     Page<KanrenshaKigyouDtHistory18Entity> findByInsertTimestampGreaterThanEqualAndInsertTimestampLessThanAndIsLatest(
             LocalDateTime dateTimeStart, LocalDateTime dateTimeEnd, boolean isLatest, Pageable pageable);
 
+    /**
+     * 関連者コードが一致かつ最新
+     * 
+     * @param code 関連者コード
+     * @return 検索結果
+     */
+    List<KanrenshaKigyouDtHistory18Entity> findByKigyouDtKanrenshaCodeAndIsLatestTrue(String code);
+
 }

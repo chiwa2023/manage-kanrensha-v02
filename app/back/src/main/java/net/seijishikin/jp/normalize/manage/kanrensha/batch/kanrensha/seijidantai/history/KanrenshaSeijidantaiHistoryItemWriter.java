@@ -8,6 +8,7 @@ import org.springframework.batch.infrastructure.item.Chunk;
 import org.springframework.batch.infrastructure.item.database.JpaItemWriter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import jakarta.persistence.EntityManagerFactory;
 import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
@@ -61,6 +62,7 @@ public class KanrenshaSeijidantaiHistoryItemWriter extends JpaItemWriter<WkTblKa
      * 書き込み処理
      */
     @Override
+    @Transactional
     public void write(final Chunk<? extends WkTblKanrenshaSeijidantaiHistoryEntity> items) {
 
         int code = 0;

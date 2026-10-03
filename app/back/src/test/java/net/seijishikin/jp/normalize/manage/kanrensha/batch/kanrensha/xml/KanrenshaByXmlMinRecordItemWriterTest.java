@@ -22,7 +22,6 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
-import org.springframework.transaction.annotation.Transactional;
 
 import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.KanrenshaKigyouDtMasterEntity;
@@ -50,7 +49,6 @@ import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateLeastUserForTes
 @AutoConfigureMockMvc
 @SpringBootTest
 @DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
-@Transactional
 @Sql("KanrenshaByXmlMinRecordItemWriterTest.sql")
 class KanrenshaByXmlMinRecordItemWriterTest { // NOPMD CouplingBetweenObjects
     // CHECKSTYLE:OFF MagicNumber
@@ -139,7 +137,6 @@ class KanrenshaByXmlMinRecordItemWriterTest { // NOPMD CouplingBetweenObjects
 
     @Test
     @Tag("TableTruncate")
-    @Transactional
     void testCorp() {
 
         final Integer saveId = 1059;
@@ -187,7 +184,6 @@ class KanrenshaByXmlMinRecordItemWriterTest { // NOPMD CouplingBetweenObjects
 
     @Test
     @Tag("TableTruncate")
-    @Transactional
     void testPoliOrg() {
 
         final Integer saveId = 1059;

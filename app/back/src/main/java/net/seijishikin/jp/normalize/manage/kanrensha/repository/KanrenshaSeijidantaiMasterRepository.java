@@ -115,4 +115,14 @@ public interface KanrenshaSeijidantaiMasterRepository extends JpaRepository<Kanr
     Integer countSearchCondition(String poliOrgNo, String name, String address, String delegate, // NOPMD CleanerAPI
             List<String> listDantaiKbn);
 
+    /**
+     * 関連者コードで検索する
+     * 
+     * @param kanrenshaCode 関連者コード
+     * @param isLatest      最新フラグ
+     * @return 検索結果
+     */
+    List<KanrenshaSeijidantaiMasterEntity> findBySeijidantaiKanrenshaCodeAndIsLatestOrderByKanrenshaSeijidantaiMasterIdDesc(
+            String kanrenshaCode, Boolean isLatest);
+
 }

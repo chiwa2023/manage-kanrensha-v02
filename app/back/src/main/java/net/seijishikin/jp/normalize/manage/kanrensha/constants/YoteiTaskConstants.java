@@ -17,4 +17,10 @@ public class YoteiTaskConstants { // NOPMD DataClass
     public static final short DUMP_STD = (short) 105;
     /** 履歴差分出力 */
     public static final short DUMP_STD_SABUN = (short) 106;
+    /** 一時ファイル削除 */
+    public static final short TEMP_FILE_DELETE = (short) 107;
+    /** 期限切れトークン削除 */
+    public static final short EXPIRED_TOKEN_DELETE = (short) 108;
+    /** APIパートナー長期トークン期限切れ通知 */
+    public static final short NOTIFY_TOKEN_LIMIT = (short) 109;
 }

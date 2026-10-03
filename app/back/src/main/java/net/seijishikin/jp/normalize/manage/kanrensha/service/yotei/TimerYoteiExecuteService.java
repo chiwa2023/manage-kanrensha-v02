@@ -54,7 +54,7 @@ public class TimerYoteiExecuteService {
         // 基本的には1時間1件しか動かさない想定。TODO 起動メモリ的に十分に動作することが確認出来てからリスト化する
         LocalDateTime now = LocalDateTime.now();
         Optional<TimerYoteiEntity> optional = timerYoteiRepository
-                .findByNextTimestampLessThanEqualAndIsLatestTrueOrderByNextTimestampAscInsertTimestampAsc(now);
+                .findFirstByNextTimestampLessThanEqualAndIsLatestTrueOrderByNextTimestampAscInsertTimestampAsc(now);
 
         // 特に予定がなければ離脱
         if (optional.isEmpty()) {

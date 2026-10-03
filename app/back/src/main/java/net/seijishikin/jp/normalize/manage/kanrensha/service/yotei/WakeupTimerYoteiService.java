@@ -1,18 +1,24 @@
 package net.seijishikin.jp.normalize.manage.kanrensha.service.yotei;
 
+import java.time.LocalDateTime;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.constants.YoteiTaskConstants;
+import net.seijishikin.jp.normalize.manage.kanrensha.controller.file.DeleteStorageTempFileController;
+import net.seijishikin.jp.normalize.manage.kanrensha.controller.user.DeleteLimitOverTokenController;
 import net.seijishikin.jp.normalize.manage.kanrensha.controller.z_force.ForceDumpHistoryController;
 import net.seijishikin.jp.normalize.manage.kanrensha.controller.z_force.ForceDumpHistorySabunController;
 import net.seijishikin.jp.normalize.manage.kanrensha.controller.z_force.ForceDumpMinMasterController;
 import net.seijishikin.jp.normalize.manage.kanrensha.controller.z_force.ForceDumpMinMasterSabunController;
 import net.seijishikin.jp.normalize.manage.kanrensha.controller.z_force.ForceDumpStdMasterController;
 import net.seijishikin.jp.normalize.manage.kanrensha.controller.z_force.ForceDumpStdMasterSabunController;
+import net.seijishikin.jp.normalize.manage.kanrensha.dto.user.NotifyPartnerApiLimitCapsuleDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.z_force.ForceDumpCapsuleDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.TimerYoteiEntity;
+import net.seijishikin.jp.normalize.manage.kanrensha.service.user.NotificationPartnerApiTokenLimitAsyncService;
 
 /**
  * 予定作業と定義されたタスクを起動する
@@ -43,6 +49,18 @@ public class WakeupTimerYoteiService {
     /** 関連者標準出力差分Controller */
     @Autowired
     private ForceDumpStdMasterSabunController forceDumpStdMasterSabunController;
+
+    /** ストレージ一時ファイル削除Controller */
+    @Autowired
+    private DeleteStorageTempFileController deleteStorageTempFileController;
+
+    /** APIパートナ－長期トークン期限切れ通知非同期Service */
+    @Autowired
+    private NotificationPartnerApiTokenLimitAsyncService notificationPartnerApiTokenLimitAsyncService;
+
+    /** 期限切れトークン削除Controller */
+    @Autowired
+    private DeleteLimitOverTokenController deleteLimitOverTokenController;
 
     /**
      * 処理を行う
@@ -75,9 +93,21 @@ public class WakeupTimerYoteiService {
                     return !forceDumpStdMasterSabunController.practice( // NOPMD LawOfDemeter
                             this.createDumpCapsuleDto(timerYoteiEntity, userDto)).getBody().getIsFailure();
 
-                /* TODO アップロード一時ファイル整理 */
+                /* アップロード一時ファイル整理 */
+                case YoteiTaskConstants.TEMP_FILE_DELETE:
+                    return deleteStorageTempFileController.practice();
 
-                /* TODO 長期アクセスなしユーザ対応 */
+                /* 不要アクセストークン削除 */
+                case YoteiTaskConstants.EXPIRED_TOKEN_DELETE:
+                    return deleteLimitOverTokenController.practice();
+
+                /* APIパートナートークン期限切れ通知 */
+                case YoteiTaskConstants.NOTIFY_TOKEN_LIMIT:
+                    LocalDateTime createDateTime = LocalDateTime.now();
+                    NotifyPartnerApiLimitCapsuleDto capsuleDto = new NotifyPartnerApiLimitCapsuleDto();
+                    capsuleDto.setCheckDate(createDateTime.toLocalDate());
+                    notificationPartnerApiTokenLimitAsyncService.practice(createDateTime, capsuleDto);
+                    return true;
 
                 default:
                     // その他の未指定は該当なしで何もしない

@@ -60,51 +60,27 @@ public class SendMailUserLogic {
                     // 送信元(From)のサニタイズ（制御文字やスペースを除去）
                     String from = mailMessage.getFrom();
                     if (from != null) {
-                        
-                        String cleanFrom = from.replaceAll("[\\s\\p{Cntrl}]", "");
-                        mailMessage.setFrom(cleanFrom);
+                        mailMessage.setFrom(this.cleanFrom(from));
                     }
                     // 送信先(To)のサニタイズ
-                    String[] to = mailMessage.getTo();
+                    String[] to = mailMessage.getTo(); // NOPMD
                     if (to != null) {
-                        String[] cleanTo = new String[to.length];
-                        for (int i = 0; i < to.length; i++) {
-                            if (to[i] != null) {
-                                cleanTo[i] = to[i].replaceAll("[\\s\\p{Cntrl}]", "");
-                            }
-                        }
-                        mailMessage.setTo(cleanTo);
-                        
-                        for (String clean :cleanTo) {
-                            if (clean != null) {
-                            }
-                        }
-                        
+                        mailMessage.setTo(this.cleanTo(to));
                     }
+
                     // CCのサニタイズ
-                    String[] cc = mailMessage.getCc();
+                    String[] cc = mailMessage.getCc(); //NOPMD
                     if (cc != null) {
-                        String[] cleanCc = new String[cc.length];
-                        for (int i = 0; i < cc.length; i++) {
-                            if (cc[i] != null) {
-                                cleanCc[i] = cc[i].replaceAll("[\\s\\p{Cntrl}]", "");
-                            }
-                        }
-                        mailMessage.setCc(cleanCc);
+                        mailMessage.setCc(this.cleanCc(cc));
                     }
+
                     // BCCのサニタイズ
                     String[] bcc = mailMessage.getBcc();
                     if (bcc != null) {
-                        String[] cleanBcc = new String[bcc.length];
-                        for (int i = 0; i < bcc.length; i++) {
-                            if (bcc[i] != null) {
-                                cleanBcc[i] = bcc[i].replaceAll("[\\s\\p{Cntrl}]", "");
-                            }
-                        }
-                        mailMessage.setBcc(cleanBcc);
+                        mailMessage.setBcc(this.cleanBcc(bcc));
                     }
                 }
-                
+
                 // TODO 環境が替わるたびに動作テストする。現在smtp4devをテストして動作
                 mailSender.send(mailMessage);
                 resultDto.getListSuccess().add(dataDto);
@@ -164,4 +140,40 @@ public class SendMailUserLogic {
 
         return resultDto;
     }
+
+    private String cleanFrom(final String from) {
+        return from.replaceAll("[\\s\\p{Cntrl}]", ""); // NOPMD DuplicateLiteral
+
+    }
+
+    private String[] cleanTo(final String[] to) { // NOPMD
+        String[] cleanTo = new String[to.length];
+        for (int i = 0; i < to.length; i++) {
+            if (to[i] != null) {
+                cleanTo[i] = to[i].replaceAll("[\\s\\p{Cntrl}]", "");
+            }
+        }
+        return cleanTo;
+    }
+
+    private String[] cleanCc(final String[] cc) { //NOPMD
+        String[] cleanCc = new String[cc.length];
+        for (int i = 0; i < cc.length; i++) {
+            if (cc[i] != null) {
+                cleanCc[i] = cc[i].replaceAll("[\\s\\p{Cntrl}]", "");
+            }
+        }
+        return cleanCc;
+    }
+
+    private String[] cleanBcc(final String[] bcc) { // NOPMD
+        String[] cleanBcc = new String[bcc.length];
+        for (int i = 0; i < bcc.length; i++) {
+            if (bcc[i] != null) {
+                cleanBcc[i] = bcc[i].replaceAll("[\\s\\p{Cntrl}]", "");
+            }
+        }
+        return cleanBcc;
+    }
+
 }

@@ -4,7 +4,7 @@ import {
     MessageConstants, MessageView, ViewInputAccess, ViewInputAddress, ViewInputKanrenshaLeast, ViewInputOrgName,
     type KanrenshaSeijidantaiMasterEntityInterface, type LeastUserDtoInterface
 } from 'seijishikin-jp-normalize_common-tool';
-import { onMounted, ref, watch, type Ref } from 'vue';
+import { ref, watch, type Ref } from 'vue';
 import RoutePathConstants from '../../../../routePathConstants';
 import { GetKanrenshaSeijidantaiCapsuleDto, type GetKanrenshaSeijidantaiCapsuleDtoInterface } from '../../dto/kanrensha/getKanrenshaSeijidantaiCapsuleDto';
 import getAuthorizedPromiseArea from '../../dto/login/getAuthorizedPromiseArea';
@@ -38,9 +38,6 @@ const urlBack: string = RoutePathConstants.DOMAIN + RoutePathConstants.BASE_PATH
 const editSeijidantaiDto: Ref<KanrenshaSeijidantaiDtoInterface> = ref(new KanrenshaSeijidantaiDto());
 
 watch(props, () => {
-    load();
-});
-onMounted(() => {
     load();
 });
 

@@ -4,7 +4,12 @@ import java.text.Normalizer;
 import java.util.Objects;
 
 import org.apache.commons.lang3.RandomStringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Component;
+
+import net.seijishikin.jp.normalize.manage.kanrensha.entity.PublishCodeEntity;
+import net.seijishikin.jp.normalize.manage.kanrensha.repository.PublishCodeRepository;
 
 /**
  * 企業団体向け関連者コードを生成する
@@ -15,6 +20,10 @@ public class CreateDokujiCodeForKigyouDtUtil {
     /** ハイフンを除いた文字数 */
     private static final int CODE_LENGTH = 20;
 
+    /** 発行済コードRepository */
+    @Autowired
+    private PublishCodeRepository publishCodeRepository;
+
     /**
      * 処理を行う
      *
@@ -22,6 +31,25 @@ public class CreateDokujiCodeForKigyouDtUtil {
      * @return 仮関連者コード
      */
     public String practice(final String dataSeiki) {
+
+        // 3回試行
+        // オーバーラップコードが19文字でランダム不可1文字の場合
+        // アルファベット大文字小文字+数字 → 1/ 62*62*62 の確率で重複が起きる
+        final int times = 3;
+        for (int i = 0; i < times; i++) {
+
+            String tmpCode = this.createCode(dataSeiki);
+
+            if (tmpCode.equals(this.checkCode(tmpCode))) {
+                return tmpCode;
+            }
+        }
+
+        throw new DuplicateKeyException("重複のあるコードしか生成できませんでした。オーバラップするコードを見直してください");
+    }
+
+    private String createCode(final String dataSeiki) {
+
         // 1-2345-67-890123-4567890が最終形
 
         final String hyphen = "-";
@@ -52,6 +80,17 @@ public class CreateDokujiCodeForKigyouDtUtil {
                 .append(allText.substring(pos4, CODE_LENGTH));
 
         return builder.toString();
+
     }
 
+    private String checkCode(final String tmpCode) {
+
+        if (publishCodeRepository.findById(tmpCode).isEmpty()) {
+            PublishCodeEntity entity = new PublishCodeEntity();
+            entity.setKanrenshaCode(tmpCode);
+            return publishCodeRepository.saveAndFlush(entity).getKanrenshaCode();
+        }
+
+        return "";
+    }
 }

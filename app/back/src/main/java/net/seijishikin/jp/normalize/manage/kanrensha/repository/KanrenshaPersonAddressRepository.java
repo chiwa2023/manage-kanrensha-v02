@@ -62,10 +62,29 @@ public interface KanrenshaPersonAddressRepository extends JpaRepository<Kanrensh
      * @return 該当件数
      */
     @Query(value = "SELECT count(*) AS person_count FROM kanrensha_person_address "
-            + "                           WHERE insert_timestamp between ?1 and ?2"
-            + "                              AND (is_postal_edit = 1 OR is_block_edit = 1 OR is_building_edit = 1)"
-            + "                              AND (is_postal_accept IN ?3 OR is_block_accept IN ?3 OR is_building_accept IN ?3)"
-            + "                              AND is_latest = 1 ", nativeQuery = true)
+            + "               WHERE insert_timestamp between ?1 and ?2"
+            + "                  AND (is_postal_edit = 1 OR is_block_edit = 1 OR is_building_edit = 1)"
+            + "                  AND (is_postal_accept IN ?3 OR is_block_accept IN ?3 OR is_building_accept IN ?3)"
+            + "                  AND is_latest = 1 ", nativeQuery = true)
     Integer countIsEditData(LocalDateTime startDatetime, LocalDateTime endDatetime, List<Boolean> listAccept);
+
+    /**
+     * ますったに紐づく最新を取得する
+     * 
+     * @param masterId マスタId
+     * @param isLatest 最新該非
+     * @return 検索結果リスト
+     */
+    List<KanrenshaPersonAddressEntity> findByKanrenshaPersonIdAndIsLatest(Integer masterId, boolean isLatest);
+
+    /**
+     * 関連者コードかつ最新を取得する
+     * 
+     * @param kanrenshaCode 関連者コード
+     * @param isLatest      最新
+     * @return 検索結果リスト
+     */
+    List<KanrenshaPersonAddressEntity> findByPersonKanrenshaCodeAndIsLatestOrderByKanrenshaPersonAddressIdDesc(
+            String kanrenshaCode, Boolean isLatest);
 
 }

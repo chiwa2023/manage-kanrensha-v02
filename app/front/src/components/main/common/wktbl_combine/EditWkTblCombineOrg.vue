@@ -1,16 +1,17 @@
 ﻿<script setup lang="ts">
-import { computed, ref, toRaw, type ComputedRef, type Ref } from 'vue';
+import { computed, onMounted, ref, toRaw, type ComputedRef, type Ref } from 'vue';
 import { SearchWkTblPagingCapsuleDto, type SearchWkTblPagingCapsuleDtoInterface } from '../../dto/add_xml/searchWkTbPagingCapsuleDto';
 import { SearchWkTblCombineOrgPagingResultDto, type SearchWkTblCombineOrgPagingResultDtoInterface } from '../../dto/wktbl_combine/searchWkTblCombineOrgPagingResultDto';
-import { getErrorMessage, getErrorUniqueIdMessage, MessageConstants, MessageView, PagingControl, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
+import { FrameworkCapsuleDto, getErrorMessage, getErrorUniqueIdMessage, MessageConstants, MessageView, PagingControl, type FrameworkCapsuleDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import KanrenshaKbnConstants from '../../dto/kanrensha/kanrenshaKbnConstants';
 import RoutePathConstants from '../../../../routePathConstants';
 import { WkTblKanrenshaCombineOrgEntity, type WkTblKanrenshaCombineOrgEntityInterface } from '../../entity/wkTblKanrenshaCombineOrgEntity';
-import YearOption from '../../dto/wktbl_combine/yearOption';
 import getAuthorizedPromiseArea from '../../dto/login/getAuthorizedPromiseArea';
 import { AccessTokenNotFoundError, TokenRefreshError } from '../../dto/login/errors';
 import { UpdateWkTblCombineOrgCapsuleDto, type UpdateWkTblCombineOrgCapsuleDtoInterface } from '../../dto/wktbl_combine/updateWkTblCombineOrgCapsuleDto';
 import type { UpdateWkTblHistoryKigyouDtResultDtoInterface } from '../../dto/wktbl_history/updateWkTblHistoryKigyouDtResultDto';
+import type { YearOptionResultDtoInterface } from '../../dto/year_option/yearOptionResultDto';
+import type { YearOptionEntityInterface } from '../../entity/yearOptionEntity';
 
 //props,emit
 const props = defineProps<{ orgType: string, userDto: LeastUserDtoInterface }>();
@@ -46,15 +47,56 @@ combineCapsuleDto.value.userDto = props.userDto;
 combineCapsuleDto.value.hasAffectNot = true;
 const combineResultDto: Ref<SearchWkTblCombineOrgPagingResultDtoInterface> = ref(new SearchWkTblCombineOrgPagingResultDto());
 
-const systemYearStart: number = 2019;
-const systemYearEnd: number = 2025;
-const listYearCheck: Ref<YearOption[]> = ref([]);
-for (let index = systemYearStart; index <= systemYearEnd; index++) {
-    const dto: YearOption = new YearOption();
-    dto.year = index;
-    dto.isSelect = false;
-    listYearCheck.value.push(dto);
-}
+const listYearCheck: Ref<YearOptionEntityInterface[]> = ref([]);
+
+onMounted(() => {
+    // 年選択リストを取得
+    const yearCapsuleDto: FrameworkCapsuleDtoInterface = new FrameworkCapsuleDto();
+    yearCapsuleDto.userDto = props.userDto;
+
+    getAuthorizedPromiseArea().then(token => {
+        const url = urlBack + "/year-option/get";
+        const method = "POST";
+        const body = JSON.stringify(yearCapsuleDto);
+        const headers = {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'X-AUTH-TOKEN': 'Bearer ' + token
+        };
+        fetch(url, { method, headers, body })
+            .then(async (response) => {
+                const resultDto:YearOptionResultDtoInterface = await response.json();
+
+                message.value = resultDto.message;
+                if (resultDto.isFailure) {
+                    infoLevel.value = MessageConstants.LEVEL_WARNING;
+                    messageType.value = MessageConstants.VIEW_OK;
+                    return;
+                } else {
+                    listYearCheck.value =                    resultDto.listEntity;
+                }
+            })
+            .catch((error) => {
+                message.value = getErrorMessage(error, ERR_MESS_ONLY);
+                infoLevel.value = MessageConstants.LEVEL_ERROR;
+                messageType.value = MessageConstants.VIEW_OK;
+                return;
+            });
+    }).catch((e) => {
+        infoLevel.value = MessageConstants.LEVEL_ERROR;
+        messageType.value = MessageConstants.VIEW_OK;
+
+        // トークン保持または取得に失敗している場合
+        if (e instanceof AccessTokenNotFoundError || e instanceof TokenRefreshError) {
+            message.value = e.message;
+            return;
+        }
+
+        message.value = getErrorMessage(e, INQUIRE_FLG);
+        return;
+    });
+
+});
 
 function onSearch() {
 
@@ -127,8 +169,8 @@ function onEditData(editId: number) {
         // 指定配列に基づきチェックボックスにチェックを打つ
         const listRegist = entityEdit.value.yearArrayText.split(":");
         for (const dto of listYearCheck.value) {
-            if (listRegist.includes(String(dto.year))) {
-                dto.isSelect = true;
+            if (listRegist.includes(String(dto.selectedYear))) {
+                dto.isSelected = true;
             }
             isEditData.value = true;
         }
@@ -153,8 +195,8 @@ function onEditUpdate() {
     else {
         // チェックボックスによる指定
         for (const dto of listYearCheck.value) {
-            if (dto.isSelect) {
-                text = text + dto.year + ":";
+            if (dto.isSelected) {
+                text = text + dto.selectedYear + ":";
             }
         }
         entityEdit.value.startYear = 0;
@@ -415,8 +457,8 @@ function recieveSubmit() {
                     登録年
                 </div>
                 <div class="right-area">
-                    <span v-for="dto in listYearCheck" :key="dto.year">
-                        <input type="checkbox" v-model="dto.isSelect" />{{ dto.year }} 年
+                    <span v-for="dto in listYearCheck" :key="dto.selectedYear">
+                        <input type="checkbox" v-model="dto.isSelected" />{{ dto.selectedYear }} 年
                     </span>
                 </div>
             </div>

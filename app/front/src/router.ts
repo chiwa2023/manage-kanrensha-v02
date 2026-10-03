@@ -45,6 +45,12 @@ const routes = [
     { path: RoutePathConstants.PAGE_INSERT_PARTNER_API, name: "InsertRiyoushaPartner", component: () => import("./components/main/pages/add_account/InsertRiyoushaPartner.vue") },
     { path: RoutePathConstants.PAGE_INSERT_MANAGER, name: "InsertRiyoushaManager", component: () => import("./components/main/pages/add_account/InsertRiyoushaManager.vue") },
 
+    // 関連者コード変更
+    { path: RoutePathConstants.PAGE_MOVE_CODE_MANAGER, name: "MoveCodeForManager", component: () => import("./components/main/pages/move_code/MoveCodeForManager.vue") },
+    { path: RoutePathConstants.PAGE_MOVE_CODE_PROMOTE, name: "MoveCodePromote", component: () => import("./components/main/pages/move_code/MoveCodePromote.vue") },
+    { path: RoutePathConstants.PAGE_MOVE_CODE_ACCEPT, name: "MoveCodeAccept", component: () => import("./components/main/pages/move_code/MoveCodeAccept.vue") },
+    { path: RoutePathConstants.PAGE_MOVE_CODE_MYSELF, name: "MoveCodeMySelf", component: () => import("./components/main/pages/move_code/MoveCodeMySelf.vue") },
+
     // 利用者検索
     { path: RoutePathConstants.PAGE_RIYOUSHA_SEARCH, name: "SearchEditRiyousha", component: () => import("./components/main/pages/search_edit_riyousha/SearchEditRiyousha.vue") },
 
@@ -128,6 +134,12 @@ const routes = [
 
     // トークン置き換え
     { path: RoutePathConstants.PAGE_PARTNER_TOKEN_REPLACE, name: "ReplacePartnerApiToken", component: () => import("./components/main/pages/user_edit/ReplacePartnerApiToken.vue") },
+    // トークン期限通知(強制)
+    { path: RoutePathConstants.PAGE_NOTIFY_LIMIT, name: "NotifyPartnerApiLimit", component: () => import("./components/main/pages/user_edit/NotifyPartnerApiLimit.vue") },
+
+    // 運営者と連絡
+    { path: RoutePathConstants.PAGE_CONTACT_MANAGER_MYSELF, name: "ContactMyself", component: () => import("./components/main/pages/contact/ContactMyself.vue") },
+    { path: RoutePathConstants.PAGE_CONTACT_MANAGER_ANSWER, name: "ContactAnswer", component: () => import("./components/main/pages/contact/ContactAnswer.vue") },
 
     // タスク計画
     { path: RoutePathConstants.PAGE_SEARCH_TASK_PLAN, name: "SearchTaskPlan", component: () => import("./components/main/pages/search_task_plan/SearchTaskPlan.vue") },

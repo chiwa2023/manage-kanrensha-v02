@@ -186,5 +186,25 @@ public class InsertTaskPlanResultDto extends FrameworkMessageAndResultDto // NOP
         this.paramQuery = paramQuery;
     }
 
+    /** 保存Id(タスク計画と本タスク保存Id返却用) */
+    private Integer savedId = INIT_INTEGER;
+
+    /**
+     * 保存Idを取得する
+     * 
+     * @return 保存Id
+     */
+    public Integer getSavedId() {
+        return savedId;
+    }
+
+    /**
+     * 保存Idを設定する
+     * 
+     * @param savedId 保存Id
+     */
+    public void setSavedId(final Integer savedId) {
+        this.savedId = savedId;
+    }
 
 }

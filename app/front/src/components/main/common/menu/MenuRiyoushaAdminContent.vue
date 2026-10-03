@@ -20,6 +20,7 @@ import RoutePathConstants from '../../../../routePathConstants';
             <h4 class="menu-title">利用者管理</h4>
             <RouterLink class="menu-item" :to=RoutePathConstants.PAGE_RIYOUSHA_SEARCH>利用者検索／編集</RouterLink>
             <RouterLink class="menu-item" :to=RoutePathConstants.PAGE_SEARCH_RIYOUSHA_ORG>利用者組織検索／編集</RouterLink>
+            <RouterLink :to="RoutePathConstants.PAGE_NOTIFY_LIMIT" class="menu-item">APIパートナー長期トークン期限切れ通知</RouterLink>
         </div>
     </div>
 

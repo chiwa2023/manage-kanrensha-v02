@@ -38,7 +38,7 @@ public class GetRoleSomeoneTaskService {
 
         // 取得状態であることを更新
         resultDto.setIsRefreshed(true);
-
+        
         return resultDto;
     }
 

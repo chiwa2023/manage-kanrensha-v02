@@ -12,6 +12,8 @@ CREATE TABLE `task_plan_2025` (
   `end_dateimte` datetime DEFAULT NULL COMMENT '終了日時',
   `role_list` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin COMMENT '対象ユーザリスト',
   `transfer_pass` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin COMMENT '遷移パス',
+  `task_user_code` int DEFAULT NULL,
+  `task_user_name` varchar(200) COLLATE utf8mb4_bin DEFAULT NULL,
   `insert_user_id` int DEFAULT NULL COMMENT '挿入ユーザId',
   `insert_user_code` int DEFAULT NULL COMMENT '挿入ユーザコード',
   `insert_user_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '挿入ユーザ名称',
@@ -22,4 +24,4 @@ CREATE TABLE `task_plan_2025` (
   `delete_timestamp` datetime DEFAULT NULL COMMENT '無効日時',
   PRIMARY KEY (`task_plan_id`),
   FULLTEXT KEY `name_index` (`task_plan_name`) /*!50100 WITH PARSER `ngram` */ 
-) ENGINE=InnoDB AUTO_INCREMENT=206 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
