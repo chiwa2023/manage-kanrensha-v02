@@ -72,6 +72,7 @@ const routes = [
     { path: RoutePathConstants.PAGE_DUMP_MASTER, name: "ForceDumpMaster", component: () => import("./components/main/pages/z_force_dump/ForceDumpMaster.vue") },
     { path: RoutePathConstants.PAGE_DUMP_HISTORY, name: "ForceDumpHistory", component: () => import("./components/main/pages/z_force_dump/ForceDumpHistory.vue") },
     { path: RoutePathConstants.PAGE_DUMP_MASTER_STD, name: "ForceDumpMasterStd", component: () => import("./components/main/pages/z_force_dump/ForceDumpMasterStd.vue") },
+    { path: RoutePathConstants.PAGE_DUMP_CODE_MOVE, name: "ForceDumpCodeMove", component: () => import("./components/main/pages/z_force_dump/ForceDumpCodeMove.vue") },
 
     // 強制処理差分CSVダンプ(差分)
     { path: RoutePathConstants.PAGE_DUMP_SABUN_MASTER, name: "ForceSabunDumpMaster", component: () => import("./components/main/pages/z_force_dump_sabun/ForceSabunDumpMaster.vue") },
@@ -85,6 +86,8 @@ const routes = [
     { path: RoutePathConstants.PAGE_DOWNLOAD_MASTER_STD, name: "DownloadMasterStd", component: () => import("./components/main/pages/download_data/DownloadMasterStd.vue") },
     { path: RoutePathConstants.PAGE_DOWNLOAD_MASTER_MIN, name: "DownloadMasterMin", component: () => import("./components/main/pages/download_data/DownloadMasterMin.vue") },
     { path: RoutePathConstants.PAGE_DOWNLOAD_HISTORY, name: "DownloadHistory", component: () => import("./components/main/pages/download_data/DownloadHistory.vue") },
+
+    { path: RoutePathConstants.PAGE_DOWNLOAD_CODE_MOVE, name: "DownloadKanrenshaCodeMove", component: () => import("./components/main/pages/download_data/DownloadKanrenshaCodeMove.vue") },
 
     { path: RoutePathConstants.PAGE_DOWNLOAD_SABUN_MASTER_STD, name: "DownloadSabunMasterStd", component: () => import("./components/main/pages/download_sabun/DownloadSabunMasterStd.vue") },
     { path: RoutePathConstants.PAGE_DOWNLOAD_SABUN_MASTER_MIN, name: "DownloadSabunMasterMin", component: () => import("./components/main/pages/download_sabun/DownloadSabunMasterMin.vue") },

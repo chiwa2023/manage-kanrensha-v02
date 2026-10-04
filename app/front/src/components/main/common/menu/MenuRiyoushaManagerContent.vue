@@ -66,6 +66,8 @@ import RoutePathConstants from '../../../../routePathConstants';
             </RouterLink>
             <RouterLink :to="RoutePathConstants.PAGE_DOWNLOAD_SABUN_MASTER_STD" class="menu-item">差分関連者マスタ標準データダウンロード
             </RouterLink>
+            <RouterLink :to="RoutePathConstants.PAGE_DOWNLOAD_CODE_MOVE" class="menu-item">関連者コード移動データダウンロード
+            </RouterLink>
         </div>
     </div>
 

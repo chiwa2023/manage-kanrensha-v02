@@ -203,6 +203,8 @@ function changeVisiblePassword() {
                         <ul>
                         <li><RouterLink :to="RoutePathConstants.PAGE_DOWNLOAD_MASTER_MIN">関連者最小登録マスタ(公開情報)</RouterLink></li>
                         <li><RouterLink :to="RoutePathConstants.PAGE_DOWNLOAD_HISTORY">関連者履歴マスタ(公開情報)</RouterLink></li>
+                        <li><RouterLink :to="RoutePathConstants.PAGE_DOWNLOAD_SABUN_MASTER_MIN">関連者最小登録差分マスタ(公開情報)</RouterLink></li>
+                        <li><RouterLink :to="RoutePathConstants.PAGE_DOWNLOAD_SABUN_HISTORY">関連者差分履歴マスタ(公開情報)</RouterLink></li>
                         </ul>
                     </div>
                     <div style="text-align: left;">

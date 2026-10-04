@@ -138,6 +138,9 @@ export default class RoutePathConstants {
     /** 関連者マスタ一標準ダンプ(指定期間まで) */
     static readonly PAGE_DUMP_MASTER_STD: string = this.BASE_PATH + "/dump-master-std";
 
+    /** 関連者マスタ一標準ダンプ(指定期間まで) */
+    static readonly PAGE_DUMP_CODE_MOVE: string = this.BASE_PATH + "/dump-code-move";
+
     /** 関連者マスタ一差分ダンプ */
     static readonly PAGE_DUMP_SABUN_MASTER: string = this.BASE_PATH + "/dump-sabun-master";
     /** 関連者履歴一差分ダンプ */
@@ -161,6 +164,9 @@ export default class RoutePathConstants {
     static readonly PAGE_DOWNLOAD_SABUN_MASTER_MIN: string = this.BASE_PATH + "/download-sabun-master-min";
     /** 関連者履歴データ差分ダウンロード */
     static readonly PAGE_DOWNLOAD_SABUN_HISTORY: string = this.BASE_PATH + "/download-sabun-history";
+
+    /** 関連者コード移動ダウンロード */
+    static readonly PAGE_DOWNLOAD_CODE_MOVE: string = this.BASE_PATH + "/download-code-move";
 
     /** 作業内容承認 */
     static readonly PAGE_WORKS_APPROVAL: string = this.BASE_PATH + "/works-approval";

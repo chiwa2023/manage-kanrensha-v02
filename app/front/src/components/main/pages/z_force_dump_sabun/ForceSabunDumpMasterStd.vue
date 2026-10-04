@@ -42,10 +42,10 @@ const isDisabledKigyouDt: Ref<boolean> = ref(true);
 const isDisabledPerson: Ref<boolean> = ref(true);
 const isDisabledSeijidantai: Ref<boolean> = ref(true);
 const now: Date = new Date();
-const pre: Date = new Date(now.getFullYear(), now.getMonth(), 1);
+const pre: Date = new Date(now.getFullYear(), now.getMonth(), 1, 12, 0, 0);
 pre.setDate(pre.getDate() - 1);
 capsuleDto.value.dateEnd = pre;
-capsuleDto.value.dateStart = new Date(now.getFullYear(), 0, 1);
+capsuleDto.value.dateStart = new Date(now.getFullYear(), 0, 1, 12, 0, 0);
 
 // 関連者選択制御
 watch(isExecuteAll, () => {

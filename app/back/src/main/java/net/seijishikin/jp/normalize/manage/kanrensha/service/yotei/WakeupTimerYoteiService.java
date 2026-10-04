@@ -11,6 +11,7 @@ import net.seijishikin.jp.normalize.manage.kanrensha.controller.file.DeleteStora
 import net.seijishikin.jp.normalize.manage.kanrensha.controller.user.DeleteLimitOverTokenController;
 import net.seijishikin.jp.normalize.manage.kanrensha.controller.z_force.ForceDumpHistoryController;
 import net.seijishikin.jp.normalize.manage.kanrensha.controller.z_force.ForceDumpHistorySabunController;
+import net.seijishikin.jp.normalize.manage.kanrensha.controller.z_force.ForceDumpKanrenshaCodeMoveController;
 import net.seijishikin.jp.normalize.manage.kanrensha.controller.z_force.ForceDumpMinMasterController;
 import net.seijishikin.jp.normalize.manage.kanrensha.controller.z_force.ForceDumpMinMasterSabunController;
 import net.seijishikin.jp.normalize.manage.kanrensha.controller.z_force.ForceDumpStdMasterController;
@@ -50,6 +51,11 @@ public class WakeupTimerYoteiService {
     @Autowired
     private ForceDumpStdMasterSabunController forceDumpStdMasterSabunController;
 
+    /** 関連者コード移動ダンプController */
+    @Autowired
+    private ForceDumpKanrenshaCodeMoveController forceDumpKanrenshaCodeMoveController;
+    
+    
     /** ストレージ一時ファイル削除Controller */
     @Autowired
     private DeleteStorageTempFileController deleteStorageTempFileController;
@@ -92,7 +98,10 @@ public class WakeupTimerYoteiService {
                 case YoteiTaskConstants.DUMP_STD_SABUN:
                     return !forceDumpStdMasterSabunController.practice( // NOPMD LawOfDemeter
                             this.createDumpCapsuleDto(timerYoteiEntity, userDto)).getBody().getIsFailure();
-
+                case YoteiTaskConstants.DUMP_CODE_MOVE:
+                    return !forceDumpKanrenshaCodeMoveController.practice( // NOPMD LawOfDemeter
+                            this.createDumpCapsuleDto(timerYoteiEntity, userDto)).getBody().getIsFailure();
+                    
                 /* アップロード一時ファイル整理 */
                 case YoteiTaskConstants.TEMP_FILE_DELETE:
                     return deleteStorageTempFileController.practice();

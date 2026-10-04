@@ -1,19 +1,12 @@
-CREATE TABLE `task_plan_2019` (
-  `task_plan_id` int NOT NULL AUTO_INCREMENT COMMENT 'タスク予定Id',
-  `task_plan_code` int DEFAULT NULL COMMENT 'タスク予定コード',
-  `task_info_code` int DEFAULT NULL COMMENT 'タスク設定コード',
-  `task_plan_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT 'タスク予定名称',
-  `table_year` int DEFAULT NULL,
+CREATE TABLE `kanrensha_combine_org_2019` (
+  `kanrensha_combine_org_id` int NOT NULL AUTO_INCREMENT COMMENT 'テーブルId',
+  `kanrensha_combine_org_code` int DEFAULT NULL COMMENT '紐づけコード',
   `is_latest` tinyint DEFAULT NULL COMMENT '最新該否',
-  `is_start` tinyint DEFAULT NULL COMMENT '作業開始フラグ',
-  `is_finished` tinyint DEFAULT NULL COMMENT '作業終了フラグ',
-  `is_suspended` tinyint DEFAULT NULL COMMENT 'タスク中断フラグ',
-  `start_datetime` datetime DEFAULT NULL COMMENT '開始日時',
-  `end_dateimte` datetime DEFAULT NULL COMMENT '終了日時',
-  `role_list` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin COMMENT '対象ユーザリスト',
-  `transfer_pass` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin COMMENT '遷移パス',
-  `task_user_code` int DEFAULT NULL,
-  `task_user_name` varchar(200) COLLATE utf8mb4_bin DEFAULT NULL,
+  `kanrensha_kbn` smallint DEFAULT NULL COMMENT '紐づけ関連者区分',
+  `person_kanrensha_code` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '個人関連者コード',
+  `person_name` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '個人氏名',
+  `org_kanrensha_code` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '団体関連者コード',
+  `org_name` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '団体代表者名称',
   `insert_user_id` int DEFAULT NULL COMMENT '挿入ユーザId',
   `insert_user_code` int DEFAULT NULL COMMENT '挿入ユーザコード',
   `insert_user_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '挿入ユーザ名称',
@@ -22,6 +15,5 @@ CREATE TABLE `task_plan_2019` (
   `delete_user_code` int DEFAULT NULL COMMENT '無効ユーザコード',
   `delete_user_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '無効ユーザ名称',
   `delete_timestamp` datetime DEFAULT NULL COMMENT '無効日時',
-  PRIMARY KEY (`task_plan_id`),
-  FULLTEXT KEY `name_index` (`task_plan_name`) /*!50100 WITH PARSER `ngram` */ 
+  PRIMARY KEY (`kanrensha_combine_org_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;

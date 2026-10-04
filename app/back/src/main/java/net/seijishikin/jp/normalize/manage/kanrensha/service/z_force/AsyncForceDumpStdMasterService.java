@@ -1,17 +1,24 @@
 package net.seijishikin.jp.normalize.manage.kanrensha.service.z_force;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import net.seijishikin.jp.normalize.common_tool.dto.DtoEntityInitialValueInterface;
 import net.seijishikin.jp.normalize.manage.kanrensha.constants.MasterCsvFileNameConstants;
+import net.seijishikin.jp.normalize.manage.kanrensha.constants.TaskInfoConstants;
 import net.seijishikin.jp.normalize.manage.kanrensha.constants.MasterCsvFileNameConstants.MasterStd;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.task.InsertTaskPlanResultDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.z_force.ForceDumpCapsuleDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.logic.file.CompressZipPointedFileLogic;
 import net.seijishikin.jp.normalize.manage.kanrensha.logic.file.CreateMasterCompressFilePathLogic;
+import net.seijishikin.jp.normalize.manage.kanrensha.service.dump_record.InsertDupmRunRecordService;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.util.SaveStackTraceService;
 
 /**
@@ -40,6 +47,10 @@ public class AsyncForceDumpStdMasterService {
     @Autowired
     private CreateMasterCompressFilePathLogic createMasterCompressFilePathLogic;
 
+    /** ダンプ実行記録Service */
+    @Autowired
+    private InsertDupmRunRecordService insertDupmRunRecordService;
+
     /** StackTrace保存Service */
     @Autowired
     private SaveStackTraceService saveStackTraceService;
@@ -56,14 +67,18 @@ public class AsyncForceDumpStdMasterService {
 
         LocalDate endDate = capsuleDto.getDateEnd();
 
+        List<Integer> listTask = new ArrayList<>();
         if (capsuleDto.getIsExecuteKigyouDt()) {
             forceDumpStdMasterKigyouDtService.practice(year, planDto1, endDate, capsuleDto.getUserDto());
+            listTask.add(TaskInfoConstants.DUMP_STD_PERSON);
         }
         if (capsuleDto.getIsExecutePerson()) {
             forceDumpStdMasterPersonService.practice(year, planDto2, endDate, capsuleDto.getUserDto());
+            listTask.add(TaskInfoConstants.DUMP_STD_KIGYOU);
         }
         if (capsuleDto.getIsExecuteSeijidantai()) {
             forceDumpStdMasterSeijidantaiService.practice(year, planDto3, endDate, capsuleDto.getUserDto());
+            listTask.add(TaskInfoConstants.DUMP_STD_SEIJIDANTAI);
         }
 
         try {
@@ -73,6 +88,12 @@ public class AsyncForceDumpStdMasterService {
                     createMasterCompressFilePathLogic.practiceFileList(MasterCsvFileNameConstants.FOLDER_MASTER,
                             MasterStd.MASTER_STD_KIGYOU, MasterStd.MASTER_STD_PERSON,
                             MasterStd.MASTER_STD_SEIJIDANTAI));
+
+            // 実行記録
+            LocalDateTime startDatetime = DtoEntityInitialValueInterface.INIT_TIMESTAMP;
+            LocalDateTime endDatetime = LocalDateTime.of(endDate, LocalTime.MIN);
+            insertDupmRunRecordService.practice(listTask, startDatetime, endDatetime, capsuleDto.getUserDto());
+
         } catch (Exception exception) { // NOPMD 業務的な理由から積極的に許容
             saveStackTraceService.practice(exception, year, planDto1.getTaskPlanCode());
         }

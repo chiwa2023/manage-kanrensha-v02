@@ -91,7 +91,8 @@ public class SecurityConfig {
                             PathRouteConstants.ROOT + "/refresh-token", PathRouteConstants.ROOT + "/replace-token",
                             PathRouteConstants.ROOT + "/add-user/**", PathRouteConstants.ROOT + "/trial-access",
                             PathRouteConstants.ROOT + "/reset-password/**",
-                            PathRouteConstants.ROOT + "/api-for-partner/**")//
+                            PathRouteConstants.ROOT + "/api-for-partner/**",
+                            PathRouteConstants.ROOT + "/dump-record/get")//
                             .permitAll() //
                             /* 以下はコンパイル時(front接続時)にのみ有効 */
 

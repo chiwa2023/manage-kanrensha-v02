@@ -23,4 +23,7 @@ public class YoteiTaskConstants { // NOPMD DataClass
     public static final short EXPIRED_TOKEN_DELETE = (short) 108;
     /** APIパートナー長期トークン期限切れ通知 */
     public static final short NOTIFY_TOKEN_LIMIT = (short) 109;
+    /** コード移動出力 */
+    public static final short DUMP_CODE_MOVE = (short) 110;
+
 }
