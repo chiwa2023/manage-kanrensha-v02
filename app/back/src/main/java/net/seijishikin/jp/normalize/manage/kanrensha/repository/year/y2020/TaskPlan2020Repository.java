@@ -40,14 +40,6 @@ public interface TaskPlan2020Repository
     Optional<TaskPlan2020Entity> findFirstByOrderByTaskPlanCodeDesc();
 
     /**
-     * 更新日時降順で同一コードを取得する(履歴)
-     *
-     * @param taskPlanCode タスク計画コード
-     * @return タスク計画リスト
-     */
-    List<TaskPlan2020Entity> findByTaskPlanCodeOrderByInsertTimestampAsc(Integer taskPlanCode);
-
-    /**
      * 同一コードで最新を取得する
      * 
      * @param taskCode タスクコード
@@ -74,15 +66,20 @@ public interface TaskPlan2020Repository
      * @return 検索結果
      */
     @Query(value = "SELECT * FROM task_plan_2020" //
-            + "   WHERE insert_timestamp BETWEEN ?1 AND ?2" //
+            + "   WHERE insert_timestamp BETWEEN ?2 AND ?3" //
             + "       AND is_latest = 1" //
-            + "       AND CASE" //
-            // + " WHEN ?3 <> '' THEN MATCH(task_plan_name) AGAINST (?3 IN BOOLEAN MODE)" //
-            + "              WHEN ?3 <> '' THEN task_plan_name LIKE ?3" //
-            + "              ELSE 1=1"//
-            + "           END", nativeQuery = true)
-    List<TaskPlanBaseEntity> findTaskPlan(LocalDateTime startDateTime, LocalDateTime endDateTime, String searchWord,
-            Pageable pageable);
+            + "       AND (task_user_code = ?1 OR (task_user_code = 0 AND insert_user_code = ?1) )" //
+            // + "AND CASE WHEN ?3 <> '' THEN MATCH(task_plan_name) AGAINST (?3 IN BOOLEAN
+            // MODE)" //
+            + "       AND CASE WHEN ?4 <> '' THEN task_plan_name LIKE ?4 ELSE 1=1 END " //
+            + "       AND CASE  WHEN ?5<2 THEN is_finished = ?5 ELSE 1=1 END "//
+            + "       AND CASE  WHEN ?6<2 THEN is_start = ?6 ELSE 1=1 END "//
+            + "       AND CASE  WHEN ?7<2 THEN is_suspended = ?7 ELSE 1=1 END "//
+            + "       AND CASE  WHEN ?9= true THEN task_info_code IN ?8 ELSE 1=1 END "//
+            , nativeQuery = true)
+    List<TaskPlanBaseEntity> findTaskPlan(Integer userCode, LocalDateTime startDateTime, LocalDateTime endDateTime,
+            String searchWord, Integer flgFinished, Integer flgStart, Integer flgSuspended, List<Integer> infoCodeList,
+            boolean hasCodeList, Pageable pageable);
 
     /**
      * 検索条件該当件数を取得する
@@ -93,14 +90,28 @@ public interface TaskPlan2020Repository
      * @return 該当件数
      */
     @Query(value = "SELECT count(*) FROM task_plan_2020" //
-            + "   WHERE insert_timestamp BETWEEN ?1 AND ?2" //
+            + "   WHERE insert_timestamp BETWEEN ?2 AND ?3" //
             + "       AND is_latest = 1" //
-            + "       AND CASE" //
-            // + " WHEN ?3 <> '' THEN MATCH(task_plan_name) AGAINST (?3 IN BOOLEAN MODE)" //
-            + "              WHEN ?3 <> '' THEN task_plan_name LIKE ?3" //
-            + "              ELSE 1=1"//
-            + "           END", nativeQuery = true)
-    Integer countTaskPlan(LocalDateTime startDateTime, LocalDateTime endDateTime, String searchWord);
+            + "       AND (task_user_code = ?1 OR (task_user_code = 0 AND insert_user_code = ?1) )" //
+            // + "AND CASE WHEN ?3 <> '' THEN MATCH(task_plan_name) AGAINST (?3 IN BOOLEAN
+            // MODE)" //
+            + "       AND CASE WHEN ?4 <> '' THEN task_plan_name LIKE ?4 ELSE 1=1 END " //
+            + "       AND CASE  WHEN ?5<2 THEN is_finished = ?5 ELSE 1=1 END "//
+            + "       AND CASE  WHEN ?6<2 THEN is_start = ?6 ELSE 1=1 END "//
+            + "       AND CASE  WHEN ?7<2 THEN is_suspended = ?7 ELSE 1=1 END "//
+            + "       AND CASE  WHEN ?9= true THEN task_info_code IN ?8 ELSE 1=1 END "//
+            , nativeQuery = true)
+    Integer countTaskPlan(Integer userCode, LocalDateTime startDateTime, LocalDateTime endDateTime, String searchWord,
+            Integer flgFinished, Integer flgStart, Integer flgSuspended, List<Integer> infoCodeList,
+            boolean hasCodeList);
+
+    /**
+     * 更新日時降順で同一コードを取得する(履歴)
+     *
+     * @param taskPlanCode タスク計画コード
+     * @return タスク計画リスト
+     */
+    List<TaskPlan2020Entity> findByTaskPlanCodeOrderByInsertTimestampAsc(Integer taskPlanCode);
 
     /**
      * 未処理タスクを抽出する
@@ -113,7 +124,7 @@ public interface TaskPlan2020Repository
             Integer userCode, Pageable pageable);
 
     /**
-     * 未終了のタスク計画を権限で検索する
+     * 未終了のタスク計画を権限で取得する
      * 
      * @param listRole 権限リスト
      * @param pageable ページング

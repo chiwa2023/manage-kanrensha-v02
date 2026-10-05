@@ -67,7 +67,8 @@ public interface TaskPlan2026Repository
      */
     @Query(value = "SELECT * FROM task_plan_2026" //
             + "   WHERE insert_timestamp BETWEEN ?2 AND ?3" //
-            + "       AND is_latest = 1 AND insert_user_code = ?1" //
+            + "       AND is_latest = 1" //
+            + "       AND (task_user_code = ?1 OR (task_user_code = 0 AND insert_user_code = ?1) )" //
             // + "AND CASE WHEN ?3 <> '' THEN MATCH(task_plan_name) AGAINST (?3 IN BOOLEAN
             // MODE)" //
             + "       AND CASE WHEN ?4 <> '' THEN task_plan_name LIKE ?4 ELSE 1=1 END " //
@@ -90,7 +91,8 @@ public interface TaskPlan2026Repository
      */
     @Query(value = "SELECT count(*) FROM task_plan_2026" //
             + "   WHERE insert_timestamp BETWEEN ?2 AND ?3" //
-            + "       AND is_latest = 1 AND insert_user_code = ?1" //
+            + "       AND is_latest = 1" //
+            + "       AND (task_user_code = ?1 OR (task_user_code = 0 AND insert_user_code = ?1) )" //
             // + "AND CASE WHEN ?3 <> '' THEN MATCH(task_plan_name) AGAINST (?3 IN BOOLEAN
             // MODE)" //
             + "       AND CASE WHEN ?4 <> '' THEN task_plan_name LIKE ?4 ELSE 1=1 END " //

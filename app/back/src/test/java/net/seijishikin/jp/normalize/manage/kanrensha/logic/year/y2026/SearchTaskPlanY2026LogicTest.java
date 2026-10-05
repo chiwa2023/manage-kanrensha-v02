@@ -44,30 +44,6 @@ class SearchTaskPlanY2026LogicTest {
     @Tag("TableTruncate")
     void test() throws Exception {
 
-        SearchTaskPlanCapsuleDto capsuleDto0 = new SearchTaskPlanCapsuleDto();
-        capsuleDto0.setUserDto(CreateLeastUserForTestUtil.practice());
-        capsuleDto0.setAllCount(0);
-        capsuleDto0.setLimit(30);
-        capsuleDto0.setPageNumber(0);
-        capsuleDto0.setStartDate(LocalDateTime.of(2026, 6, 1, 0, 0, 0));
-        capsuleDto0.setEndDate(LocalDateTime.of(2026, 12, 31, 23, 59, 59));
-        // TODO 開始条件とタスクの種類は改めてテストする
-        capsuleDto0.setFlgFinished(2);
-        capsuleDto0.setFlgStart(2);
-        capsuleDto0.setFlgSuspended(2);
-        List<Integer> listCode = new ArrayList<>();
-        listCode.add(TaskInfoConstants.PROMOTE_ADMIN);
-        listCode.add(TaskInfoConstants.SAVE_POSTAL_REPAIR_CSV);
-        listCode.add(TaskInfoConstants.WKTBL_KANRENSHA_XML);
-        capsuleDto0.setInfoCodeList(listCode);
-
-        SearchTaskPlanResultDto resultDto0 = searchTaskPlanY2026Logic.practice(capsuleDto0);
-
-        List<TaskPlanBaseEntity> list0 = resultDto0.getListTaskPlan();
-        assertEquals(2, list0.size());
-        assertEquals(203, list0.get(0).getTaskPlanId());
-        assertEquals(205, list0.get(1).getTaskPlanId());
-
         SearchTaskPlanCapsuleDto capsuleDto1 = new SearchTaskPlanCapsuleDto();
         capsuleDto1.setUserDto(CreateLeastUserForTestUtil.practice());
         capsuleDto1.setAllCount(0);
@@ -76,15 +52,22 @@ class SearchTaskPlanY2026LogicTest {
         capsuleDto1.setStartDate(LocalDateTime.of(2026, 6, 1, 0, 0, 0));
         capsuleDto1.setEndDate(LocalDateTime.of(2026, 12, 31, 23, 59, 59));
         capsuleDto1.setSearchTaskWord("名称4");
-        capsuleDto1.setFlgFinished(2);
-        capsuleDto1.setFlgStart(2);
-        capsuleDto1.setFlgSuspended(2);
+        capsuleDto1.setFlgFinished(1); // 有効
+        capsuleDto1.setFlgStart(1); // 有効
+        capsuleDto1.setFlgSuspended(1); // 有効
+        // タスク情報種類有効
+        List<Integer> listCode = new ArrayList<>();
+        listCode.add(TaskInfoConstants.PROMOTE_ADMIN);
+        listCode.add(TaskInfoConstants.SAVE_POSTAL_REPAIR_CSV);
         capsuleDto1.setInfoCodeList(listCode);
 
-        SearchTaskPlanResultDto resultDto1 = searchTaskPlanY2026Logic.practice(capsuleDto1);
+        final Integer taskInfoCount = 3;
+
+        SearchTaskPlanResultDto resultDto1 = searchTaskPlanY2026Logic.practice(taskInfoCount, capsuleDto1);
         List<TaskPlanBaseEntity> list1 = resultDto1.getListTaskPlan();
-        assertEquals(1, list1.size());
+        assertEquals(2, list1.size());
         assertEquals(205, list1.get(0).getTaskPlanId());
+        assertEquals(206, list1.get(1).getTaskPlanId());
     }
 
 }

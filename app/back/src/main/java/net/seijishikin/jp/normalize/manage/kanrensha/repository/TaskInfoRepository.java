@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
+import net.seijishikin.jp.normalize.manage.kanrensha.dto.task_info.TaskInfoCodeCheckOptionDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.TaskInfoEntity;
 
 /**
@@ -42,4 +43,11 @@ public interface TaskInfoRepository
      * @return 検索結果
      */
     List<TaskInfoEntity> findByTaskInfoCodeAndIsLatestTrue(Integer taskCode);
+    
+    
+    Integer countByIsLatestTrue();
+
+    @Query(value = "SELECT 1 AS is_checked ,task_info_code  AS code_value , task_info_name AS code_name"
+            + "  FROM task_info WHERE is_latest = 1", nativeQuery = true)
+    List<TaskInfoCodeCheckOptionDto> findAllAlive();
 }

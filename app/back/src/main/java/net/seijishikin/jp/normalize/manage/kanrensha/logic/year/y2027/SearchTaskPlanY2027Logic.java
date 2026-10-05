@@ -1,6 +1,7 @@
 package net.seijishikin.jp.normalize.manage.kanrensha.logic.year.y2027;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -24,23 +25,43 @@ public class SearchTaskPlanY2027Logic {
     @Autowired
     private TaskPlan2027Repository taskPlan2027Repository;
 
+    /** 空文字 */
+    private static final String BLANK = "";
+
     /**
      * 処理を行う
      *
      * @param capsuleDto 検索条件Dto
      * @return 検索結果Dto
      */
-    public SearchTaskPlanResultDto practice(final SearchTaskPlanCapsuleDto capsuleDto) {
+    public SearchTaskPlanResultDto practice(final Integer taskInfoCount, final SearchTaskPlanCapsuleDto capsuleDto) {
 
+        Integer userCode = capsuleDto.getUserDto().getUserPersonCode();
+
+        // 検索日時
         LocalDateTime start = capsuleDto.getStartDate();
         LocalDateTime end = capsuleDto.getEndDate();
+
+        // 名称
         // String searchWord =
         // createSerachWordsBooleanModeLogic.practice(capsuleDto.getSearchTaskWord());
-        String searchWord = "%"+capsuleDto.getSearchTaskWord() + "%";
+        String searchWord = BLANK;
+        if (!BLANK.equals(capsuleDto.getSearchTaskWord())) {
+            searchWord = "%" + capsuleDto.getSearchTaskWord() + "%";
+        }
 
-        // TODO カウント処理は改めてブラッシュアップする
+        // 状態
+        Integer flgFinished = capsuleDto.getFlgFinished();
+        Integer flgStart = capsuleDto.getFlgStart();
+        Integer flgSuspended = capsuleDto.getFlgSuspended();
 
-        int count = taskPlan2027Repository.countTaskPlan(start, end, searchWord);
+        // チェック
+        List<Integer> infoCodeList = capsuleDto.getInfoCodeList();
+
+        Boolean hasTaskCode = taskInfoCount != infoCodeList.size(); // 全件と同一の場合は検索条件に含めない
+
+        int count = taskPlan2027Repository.countTaskPlan(userCode, start, end, searchWord, flgFinished, flgStart,
+                flgSuspended, infoCodeList, hasTaskCode);
 
         SearchTaskPlanResultDto resultDto = new SearchTaskPlanResultDto();
         resultDto.setAllCount(count);
@@ -48,7 +69,8 @@ public class SearchTaskPlanY2027Logic {
         resultDto.setPageNumber(capsuleDto.getPageNumber());
 
         Pageable pageable = Pageable.ofSize(capsuleDto.getLimit()).withPage(capsuleDto.getPageNumber());
-        resultDto.setListTaskPlan(taskPlan2027Repository.findTaskPlan(start, end, searchWord, pageable));
+        resultDto.setListTaskPlan(taskPlan2027Repository.findTaskPlan(userCode, start, end, searchWord, flgFinished,
+                flgStart, flgSuspended, infoCodeList, hasTaskCode, pageable));
 
         return resultDto;
     }
