@@ -1,7 +1,6 @@
 package net.seijishikin.jp.normalize.manage.kanrensha.logic.year.y2026;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 import java.nio.file.Path;
@@ -88,8 +87,6 @@ class InsertSaveStorageY2026LogicTest {
         assertEquals(true, entity.getIsLatest());
         assertEquals("20221205123456", entity.getRegistTimeText());
         assertEquals(shoshoKbn, entity.getShoshoKbn());
-
-        fail("Not yet implemented");
     }
 
 }

@@ -15,7 +15,7 @@ const props = defineProps<{ taskPlanCode: number, taskYear: number, userDto: Lea
 const BLANK: string = "";
 // const INIT_NUMBER: number = 0;
 // const SEARCH_LIMIT: number = 20;
-// const SERVER_STATUS_OK: number = 200;
+const SERVER_STATUS_ERROR: number = 400;
 const INQUIRE_FLG: boolean = false;
 const ERR_MESS_ONLY: boolean = true;
 const MESS_PAGE_NAME: string = "スタックトレース取得";
@@ -55,10 +55,18 @@ async function onDownload() {
 
                 resultDto.value = await response.json();
 
+                if (response.status > SERVER_STATUS_ERROR) {
+                    message.value = getErrorMessage(resultDto.value.message, ERR_MESS_ONLY);
+                    infoLevel.value = MessageConstants.LEVEL_ERROR;
+                    messageType.value = MessageConstants.VIEW_OK;
+                    return;
+                }
+
                 if (resultDto.value.isFailure) {
                     // メッセージ
                     infoLevel.value = MessageConstants.LEVEL_WARNING;
                     messageType.value = MessageConstants.VIEW_OK;
+
                     message.value = getErrorMessage(resultDto.value.message, ERR_MESS_ONLY);
                 } else {
                     //Base64文字列からMIMEType不明(=application/octet-stream)Blobに変換
@@ -77,18 +85,24 @@ async function onDownload() {
                     anchorElement.click();
                 }
             })
-            .catch((e) => {
+            .catch((error) => {
+                message.value = getErrorMessage(error, ERR_MESS_ONLY);
                 infoLevel.value = MessageConstants.LEVEL_ERROR;
                 messageType.value = MessageConstants.VIEW_OK;
-
-                // トークン保持または取得に失敗している場合
-                if (e instanceof AccessTokenNotFoundError || e instanceof TokenRefreshError) {
-                    message.value = e.message;
-                    return;
-                }
-                message.value = getErrorMessage(e, INQUIRE_FLG);
                 return;
             });
+    }).catch((e) => {
+        infoLevel.value = MessageConstants.LEVEL_ERROR;
+        messageType.value = MessageConstants.VIEW_OK;
+
+        // トークン保持または取得に失敗している場合
+        if (e instanceof AccessTokenNotFoundError || e instanceof TokenRefreshError) {
+            message.value = e.message;
+            return;
+        }
+
+        message.value = getErrorMessage(e, INQUIRE_FLG);
+        return;
     });
 }
 

@@ -1,10 +1,12 @@
 ﻿<script setup lang="ts">
 import { onMounted, ref, type Ref } from 'vue';
 import { DumpRecordEntity, type DumpRecordEntityInterface } from '../../entity/dumpRecordEntity';
-import { convertDateText, convertDatetimeText, getErrorUniqueIdMessage, MessageConstants, MessageView } from 'seijishikin-jp-normalize_common-tool';
+import { convertDateText, convertDatetimeText, getErrorUniqueIdMessage, MessageConstants, MessageView, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import RoutePathConstants from '../../../../routePathConstants';
 import { GetDumpRecordCapsuleDto, type GetDumpRecordCapsuleDtoInterrface } from '../../dto/z_force_dump/getDumpRecordCapsuleDto';
 import type { GetDumpRecordResultDtoInterface } from '../../dto/z_force_dump/getDumpRecordResultDto';
+import { getLoginUser } from '../../utils/getLoginUser';
+import ManagerInfo from '../../common/user_info/ManagerInfo.vue';
 
 const BLANK: string = "";
 // const INIT_NUMBER: number = 0;
@@ -23,6 +25,9 @@ const message: Ref<string> = ref(BLANK);
 
 // back側アクセス
 const urlBack: string = RoutePathConstants.DOMAIN + RoutePathConstants.BASE_PATH;
+
+// ユーザ呼び出し
+const userDto: Ref<LeastUserDtoInterface> = ref(getLoginUser());
 
 const taskPersonCode: number = 327;
 const dumpPersonEntity: Ref<DumpRecordEntityInterface> = ref(new DumpRecordEntity());
@@ -112,7 +117,10 @@ function recieveSubmit() {
 }
 </script>
 <template>
-    <!-- サイト利用登録者限定ページではないのでユーザチェックがない -->
+
+    <!-- 管理者メニュー兼チェック -->
+    <ManagerInfo :user-dto="userDto"></ManagerInfo>
+    
     <h1>関連者履歴データダウンロード(差分)</h1>
 
     <h3>関連者一括ダウンロード</h3>

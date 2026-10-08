@@ -4,6 +4,7 @@ ALTER TABLE `save_file_storage_2024` auto_increment = 111;
 DELETE FROM `task_plan_2024`;
 ALTER TABLE `task_plan_2024` auto_increment = 0;
 
+
 DELETE FROM `task_info`;
 ALTER TABLE `task_info` auto_increment = 0;
 

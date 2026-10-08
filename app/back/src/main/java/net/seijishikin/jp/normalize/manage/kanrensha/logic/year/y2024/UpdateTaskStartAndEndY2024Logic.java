@@ -52,7 +52,7 @@ public class UpdateTaskStartAndEndY2024Logic {
         entityNew.setIsStart(true);
         entityNew.setIsFinished(true);
         entityNew.setEndDateimte(endTime);
-        setTableDataHistoryUtil.practiceInsert(userDto, entityNew); // タスク自体が終了が最新に変更
+        setTableDataHistoryUtil.practiceInsert(userDto, entityNew);
         entityNew.setTaskPlanId(0); // auto increment 明記
 
         return taskPlan2024Repository.save(entityNew).getTaskPlanId();

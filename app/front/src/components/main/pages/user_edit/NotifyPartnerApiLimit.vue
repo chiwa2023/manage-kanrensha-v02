@@ -7,6 +7,7 @@ import RoutePathConstants from '../../../../routePathConstants';
 import { getLoginUser } from '../../utils/getLoginUser';
 import getAuthorizedPromiseArea from '../../dto/login/getAuthorizedPromiseArea';
 import { AccessTokenNotFoundError, TokenRefreshError } from '../../dto/login/errors';
+import AdminInfo from '../../common/user_info/AdminInfo.vue';
 
 
 // よく使う定数

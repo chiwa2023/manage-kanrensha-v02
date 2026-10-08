@@ -53,7 +53,8 @@ public class PickupStackTraceService {
      * @param taskPlaCode タスク計画コード
      * @return base64形式Blob格納Dto
      */
-    public OneFileBlobResultDto practiceByTaskCode(final Integer taskYear, final Integer taskPlaCode)throws IOException {
+    public OneFileBlobResultDto practiceByTaskCode(final Integer taskYear, final Integer taskPlaCode)
+            throws IOException {
 
         // 保存フォルダと圧縮リストを引き渡す
         Path pathFolder = getStackTraceFolderLogic.practice(taskYear, taskPlaCode, null);
@@ -64,49 +65,55 @@ public class PickupStackTraceService {
                 .append(HYPHEN).append(pathFolder.getName(length - 2)).append(HYPHEN)
                 .append(pathFolder.getName(length - 1)).append(EXPANDS);
 
-        return this.practice(builder.toString(), Files.list(pathFolder).toList());
+        if (Files.exists(pathFolder)) {
+            return this.practice(builder.toString(), Files.list(pathFolder).toList());
+        } else {
+            // エラーが発生していない場合は空を戻す
+            return this.getFailureDto();
+        }
     }
 
     // MEMO：タスクコードがない場合タスクコード0としているが、あまりにも多い場合は日付別振り分けを追加する？
-    //    /**
-    //     * 発生日時を条件にして取得処理を行う
-    //     *
-    //     * @param pointedDate 指定日
-    //     * @return base64形式Blob格納Dto
-    //     */
-    //    public OneFileBlobDto practiceByDate(final LocalDate pointedDate) {
+    // /**
+    // * 発生日時を条件にして取得処理を行う
+    // *
+    // * @param pointedDate 指定日
+    // * @return base64形式Blob格納Dto
+    // */
+    // public OneFileBlobDto practiceByDate(final LocalDate pointedDate) {
     //
-    //        // 保存フォルダと圧縮リストを引き渡す
-    //        Path pathFolder = getStackTraceFolderLogic.practice(null, null, LocalDateTime.of(pointedDate, LocalTime.MIN));
+    // // 保存フォルダと圧縮リストを引き渡す
+    // Path pathFolder = getStackTraceFolderLogic.practice(null, null,
+    // LocalDateTime.of(pointedDate, LocalTime.MIN));
     //
-    //        int length = pathFolder.getNameCount();
+    // int length = pathFolder.getNameCount();
     //
-    //        StringBuilder builder = new StringBuilder();
-    //        builder.append(pathFolder.getName(length - 2)).append(HYPHEN) //
-    //                .append(pathFolder.getName(length - 1)).append(EXPANDS);
-    //        try {
-    //            // フォルダが存在しないときは空Dtoを返却
-    //            if (Files.exists(pathFolder)) {
-    //                return this.practice(builder.toString(), Files.list(pathFolder).toList());
-    //            } else {
-    //                return new OneFileBlobDto();
-    //            }
-    //        } catch (IOException exception) {
-    //            return new OneFileBlobDto();
-    //        }
-    //    }
+    // StringBuilder builder = new StringBuilder();
+    // builder.append(pathFolder.getName(length - 2)).append(HYPHEN) //
+    // .append(pathFolder.getName(length - 1)).append(EXPANDS);
+    // try {
+    // // フォルダが存在しないときは空Dtoを返却
+    // if (Files.exists(pathFolder)) {
+    // return this.practice(builder.toString(), Files.list(pathFolder).toList());
+    // } else {
+    // return new OneFileBlobDto();
+    // }
+    // } catch (IOException exception) {
+    // return new OneFileBlobDto();
+    // }
+    // }
 
     private OneFileBlobResultDto practice(final String fileName, final List<Path> listFile) throws IOException {
 
         // リストが空の場合は空Dtoを返却
         if (listFile.isEmpty()) {
-            return new OneFileBlobResultDto();
+            return this.getFailureDto();
         }
 
         StorageFileDto tempFileDto = getTempFilePathLogic.practice(LocalDate.now().getMonthValue(), fileName);
         Path pathZip = Paths.get(getAbsolutePathLogic.getStorageFolder(), tempFileDto.getSavedDir(),
                 tempFileDto.getFileName());
-        
+
         // ファイル圧縮して成功したらDtoに格納して返す
         OneFileBlobResultDto blobDto = new OneFileBlobResultDto();
         if (compressZipPointedFileLogic.practice(pathZip, listFile)) {
@@ -120,4 +127,11 @@ public class PickupStackTraceService {
         }
     }
 
+    private OneFileBlobResultDto getFailureDto() {
+        OneFileBlobResultDto dto = new OneFileBlobResultDto();
+        dto.setIsFailure(true);
+        dto.setMessage("例外が記録されていませんでした");
+
+        return dto;
+    }
 }

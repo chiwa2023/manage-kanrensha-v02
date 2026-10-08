@@ -63,12 +63,24 @@ public class SearchTaskPlanY2022Logic {
         int count = taskPlan2022Repository.countTaskPlan(userCode, start, end, searchWord, flgFinished, flgStart,
                 flgSuspended, infoCodeList, hasTaskCode);
 
+        
         SearchTaskPlanResultDto resultDto = new SearchTaskPlanResultDto();
         resultDto.setAllCount(count);
         resultDto.setLimit(capsuleDto.getLimit());
-        resultDto.setPageNumber(capsuleDto.getPageNumber());
 
-        Pageable pageable = Pageable.ofSize(capsuleDto.getLimit()).withPage(capsuleDto.getPageNumber());
+        // 全件数が0の場合は結果を返却
+        final Integer zero = 0;
+        if (zero.equals(resultDto.getAllCount())) {
+            resultDto.setPageNumber(0);
+            return resultDto;
+        }
+
+        // 検索条件変更等でページ番号が合わないときはページ番号をリセット
+        if (resultDto.getAllCount() < resultDto.getLimit() * resultDto.getPageNumber()) {
+            resultDto.setPageNumber(0);
+        }
+
+        Pageable pageable = Pageable.ofSize(capsuleDto.getLimit()).withPage(resultDto.getPageNumber());
         resultDto.setListTaskPlan(taskPlan2022Repository.findTaskPlan(userCode, start, end, searchWord, flgFinished,
                 flgStart, flgSuspended, infoCodeList, hasTaskCode, pageable));
 

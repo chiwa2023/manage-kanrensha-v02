@@ -10,6 +10,7 @@ import type { SelectOptionStringDtoInterface } from '../../../main/dto/select_op
 import { createListRoleOptions } from '../../../main/common/menu/createListRoleOptions';
 import PersonMenu from '../../../main/common/menu/PersonMenu.vue';
 import ShowTask from '../../../main/common/show_task/ShowTask.vue';
+import ShowTaskRole from '../../../main/common/show_task/ShowTaskRole.vue';
 import { notCompletedTaskStore } from '../../../main/stores/notCompletedTask';
 import getAuthorizedPromiseArea from '../../../main/dto/login/getAuthorizedPromiseArea';
 import { AccessTokenNotFoundError, TokenRefreshError } from '../../../main/dto/login/errors';
@@ -259,12 +260,16 @@ const isShowTask: Ref<Boolean> = ref(false);
 function onTaskViewPerson() {
     isShowTask.value = true;
 }
-// function onTaskViewRole() {
-//     isShowTask.value = true;
-// }
+const isShowTaskRole: Ref<Boolean> = ref(false);
+function onTaskViewRole() {
+    isShowTaskRole.value = true;
+}
 
 function recieveCancelShowTask() {
     isShowTask.value = false;
+}
+function recieveCancelShowTaskRole() {
+    isShowTaskRole.value = false;
 }
 
 function onTransferPerson() {
@@ -339,11 +344,9 @@ const notHasDetailInfo: ComputedRef<boolean> = computed(
                 </select>
                 <button @click="onTransferRole" :disabled="tansferDisabledRole"
                     class="left-space-narrow user-role-transfer-button">遷移</button>
-                <!--
                 <br>
                 <button @click="onTaskViewRole"
                     class="user-role-transfer-button user-role-transfer-button-margin-top">権限タスクをもっと見る</button>
-                -->
             </div>
             <!-- 遷移メニュー -->
             <div class="user-role-menu-wrapper">
@@ -384,6 +387,12 @@ const notHasDetailInfo: ComputedRef<boolean> = computed(
     <div v-if="isShowTask" class="overComponent">
         <ShowTask :is-search-condition="false" :user-dto="userDto" @send-canceel-show-task="recieveCancelShowTask">
         </ShowTask>
+    </div>
+
+    <!-- タスク表示(権限) -->
+    <div v-if="isShowTaskRole" class="overComponent">
+        <ShowTaskRole :is-search-condition="false" :user-dto="userDto" @send-canceel-show-task="recieveCancelShowTaskRole">
+        </ShowTaskRole>
     </div>
 
 </template>

@@ -230,6 +230,7 @@ export default class RoutePathConstants {
 
     /** タスク計画検索 */
     static readonly PAGE_SEARCH_TASK_PLAN: string = this.BASE_PATH + "/search-task-plan";
+    static readonly PAGE_SEARCH_TASK_PLAN_ROLE: string = this.BASE_PATH + "/search-task-plan-role";
 
     /** タスク情報検索 */
     static readonly PAGE_SEARCH_TASK_INFO: string = this.BASE_PATH + "/search-task-info";

@@ -1,7 +1,7 @@
 ﻿<script setup lang="ts">
-import { computed, onBeforeMount, onMounted, ref, type ComputedRef, type Ref } from 'vue';
+import { computed, onMounted, ref, type ComputedRef, type Ref } from 'vue';
 import { SearchTaskPlanCapsuleDto, type SearchTaskPlanCapsuleDtoInterface } from '../../dto/task_plan/searchTaskPlanCapsuleDto';
-import { convertDatetimeText, DtoEntityConstants, FrameworkCapsuleDto, getErrorMessage, InputDatetime, MessageConstants, MessageView, PagingControl, type FrameworkCapsuleDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
+import { convertDatetimeText, DtoEntityConstants, FrameworkCapsuleDto, getErrorMessage, InputDatetime, MessageConstants, MessageView, PagingControl, type FrameworkCapsuleDtoInterface, type FrameworkMessageAndResultDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import UserRoleConstants from '../../dto/user/userRoleConstants';
 import { SearchTaskPlanResultDto, type SearchTaskPlanResultDtoInterface } from '../../dto/task_plan/searchTaskPlanResultDto';
 import { SearchTaskHistoryResultDto, type SearchTaskHistoryResultDtoInterface } from '../../dto/task_plan/searchTaskHistoryResultDto';
@@ -12,6 +12,8 @@ import { SearchTaskHistoryCapsuleDto, type SearchTaskHistoryCapsuleDtoInterface 
 import DownloadStackTrace from './DownloadStackTrace.vue';
 import type { TaskInfoCodeCheckOptionDtoInterface } from '../../dto/task_plan/taskInfoCodeCheckOptionDto';
 import type { GetTaskInfoOptionsResultDtoInterface } from '../../dto/task_info/getTaskInfoOptionsResultDto';
+import { UpdateTaskPlanSimpleCapsuleDto, type UpdateTaskPlanSimpleCapsuleDtoInterface } from '../../dto/task_plan/updateTaskPlanSimpleCapsuleDto';
+import { type TaskPlanBaseEntityInterface } from '../../entity/taskPlanBaseEntity';
 import router from '../../../../router';
 
 // props,emmits
@@ -26,7 +28,7 @@ const BLANK: string = "";
 const INIT_NUMBER: number = 0;
 const SEARCH_LIMIT: number = 20;
 // const SERVER_STATUS_OK: number = 200;
-// const SERVER_STATUS_ERROR: number = 400;
+const SERVER_STATUS_ERROR: number = 400;
 const INQUIRE_FLG: boolean = false;
 const ERR_MESS_ONLY: boolean = true;
 const MESS_PAGE_NAME: string = "タスク計画表示";
@@ -60,12 +62,7 @@ const resultDto: Ref<SearchTaskPlanResultDtoInterface> = ref(new SearchTaskPlanR
 // 履歴用リスト
 const resultHistoryDto: Ref<SearchTaskHistoryResultDtoInterface> = ref(new SearchTaskHistoryResultDto());
 
-
 onMounted(() => {
-    // 検索条件を作成しないときは即離脱
-    if (!props.isSearchCondition) {
-        return;
-    }
 
     const getCapsuleDto: FrameworkCapsuleDtoInterface = new FrameworkCapsuleDto();
     getCapsuleDto.userDto = props.userDto;
@@ -85,6 +82,13 @@ onMounted(() => {
 
                 const resultOptionsDto: GetTaskInfoOptionsResultDtoInterface = await response.json();
 
+                if (response.status > SERVER_STATUS_ERROR) {
+                    message.value = getErrorMessage(resultOptionsDto.message, ERR_MESS_ONLY);
+                    infoLevel.value = MessageConstants.LEVEL_ERROR;
+                    messageType.value = MessageConstants.VIEW_OK;
+                    return;
+                }
+
                 if (resultOptionsDto.isFailure) {
                     message.value = resultOptionsDto.message;
                     infoLevel.value = MessageConstants.LEVEL_ERROR;
@@ -100,6 +104,26 @@ onMounted(() => {
                     listCategory7.value = resultOptionsDto.listDto.filter((e) => e.codeValue >= 700 && e.codeValue < 800);
                     listCategory8.value = resultOptionsDto.listDto.filter((e) => e.codeValue >= 800 && e.codeValue < 900);
                     listCategory9.value = resultOptionsDto.listDto.filter((e) => e.codeValue >= 900 && e.codeValue < 1000);
+
+                    // 検索条件を作成しないときは指定条件で検索
+                    if (!props.isSearchCondition) {
+
+                        // 検索期間は前年初頭から今年末
+                        const year: number = new Date().getFullYear();
+                        capsuleDto.value.startDate = new Date((year - 1) + "-01-01");
+                        capsuleDto.value.startDate.setHours(0);
+                        capsuleDto.value.startDate.setMinutes(0);
+                        capsuleDto.value.startDate.setSeconds(0);
+                        capsuleDto.value.startDate.setHours(9, 0, 0, 0);
+
+                        capsuleDto.value.endDate = new Date((year) + "-12-31");
+                        capsuleDto.value.endDate.setHours(23, 59, 59, 0);
+                        capsuleDto.value.flgFinished = 0;
+                        capsuleDto.value.flgSuspended = 0;
+                        capsuleDto.value.flgStart = 2;
+
+                        onSearch();
+                    }
                 }
             })
             .catch((error) => {
@@ -121,6 +145,8 @@ onMounted(() => {
         message.value = getErrorMessage(e, INQUIRE_FLG);
         return;
     });
+
+
 });
 
 
@@ -157,6 +183,7 @@ function onSearch() {
         fetch(url, { method, headers, body })
             .then(async (response) => {
                 resultDto.value = await response.json();
+                // isFasilureなし
                 if (resultDto.value.allCount > 0) {
                     allCount.value = resultDto.value.allCount;
                     pageNumber.value = resultDto.value.pageNumber;
@@ -187,6 +214,7 @@ function onSearch() {
     });
 }
 
+
 function onShowHistory(selectedCode: number, taskYear: number) {
 
     const capsuleDtoHistory: SearchTaskHistoryCapsuleDtoInterface = new SearchTaskHistoryCapsuleDto();
@@ -205,6 +233,7 @@ function onShowHistory(selectedCode: number, taskYear: number) {
         };
         fetch(url, { method, headers, body })
             .then(async (response) => {
+                // isFailureなし
                 resultHistoryDto.value = await response.json();
             })
             .catch((e) => {
@@ -238,30 +267,6 @@ const listCategory7: Ref<TaskInfoCodeCheckOptionDtoInterface[]> = ref([]);
 const listCategory8: Ref<TaskInfoCodeCheckOptionDtoInterface[]> = ref([]);
 const listCategory9: Ref<TaskInfoCodeCheckOptionDtoInterface[]> = ref([]);
 
-// 検索条件を入力しないときは2年間の未処理タスク
-onBeforeMount(() => {
-    // タスクコードリストを設定
-    capsuleDto.value.infoCodeList.splice(0);
-    capsuleDto.value.infoCodeList = createCodeList();
-
-    if (!props.isSearchCondition) {
-
-        // 検索期間は前年初頭から今年末
-        const year: number = new Date().getFullYear();
-        capsuleDto.value.startDate = new Date((year - 1) + "-01-01");
-        capsuleDto.value.startDate.setHours(0);
-        capsuleDto.value.startDate.setMinutes(0);
-        capsuleDto.value.startDate.setSeconds(0);
-        capsuleDto.value.startDate.setHours(9, 0, 0, 0);
-
-        capsuleDto.value.endDate = new Date((year) + "-12-31");
-        capsuleDto.value.endDate.setHours(23, 59, 59, 0);
-        capsuleDto.value.flgFinished = 0;
-
-        onSearch();
-    }
-
-});
 
 function onCancel() {
     emits("sendCanceelShowTask");
@@ -285,7 +290,42 @@ function createCodeList(): number[] {
             list.push(dto.codeValue);
         }
     }
+    for (const dto of listCategory1.value) {
+        if (dto.isChecked) {
+            list.push(dto.codeValue);
+        }
+    }
+    for (const dto of listCategory2.value) {
+        if (dto.isChecked) {
+            list.push(dto.codeValue);
+        }
+    }
     for (const dto of listCategory3.value) {
+        if (dto.isChecked) {
+            list.push(dto.codeValue);
+        }
+    }
+    for (const dto of listCategory4.value) {
+        if (dto.isChecked) {
+            list.push(dto.codeValue);
+        }
+    }
+    for (const dto of listCategory5.value) {
+        if (dto.isChecked) {
+            list.push(dto.codeValue);
+        }
+    }
+    for (const dto of listCategory6.value) {
+        if (dto.isChecked) {
+            list.push(dto.codeValue);
+        }
+    }
+    for (const dto of listCategory7.value) {
+        if (dto.isChecked) {
+            list.push(dto.codeValue);
+        }
+    }
+    for (const dto of listCategory8.value) {
         if (dto.isChecked) {
             list.push(dto.codeValue);
         }
@@ -388,6 +428,84 @@ function recieveDatetime(date: Date, index: number) {
 function onTransfer(path: string) {
     router.push(RoutePathConstants.BASE_PATH + path);
 }
+
+
+
+function onUpdateSuccess() {
+    // 最終履歴を更新
+    const updateCapuleDto: Ref<UpdateTaskPlanSimpleCapsuleDtoInterface> = ref(new UpdateTaskPlanSimpleCapsuleDto());
+    const dto: TaskPlanBaseEntityInterface | undefined = resultHistoryDto.value.listTaskHistory[resultHistoryDto.value.listTaskHistory.length - 1];
+    if (undefined !== dto) {
+        updateCapuleDto.value.taskYear = dto.tableYear;
+        updateCapuleDto.value.taskPlanId = dto.taskPlanId;
+        updateCapuleDto.value.userDto = props.userDto;
+        if (dto.isFinished || dto.isSuspended) {
+            message.value = "このタスクは終了または中断しています";
+            infoLevel.value = MessageConstants.LEVEL_WARNING;
+            messageType.value = MessageConstants.VIEW_OK;
+            return;
+        }
+        if (!dto.isLatest) {
+            message.value = "タスク計画データに整合性がありません。";
+            infoLevel.value = MessageConstants.LEVEL_WARNING;
+            messageType.value = MessageConstants.VIEW_OK;
+            return;
+        }
+
+        // 正常終了で更新
+        getAuthorizedPromiseArea().then(token => {
+            const url = urlBack + "/task-plan/update-success";
+            const method = "POST";
+            const body = JSON.stringify(updateCapuleDto.value);
+            const headers = {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'X-AUTH-TOKEN': 'Bearer ' + token
+            };
+            fetch(url, { method, headers, body })
+                .then(async (response) => {
+                    const resultDto: FrameworkMessageAndResultDtoInterface = await response.json();
+                    message.value = resultDto.message;
+
+                    if (response.status > SERVER_STATUS_ERROR) {
+                        message.value = getErrorMessage(resultDto.message, ERR_MESS_ONLY);
+                        infoLevel.value = MessageConstants.LEVEL_ERROR;
+                        messageType.value = MessageConstants.VIEW_OK;
+                        return;
+                    }
+
+                    if (resultDto.isFailure) {
+                        infoLevel.value = MessageConstants.LEVEL_WARNING;
+                        messageType.value = MessageConstants.VIEW_OK;
+                        return;
+                    } else {
+                        infoLevel.value = MessageConstants.LEVEL_INFO;
+                        messageType.value = MessageConstants.VIEW_TOAST;
+                    }
+                })
+                .catch((error) => {
+                    message.value = getErrorMessage(error, ERR_MESS_ONLY);
+                    infoLevel.value = MessageConstants.LEVEL_ERROR;
+                    messageType.value = MessageConstants.VIEW_OK;
+                    return;
+                });
+        }).catch((e) => {
+            infoLevel.value = MessageConstants.LEVEL_ERROR;
+            messageType.value = MessageConstants.VIEW_OK;
+
+            // トークン保持または取得に失敗している場合
+            if (e instanceof AccessTokenNotFoundError || e instanceof TokenRefreshError) {
+                message.value = e.message;
+                return;
+            }
+
+            message.value = getErrorMessage(e, INQUIRE_FLG);
+            return;
+        });
+    }
+}
+
+
 </script>
 <template>
     <div v-if="!isSearchCondition">
@@ -451,7 +569,6 @@ function onTransfer(path: string) {
             </div>
         </div>
 
-        <!-- TODO タスクの種類はさらに種類が確定するまで調整 -->
         <div class="one-line">
             <div class="left-area">
                 タスクの種類
@@ -648,6 +765,15 @@ function onTransfer(path: string) {
                 </tr>
             </tbody>
         </table>
+    </div>
+
+    <div class="one-line" v-if="resultHistoryDto.listTaskHistory.length > 0">
+        <div class="left-area">
+            このタスクを正常終了
+        </div>
+        <div class="right-area">
+            <button @click="onUpdateSuccess">終了更新</button>
+        </div>
     </div>
 
     <div class="footer">

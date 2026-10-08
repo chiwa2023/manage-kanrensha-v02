@@ -55,8 +55,10 @@ public class RefleshYearSourceBatchConfiguration {
     protected Job getJob(final JobRepository jobRepository, @Qualifier(STEP_LOGIC) final Step stepLogic,
             @Qualifier(STEP_SERVICE) final Step stepService) {
 
-        return new JobBuilder(JOB_NAME, jobRepository).incrementer(new RunIdIncrementer()).flow(stepLogic)
-                .next(stepService).end().build();
+        return new JobBuilder(JOB_NAME, jobRepository).incrementer(new RunIdIncrementer()) //
+                .flow(stepLogic) //
+                .next(stepService) //
+                .end().build();
     }
 
     /**

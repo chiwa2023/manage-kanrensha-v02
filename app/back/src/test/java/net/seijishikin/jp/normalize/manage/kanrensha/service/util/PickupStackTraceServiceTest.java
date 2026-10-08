@@ -90,52 +90,52 @@ class PickupStackTraceServiceTest {
                 blobDto.getFileContentBase64());
     }
 
-    //    @Test
-    //    @Tag("TableTruncate")
-    //    void testPointedDate() throws Exception {
-    //
-    //        // テストデータを複写
-    //        this.copyTestData();
-    //
-    //        Path pathCompare = Paths.get(getAbsolutePathLogic.getStorageFolder(), "temp", "test_stack_zip_date.zip");
-    //        Files.deleteIfExists(pathCompare);
-    //
-    //        LocalDate localDate = LocalDate.of(2022, 12, 5);
-    //
-    //        OneFileBlobDto blobDto = pickupStackTraceService.practiceByDate(localDate);
-    //
-    //        Path pathFolder = getStackTraceFolderLogic.practice(null, null, LocalDateTime.of(localDate, LocalTime.MIN));
-    //        final String HYPHEN = "-";
-    //        int length = pathFolder.getNameCount();
-    //
-    //        StringBuilder builder = new StringBuilder();
-    //        builder.append(pathFolder.getName(length - 2)).append(HYPHEN).append(pathFolder.getName(length - 1))
-    //                .append(EXPANDS);
-    //
-    //        List<Path> listFile = Files.list(pathFolder).toList();
-    //
-    //        compressZipPointedFileLogic.practice(pathCompare, listFile);
-    //
-    //        assertEquals(builder.toString(), blobDto.getFileName());
-    //        assertEquals(new String(Base64.getUrlEncoder().encode(Files.readAllBytes(pathCompare))),
-    //                blobDto.getFileContentBase64());
-    //    }
-
     // @Test
     // @Tag("TableTruncate")
-    // void testEmpty() throws Exception {
+    // void testPointedDate() throws Exception {
     //
     // // テストデータを複写
     // this.copyTestData();
     //
-    // final String blank = "";
-
-    // フォルダが存在しない
-    // LocalDate localDate0 = LocalDate.of(2023, 12, 5);
-    // OneFileBlobResultDto blobDto0 =
-    // pickupStackTraceService.practiceByDate(localDate0);
-    // assertEquals(blank, blobDto0.getFileName());
+    // Path pathCompare = Paths.get(getAbsolutePathLogic.getStorageFolder(), "temp",
+    // "test_stack_zip_date.zip");
+    // Files.deleteIfExists(pathCompare);
+    //
+    // LocalDate localDate = LocalDate.of(2022, 12, 5);
+    //
+    // OneFileBlobDto blobDto = pickupStackTraceService.practiceByDate(localDate);
+    //
+    // Path pathFolder = getStackTraceFolderLogic.practice(null, null,
+    // LocalDateTime.of(localDate, LocalTime.MIN));
+    // final String HYPHEN = "-";
+    // int length = pathFolder.getNameCount();
+    //
+    // StringBuilder builder = new StringBuilder();
+    // builder.append(pathFolder.getName(length -
+    // 2)).append(HYPHEN).append(pathFolder.getName(length - 1))
+    // .append(EXPANDS);
+    //
+    // List<Path> listFile = Files.list(pathFolder).toList();
+    //
+    // compressZipPointedFileLogic.practice(pathCompare, listFile);
+    //
+    // assertEquals(builder.toString(), blobDto.getFileName());
+    // assertEquals(new
+    // String(Base64.getUrlEncoder().encode(Files.readAllBytes(pathCompare))),
+    // blobDto.getFileContentBase64());
     // }
+
+    @Test
+    @Tag("TableTruncate")
+    void testEmpty() throws Exception {
+
+        int year = 2019;
+        int code = 1062;
+
+        OneFileBlobResultDto blobDto = pickupStackTraceService.practiceByTaskCode(year, code);
+
+        assertEquals(true, blobDto.getIsFailure());
+    }
 
     private void copyTestData() throws IOException {
         // テストファイルを複写

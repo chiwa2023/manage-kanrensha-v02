@@ -15,6 +15,7 @@ import getAuthorizedPromiseArea from '../../dto/login/getAuthorizedPromiseArea';
 import convertTaskToOption from '../../dto/task_plan/convertTaskToOptions';
 import { AccessTokenNotFoundError, TokenRefreshError } from '../../dto/login/errors';
 import ShowTask from '../show_task/ShowTask.vue';
+import ShowTaskRole from '../../../main/common/show_task/ShowTaskRole.vue';
 import type { SelectOptionsTaskPlanDtoInterface } from '../../dto/select_options/selectOptionsTaskPlanDto';
 import { useTaskPlan } from '../../stores/storeTaskPlan';
 import { notCompletedTaskSomeoneStore } from '../../stores/notCompletedSomeoneTask.ts';
@@ -118,8 +119,6 @@ const switchYearRole: Ref<string> = ref("");
 
 const tansferDisabledPerson: ComputedRef<boolean> = computed(() => 0 === selectedTaskPerson.value);
 const tansferDisabledRole: ComputedRef<boolean> = computed(() => 0 === selectedTaskRole.value);
-
-
 
 let actionStatus = INIT_NUMBER;
 onBeforeMount(async () => {
@@ -263,11 +262,18 @@ function recieveSubmit() {
 
 // タスク表示
 const isShowTask: Ref<Boolean> = ref(false);
-function onTaskView() {
+function onTaskViewPerson() {
     isShowTask.value = true;
+}
+const isShowTaskRole: Ref<Boolean> = ref(false);
+function onTaskViewRole() {
+    isShowTaskRole.value = true;
 }
 function recieveCancelShowTask() {
     isShowTask.value = false;
+}
+function recieveCancelShowTaskRole() {
+    isShowTaskRole.value = false;
 }
 
 function onTransferPerson() {
@@ -329,7 +335,7 @@ const notHasDetailInfo: ComputedRef<boolean> = computed(
                 </select>
                 <button @click="onTransferPerson" :disabled="tansferDisabledPerson"
                     class="left-space-narrow user-role-transfer-button">遷移</button><br>
-                <button @click="onTaskView"
+                <button @click="onTaskViewPerson"
                     class="user-role-transfer-button user-role-transfer-button-margin-top">未処理タスクをもっと見る</button>
             </div>
 
@@ -341,11 +347,9 @@ const notHasDetailInfo: ComputedRef<boolean> = computed(
                 </select>
                 <button @click="onTransferRole" :disabled="tansferDisabledRole"
                     class="left-space-narrow user-role-transfer-button">遷移</button>
-                <!--
                 <br>
                 <button @click="onTaskViewRole"
                     class="user-role-transfer-button user-role-transfer-button-margin-top">権限タスクをもっと見る</button>
-                -->
             </div>
 
             <!-- 遷移メニュー -->
@@ -387,6 +391,12 @@ const notHasDetailInfo: ComputedRef<boolean> = computed(
     <div v-if="isShowTask" class="overComponent">
         <ShowTask :is-search-condition="false" :user-dto="userDto" @send-canceel-show-task="recieveCancelShowTask">
         </ShowTask>
+    </div>
+
+    <!-- タスク表示(権限) -->
+    <div v-if="isShowTaskRole" class="overComponent">
+        <ShowTaskRole :is-search-condition="false" :user-dto="userDto" @send-canceel-show-task="recieveCancelShowTaskRole">
+        </ShowTaskRole>
     </div>
 
 </template>

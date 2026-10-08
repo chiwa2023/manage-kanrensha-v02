@@ -43,7 +43,8 @@ const isDisabledKigyouDt: Ref<boolean> = ref(true);
 const isDisabledPerson: Ref<boolean> = ref(true);
 const isDisabledSeijidantai: Ref<boolean> = ref(true);
 const now: Date = new Date();
-capsuleDto.value.dateEnd = new Date(now.getFullYear(), 0, 1, 12, 0, 0);
+const INPUT_LIMIT: Date = new Date(now.getFullYear(), 0, 1, 12, 0, 0);
+capsuleDto.value.dateEnd = INPUT_LIMIT;
 
 // 関連者選択制御
 watch(isExecuteAll, () => {
@@ -71,6 +72,14 @@ function onSave() {
         infoLevel.value = MessageConstants.LEVEL_WARNING;
         messageType.value = MessageConstants.VIEW_OK;
         message.value = "終了日時入力が不正です。入力しなおしてください";
+        return;
+    }
+
+    // 未提出データダンプ禁止
+        if (capsuleDto.value.dateEnd > INPUT_LIMIT) {
+        infoLevel.value = MessageConstants.LEVEL_WARNING;
+        messageType.value = MessageConstants.VIEW_OK;
+        message.value = "選管・総務省に提出前の本年データは強制ダンプできません。";
         return;
     }
 
