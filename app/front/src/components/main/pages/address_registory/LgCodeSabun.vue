@@ -46,7 +46,15 @@ function onCancel() {
     history.back();
 }
 function onSave() {
-    
+
+    // 地方自治体コードファイルが未指定の時は離脱
+    if (capsuleDto.value.storageFileDto.fileName === "") {
+        message.value = "地方自治体コードファイルを指定してください";
+        infoLevel.value = MessageConstants.LEVEL_WARNING;
+        messageType.value = MessageConstants.VIEW_OK;
+        return;
+    }
+
     getAuthorizedPromiseArea().then(token => {
         const url = urlBack + "/city-lgcode-all/reflesh";
         const method = "POST";
@@ -86,7 +94,7 @@ function onSave() {
             message.value = e.message;
             return;
         }
-        
+
         message.value = getErrorMessage(e, INQUIRE_FLG);
         return;
     });

@@ -52,6 +52,20 @@ function onSave() {
 
     capsuleDto.value.userDto = userDto.value;
 
+    // 差分ファイルは両方保持
+    if (capsuleDto.value.addFileDto.fileName === "") {
+        message.value = "郵便番号追加差分ファイルを指定してください";
+        infoLevel.value = MessageConstants.LEVEL_WARNING;
+        messageType.value = MessageConstants.VIEW_OK;
+        return;
+    }
+    if (capsuleDto.value.deleteFileDto.fileName === "") {
+        message.value = "郵便番号差分削除ファイルを指定してください";
+        infoLevel.value = MessageConstants.LEVEL_WARNING;
+        messageType.value = MessageConstants.VIEW_OK;
+        return;
+    }
+
     getAuthorizedPromiseArea().then(token => {
         const url = urlBack + "/postal-wktbl/prepare";
         const method = "POST";

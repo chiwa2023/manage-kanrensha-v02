@@ -115,6 +115,15 @@ function onSave() {
 }
 
 function onBatchByFile() {
+
+    // ファイル未指定時は中断
+    if (capsuleDto.value.storageFileDto.fileName === "") {
+        message.value = "CSVファイルを指定してください";
+        infoLevel.value = MessageConstants.LEVEL_WARNING;
+        messageType.value = MessageConstants.VIEW_OK;
+        return;
+    }
+
     getAuthorizedPromiseArea().then(token => {
         const url = urlBack + "/regist-bulk-history/execute-kigyou-dt";
         const method = "POST";

@@ -72,8 +72,6 @@ function onCancel() {
 
 function onSave() {
 
-    alert(JSON.stringify(capsuleDto.value));
-
     capsuleDto.value.userDto = userDto.value;
     capsuleDto.value.kanrenshaKbn = viewStatus.value;
 

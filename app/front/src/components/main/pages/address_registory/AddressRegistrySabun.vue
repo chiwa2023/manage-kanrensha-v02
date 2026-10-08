@@ -50,6 +50,20 @@ function onCancel() {
 function onSave() {
     capsuleDto.value.userDto = userDto.value;
 
+    // 差分ファイルは両方保持
+    if (capsuleDto.value.parcelFileDto.fileName === "") {
+        message.value = "アドレス・ベース・レジストリ地番ファイルを指定してください";
+        infoLevel.value = MessageConstants.LEVEL_WARNING;
+        messageType.value = MessageConstants.VIEW_OK;
+        return;
+    }
+    if (capsuleDto.value.rsdtFileDto.fileName === "") {
+        message.value = "アドレス・ベース・レジストリ住居ファイルを指定してください";
+        infoLevel.value = MessageConstants.LEVEL_WARNING;
+        messageType.value = MessageConstants.VIEW_OK;
+        return;
+    }
+
     getAuthorizedPromiseArea().then(token => {
         const url = urlBack + "/wktbl-address-rsdt/prepare";
         const method = "POST";

@@ -85,10 +85,6 @@ function onSave() {
 
     capsuleDto.value.userDto = userDto.value;
 
-
-    alert(capsuleDto.value.dateStart);
-    alert(capsuleDto.value.dateEnd);
-
     getAuthorizedPromiseArea().then(token => {
         const url = urlBack + "/dump-history-sabun/execute";
         const method = "POST";

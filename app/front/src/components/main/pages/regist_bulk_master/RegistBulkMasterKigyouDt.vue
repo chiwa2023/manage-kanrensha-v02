@@ -135,6 +135,14 @@ function onSave() {
 
 function onBatchByFile() {
 
+    // ファイル未指定時は中断
+    if (capsuleDto.value.storageFileDto.fileName === "") {
+        message.value = "CSVファイルを指定してください";
+        infoLevel.value = MessageConstants.LEVEL_WARNING;
+        messageType.value = MessageConstants.VIEW_OK;
+        return;
+    }
+
     let url = "";
     getAuthorizedPromiseArea().then(token => {
         // 最小と標準で接続先切り替え(起動条件のパラメータ内容は変わらない)
