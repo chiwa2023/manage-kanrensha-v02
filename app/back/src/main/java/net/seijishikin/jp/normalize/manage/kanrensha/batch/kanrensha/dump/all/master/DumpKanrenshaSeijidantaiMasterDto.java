@@ -21,7 +21,7 @@ public class DumpKanrenshaSeijidantaiMasterDto // NOPMD DataClass
     /**
      * コンストラクタ
      */
-    public DumpKanrenshaSeijidantaiMasterDto() { // NOPMD TODO 安定した段階でフィールドを引数とするコンストラクタを作成
+    public DumpKanrenshaSeijidantaiMasterDto() { // NOPMD
 
     }
 

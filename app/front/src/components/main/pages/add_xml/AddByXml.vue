@@ -30,7 +30,7 @@ const userDto: Ref<LeastUserDtoInterface> = ref(getLoginUser());
 const BLANK: string = "";
 const INIT_NUMBER: number = 0;
 // const SERVER_STATUS_OK: number = 200;
-// const SERVER_STATUS_ERROR: number = 400;
+const SERVER_STATUS_ERROR: number = 400;
 const SEARCH_LIMIT: number = 20;
 const INQUIRE_FLG: boolean = false;
 const ERR_MESS_ONLY: boolean = true;
@@ -125,6 +125,14 @@ function onSaveWkTbl() {
         fetch(url, { method, headers, body })
             .then(async (response) => {
                 const resultDto: FrameworkMessageAndResultDtoInterface = await response.json();
+
+                if (response.status > SERVER_STATUS_ERROR) {
+                    message.value = getErrorMessage(resultDto.message, ERR_MESS_ONLY);
+                    infoLevel.value = MessageConstants.LEVEL_ERROR;
+                    messageType.value = MessageConstants.VIEW_OK;
+                    return;
+                }
+
                 if (resultDto.isFailure) {
                     infoLevel.value = MessageConstants.LEVEL_ERROR;
                     messageType.value = MessageConstants.VIEW_OK;
@@ -178,6 +186,14 @@ function onSearchAll() {
         fetch(url, { method, headers, body })
             .then(async (response) => {
                 byXmlResultDto.value = await response.json();
+
+                 if (response.status > SERVER_STATUS_ERROR) {
+                    message.value = getErrorMessage(BLANK, INQUIRE_FLG);
+                    infoLevel.value = MessageConstants.LEVEL_ERROR;
+                    messageType.value = MessageConstants.VIEW_OK;
+                    return;
+                }
+               
                 allCount.value = byXmlResultDto.value.allCount;
                 limit.value = byXmlResultDto.value.limit;
                 pageNumber.value = byXmlResultDto.value.pageNumber;
@@ -254,6 +270,15 @@ function onSaveBunrui(editId: number) {
         fetch(url, { method, headers, body })
             .then(async (response) => {
                 const resultDto: UpdateWkTblAddByXmlResultDtoInterface = await response.json();
+
+                if (response.status > SERVER_STATUS_ERROR) {
+                    message.value = getErrorMessage(resultDto.message, ERR_MESS_ONLY);
+                    infoLevel.value = MessageConstants.LEVEL_ERROR;
+                    messageType.value = MessageConstants.VIEW_OK;
+                    return;
+                }
+
+
                 // 正常に更新できた時だけ既存のリストと入れ替え
                 byXmlResultDto.value.listXmlEntity.splice(findIndex, 1, resultDto.wkTblMasterAllByXmlEntity);
                 // 再表示
@@ -310,6 +335,13 @@ function onSaveTableList() {
             .then(async (response) => {
                 const resultDto: FrameworkMessageAndResultDtoInterface = await response.json();
 
+                if (response.status > SERVER_STATUS_ERROR) {
+                    message.value = getErrorMessage(resultDto.message, ERR_MESS_ONLY);
+                    infoLevel.value = MessageConstants.LEVEL_ERROR;
+                    messageType.value = MessageConstants.VIEW_OK;
+                    return;
+                }
+
                 infoLevel.value = MessageConstants.LEVEL_INFO;
                 messageType.value = MessageConstants.VIEW_TOAST;
                 message.value = resultDto.message;
@@ -363,6 +395,13 @@ function onSave() {
         fetch(url, { method, headers, body })
             .then(async (response) => {
                 const resultDto: FrameworkMessageAndResultDtoInterface = await response.json();
+
+                if (response.status > SERVER_STATUS_ERROR) {
+                    message.value = getErrorMessage(resultDto.message, ERR_MESS_ONLY);
+                    infoLevel.value = MessageConstants.LEVEL_ERROR;
+                    messageType.value = MessageConstants.VIEW_OK;
+                    return;
+                }
 
                 infoLevel.value = MessageConstants.LEVEL_INFO;
                 messageType.value = MessageConstants.VIEW_TOAST;

@@ -144,7 +144,6 @@ public class RsdtAddressItemWriter extends JpaItemWriter<AddressRsdtBaseEntity> 
     }
 
     private Integer convertLatest(final boolean isLatest) {
-        // TODO 3回以上出現したらutil化する
         if (isLatest) {
             return 1;
         } else {

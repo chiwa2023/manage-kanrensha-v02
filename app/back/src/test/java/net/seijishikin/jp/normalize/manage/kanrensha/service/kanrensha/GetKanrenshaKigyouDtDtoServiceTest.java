@@ -116,7 +116,7 @@ class GetKanrenshaKigyouDtDtoServiceTest {
         assertEquals(masterEntity.getKigyouDtDelegate(), delegeateDto.getPersonName());
         assertEquals(propertyEntity.getOrgDelegateCode(), delegeateDto.getPersonKanrenshaCode());
 
-        // TODO dto.getIsCombineUser();
+        // front側で取得時に紐づけを表示していないので紐づけ動作の検証不要
     }
 
 }

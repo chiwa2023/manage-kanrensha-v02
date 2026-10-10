@@ -20,8 +20,9 @@ const urlBack: string = RoutePathConstants.DOMAIN + RoutePathConstants.BASE_PATH
 const BLANK: string = "";
 // const INIT_NUMBER: number = 0;
 // const SERVER_STATUS_OK: number = 200;
-// const SERVER_STATUS_ERROR: number = 400;
+const SERVER_STATUS_ERROR: number = 400;
 const INQUIRE_FLG: boolean = false;
+const ERR_MESS_ONLY: boolean = true;
 const MESS_PAGE_NAME: string = "SE権限追加推薦処理";
 const INIT_CALLER: string = "no branch";
 
@@ -56,6 +57,14 @@ function onSearch() {
         fetch(url, { method, headers, body })
             .then(async (response) => {
                 resultDto.value = await response.json();
+
+                if (response.status > SERVER_STATUS_ERROR) {
+                    message.value = getErrorMessage(BLANK, INQUIRE_FLG);
+                    infoLevel.value = MessageConstants.LEVEL_ERROR;
+                    messageType.value = MessageConstants.VIEW_OK;
+                    return;
+                }
+
             })
             .catch((e) => {
                 infoLevel.value = MessageConstants.LEVEL_ERROR;
@@ -101,6 +110,14 @@ async function onAdminPromote(userId: number) {
             fetch(url, { method, headers, body })
                 .then(async (response) => {
                     const resultDto: FrameworkMessageAndResultDtoInterface = await response.json();
+
+                    if (response.status > SERVER_STATUS_ERROR) {
+                        message.value = getErrorMessage(resultDto.message, ERR_MESS_ONLY);
+                        infoLevel.value = MessageConstants.LEVEL_ERROR;
+                        messageType.value = MessageConstants.VIEW_OK;
+                        return;
+                    }
+
                     infoLevel.value = MessageConstants.LEVEL_INFO;
                     // トークン保持ができていない場合
                     messageType.value = MessageConstants.VIEW_TOAST;

@@ -35,11 +35,11 @@ import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateLeastUserForTes
 @SpringBootTest
 @DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
 @ConfigurationProperties(prefix = "net.seijishikin.jp.normalize.kanrensha")
-class SaveFileLogicTest {
+class SaveFileBase64LogicTest {
 
     /** テスト対象 */
     @Autowired
-    private SaveFileLogic saveFileLogic;
+    private SaveFileBase64Logic saveFileBase64Logic;
     
     /** propertiesからインジェクションされた最上位保存フォルダ絶対パス */
     private String storageFolder;
@@ -83,7 +83,7 @@ class SaveFileLogicTest {
         byte[] bytes = Files.readAllBytes(path);
         String content = Base64.getEncoder().encodeToString(bytes);
         
-        assertTrue(saveFileLogic.practice(pathWrite , content));
+        assertTrue(saveFileBase64Logic.practice(pathWrite , content));
 
         // 実施後にはファイルが存在
         assertTrue(file.exists());
@@ -114,7 +114,7 @@ class SaveFileLogicTest {
         // 読み取りファイルを取得
         Path path = Paths.get(GetCurrentResourcePath.getBackTestResourcePath(), "/file/", "srcmd_base64.txt");
         String content = Files.readString(path);
-        assertTrue(saveFileLogic.practice(pathWrite, content));
+        assertTrue(saveFileBase64Logic.practice(pathWrite, content));
 
         // 実施後にはファイルが存在
         assertTrue(file.exists());

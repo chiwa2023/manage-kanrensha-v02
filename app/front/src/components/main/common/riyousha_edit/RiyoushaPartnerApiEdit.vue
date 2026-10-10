@@ -15,7 +15,7 @@ const emits = defineEmits(["sendCancelPartnerApi", "sendPartnerApiInterface"]);
 // よく使う定数
 const BLANK: string = "";
 // const SERVER_STATUS_OK: number = 200;
-// const SERVER_STATUS_ERROR: number = 400;
+const SERVER_STATUS_ERROR: number = 400;
 const INQUIRE_FLG: boolean = false;
 const ERR_MESS_ONLY: boolean = true;
 const MESS_PAGE_NAME: string = "APIパートナー編集";
@@ -64,6 +64,15 @@ function onChangeEntity() {
             fetch(url, { method, headers, body })
                 .then(async (response) => {
                     inputpartnerApiDto.value = await response.json();
+
+                    if (response.status > SERVER_STATUS_ERROR) {
+                        message.value = getErrorMessage(inputpartnerApiDto.value.message, ERR_MESS_ONLY);
+                        infoLevel.value = MessageConstants.LEVEL_ERROR;
+                        messageType.value = MessageConstants.VIEW_OK;
+                        return;
+                    }
+
+
                     message.value = inputpartnerApiDto.value.message;
                     if (inputpartnerApiDto.value.isFailure) {
                         infoLevel.value = MessageConstants.LEVEL_WARNING;

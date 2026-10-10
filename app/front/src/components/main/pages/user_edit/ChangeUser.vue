@@ -19,7 +19,7 @@ const BLANK: string = "";
 //const INIT_NUMBER: number = 0;
 //const SERVER_STATUS_OK: number = 200;
 //const SERVER_ACCEPTED: number = 202;
-// const SERVER_STATUS_ERROR: number = 400;
+const SERVER_STATUS_ERROR: number = 400;
 const SERVER_STATUS_ACCEPTED: number = 201;
 const SEARCH_LIMIT: number = 20;
 const INQUIRE_FLG: boolean = false;
@@ -88,6 +88,13 @@ function onSearch() {
         fetch(url, { method, headers, body })
             .then(async (response) => {
                 const resultDto: SearchUserEntityResultDtoInterface = await response.json();
+
+                if (response.status > SERVER_STATUS_ERROR) {
+                    message.value = getErrorMessage(BLANK, INQUIRE_FLG);
+                    infoLevel.value = MessageConstants.LEVEL_ERROR;
+                    messageType.value = MessageConstants.VIEW_OK;
+                    return;
+                }
 
                 if (resultDto.listPersonEntity.length === 0) {
                     infoLevel.value = MessageConstants.LEVEL_INFO;
@@ -172,7 +179,9 @@ function recieveSubmit(button: string, callerMethod: string) {
 
         const capsuleDtoDelete: DeleteUserCapsuleDtoInterface = new DeleteUserCapsuleDto();
         capsuleDtoDelete.userDto = deleteUserDto;
-        capsuleDtoDelete.withdrawReason = "SE権限者による作業"; // TODO 必要ならば入力窓作成
+        // MEMO 修正理由を固定しているが必要ならば入力窓作成
+        capsuleDtoDelete.withdrawReason = "SE権限者による作業";
+
         // 処理実行
         getAuthorizedPromiseArea().then(token => {
             const url = urlBack + "/edit-user/delete";
@@ -186,6 +195,15 @@ function recieveSubmit(button: string, callerMethod: string) {
             fetch(url, { method, headers, body })
                 .then(async (response) => {
                     const resultDto = await response.json();
+
+                    if (response.status > SERVER_STATUS_ERROR) {
+                        message.value = getErrorMessage(resultDto.message, ERR_MESS_ONLY);
+                        infoLevel.value = MessageConstants.LEVEL_ERROR;
+                        messageType.value = MessageConstants.VIEW_OK;
+                        return;
+                    }
+
+
                     if (SERVER_STATUS_ACCEPTED == response.status) {
                         infoLevel.value = MessageConstants.LEVEL_ERROR;
                         messageType.value = MessageConstants.VIEW_OK;

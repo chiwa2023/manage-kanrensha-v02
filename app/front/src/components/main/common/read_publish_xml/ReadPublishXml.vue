@@ -19,7 +19,7 @@ const BLANK: string = "";
 // const INIT_NUMBER: number = 0;
 //const SEARCH_LIMIT: number = 20;
 const SERVER_STATUS_OK: number = 200;
-// const SERVER_STATUS_ERROR: number = 400;
+const SERVER_STATUS_ERROR: number = 400;
 const INQUIRE_FLG: boolean = false;
 const ERR_MESS_ONLY: boolean = true;
 const MESS_PAGE_NAME: string = "政治資金XML読み取り";
@@ -79,6 +79,15 @@ function readXmlFile() {
                                 fetch(url, { method, headers, body })
                                     .then(async (response) => {
                                         resultDto.value = await response.json();
+
+                                        if (response.status > SERVER_STATUS_ERROR) {
+                                            message.value = getErrorMessage(resultDto.value.message, ERR_MESS_ONLY);
+                                            infoLevel.value = MessageConstants.LEVEL_ERROR;
+                                            messageType.value = MessageConstants.VIEW_OK;
+                                            return;
+                                        }
+
+
                                         if (SERVER_STATUS_OK === response.status) {
 
                                             emits("sendStorageFileInterface", resultDto.value.storageFileDto);

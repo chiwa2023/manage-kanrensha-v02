@@ -78,7 +78,6 @@ class AuthorizeFilterTest {
 
         final String path = "/edit-user/refresh-password";
 
-        // TODO 仮でパスワード更新にしているが、他によいAPIがあれば入れ替える
         MockHttpServletRequest request = new MockHttpServletRequest();
         request.addHeader("X-AUTH-TOKEN", "Bearer " + jwtTokenDto.getAccessToken());
         MockHttpServletMapping mapping = new MockHttpServletMapping(path, path, userName, MappingMatch.PATH);

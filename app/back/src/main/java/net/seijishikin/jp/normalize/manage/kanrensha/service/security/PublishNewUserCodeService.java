@@ -74,7 +74,7 @@ public class PublishNewUserCodeService {
         List<MailDataDto> list = new ArrayList<>();
         list.add(this.createMailData(email, regiCode, limitTime, verifyToken));
 
-        SendMaileResultDto resultDto = sendMailUserLogic.practice(list);
+        SendMaileResultDto resultDto = sendMailUserLogic.practice(list, 0);
 
         if (resultDto.getIsFailure()) {
             // コード登録ができなかった場合はnull

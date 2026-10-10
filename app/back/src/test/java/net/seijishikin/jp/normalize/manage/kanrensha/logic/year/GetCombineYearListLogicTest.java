@@ -32,8 +32,8 @@ class GetCombineYearListLogicTest {
 
         List<Short> list = getCombineYearListLogic.practice();
 
-        // TODO 年更新処理するごとに変化する
-        assertEquals(Short.valueOf("2020"), list.getFirst());
+        // MEMO 年更新処理するごとに変化する
+        assertEquals(Short.valueOf("2019"), list.getFirst());
         assertEquals(Short.valueOf("2027"), list.getLast());
         
 

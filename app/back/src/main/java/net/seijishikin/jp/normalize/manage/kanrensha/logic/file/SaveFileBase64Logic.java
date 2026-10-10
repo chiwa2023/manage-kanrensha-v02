@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
  * ファイル保存処理Logic
  */
 @Component
-public class SaveFileLogic {
+public class SaveFileBase64Logic {
 
     /** Base64ヘッダ */
     private static final String BASE64_HEADER = ";base64,";
@@ -26,8 +26,6 @@ public class SaveFileLogic {
      */
     public boolean practice(final Path allPath, final String fileContent)
             throws IOException {
-
-        // TODO Class名変更(Base64変換明記) 
         
         // Webから取得したデータの場合はMymeTypeのヘッダがついているので発見したら除去
         int pos = fileContent.indexOf(BASE64_HEADER);

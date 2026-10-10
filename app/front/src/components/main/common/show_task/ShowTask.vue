@@ -183,6 +183,14 @@ function onSearch() {
         fetch(url, { method, headers, body })
             .then(async (response) => {
                 resultDto.value = await response.json();
+
+                if (response.status > SERVER_STATUS_ERROR) {
+                    message.value = getErrorMessage(BLANK, INQUIRE_FLG);
+                    infoLevel.value = MessageConstants.LEVEL_ERROR;
+                    messageType.value = MessageConstants.VIEW_OK;
+                    return;
+                }
+
                 // isFasilureなし
                 if (resultDto.value.allCount > 0) {
                     allCount.value = resultDto.value.allCount;
@@ -235,6 +243,14 @@ function onShowHistory(selectedCode: number, taskYear: number) {
             .then(async (response) => {
                 // isFailureなし
                 resultHistoryDto.value = await response.json();
+
+                if (response.status > SERVER_STATUS_ERROR) {
+                    message.value = getErrorMessage(BLANK, INQUIRE_FLG);
+                    infoLevel.value = MessageConstants.LEVEL_ERROR;
+                    messageType.value = MessageConstants.VIEW_OK;
+                    return;
+                }
+
             })
             .catch((e) => {
                 infoLevel.value = MessageConstants.LEVEL_ERROR;
@@ -465,6 +481,14 @@ function onUpdateSuccess() {
             fetch(url, { method, headers, body })
                 .then(async (response) => {
                     const resultDto: FrameworkMessageAndResultDtoInterface = await response.json();
+
+                    if (response.status > SERVER_STATUS_ERROR) {
+                        message.value = getErrorMessage(resultDto.message, ERR_MESS_ONLY);
+                        infoLevel.value = MessageConstants.LEVEL_ERROR;
+                        messageType.value = MessageConstants.VIEW_OK;
+                        return;
+                    }
+
                     message.value = resultDto.message;
 
                     if (response.status > SERVER_STATUS_ERROR) {

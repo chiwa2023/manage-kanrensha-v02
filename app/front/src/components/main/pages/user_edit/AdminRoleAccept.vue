@@ -20,8 +20,9 @@ const BLANK: string = "";
 const INIT_NUMBER: number = 0;
 //const SERVER_STATUS_OK: number = 200;
 const SERVER_ACCEPTED: number = 202;
-// const SERVER_STATUS_ERROR: number = 400;
+const SERVER_STATUS_ERROR: number = 400;
 const INQUIRE_FLG: boolean = false;
+const ERR_MESS_ONLY: boolean = true;
 const MESS_PAGE_NAME: string = "SE権限追加推薦処理";
 const INIT_CALLER: string = "no branch";
 
@@ -65,6 +66,14 @@ onBeforeMount(() => {
         fetch(url, { method, headers, body })
             .then(async (response) => {
                 resultDto.value = await response.json();
+
+                if (response.status > SERVER_STATUS_ERROR) {
+                    message.value = getErrorMessage(resultDto.value.message, ERR_MESS_ONLY);
+                    infoLevel.value = MessageConstants.LEVEL_ERROR;
+                    messageType.value = MessageConstants.VIEW_OK;
+                    return;
+                }
+
                 if (SERVER_ACCEPTED == response.status) {
                     infoLevel.value = MessageConstants.LEVEL_ERROR;
                     messageType.value = MessageConstants.VIEW_OK;
@@ -108,6 +117,14 @@ function onSave() {
         fetch(url, { method, headers, body })
             .then(async (response) => {
                 const resultDtoAccept: FrameworkMessageAndResultDtoInterface = await response.json();
+
+                if (response.status > SERVER_STATUS_ERROR) {
+                    message.value = getErrorMessage(resultDtoAccept.message, ERR_MESS_ONLY);
+                    infoLevel.value = MessageConstants.LEVEL_ERROR;
+                    messageType.value = MessageConstants.VIEW_OK;
+                    return;
+                }
+
                 // 何によらずメッセージを出す
                 infoLevel.value = MessageConstants.LEVEL_INFO;
                 messageType.value = MessageConstants.VIEW_TOAST;

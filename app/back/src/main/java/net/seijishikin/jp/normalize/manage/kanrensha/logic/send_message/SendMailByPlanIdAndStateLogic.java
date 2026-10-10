@@ -109,7 +109,7 @@ public class SendMailByPlanIdAndStateLogic {
         List<MailDataDto> listMail = new ArrayList<>();
         listMail.add(mailDataDto);
 
-        return sendMailUserLogic.practice(listMail);
+        return sendMailUserLogic.practice(listMail, 0);
     }
 
     private String getBody(final TaskInfoEntity infoEntity, final Integer state) {

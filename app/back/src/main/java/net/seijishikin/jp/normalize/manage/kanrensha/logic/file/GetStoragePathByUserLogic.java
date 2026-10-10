@@ -19,7 +19,7 @@ import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
  */
 @Component
 @ConfigurationProperties(prefix = "net.seijishikin.jp.normalize.kanrensha")
-public class GetStoragePathLogic {
+public class GetStoragePathByUserLogic {
 
     /** propertiesからインジェクションされた最上位保存フォルダ絶対パス */
     private String storageFolder;
@@ -50,8 +50,6 @@ public class GetStoragePathLogic {
      * @throws IOException ファイル書き込み時例外
      */
     public Path practice(final LeastUserDto userDto) throws IOException {
-
-        // TODO クラス名変更(User情報存在を明確に)
         
         // 冗長だが毎回ディレクトリの有無を確認する
         Path parentPath = Paths.get(storageFolder);

@@ -13,8 +13,8 @@ import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.constants.TaskInfoConstants;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.storage_file.UploadContentCapsuleDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.logic.file.GetAbsolutePathLogic;
-import net.seijishikin.jp.normalize.manage.kanrensha.logic.file.GetStoragePathLogic;
-import net.seijishikin.jp.normalize.manage.kanrensha.logic.file.SaveFileLogic;
+import net.seijishikin.jp.normalize.manage.kanrensha.logic.file.GetStoragePathByUserLogic;
+import net.seijishikin.jp.normalize.manage.kanrensha.logic.file.SaveFileBase64Logic;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.year.SwitchYearInsertSaveStorageService;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.year.SwitchYearInsertTaskPlanService;
 
@@ -27,7 +27,7 @@ public class FileUploadServcie {
 
     /** ファイル保存フォルダ取得Logic */
     @Autowired
-    private GetStoragePathLogic getStoragePathLogic;
+    private GetStoragePathByUserLogic getStoragePathByUserLogic;
 
     /** 絶対パス変換Logic */
     @Autowired
@@ -35,7 +35,7 @@ public class FileUploadServcie {
 
     /** ファイル保存Logic */
     @Autowired
-    private SaveFileLogic saveFileLogic;
+    private SaveFileBase64Logic saveFileBase64Logic;
 
     /** ファイル保存(年管理)Service */
     @Autowired
@@ -58,18 +58,18 @@ public class FileUploadServcie {
 
         LeastUserDto userDto = capsuleDto.getUserDto();
 
-        Path childPath = getStoragePathLogic.practice(userDto);
+        Path childPath = getStoragePathByUserLogic.practice(userDto);
 
         Path fullPath = getAbsolutePathLogic.practice(childPath.toString(),
                 capsuleDto.getUploadFileDto().getFileName());
 
         // ファイルを保存する
-        saveFileLogic.practice(fullPath, capsuleDto.getUploadFileDto().getFileContent());
+        saveFileBase64Logic.practice(fullPath, capsuleDto.getUploadFileDto().getFileContent());
 
-        // TODO 書証区分を決定次第指定する
+        // TODO (1)書証区分を決定次第指定する
         switchYearInsertSaveStorageService.practice(dateTimeStrat.getYear(), userDto, fullPath, Short.valueOf("205"));
 
-        // TODO タスク情報の入れ方を決定する
+        // TODO (1)タスク情報の入れ方を決定する
         switchYearInsertTaskPlanService.practice(null, userDto, dateTimeStrat, TaskInfoConstants.SAVE_POSTAL_REPAIR_CSV,
                 mapQuery);
 

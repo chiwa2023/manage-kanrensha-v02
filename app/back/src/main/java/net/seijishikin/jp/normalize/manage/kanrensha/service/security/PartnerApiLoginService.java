@@ -21,7 +21,7 @@ import net.seijishikin.jp.normalize.manage.kanrensha.service.year.SwitchYearSave
  * API接続ログインService
  * 
  * <p>
- * トークン確認と路銀履歴記録を行う
+ * トークン確認とログイン履歴記録を行う
  * </p>
  */
 @Service
@@ -121,7 +121,6 @@ public class PartnerApiLoginService {
 
         } catch (Exception exception) { // NOPMD
             saveStackTraceService.practice(exception, baseEntity.getAttemptTime().getYear(), 0);
-            // TODO 資格に問題がないが履歴が登録できない場合の処理は決定後実装する
         }
     }
 

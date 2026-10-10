@@ -22,6 +22,7 @@ import router from '../../../../router';
 const BLANK: string = "";
 const INIT_NUMBER: number = 0;
 // const INIT_BOOLEAN: boolean = false;
+const SERVER_STATUS_ERROR: number = 400;
 const INQUIRE_FLG: boolean = false;
 const ERR_MESS_ONLY: boolean = true;
 const MESS_PAGE_NAME: string = "利用者組織更新";
@@ -78,6 +79,14 @@ onBeforeMount(() => {
         fetch(url, { method, headers, body })
             .then(async (response) => {
                 const resultDto: GetRiyoushaMasterResultDtoInterface = await response.json();
+
+                if (response.status > SERVER_STATUS_ERROR) {
+                    message.value = getErrorMessage(resultDto.message, ERR_MESS_ONLY);
+                    infoLevel.value = MessageConstants.LEVEL_ERROR;
+                    messageType.value = MessageConstants.VIEW_OK;
+                    return;
+                }
+
                 message.value = resultDto.message;
                 if (resultDto.isFailure) {
                     infoLevel.value = MessageConstants.LEVEL_WARNING;
@@ -132,6 +141,14 @@ onBeforeMount(() => {
         fetch(url, { method, headers, body })
             .then(async (response) => {
                 riyoshaOrgoptions.value = await response.json();
+
+                if (response.status > SERVER_STATUS_ERROR) {
+                    message.value = getErrorMessage(BLANK, INQUIRE_FLG);
+                    infoLevel.value = MessageConstants.LEVEL_ERROR;
+                    messageType.value = MessageConstants.VIEW_OK;
+                    return;
+                }
+
             })
             .catch((error) => {
                 message.value = getErrorMessage(error, ERR_MESS_ONLY);
@@ -179,6 +196,14 @@ function recieveRiyoushaOrgInterface(editDto: RiyoushaOrgDtoInterface) {
         fetch(url, { method, headers, body })
             .then(async (response) => {
                 const resultDto: FrameworkMessageAndResultDtoInterface = await response.json();
+
+                if (response.status > SERVER_STATUS_ERROR) {
+                    message.value = getErrorMessage(resultDto.message, ERR_MESS_ONLY);
+                    infoLevel.value = MessageConstants.LEVEL_ERROR;
+                    messageType.value = MessageConstants.VIEW_OK;
+                    return;
+                }
+
                 message.value = resultDto.message;
                 if (resultDto.isFailure) {
                     infoLevel.value = MessageConstants.LEVEL_WARNING;

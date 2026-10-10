@@ -38,7 +38,7 @@ public class RsdtAddressProcessor implements ItemProcessor<RsdtAddressCsvDto, Ad
         // 建物までの住所変換
         entity.setAddressBlock(this.convertBlockAddress(item));
 
-        // 建物は住居番号2Idが空でないときに住居番号2番号を補う TODO 規約で全角文字であることを要求される場合は変換する
+        // 建物は住居番号2Idが空でないときに住居番号2番号を補う MEMO 規約で全角文字であることを要求される場合は変換する
         if (!BLANK.equals(item.getRsdtNum2())) {
             entity.setAddressBuilding(item.getRsdtNum2() + "号室");
         }
@@ -52,7 +52,7 @@ public class RsdtAddressProcessor implements ItemProcessor<RsdtAddressCsvDto, Ad
         builder.append(item.getCity()).append(item.getWard()).append(item.getOazaCho()).append(item.getChome())
                 .append(item.getKoaza());
 
-        // TODO 規約で全角文字であることを要求される場合は変換する
+        // MEMO 規約で全角文字であることを要求される場合は変換する
         if (!BLANK.equals(item.getBlkNum())) {
             builder.append(item.getBlkNum()).append("番地");
         }

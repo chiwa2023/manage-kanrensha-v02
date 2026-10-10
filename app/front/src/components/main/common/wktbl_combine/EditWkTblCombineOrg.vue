@@ -2,7 +2,7 @@
 import { computed, onMounted, ref, toRaw, type ComputedRef, type Ref } from 'vue';
 import { SearchWkTblPagingCapsuleDto, type SearchWkTblPagingCapsuleDtoInterface } from '../../dto/add_xml/searchWkTbPagingCapsuleDto';
 import { SearchWkTblCombineOrgPagingResultDto, type SearchWkTblCombineOrgPagingResultDtoInterface } from '../../dto/wktbl_combine/searchWkTblCombineOrgPagingResultDto';
-import { FrameworkCapsuleDto, getErrorMessage, getErrorUniqueIdMessage, MessageConstants, MessageView, PagingControl, type FrameworkCapsuleDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
+import { FrameworkCapsuleDto, getErrorMessage, getErrorUniqueIdMessage, MessageConstants, MessageView, PagingControl, SearchKanrenshaKigyouDt, SearchKanrenshaPerson, SearchKanrenshaSeijidantai, type FrameworkCapsuleDtoInterface, type KanrenshaKigyouDtMasterEntityInterface, type KanrenshaPersonMasterEntityInterface, type KanrenshaSeijidantaiMasterEntityInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import KanrenshaKbnConstants from '../../dto/kanrensha/kanrenshaKbnConstants';
 import RoutePathConstants from '../../../../routePathConstants';
 import { WkTblKanrenshaCombineOrgEntity, type WkTblKanrenshaCombineOrgEntityInterface } from '../../entity/wkTblKanrenshaCombineOrgEntity';
@@ -19,9 +19,9 @@ const props = defineProps<{ orgType: string, userDto: LeastUserDtoInterface }>()
 // よく使う定数
 const BLANK: string = "";
 const INIT_NUMBER: number = 0;
-// const INIT_BOOLEAN: boolean = false;
+const INIT_BOOLEAN: boolean = false;
 // const SERVER_STATUS_OK: number = 200;
-// const SERVER_STATUS_ERROR: number = 400;
+const SERVER_STATUS_ERROR: number = 400;
 const SEARCH_LIMIT: number = 20;
 const INQUIRE_FLG: boolean = false;
 const ERR_MESS_ONLY: boolean = true;
@@ -65,7 +65,14 @@ onMounted(() => {
         };
         fetch(url, { method, headers, body })
             .then(async (response) => {
-                const resultDto:YearOptionResultDtoInterface = await response.json();
+                const resultDto: YearOptionResultDtoInterface = await response.json();
+
+                if (response.status > SERVER_STATUS_ERROR) {
+                    message.value = getErrorMessage(resultDto.message, ERR_MESS_ONLY);
+                    infoLevel.value = MessageConstants.LEVEL_ERROR;
+                    messageType.value = MessageConstants.VIEW_OK;
+                    return;
+                }
 
                 message.value = resultDto.message;
                 if (resultDto.isFailure) {
@@ -73,7 +80,7 @@ onMounted(() => {
                     messageType.value = MessageConstants.VIEW_OK;
                     return;
                 } else {
-                    listYearCheck.value =                    resultDto.listEntity;
+                    listYearCheck.value = resultDto.listEntity;
                 }
             })
             .catch((error) => {
@@ -116,6 +123,14 @@ function onSearch() {
         fetch(url, { method, headers, body })
             .then(async (response) => {
                 combineResultDto.value = await response.json();
+
+                if (response.status > SERVER_STATUS_ERROR) {
+                    message.value = getErrorMessage(BLANK, INQUIRE_FLG);
+                    infoLevel.value = MessageConstants.LEVEL_ERROR;
+                    messageType.value = MessageConstants.VIEW_OK;
+                    return;
+                }
+
                 if (combineResultDto.value.allCount == 0) {
                     infoLevel.value = MessageConstants.LEVEL_INFO;
                     messageType.value = MessageConstants.VIEW_TOAST;
@@ -218,6 +233,14 @@ function onEditUpdate() {
         fetch(url, { method, headers, body })
             .then(async (response) => {
                 const resultDto: UpdateWkTblHistoryKigyouDtResultDtoInterface = await response.json();
+
+                if (response.status > SERVER_STATUS_ERROR) {
+                    message.value = getErrorMessage(resultDto.message, ERR_MESS_ONLY);
+                    infoLevel.value = MessageConstants.LEVEL_ERROR;
+                    messageType.value = MessageConstants.VIEW_OK;
+                    return;
+                }
+
                 message.value = resultDto.message;
                 if (resultDto.isFailure) {
                     infoLevel.value = MessageConstants.LEVEL_WARNING;
@@ -280,6 +303,51 @@ function recieveSubmit() {
     infoLevel.value = 0;
     messageType.value = 0;
 }
+
+// 個人検索
+const isSearchPerson: Ref<boolean> = ref(INIT_BOOLEAN);
+function recievePersonInterface(entity: KanrenshaPersonMasterEntityInterface) {
+    entityEdit.value.personKanrenshaCode = entity.personKanrenshaCode;
+    entityEdit.value.personName = entity.kanrenshaName;
+    isSearchPerson.value = false;
+}
+function recieveCancelPerson() {
+    isSearchPerson.value = false;
+}
+function onSearchPerson() {
+    isSearchPerson.value = true;
+}
+
+// 企業団体検索
+const isSearchKigyouDt: Ref<boolean> = ref(INIT_BOOLEAN);
+function recieveKigyouDtInterface(entity: KanrenshaKigyouDtMasterEntityInterface) {
+    entityEdit.value.orgKanrenshaCode = entity.kigyouDtKanrenshaCode;
+    entityEdit.value.orgName = entity.kanrenshaName;
+    isSearchKigyouDt.value = false;
+}
+function recieveCancelKigyouDt() {
+    isSearchKigyouDt.value = false;
+}
+
+// 政治団体検索
+const isSearchSeijidantai: Ref<boolean> = ref(INIT_BOOLEAN);
+function recieveSeijidantaiInterface(entity: KanrenshaSeijidantaiMasterEntityInterface) {
+    entityEdit.value.orgKanrenshaCode = entity.seijidantaiKanrenshaCode;
+    entityEdit.value.orgName = entity.kanrenshaName;
+    isSearchSeijidantai.value = false;
+}
+function recieveCancelSeijidantai() {
+    isSearchSeijidantai.value = false;
+}
+
+function onSearchDantai() {
+    if (entityEdit.value.kanrenshaKbn == 2) {
+        isSearchKigyouDt.value = true;
+    } else {
+        isSearchSeijidantai.value = true;
+    }
+}
+
 </script>
 <template>
     <h3>関連者企業／団体検索条件</h3>
@@ -381,12 +449,14 @@ function recieveSubmit() {
             </div>
         </div>
 
+
+
         <div class="one-line">
             <div class="left-area">
                 個人関連者番号
             </div>
             <div class="right-area">
-                <input type="text" v-model="entityEdit.personKanrenshaCode" />
+                <input type="text" v-model="entityEdit.personKanrenshaCode" disabled="true" />
             </div>
         </div>
 
@@ -395,7 +465,8 @@ function recieveSubmit() {
                 個人姓名
             </div>
             <div class="right-area">
-                <input type="text" v-model="entityEdit.personName" />
+                <input type="text" v-model="entityEdit.personName" disabled="true" />
+                <button class="left-space" @click="onSearchPerson">検索</button>
             </div>
         </div>
 
@@ -404,7 +475,7 @@ function recieveSubmit() {
                 団体関連者番号
             </div>
             <div class="right-area">
-                <input type="text" v-model="entityEdit.orgKanrenshaCode" />
+                <input type="text" v-model="entityEdit.orgKanrenshaCode" disabled="true" />
             </div>
         </div>
 
@@ -413,7 +484,8 @@ function recieveSubmit() {
                 団体名称
             </div>
             <div class="right-area">
-                <input type="text" v-model="entityEdit.orgName" />
+                <input type="text" v-model="entityEdit.orgName" disabled="true" />
+                <button @click="onSearchDantai"> 検索</button>
             </div>
         </div>
 
@@ -470,11 +542,35 @@ function recieveSubmit() {
         </div>
     </div>
 
-    <!-- メッセージ表示    -->
+    <!-- メッセージ表示 -->
     <div class="overMessage" v-if="messageType !== MessageConstants.VIEW_NONE">
         <MessageView :info-level="infoLevel" :message-type="messageType" :title="MESS_PAGE_NAME" :message="message"
             :caller="caller" @send-submit="recieveSubmit">
         </MessageView>
+    </div>
+
+    <!-- 個人検索 -->
+    <div v-if="isSearchPerson" class="overBackgroundLayer2"></div>
+    <div v-if="isSearchPerson" class="overComponentLayer2">
+        <SearchKanrenshaPerson @send-person-interface="recievePersonInterface" @send-cancel-person="recieveCancelPerson"
+            :is-raise-commponet="true">
+        </SearchKanrenshaPerson>
+    </div>
+
+    <!-- 企業団体検索 -->
+    <div v-if="isSearchKigyouDt" class="overBackgroundLayer2"></div>
+    <div v-if="isSearchKigyouDt" class="overComponentLayer2">
+        <SearchKanrenshaKigyouDt v-if="isSearchKigyouDt" @send-kigyou-dt-interface="recieveKigyouDtInterface"
+            @send-cancel-kigyou-dt="recieveCancelKigyouDt" :is-raise-commponet="true">
+        </SearchKanrenshaKigyouDt>
+    </div>
+
+    <!-- 政治団体検索 -->
+    <div v-if="isSearchSeijidantai" class="overBackgroundLayer2"></div>
+    <div v-if="isSearchSeijidantai" class="overComponentLayer2">
+        <SearchKanrenshaSeijidantai @send-seijidantai-interface="recieveSeijidantaiInterface"
+            @send-cancel-seijidantai="recieveCancelSeijidantai" :is-raise-commponet="true">
+        </SearchKanrenshaSeijidantai>
     </div>
 
 </template>

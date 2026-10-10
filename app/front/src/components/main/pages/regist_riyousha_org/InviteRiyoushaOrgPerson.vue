@@ -19,6 +19,7 @@ import PartnerApiInfo from '../../common/user_info/PartnerApiInfo.vue';
 const BLANK: string = "";
 const INIT_NUMBER: number = 0;
 // const INIT_BOOLEAN: boolean = false;
+const SERVER_STATUS_ERROR: number = 400;
 // const SEARCH_LIMIT: number = 20;
 const INQUIRE_FLG: boolean = false;
 const ERR_MESS_ONLY: boolean = true;
@@ -82,6 +83,14 @@ onMounted(() => {
         fetch(url, { method, headers, body })
             .then(async (response) => {
                 const resultDto: GetRiyoushaMasterResultDtoInterface = await response.json();
+
+                if (response.status > SERVER_STATUS_ERROR) {
+                    message.value = getErrorMessage(resultDto.message, ERR_MESS_ONLY);
+                    infoLevel.value = MessageConstants.LEVEL_ERROR;
+                    messageType.value = MessageConstants.VIEW_OK;
+                    return;
+                }
+
                 if (resultDto.isFailure) {
                     message.value = resultDto.message;
                     infoLevel.value = MessageConstants.LEVEL_WARNING;
@@ -133,6 +142,14 @@ onMounted(() => {
         fetch(url, { method, headers, body })
             .then(async (response) => {
                 riyoshaOrgoptions.value = await response.json();
+
+                if (response.status > SERVER_STATUS_ERROR) {
+                    message.value = getErrorMessage(BLANK, INQUIRE_FLG);
+                    infoLevel.value = MessageConstants.LEVEL_ERROR;
+                    messageType.value = MessageConstants.VIEW_OK;
+                    return;
+                }
+
                 // 編集時には必要な新規登録選択肢は不要
                 riyoshaOrgoptions.value.shift();
                 if (riyoshaOrgoptions.value.length === 0) {
@@ -193,6 +210,14 @@ function onSave() {
         fetch(url, { method, headers, body })
             .then(async (response) => {
                 const resultDto: GetRiyoushaMasterResultDtoInterface = await response.json();
+
+                if (response.status > SERVER_STATUS_ERROR) {
+                    message.value = getErrorMessage(resultDto.message, ERR_MESS_ONLY);
+                    infoLevel.value = MessageConstants.LEVEL_ERROR;
+                    messageType.value = MessageConstants.VIEW_OK;
+                    return;
+                }
+
                 message.value = resultDto.message;
                 if (resultDto.isFailure) {
                     infoLevel.value = MessageConstants.LEVEL_WARNING;

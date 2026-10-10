@@ -63,7 +63,7 @@ class InsertTaskPlanOtherPersonServiceTest {
                 createDatetime, 2000, mapParam);
         assertTrue(resultDto0.getIsFailure());
 
-        // TODO メールが送信できない場合のテストは別ファイル
+        // メールが送信できない場合のテストは別ファイル
 
         // 正常ケース
         FrameworkMessageAndResultDto resultDto1 = insertTaskPlanOtherPersonService.practice(email, workUserDto, userDto,

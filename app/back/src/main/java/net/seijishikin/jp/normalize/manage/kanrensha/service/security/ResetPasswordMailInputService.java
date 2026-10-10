@@ -11,6 +11,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.mail.SimpleMailMessage;
@@ -33,9 +34,9 @@ import net.seijishikin.jp.normalize.manage.kanrensha.repository.UserPasswordRese
 @Service
 public class ResetPasswordMailInputService {
 
-    // TODO 正しいアドレスに修正する
-    /** 新規登録中ユーザRepository */
-    private static final String sendEmail = "test@example.com";
+    /** 送信メールアドレス */
+    @Value("${app.send.mail.address:test@example.com}")
+    private String sendEmail;
 
     /** mail送信Logic */
     @Autowired
@@ -90,7 +91,7 @@ public class ResetPasswordMailInputService {
         List<MailDataDto> list = new ArrayList<>();
         list.add(this.createMailData(email, regiCode, limitTime));
 
-        SendMaileResultDto mailtDto = sendMailUserLogic.practice(list);
+        SendMaileResultDto mailtDto = sendMailUserLogic.practice(list, 0);
 
         if (mailtDto.getIsFailure()) {
             // コード登録ができなかった場は

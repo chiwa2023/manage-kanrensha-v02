@@ -60,37 +60,33 @@ public class CustomUserDetailsManager implements UserDetailsManager {
     @Override
     public UserDetails loadUserByUsername(final String username) throws NoSuchElementException { // NOPMD
 
-        LoginStatusEntity statusEntity = loginStatusRepository.findById(username).get();
-        LocalDateTime now = LocalDateTime.now();
+        try {
+            LoginStatusEntity statusEntity = loginStatusRepository.findById(username).get();
+            LocalDateTime now = LocalDateTime.now();
 
-        UserPersonEntity personEntity = userPersonRepository.findByEmailAndIsLatestTrue(username).get();
+            UserPersonEntity personEntity = userPersonRepository.findByEmailAndIsLatestTrue(username).get();
 
-        // 権限を呼び出してUserDetailを作成する
-        List<String> listRole = userRoleRepository.findLatestRoleByMail(username);
+            // 権限を呼び出してUserDetailを作成する
+            List<String> listRole = userRoleRepository.findLatestRoleByMail(username);
 
-        return new CustomUserDetails( //
-                personEntity.getUserPersonId(), // ログインユーザId
-                personEntity.getUserPersonCode(), // ログインユーザCode
-                personEntity.getUserPersonName(), // ログインユーザId
-                statusEntity.getEmail(), //
-                statusEntity.getPassword(), //
-                this.createListAuthority(listRole), //
-                !statusEntity.getLoginTime().plusYears(LIMIT_ACTIVE).isBefore(now), // x年無活動なのでアカウントロックしたなど
-                true, // 現状未使用
-                !statusEntity.getPassChangeTime().plusMonths(LIMIT_PASS_CHANGE).isBefore(now), // xか月パスワード更新なしなのでアカウントロックしたなど
-                !statusEntity.getDisabled() // 保存した値をそのまま
-        );
-
-        // return
-        // User.builder().username(statusEntity.getEmail()).password(statusEntity.getPassword())
-        // .accountExpired(statusEntity.getLoginTime().plusYears(LIMIT_ACTIVE).isBefore(now))
-        // // x年無活動なのでアカウントロックしたなど
-        // .accountLocked(false) // 現状未使用
-        // .credentialsExpired(statusEntity.getPassChangeTime().plusMonths(LIMIT_PASS_CHANGE).isBefore(now))
-        // // xか月パスワード更新なしなのでアカウントロックしたなど
-        // .disabled(statusEntity.getDisabled()).roles(listRole.toArray(new
-        // String[listRole.size()])).build(); // NOPMD
-
+            return new CustomUserDetails( //
+                    personEntity.getUserPersonId(), // ログインユーザId
+                    personEntity.getUserPersonCode(), // ログインユーザCode
+                    personEntity.getUserPersonName(), // ログインユーザId
+                    statusEntity.getEmail(), //
+                    statusEntity.getPassword(), //
+                    this.createListAuthority(listRole), //
+                    !statusEntity.getLoginTime().plusYears(LIMIT_ACTIVE).isBefore(now), // x年無活動なのでアカウントロックしたなど
+                    true, // 現状未使用
+                    !statusEntity.getPassChangeTime().plusMonths(LIMIT_PASS_CHANGE).isBefore(now), // xか月パスワード更新なしなのでアカウントロックしたなど
+                    !statusEntity.getDisabled() // 保存した値をそのまま
+            );
+        } catch (Exception exception) { // NOPMD 下記↓↓の理由から絶対必要
+            // 例外がログイン失敗イベントとSpringSecurityに認識されるにはイベント例外に該当する例外で、例外投げなおしが必要
+            // DaoAuthenticationProvider#retrieveUser の実装から
+            // 投げなおしができる例外はUsernameNotFoundExceptionのみ by Gemini解説
+            throw new UsernameNotFoundException(username + "でログインできませんでした", exception);
+        }
     }
 
     /**

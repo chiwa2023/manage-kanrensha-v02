@@ -15,6 +15,7 @@ import { AddContactMessageCapsuleDto, type AddContactMessageCapsuleDtoInterface 
 const BLANK: string = "";
 const INIT_NUMBER: number = 0;
 const SEARCH_LIMIT: number = 20;
+const SERVER_STATUS_ERROR: number = 400;
 
 // メッセージボックス表示定数
 const INQUIRE_FLG: boolean = false;
@@ -72,6 +73,14 @@ function onSearch() {
         fetch(url, { method, headers, body })
             .then(async (response) => {
                 searchResultDto.value = await response.json();
+
+                if (response.status > SERVER_STATUS_ERROR) {
+                    message.value = getErrorMessage(searchResultDto.value.message, ERR_MESS_ONLY);
+                    infoLevel.value = MessageConstants.LEVEL_ERROR;
+                    messageType.value = MessageConstants.VIEW_OK;
+                    return;
+                }
+
                 allCount.value = searchResultDto.value.allCount;
                 limit.value = searchResultDto.value.limit;
                 pageNumber.value = searchResultDto.value.pageNumber;
@@ -192,6 +201,14 @@ function onSave() {
         fetch(url, { method, headers, body })
             .then(async (response) => {
                 const resultDto: FrameworkMessageAndResultDtoInterface = await response.json();
+
+                if (response.status > SERVER_STATUS_ERROR) {
+                    message.value = getErrorMessage(resultDto.message, ERR_MESS_ONLY);
+                    infoLevel.value = MessageConstants.LEVEL_ERROR;
+                    messageType.value = MessageConstants.VIEW_OK;
+                    return;
+                }
+
                 message.value = resultDto.message;
                 if (resultDto.isFailure) {
                     infoLevel.value = MessageConstants.LEVEL_ERROR;
@@ -274,6 +291,15 @@ function showHistory(selectedId: number) {
 
                 // 必ず1件は取れる。とれなかったら大事件
                 resultDtoHistoy.value = await response.json();
+
+                if (response.status > SERVER_STATUS_ERROR) {
+                    message.value = getErrorMessage(resultDtoHistoy.value.message, ERR_MESS_ONLY);
+                    infoLevel.value = MessageConstants.LEVEL_ERROR;
+                    messageType.value = MessageConstants.VIEW_OK;
+                    return;
+                }
+
+
                 if (resultDtoHistoy.value.isFailure) {
                     infoLevel.value = MessageConstants.LEVEL_ERROR;
                     messageType.value = MessageConstants.VIEW_OK;
@@ -389,11 +415,11 @@ function getStatus(isColsed: boolean): string {
                     :class="{ 'selected-row': selectedInquiryId === entity.contactManagerId }">
                     <td>{{ entity.firstTimestamp }}</td>
                     <td>{{ entity.contactManagerCode }}</td>
-                        <td>
-                            <span :class="entity.isClosed ? 'status-closed' : 'status-open'">
-                                {{ getStatus(entity.isClosed) }}
-                            </span>
-                        </td>
+                    <td>
+                        <span :class="entity.isClosed ? 'status-closed' : 'status-open'">
+                            {{ getStatus(entity.isClosed) }}
+                        </span>
+                    </td>
                     <td>{{ entity.inquireUserName }}</td>
                     <td>{{ entity.inquireTitle }}</td>
                     <td>{{ entity.insertTimestamp }}</td>
@@ -421,7 +447,7 @@ function getStatus(isColsed: boolean): string {
             :class="['chat-message', isMyself(entity.insertUserCode) ? 'self' : 'other']">
             <div class="chat-meta">
                 <span class="chat-sender" v-if="!isMyself(entity.insertUserCode)">{{ entity.insertUserName
-                    }}</span>
+                }}</span>
                 <span class="chat-time">{{ entity.insertTimestamp }}</span>
             </div>
             <div class="chat-bubble">

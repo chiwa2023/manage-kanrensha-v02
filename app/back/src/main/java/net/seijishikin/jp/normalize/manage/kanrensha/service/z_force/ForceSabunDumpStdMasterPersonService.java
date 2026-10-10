@@ -35,7 +35,6 @@ public class ForceSabunDumpStdMasterPersonService {
     @Autowired
     private JobOperator jobOperator;
 
-    // TODO 標準出力が完成次第切り替える
     /** 起動をするJob */
     @Qualifier(DumpSabunMasterPersonBatchConfiguration.JOB_NAME)
     @Autowired

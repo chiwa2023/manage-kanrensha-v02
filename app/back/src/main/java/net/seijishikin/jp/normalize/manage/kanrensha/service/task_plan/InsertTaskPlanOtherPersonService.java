@@ -98,7 +98,7 @@ public class InsertTaskPlanOtherPersonService {
 
         SendMaileResultDto sendMaileResultDto;
         try {
-            sendMaileResultDto = sendMailUserLogic.practice(listMailData);
+            sendMaileResultDto = sendMailUserLogic.practice(listMailData, insertTaskPlanResultDto.getTaskPlanCode());
             if (sendMaileResultDto.getIsFailure()) {
                 resultDto.setIsFailure(true);
                 resultDto.setMessage("メールが送信できませんでした");

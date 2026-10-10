@@ -79,7 +79,6 @@ class RegistCombineOrganizationServiceTest {
         assertEquals(entityBase.getOrgName(), entityCopy.getOrgName());
         assertEquals(entityBase.getYearArrayText(), entityCopy.getYearArrayText());
         assertEquals(SetTableDataHistoryUtil.INSERT_STATE, entityCopy.getIsLatest());
-        // TODO 画面からの挙動を確認後確定
         assertEquals("終了年より開始年が大きい値です;", entityCopy.getJudgeReason()); // 編集内容に対してチェックが効いています
     }
 

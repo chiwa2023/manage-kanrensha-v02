@@ -29,11 +29,11 @@ import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateLeastUserForTes
 @SpringBootTest
 @DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
 @ConfigurationProperties(prefix = "net.seijishikin.jp.normalize.kanrensha")
-class GetStoragePathLogicTest {
+class GetStoragePathByUserLogicTest {
 
     /** テスト対象 */
     @Autowired
-    private GetStoragePathLogic getStoragePathLogic;
+    private GetStoragePathByUserLogic getStoragePathByUserLogic;
 
     /** propertiesからインジェクションされた最上位保存フォルダ絶対パス */
     private String storageFolder;
@@ -61,7 +61,7 @@ class GetStoragePathLogicTest {
     void test() throws Exception {
 
         LeastUserDto userDto = CreateLeastUserForTestUtil.practice();
-        Path path = getStoragePathLogic.practice(userDto);
+        Path path = getStoragePathByUserLogic.practice(userDto);
 
         // 生成されたパスはユーザコードで始まる(後の2ディレクトリUnixTimeとランダム文字列はチェックしない)
         assertTrue(path.toString().startsWith(String.valueOf(userDto.getUserPersonCode())));

@@ -65,8 +65,7 @@ public class AuthorizeFilter extends OncePerRequestFilter {
             // headersのkeyを指定してトークンを取得します
             String xAuthToken = request.getHeader(HEADER_NAME);
 
-            // ヘッダがない時、トークンが埋め込まれていないときは次のフィルタに委譲しているが
-            // TODO 挙動確認後委譲処理を削除する(パスを正確に指定することで実現すればよい)
+            // ヘッダがない時、トークンが埋め込まれていないときは次のフィルタに委譲
             if (xAuthToken == null || !xAuthToken.startsWith(BEARER)) {
                 // throw new BadCredentialsException("X-AUTH-TOKENが取得できないか、Bearerで設定されていません");
                 filterChain.doFilter(request, response);

@@ -160,7 +160,7 @@ public class ValidateAuthoraizeUserDetailLogic {
     private List<String> convertRoleList(final Collection<? extends GrantedAuthority> collections) {
         List<String> list = new ArrayList<>();
         for (GrantedAuthority authority : collections) {
-            // TODO 両方チェック対象にするのは不細工なので修正を考慮する
+            // TODO (1)両方チェック対象にするのは不細工なので修正を考慮する
             // list.add("ROLE_" + authority.getAuthority());
             list.add(authority.getAuthority());
         }

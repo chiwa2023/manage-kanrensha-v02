@@ -30,7 +30,7 @@ const urlBack: string = RoutePathConstants.DOMAIN + RoutePathConstants.BASE_PATH
 const BLANK: string = "";
 const INIT_NUMBER: number = 0;
 const SERVER_STATUS_OK: number = 200;
-// const SERVER_STATUS_ERROR: number = 400;
+const SERVER_STATUS_ERROR: number = 400;
 const INQUIRE_FLG: boolean = false;
 const ERR_MESS_ONLY: boolean = true;
 const MESS_PAGE_NAME: string = "運営者ヘッダ";
@@ -112,6 +112,14 @@ onBeforeMount(async () => {
                 fetch(url, { method, headers, body })
                     .then(async (response) => {
                         resultDtoTaskPerson.value = await response.json();
+
+                        if (response.status > SERVER_STATUS_ERROR) {
+                            message.value = getErrorMessage(BLANK, INQUIRE_FLG);
+                            infoLevel.value = MessageConstants.LEVEL_ERROR;
+                            messageType.value = MessageConstants.VIEW_OK;
+                            return;
+                        }
+
                         if (resultDtoTaskPerson.value.listThisYear.length === 0 && resultDtoTaskPerson.value.listLastYear.length === 0) {
                             infoLevel.value = MessageConstants.LEVEL_INFO;
                             messageType.value = MessageConstants.VIEW_TOAST;
@@ -168,6 +176,15 @@ onBeforeMount(async () => {
                 fetch(url, { method, headers, body })
                     .then(async (response) => {
                         resultDtoTaskRole.value = await response.json();
+
+                        if (response.status > SERVER_STATUS_ERROR) {
+                            message.value = getErrorMessage(BLANK, INQUIRE_FLG);
+                            infoLevel.value = MessageConstants.LEVEL_ERROR;
+                            messageType.value = MessageConstants.VIEW_OK;
+                            return;
+                        }
+
+
                         if (resultDtoTaskRole.value.listThisYear.length === 0 && resultDtoTaskRole.value.listLastYear.length === 0) {
                             infoLevel.value = MessageConstants.LEVEL_INFO;
                             messageType.value = MessageConstants.VIEW_TOAST;
@@ -391,7 +408,8 @@ const notHasDetailInfo: ComputedRef<boolean> = computed(
 
     <!-- タスク表示(権限) -->
     <div v-if="isShowTaskRole" class="overComponent">
-        <ShowTaskRole :is-search-condition="false" :user-dto="userDto" @send-canceel-show-task="recieveCancelShowTaskRole">
+        <ShowTaskRole :is-search-condition="false" :user-dto="userDto"
+            @send-canceel-show-task="recieveCancelShowTaskRole">
         </ShowTaskRole>
     </div>
 

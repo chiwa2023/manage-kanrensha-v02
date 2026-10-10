@@ -14,14 +14,13 @@ import { logout } from '../utils/logout';
 //const title: Ref<string> = ref(BLANK);
 //const message: Ref<string> = ref(BLANK);
 
-// TODO ログアウト処理
+// ログアウト処理
 logout();
 
 // ログインページに遷移
 router.push(RoutePathConstants.PAGE_LOGIN);
 </script>
 <template>
-    <!-- ログアウト処理なのでなにもしないまたは TODO ログアウト中表示作成 -->
     ログアウトしています...<br>
     <RouterLink :to=RoutePathConstants.PAGE_LOGIN>ログインページへ</RouterLink><br>
 </template>

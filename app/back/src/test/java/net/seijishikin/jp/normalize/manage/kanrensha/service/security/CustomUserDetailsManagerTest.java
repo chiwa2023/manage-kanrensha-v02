@@ -83,7 +83,7 @@ class CustomUserDetailsManagerTest {
         // 使用可否
         assertFalse(userDetails11.isEnabled());
 
-        // TODO アカウントがロックは現状使っていないが、必要ならば実装する
+        // MEMO アカウントがロックは現状使っていないが、必要ならば実装する
     }
 
     @Test

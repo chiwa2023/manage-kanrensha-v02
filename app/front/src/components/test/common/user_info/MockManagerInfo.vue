@@ -90,7 +90,6 @@ onBeforeMount(async () => {
                             messageType.value = MessageConstants.VIEW_TOAST;
                             message.value = "未処理タスクは存在しませんでした";
                         } else {
-                            // TODO selectboxに変換
                             optionsThisYear.value = convertTaskToOption(resultDtoTask.value.listThisYear);
                             optionsLastYear.value = convertTaskToOption(resultDtoTask.value.listLastYear);
                             notCompletedTaskInfo.notCompleteTaskDto.isRefreshed = true;

@@ -96,7 +96,7 @@ public class AddContactManagerController {
                 if (!Objects.isNull(email) && !listTask.isEmpty()) {
                     List<MailDataDto> list = new ArrayList<>();
                     list.add(this.createMailData(email, listTask.get(0)));
-                    sendMailUserLogic.practice(list);
+                    sendMailUserLogic.practice(list, 0);
                 }
 
                 // タスク計画は管理できない。
@@ -133,7 +133,7 @@ public class AddContactManagerController {
         mailMessage.setTo(email);
         // mailMessage.setCc(""); // cc不要
         // 問い合わせ反応を早くするために仮に代表アドレスを入れておく
-        // TODO 将来的には運営者のランダムの5名に送信のようにタスク分散したい
+        // TODO (1)将来的には運営者のランダムの5名に送信のようにタスク分散したい
         mailMessage.setBcc("info@normalize-jp-seijishikin.net");
         mailMessage.setSubject(taskInfoEntity.getTaskInfoName() + "：政治資金関連者標準化サイト");
         // mailMessage.setReplyTo("このアドレスに返信はできません");

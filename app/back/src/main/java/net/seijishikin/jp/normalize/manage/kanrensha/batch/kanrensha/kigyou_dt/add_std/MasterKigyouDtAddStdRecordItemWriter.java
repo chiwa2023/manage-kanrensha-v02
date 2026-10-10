@@ -148,7 +148,7 @@ public class MasterKigyouDtAddStdRecordItemWriter extends JpaItemWriter<WkTblKan
         addressEntity.setKanrenshaKigyouDtId(masterId);
         BeanUtils.copyProperties(entityWkTbl, addressEntity);
 
-        // TODO 住所が自サイト独自形式になっているか？は利用の動向を見ながら再検討
+        // TODO (1)住所が自サイト独自形式になっているか？は利用の動向を見ながら再検討
         // 現状はフォーマットされていないのがほとんどなの自動でfalse,周知されたらcsvにフラグを載せてその内容を反映
         boolean isEdit = !entityWkTbl.getIsJushoFormat();
         addressEntity.setIsPostalEdit(isEdit);

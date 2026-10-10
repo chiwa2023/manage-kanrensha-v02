@@ -15,7 +15,7 @@ import { ContactManagerEntity, type ContactManagerEntityInterface } from '../../
 const BLANK: string = "";
 const INIT_NUMBER: number = 0;
 // const SERVER_STATUS_OK: number = 200;
-// const SERVER_STATUS_ERROR: number = 400;
+const SERVER_STATUS_ERROR: number = 400;
 const SEARCH_LIMIT: number = 20;
 // メッセージボックス表示定数
 const INQUIRE_FLG: boolean = false;
@@ -68,6 +68,15 @@ function onSearch() {
         fetch(url, { method, headers, body })
             .then(async (response) => {
                 resultDto.value = await response.json();
+
+                if (response.status > SERVER_STATUS_ERROR) {
+                    message.value = getErrorMessage(resultDto.value.message, ERR_MESS_ONLY);
+                    infoLevel.value = MessageConstants.LEVEL_ERROR;
+                    messageType.value = MessageConstants.VIEW_OK;
+                    return;
+                }
+
+
                 allCount.value = resultDto.value.allCount;
                 limit.value = resultDto.value.limit;
                 pageNumber.value = resultDto.value.pageNumber;
@@ -147,6 +156,14 @@ function onSave() {
             fetch(url, { method, headers, body })
                 .then(async (response) => {
                     const resultDto: FrameworkMessageAndResultDtoInterface = await response.json();
+
+                    if (response.status > SERVER_STATUS_ERROR) {
+                        message.value = getErrorMessage(resultDto.message, ERR_MESS_ONLY);
+                        infoLevel.value = MessageConstants.LEVEL_ERROR;
+                        messageType.value = MessageConstants.VIEW_OK;
+                        return;
+                    }
+
                     message.value = resultDto.message;
                     if (resultDto.isFailure) {
                         infoLevel.value = MessageConstants.LEVEL_WARNING;
@@ -193,6 +210,14 @@ function onSave() {
             fetch(url, { method, headers, body })
                 .then(async (response) => {
                     const resultDto: FrameworkMessageAndResultDtoInterface = await response.json();
+
+                    if (response.status > SERVER_STATUS_ERROR) {
+                        message.value = getErrorMessage(resultDto.message, ERR_MESS_ONLY);
+                        infoLevel.value = MessageConstants.LEVEL_ERROR;
+                        messageType.value = MessageConstants.VIEW_OK;
+                        return;
+                    }
+
                     message.value = resultDto.message;
                     if (resultDto.isFailure) {
                         infoLevel.value = MessageConstants.LEVEL_WARNING;
@@ -270,6 +295,13 @@ function showHistory(selectedId: number) {
 
                 // 必ず1件は取れる。とれなかったら大事件
                 resultDtoHistoy.value = await response.json();
+
+                if (response.status > SERVER_STATUS_ERROR) {
+                    message.value = getErrorMessage(resultDtoHistoy.value.message, ERR_MESS_ONLY);
+                    infoLevel.value = MessageConstants.LEVEL_ERROR;
+                    messageType.value = MessageConstants.VIEW_OK;
+                    return;
+                }
 
                 if (resultDtoHistoy.value.isFailure) {
                     infoLevel.value = MessageConstants.LEVEL_ERROR;
@@ -396,7 +428,7 @@ function getStatus(isColsed: boolean): string {
                 :class="['chat-message', isMyself(entity.insertUserCode) ? 'self' : 'other']">
                 <div class="chat-meta">
                     <span class="chat-sender" v-if="!isMyself(entity.insertUserCode)">{{ entity.insertUserName
-                    }}</span>
+                        }}</span>
                     <span class="chat-time">{{ entity.insertTimestamp }}</span>
                 </div>
                 <div class="chat-bubble">

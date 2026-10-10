@@ -65,7 +65,7 @@ public class MoveCodeKanrenshaPromoteSendMessageService {
             if (listMailData.isEmpty()) {
                 return new SendMaileResultDto();
             } else {
-                return sendMailUserLogic.practice(listMailData);
+                return sendMailUserLogic.practice(listMailData, planResultDto.getTaskPlanCode());
             }
 
         } catch (Exception exception) { // NOPMD 業務的な理由から積極的に許容
@@ -100,7 +100,7 @@ public class MoveCodeKanrenshaPromoteSendMessageService {
         // mailMessage.setReplyTo("このアドレスに返信はできません");
 
         // ここでは結果を待つだけなので遷移ページは設けない
-        // 異議があった場合は→運営者に連絡をして作業を止めてもらう→ TODO 運営者に連絡を取る機能が必要
+        // 異議があった場合は→運営者に連絡をして作業を止めてもらう
         String body = planResultDto.getMessageTemplate();
         mailMessage.setText(body);
 
@@ -110,6 +110,5 @@ public class MoveCodeKanrenshaPromoteSendMessageService {
 
         return mailDataDto;
     }
-
 
 }

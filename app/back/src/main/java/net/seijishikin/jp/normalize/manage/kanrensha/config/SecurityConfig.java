@@ -4,9 +4,12 @@ import java.util.List; // NOPMD ExcessiveImports
 
 import org.springframework.beans.factory.annotation.Autowired; // NOPMD
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationEventPublisher;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.DefaultAuthenticationEventPublisher;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -232,6 +235,18 @@ public class SecurityConfig {
                 .build();
         JWKSource<SecurityContext> jwkSource = new ImmutableJWKSet<>(new JWKSet(jwk));
         return new NimbusJwtEncoder(jwkSource);
+    }
+
+    /**
+     * AuthenticationEventPublisherを設定する
+     * 
+     * @param applicationEventPublisher アプリケーションイベント発行
+     * @return AuthenticationEventPublisher
+     */
+    @Bean
+    protected AuthenticationEventPublisher authenticationEventPublisher(
+            final ApplicationEventPublisher applicationEventPublisher) {
+        return new DefaultAuthenticationEventPublisher(applicationEventPublisher);
     }
 
     /**

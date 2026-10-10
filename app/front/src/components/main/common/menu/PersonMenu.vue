@@ -2,7 +2,7 @@
 import { computed, onBeforeMount, ref, watch, type ComputedRef, type Ref } from 'vue';
 import RoutePathConstants from '../../../../routePathConstants';
 import UserRoleConstants from '../../dto/user/userRoleConstants';
-import type { LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
+import { MessageConstants, MessageView, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 
 // props,emmits
 const props = defineProps<{ viewRole: string, userDto: LeastUserDtoInterface }>();
@@ -14,10 +14,14 @@ const BLANK: string = "";
 // const SERVER_STATUS_OK: number = 200;
 // const SERVER_STATUS_ERROR: number = 400;
 // メッセージボックス表示定数
-//const infoLevel: Ref<number> = ref(MessageConstants.LEVEL_NONE);
-//const messageType: Ref<number> = ref(MessageConstants.VIEW_NONE);
-//const title: Ref<string> = ref(BLANK);
-//const message: Ref<string> = ref(BLANK);
+// const INQUIRE_FLG: boolean = false;
+// const ERR_MESS_ONLY: boolean = true;
+const MESS_PAGE_NAME: string = "ユーザ共通メニュー";
+const INIT_CALLER: string = "no branch";
+const infoLevel: Ref<number> = ref(MessageConstants.LEVEL_NONE);
+const messageType: Ref<number> = ref(MessageConstants.VIEW_NONE);
+const caller: Ref<string> = ref(INIT_CALLER);
+const message: Ref<string> = ref(BLANK);
 
 const vRole: Ref<string> = ref(props.viewRole);
 watch(props, () => {
@@ -33,8 +37,8 @@ const personEditUrl: Ref<string> = ref(BLANK);
 function setAnchor() {
     // 関連者重複を許さないが、利用者は重複を許すので、
     // 詳細データが紐づけられている権限を詳細情報編集先としてピックアップする
-    if(props.userDto.riyoushaCode !=  0){
-        vRole.value = "ROLE_"+props.userDto.riyoushaRole;
+    if (props.userDto.riyoushaCode != 0) {
+        vRole.value = "ROLE_" + props.userDto.riyoushaRole;
     }
     // 詳細登録をしていないかつ全ユーザ共通で個人メニューを開くと、
     // メニュー切り替えができないので救済措置
@@ -69,9 +73,10 @@ function setAnchor() {
             break;
 
         default:
-            // TODO 関連者でも利用者でもない場合
-            // ex.運営者で登録してAPIユーザに切り替えた場合
-
+            // 該当なしの場合メッセージ掲出(使うことはないはず)
+            message.value = "権限が存在しませんでした。権限を追加してください";
+            infoLevel.value = MessageConstants.LEVEL_WARNING;
+            messageType.value = MessageConstants.VIEW_OK;
             break;
     }
 }
@@ -82,6 +87,10 @@ const notHasDetailInfo: ComputedRef<boolean> = computed(
 /** キャンセル押下 */
 function onCancel() {
     emits("sendCanceelMenu");
+}
+function recieveSubmit() {
+    infoLevel.value = 0;
+    messageType.value = 0;
 }
 </script>
 <template>
@@ -101,6 +110,13 @@ function onCancel() {
         <div class="footer_sub">
             <button @click="onCancel" class="footer-button">閉じる</button>
         </div>
+    </div>
+
+    <!-- メッセージ表示    -->
+    <div class="overMessage" v-if="messageType !== MessageConstants.VIEW_NONE">
+        <MessageView :info-level="infoLevel" :message-type="messageType" :title="MESS_PAGE_NAME" :message="message"
+            :caller="caller" @send-submit="recieveSubmit">
+        </MessageView>
     </div>
 
 </template>
