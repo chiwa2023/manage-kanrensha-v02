@@ -20,6 +20,7 @@ const BLANK: string = "";
 const SERVER_STATUS_OK: number = 200;
 // const SERVER_STATUS_ERROR: number = 400;
 const SERVER_STATUS_UNAUTHORIZED: number = 401;
+const SERVER_STATUS_LOCKED: number = 423;
 const MESS_PAGE_NAME: string = "ユーザログイン";
 const INIT_CALLER: string = "no branch";
 
@@ -130,7 +131,7 @@ async function onLogin() {
                     break;
             }
         } catch {
-            // レスポンスは正常だがSJONが合わない等→実装ミス
+            // レスポンスは正常だがJSONが合わない等→実装ミス
             infoLevel.value = MessageConstants.LEVEL_ERROR;
             messageType.value = MessageConstants.VIEW_OK;
             message.value = "システムエラーが発生しました";
@@ -142,6 +143,13 @@ async function onLogin() {
         infoLevel.value = MessageConstants.LEVEL_ERROR;
         messageType.value = MessageConstants.VIEW_OK;
         message.value = "ログイン失敗しました。パスワードまたはメールアドレスに誤りがあります。再入力してください";
+        return;
+    }
+
+    if (SERVER_STATUS_LOCKED === response.status) {
+        infoLevel.value = MessageConstants.LEVEL_ERROR;
+        messageType.value = MessageConstants.VIEW_OK;
+        message.value = "パスワード入力を規定回数以上間違えたなどで、アカウントがロックされています";
         return;
     }
 
@@ -201,8 +209,13 @@ function changeVisiblePassword() {
                     <div style="text-align: left;">
                         下記マスタはすでにWebで公開済の公開情報となり、どなたでもご利用いただけます
                         <ul>
-                        <li><RouterLink :to="RoutePathConstants.PAGE_DOWNLOAD_MASTER_MIN">関連者最小登録マスタ(公開情報)</RouterLink></li>
-                        <li><RouterLink :to="RoutePathConstants.PAGE_DOWNLOAD_HISTORY">関連者履歴マスタ(公開情報)</RouterLink></li>
+                            <li>
+                                <RouterLink :to="RoutePathConstants.PAGE_DOWNLOAD_MASTER_MIN">関連者最小登録マスタ(公開情報)
+                                </RouterLink>
+                            </li>
+                            <li>
+                                <RouterLink :to="RoutePathConstants.PAGE_DOWNLOAD_HISTORY">関連者履歴マスタ(公開情報)</RouterLink>
+                            </li>
                         </ul>
                     </div>
                     <div style="text-align: left;">

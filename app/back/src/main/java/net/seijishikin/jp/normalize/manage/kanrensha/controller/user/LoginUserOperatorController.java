@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.LockedException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -70,6 +71,9 @@ public class LoginUserOperatorController {
             resultDto.setUserDto(getLeastUserByMailService.practice(capsuleDto.getUserId(), authentication));
 
             return ResponseEntity.status(HttpStatus.OK).body(resultDto);
+
+        } catch (LockedException e) {
+            return ResponseEntity.status(HttpStatus.LOCKED).build();
 
         } catch (AuthenticationException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();

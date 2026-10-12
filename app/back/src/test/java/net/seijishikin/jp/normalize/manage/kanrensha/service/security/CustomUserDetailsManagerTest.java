@@ -7,7 +7,6 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -17,6 +16,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.jdbc.Sql;
@@ -71,8 +71,8 @@ class CustomUserDetailsManagerTest {
     @Tag("TableTruncate")
     void testFailLogin() {
 
-        // 存在しないユーザ(NoSuchElementExceptionを出して親でキャッチする)
-        assertThrows(NoSuchElementException.class,
+        // 存在しないユーザ(UsernameNotFoundExceptionを出して親でキャッチする)
+        assertThrows(UsernameNotFoundException.class,
                 () -> customUserDetailsManager.loadUserByUsername("aa@politician.balanse.report.net"));
 
         UserDetails userDetails11 = customUserDetailsManager.loadUserByUsername("bbb@politician.balanse.report.net");
@@ -83,7 +83,7 @@ class CustomUserDetailsManagerTest {
         // 使用可否
         assertFalse(userDetails11.isEnabled());
 
-        // MEMO アカウントがロックは現状使っていないが、必要ならば実装する
+        // MEMO アカウントをロックするは現状使っていないが、必要ならば実装する
     }
 
     @Test

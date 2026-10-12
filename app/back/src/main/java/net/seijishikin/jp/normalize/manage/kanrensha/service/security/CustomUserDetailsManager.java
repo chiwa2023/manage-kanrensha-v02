@@ -1,5 +1,6 @@
 package net.seijishikin.jp.normalize.manage.kanrensha.service.security;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +26,7 @@ import net.seijishikin.jp.normalize.manage.kanrensha.entity.UserRoleEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.repository.LoginStatusRepository;
 import net.seijishikin.jp.normalize.manage.kanrensha.repository.UserPersonRepository;
 import net.seijishikin.jp.normalize.manage.kanrensha.repository.UserRoleRepository;
+import net.seijishikin.jp.normalize.manage.kanrensha.service.year.SwitchYearGetLoginHistoryFailureService;
 
 /**
  * 独自ユーザ詳細Manager
@@ -50,6 +52,10 @@ public class CustomUserDetailsManager implements UserDetailsManager {
     @Autowired
     private UserRoleRepository userRoleRepository;
 
+    /** 年切り替えログイン失敗履歴試行判定Service */
+    @Autowired
+    private SwitchYearGetLoginHistoryFailureService switchYearGetLoginHistoryFailureService;
+
     /** テーブル履歴設定util */
     @Autowired
     private SetTableDataHistoryUtil setTableDataHistoryUtil;
@@ -60,32 +66,53 @@ public class CustomUserDetailsManager implements UserDetailsManager {
     @Override
     public UserDetails loadUserByUsername(final String username) throws NoSuchElementException { // NOPMD
 
-        try {
-            LoginStatusEntity statusEntity = loginStatusRepository.findById(username).get();
-            LocalDateTime now = LocalDateTime.now();
+        // 指定されたユーザ(メアド)でのログイン失敗記録を取得する
+        if (switchYearGetLoginHistoryFailureService.practice(username, LocalDate.now())) {
+            // 条件未満の場合現実装通りユーザ情報を組み立てて CustomUserDetailsを投げる
+            try {
+                LoginStatusEntity statusEntity = loginStatusRepository.findById(username).get();
+                LocalDateTime now = LocalDateTime.now();
 
-            UserPersonEntity personEntity = userPersonRepository.findByEmailAndIsLatestTrue(username).get();
+                UserPersonEntity personEntity = userPersonRepository.findByEmailAndIsLatestTrue(username).get();
 
-            // 権限を呼び出してUserDetailを作成する
-            List<String> listRole = userRoleRepository.findLatestRoleByMail(username);
+                // 権限を呼び出してUserDetailを作成する
+                List<String> listRole = userRoleRepository.findLatestRoleByMail(username);
 
+                return new CustomUserDetails( //
+                        personEntity.getUserPersonId(), // ログインユーザId
+                        personEntity.getUserPersonCode(), // ログインユーザCode
+                        personEntity.getUserPersonName(), // ログインユーザName
+                        statusEntity.getEmail(), //
+                        statusEntity.getPassword(), //
+                        this.createListAuthority(listRole), //
+                        !statusEntity.getLoginTime().plusYears(LIMIT_ACTIVE).isBefore(now), // x年無活動なのでアカウントロックしたなど
+                        true, // 現状未使用
+                        !statusEntity.getPassChangeTime().plusMonths(LIMIT_PASS_CHANGE).isBefore(now), // xか月パスワード更新なしなのでアカウントロックしたなど
+                        !statusEntity.getDisabled() // 保存した値をそのまま
+                );
+
+            } catch (Exception exception) { // NOPMD 下記↓↓の理由から絶対必要
+                // 例外がログイン失敗イベントとSpringSecurityに認識されるにはイベント例外に該当する例外で、例外投げなおしが必要
+                // DaoAuthenticationProvider#retrieveUser の実装から
+                // 投げなおしができる例外はUsernameNotFoundExceptionのみ by Gemini解説
+                throw new UsernameNotFoundException(username + "でログインできませんでした", exception);
+            }
+
+        } else {
+            // 条件以上の場合 CustomUserDetails を true, 
+            // 現状未使用を falseにして投げる(パスチェックチェックをしないで強制終了)
             return new CustomUserDetails( //
-                    personEntity.getUserPersonId(), // ログインユーザId
-                    personEntity.getUserPersonCode(), // ログインユーザCode
-                    personEntity.getUserPersonName(), // ログインユーザId
-                    statusEntity.getEmail(), //
-                    statusEntity.getPassword(), //
-                    this.createListAuthority(listRole), //
-                    !statusEntity.getLoginTime().plusYears(LIMIT_ACTIVE).isBefore(now), // x年無活動なのでアカウントロックしたなど
-                    true, // 現状未使用
-                    !statusEntity.getPassChangeTime().plusMonths(LIMIT_PASS_CHANGE).isBefore(now), // xか月パスワード更新なしなのでアカウントロックしたなど
-                    !statusEntity.getDisabled() // 保存した値をそのまま
+                    0, // ログインユーザId
+                    0, // ログインユーザCode
+                    "", // ログインユーザName
+                    username, // メアド
+                    "", // パスワード
+                    new ArrayList<>(), //
+                    false, // x年無活動なのでアカウントロックしたなど
+                    false, // パスワードチェックを拒否
+                    false, // パスワード更新なしにつき使用不能
+                    false // 利用状態
             );
-        } catch (Exception exception) { // NOPMD 下記↓↓の理由から絶対必要
-            // 例外がログイン失敗イベントとSpringSecurityに認識されるにはイベント例外に該当する例外で、例外投げなおしが必要
-            // DaoAuthenticationProvider#retrieveUser の実装から
-            // 投げなおしができる例外はUsernameNotFoundExceptionのみ by Gemini解説
-            throw new UsernameNotFoundException(username + "でログインできませんでした", exception);
         }
     }
 

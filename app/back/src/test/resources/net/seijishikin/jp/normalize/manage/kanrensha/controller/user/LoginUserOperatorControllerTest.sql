@@ -30,3 +30,6 @@ INSERT INTO `user_role` (`user_role_id`,`email`,`is_latest`,`role`,`kanrensha_co
   ,(154,'mmmm@politician.balanse.report.net',1,'kanrensha_seijidantai','123-4567-0FRi-6kEt-RF77W',0,207,195,'mmmm','2026-05-05 10:07:44',0,0,'','1948-07-28 23:59:59')
   ;
   
+-- テスト実施年ごとに代わる
+DELETE FROM `login_history_2026`;
+ALTER TABLE `login_history_2026` auto_increment = 0;
