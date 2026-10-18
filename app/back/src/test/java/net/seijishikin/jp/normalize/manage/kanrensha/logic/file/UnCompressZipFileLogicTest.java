@@ -1,6 +1,6 @@
 package net.seijishikin.jp.normalize.manage.kanrensha.logic.file;
 
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 import org.junit.jupiter.api.Test;
 
@@ -18,9 +18,9 @@ class UnCompressZipFileLogicTest {
 
         UnCompressZipFileLogic unCompressZipFileLogic = new UnCompressZipFileLogic();
 
-        unCompressZipFileLogic.practice(GetChibanConstants.STORED_PATH, unCompressPath);
-
-        fail("Not yet implemented");
+        assertDoesNotThrow(() -> unCompressZipFileLogic.practice(GetChibanConstants.STORED_PATH, unCompressPath));
+        // C:/temp/address/472018.csv.zip が解凍され
+        // 圧縮内ファイル C:/temp/uncompress/address/mt_parcel_city472018.csvが存在すること
     }
 
 }

@@ -133,7 +133,7 @@ class InsertUserKanrenshaSeijidantaiControllerTest {
         SaveKanrenshaSeijidantaiCapsuleDto capsuleDto = new SaveKanrenshaSeijidantaiCapsuleDto();
         capsuleDto.setKanrenshaSeijidantaiDto(kanrenshaSeijidantaiDto);
         capsuleDto.getUserDto().setUserPersonId(81);
-        capsuleDto.getUserDto().setUserPersonCode(80);
+        capsuleDto.getUserDto().setUserPersonCode(190);
         capsuleDto.getUserDto().setUserPersonName("aaa");
         capsuleDto.getUserDto().getListRoles().add("ROLE_" + UserRoleConstants.MANAGER);
 

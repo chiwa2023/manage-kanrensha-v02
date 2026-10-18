@@ -22,6 +22,7 @@ public class GetAutoTaskExecuteUserUtil {
         userDto.setUserPersonId(2);
         userDto.setUserPersonCode(2);
         userDto.setUserPersonName("システム自動処理");
+        userDto.getListRoles().add("ROLE_admin");
 
         return userDto;
     }

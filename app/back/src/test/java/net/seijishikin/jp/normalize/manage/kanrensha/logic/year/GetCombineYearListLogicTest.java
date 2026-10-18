@@ -1,7 +1,6 @@
 package net.seijishikin.jp.normalize.manage.kanrensha.logic.year;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
 
 import java.util.List;
 
@@ -35,9 +34,6 @@ class GetCombineYearListLogicTest {
         // MEMO 年更新処理するごとに変化する
         assertEquals(Short.valueOf("2019"), list.getFirst());
         assertEquals(Short.valueOf("2027"), list.getLast());
-        
-
-        fail("Not yet implemented");
     }
 
 }

@@ -15,7 +15,6 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
-import org.springframework.transaction.annotation.Transactional;
 
 import net.seijishikin.jp.normalize.common_tool.dto.input.InputAccessDto;
 import net.seijishikin.jp.normalize.common_tool.dto.input.InputAddressDto;
@@ -45,7 +44,6 @@ import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateLeastUserForTes
 @AutoConfigureMockMvc
 @SpringBootTest
 @DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
-@Transactional
 @Sql("InsertKanrenshaSeijidantaiServiceTest.sql")
 class InsertKanrenshaSeijidantaiServiceTest { // NOPMD CouplingObjects
 
@@ -345,7 +343,7 @@ class InsertKanrenshaSeijidantaiServiceTest { // NOPMD CouplingObjects
 
         // 自身データで新規追加の場合roleを紐づけのために更新
         List<UserRoleEntity> listRole = userRoleRepository.findByEmailAndRoleAndIsLatestTrue(
-                "ccc@politician.balanse.report.net", UserRoleConstants.KANRENSHA_SEIJIDANTAI);
+                "mmmm@politician.balanse.report.net", UserRoleConstants.KANRENSHA_SEIJIDANTAI);
         assertEquals(1, listRole.size());
 
         UserRoleEntity roleEntity = listRole.get(0);

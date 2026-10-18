@@ -6,6 +6,10 @@ import java.util.List;
 
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.springframework.batch.core.job.parameters.JobParameters;
+import org.springframework.batch.core.job.parameters.JobParametersBuilder;
+import org.springframework.batch.core.step.StepExecution;
+import org.springframework.batch.test.MetaDataInstanceFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
@@ -48,6 +52,8 @@ class SplitIrregularToutenLogicTest {
     @Test
     @Tag("TableTruncate")
     void test() throws Exception {
+
+        postalCodeOneLineProcessor.beforeStep(this.getStepExecution());
 
         String line = "01207,\"080  \",\"0800029\",\"ホッカイドウ\",\"オビヒロシ\",\"ニシ１９ジョウミナミ（３５−３８、４１、４２チョウメ）\",\"北海道\",\"帯広市\",\"西十九条南（３５〜３８、４１、４２丁目）\",1,0,1,0,0,0";
         PostalCodeOneLineLineMapper lineMapper = new PostalCodeOneLineLineMapper();
@@ -170,6 +176,15 @@ class SplitIrregularToutenLogicTest {
         // １７５２番地
         WkTblPostalCommonEntity ansEntity14 = listAns.get(14);
         assertEquals("協和（１７５２番地）", ansEntity14.getAddressOrg());
+    }
+
+    private StepExecution getStepExecution() {
+
+        JobParameters jobParameters = new JobParametersBuilder() // NOPMD
+                .addString("lgCode", "01207").toJobParameters();
+
+        // 起動引数付きのStepExecutionを作成
+        return MetaDataInstanceFactory.createStepExecution(jobParameters);
     }
 
 }

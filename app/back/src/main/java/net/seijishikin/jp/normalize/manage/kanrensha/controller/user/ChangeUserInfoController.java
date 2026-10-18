@@ -12,8 +12,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import net.seijishikin.jp.normalize.common_tool.dto.FrameworkMessageAndResultDto;
+import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.controller.PathRouteConstants;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.user.EditUserPersonCapsuleDto;
+import net.seijishikin.jp.normalize.manage.kanrensha.logic.user.GetLoginLeastUserLogic;
 import net.seijishikin.jp.normalize.manage.kanrensha.logic.user.ValidateAuthoraizeUserDetailLogic;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.user.ChangeUserInfoService;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.util.SaveStackTraceService;
@@ -33,6 +35,10 @@ public class ChangeUserInfoController {
     @Autowired
     private SaveStackTraceService saveStackTraceService;
 
+    /** ログインユーザ取得Logic */
+    @Autowired
+    private GetLoginLeastUserLogic getLoginLeastUserLogic;
+
     /** ユーザ妥当性検証Logic */
     @Autowired
     private ValidateAuthoraizeUserDetailLogic validateAuthoraizeUserDetailLogic;
@@ -49,10 +55,11 @@ public class ChangeUserInfoController {
 
         FrameworkMessageAndResultDto resultDto = new FrameworkMessageAndResultDto();
         try {
-            // ユーザチェック
-            validateAuthoraizeUserDetailLogic.practice(capsuleDto.getUserDto());
+            // 操作者を取得してからユーザチェック
+            LeastUserDto operationUserdto = getLoginLeastUserLogic.practice();
+            validateAuthoraizeUserDetailLogic.practice(operationUserdto);
 
-            resultDto = changeUserInfoService.practice(capsuleDto);
+            resultDto = changeUserInfoService.practice(capsuleDto, operationUserdto);
 
             if (resultDto.getIsFailure()) {
                 return ResponseEntity.status(HttpStatus.ACCEPTED).body(resultDto);

@@ -57,7 +57,7 @@ class LoginUserOperatorControllerTryProhibitTest {
     void test() throws Exception {
 
         LoginUserCapsuleDto capsuleDto = new LoginUserCapsuleDto();
-        capsuleDto.setUserId("aaa@politician.balanse.report.net");
+        capsuleDto.setUserId("locked-account@politician.balanse.report.net");
         capsuleDto.setPassword("qwerty123");
 
         ObjectMapper objectMapper = GetObjectMapperWithTimeModuleUtil.practice();

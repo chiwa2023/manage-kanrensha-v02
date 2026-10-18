@@ -151,12 +151,11 @@ class CombineOrgCsvProcessorTest {
     @Sql("CombineOrgCsvProcessorRenameTest.sql")
     void testYearRefleshWrong() throws Exception {
 
-        
         combineOrgCsvProcessor.beforeStep(getStepExecution(KanrenshaKbnConstants.SEIJIDANTAI));
 
         // 処理実施直前に別実装で2020-2025年のテーブルが存在する、と確認したにもかかわらず
         // バッチ処理段階でテーブル不備が発生した(テストを複数回実施する以外では超々々レアケース)・・・処理中断
-        // MEMO さすがにテーブル名変更はトランザクションで戻してくれないので手作業で2027→2023と戻すこと
+        // MEMO さすがにテーブル名変更はトランザクションで戻してくれないので手作業で2099→2023と戻すこと
         KanrenshaCombineOrgDto dto01 = new KanrenshaCombineOrgDto();
         dto01.setPersonKanrenshaCode("P-CODE-001");
         dto01.setPersonName("迂回献金　太郎");

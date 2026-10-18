@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.List;
 
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -31,7 +32,8 @@ class ViewCombineAliveRiyoushaRepositoryTest {
     private ViewCombineAliveRiyoushaRepository viewCombineAliveRiyoushaRepository;
 
     @Test
-    void test() {
+    @Tag("TableTruncate")
+    void test() throws Exception {
 
         List<ViewCombineAliveRiyoushaEntity> list = viewCombineAliveRiyoushaRepository.findAll();
 

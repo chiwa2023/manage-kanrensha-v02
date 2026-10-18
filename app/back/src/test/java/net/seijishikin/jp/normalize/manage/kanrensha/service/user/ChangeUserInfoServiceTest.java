@@ -18,17 +18,19 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
-import org.springframework.transaction.annotation.Transactional;
 
 import net.seijishikin.jp.normalize.common_tool.dto.FrameworkMessageAndResultDto;
+import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.constants.UserRoleConstants;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.user.EditUserPersonCapsuleDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.UserPersonEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.UserRoleEntity;
+import net.seijishikin.jp.normalize.manage.kanrensha.logic.user.GetLoginLeastUserLogic;
 import net.seijishikin.jp.normalize.manage.kanrensha.repository.UserPersonRepository;
 import net.seijishikin.jp.normalize.manage.kanrensha.repository.UserRoleRepository;
 
@@ -39,7 +41,6 @@ import net.seijishikin.jp.normalize.manage.kanrensha.repository.UserRoleReposito
 @AutoConfigureMockMvc
 @SpringBootTest
 @DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
-@Transactional
 @Sql("ChangeUserInfoServiceTest.sql")
 class ChangeUserInfoServiceTest {
     // CHECKSTYLE:OFF MagicNumber
@@ -56,8 +57,13 @@ class ChangeUserInfoServiceTest {
     @Autowired
     private UserRoleRepository userRoleRepository;
 
+    /** ログインユーザ取得Logic */
+    @Autowired
+    private GetLoginLeastUserLogic getLoginLeastUserLogic;
+
     @Test
     @Tag("TableTruncate") // NOPMD
+    @WithMockUser
     void testNoRoleChange() throws Exception {
 
         // 他人編集
@@ -80,17 +86,17 @@ class ChangeUserInfoServiceTest {
         capsuleDto.setIsAlertTaskEnd(true);
         capsuleDto.setIsAlertTaskStart(true);
 
-        FrameworkMessageAndResultDto resultDto = changeUserInfoService.practice(capsuleDto);
+        LeastUserDto operateUserDto = getLoginLeastUserLogic.practice();
+
+        FrameworkMessageAndResultDto resultDto = changeUserInfoService.practice(capsuleDto, operateUserDto);
         assertFalse(resultDto.getIsFailure());
 
-        List<UserPersonEntity> listPerson = userPersonRepository.findAll();
-        assertEquals(3, listPerson.size());
         final String email = "bbb@politician.balanse.report.net";
-        UserPersonEntity entityOld = listPerson.get(1);
+        UserPersonEntity entityOld = userPersonRepository.findById(82).get();
         assertEquals(false, entityOld.getIsLatest());
         assertEquals(email, entityOld.getEmail());
 
-        UserPersonEntity entityNew = listPerson.get(2);
+        UserPersonEntity entityNew = userPersonRepository.findByEmailAndIsLatestTrue(email).get();
         assertEquals(true, entityNew.getIsLatest());
         assertEquals(email, entityNew.getEmail());
         assertEquals(name, entityNew.getUserPersonName());
@@ -98,10 +104,10 @@ class ChangeUserInfoServiceTest {
         assertEquals(true, entityNew.getIsAlertTaskStart());
         assertEquals(true, entityNew.getIsAlertTaskEnd());
 
-        List<UserRoleEntity> listRole = userRoleRepository.findAll();
-        assertEquals(2, listRole.size());
+        List<UserRoleEntity> listRole = userRoleRepository.findByEmailAndIsLatestTrue(email);
+        assertEquals(1, listRole.size());
 
-        UserRoleEntity entityRoleNew = listRole.get(1);
+        UserRoleEntity entityRoleNew = listRole.get(0);
         assertEquals(true, entityRoleNew.getIsLatest());
         assertEquals(email, entityRoleNew.getEmail());
         assertEquals(role, entityRoleNew.getRole());
@@ -113,6 +119,7 @@ class ChangeUserInfoServiceTest {
 
     @Test
     @Tag("TableTruncate")
+    @WithMockUser
     void testRoleChange() throws Exception {
 
         // 他人編集
@@ -136,17 +143,17 @@ class ChangeUserInfoServiceTest {
         capsuleDto.setIsAlertTaskEnd(true);
         capsuleDto.setIsAlertTaskStart(true);
 
-        FrameworkMessageAndResultDto resultDto = changeUserInfoService.practice(capsuleDto);
+        LeastUserDto operateUserDto = getLoginLeastUserLogic.practice();
+
+        FrameworkMessageAndResultDto resultDto = changeUserInfoService.practice(capsuleDto, operateUserDto);
         assertFalse(resultDto.getIsFailure());
 
-        List<UserPersonEntity> listPerson = userPersonRepository.findAll();
-        assertEquals(3, listPerson.size());
         final String email = "bbb@politician.balanse.report.net";
-        UserPersonEntity entityOld = listPerson.get(1);
+        UserPersonEntity entityOld = userPersonRepository.findById(82).get();
         assertEquals(false, entityOld.getIsLatest());
         assertEquals(email, entityOld.getEmail());
 
-        UserPersonEntity entityNew = listPerson.get(2);
+        UserPersonEntity entityNew = userPersonRepository.findByEmailAndIsLatestTrue(email).get();
         assertEquals(true, entityNew.getIsLatest());
         assertEquals(email, entityNew.getEmail());
         assertEquals(name, entityNew.getUserPersonName());
@@ -154,10 +161,10 @@ class ChangeUserInfoServiceTest {
         assertEquals(true, entityNew.getIsAlertTaskStart());
         assertEquals(true, entityNew.getIsAlertTaskEnd());
 
-        List<UserRoleEntity> listRole = userRoleRepository.findAll();
-        assertEquals(4, listRole.size());
+        List<UserRoleEntity> listRole = userRoleRepository.findByEmailAndIsLatestTrue(email);
+        assertEquals(2, listRole.size());
 
-        UserRoleEntity entityRoleNew = listRole.get(3);
+        UserRoleEntity entityRoleNew = listRole.get(1);
         assertEquals(true, entityRoleNew.getIsLatest());
         assertEquals(email, entityRoleNew.getEmail());
         assertEquals(UserRoleConstants.KANRENSHA_PERSON, entityRoleNew.getRole());
@@ -168,6 +175,7 @@ class ChangeUserInfoServiceTest {
 
     @Test
     @Tag("TableTruncate")
+    @WithMockUser
     void testWrongLoginUser() throws Exception {
         EditUserPersonCapsuleDto capsuleDto = new EditUserPersonCapsuleDto();
         capsuleDto.getUserDto().setUserPersonId(82);
@@ -175,21 +183,25 @@ class ChangeUserInfoServiceTest {
         capsuleDto.getUserDto().setUserPersonName("abcdefg");
 
         // ログインしていないので操作者情報が取れない
+        LeastUserDto operateUserDto = getLoginLeastUserLogic.practice();
 
-        FrameworkMessageAndResultDto resultDto = changeUserInfoService.practice(capsuleDto);
+        FrameworkMessageAndResultDto resultDto = changeUserInfoService.practice(capsuleDto, operateUserDto);
         assertTrue(resultDto.getIsFailure());
         assertEquals("操作者ログイン情報が正常に取得できませんでした", resultDto.getMessage());
     }
 
     @Test
     @Tag("TableTruncate")
+    @WithMockUser
     void testWrongEditUser() throws Exception {
         EditUserPersonCapsuleDto capsuleDto = new EditUserPersonCapsuleDto();
         capsuleDto.getUserDto().setUserPersonId(2469);
         capsuleDto.getUserDto().setUserPersonCode(2489);
         capsuleDto.getUserDto().setUserPersonName("abcdefg");
 
-        FrameworkMessageAndResultDto resultDto = changeUserInfoService.practice(capsuleDto);
+        LeastUserDto operateUserDto = getLoginLeastUserLogic.practice();
+
+        FrameworkMessageAndResultDto resultDto = changeUserInfoService.practice(capsuleDto, operateUserDto);
         assertTrue(resultDto.getIsFailure());
         assertEquals("編集ユーザ情報が正常に取得できませんでした", resultDto.getMessage());
     }

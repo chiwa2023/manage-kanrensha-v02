@@ -6,8 +6,6 @@ import java.util.Optional;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -46,11 +44,13 @@ public class ChangeUserInfoService {
     /**
      * 処理を行う
      * 
-     * @param capsuleDto 更新ユーザDto
+     * @param capsuleDto      編集対象ユーザDto
+     * @param operatorUserDto 更新作業ユーザDto
      * @return 処理結果
      */
     @Transactional
-    public FrameworkMessageAndResultDto practice(final EditUserPersonCapsuleDto capsuleDto) {
+    public FrameworkMessageAndResultDto practice(final EditUserPersonCapsuleDto capsuleDto,
+            final LeastUserDto operatorUserDto) {
 
         FrameworkMessageAndResultDto resultDto = new FrameworkMessageAndResultDto();
 
@@ -62,9 +62,15 @@ public class ChangeUserInfoService {
             return resultDto;
         }
 
-        // 操作者ユーザ情報が正常に取得できない
-        LeastUserDto operatorUserDto = this.getOperatorPerson();
-        if (Objects.isNull(operatorUserDto)) {
+        // 操作者ユーザ情報をControllerで妥当性をチェックしているのでService位置で取得でははまずい
+        // LeastUserDto operatorUserDto = this.getOperatorPerson();
+        // if (Objects.isNull(operatorUserDto)) {
+        // resultDto.setIsFailure(true);
+        // resultDto.setMessage("操作者ログイン情報が正常に取得できませんでした");
+        // return resultDto;
+        // }
+        // 操作者情報チェック
+        if (0 == operatorUserDto.getUserPersonId()) {
             resultDto.setIsFailure(true);
             resultDto.setMessage("操作者ログイン情報が正常に取得できませんでした");
             return resultDto;
@@ -122,26 +128,4 @@ public class ChangeUserInfoService {
 
     }
 
-    private LeastUserDto getOperatorPerson() {
-
-        // 操作者の取得
-        Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
-        if (currentUser == null) {
-            return null;
-        }
-
-        Optional<UserPersonEntity> optionalOperator = userPersonRepository
-                .findByEmailAndIsLatestTrue(currentUser.getName());
-        if (optionalOperator.isEmpty()) {
-            return null;
-        }
-
-        UserPersonEntity entityOperator = optionalOperator.get();
-        LeastUserDto operatorUserDto = new LeastUserDto();
-        operatorUserDto.setUserPersonId(entityOperator.getUserPersonId());
-        operatorUserDto.setUserPersonCode(entityOperator.getUserPersonCode());
-        operatorUserDto.setUserPersonName(entityOperator.getUserPersonName());
-
-        return operatorUserDto;
-    }
 }

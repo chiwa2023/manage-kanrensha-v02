@@ -8,7 +8,6 @@ import java.util.Objects;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
@@ -35,18 +34,21 @@ public class ValidateAuthoraizeUserDetailLogic {
      */
     public String practice(final LeastUserDto userDto) {
 
-        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext() // NOPMD LawDemeter
+        Object userDetails = SecurityContextHolder.getContext() // NOPMD LawDemeter
                 .getAuthentication().getPrincipal();
 
-        // テストで@withMockUserを使用し、仮ログイン状態でなければ有効
+        // テストで@withMockUserを使用し、仮ログイン状態でなければ全チェックする
         if (userDetails instanceof CustomUserDetails) {
-
             CustomUserDetails customUserDetails = (CustomUserDetails) userDetails;
-
             this.checkUserInfo(customUserDetails, userDto);
         }
 
-        return userDetails.getUsername();
+        // テストで@withMockUserを使用している場合はユーザ名だけが返ってくる
+        if (userDetails instanceof String) {
+            return (String) userDetails;
+        }
+
+        return null;
     }
 
     /**

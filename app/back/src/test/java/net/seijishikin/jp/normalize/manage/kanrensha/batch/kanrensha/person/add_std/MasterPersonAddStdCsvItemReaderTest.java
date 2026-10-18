@@ -56,11 +56,11 @@ class MasterPersonAddStdCsvItemReaderTest {
         assertEquals("住所郵便番号まで", dto.getAddressPostal());
         assertEquals("住所番地まで", dto.getAddressBlock());
         assertEquals("住所建物まで", dto.getAddressBuilding());
-        assertEquals("郵便番号1", dto.getPostalcode1());
-        assertEquals("郵便番号2", dto.getPostalcode2());
-        assertEquals("電話番号市外局番", dto.getPhon1());
-        assertEquals("電話番号局番", dto.getPhon2());
-        assertEquals("電話番号番号", dto.getPhon3());
+        assertEquals("023", dto.getPostalcode1());
+        assertEquals("4567", dto.getPostalcode2());
+        assertEquals("023", dto.getPhon1());
+        assertEquals("4567", dto.getPhon2());
+        assertEquals("8901", dto.getPhon3());
         assertEquals("メールアドレス", dto.getEmail());
         assertEquals("自分の公式サイト", dto.getMyPortalUrl());
         assertEquals("SNSサービス名称", dto.getSnsServiceName());
@@ -78,12 +78,12 @@ class MasterPersonAddStdCsvItemReaderTest {
         assertEquals("職業法人番号", dto.getKigyouDtNo());
         assertEquals("職業法人住所", dto.getKigyouDtAddress());
         assertEquals("職業法人名", dto.getKigyouDtName());
-        assertEquals("地方公共団体コード", dto.getLgCode());
-        assertEquals("町字Id", dto.getMachiazaId());
-        assertEquals("街区Id", dto.getBlkId());
-        assertEquals("地番Id", dto.getPrcId());
-        assertEquals("住居Id", dto.getRsdtId());
-        assertEquals("住居2Id", dto.getRsdt2Id());
+        assertEquals("123456", dto.getLgCode());
+        assertEquals("234", dto.getMachiazaId());
+        assertEquals("345", dto.getBlkId());
+        assertEquals("456", dto.getPrcId());
+        assertEquals("567", dto.getRsdtId());
+        assertEquals("678", dto.getRsdt2Id());
 
         assertNull(masterPersonAddStdCsvItemReader.read());
     }

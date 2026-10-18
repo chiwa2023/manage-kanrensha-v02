@@ -38,6 +38,7 @@ import net.seijishikin.jp.normalize.manage.kanrensha.dto.postal.SearchPostalIlle
 @DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
 @Sql("../../service/postal/SearchPostalIrregularBuildingDelegateServiceTest.sql")
 class SearchPostalIrregularBuildingDelegateControllerTest {
+    // CHECKSTYLE:OFF MagicNumber
 
     /** WebApplicationContext */
     @Autowired
@@ -59,6 +60,9 @@ class SearchPostalIrregularBuildingDelegateControllerTest {
     void test() throws Exception {
 
         SearchPostalIllegularCapsuleDto capsuleDto = new SearchPostalIllegularCapsuleDto();
+        capsuleDto.setAllCount(107);
+        capsuleDto.setPageNumber(41);
+        capsuleDto.setLimit(20);
 
         String path = PathRouteConstants.ROOT + "/postal-irregular/building";
 

@@ -12,8 +12,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import net.seijishikin.jp.normalize.common_tool.dto.FrameworkMessageAndResultDto;
+import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.controller.PathRouteConstants;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.user.DeleteUserCapsuleDto;
+import net.seijishikin.jp.normalize.manage.kanrensha.logic.user.GetLoginLeastUserLogic;
 import net.seijishikin.jp.normalize.manage.kanrensha.logic.user.ValidateAuthoraizeUserDetailLogic;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.user.DeleteUserService;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.util.SaveStackTraceService;
@@ -33,6 +35,10 @@ public class DeleteUserController {
     @Autowired
     private SaveStackTraceService stackTraceService;
 
+    /** ログインユーザ取得Logic */
+    @Autowired
+    private GetLoginLeastUserLogic getLoginLeastUserLogic;
+
     /** ユーザ妥当性検証Logic */
     @Autowired
     private ValidateAuthoraizeUserDetailLogic validateAuthoraizeUserDetailLogic;
@@ -49,8 +55,9 @@ public class DeleteUserController {
         // 削除作業
         FrameworkMessageAndResultDto resultDto = new FrameworkMessageAndResultDto();
         try {
-            // ユーザチェック
-            validateAuthoraizeUserDetailLogic.practice(capsuleDto.getUserDto());
+            // 操作者を取得してからユーザチェック(削除の場合は処理側で編集者を取得しているので何回も編集ユーザを取得している)
+            LeastUserDto operationUserdto = getLoginLeastUserLogic.practice();
+            validateAuthoraizeUserDetailLogic.practice(operationUserdto);
 
             resultDto = deleteUserService.practice(capsuleDto);
             if (resultDto.getIsFailure()) {

@@ -23,7 +23,6 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -40,8 +39,7 @@ import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateLeastUserForTes
 @AutoConfigureMockMvc
 @SpringBootTest
 @DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
-@Transactional
-@Sql("../../service/year/SwitchYearSearchTaskPlanServiceTest.sql")
+@Sql("../../service/year/y2025/SwitchYearSearchTaskPlanY2025ServiceTest.sql")
 class SearchTaskPlanControllerTest {
     // CHECKSTYLE:OFF MagicNumber
 
@@ -70,6 +68,11 @@ class SearchTaskPlanControllerTest {
         capsuleDto.setPageNumber(0);
         capsuleDto.setStartDate(LocalDateTime.of(2025, 5, 2, 0, 0, 0));
         capsuleDto.setEndDate(LocalDateTime.of(2025, 12, 31, 23, 59, 59));
+        capsuleDto.setFlgStart(2);
+        capsuleDto.setFlgFinished(2);
+        capsuleDto.setFlgSuspended(2);
+        capsuleDto.getInfoCodeList().add(901);
+        
         capsuleDto.setUserDto(CreateLeastUserForTestUtil.practice());
 
         ObjectMapper objectMapper = GetObjectMapperWithTimeModuleUtil.practice();

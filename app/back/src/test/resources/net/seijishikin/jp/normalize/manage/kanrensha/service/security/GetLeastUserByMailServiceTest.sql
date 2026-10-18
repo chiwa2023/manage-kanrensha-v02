@@ -13,5 +13,7 @@ INSERT INTO `login_status` (`email`,`password`,`is_success`,`fail_reason`,`disab
 INSERT INTO `user_person` (`user_person_id`,`user_person_code`,`user_person_name`,`is_latest`,`email`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`) 
   VALUES (81,80,'aaa',1,'aaa@politician.balanse.report.net',1,1,'aaa','2026-01-05 20:15:48',0,0,'','1948-07-28 22:59:59');
 
-INSERT INTO `user_role` (`user_role_id`,`email`,`is_latest`,`role`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`)
-  VALUES (1,'aaa@politician.balanse.report.net',1,'manager',1,1,'aaa','2026-01-05 20:15:48',0,0,'','1948-07-28 22:59:59');
+INSERT INTO `user_role` (`user_role_id`,`email`,`is_latest`,`role`,`kanrensha_code`,`riyousha_code`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`)
+  VALUES 
+  (1,'aaa@politician.balanse.report.net',1,'manager','dvsdf',80,1,1,'aaa','2026-01-05 20:15:48',0,0,'','1948-07-28 22:59:59')
+;

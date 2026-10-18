@@ -338,7 +338,7 @@ class InsertKanrenshaKigyouDtServiceTest { // NOPMD CouplingObjects
         
         // 自身データで新規追加の場合roleを紐づけのために更新
         List<UserRoleEntity> listRole = userRoleRepository.findByEmailAndRoleAndIsLatestTrue(
-                "ccc@politician.balanse.report.net", UserRoleConstants.KANRENSHA_KIGYOU_DT);
+                "llll@politician.balanse.report.net", UserRoleConstants.KANRENSHA_KIGYOU_DT);
         assertEquals(1, listRole.size());
 
         UserRoleEntity roleEntity = listRole.get(0);

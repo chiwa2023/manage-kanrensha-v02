@@ -87,7 +87,7 @@ class RefreshPasswordControllerTest {
     @WithMockUser
     void testWrongOldPassword() throws Exception {
 
-        // パスワードが間違っている場合は強制401が返ってしまうため、frontのキャッチを
+        // パスワードが間違っている場合は強制401が返ってしまうため、frontでのキャッチをする
         RefreshPasswordCapsuleDto capsuleDto = new RefreshPasswordCapsuleDto();
         capsuleDto.getUserDto().setUserPersonId(81);
         capsuleDto.setOldPassword("qwerty12345");
@@ -109,15 +109,17 @@ class RefreshPasswordControllerTest {
     @WithMockUser
     void test() throws Exception {
 
-        // パスワードが間違っている場合は強制401が返ってしまうため、frontのキャッチを
         RefreshPasswordCapsuleDto capsuleDto = new RefreshPasswordCapsuleDto();
         capsuleDto.getUserDto().setUserPersonId(81);
+        capsuleDto.getUserDto().setUserPersonCode(80);
+        capsuleDto.getUserDto().setUserPersonName("aaa");
+        capsuleDto.getUserDto().getListRoles().add("ROLE_manager");
         String mail = "aaa@politician.balanse.report.net";
         String password = "qwerty1234";
         capsuleDto.setOldPassword(password);
         capsuleDto.setNewPassword("asdfg12345");
 
-        UserDetails testUser = User.withUsername(mail).password(password) // パスワードはダミー
+        UserDetails testUser = User.withUsername(mail).password(password) //
                 .roles("manager").build();
 
         // 架空のユーザでログイン状態を作成
