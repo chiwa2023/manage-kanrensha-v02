@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onBeforeMount, ref, type Ref } from 'vue';
+import { ref, watch, type Ref } from 'vue';
 
 const props = defineProps<{ ipAddress: string }>();
 const emits = defineEmits(["sendIpAddress"]);
@@ -32,7 +32,7 @@ const v6IpAdd8: Ref<string> = ref("");
 const addressVersion: Ref<string> = ref("v4");
 
 
-onBeforeMount(() => {
+watch(props, () => {
 
     if (props.ipAddress.includes(".")) {
         // propsが v4   
@@ -94,34 +94,34 @@ function onAddressChangeV6() {
 
 </script>
 <template>
-                    <div class="form-group-vertical">
+    <div class="form-group-vertical">
 
-    <div>
-    <input type="radio" value="v4" v-model="addressVersion"> IPV4
-    <input type="radio" value="v6" v-model="addressVersion" class="left-space"> IPV6<br>
+        <div>
+            <input type="radio" value="v4" v-model="addressVersion"> IPV4
+            <input type="radio" value="v6" v-model="addressVersion" class="left-space"> IPV6<br>
         </div>
 
-    <div v-if="addressVersion === 'v4'">
-        <input type="number" v-model="v4IpAdd1" min="0" max="255" @change="onAddressChangeV4" class="ip-address">.
-        <input type="number" v-model="v4IpAdd2" min="0" max="255" @change="onAddressChangeV4" class="ip-address">.
-        <input type="number" v-model="v4IpAdd3" min="0" max="255" @change="onAddressChangeV4" class="ip-address">.
-        <input type="number" v-model="v4IpAdd4" min="0" max="255" @change="onAddressChangeV4" class="ip-address">
-    </div>
-    <div v-if="addressVersion === 'v6'">
-        <input type="text" v-model="v6IpAdd1" @change="onAddressChangeV6" class="ip-address"> ： 
-        <input type="text" v-model="v6IpAdd2" @change="onAddressChangeV6" class="ip-address"> ： 
-        <input type="text" v-model="v6IpAdd3" @change="onAddressChangeV6" class="ip-address"> ： 
-        <input type="text" v-model="v6IpAdd4" @change="onAddressChangeV6" class="ip-address"> ： 
-        <input type="text" v-model="v6IpAdd5" @change="onAddressChangeV6" class="ip-address"> ： 
-        <input type="text" v-model="v6IpAdd6" @change="onAddressChangeV6" class="ip-address"> ： 
-        <input type="text" v-model="v6IpAdd7" @change="onAddressChangeV6" class="ip-address"> ： 
-        <input type="text" v-model="v6IpAdd8" @change="onAddressChangeV6" class="ip-address">
-    </div>
+        <div v-if="addressVersion === 'v4'">
+            <input type="number" v-model="v4IpAdd1" min="0" max="255" @change="onAddressChangeV4" class="ip-address">.
+            <input type="number" v-model="v4IpAdd2" min="0" max="255" @change="onAddressChangeV4" class="ip-address">.
+            <input type="number" v-model="v4IpAdd3" min="0" max="255" @change="onAddressChangeV4" class="ip-address">.
+            <input type="number" v-model="v4IpAdd4" min="0" max="255" @change="onAddressChangeV4" class="ip-address">
+        </div>
+        <div v-if="addressVersion === 'v6'">
+            <input type="text" v-model="v6IpAdd1" @change="onAddressChangeV6" class="ip-address"> ：
+            <input type="text" v-model="v6IpAdd2" @change="onAddressChangeV6" class="ip-address"> ：
+            <input type="text" v-model="v6IpAdd3" @change="onAddressChangeV6" class="ip-address"> ：
+            <input type="text" v-model="v6IpAdd4" @change="onAddressChangeV6" class="ip-address"> ：
+            <input type="text" v-model="v6IpAdd5" @change="onAddressChangeV6" class="ip-address"> ：
+            <input type="text" v-model="v6IpAdd6" @change="onAddressChangeV6" class="ip-address"> ：
+            <input type="text" v-model="v6IpAdd7" @change="onAddressChangeV6" class="ip-address"> ：
+            <input type="text" v-model="v6IpAdd8" @change="onAddressChangeV6" class="ip-address">
+        </div>
     </div>
 </template>
 <style scoped>
-    input.ip-address{
-        text-align: right;
-        width: 4em;
-    }
+input.ip-address {
+    text-align: right;
+    width: 4em;
+}
 </style>

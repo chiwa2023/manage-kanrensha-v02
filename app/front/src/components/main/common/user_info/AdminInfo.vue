@@ -346,8 +346,8 @@ const notHasDetailInfo: ComputedRef<boolean> = computed(
                 <input type="radio" v-model="switchYearPerson" value="1" id="test">本年{{ optionsThisYearPerson.length - 1
                 }}件
                 <input type="radio" v-model="switchYearPerson" value="2" id="test">前年{{ optionsLastYearPerson.length - 1
-                }}件
-                <select v-model="selectedTaskPerson" class="left-space">
+                }}件<br>
+                <select v-model="selectedTaskPerson" class="left-space transfer-select">
                     <option v-for="option in optionsViewPerson" :value="option.taskPlanId">{{ option.text }}</option>
                 </select>
                 <button @click="onTransferPerson" :disabled="tansferDisabledPerson"
@@ -359,7 +359,8 @@ const notHasDetailInfo: ComputedRef<boolean> = computed(
             <div class="user-role-task left-space">
                 <input type="radio" v-model="switchYearRole" value="1" id="test">本年{{ optionsThisYearRole.length - 1 }}件
                 <input type="radio" v-model="switchYearRole" value="2" id="test">前年{{ optionsLastYearRole.length - 1 }}件
-                <select v-model="selectedTaskRole" class="left-space">
+                <br>
+                <select v-model="selectedTaskRole" class="left-space transfer-select">
                     <option v-for="option in optionsViewRole" :value="option.taskPlanId">{{ option.text }}</option>
                 </select>
                 <button @click="onTransferRole" :disabled="tansferDisabledRole"
@@ -418,4 +419,8 @@ const notHasDetailInfo: ComputedRef<boolean> = computed(
     </div>
 
 </template>
-<style scoped></style>
+<style scoped>
+select.transfer-select {
+    width: 80%;
+}
+</style>
