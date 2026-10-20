@@ -23,5 +23,6 @@ CREATE TABLE `task_plan_2025` (
   `delete_user_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '無効ユーザ名称',
   `delete_timestamp` datetime DEFAULT NULL COMMENT '無効日時',
   PRIMARY KEY (`task_plan_id`),
+  KEY `code_index` (`task_plan_code`),
   FULLTEXT KEY `name_index` (`task_plan_name`) /*!50100 WITH PARSER `ngram` */ 
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;

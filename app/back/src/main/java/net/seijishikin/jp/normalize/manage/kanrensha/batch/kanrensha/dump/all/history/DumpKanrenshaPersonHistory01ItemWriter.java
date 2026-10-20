@@ -5,6 +5,7 @@ import java.nio.file.Paths;
 
 import org.springframework.batch.core.step.StepExecution;
 import org.springframework.batch.core.annotation.BeforeStep;
+import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.infrastructure.item.file.FlatFileItemWriter;
 import org.springframework.batch.infrastructure.item.file.transform.BeanWrapperFieldExtractor;
 import org.springframework.batch.infrastructure.item.file.transform.DelimitedLineAggregator;
@@ -17,6 +18,7 @@ import net.seijishikin.jp.normalize.manage.kanrensha.entity.lgcode.KanrenshaPers
  * 関連者個人履歴(01)ItemWriter
  */
 @Component
+@StepScope
 public class DumpKanrenshaPersonHistory01ItemWriter extends FlatFileItemWriter<KanrenshaPersonHistory01Entity> {
 
     /**

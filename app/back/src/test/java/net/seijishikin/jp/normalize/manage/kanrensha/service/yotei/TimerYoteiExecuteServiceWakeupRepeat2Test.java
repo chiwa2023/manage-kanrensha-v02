@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import org.springframework.test.annotation.DirtiesContext;
@@ -41,6 +42,7 @@ class TimerYoteiExecuteServiceWakeupRepeat2Test {
 
     @Test
     @Tag("TableTruncate")
+    @WithMockUser
     void testWakeupRepeat() throws Exception {
 
         // 次回予定を設定

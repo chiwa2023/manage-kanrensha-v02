@@ -8,6 +8,7 @@ import org.springframework.batch.infrastructure.item.file.FlatFileItemWriter;
 import org.springframework.batch.infrastructure.item.file.transform.BeanWrapperFieldExtractor;
 import org.springframework.batch.infrastructure.item.file.transform.DelimitedLineAggregator;
 import org.springframework.batch.core.annotation.BeforeStep;
+import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.stereotype.Component;
 
@@ -17,6 +18,7 @@ import net.seijishikin.jp.normalize.manage.kanrensha.entity.lgcode.KanrenshaSeij
  * 関連者政治団体団体履歴(36)ItemWriter
  */
 @Component
+@StepScope
 public class DumpKanrenshaSeijidantaiHistory36ItemWriter
         extends FlatFileItemWriter<KanrenshaSeijidantaiHistory36Entity> {
 

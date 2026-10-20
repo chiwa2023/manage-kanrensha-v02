@@ -30,7 +30,6 @@ class DeleteStorageTempFileControllerTest {
         assertTrue(deleteStorageTempFileController.practice());
 
         // MEMO 重要：実行時の半年前(10月→4月)のフォルダがクリアされていることを目視で確認すること
-        // 削除ディレクトリが実行時基準で算出しているのはこのテストだけ
     }
 
 }

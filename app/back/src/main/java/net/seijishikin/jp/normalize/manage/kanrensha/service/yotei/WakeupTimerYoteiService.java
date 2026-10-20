@@ -7,19 +7,19 @@ import org.springframework.stereotype.Service;
 
 import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.constants.YoteiTaskConstants;
-import net.seijishikin.jp.normalize.manage.kanrensha.controller.file.DeleteStorageTempFileController;
-import net.seijishikin.jp.normalize.manage.kanrensha.controller.user.DeleteLimitOverTokenController;
-import net.seijishikin.jp.normalize.manage.kanrensha.controller.z_force.ForceDumpHistoryController;
-import net.seijishikin.jp.normalize.manage.kanrensha.controller.z_force.ForceDumpHistorySabunController;
-import net.seijishikin.jp.normalize.manage.kanrensha.controller.z_force.ForceDumpKanrenshaCodeMoveController;
-import net.seijishikin.jp.normalize.manage.kanrensha.controller.z_force.ForceDumpMinMasterController;
-import net.seijishikin.jp.normalize.manage.kanrensha.controller.z_force.ForceDumpMinMasterSabunController;
-import net.seijishikin.jp.normalize.manage.kanrensha.controller.z_force.ForceDumpStdMasterController;
-import net.seijishikin.jp.normalize.manage.kanrensha.controller.z_force.ForceDumpStdMasterSabunController;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.user.NotifyPartnerApiLimitCapsuleDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.z_force.ForceDumpCapsuleDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.TimerYoteiEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.user.NotificationPartnerApiTokenLimitAsyncService;
+import net.seijishikin.jp.normalize.manage.kanrensha.service.yotei.function.YoteiFuncDeleteLimitOverTokenService;
+import net.seijishikin.jp.normalize.manage.kanrensha.service.yotei.function.YoteiFuncDeleteStorageTempFileService;
+import net.seijishikin.jp.normalize.manage.kanrensha.service.yotei.function.YoteiFuncForceDumpHistorySabunService;
+import net.seijishikin.jp.normalize.manage.kanrensha.service.yotei.function.YoteiFuncForceDumpHistoryService;
+import net.seijishikin.jp.normalize.manage.kanrensha.service.yotei.function.YoteiFuncForceDumpKanrenshaCodeMoveService;
+import net.seijishikin.jp.normalize.manage.kanrensha.service.yotei.function.YoteiFuncForceDumpMinMasterSabunService;
+import net.seijishikin.jp.normalize.manage.kanrensha.service.yotei.function.YoteiFuncForceDumpMinMasterService;
+import net.seijishikin.jp.normalize.manage.kanrensha.service.yotei.function.YoteiFuncForceDumpStdMasterSabunService;
+import net.seijishikin.jp.normalize.manage.kanrensha.service.yotei.function.YoteiFuncForceDumpStdMasterService;
 
 /**
  * 予定作業と定義されたタスクを起動する
@@ -29,36 +29,35 @@ public class WakeupTimerYoteiService {
 
     /** 関連者履歴出力Controller */
     @Autowired
-    private ForceDumpHistoryController forceDumpHistoryController;
+    private YoteiFuncForceDumpHistoryService yoteiFuncForceDumpHistoryService;
 
     /** 関連者履歴出力差分Controller */
     @Autowired
-    private ForceDumpHistorySabunController forceDumpHistorySabunController;
+    private YoteiFuncForceDumpHistorySabunService yoteiFuncForceDumpHistorySabunService;
 
     /** 関連者最小出力Controller */
     @Autowired
-    private ForceDumpMinMasterController forceDumpMinMasterController;
+    private YoteiFuncForceDumpMinMasterService yoteiFuncForceDumpMinMasterService;
 
     /** 関連者最小出力差分Controller */
     @Autowired
-    private ForceDumpMinMasterSabunController forceDumpMinMasterSabunController;
+    private YoteiFuncForceDumpMinMasterSabunService yoteiFuncForceDumpMinMasterSabunService;
 
     /** 関連者標準出力Controller */
     @Autowired
-    private ForceDumpStdMasterController forceDumpStdMasterController;
+    private YoteiFuncForceDumpStdMasterService yoteiFuncForceDumpStdMasterService;
 
     /** 関連者標準出力差分Controller */
     @Autowired
-    private ForceDumpStdMasterSabunController forceDumpStdMasterSabunController;
+    private YoteiFuncForceDumpStdMasterSabunService yoteiFuncForceDumpStdMasterSabunService;
 
     /** 関連者コード移動ダンプController */
     @Autowired
-    private ForceDumpKanrenshaCodeMoveController forceDumpKanrenshaCodeMoveController;
-    
-    
+    private YoteiFuncForceDumpKanrenshaCodeMoveService yoteiFuncForceDumpKanrenshaCodeMoveService;
+
     /** ストレージ一時ファイル削除Controller */
     @Autowired
-    private DeleteStorageTempFileController deleteStorageTempFileController;
+    private YoteiFuncDeleteStorageTempFileService yoteiFuncDeleteStorageTempFileService;
 
     /** APIパートナ－長期トークン期限切れ通知非同期Service */
     @Autowired
@@ -66,7 +65,7 @@ public class WakeupTimerYoteiService {
 
     /** 期限切れトークン削除Controller */
     @Autowired
-    private DeleteLimitOverTokenController deleteLimitOverTokenController;
+    private YoteiFuncDeleteLimitOverTokenService yoteiFuncDeleteLimitOverTokenService;
 
     /**
      * 処理を行う
@@ -77,38 +76,38 @@ public class WakeupTimerYoteiService {
     public boolean practice(final TimerYoteiEntity timerYoteiEntity, final LeastUserDto userDto) {
 
         try {
-            switch ((short) timerYoteiEntity.getYoyakuTaskKbn()) { // NOPMD NOt Cast
+            switch ((short) timerYoteiEntity.getYoyakuTaskKbn()) { // NOPMD NotCast
 
                 /* 関連者ファイルダンプ */
                 case YoteiTaskConstants.DUMP_HISTORY:
-                    return !forceDumpHistoryController.practice( // NOPMD LawOfDemeter
-                            this.createDumpCapsuleDto(timerYoteiEntity, userDto)).getBody().getIsFailure();
+                    return yoteiFuncForceDumpHistoryService
+                            .practice(this.createDumpCapsuleDto(timerYoteiEntity, userDto));
                 case YoteiTaskConstants.DUMP_HISTORY_SABUN:
-                    return !forceDumpHistorySabunController.practice( // NOPMD LawOfDemeter
-                            this.createDumpCapsuleDto(timerYoteiEntity, userDto)).getBody().getIsFailure();
+                    return yoteiFuncForceDumpHistorySabunService
+                            .practice(this.createDumpCapsuleDto(timerYoteiEntity, userDto));
                 case YoteiTaskConstants.DUMP_MIN:
-                    return !forceDumpMinMasterController.practice( // NOPMD LawOfDemeter
-                            this.createDumpCapsuleDto(timerYoteiEntity, userDto)).getBody().getIsFailure();
+                    return yoteiFuncForceDumpMinMasterService
+                            .practice(this.createDumpCapsuleDto(timerYoteiEntity, userDto));
                 case YoteiTaskConstants.DUMP_MIN_SABUN:
-                    return !forceDumpMinMasterSabunController.practice( // NOPMD LawOfDemeter
-                            this.createDumpCapsuleDto(timerYoteiEntity, userDto)).getBody().getIsFailure();
+                    return yoteiFuncForceDumpMinMasterSabunService
+                            .practice(this.createDumpCapsuleDto(timerYoteiEntity, userDto));
                 case YoteiTaskConstants.DUMP_STD:
-                    return !forceDumpStdMasterController.practice( // NOPMD LawOfDemeter
-                            this.createDumpCapsuleDto(timerYoteiEntity, userDto)).getBody().getIsFailure();
+                    return yoteiFuncForceDumpStdMasterService
+                            .practice(this.createDumpCapsuleDto(timerYoteiEntity, userDto));
                 case YoteiTaskConstants.DUMP_STD_SABUN:
-                    return !forceDumpStdMasterSabunController.practice( // NOPMD LawOfDemeter
-                            this.createDumpCapsuleDto(timerYoteiEntity, userDto)).getBody().getIsFailure();
+                    return yoteiFuncForceDumpStdMasterSabunService
+                            .practice(this.createDumpCapsuleDto(timerYoteiEntity, userDto));
                 case YoteiTaskConstants.DUMP_CODE_MOVE:
-                    return !forceDumpKanrenshaCodeMoveController.practice( // NOPMD LawOfDemeter
-                            this.createDumpCapsuleDto(timerYoteiEntity, userDto)).getBody().getIsFailure();
-                    
+                    return yoteiFuncForceDumpKanrenshaCodeMoveService
+                            .practice(this.createDumpCapsuleDto(timerYoteiEntity, userDto));
+
                 /* アップロード一時ファイル整理 */
                 case YoteiTaskConstants.TEMP_FILE_DELETE:
-                    return deleteStorageTempFileController.practice();
+                    return yoteiFuncDeleteStorageTempFileService.practice();
 
                 /* 不要アクセストークン削除 */
                 case YoteiTaskConstants.EXPIRED_TOKEN_DELETE:
-                    return deleteLimitOverTokenController.practice();
+                    return yoteiFuncDeleteLimitOverTokenService.practice();
 
                 /* APIパートナートークン期限切れ通知 */
                 case YoteiTaskConstants.NOTIFY_TOKEN_LIMIT:
@@ -122,7 +121,7 @@ public class WakeupTimerYoteiService {
                     // その他の未指定は該当なしで何もしない
                     return false;
             }
-        } catch (NullPointerException exception) { // NOPMD CatchingNPE
+        } catch (Exception exception) { // NOPMD 業務的な理由から積極的に許容
             // bodyのないレスポンスが戻ってきた場合は、各タスクで例外のレスポンスが発生している(屋上屋になるのでstacktraceの保存はしない)
             return false;
         }
