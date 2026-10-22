@@ -137,8 +137,13 @@ const routes = [
 
     // トークン置き換え
     { path: RoutePathConstants.PAGE_PARTNER_TOKEN_REPLACE, name: "ReplacePartnerApiToken", component: () => import("./components/main/pages/user_edit/ReplacePartnerApiToken.vue") },
+
     // トークン期限通知(強制)
     { path: RoutePathConstants.PAGE_NOTIFY_LIMIT, name: "NotifyPartnerApiLimit", component: () => import("./components/main/pages/user_edit/NotifyPartnerApiLimit.vue") },
+    // 期限切れトークン削除(強制)
+    { path: RoutePathConstants.PAGE_DELETE_TEMP_STORAGE, name: "DeleteLimitOverToken", component: () => import("./components/main/pages/z_force_yotei/DelteStorageTempFile.vue") },
+    // 一時ファイル削除(強制)
+    { path: RoutePathConstants.PAGE_DELETE_TOKEN, name: "DelteStorageTempFile", component: () => import("./components/main/pages/z_force_yotei/DeleteLimitOverToken.vue") },
 
     // 運営者と連絡
     { path: RoutePathConstants.PAGE_CONTACT_MANAGER_MYSELF, name: "ContactMyself", component: () => import("./components/main/pages/contact/ContactMyself.vue") },

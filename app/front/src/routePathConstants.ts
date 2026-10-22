@@ -79,7 +79,9 @@ export default class RoutePathConstants {
     static readonly PAGE_PARTNER_TOKEN_REPLACE: string = this.BASE_PATH + "/partner-api/token-replace";
 
     /** APIパートナー期限切れ強制通知 */
-    static readonly PAGE_NOTIFY_LIMIT: string = this.BASE_PATH + "/partner-api/notify-limit";
+    static readonly PAGE_NOTIFY_LIMIT: string = this.BASE_PATH + "/z-force-yotei/notify-limit";
+    static readonly PAGE_DELETE_TEMP_STORAGE: string = this.BASE_PATH + "/z-force-yotei/delete-temp-storage";
+    static readonly PAGE_DELETE_TOKEN: string = this.BASE_PATH + "/z-force-yotei/delete-token";
 
     /** 利用者検索 */
     static readonly PAGE_RIYOUSHA_SEARCH: string = this.BASE_PATH + "/riyousha-search";
