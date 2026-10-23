@@ -43,6 +43,10 @@ public class PartnerApiLoginService {
     @Autowired
     private SaveStackTraceService saveStackTraceService;
 
+    /** IPアドレス検証ユーティリティ */
+    @Autowired
+    private IpAddressMatcherUtil ipAddressMatcherUtil;
+
     /**
      * 処理を行う
      * 
@@ -91,8 +95,8 @@ public class PartnerApiLoginService {
             throw new LockedException("このTokenは有効期間経過などの理由で失効しています");
         }
 
-        // IPアドレスが登録されており、一致しない場合はエラー
-        if (!ipAddress.equals(tokenEntity.getIpAddress())) {
+        // IPアドレスが登録されており、一致（またはCIDR範囲内）しない場合はエラー
+        if (!ipAddressMatcherUtil.matches(tokenEntity.getIpAddress(), ipAddress)) {
             baseEntity.setIsSuccess(false);
             // 履歴をアクセス失敗で記録
             this.saveHitory(baseEntity);

@@ -92,6 +92,22 @@
 			<artifactId>spring-boot-starter-webflux</artifactId>
 		</dependency>
 
+		<!-- 2. WebAuthn/パスキー処理用の公式コアライブラリ -->
+		<!-- ※Spring Security 7のPasskeysサポートに必須の依存関係です -->
+		<dependency>
+			<groupId>com.webauthn4j</groupId>
+			<artifactId>webauthn4j-core</artifactId>
+			<version>0.24.1.RELEASE</version> <!-- プロジェクトに合わせて最新版を推奨 -->
+		</dependency>
+
+		<!-- Bucket4j レートリミットライブラリ -->
+		<dependency>
+			<groupId>com.bucket4j</groupId>
+			<artifactId>bucket4j-core</artifactId>
+			<version>8.10.1</version>
+		</dependency>
+
+
 		<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
 		<dependency>
 			<groupId>org.apache.commons</groupId>

@@ -63,5 +63,30 @@
     "name": "app.cors.allowed-origins",
     "type": "java.lang.String",
     "description": "A description for 'app.cors.allowed-origins'"
+  },
+  {
+    "name": "app.rate-limit.enabled",
+    "type": "java.lang.String",
+    "description": "A description for 'app.rate-limit.enabled'"
+  },
+  {
+    "name": "app.cors.allowed-origin-patterns",
+    "type": "java.lang.String",
+    "description": "A description for 'app.cors.allowed-origin-patterns'"
+  },
+  {
+    "name": "app.rate-limit.capacity",
+    "type": "java.lang.String",
+    "description": "A description for 'app.rate-limit.capacity'"
+  },
+  {
+    "name": "app.rate-limit.refill-tokens",
+    "type": "java.lang.String",
+    "description": "A description for 'app.rate-limit.refill-tokens'"
+  },
+  {
+    "name": "app.rate-limit.refill-duration-seconds",
+    "type": "java.lang.String",
+    "description": "A description for 'app.rate-limit.refill-duration-seconds'"
   }
 ]}

@@ -41,6 +41,8 @@ import com.nimbusds.jose.proc.SecurityContext;
 import net.seijishikin.jp.normalize.manage.kanrensha.controller.PathRouteConstants;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.security.AuthorizeFilter;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.security.CustomUserDetailsManager;
+import net.seijishikin.jp.normalize.manage.kanrensha.service.security.RateLimitFilter;
+import net.seijishikin.jp.normalize.manage.kanrensha.service.security.RateLimitService;
 
 /**
  * セキュリティ設定
@@ -48,7 +50,7 @@ import net.seijishikin.jp.normalize.manage.kanrensha.service.security.CustomUser
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
-public class SecurityConfig {
+public class SecurityConfig { // NOPMD TooManyMethods
 
     /** ログインユーザ詳細取得Manager */
     @Autowired
@@ -58,9 +60,24 @@ public class SecurityConfig {
     @Autowired
     private JwtKeyProperties jwtKeyProperties;
 
+    /** レートリミットService */
+    @Autowired
+    private RateLimitService rateLimitService;
+
+    /** レートリミット設定 */
+    @Autowired
+    private RateLimitConfig rateLimitConfig;
+    
+    /** 許可時間 */
+    public static final long MAX_AGE = 3600L;
+
     /** ドメイン(frontend)URL */
     @Value("${app.cors.allowed-origins:http://localhost:5173}")
     private List<String> allowedOrigins;
+
+    /** 許可オリジンパターン (ワイルドカード対応) */
+    @Value("${app.cors.allowed-origin-patterns:}")
+    private List<String> allowedOriginPatterns;
 
     /**
      * AuthenticationManagerをBeanとする
@@ -172,6 +189,7 @@ public class SecurityConfig {
                 .oauth2ResourceServer(
                         oauth2 -> oauth2.jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter())))
                 .addFilterBefore(new AuthorizeFilter(jwtDecoder()), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new RateLimitFilter(rateLimitService, rateLimitConfig), AuthorizeFilter.class)
                 .logout(logout -> logout.logoutSuccessUrl("/"))
                 .cors(cors -> cors.configurationSource(this.corsConfigurationSource())).build();
     }
@@ -254,13 +272,24 @@ public class SecurityConfig {
      *
      * @return CorsConfiguration
      */
-    private CorsConfigurationSource corsConfigurationSource() {
+    protected CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
         corsConfiguration.addAllowedMethod(CorsConfiguration.ALL);
         corsConfiguration.addAllowedHeader(CorsConfiguration.ALL);
         corsConfiguration.addExposedHeader("X-AUTH-TOKEN");
-        corsConfiguration.setAllowedOrigins(allowedOrigins);
+        corsConfiguration.addExposedHeader("Authorization");
+        corsConfiguration.setMaxAge(MAX_AGE);
         corsConfiguration.setAllowCredentials(true);
+
+        if (allowedOriginPatterns != null && !allowedOriginPatterns.isEmpty()
+                && allowedOriginPatterns.stream().anyMatch(p -> p != null && !p.isBlank())) {
+            corsConfiguration.setAllowedOriginPatterns(
+                    allowedOriginPatterns.stream().filter(p -> p != null && !p.isBlank()).toList());
+        }
+        if (allowedOrigins != null && !allowedOrigins.isEmpty()) {
+            corsConfiguration.setAllowedOrigins(allowedOrigins);
+        }
+
         UrlBasedCorsConfigurationSource corsSource = new UrlBasedCorsConfigurationSource();
         corsSource.registerCorsConfiguration("/**", corsConfiguration);
         return corsSource;

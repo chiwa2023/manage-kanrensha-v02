@@ -72,4 +72,19 @@ class SecurityConfigTest {
     void testAuthenticationProvider() {
         assertEquals(DaoAuthenticationProvider.class, securityConfig.authenticationProvider().getClass());
     }
+
+    @Test
+    @Tag(TAG)
+    void testCorsConfigurationSource() {
+        org.springframework.web.cors.CorsConfigurationSource source = securityConfig.corsConfigurationSource();
+        org.springframework.mock.web.MockHttpServletRequest request = new org.springframework.mock.web.MockHttpServletRequest();
+        request.setRequestURI("/api/test");
+        org.springframework.web.cors.CorsConfiguration config = source.getCorsConfiguration(request);
+
+        org.junit.jupiter.api.Assertions.assertNotNull(config);
+        org.junit.jupiter.api.Assertions.assertTrue(config.getAllowCredentials());
+        assertEquals(SecurityConfig.MAX_AGE, config.getMaxAge());
+        org.junit.jupiter.api.Assertions.assertTrue(config.getExposedHeaders().contains("X-AUTH-TOKEN"));
+        org.junit.jupiter.api.Assertions.assertTrue(config.getExposedHeaders().contains("Authorization"));
+    }
 }

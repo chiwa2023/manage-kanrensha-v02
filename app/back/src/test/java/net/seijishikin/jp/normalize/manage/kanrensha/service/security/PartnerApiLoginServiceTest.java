@@ -87,7 +87,7 @@ class PartnerApiLoginServiceTest {
     void testWrongIpAddress() throws Exception {
 
         // IPアドレスが不正
-        final String token = "12345";
+        final String token = "12345"; // NOPMD
         final String accessUrl = "/abc-def/ghi-jkl";
         final String ipAddress = "9.8.7.6"; // NOPMD
         final String usrAgent = "NetScape";
@@ -130,5 +130,43 @@ class PartnerApiLoginServiceTest {
         assertEquals(usrAgent, entity0.getUserAgent());
         assertEquals(190, entity0.getUserCode());
         assertEquals("name_aaa", entity0.getUserName());
+    }
+
+    @Test
+    @Tag("TableTruncate")
+    void testSuccessWithCidr() throws Exception {
+
+        // トークン設定のIPアドレスをCIDRサブネットに更新
+        PartnerAccessTokenEntity entity = partnerAccessTokenRepository.findById(326).get();
+        entity.setIpAddress("192.168.1.0/24");
+        partnerAccessTokenRepository.save(entity);
+
+        final String token = "12345";
+        final String accessUrl = "/cidr-test";
+        final String clientIp = "192.168.1.50"; // NOPMD
+        final String usrAgent = "NetScape";
+        final LocalDateTime loginTime = LocalDateTime.of(2026, 4, 12, 12, 34, 56);
+
+        LeastUserDto userDto = partnerApiLoginService.practice(token, accessUrl, usrAgent, clientIp, loginTime);
+        assertEquals(190, userDto.getUserPersonCode());
+    }
+
+    @Test
+    @Tag("TableTruncate")
+    void testFailureOutsideCidr() throws Exception {
+
+        // トークン設定のIPアドレスをCIDRサブネットに更新
+        PartnerAccessTokenEntity entity = partnerAccessTokenRepository.findById(326).get();
+        entity.setIpAddress("192.168.1.0/24");
+        partnerAccessTokenRepository.save(entity);
+
+        final String token = "12345";
+        final String accessUrl = "/cidr-test";
+        final String clientIp = "192.168.2.50"; // サブネット外 NOPMD
+        final String usrAgent = "NetScape";
+        final LocalDateTime loginTime = LocalDateTime.of(2026, 4, 12, 12, 34, 56);
+
+        assertThrows(AccessDeniedException.class,
+                () -> partnerApiLoginService.practice(token, accessUrl, usrAgent, clientIp, loginTime));
     }
 }
