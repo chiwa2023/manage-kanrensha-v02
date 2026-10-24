@@ -112,6 +112,7 @@ public class SecurityConfig { // NOPMD TooManyMethods
                             PathRouteConstants.ROOT + "/add-user/**", PathRouteConstants.ROOT + "/trial-access",
                             PathRouteConstants.ROOT + "/reset-password/**",
                             PathRouteConstants.ROOT + "/api-for-partner/**",
+                            PathRouteConstants.ROOT + "/passkey/authenticate/**",
                             PathRouteConstants.ROOT + "/dump-record/get")//
                             .permitAll() //
                             /* 以下はコンパイル時(front接続時)にのみ有効 */

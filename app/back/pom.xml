@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>4.1.1</version>
+		<version>4.1.2</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>net.seijishikin.jp.normalize.manage.kanrensha</groupId>
@@ -97,7 +97,7 @@
 		<dependency>
 			<groupId>com.webauthn4j</groupId>
 			<artifactId>webauthn4j-core</artifactId>
-			<version>0.24.1.RELEASE</version> <!-- プロジェクトに合わせて最新版を推奨 -->
+			<version>0.31.8.RELEASE</version> <!-- プロジェクトに合わせて最新版を推奨 -->
 		</dependency>
 
 		<!-- Bucket4j レートリミットライブラリ -->

@@ -88,5 +88,20 @@
     "name": "app.rate-limit.refill-duration-seconds",
     "type": "java.lang.String",
     "description": "A description for 'app.rate-limit.refill-duration-seconds'"
+  },
+  {
+    "name": "app.webauthn.rp-id",
+    "type": "java.lang.String",
+    "description": "A description for 'app.webauthn.rp-id'"
+  },
+  {
+    "name": "app.webauthn.rp-name",
+    "type": "java.lang.String",
+    "description": "A description for 'app.webauthn.rp-name'"
+  },
+  {
+    "name": "app.webauthn.allowed-origins",
+    "type": "java.lang.String",
+    "description": "A description for 'app.webauthn.allowed-origins'"
   }
 ]}

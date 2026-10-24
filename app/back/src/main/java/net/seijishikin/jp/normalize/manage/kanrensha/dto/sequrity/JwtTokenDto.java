@@ -21,6 +21,13 @@ public class JwtTokenDto implements Serializable {
     private final Date expiresAt;
 
     /**
+     * デフォルトコンストラクタ
+     */
+    public JwtTokenDto() {
+        this("", "", null);
+    }
+
+    /**
      * コンストラクタ
      *
      * @param accessToken  アクセストークン

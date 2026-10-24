@@ -18,6 +18,90 @@ public class LoginUserResultDto implements Serializable { // NOPMD DataClass
     /** Jwtトークン */
     private JwtTokenDto jwtTokenDto;
 
+    /** パスキー2段階認証要求フラグ */
+    private Boolean requiresPasskey = false;
+
+    /** Pre-Auth Token (2段階目認証用一時トークン) */
+    private String preAuthToken = "";
+
+    /** WebAuthn Challenge (Base64URL) */
+    private String challenge = "";
+
+    /** 許可クレデンシャルIDリスト */
+    private java.util.List<String> allowCredentials = new java.util.ArrayList<>();
+
+    /**
+     * パスキー2段階認証要求フラグを取得する
+     *
+     * @return パスキー2段階認証要求フラグ
+     */
+    public Boolean getRequiresPasskey() {
+        return requiresPasskey;
+    }
+
+    /**
+     * パスキー2段階認証要求フラグを設定する
+     *
+     * @param requiresPasskey パスキー2段階認証要求フラグ
+     */
+    public void setRequiresPasskey(final Boolean requiresPasskey) {
+        this.requiresPasskey = requiresPasskey;
+    }
+
+    /**
+     * Pre-Auth Tokenを取得する
+     *
+     * @return Pre-Auth Token
+     */
+    public String getPreAuthToken() {
+        return preAuthToken;
+    }
+
+    /**
+     * Pre-Auth Tokenを設定する
+     *
+     * @param preAuthToken Pre-Auth Token
+     */
+    public void setPreAuthToken(final String preAuthToken) {
+        this.preAuthToken = preAuthToken;
+    }
+
+    /**
+     * WebAuthn Challengeを取得する
+     *
+     * @return WebAuthn Challenge
+     */
+    public String getChallenge() {
+        return challenge;
+    }
+
+    /**
+     * WebAuthn Challengeを設定する
+     *
+     * @param challenge WebAuthn Challenge
+     */
+    public void setChallenge(final String challenge) {
+        this.challenge = challenge;
+    }
+
+    /**
+     * 許可クレデンシャルIDリストを取得する
+     *
+     * @return 許可クレデンシャルIDリスト
+     */
+    public java.util.List<String> getAllowCredentials() {
+        return allowCredentials;
+    }
+
+    /**
+     * 許可クレデンシャルIDリストを設定する
+     *
+     * @param allowCredentials 許可クレデンシャルIDリスト
+     */
+    public void setAllowCredentials(final java.util.List<String> allowCredentials) {
+        this.allowCredentials = allowCredentials;
+    }
+
     
     /**
      * ユーザ最小限Dtoを取得する

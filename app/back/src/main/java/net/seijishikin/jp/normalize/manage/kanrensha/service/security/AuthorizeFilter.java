@@ -127,7 +127,8 @@ public class AuthorizeFilter extends OncePerRequestFilter {
         if (Objects.isNull(list)) {
             String[] publicUrls = { //
                     PathRouteConstants.ROOT + "/login", PathRouteConstants.ROOT + "/refresh-token",
-                    PathRouteConstants.ROOT + "/add-user/**" };
+                    PathRouteConstants.ROOT + "/add-user/**",
+                    PathRouteConstants.ROOT + "/passkey/authenticate/**" };
             list = new ArrayList<>();
             for (String path : publicUrls) {
                 list.add(PathPatternRequestMatcher.withDefaults().matcher(path));
