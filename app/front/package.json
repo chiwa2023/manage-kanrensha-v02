@@ -11,6 +11,7 @@
     "check": "vue-tsc --noEmit && eslint ."
   },
   "dependencies": {
+    "@simplewebauthn/browser": "^14.0.0",
     "crypto-js": "^4.2.0",
     "pinia": "^3.0.4",
     "pinia-plugin-persistedstate": "^4.7.1",

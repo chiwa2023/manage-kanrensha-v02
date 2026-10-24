@@ -61,6 +61,8 @@ export default class RoutePathConstants {
 
     /** ユーザパスワード更新 */
     static readonly PAGE_REFRESH_PASSWORD: string = this.BASE_PATH + "/user/refresh-password";
+    /** パスキー管理 */
+    static readonly PAGE_PASSKEY_MANAGE: string = this.BASE_PATH + "/user/passkey-manage";
     /** ユーザパスワードリセット */
     static readonly PAGE_RESET_PASSWORD: string = this.BASE_PATH + "/user/reset-password";
     /** ユーザ自身を編集 */

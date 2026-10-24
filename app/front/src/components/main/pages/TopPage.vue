@@ -1,5 +1,5 @@
 ﻿<script setup lang="ts">
-import { MessageConstants, MessageView, useUserInfoStoreCommon } from 'seijishikin-jp-normalize_common-tool';
+import { MessageConstants, MessageView, useUserInfoStoreCommon, LeastUserDto, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import RoutePathConstants from '../../../routePathConstants';
 import { onBeforeMount, ref, type Ref } from 'vue';
 import { LoginUserCapsuleDto, type LoginUserCapsuleDtoInterface } from '../dto/login/loginUserCapsuleDto';
@@ -10,6 +10,7 @@ import { rememberMeStore } from '../../main/stores/remeberMe';
 import UserRoleConstants from '../dto/user/userRoleConstants';
 import { nextTransferPassStore } from '../stores/nextTransferPass';
 import { getActivePinia } from 'pinia';
+import { isWebAuthnSupported, authenticatePasskey } from '../utils/passkeyService';
 
 // back側アクセス
 const urlBack: string = RoutePathConstants.DOMAIN + RoutePathConstants.BASE_PATH;
@@ -29,6 +30,21 @@ const infoLevel: Ref<number> = ref(MessageConstants.LEVEL_NONE);
 const messageType: Ref<number> = ref(MessageConstants.VIEW_NONE);
 const caller: Ref<string> = ref(INIT_CALLER);
 const message: Ref<string> = ref(BLANK);
+
+// パスキー2要素認証用State
+const is2FaModalOpen: Ref<boolean> = ref(false);
+const twoFaPreAuthToken: Ref<string> = ref("");
+const twoFaChallenge: Ref<string> = ref("");
+const twoFaAllowCredentials: Ref<string[]> = ref([]);
+const twoFaUserDto: Ref<LeastUserDtoInterface> = ref(new LeastUserDto());
+const is2FaAuthenticating: Ref<boolean> = ref(false);
+const twoFaErrorMessage: Ref<string> = ref("");
+
+// パスキー未登録案内用State (移行猶予期間)
+const isPasskeyPromptOpen: Ref<boolean> = ref(false);
+const dontShowPasskeyPromptAgain: Ref<boolean> = ref(false);
+const pendingRole: Ref<string> = ref("");
+
 // pinia
 const userInfo = useUserInfoStore();
 const rememberMe = rememberMeStore();
@@ -55,6 +71,63 @@ function recieveSubmit() {
 
 const user: Ref<LoginUserCapsuleDtoInterface> = ref(new LoginUserCapsuleDto());
 
+/**
+ * ユーザセッション保存
+ */
+function saveUserSession(resultDto: LoginUserResultDtoInterface) {
+    userInfo.jwtDto = resultDto.jwtTokenDto;
+    userInfo.userDto = resultDto.userDto;
+
+    // common-toolにアクセス情報を渡す
+    const userInfoCommon = useUserInfoStoreCommon(getActivePinia());
+    userInfoCommon.jwtDto = userInfo.jwtDto;
+    userInfoCommon.userDto = userInfo.userDto;
+
+    // ログインに成功かつrememberMeを使用したいときだけPiniaに保存
+    if (user.value.rememberMe) {
+        rememberMe.setMail(user.value.userId);
+        rememberMe.setPassword(user.value.password);
+    } else {
+        // チェックが外されたら初期化
+        rememberMe.initialize();
+    }
+}
+
+/**
+ * 画面遷移の実行
+ */
+function finishNavigation(role?: string) {
+    // 次の行き先が保存してある場合はその遷移先に移動
+    if (null !== nextPath && BLANK !== nextPath) {
+        router.push(nextPath);
+        return;
+    }
+    navigateByRole(role);
+}
+
+function navigateByRole(role?: string) {
+    switch (role) {
+        case UserRoleConstants.ROLE_ADMIN:
+            router.push(RoutePathConstants.PAGE_MENU_ADMIN);
+            break;
+        case UserRoleConstants.ROLE_MANAGER:
+            router.push(RoutePathConstants.PAGE_MENU_MANAGER);
+            break;
+        case UserRoleConstants.ROLE_PARTNER_API:
+            router.push(RoutePathConstants.PAGE_MENU_PARTNER_API);
+            break;
+        case UserRoleConstants.ROLE_KANRENSHA_PERSON:
+        case UserRoleConstants.ROLE_KANRENSHA_KIGYOU_DT:
+        case UserRoleConstants.ROLE_KANRENSHA_SEIJIDANTAI:
+            router.push(RoutePathConstants.PAGE_MENU_KANRENSHA);
+            break;
+        default:
+            infoLevel.value = MessageConstants.LEVEL_ERROR;
+            messageType.value = MessageConstants.VIEW_OK;
+            message.value = "権限取得でエラーが発生しています";
+            break;
+    }
+}
 
 async function onLogin() {
 
@@ -81,55 +154,30 @@ async function onLogin() {
         try {
             const resultDto: LoginUserResultDtoInterface = await response.json();
 
-            // 取得できたら保存
-            userInfo.jwtDto = resultDto.jwtTokenDto;
-            userInfo.userDto = resultDto.userDto;
-
-            // common-toolにアクセス情報を渡す
-            const userInfoCommon = useUserInfoStoreCommon(getActivePinia());
-            userInfoCommon.jwtDto = userInfo.jwtDto;
-            userInfoCommon.userDto = userInfo.userDto;
-
-            // ログインに成功かつrememberMeを使用したいときだけPiniaに保存
-            if (user.value.rememberMe) {
-                rememberMe.setMail(user.value.userId);
-                rememberMe.setPassword(user.value.password);
-            } else {
-                // チェックが外されたら初期化
-                rememberMe.initialize();
-            }
-
-            // 次の行き先が保存してある場合はその遷移先に移動
-            if (null !== nextPath && BLANK !== nextPath) {
-                router.push(nextPath);
+            // パスキー2要素認証が要求されている場合
+            if (resultDto.requiresPasskey) {
+                twoFaPreAuthToken.value = resultDto.preAuthToken || "";
+                twoFaChallenge.value = resultDto.challenge || "";
+                twoFaAllowCredentials.value = resultDto.allowCredentials || [];
+                twoFaUserDto.value = resultDto.userDto;
+                twoFaErrorMessage.value = "";
+                is2FaModalOpen.value = true;
                 return;
             }
 
-            switch (resultDto.userDto.listRoles[0]) {
-                case UserRoleConstants.ROLE_ADMIN:
-                    // 運営者
-                    router.push(RoutePathConstants.PAGE_MENU_ADMIN);
-                    break;
-                case UserRoleConstants.ROLE_MANAGER:
-                    // 運営者
-                    router.push(RoutePathConstants.PAGE_MENU_MANAGER);
-                    break;
-                case UserRoleConstants.ROLE_PARTNER_API:
-                    // APIパートナー
-                    router.push(RoutePathConstants.PAGE_MENU_PARTNER_API);
-                    break;
-                case UserRoleConstants.ROLE_KANRENSHA_PERSON:
-                case UserRoleConstants.ROLE_KANRENSHA_KIGYOU_DT:
-                case UserRoleConstants.ROLE_KANRENSHA_SEIJIDANTAI:
-                    // 関連者
-                    router.push(RoutePathConstants.PAGE_MENU_KANRENSHA);
-                    break;
-                default:
-                    infoLevel.value = MessageConstants.LEVEL_ERROR;
-                    messageType.value = MessageConstants.VIEW_OK;
-                    message.value = "権限取得でエラーが発生しています";
-                    break;
+            // パスキー未登録（パスワード認証のみで成功）
+            saveUserSession(resultDto);
+
+            // パスキー未登録ユーザへの案内モーダル判定 (移行猶予期間)
+            const skipKey = "passkey_prompt_skip_" + resultDto.userDto.userPersonId;
+            const isSkipped = localStorage.getItem(skipKey) === "true";
+            if (!isSkipped && isWebAuthnSupported()) {
+                pendingRole.value = resultDto.userDto.listRoles[0] || "";
+                isPasskeyPromptOpen.value = true;
+                return;
             }
+
+            finishNavigation(resultDto.userDto.listRoles[0]);
         } catch {
             // レスポンスは正常だがJSONが合わない等→実装ミス
             infoLevel.value = MessageConstants.LEVEL_ERROR;
@@ -156,6 +204,59 @@ async function onLogin() {
     infoLevel.value = MessageConstants.LEVEL_ERROR;
     messageType.value = MessageConstants.VIEW_OK;
     message.value = "システムエラーが発生しました";
+}
+
+/**
+ * パスキー2要素認証の実行
+ */
+async function onPerformPasskeyAuth() {
+    is2FaAuthenticating.value = true;
+    twoFaErrorMessage.value = "";
+    try {
+        const verifyResult = await authenticatePasskey(
+            twoFaPreAuthToken.value,
+            twoFaChallenge.value,
+            twoFaAllowCredentials.value
+        );
+        is2FaModalOpen.value = false;
+        saveUserSession(verifyResult);
+        finishNavigation(verifyResult.userDto.listRoles[0]);
+    } catch (e: any) {
+        twoFaErrorMessage.value = e?.message || "パスキー認証に失敗しました。生体認証がキャンセルされたかタイムアウトしました。";
+    } finally {
+        is2FaAuthenticating.value = false;
+    }
+}
+
+/**
+ * 2FAモーダルキャンセル
+ */
+function cancel2Fa() {
+    is2FaModalOpen.value = false;
+    twoFaPreAuthToken.value = "";
+    twoFaErrorMessage.value = "";
+}
+
+/**
+ * 案内モーダルからパスキー登録画面へ
+ */
+function onGoToPasskeyRegister() {
+    if (dontShowPasskeyPromptAgain.value && userInfo.userDto?.userPersonId) {
+        localStorage.setItem("passkey_prompt_skip_" + userInfo.userDto.userPersonId, "true");
+    }
+    isPasskeyPromptOpen.value = false;
+    router.push(RoutePathConstants.PAGE_PASSKEY_MANAGE);
+}
+
+/**
+ * 案内モーダルをスキップしてメニューへ
+ */
+function onSkipPasskeyPrompt() {
+    if (dontShowPasskeyPromptAgain.value && userInfo.userDto?.userPersonId) {
+        localStorage.setItem("passkey_prompt_skip_" + userInfo.userDto.userPersonId, "true");
+    }
+    isPasskeyPromptOpen.value = false;
+    finishNavigation(pendingRole.value);
 }
 
 // パスワード可視／不可視切り替えロジック
@@ -230,6 +331,67 @@ function changeVisiblePassword() {
                     </div>
                 </div>
 
+            </div>
+        </div>
+
+        <!-- パスキー2要素認証モーダル -->
+        <div v-if="is2FaModalOpen" class="modal-overlay">
+            <div class="modal-dialog">
+                <div class="modal-header-icon">🔐</div>
+                <h3 class="modal-title">パスキーによる2要素認証</h3>
+                <p class="modal-desc">
+                    <strong>{{ twoFaUserDto.userPersonName }}</strong> 様のアカウントはパスキーによる2要素認証が有効です。
+                    端末の生体認証（Touch ID / Face ID / Windows Hello）またはセキュリティキーで認証を完了してください。
+                </p>
+
+                <div v-if="twoFaErrorMessage" class="modal-error">
+                    {{ twoFaErrorMessage }}
+                </div>
+
+                <div v-if="is2FaAuthenticating" class="modal-loading">
+                    端末の生体認証・セキュリティキーを待機中...
+                </div>
+
+                <div class="modal-buttons">
+                    <button
+                        @click="onPerformPasskeyAuth"
+                        :disabled="is2FaAuthenticating"
+                        class="footer-button auth-confirm-btn"
+                    >
+                        パスキーで認証する
+                    </button>
+                    <button
+                        @click="cancel2Fa"
+                        :disabled="is2FaAuthenticating"
+                        class="footer-button"
+                    >
+                        キャンセル
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- パスキー未登録ユーザへの登録案内モーダル (移行猶予期間) -->
+        <div v-if="isPasskeyPromptOpen" class="modal-overlay">
+            <div class="modal-dialog">
+                <div class="modal-header-icon">🛡️</div>
+                <h3 class="modal-title">パスキー（2要素認証）登録のお願い</h3>
+                <p class="modal-desc">
+                    当システムではセキュリティ向上のため、パスキー（生体認証 / セキュリティキー）による2要素認証を推奨しています。
+                    今すぐ登録すると、次回からより安全にログインできます。
+                </p>
+                <div class="prompt-checkbox">
+                    <input type="checkbox" id="dontShowPrompt" v-model="dontShowPasskeyPromptAgain">
+                    <label for="dontShowPrompt">次回からこの案内を表示しない</label>
+                </div>
+                <div class="modal-buttons">
+                    <button @click="onGoToPasskeyRegister" class="footer-button prompt-register-btn">
+                        今すぐパスキーを登録
+                    </button>
+                    <button @click="onSkipPasskeyPrompt" class="footer-button prompt-skip-btn">
+                        あとで登録（スキップ）
+                    </button>
+                </div>
             </div>
         </div>
 
@@ -358,5 +520,109 @@ h2 {
 
 .links a:hover {
     text-decoration: underline;
+}
+
+/* モーダルオーバーレイ */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-dialog {
+    background: #ffffff;
+    padding: 2rem;
+    border-radius: 8px;
+    max-width: 480px;
+    width: 90%;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+    text-align: center;
+}
+
+.modal-header-icon {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.modal-title {
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+    color: #333;
+}
+
+.modal-desc {
+    font-size: 0.95rem;
+    color: #555;
+    line-height: 1.6;
+    margin-bottom: 1.2rem;
+    text-align: left;
+}
+
+.modal-error {
+    background-color: #ffebee;
+    color: #c62828;
+    padding: 0.75rem;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+    font-size: 0.88rem;
+    text-align: left;
+}
+
+.modal-loading {
+    color: #1565c0;
+    margin-bottom: 1rem;
+    font-weight: bold;
+    font-size: 0.92rem;
+}
+
+.prompt-checkbox {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-bottom: 1.2rem;
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.modal-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.auth-confirm-btn {
+    background-color: #2e7d32;
+    color: #fff;
+}
+
+.auth-confirm-btn:hover {
+    background-color: #1b5e20;
+}
+
+.prompt-register-btn {
+    background-color: #007bff;
+    color: #fff;
+}
+
+.prompt-register-btn:hover {
+    background-color: #0056b3;
+}
+
+.prompt-skip-btn {
+    background-color: #6c757d;
+    color: #fff;
+}
+
+.prompt-skip-btn:hover {
+    background-color: #5a6268;
 }
 </style>
