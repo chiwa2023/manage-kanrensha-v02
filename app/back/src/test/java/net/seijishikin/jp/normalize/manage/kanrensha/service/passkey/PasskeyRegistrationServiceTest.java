@@ -1,7 +1,8 @@
 package net.seijishikin.jp.normalize.manage.kanrensha.service.passkey;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals; // NOPMD TooManyImports
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
@@ -42,6 +43,7 @@ import net.seijishikin.jp.normalize.manage.kanrensha.repository.UserPasskeyCrede
  */
 @ExtendWith(MockitoExtension.class)
 class PasskeyRegistrationServiceTest {
+    // CHECKSTYLE:OFF MagicNumber
 
     /** テスト対象 */
     @InjectMocks
@@ -111,9 +113,6 @@ class PasskeyRegistrationServiceTest {
     @Test
     void testVerifyAndRegisterSuccess() {
         final Integer userPersonCode = 40003;
-        String credIdBytesStr = "registered-cred-id";
-        byte[] credIdBytes = credIdBytesStr.getBytes();
-        String credIdBase64 = Base64.getUrlEncoder().withoutPadding().encodeToString(credIdBytes);
 
         PasskeyRegistrationVerifyRequestDto requestDto = new PasskeyRegistrationVerifyRequestDto();
         requestDto.setAttestationObject(Base64.getUrlEncoder().withoutPadding().encodeToString(new byte[10]));
@@ -125,6 +124,9 @@ class PasskeyRegistrationServiceTest {
         when(webAuthnConfig.isOriginAllowed("http://localhost:5173")).thenReturn(true);
         when(webAuthnConfig.getRpId()).thenReturn("localhost");
 
+        String credIdBytesStr = "registered-cred-id";
+        byte[] credIdBytes = credIdBytesStr.getBytes();
+        String credIdBase64 = Base64.getUrlEncoder().withoutPadding().encodeToString(credIdBytes);
         when(credentialRepository.findByCredentialId(credIdBase64)).thenReturn(Optional.empty());
 
         RegistrationData regData = Mockito.mock(RegistrationData.class);
@@ -150,7 +152,7 @@ class PasskeyRegistrationServiceTest {
 
         when(credentialRepository.save(ArgumentMatchers.any(UserPasskeyCredentialEntity.class)))
                 .thenAnswer(invocation -> {
-                    UserPasskeyCredentialEntity e = invocation.getArgument(0);
+                    UserPasskeyCredentialEntity e = invocation.getArgument(0); // NOPMD ShortVariable
                     e.setPasskeyId(123L);
                     return e;
                 });
@@ -159,7 +161,7 @@ class PasskeyRegistrationServiceTest {
                 "http://localhost:5173");
 
         assertNotNull(result);
-        assertEquals(true, result.isSuccess());
+        assertTrue( result.isSuccess());
         assertEquals(123L, result.getPasskeyId());
         assertEquals(credIdBase64, result.getCredentialId());
         assertEquals("MacBook TouchID", result.getDeviceName());

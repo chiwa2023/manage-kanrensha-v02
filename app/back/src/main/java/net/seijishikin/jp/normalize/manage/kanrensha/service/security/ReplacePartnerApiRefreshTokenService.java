@@ -5,9 +5,11 @@ import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.TreeMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
@@ -15,7 +17,9 @@ import net.seijishikin.jp.normalize.manage.kanrensha.constants.UserRoleConstants
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.user.PartnerApiTokenCapsuleDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.user.PartnerApiTokenResultDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.PartnerAccessTokenEntity;
+import net.seijishikin.jp.normalize.manage.kanrensha.entity.UserPersonEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.repository.PartnerAccessTokenRepository;
+import net.seijishikin.jp.normalize.manage.kanrensha.repository.UserPersonRepository;
 
 /**
  * トークン発行Service
@@ -29,6 +33,10 @@ public class ReplacePartnerApiRefreshTokenService {
     /** APIパートナー長期トークン管理Repository */
     @Autowired
     private PartnerAccessTokenRepository partnerAccessTokenRepository;
+
+    /** ユーザ人物Repository */
+    @Autowired
+    private UserPersonRepository userPersonRepository;
 
     /** token生成Service */
     @Autowired
@@ -66,9 +74,15 @@ public class ReplacePartnerApiRefreshTokenService {
         Map<String, Object> claims = new TreeMap<>();
         claims.put("role", UserRoleConstants.PARTNER_API);
 
+        Optional<UserPersonEntity> optional = userPersonRepository
+                .findFirstByUserPersonCodeAndIsLatestTrueOrderByInsertTimestampDesc(userDto.getUserPersonCode());
+        if (optional.isEmpty()) {
+            throw new EmptyResultDataAccessException("ユーザが確認できませんでした。", 0);
+        }
+
+        UserPersonEntity personEntity = optional.get();
         // 新しいトークンの生成
-        String token = jwtService.createToken(userDto.getUserPersonName(),
-                issuedAtInstant, expiresAtInstant, claims);
+        String token = jwtService.createToken(personEntity.getEmail(), issuedAtInstant, expiresAtInstant, claims);
 
         // トークンのencode
         String tokenHashed = partnerTokenEncoder.encode(token);

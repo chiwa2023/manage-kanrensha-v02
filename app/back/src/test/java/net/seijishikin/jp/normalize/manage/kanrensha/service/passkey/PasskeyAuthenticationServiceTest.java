@@ -1,6 +1,6 @@
 package net.seijishikin.jp.normalize.manage.kanrensha.service.passkey;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals; // NOPMD TooManyImports
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
@@ -84,8 +84,8 @@ class PasskeyAuthenticationServiceTest {
         String preAuthToken = "token-12345";
         Integer userPersonCode = 50001;
 
-        Authentication auth = new UsernamePasswordAuthenticationToken("user@example.com", "pass",
-                Collections.emptyList());
+        Authentication auth = new UsernamePasswordAuthenticationToken("user@example.com", // NOPMD
+                "pass", Collections.emptyList());
         PreAuthSession session = new PreAuthSession(preAuthToken, userPersonCode, "user@example.com", auth,
                 new LeastUserDto(), Instant.now().plusSeconds(300));
 
@@ -123,7 +123,7 @@ class PasskeyAuthenticationServiceTest {
         when(preAuthTokenService.getPreAuthSession("expired-token")).thenReturn(null);
 
         assertThrows(IllegalArgumentException.class, () -> {
-            authenticationService.verifyAndAuthenticate(requestDto, "http://localhost:5173");
+            authenticationService.verifyAndAuthenticate(requestDto, "http://localhost:5173"); // NOPMD
         });
     }
 
@@ -162,8 +162,8 @@ class PasskeyAuthenticationServiceTest {
                 Collections.emptyList());
         LeastUserDto leastUserDto = new LeastUserDto();
         leastUserDto.setUserPersonCode(userPersonCode);
-        PreAuthSession session = new PreAuthSession(token, userPersonCode, "user@example.com", auth,
-                leastUserDto, Instant.now().plusSeconds(300));
+        PreAuthSession session = new PreAuthSession(token, userPersonCode, "user@example.com", auth, leastUserDto,
+                Instant.now().plusSeconds(300));
 
         when(preAuthTokenService.getPreAuthSession(token)).thenReturn(session);
         String challengeStr = Base64.getUrlEncoder().withoutPadding().encodeToString("test-challenge".getBytes());

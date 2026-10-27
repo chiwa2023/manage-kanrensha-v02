@@ -153,24 +153,12 @@ public class PasskeyAuthenticationService { // NOPMD CouplingObjects
             AttestedCredentialData attestedCredentialData = new AttestedCredentialData(aaguid, credentialIdBytes,
                     coseKey);
 
-            CredentialRecord credentialRecord = new CredentialRecordImpl(
-                    null,
-                    null,
-                    null,
-                    null,
-                    credential.getSignCount(),
-                    attestedCredentialData,
-                    null,
-                    null,
-                    null,
-                    null);
+            CredentialRecord credentialRecord = new CredentialRecordImpl(null, null, null, null,
+                    credential.getSignCount(), attestedCredentialData, null, null, null, null);
 
             Challenge challenge = new DefaultChallenge(Base64.getUrlDecoder().decode(storedChallenge));
-            ServerProperty serverProperty = ServerProperty.builder()
-                    .origin(origin)
-                    .rpId(webAuthnConfig.getRpId())
-                    .challenge(challenge)
-                    .build();
+            ServerProperty serverProperty = ServerProperty.builder().origin(origin).rpId(webAuthnConfig.getRpId())
+                    .challenge(challenge).build();
             AuthenticationParameters authenticationParameters = new AuthenticationParameters(serverProperty,
                     credentialRecord, null, false);
 
@@ -268,7 +256,7 @@ public class PasskeyAuthenticationService { // NOPMD CouplingObjects
         if (requestDto.getUserHandle() != null && !requestDto.getUserHandle().isBlank()) {
             return Base64.getUrlDecoder().decode(requestDto.getUserHandle());
         } else {
-            return null;
+            return null; // NOPMD ReturnEmpty
         }
         // byte[] userHandleBytes = (requestDto.getUserHandle() != null &&
         // !requestDto.getUserHandle().isBlank())
