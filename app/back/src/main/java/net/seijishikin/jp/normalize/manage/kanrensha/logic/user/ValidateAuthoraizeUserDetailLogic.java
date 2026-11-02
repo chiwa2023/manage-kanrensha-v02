@@ -8,6 +8,7 @@ import java.util.Objects;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
@@ -41,6 +42,8 @@ public class ValidateAuthoraizeUserDetailLogic {
         if (userDetails instanceof CustomUserDetails) {
             CustomUserDetails customUserDetails = (CustomUserDetails) userDetails;
             this.checkUserInfo(customUserDetails, userDto);
+            UserDetails us = (UserDetails)userDetails;
+            return us.getUsername();
         }
 
         // テストで@withMockUserを使用している場合はユーザ名だけが返ってくる
@@ -82,6 +85,7 @@ public class ValidateAuthoraizeUserDetailLogic {
                     return true;
                 }
             }
+
             return false;
         }
 

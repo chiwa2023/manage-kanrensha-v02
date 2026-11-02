@@ -40,6 +40,7 @@ onMounted(() => {
         const capsuleDto: GetRiyoushaMasterCapsuleDtoInterface = new GetRiyoushaMasterCapsuleDto();
         capsuleDto.riyoushaRole = userDto.value.riyoushaRole;
         capsuleDto.riyoushaCode = userDto.value.riyoushaCode;
+        capsuleDto.userDto = userDto.value;
 
         getAuthorizedPromiseArea().then(token => {
             const url = urlBack + "/riyousha/get-myself";

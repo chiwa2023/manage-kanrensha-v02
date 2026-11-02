@@ -3,9 +3,9 @@ package net.seijishikin.jp.normalize.manage.kanrensha.dto.kanrensha;
 import java.io.Serializable;
 
 import net.seijishikin.jp.normalize.common_tool.dto.FrameworkMessageAndResultDto;
-import net.seijishikin.jp.normalize.manage.kanrensha.entity.KanrenshaKigyouDtMasterEntity;
-import net.seijishikin.jp.normalize.manage.kanrensha.entity.KanrenshaPersonMasterEntity;
-import net.seijishikin.jp.normalize.manage.kanrensha.entity.KanrenshaSeijidantaiMasterEntity;
+import net.seijishikin.jp.normalize.common_tool.dto.kanrensha.KanrenshaKigyouDtMasterDto;
+import net.seijishikin.jp.normalize.common_tool.dto.kanrensha.KanrenshaPersonMasterDto;
+import net.seijishikin.jp.normalize.common_tool.dto.kanrensha.KanrenshaSeijidantaiMasterDto;
 
 /**
  * 関連者マスタ取得結果Dto
@@ -17,20 +17,20 @@ public class GetKanrenshaMasterResultDto extends FrameworkMessageAndResultDto //
     private static final long serialVersionUID = 1L;
 
     /** 関連者個人マスタEntity */
-    private KanrenshaPersonMasterEntity masterPersonEntity = new KanrenshaPersonMasterEntity();
+    private KanrenshaPersonMasterDto masterPersonEntity = new KanrenshaPersonMasterDto();
 
     /** 関連者企業団体マスタEntity */
-    private KanrenshaKigyouDtMasterEntity masterKigyouDtEntity = new KanrenshaKigyouDtMasterEntity();
+    private KanrenshaKigyouDtMasterDto masterKigyouDtEntity = new KanrenshaKigyouDtMasterDto();
 
     /** 関連者政治団体マスタEntity */
-    private KanrenshaSeijidantaiMasterEntity masterSeijidantaiEntity = new KanrenshaSeijidantaiMasterEntity();
+    private KanrenshaSeijidantaiMasterDto masterSeijidantaiEntity = new KanrenshaSeijidantaiMasterDto();
 
     /**
      * 関連者個人マスタEntityを取得する
      * 
      * @return 関連者個人マスタEntity
      */
-    public KanrenshaPersonMasterEntity getMasterPersonEntity() {
+    public KanrenshaPersonMasterDto getMasterPersonEntity() {
         return masterPersonEntity;
     }
 
@@ -39,7 +39,7 @@ public class GetKanrenshaMasterResultDto extends FrameworkMessageAndResultDto //
      * 
      * @param masterPersonEntity 関連者個人マスタEntity
      */
-    public void setMasterPersonEntity(final KanrenshaPersonMasterEntity masterPersonEntity) {
+    public void setMasterPersonEntity(final KanrenshaPersonMasterDto masterPersonEntity) {
         this.masterPersonEntity = masterPersonEntity;
     }
 
@@ -48,7 +48,7 @@ public class GetKanrenshaMasterResultDto extends FrameworkMessageAndResultDto //
      * 
      * @return 関連者企業団体マスタEntity
      */
-    public KanrenshaKigyouDtMasterEntity getMasterKigyouDtEntity() {
+    public KanrenshaKigyouDtMasterDto getMasterKigyouDtEntity() {
         return masterKigyouDtEntity;
     }
 
@@ -57,7 +57,7 @@ public class GetKanrenshaMasterResultDto extends FrameworkMessageAndResultDto //
      * 
      * @param masterKigyouDtEntity 関連者企業団体マスタEntity
      */
-    public void setMasterKigyouDtEntity(final KanrenshaKigyouDtMasterEntity masterKigyouDtEntity) {
+    public void setMasterKigyouDtEntity(final KanrenshaKigyouDtMasterDto masterKigyouDtEntity) {
         this.masterKigyouDtEntity = masterKigyouDtEntity;
     }
 
@@ -66,7 +66,7 @@ public class GetKanrenshaMasterResultDto extends FrameworkMessageAndResultDto //
      * 
      * @return 関連者政治団体マスタEntity
      */
-    public KanrenshaSeijidantaiMasterEntity getMasterSeijidantaiEntity() {
+    public KanrenshaSeijidantaiMasterDto getMasterSeijidantaiEntity() {
         return masterSeijidantaiEntity;
     }
 
@@ -75,7 +75,7 @@ public class GetKanrenshaMasterResultDto extends FrameworkMessageAndResultDto //
      * 
      * @param masterSeijidantaiEntity 関連者政治団体マスタEntity
      */
-    public void setMasterSeijidantaiEntity(final KanrenshaSeijidantaiMasterEntity masterSeijidantaiEntity) {
+    public void setMasterSeijidantaiEntity(final KanrenshaSeijidantaiMasterDto masterSeijidantaiEntity) {
         this.masterSeijidantaiEntity = masterSeijidantaiEntity;
     }
 

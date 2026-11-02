@@ -246,7 +246,7 @@ function recievePersonInterfaceEdit(editDto: KanrenshaPersonDtoInterface) {
         url = urlBack + "/user-kanrensha/add-person";
         editDto.isCombineUser = true; // 紐づけ処理あり
     } else {
-        url = urlBack + "/user-kanrensha/add-person";
+        url = urlBack + "/user-kanrensha/edit-person";
     }
 
     getAuthorizedPromiseArea().then(token => {

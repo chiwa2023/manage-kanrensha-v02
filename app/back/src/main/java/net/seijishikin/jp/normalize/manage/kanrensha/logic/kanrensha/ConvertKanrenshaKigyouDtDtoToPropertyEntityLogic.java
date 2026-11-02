@@ -7,7 +7,6 @@ import net.seijishikin.jp.normalize.common_tool.dto.kanrensha.KanrenshaKigyouDtD
 import net.seijishikin.jp.normalize.manage.kanrensha.constants.HoujinShubetsuConstants;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.KanrenshaKigyouDtPropertyEntity;
 
-
 /**
  * 関連者個人Dtoマスタ政治団体属性Entity変換Logic
  */
@@ -25,12 +24,17 @@ public class ConvertKanrenshaKigyouDtDtoToPropertyEntityLogic {
         KanrenshaKigyouDtPropertyEntity propertyEntity = new KanrenshaKigyouDtPropertyEntity();
         BeanUtils.copyProperties(kanrenshaKigyouDtDto, propertyEntity);
 
-        // 法人種別が外国会社401であれば外国籍フラグを立てる
-        propertyEntity.setIsForeign(HoujinShubetsuConstants.GAIKOKU_KAISHA.equals(propertyEntity.getHoujinSbts()));
+        if (HoujinShubetsuConstants.GAIKOKU_KAISHA.equals(propertyEntity.getHoujinSbts())) {
+            // 法人種別が外国会社401であれば入力を尊重する
+            propertyEntity.setIsForeign(kanrenshaKigyouDtDto.getIsForeign());
+        } else {
+            // その他の種別の場合は強制false(編集画面で制御しているが・・・)
+            propertyEntity.setIsForeign(false);
+        }
         propertyEntity.setKanrenshaName(kanrenshaKigyouDtDto.getInputOrgNameDto().getOrgName());
         propertyEntity.setOrgDelegateCode(kanrenshaKigyouDtDto.getOrgDelegateLeastDto().getPersonKanrenshaCode());
         propertyEntity.setOrgNameKana(kanrenshaKigyouDtDto.getInputOrgNameDto().getOrgNameKana());
-        
+
         propertyEntity.setKanrenshaKigyouDtPropertyId(kanrenshaKigyouDtDto.getPropertyId());
         propertyEntity.setKanrenshaKigyouDtId(kanrenshaKigyouDtDto.getMasterId());
 

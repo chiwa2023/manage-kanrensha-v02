@@ -130,7 +130,7 @@ function recieveSubmit() {
 
     <div class="one-line">
         <div class="left-area">
-            関連者コード
+            利用者コード
         </div>
         <div class="right-area">
             <input type="text" disabled="true" v-model="inputManagerDto.riyoushaManagerMasterCode">

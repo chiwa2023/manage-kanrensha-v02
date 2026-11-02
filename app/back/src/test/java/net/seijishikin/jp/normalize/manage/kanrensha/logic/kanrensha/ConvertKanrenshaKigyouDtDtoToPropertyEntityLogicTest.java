@@ -39,7 +39,7 @@ class ConvertKanrenshaKigyouDtDtoToPropertyEntityLogicTest {
                 propertyEntity.getOrgDelegateCode());
         assertEquals(kanrenshaKigyouDtDto.getInputOrgNameDto().getOrgNameKana(), propertyEntity.getOrgNameKana());
         assertEquals(kanrenshaKigyouDtDto.getHoujinSbts(), propertyEntity.getHoujinSbts());
-        assertEquals(true, propertyEntity.getIsForeign());
+        assertEquals(false, propertyEntity.getIsForeign());
     }
 
     private KanrenshaKigyouDtDto createKigyouDtDto() {
@@ -89,6 +89,7 @@ class ConvertKanrenshaKigyouDtDtoToPropertyEntityLogicTest {
         kanrenshaKigyouDtDto.setOrgDelegateLeastDto(orgDelegateLeastDto);
 
         kanrenshaKigyouDtDto.setHoujinSbts(HoujinShubetsuConstants.GAIKOKU_KAISHA); // 外国籍
+        kanrenshaKigyouDtDto.setIsForeign(false); // 5年以上にわたって上場しているので条件を外す
         kanrenshaKigyouDtDto.setIsShiten(true);
 
         // 共通Id類
