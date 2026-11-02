@@ -1,16 +1,18 @@
 ﻿<script setup lang="ts">
 import {
+    AccessTokenNotFoundError,
     getErrorMessage,
+    getLoginUser,
     MessageConstants, MessageView,
+    TokenRefreshError,
+    UserRoleConstants,
     type FrameworkMessageAndResultDtoInterface, type LeastUserDtoInterface
 } from 'seijishikin-jp-normalize_common-tool';
 import { onMounted, ref, type Ref } from 'vue';
 import RoutePathConstants from '../../../../routePathConstants';
-import { getLoginUser } from '../../utils/getLoginUser';
 import router from '../../../../router';
 import { useRoute } from 'vue-router';
 import getAuthorizedPromiseArea from '../../dto/login/getAuthorizedPromiseArea';
-import { AccessTokenNotFoundError, TokenRefreshError } from '../../dto/login/errors';
 import { GetTempRiyoushaOrgCombineCapsuleDto, type GetTempRiyoushaOrgCombineCapsuleDtoInterface } from '../../dto/riyousha/getTempRiyoushaOrgCombineCapsuleDto';
 import type { GetTempRiyoushaOrgCombineResultDtoInterface } from '../../dto/riyousha/getTempRiyoushaOrgCombineResultDto';
 import { AcceptRiyoushaCombineCapsuleDto, type AcceptRiyoushaCombineCapsuleDtoInterface } from '../../dto/riyousha/acceptRiyoushaCombineCapsuleDto';
@@ -18,9 +20,7 @@ import { RiyoushaCombineOrgTempEntity, type RiyoushaCombineOrgTempEntityInterfac
 import { useTaskPlan } from '../../stores/storeTaskPlan';
 import ManagerInfo from '../../common/user_info/ManagerInfo.vue';
 import { nextTransferPassStore } from '../../stores/nextTransferPass';
-import UserRoleConstants from '../../dto/user/userRoleConstants';
 import PartnerApiInfo from '../../common/user_info/PartnerApiInfo.vue';
-
 
 // よく使う定数
 const BLANK: string = "";

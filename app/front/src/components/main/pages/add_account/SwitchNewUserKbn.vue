@@ -3,10 +3,8 @@ import { ref, type Ref } from 'vue';
 import RoutePathConstants from '../../../../routePathConstants';
 import { NewComerDto, type NewComerDtoInterface } from '../../dto/add_account/newComerDto';
 import { useApi } from '../../utils/useApi';
-import type { LoginUserResultDtoInterface } from '../../dto/login/loginUserResultDto';
-import { MessageConstants, MessageView } from 'seijishikin-jp-normalize_common-tool';
+import { MessageConstants, MessageView, UserRoleConstants, type LoginUserResultDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import router from '../../../../router';
-import UserRoleConstants from '../../dto/user/userRoleConstants';
 import NewComerInfo from '../../common/user_info/NewComerInfo.vue';
 import { useUserInfoStore } from '../../stores/storeUserInfo';
 

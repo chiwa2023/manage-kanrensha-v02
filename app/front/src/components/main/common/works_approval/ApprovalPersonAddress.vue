@@ -1,12 +1,11 @@
 ﻿<script setup lang="ts">
 import { ref, type Ref } from 'vue';
-import { DtoEntityConstants, getErrorMessage, getErrorUniqueIdMessage, InputAddressDto, InputCompareAddress, InputDate, MessageConstants, MessageView, PagingControl, type FrameworkMessageAndResultDtoInterface, type InputAddressDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
+import { AccessTokenNotFoundError, DtoEntityConstants, getErrorMessage, getErrorUniqueIdMessage, InputAddressDto, InputCompareAddress, InputDate, MessageConstants, MessageView, PagingControl, TokenRefreshError, type FrameworkMessageAndResultDtoInterface, type InputAddressDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import { SearchWorksApprovalCapsuleDto, type SearchWorksApprovalCapsuleDtoInterfce } from '../../dto/works_approval/searchWorksApprovalCapsuleDto';
 import type { KanrenshaAddressBaseEntityInterface } from '../../entity/kanrenshaAddressBaseEntity';
 import { SearchWorksApprovalResultDto, type SearchWorksApprovalResultDtoInterface } from '../../dto/works_approval/searchWorksApprovalResultDto';
 import getAuthorizedPromiseArea from '../../dto/login/getAuthorizedPromiseArea';
 import RoutePathConstants from '../../../../routePathConstants';
-import { AccessTokenNotFoundError, TokenRefreshError } from '../../dto/login/errors';
 import { SaveWorksApprovalCapsuleDto, type SaveWorksApprovalCapsuleDtoInterface } from '../../dto/works_approval/saveWorksApprovalCapsuleDto';
 
 //props,emit

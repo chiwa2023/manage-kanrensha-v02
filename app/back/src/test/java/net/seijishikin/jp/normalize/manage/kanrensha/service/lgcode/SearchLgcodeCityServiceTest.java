@@ -14,8 +14,8 @@ import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
+import net.seijishikin.jp.normalize.common_tool.dto.address_rsdt.SearchAllCityLgcodeCapsuleDto;
 import net.seijishikin.jp.normalize.common_tool.dto.select_options.SelectOptionStringDto;
-import net.seijishikin.jp.normalize.manage.kanrensha.dto.address_rsdt.SearchAllCityLgcodeCapsuleDto;
 
 /**
  * SearchLgcodeCityService単体テスト

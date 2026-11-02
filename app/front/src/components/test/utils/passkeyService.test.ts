@@ -1,14 +1,19 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import {
-    isWebAuthnSupported,
-    getDefaultDeviceName,
-    registerPasskey,
-    authenticatePasskey,
-    fetchPasskeyList,
-    deletePasskey
-} from '../../main/utils/passkeyService';
 import * as simpleWebAuthn from '@simplewebauthn/browser';
 import * as authArea from '../../main/dto/login/getAuthorizedPromiseArea';
+import App from '../../../App.vue'
+import { createPinia } from 'pinia';
+import { createApp } from 'vue';
+import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
+
+// import { authenticatePasskey, deletePasskey, fetchPasskeyList, getDefaultDeviceName, isWebAuthnSupported, registerPasskey } from '../../main/utils/passkeyService';
+import { authenticatePasskey, deletePasskey, fetchPasskeyList, getDefaultDeviceName, isWebAuthnSupported, registerPasskey } from 'seijishikin-jp-normalize_common-tool';
+
+// pinia設定
+const app = createApp(App);
+const pinia = createPinia();
+pinia.use(piniaPluginPersistedstate)
+app.use(pinia);
 
 vi.mock('@simplewebauthn/browser', () => ({
     browserSupportsWebAuthn: vi.fn(),

@@ -1,10 +1,9 @@
 ﻿<script setup lang="ts">
 import { computed, onBeforeMount, ref, type ComputedRef, type Ref } from 'vue';
-import { FrameworkCapsuleDto, getErrorMessage, type FrameworkCapsuleDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
+import { AccessTokenNotFoundError, FrameworkCapsuleDto, getErrorMessage, TokenRefreshError, UserRoleConstants, type FrameworkCapsuleDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import { MessageConstants, MessageView } from 'seijishikin-jp-normalize_common-tool';
 import router from '../../../../router';
 import RoutePathConstants from '../../../../routePathConstants';
-import UserRoleConstants from '../../../main/dto/user/userRoleConstants';
 import AllMenu from '../../../main/common/menu/AllMenu.vue';
 import type { SelectOptionStringDtoInterface } from '../../../main/dto/select_options/selectOptionStringDto';
 import { createListRoleOptions } from '../../../main/common/menu/createListRoleOptions';
@@ -12,7 +11,6 @@ import PersonMenu from '../../../main/common/menu/PersonMenu.vue';
 import ShowTask from '../../../main/common/show_task/ShowTask.vue';
 import { notCompletedTaskStore } from '../../../main/stores/notCompletedTask';
 import getAuthorizedPromiseArea from '../../../main/dto/login/getAuthorizedPromiseArea';
-import { AccessTokenNotFoundError, TokenRefreshError } from '../../../main/dto/login/errors';
 import { TaskListForUserInfoResultDto, type TaskListForUserInfoResultDtoInterface } from '../../../main/dto/task_plan/taskListForUserInfoResultDto';
 import convertTaskToOption from '../../../main/dto/task_plan/convertTaskToOptions';
 

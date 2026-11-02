@@ -3,13 +3,11 @@ import { ref, type Ref } from 'vue';
 import router from '../../../../router';
 import RoutePathConstants from '../../../../routePathConstants';
 import type { FrameworkMessageAndResultDtoInterface, LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
-import { getLoginUser } from '../../utils/getLoginUser';
-import { getErrorMessage, MessageConstants, MessageView } from 'seijishikin-jp-normalize_common-tool';
+import { AccessTokenNotFoundError, getErrorMessage, getLoginUser, MessageConstants, MessageView, TokenRefreshError } from 'seijishikin-jp-normalize_common-tool';
 import { RefreshPasswordCapsuleDto, type RefreshPasswordCapsuleDtoInterface } from '../../dto/user/refreshPasswordCapsuleDto';
 import PasswordInput from '../../common/user/PasswordInput.vue';
 import AllUserInfo from '../../common/user_info/AllUserInfo.vue';
 import getAuthorizedPromiseArea from '../../dto/login/getAuthorizedPromiseArea';
-import { AccessTokenNotFoundError, TokenRefreshError } from '../../dto/login/errors';
 
 // back側アクセス
 const urlBack: string = RoutePathConstants.DOMAIN + RoutePathConstants.BASE_PATH;

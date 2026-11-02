@@ -17,7 +17,7 @@ import net.seijishikin.jp.normalize.common_tool.entity.AllTabeDataHistoryInterfa
  */
 @Entity
 @Table(name = "address_rsdt_template")
-public class AddressRsdtTemplateEntity implements Serializable,AllTabeDataHistoryInterface { // NOPMD DataClass
+public class AddressRsdtTemplateEntity implements Serializable, AllTabeDataHistoryInterface { // NOPMD DataClass
 
     /** Serialize id */
     private static final long serialVersionUID = 1L;

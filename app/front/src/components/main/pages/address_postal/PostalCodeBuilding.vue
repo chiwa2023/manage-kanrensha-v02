@@ -1,13 +1,11 @@
 ﻿<script setup lang="ts">
-import { FrameworkPagingDto, getErrorMessage, getErrorUniqueIdMessage, InputAddressDto, InputBuildingAddress, MessageConstants, MessageView, PagingControl, type FrameworkMessageAndResultDtoInterface, type FrameworkPagingDtoInterface, type InputAddressDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
+import { AccessTokenNotFoundError, FrameworkPagingDto, getErrorMessage, getErrorUniqueIdMessage, getLoginUser, InputAddressDto, InputBuildingAddress, MessageConstants, MessageView, PagingControl, TokenRefreshError, type FrameworkMessageAndResultDtoInterface, type FrameworkPagingDtoInterface, type InputAddressDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import { onMounted, ref, type Ref } from 'vue';
-import { getLoginUser } from '../../utils/getLoginUser';
 import { SearchPostalIllegularResultDto, type SearchPostalIllegularResultDtoInterface } from '../../dto/address_postal/searchPostalIllegularResultDto';
 import { GetDetailPostalIllegularResultDto, type GetDetailPostalIllegularResultDtoInterface } from '../../dto/address_postal/getDetailPostalIllegularResultDto';
 import ManagerInfo from '../../common/user_info/ManagerInfo.vue';
 import getAuthorizedPromiseArea from '../../dto/login/getAuthorizedPromiseArea.ts';
 import RoutePathConstants from '../../../../routePathConstants.ts';
-import { AccessTokenNotFoundError, TokenRefreshError } from '../../dto/login/errors.ts';
 import { GetDetailPostalIllegularCapsuleDto, type GetDetailPostalIllegularCapsuleDtoInterface } from '../../dto/address_postal/getDetailPostalIllegularCapsuleDto.ts';
 import { SavePostalIrregularCapsuleDto, type SavePostalIrregularCapsuleDtoInterface } from '../../dto/address_postal/savePostalIrregularCapsuleDto.ts';
 import { AddressPostalIrregularEntity, type AddressPostalIrregularEntityInterface } from '../../entity/addressPostalIrregularEntity.ts';

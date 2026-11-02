@@ -3,8 +3,7 @@ import { ref, type Ref } from 'vue';
 import ChangeWkTblAddress from '../../common/address_registory/ChangeWkTblAddress.vue';
 import DeleteWkTblAddress from '../../common/address_registory/DeleteWkTblAddress.vue';
 import ManagerInfo from '../../common/user_info/ManagerInfo.vue';
-import type { LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
-import { getLoginUser } from '../../utils/getLoginUser.ts';
+import { getLoginUser, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 
 
 // よく使う定数

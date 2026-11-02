@@ -2,15 +2,12 @@
 import { ref, type Ref } from 'vue';
 import RoutePathConstants from '../../../../routePathConstants';
 import router from '../../../../router';
-import { getErrorMessage, getErrorUniqueIdMessage, LeastUserDto, MessageConstants, MessageView, PagingControl, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
-import { getLoginUser } from '../../utils/getLoginUser';
+import { AccessTokenNotFoundError, getErrorMessage, getErrorUniqueIdMessage, getLoginUser, LeastUserDto, MessageConstants, MessageView, PagingControl, TokenRefreshError, UserRoleConstants, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import type { UserPersonEntityInterface } from '../../entity/userPersonEntity';
 import UserDetailEdit from '../../common/user/UserDetailEdit.vue';
 import { SearchUserCapsuleDto, type SearchUserCapsuleDtoInterface } from '../../dto/user/searchUserCapsuleDto';
-import UserRoleConstants from '../../dto/user/userRoleConstants';
 import AdminInfo from '../../common/user_info/AdminInfo.vue';
 import getAuthorizedPromiseArea from '../../dto/login/getAuthorizedPromiseArea';
-import { AccessTokenNotFoundError, TokenRefreshError } from '../../dto/login/errors';
 import type { SearchUserEntityResultDtoInterface } from '../../dto/user/searchUserEntityResultDto';
 import { DeleteUserCapsuleDto, type DeleteUserCapsuleDtoInterface } from '../../dto/user/deleteUserCapsuleDto';
 

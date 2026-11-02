@@ -5,19 +5,16 @@ import {
     MessageView,
     type FrameworkMessageAndResultDtoInterface,
     getErrorMessage,
-    getErrorUniqueIdMessage
+    getErrorUniqueIdMessage,
+    UserRoleConstants,
+    AccessTokenNotFoundError,
+    TokenRefreshError
 } from 'seijishikin-jp-normalize_common-tool';
 import { onBeforeMount, ref, type Ref, watch } from 'vue';
-// import mockGetOrgName from '../../../test/pages/regist_riyousha_org/mockGetOrgName';
-// import mockGetAddress from '../../../test/pages/regist_riyousha_org/mockGetAddress';
-// import mockGetAccess from '../../../test/pages/regist_riyousha_org/mockGetAccess';
-//import mockGetRiyoushaCOmbinePersonList from '../../../test/common/riyousha/mockGetRiyoushaCombinePersonList';
 import RoutePathConstants from '../../../../routePathConstants';
 import { RiyoushaOrgDto, type RiyoushaOrgDtoInterface } from '../../dto/riyousha/riyoushaOrgDto';
 import getAuthorizedPromiseArea from '../../dto/login/getAuthorizedPromiseArea';
-import { AccessTokenNotFoundError, TokenRefreshError } from '../../dto/login/errors';
 import { GetRiyoushaOrgByCodeCapsuleDto, type GetRiyoushaOrgByCodeCapsuleDtoInterface } from '../../dto/riyousha/getRiyoushaOrgByCodeCapsuleDto';
-import UserRoleConstants from '../../dto/user/userRoleConstants';
 import type { RiyoushaCombineOrgEntityInterface } from '../../entity/riyoushaCombineOrgEntity';
 import { RiyoushaCombinePersonCapsuleDto, type RiyoushaCombinePersonCapsuleDtoInterface } from '../../dto/riyousha/riyoushaCombinePersonCapsuleDto';
 

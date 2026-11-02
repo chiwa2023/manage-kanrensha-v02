@@ -10,10 +10,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import net.seijishikin.jp.normalize.manage.kanrensha.dto.postal.PostalCodeCapsuleDto;
-import net.seijishikin.jp.normalize.manage.kanrensha.dto.postal.PostalCodePostalResultDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.postal.SearchAddressPostalService;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.util.SaveStackTraceService;
+import net.seijishikin.jp.normalize.common_tool.dto.postal.PostalCodeCapsuleDto;
+import net.seijishikin.jp.normalize.common_tool.dto.postal.PostalCodePostalResultDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.controller.PathRouteConstants;
 
 /**

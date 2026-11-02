@@ -10,8 +10,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import org.springframework.http.HttpStatus;
+
+import net.seijishikin.jp.normalize.common_tool.dto.sns.SnsServiceOptionDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.controller.PathRouteConstants;
-import net.seijishikin.jp.normalize.manage.kanrensha.dto.sns.SnsServiceOptionDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.sns.GetSnsOptionListService;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.util.SaveStackTraceService;
 

@@ -16,10 +16,10 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import org.springframework.transaction.annotation.Transactional;
 
+import net.seijishikin.jp.normalize.common_tool.dto.kanrensha.KanrenshaSeijidantaiMasterDto;
+import net.seijishikin.jp.normalize.common_tool.dto.kanrensha.SearchKanrenshaSeijidantaiCapsuleDto;
+import net.seijishikin.jp.normalize.common_tool.dto.kanrensha.SearchKanrenshaSeijidantaiResultDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.constants.SeijidantaiDantaiKbnConstants;
-import net.seijishikin.jp.normalize.manage.kanrensha.dto.kanrensha.SearchKanrenshaSeijidantaiCapsuleDto;
-import net.seijishikin.jp.normalize.manage.kanrensha.dto.kanrensha.SearchKanrenshaSeijidantaiResultDto;
-import net.seijishikin.jp.normalize.manage.kanrensha.entity.KanrenshaSeijidantaiMasterEntity;
 
 /**
  * SearchKanrenshaSeijidantaiListService単体テスト
@@ -58,10 +58,10 @@ class SearchKanrenshaSeijidantaiListServiceTest {
         assertEquals(capsuleDto.getLimit(), resultDto.getLimit());
         assertEquals(0, resultDto.getPageNumber());
 
-        List<KanrenshaSeijidantaiMasterEntity> list = resultDto.getListMasterSeijidantai();
+        List<KanrenshaSeijidantaiMasterDto> list = resultDto.getListMasterSeijidantai();
         assertEquals(1, list.size());
 
-        KanrenshaSeijidantaiMasterEntity entity = list.get(0);
+        KanrenshaSeijidantaiMasterDto entity = list.get(0);
         assertEquals(323, entity.getKanrenshaSeijidantaiMasterId());
     }
 
@@ -93,25 +93,25 @@ class SearchKanrenshaSeijidantaiListServiceTest {
         assertEquals(capsuleDto.getLimit(), resultDto.getLimit());
         assertEquals(0, resultDto.getPageNumber());
 
-        List<KanrenshaSeijidantaiMasterEntity> list = resultDto.getListMasterSeijidantai();
+        List<KanrenshaSeijidantaiMasterDto> list = resultDto.getListMasterSeijidantai();
         assertEquals(6, list.size());
 
-        KanrenshaSeijidantaiMasterEntity entity0 = list.get(0);
+        KanrenshaSeijidantaiMasterDto entity0 = list.get(0);
         assertEquals(323, entity0.getKanrenshaSeijidantaiMasterId());
 
-        KanrenshaSeijidantaiMasterEntity entity1 = list.get(1);
+        KanrenshaSeijidantaiMasterDto entity1 = list.get(1);
         assertEquals(325, entity1.getKanrenshaSeijidantaiMasterId());
 
-        KanrenshaSeijidantaiMasterEntity entity2 = list.get(2);
+        KanrenshaSeijidantaiMasterDto entity2 = list.get(2);
         assertEquals(326, entity2.getKanrenshaSeijidantaiMasterId());
 
-        KanrenshaSeijidantaiMasterEntity entity3 = list.get(3);
+        KanrenshaSeijidantaiMasterDto entity3 = list.get(3);
         assertEquals(327, entity3.getKanrenshaSeijidantaiMasterId());
 
-        KanrenshaSeijidantaiMasterEntity entity4 = list.get(4);
+        KanrenshaSeijidantaiMasterDto entity4 = list.get(4);
         assertEquals(328, entity4.getKanrenshaSeijidantaiMasterId());
 
-        KanrenshaSeijidantaiMasterEntity entity5 = list.get(5);
+        KanrenshaSeijidantaiMasterDto entity5 = list.get(5);
         assertEquals(329, entity5.getKanrenshaSeijidantaiMasterId());
     }
 

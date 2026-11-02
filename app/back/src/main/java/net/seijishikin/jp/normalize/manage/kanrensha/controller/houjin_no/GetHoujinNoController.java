@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import net.seijishikin.jp.normalize.common_tool.dto.houjin_no.SearchHoujinNoCapsuleDto;
+import net.seijishikin.jp.normalize.common_tool.dto.houjin_no.SearchHoujinNoResultDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.controller.PathRouteConstants;
-import net.seijishikin.jp.normalize.manage.kanrensha.dto.houjin_no.SearchHoujinNoCapsuleDto;
-import net.seijishikin.jp.normalize.manage.kanrensha.dto.houjin_no.SearchHoujinNoResultDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.houjin_no.GetHoujinNoService;
 
 /**

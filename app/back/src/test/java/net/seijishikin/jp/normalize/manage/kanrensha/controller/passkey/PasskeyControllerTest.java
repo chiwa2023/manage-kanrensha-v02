@@ -25,12 +25,12 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
+import net.seijishikin.jp.normalize.common_tool.dto.passkey.PasskeyAuthenticationChallengeRequestDto;
+import net.seijishikin.jp.normalize.common_tool.dto.passkey.PasskeyAuthenticationChallengeResponseDto;
+import net.seijishikin.jp.normalize.common_tool.dto.passkey.PasskeyRegistrationChallengeDto;
+import net.seijishikin.jp.normalize.common_tool.dto.passkey.PasskeySummaryDto;
 import net.seijishikin.jp.normalize.common_tool.utils.GetObjectMapperWithTimeModuleUtil;
 import net.seijishikin.jp.normalize.manage.kanrensha.controller.PathRouteConstants;
-import net.seijishikin.jp.normalize.manage.kanrensha.dto.passkey.PasskeyAuthenticationChallengeRequestDto;
-import net.seijishikin.jp.normalize.manage.kanrensha.dto.passkey.PasskeyAuthenticationChallengeResponseDto;
-import net.seijishikin.jp.normalize.manage.kanrensha.dto.passkey.PasskeyRegistrationChallengeDto;
-import net.seijishikin.jp.normalize.manage.kanrensha.dto.passkey.PasskeySummaryDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.logic.user.GetLoginLeastUserLogic;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.passkey.PasskeyAuthenticationService;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.passkey.PasskeyManageService;

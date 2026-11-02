@@ -3,11 +3,10 @@ import { computed, ref, toRaw, type ComputedRef, type Ref } from 'vue';
 import { SearchWkTblPagingCapsuleDto, type SearchWkTblPagingCapsuleDtoInterface } from '../../dto/add_xml/searchWkTbPagingCapsuleDto';
 import { WkTblKanrenshaKigyouDtAddMinEntity, type WkTblKanrenshaKigyouDtAddMinEntityInterface } from '../../entity/wkTblKanrenshaKigyouDtAddMinEntity';
 import { UpdateWkTblMinKigyouDtCapsuleDto, type UpdateWkTblMinKigyouDtCapsuleDtoInterface } from '../../dto/wktbl_min/updateWkTblMinKigyouDtCapsuleDto';
-import { getErrorMessage, MessageConstants, MessageView, PagingControl, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
+import { AccessTokenNotFoundError, getErrorMessage, MessageConstants, MessageView, PagingControl, TokenRefreshError, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import { SearchWkTblMinKigyouDtPagingResultDto, type SearchWkTblMinKigyouDtPagingResultDtoInterface } from '../../dto/wktbl_min/searchWkTblMinKigyouDtPagingResultDto';
 import getAuthorizedPromiseArea from '../../dto/login/getAuthorizedPromiseArea';
 import RoutePathConstants from '../../../../routePathConstants';
-import { AccessTokenNotFoundError, TokenRefreshError } from '../../dto/login/errors';
 import type { UpdateWkTblMinKigyouDtResultDtoInterface } from '../../dto/wktbl_min/updateWkTblMinKigyouDtResultDto';
 
 //props,emit

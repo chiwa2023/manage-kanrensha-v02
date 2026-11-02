@@ -1,8 +1,7 @@
 ﻿<script setup lang="ts">
 import MenuKanrenshaContent from '../../common/menu/MenuKanrenshaContent.vue';
-import { type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
+import { getLoginUser, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import { computed, ref, type ComputedRef, type Ref } from 'vue';
-import { getLoginUser } from '../../utils/getLoginUser';
 import KanrenshaInfo from '../../common/user_info/KanrenshaInfo.vue';
 
 // よく使う定数

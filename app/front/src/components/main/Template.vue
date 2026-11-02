@@ -2,8 +2,8 @@
 import { ref, type Ref } from 'vue';
 import {
     InputAccessDto, InputAddressDto, InputOrgNameDto, InputPersonNameDto,
-    InputShokugyouDto, MessageConstants, MessageView, MockViewInputAddress, MockViewInputAddressShort, PagingControl,
-    SearchHoujinNo, ViewInputAccess, ViewInputOrgName, ViewInputPersonName, ViewInputShokugyou,
+    InputShokugyouDto, MessageConstants, MessageView,  PagingControl,
+    SearchHoujinNo, ViewInputAccess, ViewInputAddress, ViewInputAddressShort, ViewInputOrgName, ViewInputPersonName, ViewInputShokugyou,
     type HoujinNoDtoInterface,
     type InputAccessDtoInterface, type InputAddressDtoInterface,
     type InputOrgNameDtoInterface, type InputPersonNameDtoInterface,
@@ -347,10 +347,10 @@ const houjinAppId: string = import.meta.env.VITE_HOUJIN_NO_API;
         <ViewInputPersonName :edit-dto="inputPersonNameDto"></ViewInputPersonName>
 
         <!-- 住所 -->
-        <MockViewInputAddress :edit-dto="inputAddressDto"></MockViewInputAddress>
+        <ViewInputAddress :edit-dto="inputAddressDto"></ViewInputAddress>
 
         <!-- 住所短縮 -->
-        <MockViewInputAddressShort :edit-dto="inputAddressDtoShort"></MockViewInputAddressShort>
+        <ViewInputAddressShort :edit-dto="inputAddressDtoShort"></ViewInputAddressShort>
 
         <!-- 連絡先 -->
         <ViewInputAccess :edit-dto="inputAccessDto" :long-token="longToken"></ViewInputAccess>

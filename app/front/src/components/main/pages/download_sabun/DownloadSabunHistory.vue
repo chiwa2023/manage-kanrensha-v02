@@ -1,11 +1,10 @@
 ﻿<script setup lang="ts">
 import { onMounted, ref, type Ref } from 'vue';
 import { DumpRecordEntity, type DumpRecordEntityInterface } from '../../entity/dumpRecordEntity';
-import { convertDateText, convertDatetimeText, getErrorUniqueIdMessage, MessageConstants, MessageView, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
+import { convertDateText, convertDatetimeText, getErrorUniqueIdMessage, getLoginUser, MessageConstants, MessageView, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import RoutePathConstants from '../../../../routePathConstants';
 import { GetDumpRecordCapsuleDto, type GetDumpRecordCapsuleDtoInterrface } from '../../dto/z_force_dump/getDumpRecordCapsuleDto';
 import type { GetDumpRecordResultDtoInterface } from '../../dto/z_force_dump/getDumpRecordResultDto';
-import { getLoginUser } from '../../utils/getLoginUser';
 import ManagerInfo from '../../common/user_info/ManagerInfo.vue';
 
 const BLANK: string = "";

@@ -1,11 +1,9 @@
 <script setup lang="ts">
 import { onBeforeMount, ref, type Ref } from 'vue';
 import router from '../../../../router';
-import { FrameworkCapsuleDto, getErrorMessage, MessageConstants, MessageView, type FrameworkCapsuleDtoInterface, type FrameworkMessageAndResultDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
-import { getLoginUser } from '../../utils/getLoginUser';
+import { AccessTokenNotFoundError, FrameworkCapsuleDto, getErrorMessage, getLoginUser, MessageConstants, MessageView, TokenRefreshError, type FrameworkCapsuleDtoInterface, type FrameworkMessageAndResultDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import getAuthorizedPromiseArea from '../../dto/login/getAuthorizedPromiseArea';
 import RoutePathConstants from '../../../../routePathConstants';
-import { AccessTokenNotFoundError, TokenRefreshError } from '../../dto/login/errors';
 import { GetPromoteAdminResultDto, type GetPromoteAdminResultDtoInterface } from '../../dto/user/getPromoteAdminResultDto';
 import { AcceptUserAdminCapsuleDto, type AcceptUserAdminCapsuleDtoInterface } from '../../dto/user/acceptUserAdminCapsuleDto';
 import { nextTransferPassStore } from '../../stores/nextTransferPass';

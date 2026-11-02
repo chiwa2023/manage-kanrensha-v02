@@ -30,11 +30,10 @@ import com.webauthn4j.data.attestation.authenticator.AuthenticatorData;
 import com.webauthn4j.data.attestation.authenticator.COSEKey;
 import com.webauthn4j.data.extension.authenticator.RegistrationExtensionAuthenticatorOutput;
 import tools.jackson.dataformat.cbor.CBORMapper;
-
+import net.seijishikin.jp.normalize.common_tool.dto.passkey.PasskeyRegistrationChallengeDto;
+import net.seijishikin.jp.normalize.common_tool.dto.passkey.PasskeyRegistrationResultDto;
+import net.seijishikin.jp.normalize.common_tool.dto.passkey.PasskeyRegistrationVerifyRequestDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.config.WebAuthnConfig;
-import net.seijishikin.jp.normalize.manage.kanrensha.dto.passkey.PasskeyRegistrationChallengeDto;
-import net.seijishikin.jp.normalize.manage.kanrensha.dto.passkey.PasskeyRegistrationResultDto;
-import net.seijishikin.jp.normalize.manage.kanrensha.dto.passkey.PasskeyRegistrationVerifyRequestDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.UserPasskeyCredentialEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.repository.UserPasskeyCredentialRepository;
 

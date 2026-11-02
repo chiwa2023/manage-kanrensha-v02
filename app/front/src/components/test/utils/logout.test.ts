@@ -1,12 +1,11 @@
 import { describe, it, expect } from 'vitest';
-import { logout } from '../../main/utils/logout';
 import App from '../../../App.vue'
 import { createPinia } from 'pinia';
 import { createApp } from 'vue';
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 import { useUserInfoStore } from '../../main/stores/storeUserInfo';
 import { JwtTokenDto, type JwtTokenDtoInterface } from '../../main/dto/login/jwtTokenDto';
-import { LeastUserDto, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
+import { LeastUserDto, logout, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 
 // pinia設定
 const app = createApp(App);

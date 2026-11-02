@@ -16,7 +16,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import net.seijishikin.jp.normalize.manage.kanrensha.dto.passkey.PasskeySummaryDto;
+import net.seijishikin.jp.normalize.common_tool.dto.passkey.PasskeySummaryDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.UserPasskeyCredentialEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.repository.UserPasskeyCredentialRepository;
 

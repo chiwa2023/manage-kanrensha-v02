@@ -30,11 +30,11 @@ import com.webauthn4j.data.attestation.authenticator.COSEKey;
 import tools.jackson.dataformat.cbor.CBORMapper;
 
 import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
+import net.seijishikin.jp.normalize.common_tool.dto.passkey.PasskeyAuthenticationChallengeResponseDto;
+import net.seijishikin.jp.normalize.common_tool.dto.passkey.PasskeyAuthenticationVerifyRequestDto;
+import net.seijishikin.jp.normalize.common_tool.dto.sequrity.JwtTokenDto;
+import net.seijishikin.jp.normalize.common_tool.dto.sequrity.LoginUserResultDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.config.WebAuthnConfig;
-import net.seijishikin.jp.normalize.manage.kanrensha.dto.passkey.PasskeyAuthenticationChallengeResponseDto;
-import net.seijishikin.jp.normalize.manage.kanrensha.dto.passkey.PasskeyAuthenticationVerifyRequestDto;
-import net.seijishikin.jp.normalize.manage.kanrensha.dto.sequrity.JwtTokenDto;
-import net.seijishikin.jp.normalize.manage.kanrensha.dto.sequrity.LoginUserResultDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.UserPasskeyCredentialEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.repository.UserPasskeyCredentialRepository;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.passkey.PreAuthTokenService.PreAuthSession;

@@ -1,12 +1,10 @@
 ﻿<script setup lang="ts">
-import { convertDateText, getErrorMessage, InputPref, MessageConstants, MessageView, PagingControl, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
+import { AccessTokenNotFoundError, convertDateText, getErrorMessage, getLoginUser, InputPref, MessageConstants, MessageView, PagingControl, TokenRefreshError, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import { ref, type Ref } from 'vue';
-import { getLoginUser } from '../../utils/getLoginUser';
 import { SearchLgCodeCapsuleDto, type SearchLgCodeCapsuleDtoInterface } from '../../dto/address_registory/searchLgCodeCapsuleDto';
 import { SearchLgCodeResultDto, type SearchLgCodeResultDtoInterface } from '../../dto/address_registory/searchLgCodeResultDto';
 import getAuthorizedPromiseArea from '../../dto/login/getAuthorizedPromiseArea';
 import RoutePathConstants from '../../../../routePathConstants';
-import { AccessTokenNotFoundError, TokenRefreshError } from '../../dto/login/errors';
 import type { SelectOptionStringDtoInterface } from '../../dto/select_options/selectOptionStringDto';
 
 

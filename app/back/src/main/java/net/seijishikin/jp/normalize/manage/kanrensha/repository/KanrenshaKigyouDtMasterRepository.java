@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
+import net.seijishikin.jp.normalize.common_tool.dto.kanrensha.KanrenshaKigyouDtMasterDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.KanrenshaKigyouDtMasterEntity;
 
 /**
@@ -92,7 +93,7 @@ public interface KanrenshaKigyouDtMasterRepository extends JpaRepository<Kanrens
             + " WHERE houjin_no LIKE ?1 AND kanrensha_name LIKE ?2 " //
             + "     AND all_address LIKE ?3 AND kigyou_dt_delegate LIKE ?4 AND is_latest=1" //
             , nativeQuery = true)
-    List<KanrenshaKigyouDtMasterEntity> findSearchCondition(String houjinNo, String name, // NOPMD CleanerAPI
+    List<KanrenshaKigyouDtMasterDto> findSearchCondition(String houjinNo, String name, // NOPMD CleanerAPI
             String address, String delegate, Pageable pageable);
 
     /**

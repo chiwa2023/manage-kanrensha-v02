@@ -1,11 +1,10 @@
 ﻿<script setup lang="ts">
 import { onMounted, ref, watch, type Ref } from 'vue';
-import { getErrorMessage, MessageConstants, MessageView, ViewInputAccess, ViewInputAddress, ViewInputPersonName, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
+import { AccessTokenNotFoundError, getErrorMessage, MessageConstants, MessageView, TokenRefreshError, ViewInputAccess, ViewInputAddress, ViewInputPersonName, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import { RiyoushaManagerDto, type RiyoushaManagerDtoInterface } from '../../dto/riyousha/riyoushaManagerDto';
 import type { RiyoushaManagerMasterEntityInterface } from '../../entity/riyoushaManagerMasterEntity';
 import getAuthorizedPromiseArea from '../../dto/login/getAuthorizedPromiseArea';
 import RoutePathConstants from '../../../../routePathConstants';
-import { AccessTokenNotFoundError, TokenRefreshError } from '../../dto/login/errors';
 import { GetRiyoushaManagerByEntityCapsuleDto, type GetRiyoushaManagerByEntityCapsuleDtoInterface } from '../../dto/riyousha/getRiyoushaManagerByEntityCapsuleDto';
 
 // props,emit

@@ -1,16 +1,12 @@
 ﻿<script setup lang="ts">
-import { MessageConstants, MessageView, useUserInfoStoreCommon, LeastUserDto, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
+import { MessageConstants, MessageView, useUserInfoStoreCommon, LeastUserDto, type LeastUserDtoInterface, UserRoleConstants, isWebAuthnSupported, authenticatePasskey, type LoginUserResultDtoInterface, type LoginUserCapsuleDtoInterface, LoginUserCapsuleDto } from 'seijishikin-jp-normalize_common-tool';
 import RoutePathConstants from '../../../routePathConstants';
 import { onBeforeMount, ref, type Ref } from 'vue';
-import { LoginUserCapsuleDto, type LoginUserCapsuleDtoInterface } from '../dto/login/loginUserCapsuleDto';
-import type { LoginUserResultDtoInterface } from '../dto/login/loginUserResultDto';
 import router from '../../../router';
 import { useUserInfoStore } from '../stores/storeUserInfo';
 import { rememberMeStore } from '../../main/stores/remeberMe';
-import UserRoleConstants from '../dto/user/userRoleConstants';
 import { nextTransferPassStore } from '../stores/nextTransferPass';
 import { getActivePinia } from 'pinia';
-import { isWebAuthnSupported, authenticatePasskey } from '../utils/passkeyService';
 
 // back側アクセス
 const urlBack: string = RoutePathConstants.DOMAIN + RoutePathConstants.BASE_PATH;

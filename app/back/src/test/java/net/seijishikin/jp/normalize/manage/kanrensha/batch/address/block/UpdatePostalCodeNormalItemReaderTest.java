@@ -1,6 +1,7 @@
 package net.seijishikin.jp.normalize.manage.kanrensha.batch.address.block;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -52,7 +53,7 @@ class UpdatePostalCodeNormalItemReaderTest {
         assertEquals(856, entity1.getAddressPostalId());
 
         AddressPostalEntity entity2 = updatePostalCodeNormalItemReader.read();
-        assertEquals(null, entity2);
+        assertNull(entity2);
     }
 
     private StepExecution getStepExecution() {

@@ -1,8 +1,7 @@
 ﻿<script setup lang="ts">
 import MenuRiyoushaPartnerApiContent from '../../common/menu/MenuRiyoushaPartnerApiContent.vue';
-import { type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
+import { getLoginUser, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import { computed, ref, type ComputedRef, type Ref } from 'vue';
-import { getLoginUser } from '../../utils/getLoginUser';
 import PartnerApiInfo from '../../common/user_info/PartnerApiInfo.vue';
 
 // よく使う定数

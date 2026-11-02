@@ -1,17 +1,8 @@
 <script setup lang="ts">
 import { onBeforeMount, ref, type Ref } from 'vue';
 import router from '../../../../router';
-import { getLoginUser } from '../../utils/getLoginUser';
 import AllUserInfo from '../../common/user_info/AllUserInfo.vue';
-import { MessageConstants, MessageView, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
-import {
-    isWebAuthnSupported,
-    getDefaultDeviceName,
-    registerPasskey,
-    fetchPasskeyList,
-    deletePasskey
-} from '../../utils/passkeyService';
-import type { PasskeySummaryDto } from '../../dto/passkey/passkeySummaryDto';
+import { deletePasskey, fetchPasskeyList, getDefaultDeviceName, getLoginUser, isWebAuthnSupported, MessageConstants, MessageView, registerPasskey, type LeastUserDtoInterface, type PasskeySummaryDto } from 'seijishikin-jp-normalize_common-tool';
 
 // 定数
 const MESS_PAGE_NAME = 'パスキー管理';

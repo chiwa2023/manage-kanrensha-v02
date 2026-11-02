@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
+import net.seijishikin.jp.normalize.common_tool.dto.kanrensha.KanrenshaPersonMasterDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.KanrenshaPersonMasterEntity;
 
 /**
@@ -90,7 +91,7 @@ public interface KanrenshaPersonMasterRepository extends JpaRepository<Kanrensha
             + " WHERE kanrensha_name LIKE ?1 AND all_address LIKE ?2 "
             + "    AND person_shokugyou LIKE ?3 AND is_latest=1" //
             , nativeQuery = true)
-    List<KanrenshaPersonMasterEntity> findSearchCondition(String name, String address, String shokugyou,
+    List<KanrenshaPersonMasterDto> findSearchCondition(String name, String address, String shokugyou,
             Pageable pageable);
 
     /**

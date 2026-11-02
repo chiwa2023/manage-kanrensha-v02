@@ -1,17 +1,14 @@
 ﻿<script setup lang="ts">
 import { computed, onBeforeMount, ref, type ComputedRef, type Ref } from 'vue';
-import { getLoginUser } from '../../utils/getLoginUser';
 import RiyoushaOrgEdit from '../../common/riyousha_edit/RiyoushaOrgEdit.vue';
 import { type SelectOptionNumberDtoInterface } from '../../dto/select_options/selectOptionNumberDto';
-import { FrameworkCapsuleDto, getErrorMessage, MessageConstants, MessageView, type FrameworkCapsuleDtoInterface, type FrameworkMessageAndResultDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
+import { AccessTokenNotFoundError, FrameworkCapsuleDto, getErrorMessage, getLoginUser, MessageConstants, MessageView, TokenRefreshError, UserRoleConstants, type FrameworkCapsuleDtoInterface, type FrameworkMessageAndResultDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import ManagerInfo from '../../common/user_info/ManagerInfo.vue';
 import type { RiyoushaOrgDtoInterface } from '../../dto/riyousha/riyoushaOrgDto';
 import getAuthorizedPromiseArea from '../../dto/login/getAuthorizedPromiseArea';
 import RoutePathConstants from '../../../../routePathConstants';
-import { AccessTokenNotFoundError, TokenRefreshError } from '../../dto/login/errors';
 import { SaveRiyoushaOrgCapsuleDto, type SaveRiyoushaOrgCapsuleDtoInterface } from '../../dto/riyousha/saveRiyoushaOrgCapsuleDto';
 import { useRoute } from 'vue-router';
-import UserRoleConstants from '../../dto/user/userRoleConstants';
 import PartnerApiInfo from '../../common/user_info/PartnerApiInfo.vue';
 import { RiyoushaCombineOrgEntity, type RiyoushaCombineOrgEntityInterface } from '../../entity/riyoushaCombineOrgEntity';
 import { GetRiyoushaMasterCapsuleDto, type GetRiyoushaMasterCapsuleDtoInterface } from '../../dto/riyousha/getRiyoushaMasterCapsuleDto';

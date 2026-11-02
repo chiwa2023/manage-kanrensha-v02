@@ -4,10 +4,9 @@ import { SearchWkTblPagingCapsuleDto, type SearchWkTblPagingCapsuleDtoInterface 
 import { SearchWkTblHistoryPersonPagingResultDto, type SearchWkTblHistoryPersonPagingResultDtoInterface } from '../../dto/wktbl_history/searchWkTblHistoryPersonPagingResultDto';
 import { WkTblKanrenshaPersonHistoryEntity, type WkTblKanrenshaPersonHistoryEntityInterface } from '../../entity/wkTblKanrenshaPersonHistoryEntity';
 import { UpdateWkTblHistoryPersonCapsuleDto, type UpdateWkTblHistoryPersonCapsuleDtoInterface } from '../../dto/wktbl_history/updateWkTblHistoryPersonCapsuleDto';
-import { getErrorMessage, MessageConstants, MessageView, PagingControl, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
+import { AccessTokenNotFoundError, getErrorMessage, MessageConstants, MessageView, PagingControl, TokenRefreshError, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import RoutePathConstants from '../../../../routePathConstants';
 import getAuthorizedPromiseArea from '../../dto/login/getAuthorizedPromiseArea';
-import { AccessTokenNotFoundError, TokenRefreshError } from '../../dto/login/errors';
 import type { UpdateWkTblHistoryPersonResultDtoInterface } from '../../dto/wktbl_history/updateWkTblHistoryPersonResultDto';
 
 //props,emit

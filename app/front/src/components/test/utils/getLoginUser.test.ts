@@ -1,8 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import LoginConstants from '../../main/dto/user/loginConstants';
-import { LeastUserDto, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
-import { getLoginUser } from '../../main/utils/getLoginUser';
-import UserRoleConstants from '../../main/dto/user/userRoleConstants';
+import { getLoginUser, LeastUserDto, UserRoleConstants, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import { SelectOptionStringDto, type SelectOptionStringDtoInterface } from '../../main/dto/select_options/selectOptionStringDto';
 
 describe('getLoginUser', () => {

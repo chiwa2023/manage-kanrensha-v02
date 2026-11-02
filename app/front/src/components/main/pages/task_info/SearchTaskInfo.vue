@@ -1,14 +1,12 @@
 ﻿<script setup lang="ts">
-import { getErrorMessage, getErrorUniqueIdMessage, MessageConstants, MessageView, PagingControl, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
+import { AccessTokenNotFoundError, getErrorMessage, getErrorUniqueIdMessage, getLoginUser, MessageConstants, MessageView, PagingControl, TokenRefreshError, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import { ref, toRaw, type Ref } from 'vue';
 import RoutePathConstants from '../../../../routePathConstants';
 import EditTaskInfo from '../../common/task_info/EditTaskInfo.vue';
-import { getLoginUser } from '../../utils/getLoginUser';
 import AdminInfo from '../../common/user_info/AdminInfo.vue';
 import { SearchTaskInfoCapsuleDto, type SearchTaskInfoCapsuleDtoInterface } from '../../dto/task_info/searchTaskInfoCapsuleDto';
 import { SearchTaskInfoResultDto, type SearchTaskInfoResultDtoInterface } from '../../dto/task_info/searchTaskInfoResultDto';
 import getAuthorizedPromiseArea from '../../dto/login/getAuthorizedPromiseArea';
-import { AccessTokenNotFoundError, TokenRefreshError } from '../../dto/login/errors';
 import { TaskInfoEntity, type TaskInfoEntityInterface } from '../../entity/taskInfoEntity';
 
 // よく使う定数

@@ -1,14 +1,12 @@
 ﻿<script setup lang="ts">
-import { getErrorMessage, MessageConstants, MessageView, type FrameworkMessageAndResultDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
+import { AccessTokenNotFoundError, getErrorMessage, getLoginUser, MessageConstants, MessageView, TokenRefreshError, type FrameworkMessageAndResultDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import { ref, type Ref } from 'vue';
-import { getLoginUser } from '../../utils/getLoginUser';
 import type { StorageFileDtoInterface } from '../../dto/storage_file/storageFileDto';
 import ManagerInfo from '../../common/user_info/ManagerInfo.vue';
 import ReadCsv from '../../common/read_csv/ReadCsv.vue';
 import { PrepareSabunWktblPostalCodeCapsuleDto, type PrepareSabunWktblPostalCodeCapsuleDtoInterface } from '../../dto/address_postal/prepareSabunWktblPostalCodeCapsuleDto.ts';
 import getAuthorizedPromiseArea from '../../dto/login/getAuthorizedPromiseArea.ts';
 import RoutePathConstants from '../../../../routePathConstants.ts';
-import { AccessTokenNotFoundError, TokenRefreshError } from '../../dto/login/errors.ts';
 // import ManagerInfo from '../../common/user_info/ManagerInfo.vue';
 
 // よく使う定数

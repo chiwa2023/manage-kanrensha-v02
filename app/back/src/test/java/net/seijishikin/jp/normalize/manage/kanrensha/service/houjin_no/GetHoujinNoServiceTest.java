@@ -16,9 +16,10 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
-import net.seijishikin.jp.normalize.manage.kanrensha.dto.houjin_no.HoujinNoDto;
-import net.seijishikin.jp.normalize.manage.kanrensha.dto.houjin_no.SearchHoujinNoCapsuleDto;
-import net.seijishikin.jp.normalize.manage.kanrensha.dto.houjin_no.SearchHoujinNoResultDto;
+import net.seijishikin.jp.normalize.common_tool.dto.houjin_no.HoujinNoDto;
+import net.seijishikin.jp.normalize.common_tool.dto.houjin_no.SearchHoujinNoCapsuleDto;
+import net.seijishikin.jp.normalize.common_tool.dto.houjin_no.SearchHoujinNoResultDto;
+
 
 /**
  * GetHoujinNoService単体テスト

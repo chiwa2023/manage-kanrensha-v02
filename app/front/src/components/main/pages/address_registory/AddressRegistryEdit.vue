@@ -1,10 +1,7 @@
 ﻿<script setup lang="ts">
-import { DtoEntityConstants, getErrorMessage, getErrorUniqueIdMessage, InputDate, InputDateAndNull, InputLgcode, MessageConstants, MessageView, PagingControl, type FrameworkMessageAndResultDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
+import { AccessTokenNotFoundError, AddressRsdtTemplateEntity, DtoEntityConstants, getErrorMessage, getErrorUniqueIdMessage, getLoginUser, InputDate, InputDateAndNull, InputLgcode, MessageConstants, MessageView, PagingControl, TokenRefreshError, type AddressRsdtTemplateEntityInterface, type FrameworkMessageAndResultDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import { ref, type Ref } from 'vue';
-import { getLoginUser } from '../../utils/getLoginUser';
-import { AddressRsdtTemplateEntity, type AddressRsdtTemplateEntityInterface } from '../../entity/addressRsdtTemplateEntity';
 import ManagerInfo from '../../common/user_info/ManagerInfo.vue';
-import { AccessTokenNotFoundError, TokenRefreshError } from '../../dto/login/errors.ts';
 import getAuthorizedPromiseArea from '../../dto/login/getAuthorizedPromiseArea.ts';
 import RoutePathConstants from '../../../../routePathConstants.ts';
 import { SearchAddressRsdtCapsuleDto, type SearchAddressRsdtCapsuleDtoInterface } from '../../dto/address_registory/searchAddressRsdtCapsuleDto.ts';

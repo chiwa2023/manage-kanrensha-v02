@@ -1,12 +1,10 @@
 ﻿<script setup lang="ts">
-import { getErrorMessage, InputDate, MessageConstants, MessageView, type FrameworkMessageAndResultDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
+import { AccessTokenNotFoundError, getErrorMessage, getLoginUser, InputDate, MessageConstants, MessageView, TokenRefreshError, type FrameworkMessageAndResultDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import router from '../../../../router';
 import { ref, type Ref } from 'vue';
 import { NotifyPartnerApiLimitCapsuleDto, type NotifyPartnerApiLimitCapsuleDtoInterface } from '../../dto/user/notifyPartnerApiLimitCapsuleDto';
 import RoutePathConstants from '../../../../routePathConstants';
-import { getLoginUser } from '../../utils/getLoginUser';
 import getAuthorizedPromiseArea from '../../dto/login/getAuthorizedPromiseArea';
-import { AccessTokenNotFoundError, TokenRefreshError } from '../../dto/login/errors';
 import AdminInfo from '../../common/user_info/AdminInfo.vue';
 
 

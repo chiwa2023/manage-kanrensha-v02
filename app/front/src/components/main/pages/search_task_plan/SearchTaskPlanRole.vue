@@ -1,8 +1,7 @@
 ﻿<script setup lang="ts">
 import { ref, type Ref } from 'vue';
 import ShowTaskRole from '../../common/show_task/ShowTaskRole.vue';
-import type { LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
-import { getLoginUser } from '../../utils/getLoginUser.ts';
+import { getLoginUser, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import router from '../../../../router.ts';
 import ManagerInfo from '../../common/user_info/ManagerInfo.vue';
 

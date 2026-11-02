@@ -1,13 +1,12 @@
 ﻿<script setup lang="ts">
 import { computed, ref, toRaw, type ComputedRef, type Ref } from 'vue';
-import { getErrorMessage, MessageConstants, MessageView, PagingControl, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
+import { AccessTokenNotFoundError, getErrorMessage, MessageConstants, MessageView, PagingControl, TokenRefreshError, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import { SearchWkTblPagingCapsuleDto, type SearchWkTblPagingCapsuleDtoInterface } from '../../dto/add_xml/searchWkTbPagingCapsuleDto';
 import { SearchWkTblStdPersonPagingResultDto, type SearchWkTblStdPersonPagingResultDtoInterface } from '../../dto/wktbl_std/searchWkTblStdPersonPagingResultDto';
 import { WkTblKanrenshaPersonMasterEntity, type WkTblKanrenshaPersonMasterEntityInterface } from '../../entity/wkTblKanrenshaPersonMasterEntity';
 import { UpdateWkTblStdPersonCapsuleDto, type UpdateWkTblStdPersonCapsuleDtoInterface } from '../../dto/wktbl_std/updateWkTblStdPersonCapsuleDto';
 import RoutePathConstants from '../../../../routePathConstants';
 import getAuthorizedPromiseArea from '../../dto/login/getAuthorizedPromiseArea';
-import { AccessTokenNotFoundError, TokenRefreshError } from '../../dto/login/errors';
 import type { UpdateWkTblStdPersonResultDtoInterface } from '../../dto/wktbl_std/updateWkTblStdPersonResultDto';
 
 //props,emit

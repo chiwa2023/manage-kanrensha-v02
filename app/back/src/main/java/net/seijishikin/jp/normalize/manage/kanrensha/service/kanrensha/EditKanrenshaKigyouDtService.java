@@ -6,7 +6,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import net.seijishikin.jp.normalize.manage.kanrensha.dto.kanrensha.SaveKanrenshaKigyouDtCapsuleDto;
+import net.seijishikin.jp.normalize.common_tool.dto.kanrensha.SaveKanrenshaKigyouDtCapsuleDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.logic.kanrensha.EditMasterKigyouDtAccessLogic;
 import net.seijishikin.jp.normalize.manage.kanrensha.logic.kanrensha.EditMasterKigyouDtAddressLogic;
 import net.seijishikin.jp.normalize.manage.kanrensha.logic.kanrensha.EditMasterKigyouDtMasterLogic;

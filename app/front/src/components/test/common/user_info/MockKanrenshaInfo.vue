@@ -1,10 +1,9 @@
 ﻿<script setup lang="ts">
 import { ref, type Ref } from 'vue';
-import { type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
+import { UserRoleConstants, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import { MessageConstants, MessageView } from 'seijishikin-jp-normalize_common-tool';
 import router from '../../../../router';
 import RoutePathConstants from '../../../../routePathConstants';
-import UserRoleConstants from '../../../main/dto/user/userRoleConstants';
 import AllMenu from '../../../main/common/menu/AllMenu.vue';
 import type { SelectOptionStringDtoInterface } from '../../../main/dto/select_options/selectOptionStringDto';
 import { createListRoleOptions } from '../../../main/common/menu/createListRoleOptions';

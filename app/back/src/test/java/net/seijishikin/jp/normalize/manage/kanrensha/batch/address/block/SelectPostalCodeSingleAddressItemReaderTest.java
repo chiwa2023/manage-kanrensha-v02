@@ -1,6 +1,7 @@
 package net.seijishikin.jp.normalize.manage.kanrensha.batch.address.block;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -50,7 +51,7 @@ class SelectPostalCodeSingleAddressItemReaderTest {
         assertEquals("八幡町（高岡）", entity1.getAddressOrg());
 
         AddressPostalIrregularEntity entity2 = selectPostalCodeSingleAddressItemReader.read();
-        assertEquals(null, entity2);
+        assertNull(entity2);
     }
 
     private StepExecution getStepExecution() {

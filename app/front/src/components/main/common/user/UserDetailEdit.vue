@@ -1,12 +1,10 @@
 <script setup lang="ts">
 import { onBeforeMount, ref, type Ref } from 'vue';
-import UserRoleConstants from '../../dto/user/userRoleConstants';
-import { getErrorMessage, MessageConstants, MessageView, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
+import { AccessTokenNotFoundError, getErrorMessage, MessageConstants, MessageView, TokenRefreshError, UserRoleConstants, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import getAuthorizedPromiseArea from '../../dto/login/getAuthorizedPromiseArea';
 import RoutePathConstants from '../../../../routePathConstants';
 import { GetUserDtoCapsuleDto, type GetUserDtoCapsuleDtoInterface } from '../../dto/user/getUserDtoCapsuleDto';
 import type { GetUserDtoResultDtoInterface } from '../../dto/user/getUserDtoResultDto';
-import { AccessTokenNotFoundError, TokenRefreshError } from '../../dto/login/errors';
 import { EditUserPersonCapsuleDto, type EditUserPersonCapsuleDtoInterface } from '../../dto/user/editUserPersonCapsuleDto';
 
 // props,emits

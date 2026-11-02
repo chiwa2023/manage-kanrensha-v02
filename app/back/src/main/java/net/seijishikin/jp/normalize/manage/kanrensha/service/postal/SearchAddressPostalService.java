@@ -5,8 +5,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import net.seijishikin.jp.normalize.common_tool.dto.postal.PostalCodePostalResultDto;
 import net.seijishikin.jp.normalize.common_tool.dto.select_options.SelectOptionIntegerDto;
-import net.seijishikin.jp.normalize.manage.kanrensha.dto.postal.PostalCodePostalResultDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.repository.AddressPostalIrregularRepository;
 import net.seijishikin.jp.normalize.manage.kanrensha.repository.AddressPostalRepository;
 

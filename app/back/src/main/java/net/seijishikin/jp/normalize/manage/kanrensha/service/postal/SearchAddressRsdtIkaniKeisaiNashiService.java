@@ -7,8 +7,8 @@ import org.springframework.stereotype.Service;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
+import net.seijishikin.jp.normalize.common_tool.dto.postal.PostalCodeBlockResultDto;
 import net.seijishikin.jp.normalize.common_tool.dto.select_options.SelectOptionStringDto;
-import net.seijishikin.jp.normalize.manage.kanrensha.dto.postal.PostalCodeBlockResultDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.AddressPostalEntity;
 
 /**

@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import { computed, onBeforeMount, ref, watch, type ComputedRef, type Ref } from 'vue';
 import RoutePathConstants from '../../../../routePathConstants';
-import UserRoleConstants from '../../dto/user/userRoleConstants';
-import { MessageConstants, MessageView, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
+import { MessageConstants, MessageView, UserRoleConstants, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 
 // props,emmits
 const props = defineProps<{ viewRole: string, userDto: LeastUserDtoInterface }>();

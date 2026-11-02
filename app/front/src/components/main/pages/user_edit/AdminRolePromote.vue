@@ -1,15 +1,12 @@
 <script setup lang="ts">
 import { ref, type Ref } from 'vue';
 import router from '../../../../router';
-import { getErrorMessage, getErrorUniqueIdMessage, MessageConstants, MessageView, type FrameworkMessageAndResultDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
-import { getLoginUser } from '../../utils/getLoginUser';
-import UserRoleConstants from '../../dto/user/userRoleConstants';
+import { AccessTokenNotFoundError, getErrorMessage, getErrorUniqueIdMessage, getLoginUser, MessageConstants, MessageView, TokenRefreshError, UserRoleConstants, type FrameworkMessageAndResultDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import { SearchUserCapsuleDto, type SearchUserCapsuleDtoInterface } from '../../dto/user/searchUserCapsuleDto';
 import type { UserPersonEntityInterface } from '../../entity/userPersonEntity';
 import { PromoteUserAdminCapsuleDto, type PromoteUserAdminCapsuleDtoInterface } from '../../dto/user/PromoteUserAdminCapsuleDto';
 import getAuthorizedPromiseArea from '../../dto/login/getAuthorizedPromiseArea';
 import RoutePathConstants from '../../../../routePathConstants';
-import { AccessTokenNotFoundError, TokenRefreshError } from '../../dto/login/errors';
 import { SearchUserEntityResultDto, type SearchUserEntityResultDtoInterface } from '../../dto/user/searchUserEntityResultDto';
 import AdminInfo from '../../common/user_info/AdminInfo.vue';
 

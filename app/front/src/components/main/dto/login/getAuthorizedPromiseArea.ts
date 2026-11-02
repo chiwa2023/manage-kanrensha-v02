@@ -1,7 +1,7 @@
+import { AccessTokenNotFoundError, TokenRefreshError } from "seijishikin-jp-normalize_common-tool";
 import RoutePathConstants from "../../../../routePathConstants";
 import { useUserInfoStore } from "../../stores/storeUserInfo";
 import { type JwtTokenDtoInterface } from "./jwtTokenDto";
-import { AccessTokenNotFoundError, TokenRefreshError } from "./errors";
 
 export default async function getAuthorizedPromiseArea(): Promise<string> {
 

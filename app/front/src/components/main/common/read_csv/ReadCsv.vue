@@ -1,11 +1,10 @@
 ﻿<script setup lang="ts">
 import { ref, type Ref } from 'vue';
 import { UploadContentCapsuleDto, type UploadContentCapsuleDtoInterface } from '../../dto/storage_file/uploadContentCapsuleDto';
-import { getErrorMessage, MessageConstants, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
+import { AccessTokenNotFoundError, getErrorMessage, MessageConstants, TokenRefreshError, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import getAuthorizedPromiseArea from '../../dto/login/getAuthorizedPromiseArea';
 import RoutePathConstants from '../../../../routePathConstants';
 import type { LookAheadCsvResultDtoInterface } from '../../dto/storage_file/lookAheadCsvResultDto';
-import { AccessTokenNotFoundError, TokenRefreshError } from '../../dto/login/errors';
 
 //props,emit
 const props = defineProps<{ userDto: LeastUserDtoInterface }>()

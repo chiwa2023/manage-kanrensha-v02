@@ -1,11 +1,10 @@
 ﻿<script setup lang="ts">
-import { getErrorMessage, MessageConstants, MessageView, type FrameworkMessageAndResultDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
+import { AccessTokenNotFoundError, getErrorMessage, MessageConstants, MessageView, TokenRefreshError, type FrameworkMessageAndResultDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import { TaskInfoEntity, type TaskInfoEntityInterface } from '../../entity/taskInfoEntity';
 import { onMounted, ref, toRaw, watch, type Ref } from 'vue';
 import RoutePathConstants from '../../../../routePathConstants';
 import { EditTaskInfoCapsuleDto, type EditTaskInfoCapsuleDtoInterfacee } from '../../dto/task_info/editTaskInfoCapsuleDto';
 import getAuthorizedPromiseArea from '../../dto/login/getAuthorizedPromiseArea';
-import { AccessTokenNotFoundError, TokenRefreshError } from '../../dto/login/errors';
 
 //props,emit
 const props = defineProps<{ userDto: LeastUserDtoInterface, taskInfoEntity: TaskInfoEntityInterface }>()

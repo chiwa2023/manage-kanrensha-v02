@@ -1,7 +1,7 @@
 ﻿<script setup lang="ts">
+import { logout } from 'seijishikin-jp-normalize_common-tool';
 import RoutePathConstants from '../../../routePathConstants';
 import router from '../../../router';
-import { logout } from '../utils/logout';
 
 // よく使う定数
 // const BLANK: string = "";

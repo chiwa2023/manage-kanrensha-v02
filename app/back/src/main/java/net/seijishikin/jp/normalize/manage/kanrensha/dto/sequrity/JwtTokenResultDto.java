@@ -1,6 +1,7 @@
 package net.seijishikin.jp.normalize.manage.kanrensha.dto.sequrity;
 
 import net.seijishikin.jp.normalize.common_tool.dto.FrameworkMessageAndResultDto;
+import net.seijishikin.jp.normalize.common_tool.dto.sequrity.JwtTokenDto;
 
 /**
  * Jwtトークン返却Dto

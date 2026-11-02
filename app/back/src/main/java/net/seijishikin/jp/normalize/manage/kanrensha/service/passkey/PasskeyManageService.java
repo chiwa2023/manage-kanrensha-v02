@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import net.seijishikin.jp.normalize.manage.kanrensha.dto.passkey.PasskeySummaryDto;
+import net.seijishikin.jp.normalize.common_tool.dto.passkey.PasskeySummaryDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.UserPasskeyCredentialEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.repository.UserPasskeyCredentialRepository;
 

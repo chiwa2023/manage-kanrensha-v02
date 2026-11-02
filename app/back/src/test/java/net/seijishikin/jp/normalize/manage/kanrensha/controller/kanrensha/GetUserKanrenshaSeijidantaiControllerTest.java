@@ -7,6 +7,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -28,10 +29,11 @@ import org.springframework.web.context.WebApplicationContext;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import net.seijishikin.jp.normalize.common_tool.dto.kanrensha.GetKanrenshaSeijidantaiCapsuleDto;
+import net.seijishikin.jp.normalize.common_tool.dto.kanrensha.KanrenshaSeijidantaiMasterDto;
 import net.seijishikin.jp.normalize.common_tool.utils.GetObjectMapperWithTimeModuleUtil;
 import net.seijishikin.jp.normalize.manage.kanrensha.constants.UserRoleConstants;
 import net.seijishikin.jp.normalize.manage.kanrensha.controller.PathRouteConstants;
-import net.seijishikin.jp.normalize.manage.kanrensha.dto.kanrensha.GetKanrenshaSeijidantaiCapsuleDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.KanrenshaSeijidantaiMasterEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.repository.KanrenshaSeijidantaiMasterRepository;
 
@@ -84,7 +86,9 @@ class GetUserKanrenshaSeijidantaiControllerTest {
         KanrenshaSeijidantaiMasterEntity masterEntity = kanrenshaSeijidantaiMasterRepository.findById(1215).get();
 
         GetKanrenshaSeijidantaiCapsuleDto capsuleDto = new GetKanrenshaSeijidantaiCapsuleDto();
-        capsuleDto.setMasterSeijidantaiEntity(masterEntity);
+        KanrenshaSeijidantaiMasterDto masterDto = new KanrenshaSeijidantaiMasterDto();
+        BeanUtils.copyProperties(masterEntity, masterDto);
+        capsuleDto.setMasterSeijidantaiEntity(masterDto);
         capsuleDto.getUserDto().setUserPersonId(81);
         capsuleDto.getUserDto().setUserPersonCode(80);
         capsuleDto.getUserDto().setUserPersonName("aaa");

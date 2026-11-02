@@ -1,5 +1,5 @@
 ﻿<script setup lang="ts">
-import { getErrorMessage, MessageConstants, MessageView, PagingControl, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
+import { AccessTokenNotFoundError, getErrorMessage, MessageConstants, MessageView, PagingControl, TokenRefreshError, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import { computed, ref, toRaw, type ComputedRef, type Ref } from 'vue';
 import { WkTblKanrenshaKigyouDtHistoryEntity, type WkTblKanrenshaKigyouDtHistoryEntityInterface } from '../../entity/wkTblKanrenshaKigyouDtHistoryEntity';
 import { SearchWkTblHistoryKigyouDtPagingResultDto, type SearchWkTblHistoryKigyouDtPagingResultDtoInterface } from '../../dto/wktbl_history/searchWkTblHistoryKigyouDtPagingResultDto';
@@ -7,7 +7,6 @@ import { SearchWkTblPagingCapsuleDto, type SearchWkTblPagingCapsuleDtoInterface 
 import { UpdateWkTblHistoryKigyouDtCapsuleDto, type UpdateWkTblHistoryKigyouDtCapsuleDtoInterface } from '../../dto/wktbl_history/updateWkTblHistoryKigyouDtCapsuleDto';
 import getAuthorizedPromiseArea from '../../dto/login/getAuthorizedPromiseArea';
 import RoutePathConstants from '../../../../routePathConstants';
-import { AccessTokenNotFoundError, TokenRefreshError } from '../../dto/login/errors';
 import type { UpdateWkTblHistoryKigyouDtResultDtoInterface } from '../../dto/wktbl_history/updateWkTblHistoryKigyouDtResultDto';
 
 

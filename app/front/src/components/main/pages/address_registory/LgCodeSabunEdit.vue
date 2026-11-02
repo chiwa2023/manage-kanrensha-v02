@@ -1,13 +1,11 @@
 ﻿<script setup lang="ts">
 import { ref, type Ref } from 'vue';
 import { SearchAddressCityDeleteResultDto, type SearchAddressCityDeleteResultDtoInterface } from '../../dto/address_registory/searchAddressCityDeleteResultDto';
-import { FrameworkPagingDto, getErrorMessage, getErrorUniqueIdMessage, InputLgcode, MessageConstants, MessageView, PagingControl, type FrameworkMessageAndResultDtoInterface, type FrameworkPagingDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
+import { AccessTokenNotFoundError, FrameworkPagingDto, getErrorMessage, getErrorUniqueIdMessage, getLoginUser, InputLgcode, MessageConstants, MessageView, PagingControl, TokenRefreshError, type FrameworkMessageAndResultDtoInterface, type FrameworkPagingDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import { AddressCityDeleteEntity, type AddressCityDeleteEntityInterface } from '../../entity/addressCityDeleteEntity';
 import { EditAddressCityDeleteCapsuleDto, type EditAddressCityDeleteCapsuleDtoInterface } from '../../dto/address_registory/editAddressCityDeleteCapsuleDto';
 import RoutePathConstants from '../../../../routePathConstants';
-import { getLoginUser } from '../../utils/getLoginUser';
 import getAuthorizedPromiseArea from '../../dto/login/getAuthorizedPromiseArea';
-import { AccessTokenNotFoundError, TokenRefreshError } from '../../dto/login/errors';
 import ManagerInfo from '../../common/user_info/ManagerInfo.vue';
 import type { SelectOptionStringDtoInterface } from '../../dto/select_options/selectOptionStringDto.ts';
 

@@ -2,12 +2,11 @@
 import { computed, onMounted, ref, toRaw, type ComputedRef, type Ref } from 'vue';
 import { SearchWkTblPagingCapsuleDto, type SearchWkTblPagingCapsuleDtoInterface } from '../../dto/add_xml/searchWkTbPagingCapsuleDto';
 import { SearchWkTblCombineOrgPagingResultDto, type SearchWkTblCombineOrgPagingResultDtoInterface } from '../../dto/wktbl_combine/searchWkTblCombineOrgPagingResultDto';
-import { FrameworkCapsuleDto, getErrorMessage, getErrorUniqueIdMessage, MessageConstants, MessageView, PagingControl, SearchKanrenshaKigyouDt, SearchKanrenshaPerson, SearchKanrenshaSeijidantai, type FrameworkCapsuleDtoInterface, type KanrenshaKigyouDtMasterEntityInterface, type KanrenshaPersonMasterEntityInterface, type KanrenshaSeijidantaiMasterEntityInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
+import { AccessTokenNotFoundError, FrameworkCapsuleDto, getErrorMessage, getErrorUniqueIdMessage, MessageConstants, MessageView, PagingControl, SearchKanrenshaKigyouDt, SearchKanrenshaPerson, SearchKanrenshaSeijidantai, TokenRefreshError, type FrameworkCapsuleDtoInterface, type KanrenshaKigyouDtMasterEntityInterface, type KanrenshaPersonMasterEntityInterface, type KanrenshaSeijidantaiMasterEntityInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import KanrenshaKbnConstants from '../../dto/kanrensha/kanrenshaKbnConstants';
 import RoutePathConstants from '../../../../routePathConstants';
 import { WkTblKanrenshaCombineOrgEntity, type WkTblKanrenshaCombineOrgEntityInterface } from '../../entity/wkTblKanrenshaCombineOrgEntity';
 import getAuthorizedPromiseArea from '../../dto/login/getAuthorizedPromiseArea';
-import { AccessTokenNotFoundError, TokenRefreshError } from '../../dto/login/errors';
 import { UpdateWkTblCombineOrgCapsuleDto, type UpdateWkTblCombineOrgCapsuleDtoInterface } from '../../dto/wktbl_combine/updateWkTblCombineOrgCapsuleDto';
 import type { UpdateWkTblHistoryKigyouDtResultDtoInterface } from '../../dto/wktbl_history/updateWkTblHistoryKigyouDtResultDto';
 import type { YearOptionResultDtoInterface } from '../../dto/year_option/yearOptionResultDto';

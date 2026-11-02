@@ -1,10 +1,9 @@
 ﻿<script setup lang="ts">
 import { ref, type Ref } from 'vue';
 import type { KanrenshaPersonPropertyEntityInterface } from '../../entity/kanrenshaPersonPropertyEntity';
-import { DtoEntityConstants, getErrorMessage, getErrorUniqueIdMessage, InputCompareShokugyou, InputDate, InputShokugyouDto, MessageConstants, MessageView, PagingControl, type FrameworkMessageAndResultDtoInterface, type InputShokugyouDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
+import { AccessTokenNotFoundError, DtoEntityConstants, getErrorMessage, getErrorUniqueIdMessage, InputCompareShokugyou, InputDate, InputShokugyouDto, MessageConstants, MessageView, PagingControl, TokenRefreshError, type FrameworkMessageAndResultDtoInterface, type InputShokugyouDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import getAuthorizedPromiseArea from '../../dto/login/getAuthorizedPromiseArea';
 import RoutePathConstants from '../../../../routePathConstants';
-import { AccessTokenNotFoundError, TokenRefreshError } from '../../dto/login/errors';
 import { SearchWorksApprovalCapsuleDto, type SearchWorksApprovalCapsuleDtoInterfce } from '../../dto/works_approval/searchWorksApprovalCapsuleDto';
 import { SearchApprovalShokugyouResultDto, type SearchApprovalShokugyouResultDtoInterface } from '../../dto/works_approval/searchApprovalShokugyouResultDto';
 import { SaveWorksApprovalCapsuleDto, type SaveWorksApprovalCapsuleDtoInterface } from '../../dto/works_approval/saveWorksApprovalCapsuleDto';

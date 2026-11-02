@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { createListRoleOptions } from '../../../main/common/menu/createListRoleOptions';
 import type { SelectOptionStringDtoInterface } from '../../../main/dto/select_options/selectOptionStringDto';
-import UserRoleConstants from '../../../main/dto/user/userRoleConstants';
+import { UserRoleConstants } from 'seijishikin-jp-normalize_common-tool';
 
 describe('createListRoleOptions', () => {
 

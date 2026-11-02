@@ -20,9 +20,9 @@ import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
 
 import net.seijishikin.jp.normalize.common_tool.dto.FrameworkMessageAndResultDto;
-import net.seijishikin.jp.normalize.manage.kanrensha.dto.houjin_no.HoujinNoDto;
-import net.seijishikin.jp.normalize.manage.kanrensha.dto.houjin_no.SearchHoujinNoCapsuleDto;
-import net.seijishikin.jp.normalize.manage.kanrensha.dto.houjin_no.SearchHoujinNoResultDto;
+import net.seijishikin.jp.normalize.common_tool.dto.houjin_no.HoujinNoDto;
+import net.seijishikin.jp.normalize.common_tool.dto.houjin_no.SearchHoujinNoCapsuleDto;
+import net.seijishikin.jp.normalize.common_tool.dto.houjin_no.SearchHoujinNoResultDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.logic.houjin_no.CreateSearchHoujinNoUrlLogic;
 import net.seijishikin.jp.normalize.manage.kanrensha.logic.houjin_no.ValidateCreateSearchHoujinNoUrlLogic;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.util.SaveStackTraceService;

@@ -1,5 +1,4 @@
-import { FrameworkPagingDto, type FrameworkPagingDtoInterface } from "seijishikin-jp-normalize_common-tool";
-import type { AddressRsdtTemplateEntityInterface } from "../../entity/addressRsdtTemplateEntity";
+import { FrameworkPagingDto, type AddressRsdtTemplateEntityInterface, type FrameworkPagingDtoInterface } from "seijishikin-jp-normalize_common-tool";
 
 interface SearchAddressRsdtResultDtoInterface extends FrameworkPagingDtoInterface {
 

@@ -1,15 +1,12 @@
 ﻿<script setup lang="ts">
-import { getErrorMessage, MessageConstants, MessageView, type FrameworkMessageAndResultDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
+import { AccessTokenNotFoundError, getErrorMessage, getLoginUser, MessageConstants, MessageView, TokenRefreshError, UserRoleConstants, type FrameworkMessageAndResultDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import RoutePathConstants from '../../../../routePathConstants';
 import ManagerInfo from '../../common/user_info/ManagerInfo.vue';
 import { computed, onMounted, ref, type ComputedRef, type Ref } from 'vue';
-import { getLoginUser } from '../../utils/getLoginUser';
 import { RiyoushaCombineOrgEntity, type RiyoushaCombineOrgEntityInterface } from '../../entity/riyoushaCombineOrgEntity';
-import UserRoleConstants from '../../dto/user/userRoleConstants';
 import { GetRiyoushaMasterCapsuleDto, type GetRiyoushaMasterCapsuleDtoInterface } from '../../dto/riyousha/getRiyoushaMasterCapsuleDto';
 import getAuthorizedPromiseArea from '../../dto/login/getAuthorizedPromiseArea';
 import type { GetRiyoushaMasterResultDtoInterface } from '../../dto/riyousha/getRiyoushaMasterResultDto';
-import { AccessTokenNotFoundError, TokenRefreshError } from '../../dto/login/errors';
 import router from '../../../../router';
 import { RiyoushaCombinePersonCapsuleDto, type RiyoushaCombinePersonCapsuleDtoInterface } from '../../dto/riyousha/riyoushaCombinePersonCapsuleDto';
 import { useRoute } from 'vue-router';

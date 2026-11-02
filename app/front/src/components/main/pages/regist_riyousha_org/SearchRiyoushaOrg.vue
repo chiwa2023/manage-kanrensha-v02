@@ -1,11 +1,9 @@
 <script setup lang="ts">
 import { ref, type Ref } from 'vue';
 import RiyoushaOrgEdit from '../../common/riyousha_edit/RiyoushaOrgEdit.vue';
-import { getErrorMessage, getErrorUniqueIdMessage, MessageConstants, MessageView, PagingControl, type FrameworkMessageAndResultDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
-import { getLoginUser } from '../../utils/getLoginUser';
+import { AccessTokenNotFoundError, getErrorMessage, getErrorUniqueIdMessage, getLoginUser, MessageConstants, MessageView, PagingControl, TokenRefreshError, type FrameworkMessageAndResultDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import AdminInfo from '../../common/user_info/AdminInfo.vue';
 import getAuthorizedPromiseArea from '../../dto/login/getAuthorizedPromiseArea';
-import { AccessTokenNotFoundError, TokenRefreshError } from '../../dto/login/errors';
 import { SearchRiyoushaOrgCapsuleDto, type SearchRiyoushaOrgCapsuleDtoInterface } from '../../dto/riyousha/searchRiyoushaOrgCapsuleDto';
 import RoutePathConstants from '../../../../routePathConstants';
 import { SearchRiyoushaOrgResultDto, type SearchRiyoushaOrgResultDtoInterface } from '../../dto/riyousha/searchRiyoushaOrgResultDto';

@@ -1,14 +1,12 @@
 ﻿<script setup lang="ts">
 import { computed, ref, toRaw, type ComputedRef, type Ref } from 'vue';
-import { getErrorMessage, MessageConstants, MessageView, PagingControl, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
-import SeijidantaiDantaiKbnConstants from '../../dto/kanrensha/seijidantaiDantaiKbnConstants';
+import { AccessTokenNotFoundError, getErrorMessage, MessageConstants, MessageView, PagingControl, SeijidantaiDantaiKbnConstants, TokenRefreshError, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import { SearchWkTblPagingCapsuleDto, type SearchWkTblPagingCapsuleDtoInterface } from '../../dto/add_xml/searchWkTbPagingCapsuleDto';
 import { SearchWkTblMinSeijidantaiPagingResultDto, type SearchWkTblMinSeijidantaiPagingResultDtoInterface } from '../../dto/wktbl_min/searchWkTblMinSeijidantaiPagingResultDto';
 import { WkTblKanrenshaSeijidantaiAddMinEntity, type WkTblKanrenshaSeijidantaiAddMinEntityInterface } from '../../entity/wkTblKanrenshaSeijidantaiAddMinEntity';
 import { UpdateWkTblMinSeijidantaiCapsuleDto, type UpdateWkTblMinSeijidantaiCapsuleDtoInterface } from '../../dto/wktbl_min/updateWkTblMinSeijidantaiCapsuleDto';
 import RoutePathConstants from '../../../../routePathConstants';
 import getAuthorizedPromiseArea from '../../dto/login/getAuthorizedPromiseArea';
-import { AccessTokenNotFoundError, TokenRefreshError } from '../../dto/login/errors';
 import type { UpdateWkTblMinSeijidantaiResultDtoInterface } from '../../dto/wktbl_min/updateWkTblMinSeijidantaiResultDto';
 
 //props,emit

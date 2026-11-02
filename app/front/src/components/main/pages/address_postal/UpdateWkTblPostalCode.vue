@@ -1,13 +1,11 @@
 ﻿<script setup lang="ts">
-import { getErrorMessage, getErrorUniqueIdMessage, MessageConstants, MessageView, PagingControl, type FrameworkMessageAndResultDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
+import { AccessTokenNotFoundError, getErrorMessage, getErrorUniqueIdMessage, getLoginUser, MessageConstants, MessageView, PagingControl, TokenRefreshError, type FrameworkMessageAndResultDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import { ref, type Ref } from 'vue';
-import { getLoginUser } from '../../utils/getLoginUser';
 import ManagerInfo from '../../common/user_info/ManagerInfo.vue';
 import { SearchWkTblPostalCodeCapsuleDto, type SearchWkTblPostalCodeCapsuleDtoInterface } from '../../dto/address_postal/searchWkTblPostalCodeCapsuleDto.ts';
 import { SearchWkTblPostalCodeResultDto, type SearchWkTblPostalCodeResultDtoInterface } from '../../dto/address_postal/searchWkTblPostalCodeResultDto.ts';
 import getAuthorizedPromiseArea from '../../dto/login/getAuthorizedPromiseArea.ts';
 import RoutePathConstants from '../../../../routePathConstants.ts';
-import { AccessTokenNotFoundError, TokenRefreshError } from '../../dto/login/errors.ts';
 import { WkTblPostalEditEntity, type WkTblPostalEditEntityInterface } from '../../entity/wkTblPostalEditEntity.ts';
 import { SaveWktblPostalCapsuleDto, type SaveWktblPostalCapsuleDtoInterface } from '../../dto/address_postal/saveWktblPostalCapsuleDto.ts';
 import router from '../../../../router.ts';

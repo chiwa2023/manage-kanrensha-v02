@@ -3,7 +3,7 @@ package net.seijishikin.jp.normalize.manage.kanrensha.logic.kanrensha;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
 
-import net.seijishikin.jp.normalize.manage.kanrensha.dto.kanrensha.KanrenshaKigyouDtDto;
+import net.seijishikin.jp.normalize.common_tool.dto.kanrensha.KanrenshaKigyouDtDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.KanrenshaKigyouDtAddressEntity;
 
 /**

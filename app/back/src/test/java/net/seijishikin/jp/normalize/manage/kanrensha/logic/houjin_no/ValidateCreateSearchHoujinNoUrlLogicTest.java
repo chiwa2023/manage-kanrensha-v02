@@ -19,7 +19,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import net.seijishikin.jp.normalize.common_tool.dto.DtoEntityInitialValueInterface;
-import net.seijishikin.jp.normalize.manage.kanrensha.dto.houjin_no.SearchHoujinNoCapsuleDto;
+import net.seijishikin.jp.normalize.common_tool.dto.houjin_no.SearchHoujinNoCapsuleDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.AddressAllCityEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.repository.AddressAllCityRepository;
 

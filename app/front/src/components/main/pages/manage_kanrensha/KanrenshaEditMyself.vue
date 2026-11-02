@@ -2,26 +2,22 @@
 import { computed, onMounted, ref, type ComputedRef, type Ref } from 'vue';
 import RoutePathConstants from '../../../../routePathConstants';
 import {
+    AccessTokenNotFoundError,
     getErrorMessage,
-    KanrenshaKigyouDtMasterEntity, KanrenshaPersonMasterEntity, KanrenshaSeijidantaiMasterEntity,
-    MessageConstants, MessageView, type FrameworkMessageAndResultDtoInterface,
-    type KanrenshaKigyouDtMasterEntityInterface, type KanrenshaPersonMasterEntityInterface,
-    type KanrenshaSeijidantaiMasterEntityInterface, type LeastUserDtoInterface
+    getLoginUser,
+    KanrenshaKigyouDtEdit,
+    KanrenshaKigyouDtMasterEntity, KanrenshaPersonEdit, KanrenshaPersonMasterEntity, KanrenshaSeijidanatiEdit, KanrenshaSeijidantaiMasterEntity,
+    MessageConstants, MessageView, SaveKanrenshaKigyouDtCapsuleDto, SaveKanrenshaPersonCapsuleDto, SaveKanrenshaSeijidantaiCapsuleDto, TokenRefreshError, UserRoleConstants, type FrameworkMessageAndResultDtoInterface,
+    type KanrenshaKigyouDtDtoInterface,
+    type KanrenshaKigyouDtMasterEntityInterface, type KanrenshaPersonDtoInterface, type KanrenshaPersonMasterEntityInterface,
+    type KanrenshaSeijidantaiDtoInterface,
+    type KanrenshaSeijidantaiMasterEntityInterface, type LeastUserDtoInterface,
+    type SaveKanrenshaKigyouDtCapsuleDtoInterface,
+    type SaveKanrenshaPersonCapsuleDtoInterface,
+    type SaveKanrenshaSeijidantaiCapsuleDtoInterface
 } from 'seijishikin-jp-normalize_common-tool';
-import { getLoginUser } from '../../utils/getLoginUser';
-import KanrenshaKigyouDtEdit from '../../common/kanrensha_edit/KanrenshaKigyouDtEdit.vue';
-import KanrenshaPersonEdit from '../../common/kanrensha_edit/KanrenshaPersonEdit.vue';
-import KanrenshaSeijidanatiEdit from '../../common/kanrensha_edit/KanrenshaSeijidanatiEdit.vue';
 import getAuthorizedPromiseArea from '../../dto/login/getAuthorizedPromiseArea';
-import { AccessTokenNotFoundError, TokenRefreshError } from '../../dto/login/errors';
-import { SaveKanrenshaPersonCapsuleDto, type SaveKanrenshaPersonCapsuleDtoInterface } from '../../dto/kanrensha/saveKanrenshaPersonCapsuleDto';
-import { type KanrenshaKigyouDtDtoInterface } from '../../dto/kanrensha/kanrenshaKigyouDtDto';
-import { SaveKanrenshaKigyouDtCapsuleDto, type SaveKanrenshaKigyouDtCapsuleDtoInterface } from '../../dto/kanrensha/saveKanrenshaKigyouDtCapsuleDto';
-import type { KanrenshaPersonDtoInterface } from '../../dto/kanrensha/kanrenshaPersonDto';
-import type { KanrenshaSeijidantaiDtoInterface } from '../../dto/kanrensha/kanrenshaSeijidantaiDto';
-import { SaveKanrenshaSeijidantaiCapsuleDto, type SaveKanrenshaSeijidantaiCapsuleDtoInterface } from '../../dto/kanrensha/saveKanrenshaSeijidantaiCapsuleDto';
 import KanrenshaInfo from '../../common/user_info/KanrenshaInfo.vue';
-import UserRoleConstants from '../../dto/user/userRoleConstants';
 import { GetKanrenshaMasterCapsuleDto, type GetKanrenshaMasterCapsuleDtoInterface } from '../../dto/kanrensha/getKanrenshaMasterCapsuleDto';
 import type { GetKanrenshaMasterResultDtoInterface } from '../../dto/kanrensha/getKanrenshaMasterResultDto';
 
@@ -46,6 +42,8 @@ const urlBack: string = RoutePathConstants.DOMAIN + RoutePathConstants.BASE_PATH
 // ユーザ呼び出し
 const userDto: Ref<LeastUserDtoInterface> = ref(getLoginUser());
 
+// 法人番号APIキー
+const houjinAppId: string = import.meta.env.VITE_HOUJIN_NO_API;
 
 const nowRoleStatus: Ref<string> = ref(BLANK);
 onMounted(() => {
@@ -401,14 +399,14 @@ function recieveSubmit() {
 
     <!-- 企業・団体編集 -->
     <div v-if="isEditKigyouDt">
-        <KanrenshaKigyouDtEdit :user-dto="userDto" :edit-entity="editEntityKigyouDt"
+        <KanrenshaKigyouDtEdit :user-dto="userDto" :edit-entity="editEntityKigyouDt" :houjin-api-key="houjinAppId"
             @send-kigyou-dt-interface="recieveKigyouDtInterfaceEdit" @send-cancel-kigyou-dt="recieveCancelKigyouDtEdit">
         </KanrenshaKigyouDtEdit>
     </div>
 
     <!-- 個人編集 -->
     <div v-if="isEditPerson">
-        <KanrenshaPersonEdit :user-dto="userDto" :edit-entity="editEntityPerson"
+        <KanrenshaPersonEdit :user-dto="userDto" :edit-entity="editEntityPerson" :houjin-api-key="houjinAppId"
             @send-person-interface="recievePersonInterfaceEdit" @send-cancel-person="recieveCancelPersonEdit">
         </KanrenshaPersonEdit>
     </div>

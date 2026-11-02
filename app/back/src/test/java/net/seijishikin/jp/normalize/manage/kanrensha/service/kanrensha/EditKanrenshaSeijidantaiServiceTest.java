@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -14,8 +15,9 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import org.springframework.transaction.annotation.Transactional;
 
-import net.seijishikin.jp.normalize.manage.kanrensha.dto.kanrensha.KanrenshaSeijidantaiDto;
-import net.seijishikin.jp.normalize.manage.kanrensha.dto.kanrensha.SaveKanrenshaSeijidantaiCapsuleDto;
+import net.seijishikin.jp.normalize.common_tool.dto.kanrensha.KanrenshaSeijidantaiDto;
+import net.seijishikin.jp.normalize.common_tool.dto.kanrensha.KanrenshaSeijidantaiMasterDto;
+import net.seijishikin.jp.normalize.common_tool.dto.kanrensha.SaveKanrenshaSeijidantaiCapsuleDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.KanrenshaSeijidantaiAccessEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.KanrenshaSeijidantaiAddressEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.KanrenshaSeijidantaiMasterEntity;
@@ -66,7 +68,10 @@ class EditKanrenshaSeijidantaiServiceTest {
 
         final Integer editId = 1214;
         KanrenshaSeijidantaiMasterEntity masterEntity = kanrenshaSeijidantaiMasterRepository.findById(editId).get();
-        KanrenshaSeijidantaiDto dto = getKanrenshaSeijidantaiDtoService.practice(masterEntity);
+        KanrenshaSeijidantaiMasterDto masterDto = new KanrenshaSeijidantaiMasterDto();
+        BeanUtils.copyProperties(masterEntity, masterDto);
+        
+        KanrenshaSeijidantaiDto dto = getKanrenshaSeijidantaiDtoService.practice(masterDto);
         SaveKanrenshaSeijidantaiCapsuleDto capsuleDto = new SaveKanrenshaSeijidantaiCapsuleDto();
         capsuleDto.setUserDto(CreateLeastUserForTestUtil.practice());
         capsuleDto.setKanrenshaSeijidantaiDto(dto);
@@ -80,7 +85,10 @@ class EditKanrenshaSeijidantaiServiceTest {
     void testAll() throws Exception {
         final Integer editId = 1215;
         KanrenshaSeijidantaiMasterEntity masterEntity = kanrenshaSeijidantaiMasterRepository.findById(editId).get();
-        KanrenshaSeijidantaiDto dto = getKanrenshaSeijidantaiDtoService.practice(masterEntity);
+        KanrenshaSeijidantaiMasterDto masterDto = new KanrenshaSeijidantaiMasterDto();
+        BeanUtils.copyProperties(masterEntity, masterDto);
+        
+        KanrenshaSeijidantaiDto dto = getKanrenshaSeijidantaiDtoService.practice(masterDto);
         dto.setPoliOrgNo("mnbvc"); // マスタを変更するとIdを変更するために全テーブルに波及
         SaveKanrenshaSeijidantaiCapsuleDto capsuleDto = new SaveKanrenshaSeijidantaiCapsuleDto();
         capsuleDto.setUserDto(CreateLeastUserForTestUtil.practice());
@@ -111,7 +119,10 @@ class EditKanrenshaSeijidantaiServiceTest {
 
         final Integer editId = 1216;
         KanrenshaSeijidantaiMasterEntity masterEntity = kanrenshaSeijidantaiMasterRepository.findById(editId).get();
-        KanrenshaSeijidantaiDto dto = getKanrenshaSeijidantaiDtoService.practice(masterEntity);
+        KanrenshaSeijidantaiMasterDto masterDto = new KanrenshaSeijidantaiMasterDto();
+        BeanUtils.copyProperties(masterEntity, masterDto);
+        
+        KanrenshaSeijidantaiDto dto = getKanrenshaSeijidantaiDtoService.practice(masterDto);
         dto.getInputAccessDto().setEmail("wefzdzg"); // メアドを変更しても全テーブルに影響が波及しない
         SaveKanrenshaSeijidantaiCapsuleDto capsuleDto = new SaveKanrenshaSeijidantaiCapsuleDto();
         capsuleDto.setUserDto(CreateLeastUserForTestUtil.practice());

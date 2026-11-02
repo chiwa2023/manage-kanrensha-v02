@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.servlet.http.HttpServletRequest;
-import net.seijishikin.jp.normalize.common_tool.dto.FrameworkMessageAndResultDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.controller.PathRouteConstants;
+import net.seijishikin.jp.normalize.manage.kanrensha.dto.user.GetUserDtoResultDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.security.PartnerApiLoginService;
 
 /**
@@ -27,7 +27,7 @@ public class PartnerApiTrialLoginController {
     /** APIパートナー接続Service */
     @Autowired
     private PartnerApiLoginService partnerApiLoginService;
-    
+
     /**
      * 処理を行う
      * 
@@ -35,9 +35,9 @@ public class PartnerApiTrialLoginController {
      * @return レスポンス
      */
     @PostMapping("/trial-login")
-    public ResponseEntity<FrameworkMessageAndResultDto> practice(final HttpServletRequest httpServletRequest) {
+    public ResponseEntity<GetUserDtoResultDto> practice(final HttpServletRequest httpServletRequest) {
 
-        FrameworkMessageAndResultDto resultDto = new FrameworkMessageAndResultDto();
+        GetUserDtoResultDto resultDto = new GetUserDtoResultDto();
         String authorizationHeader = httpServletRequest.getHeader(HttpHeaderKeyConstants.HEADER_KEY_AUTH);
         if (authorizationHeader != null && authorizationHeader.startsWith(HttpHeaderKeyConstants.HEADER_KEY_BEARE)) {
             try {
@@ -47,7 +47,8 @@ public class PartnerApiTrialLoginController {
 
                 String accessUrl = PathRouteConstants.ROOT + "/api-for-partner" + "/trial-login";
 
-                partnerApiLoginService.practice(token, accessUrl, userAgent, ipAddress, LocalDateTime.now());
+                resultDto.setUserDto(
+                        partnerApiLoginService.practice(token, accessUrl, userAgent, ipAddress, LocalDateTime.now()));
                 return ResponseEntity.status(HttpStatus.OK).body(resultDto);
 
             } catch (InvalidBearerTokenException | LockedException | AccessDeniedException unauthorizedException) {

@@ -7,8 +7,8 @@ import org.springframework.stereotype.Service;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
+import net.seijishikin.jp.normalize.common_tool.dto.postal.PostalCodeBuildingResultDto;
 import net.seijishikin.jp.normalize.common_tool.dto.select_options.SelectOptionIntegerDto;
-import net.seijishikin.jp.normalize.manage.kanrensha.dto.postal.PostalCodeBuildingResultDto;
 
 /**
  * 郵便番号を階ごとに割り振られている場合の住所(建物と部屋番号)を検索する

@@ -1,8 +1,6 @@
 ﻿<script setup lang="ts">
 import { onMounted, ref, useTemplateRef, type Ref } from 'vue';
-import { getLoginUser } from '../../utils/getLoginUser';
 import KanrenshaKbnConstants from '../../dto/kanrensha/kanrenshaKbnConstants';
-import SeijidantaiDantaiKbnConstants from '../../dto/kanrensha/seijidantaiDantaiKbnConstants';
 import { SearchWkTblPagingCapsuleDto, type SearchWkTblPagingCapsuleDtoInterface } from '../../dto/add_xml/searchWkTbPagingCapsuleDto';
 import { SearchWkTblAddByXmlPagingResultDto, type SearchWkTblAddByXmlPagingResultDtoInterface } from '../../dto/add_xml/searchWkTblAddByXmlPagingResultDto';
 import { RegistDataByXmlCapsuleDto, type RegistDataByXmlCapsuleDtoInterface } from '../../dto/add_xml/registDataByXmlCapsuleDto';
@@ -10,14 +8,13 @@ import type { StorageFileDtoInterface } from '../../dto/storage_file/storageFile
 import EditWkTblMinPerson from '../../common/wktbl_edit_min/EditWkTblMinPerson.vue';
 import EditWkTblMinKigyouDt from '../../common/wktbl_edit_min/EditWkTblMinKigyouDt.vue';
 import EditWkTblMinSeijidantai from '../../common/wktbl_edit_min/EditWkTblMinSeijidantai.vue';
-import { FrameworkCapsuleDto, getErrorMessage, MessageConstants, MessageView, PagingControl, type FrameworkCapsuleDtoInterface, type FrameworkMessageAndResultDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
+import { AccessTokenNotFoundError, FrameworkCapsuleDto, getErrorMessage, getLoginUser, MessageConstants, MessageView, PagingControl, SeijidantaiDantaiKbnConstants, TokenRefreshError, type FrameworkCapsuleDtoInterface, type FrameworkMessageAndResultDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import { UpdateWkTblAddByXmlTableListCapsuleDto, type UpdateWkTblAddByXmlTableListCapsuleDtoInterface } from '../../dto/add_xml/updateWkTblAddByXmlTableListCapsuleDto';
 import { UpdateWkTblAddByXmlCapsuleDto, type UpdateWkTblAddByXmlCapsuleDtoInterface } from '../../dto/add_xml/updateWkTblAddByXmlCapsuleDto';
 import ManagerInfo from '../../common/user_info/ManagerInfo.vue';
 import ReadPublishXml from '../../common/read_publish_xml/ReadPublishXml.vue';
 import RoutePathConstants from '../../../../routePathConstants';
 import getAuthorizedPromiseArea from '../../dto/login/getAuthorizedPromiseArea';
-import { AccessTokenNotFoundError, TokenRefreshError } from '../../dto/login/errors';
 import type { UpdateWkTblAddByXmlResultDtoInterface } from '../../dto/add_xml/updateWkTblAddByXmlResultDto';
 import { useRoute } from 'vue-router';
 import { nextTransferPassStore } from '../../stores/nextTransferPass';

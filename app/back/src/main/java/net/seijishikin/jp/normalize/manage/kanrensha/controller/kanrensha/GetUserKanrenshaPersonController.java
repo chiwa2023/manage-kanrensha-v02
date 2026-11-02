@@ -13,11 +13,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import net.seijishikin.jp.normalize.common_tool.dto.FrameworkMessageAndResultDto;
+import net.seijishikin.jp.normalize.common_tool.dto.kanrensha.GetKanrenshaPersonCapsuleDto;
+import net.seijishikin.jp.normalize.common_tool.dto.kanrensha.GetKanrenshaPersonResultDto;
+import net.seijishikin.jp.normalize.common_tool.dto.kanrensha.KanrenshaPersonDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.constants.UserRoleConstants;
 import net.seijishikin.jp.normalize.manage.kanrensha.controller.PathRouteConstants;
-import net.seijishikin.jp.normalize.manage.kanrensha.dto.kanrensha.GetKanrenshaPersonCapsuleDto;
-import net.seijishikin.jp.normalize.manage.kanrensha.dto.kanrensha.GetKanrenshaPersonResultDto;
-import net.seijishikin.jp.normalize.manage.kanrensha.dto.kanrensha.KanrenshaPersonDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.logic.user.ValidateAuthoraizeUserDetailLogic;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.kanrensha.GetKanrenshaPersonDtoService;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.util.SaveStackTraceService;
@@ -50,7 +50,7 @@ public class GetUserKanrenshaPersonController {
     @PostMapping("/get-person")
     public ResponseEntity<GetKanrenshaPersonResultDto> practice(
             @RequestBody final GetKanrenshaPersonCapsuleDto capsuleDto) {
-
+        
         GetKanrenshaPersonResultDto resultDto = new GetKanrenshaPersonResultDto();
         try {
             // ユーザチェック
