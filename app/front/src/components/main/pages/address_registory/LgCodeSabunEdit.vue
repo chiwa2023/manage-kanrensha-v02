@@ -1,5 +1,5 @@
 ﻿<script setup lang="ts">
-import { ref, type Ref } from 'vue';
+import { onBeforeMount, ref, type Ref } from 'vue';
 import { SearchAddressCityDeleteResultDto, type SearchAddressCityDeleteResultDtoInterface } from '../../dto/address_registory/searchAddressCityDeleteResultDto';
 import { AccessTokenNotFoundError, FrameworkPagingDto, getErrorMessage, getErrorUniqueIdMessage, getLoginUser, InputLgcode, MessageConstants, MessageView, PagingControl, TokenRefreshError, type FrameworkMessageAndResultDtoInterface, type FrameworkPagingDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import { AddressCityDeleteEntity, type AddressCityDeleteEntityInterface } from '../../entity/addressCityDeleteEntity';
@@ -8,6 +8,9 @@ import RoutePathConstants from '../../../../routePathConstants';
 import getAuthorizedPromiseArea from '../../dto/login/getAuthorizedPromiseArea';
 import ManagerInfo from '../../common/user_info/ManagerInfo.vue';
 import type { SelectOptionStringDtoInterface } from '../../dto/select_options/selectOptionStringDto.ts';
+import { useRoute } from 'vue-router';
+import { nextTransferPassStore } from '../../stores/nextTransferPass.ts';
+import router from '../../../../router.ts';
 
 
 // よく使う定数
@@ -43,6 +46,17 @@ const resultDto: Ref<SearchAddressCityDeleteResultDtoInterface> = ref(new Search
 const editEntity: Ref<AddressCityDeleteEntityInterface> = ref(new AddressCityDeleteEntity());
 const editCapsuleDto: Ref<EditAddressCityDeleteCapsuleDtoInterface> = ref(new EditAddressCityDeleteCapsuleDto());
 editCapsuleDto.value.userDto = userDto.value;
+
+const route = useRoute();
+onBeforeMount(() => {
+    // 直リンク(パスチェックあり)を許容ロジック
+    if (INIT_NUMBER === userDto.value.userPersonId) {
+        const passStore = nextTransferPassStore()
+        passStore.fullPath = route.fullPath;
+        router.push(RoutePathConstants.PAGE_LOGIN);
+        return;
+    }
+});
 
 function onSearch() {
     const capsuleDto: FrameworkPagingDtoInterface = new FrameworkPagingDto();

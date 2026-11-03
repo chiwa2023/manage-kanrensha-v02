@@ -51,12 +51,12 @@ public class AsyncForceDumpHistoryService {
         LocalDate endDate = capsuleDto.getDateEnd();
 
         List<Integer> listTask = new ArrayList<>();
-        if (capsuleDto.getIsExecuteKigyouDt()) {
-            forceDumpHistoryKigyouDtService.practice(year, planDto1, endDate, capsuleDto.getUserDto());
+        if (capsuleDto.getIsExecutePerson()) {
+            forceDumpHistoryPersonService.practice(year, planDto1, endDate, capsuleDto.getUserDto());
             listTask.add(TaskInfoConstants.DUMP_HISTORY_PERSON);
         }
-        if (capsuleDto.getIsExecutePerson()) {
-            forceDumpHistoryPersonService.practice(year, planDto2, endDate, capsuleDto.getUserDto());
+        if (capsuleDto.getIsExecuteKigyouDt()) {
+            forceDumpHistoryKigyouDtService.practice(year, planDto2, endDate, capsuleDto.getUserDto());
             listTask.add(TaskInfoConstants.DUMP_HISTORY_KIGYOU);
         }
         if (capsuleDto.getIsExecuteSeijidantai()) {

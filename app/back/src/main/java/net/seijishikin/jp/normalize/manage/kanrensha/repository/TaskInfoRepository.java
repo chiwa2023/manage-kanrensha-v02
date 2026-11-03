@@ -23,7 +23,7 @@ public interface TaskInfoRepository
      * @return 検索結果
      */
     @Query(value = "SELECT * FROM task_info WHERE task_info_code LIKE ?2 "
-            + " AND task_info_name LIKE ?1 And is_latest = 1", nativeQuery = true)
+            + " AND task_info_name LIKE ?1 And is_latest = 1 ORDER BY task_info_code", nativeQuery = true)
     List<TaskInfoEntity> findFullTextAndType(String searchWords, String infoType, Pageable pageable);
 
     /**

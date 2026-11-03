@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref, type Ref } from 'vue';
+import { onBeforeMount, onMounted, ref, type Ref } from 'vue';
 import { AccessTokenNotFoundError, FrameworkCapsuleDto, getErrorMessage, getLoginUser, InputDatetimeAndNull, logout, MessageConstants, MessageView, TokenRefreshError, type FrameworkCapsuleDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import router from '../../../../router';
 import { PartnerAccessTokenStateDto, type PartnerAccessTokenStateDtoInterface } from '../../dto/user/partnerAccessTokenStateDto';
@@ -9,13 +9,15 @@ import { PartnerApiTokenCapsuleDto, type PartnerApiTokenCapsuleDtoInterface } fr
 import type { PartnerApiTokenResultDtoInterface } from '../../dto/user/partnerApiTokenResultDto';
 import getAuthorizedPromiseArea from '../../dto/login/getAuthorizedPromiseArea';
 import PartnerApiInfo from '../../common/user_info/PartnerApiInfo.vue';
+import { nextTransferPassStore } from '../../stores/nextTransferPass.ts';
+import { useRoute } from 'vue-router';
 
 // back側アクセス
 const urlBack: string = RoutePathConstants.DOMAIN + RoutePathConstants.BASE_PATH;
 
 // よく使う定数
 const BLANK: string = "";
-// const INIT_NUMBER: number = 0;
+const INIT_NUMBER: number = 0;
 const SERVER_STATUS_ERROR: number = 400;
 // メッセージボックス表示定数
 const INQUIRE_FLG: boolean = false;
@@ -34,6 +36,18 @@ const userDto: Ref<LeastUserDtoInterface> = ref(getLoginUser());
 const stateDto: Ref<PartnerAccessTokenStateDtoInterface> = ref(new PartnerAccessTokenStateDto());
 const newToken: Ref<string> = ref("");
 const hasNotToken: string = "hasNotToken";
+
+const route = useRoute();
+onBeforeMount(() => {
+    // 直リンク(パスチェックあり)を許容ロジック
+    if (INIT_NUMBER === userDto.value.userPersonId) {
+        const passStore = nextTransferPassStore()
+        passStore.fullPath = route.fullPath;
+        router.push(RoutePathConstants.PAGE_LOGIN);
+        return;
+    }
+});
+
 onMounted(() => {
     // 前回トークン状態(トークン自身は除く)を取得
     getAuthorizedPromiseArea().then(token => {

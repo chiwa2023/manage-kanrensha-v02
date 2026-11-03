@@ -1,14 +1,18 @@
 ﻿<script setup lang="ts">
-import { ref, type Ref } from 'vue';
+import { onBeforeMount, ref, type Ref } from 'vue';
 import ChangeWkTblAddress from '../../common/address_registory/ChangeWkTblAddress.vue';
 import DeleteWkTblAddress from '../../common/address_registory/DeleteWkTblAddress.vue';
 import ManagerInfo from '../../common/user_info/ManagerInfo.vue';
 import { getLoginUser, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
+import { useRoute } from 'vue-router';
+import { nextTransferPassStore } from '../../stores/nextTransferPass.ts';
+import RoutePathConstants from '../../../../routePathConstants.ts';
+import router from '../../../../router.ts';
 
 
 // よく使う定数
 // const BLANK: string = "";
-// const INIT_NUMBER: number = 0;
+const INIT_NUMBER: number = 0;
 // const SERVER_STATUS_OK: number = 200;
 // const SERVER_STATUS_ERROR: number = 400;
 // const SEARCH_LIMIT: number = 20;
@@ -23,6 +27,17 @@ const userDto: Ref<LeastUserDtoInterface> = ref(getLoginUser());
 
 // 表示内容制御
 const editState: Ref<string> = ref("1");
+
+const route = useRoute();
+onBeforeMount(() => {
+    // 直リンク(パスチェックあり)を許容ロジック
+    if (INIT_NUMBER === userDto.value.userPersonId) {
+        const passStore = nextTransferPassStore()
+        passStore.fullPath = route.fullPath;
+        router.push(RoutePathConstants.PAGE_LOGIN);
+        return;
+    }
+});
 
 </script>
 <template>

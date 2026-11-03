@@ -1,6 +1,6 @@
 ﻿<script setup lang="ts">
 import { AccessTokenNotFoundError, getErrorMessage, getErrorUniqueIdMessage, getLoginUser, MessageConstants, MessageView, PagingControl, TokenRefreshError, type FrameworkMessageAndResultDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
-import { ref, type Ref } from 'vue';
+import { onBeforeMount, ref, type Ref } from 'vue';
 import ManagerInfo from '../../common/user_info/ManagerInfo.vue';
 import { SearchWkTblPostalCodeCapsuleDto, type SearchWkTblPostalCodeCapsuleDtoInterface } from '../../dto/address_postal/searchWkTblPostalCodeCapsuleDto.ts';
 import { SearchWkTblPostalCodeResultDto, type SearchWkTblPostalCodeResultDtoInterface } from '../../dto/address_postal/searchWkTblPostalCodeResultDto.ts';
@@ -9,6 +9,8 @@ import RoutePathConstants from '../../../../routePathConstants.ts';
 import { WkTblPostalEditEntity, type WkTblPostalEditEntityInterface } from '../../entity/wkTblPostalEditEntity.ts';
 import { SaveWktblPostalCapsuleDto, type SaveWktblPostalCapsuleDtoInterface } from '../../dto/address_postal/saveWktblPostalCapsuleDto.ts';
 import router from '../../../../router.ts';
+import { useRoute } from 'vue-router';
+import { nextTransferPassStore } from '../../stores/nextTransferPass.ts';
 
 
 // よく使う定数
@@ -49,6 +51,17 @@ capsuleDto.value.userDto = userDto.value;
 const resultDto: Ref<SearchWkTblPostalCodeResultDtoInterface> = ref(new SearchWkTblPostalCodeResultDto());
 
 const entityEdit: Ref<WkTblPostalEditEntityInterface> = ref(new WkTblPostalEditEntity());
+
+const route = useRoute();
+onBeforeMount(() => {
+    // 直リンク(パスチェックあり)を許容ロジック
+    if (INIT_NUMBER === userDto.value.userPersonId) {
+        const passStore = nextTransferPassStore()
+        passStore.fullPath = route.fullPath;
+        router.push(RoutePathConstants.PAGE_LOGIN);
+        return;
+    }
+});
 
 function onSearch() {
     getAuthorizedPromiseArea().then(token => {

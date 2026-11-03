@@ -69,13 +69,13 @@ public class AsyncForceDumpStdMasterSabunService {
 
         List<Integer> listTask = new ArrayList<>();
         if (capsuleDto.getIsExecuteKigyouDt()) {
-            forceSabunDumpStdMasterKigyouDtService.practice(year, planDto1, startDate, endDate,
+            forceSabunDumpStdMasterKigyouDtService.practice(year, planDto2, startDate, endDate,
                     capsuleDto.getUserDto());
-            listTask.add(TaskInfoConstants.DUMP_STD_SABUN_PERSON);
+            listTask.add(TaskInfoConstants.DUMP_STD_SABUN_KIGYOU);
         }
         if (capsuleDto.getIsExecutePerson()) {
-            forceSabunDumpStdMasterPersonService.practice(year, planDto2, startDate, endDate, capsuleDto.getUserDto());
-            listTask.add(TaskInfoConstants.DUMP_STD_SABUN_KIGYOU);
+            forceSabunDumpStdMasterPersonService.practice(year, planDto1, startDate, endDate, capsuleDto.getUserDto());
+            listTask.add(TaskInfoConstants.DUMP_STD_SABUN_PERSON);
         }
         if (capsuleDto.getIsExecuteSeijidantai()) {
             forceSabunDumpStdMasterSeijidantaiService.practice(year, planDto3, startDate, endDate,

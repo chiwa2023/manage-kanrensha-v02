@@ -148,20 +148,6 @@ function recieveCancelKigyouDtEdit() {
     history.back();
 }
 
-const isNewData: ComputedRef<boolean> = computed(() => {
-    if (UserRoleConstants.KANRENSHA_PERSON == userDto.value.kanrenshaRole) {
-        return 0 == editEntityPerson.value.kanrenshaPersonMasterId;
-    }
-    if (UserRoleConstants.KANRENSHA_KIGYOU_DT == userDto.value.kanrenshaRole) {
-        return 0 == editEntityKigyouDt.value.kanrenshaKigyouDtMasterId;
-    }
-    if (UserRoleConstants.KANRENSHA_SEIJIDANTAI == userDto.value.kanrenshaRole) {
-        return 0 == editEntitySeijidantai.value.kanrenshaSeijidantaiMasterId;
-    }
-    return false;
-});
-
-
 function recieveKigyouDtInterfaceEdit(editDto: KanrenshaKigyouDtDtoInterface) {
 
     const capsuleDto: SaveKanrenshaKigyouDtCapsuleDtoInterface = new SaveKanrenshaKigyouDtCapsuleDto();
@@ -170,7 +156,7 @@ function recieveKigyouDtInterfaceEdit(editDto: KanrenshaKigyouDtDtoInterface) {
 
     // 新規と編集で渡す先だけ変える(渡すものは同じ)
     let url = BLANK;
-    if (isNewData.value) {
+    if (0 == editEntityKigyouDt.value.kanrenshaKigyouDtMasterId) {
         url = urlBack + "/user-kanrensha/add-kigyou-dt";
         editDto.isCombineUser = true; // 紐づけ処理あり
     } else {
@@ -242,7 +228,7 @@ function recievePersonInterfaceEdit(editDto: KanrenshaPersonDtoInterface) {
 
     // 新規と編集で渡す先だけ変える(渡すものは同じ)
     let url = BLANK;
-    if (isNewData.value) {
+    if (0 == editEntityPerson.value.kanrenshaPersonMasterId) {
         url = urlBack + "/user-kanrensha/add-person";
         editDto.isCombineUser = true; // 紐づけ処理あり
     } else {
@@ -313,7 +299,7 @@ function recieveSeijidantaiInterfaceEdit(editDto: KanrenshaSeijidantaiDtoInterfa
 
     // 新規と編集で渡す先だけ変える(渡すものは同じ)
     let url = BLANK;
-    if (isNewData.value) {
+    if (0 == editEntitySeijidantai.value.kanrenshaSeijidantaiMasterId) {
         url = urlBack + "/user-kanrensha/add-seijidantai";
         editDto.isCombineUser = true; // 紐づけ処理あり
     } else {

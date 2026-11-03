@@ -10,7 +10,7 @@ import { RiyoushaManagerMasterEntity, type RiyoushaManagerMasterEntityInterface 
 import getAuthorizedPromiseArea from '../../dto/login/getAuthorizedPromiseArea';
 import type { RiyoushaManagerDtoInterface } from '../../dto/riyousha/riyoushaManagerDto';
 import { SaveRiyoushaManagerCapsuleDto, type SaveRiyoushaManagerCapsuleDtoInterface } from '../../dto/riyousha/saveRiyoushaManagerCapsuleDto';
-import ManagerInfo from '../../common/user_info/ManagerInfo.vue';
+import NewComerInfo from '../../common/user_info/NewComerInfo.vue';
 
 // props,emit
 const emits = defineEmits(["sendCancelManager", "sendManagerInterface"]);
@@ -18,7 +18,7 @@ const emits = defineEmits(["sendCancelManager", "sendManagerInterface"]);
 // よく使う定数
 const BLANK: string = "";
 // const INIT_NUMBER: number = 0;
-const INIT_BOOLEAN: boolean = false;
+// const INIT_BOOLEAN: boolean = false;
 // const SERVER_STATUS_OK: number = 200;
 const SERVER_STATUS_ERROR: number = 400;
 const INQUIRE_FLG: boolean = false;
@@ -46,6 +46,8 @@ onMounted(() => {
     const userInfoCommon = useUserInfoStoreCommon(getActivePinia());
     userInfoCommon.jwtDto = userInfo.jwtDto;
     userInfoCommon.userDto = userInfo.userDto;
+
+    userDto.value = userInfo.userDto;
 });
 
 
@@ -56,7 +58,6 @@ function recieveCancelManager() {
 
 const editEntity: Ref<RiyoushaManagerMasterEntityInterface> = ref(new RiyoushaManagerMasterEntity());
 
-let isSaveSuccess: boolean = INIT_BOOLEAN;
 function recieveManagerInterface(editDto: RiyoushaManagerDtoInterface) {
 
     editDto.isCombineUser = true; // 初期登録時は紐づけ処理する
@@ -95,7 +96,7 @@ function recieveManagerInterface(editDto: RiyoushaManagerDtoInterface) {
                     infoLevel.value = MessageConstants.LEVEL_INFO;
                     messageType.value = MessageConstants.VIEW_TOAST;
                     // 更新成功時
-                    isSaveSuccess = true;
+                    caller.value = "add record";
                 }
             })
             .catch((error) => {
@@ -119,20 +120,20 @@ function recieveManagerInterface(editDto: RiyoushaManagerDtoInterface) {
     });
 }
 
-function recieveSubmit() {
+function recieveSubmit(title: string, callerMess: string) {
     infoLevel.value = 0;
     messageType.value = 0;
 
-    // 登録成功時のみ運営者メニューに遷移
-    if (isSaveSuccess) {
+    // 登録成功時のみ運営者メニューに遷移                  
+    if (title === MESS_PAGE_NAME && callerMess === "add record") {
         router.push(RoutePathConstants.PAGE_LOGOUT);
     }
 }
 </script>
 <template>
 
-    <!-- 運営者 -->
-    <ManagerInfo :user-dto="userDto"></ManagerInfo>
+    <!-- 新規登録コードチェック -->
+    <NewComerInfo :current-step="4" regist-code="1"></NewComerInfo>
 
     <h1>運営者追加</h1><br>
 

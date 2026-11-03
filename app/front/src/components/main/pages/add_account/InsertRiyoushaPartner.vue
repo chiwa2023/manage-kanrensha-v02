@@ -10,12 +10,12 @@ import type { RiyoushaPartnerApiDtoInterface } from '../../dto/riyousha/riyousha
 import { SaveRiyoushaPartnerApiCapsuleDto, type SaveRiyoushaPartnerApiCapsuleDtoInterface } from '../../dto/riyousha/saveRiyoushaPartnerApiCapsuleDto';
 import getAuthorizedPromiseArea from '../../dto/login/getAuthorizedPromiseArea';
 import { RiyoushaPartnerApiMasterEntity, type RiyoushaPartnerApiMasterEntityInterface } from '../../entity/riyoushaPartnerApiMasterEntity';
-import PartnerApiInfo from '../../common/user_info/PartnerApiInfo.vue';
+import NewComerInfo from '../../common/user_info/NewComerInfo.vue';
 
 // よく使う定数
 const BLANK: string = "";
 // const INIT_NUMBER: number = 0;
-const INIT_BOOLEAN: boolean = false;
+// const INIT_BOOLEAN: boolean = false;
 // const SERVER_STATUS_OK: number = 200;
 const SERVER_STATUS_ERROR: number = 400;
 const INQUIRE_FLG: boolean = false;
@@ -45,6 +45,8 @@ onMounted(() => {
     const userInfoCommon = useUserInfoStoreCommon(getActivePinia());
     userInfoCommon.jwtDto = userInfo.jwtDto;
     userInfoCommon.userDto = userInfo.userDto;
+
+    userDto.value = userInfo.userDto;
 });
 
 function recieveCancelPartnerApi() {
@@ -52,7 +54,6 @@ function recieveCancelPartnerApi() {
     router.push(RoutePathConstants.PAGE_MENU_PARTNER_API);
 }
 
-let isSaveSuccess: boolean = INIT_BOOLEAN;
 function recievePartnerApiInterface(editDto: RiyoushaPartnerApiDtoInterface) {
 
     editDto.isCombineUser = true; // 初期登録時は紐づけ処理する
@@ -82,7 +83,6 @@ function recievePartnerApiInterface(editDto: RiyoushaPartnerApiDtoInterface) {
                 }
 
                 message.value = resultDto.message;
-                // 処理が成功したら再登録できないようにアップロードファイル情報を初期化
                 if (resultDto.isFailure) {
                     infoLevel.value = MessageConstants.LEVEL_WARNING;
                     messageType.value = MessageConstants.VIEW_OK;
@@ -91,7 +91,7 @@ function recievePartnerApiInterface(editDto: RiyoushaPartnerApiDtoInterface) {
                     infoLevel.value = MessageConstants.LEVEL_INFO;
                     messageType.value = MessageConstants.VIEW_TOAST;
                     // 更新成功時
-                    isSaveSuccess = true;
+                    caller.value = "add record";
                 }
             })
             .catch((error) => {
@@ -115,21 +115,23 @@ function recievePartnerApiInterface(editDto: RiyoushaPartnerApiDtoInterface) {
     });
 }
 
-function recieveSubmit() {
+function recieveSubmit(title: string, callerMess: string) {
     infoLevel.value = 0;
     messageType.value = 0;
 
     // 登録成功時のみ運営者メニューに遷移
-    if (isSaveSuccess) {
+    if (title === MESS_PAGE_NAME && callerMess === "add record" ) {
         router.push(RoutePathConstants.PAGE_LOGOUT);
     }
 }
-
+function onShowUer(){
+    alert(JSON.stringify(  userDto.value));
+}
 </script>
 <template>
 
-    <!-- APIパートナーメニュー兼チェック -->
-    <PartnerApiInfo :user-dto="userDto"></PartnerApiInfo>
+    <!-- 新規登録コードチェック -->
+    <NewComerInfo :current-step="4" regist-code="1"></NewComerInfo>
 
     <h1>APIパートナー追加</h1><br>
 
@@ -145,5 +147,8 @@ function recieveSubmit() {
         </MessageView>
     </div>
 
+    <div class="one-line">
+        <button @click="onShowUer">押す</button>
+    </div>
 </template>
 <style scoped></style>

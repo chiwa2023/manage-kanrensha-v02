@@ -68,13 +68,13 @@ public class AsyncForceDumpMinMasterSabunService {
         LocalDate endDate = capsuleDto.getDateEnd();
 
         List<Integer> listTask = new ArrayList<>();
-        if (capsuleDto.getIsExecuteKigyouDt()) {
-            forceSabunDumpMinMasterKigyouDtService.practice(year, planDto1, startDate, endDate,
-                    capsuleDto.getUserDto());
+        if (capsuleDto.getIsExecutePerson()) {
+            forceSabunDumpMinMasterPersonService.practice(year, planDto1, startDate, endDate, capsuleDto.getUserDto());
             listTask.add(TaskInfoConstants.DUMP_MIN_SABUN_PERSON);
         }
-        if (capsuleDto.getIsExecutePerson()) {
-            forceSabunDumpMinMasterPersonService.practice(year, planDto2, startDate, endDate, capsuleDto.getUserDto());
+        if (capsuleDto.getIsExecuteKigyouDt()) {
+            forceSabunDumpMinMasterKigyouDtService.practice(year, planDto2, startDate, endDate,
+                    capsuleDto.getUserDto());
             listTask.add(TaskInfoConstants.DUMP_MIN_SABUN_KIGYOU);
         }
         if (capsuleDto.getIsExecuteSeijidantai()) {

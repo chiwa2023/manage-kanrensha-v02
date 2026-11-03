@@ -8,6 +8,9 @@ import getAuthorizedPromiseArea from '../../dto/login/getAuthorizedPromiseArea.t
 import { SearchContactManagerCapsuleDto, type SearchContactManagerCapsuleDtoInterface } from '../../dto/contact/searchContactManagerCapsuleDto.ts';
 import { SearchContactManagerResultDto, type SearchContactManagerResultDtoInterface } from '../../dto/contact/searchContactManagerResultDto.ts';
 import { ContactManagerEntity, type ContactManagerEntityInterface } from '../../entity/contactManagerEntity.ts';
+import { useRoute } from 'vue-router';
+import { nextTransferPassStore } from '../../stores/nextTransferPass.ts';
+import router from '../../../../router.ts';
 
 // よく使う定数
 const BLANK: string = "";
@@ -39,9 +42,19 @@ const viewStatus: Ref<number> = ref(1);
 
 const capsuleDto: Ref<AddContactMessageCapsuleDtoInterface> = ref(new AddContactMessageCapsuleDto());
 
+const route = useRoute();
+
 onMounted(() => {
-    // 過去履歴がある場合は履歴を表示(すべてクローズであっても)
-    onSearch();
+    // 直リンク(パスチェックあり)を許容ロジック
+    if (INIT_NUMBER === userDto.value.userPersonId) {
+        const passStore = nextTransferPassStore()
+        passStore.fullPath = route.fullPath;
+        router.push(RoutePathConstants.PAGE_LOGIN);
+        return;
+    } else {
+        // 過去履歴がある場合は履歴を表示(すべてクローズであっても)
+        onSearch();
+    }
 });
 
 const resultDto: Ref<SearchContactManagerResultDtoInterface> = ref(new SearchContactManagerResultDto());
@@ -73,7 +86,6 @@ function onSearch() {
                     messageType.value = MessageConstants.VIEW_OK;
                     return;
                 }
-
 
                 allCount.value = resultDto.value.allCount;
                 limit.value = resultDto.value.limit;
@@ -426,7 +438,7 @@ function getStatus(isColsed: boolean): string {
                 :class="['chat-message', isMyself(entity.insertUserCode) ? 'self' : 'other']">
                 <div class="chat-meta">
                     <span class="chat-sender" v-if="!isMyself(entity.insertUserCode)">{{ entity.insertUserName
-                        }}</span>
+                    }}</span>
                     <span class="chat-time">{{ entity.insertTimestamp }}</span>
                 </div>
                 <div class="chat-bubble">

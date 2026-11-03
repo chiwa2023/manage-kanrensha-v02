@@ -66,6 +66,10 @@ public class AddContactManagerController {
     @Value("${app.send.mail.address:test@example.com}")
     private String sendEmail;
 
+    /** ベースURL */
+    @Value("${app.cors.allowed-origins:http://localhost:5173}")
+    private String baseUrl;
+
     /**
      * 処理を行う
      *
@@ -138,7 +142,8 @@ public class AddContactManagerController {
         mailMessage.setSubject(taskInfoEntity.getTaskInfoName() + "：政治資金関連者標準化サイト");
         // mailMessage.setReplyTo("このアドレスに返信はできません");
 
-        mailMessage.setText(taskInfoEntity.getMessageStart());
+        mailMessage.setText(taskInfoEntity.getMessageStart().replaceAll("【transferPass】",
+                baseUrl + taskInfoEntity.getTransferPass()));
 
         MailDataDto mailDataDto = new MailDataDto();
         mailDataDto.setSimpleMailMessage(mailMessage);

@@ -7,6 +7,7 @@ import { deletePasskey, fetchPasskeyList, getDefaultDeviceName, getLoginUser, is
 // 定数
 const MESS_PAGE_NAME = 'パスキー管理';
 const INIT_CALLER = 'PasskeyManage';
+const PROMPT_SKIP_KEY_PREFIX = 'passkey_prompt_skip_';
 
 // ユーザ情報
 const userDto: Ref<LeastUserDtoInterface> = ref(getLoginUser());
@@ -25,6 +26,9 @@ const passkeyList: Ref<PasskeySummaryDto[]> = ref([]);
 const isLoading: Ref<boolean> = ref(false);
 const isRegistering: Ref<boolean> = ref(false);
 
+// パスキー案内表示フラグ (TopPageのdontShowPasskeyPromptAgainに対応)
+const dontShowPasskeyPromptAgain: Ref<boolean> = ref(false);
+
 // 削除確認モーダル
 const isConfirmDeleteOpen: Ref<boolean> = ref(false);
 const deleteTargetId: Ref<number | null> = ref(null);
@@ -35,10 +39,54 @@ onBeforeMount(async () => {
     defaultDeviceName.value = getDefaultDeviceName();
     newDeviceName.value = defaultDeviceName.value;
 
+    loadPromptSetting();
+
     if (isSupported.value) {
         await loadPasskeys();
     }
 });
+
+/**
+ * ログイン時のパスキー案内表示設定を取得する
+ */
+function loadPromptSetting() {
+    if (userDto.value && userDto.value.userPersonId) {
+        const skipKey = PROMPT_SKIP_KEY_PREFIX + userDto.value.userPersonId;
+        dontShowPasskeyPromptAgain.value = localStorage.getItem(skipKey) === 'true';
+    }
+}
+
+/**
+ * ログイン時のパスキー案内表示設定を保存する
+ */
+function savePromptSetting() {
+    if (!userDto.value || !userDto.value.userPersonId) {
+        infoLevel.value = MessageConstants.LEVEL_ERROR;
+        messageType.value = MessageConstants.VIEW_OK;
+        message.value = 'ユーザ情報が取得できないため、設定を保存できませんでした。';
+        return;
+    }
+    const skipKey = PROMPT_SKIP_KEY_PREFIX + userDto.value.userPersonId;
+    if (dontShowPasskeyPromptAgain.value) {
+        localStorage.setItem(skipKey, 'true');
+        infoLevel.value = MessageConstants.LEVEL_INFO;
+        messageType.value = MessageConstants.VIEW_OK;
+        message.value = 'ログイン時のパスキー登録案内を「非表示」に設定しました。次回ログイン時に案内は表示されません。';
+    } else {
+        localStorage.removeItem(skipKey);
+        infoLevel.value = MessageConstants.LEVEL_INFO;
+        messageType.value = MessageConstants.VIEW_OK;
+        message.value = 'ログイン時のパスキー登録案内を「表示」に設定しました。パスキー未登録の場合、次回ログイン時に案内が表示されます。';
+    }
+}
+
+/**
+ * 案内の表示設定に戻す（リセット）
+ */
+function resetPromptSetting() {
+    dontShowPasskeyPromptAgain.value = false;
+    savePromptSetting();
+}
 
 /**
  * 登録済みパスキー一覧を取得する
@@ -257,6 +305,51 @@ function recieveSubmit() {
             </table>
         </div>
 
+        <!-- ログイン時のパスキー登録案内設定セクション -->
+        <div class="card-section">
+            <h3 class="accent-h3">ログイン時のパスキー登録案内設定</h3>
+            <p class="section-desc">
+                パスキー未登録でログインした際に表示される「パスキー（2要素認証）登録のお願い」案内の表示・非表示を設定できます。
+            </p>
+            <div class="prompt-setting-area">
+                <div class="status-indicator">
+                    <span class="status-label">現在の設定:</span>
+                    <span v-if="dontShowPasskeyPromptAgain" class="status-badge badge-hidden">
+                        非表示（ログイン時に案内しない）
+                    </span>
+                    <span v-else class="status-badge badge-visible">
+                        表示（ログイン時に案内する）
+                    </span>
+                </div>
+                <div class="form-checkbox">
+                    <input
+                        type="checkbox"
+                        id="dontShowPasskeyPromptAgain"
+                        v-model="dontShowPasskeyPromptAgain"
+                    />
+                    <label for="dontShowPasskeyPromptAgain">
+                        次回からこの案内を表示しない（案内を非表示にする）
+                    </label>
+                </div>
+                <div class="setting-actions">
+                    <button @click="savePromptSetting" class="footer-button save-setting-btn">
+                        設定を保存
+                    </button>
+                    <button
+                        v-if="dontShowPasskeyPromptAgain"
+                        @click="resetPromptSetting"
+                        class="footer-button reset-setting-btn"
+                        type="button"
+                    >
+                        案内の表示に戻す
+                    </button>
+                </div>
+            </div>
+            <p class="setting-note">
+                ※ ログイン画面で「次回からこの案内を表示しない」にチェックして閉じた場合でも、ここからいつでも表示に戻すことができます。
+            </p>
+        </div>
+
         <div class="footer">
             <button @click="onBack" class="footer-button">戻る</button>
         </div>
@@ -438,5 +531,85 @@ function recieveSubmit() {
 .delete-confirm-btn {
     background-color: #e53935;
     color: #fff;
+}
+.section-desc {
+    font-size: 0.95rem;
+    color: #555;
+    margin-top: 0.4rem;
+    margin-bottom: 1rem;
+    line-height: 1.5;
+}
+.prompt-setting-area {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    margin-bottom: 0.8rem;
+}
+.status-indicator {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 0.95rem;
+}
+.status-label {
+    font-weight: 600;
+    color: #444;
+}
+.status-badge {
+    padding: 0.25rem 0.6rem;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    font-weight: bold;
+}
+.badge-visible {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+    border: 1px solid #c8e6c9;
+}
+.badge-hidden {
+    background-color: #fff3e0;
+    color: #e65100;
+    border: 1px solid #ffe0b2;
+}
+.form-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.95rem;
+}
+.form-checkbox input[type="checkbox"] {
+    width: 1.1rem;
+    height: 1.1rem;
+    cursor: pointer;
+}
+.form-checkbox label {
+    cursor: pointer;
+}
+.setting-actions {
+    display: flex;
+    gap: 0.8rem;
+    margin-top: 0.4rem;
+    flex-wrap: wrap;
+}
+.save-setting-btn {
+    background-color: #007bff;
+    color: #fff;
+    cursor: pointer;
+}
+.save-setting-btn:hover {
+    background-color: #0056b3;
+}
+.reset-setting-btn {
+    background-color: #28a745;
+    color: #fff;
+    cursor: pointer;
+}
+.reset-setting-btn:hover {
+    background-color: #218838;
+}
+.setting-note {
+    font-size: 0.85rem;
+    color: #666;
+    margin-top: 0.5rem;
 }
 </style>

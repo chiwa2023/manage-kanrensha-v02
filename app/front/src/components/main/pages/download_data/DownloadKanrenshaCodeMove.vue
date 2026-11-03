@@ -1,5 +1,5 @@
 ﻿<script setup lang="ts">
-import { onMounted, ref, type Ref } from 'vue';
+import { onBeforeMount, onMounted, ref, type Ref } from 'vue';
 import { AccessTokenNotFoundError, convertDateText, convertDatetimeText, getErrorMessage, getErrorUniqueIdMessage, getLoginUser, MessageConstants, MessageView, TokenRefreshError, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import ManagerInfo from '../../common/user_info/ManagerInfo.vue';
 import getAuthorizedPromiseArea from '../../dto/login/getAuthorizedPromiseArea.ts';
@@ -7,9 +7,12 @@ import RoutePathConstants from '../../../../routePathConstants.ts';
 import { GetDumpRecordCapsuleDto, type GetDumpRecordCapsuleDtoInterrface } from '../../dto/z_force_dump/getDumpRecordCapsuleDto.ts';
 import { DumpRecordEntity, type DumpRecordEntityInterface } from '../../entity/dumpRecordEntity.ts';
 import type { GetDumpRecordResultDtoInterface } from '../../dto/z_force_dump/getDumpRecordResultDto.ts';
+import { useRoute } from 'vue-router';
+import { nextTransferPassStore } from '../../stores/nextTransferPass.ts';
+import router from '../../../../router.ts';
 
 const BLANK: string = "";
-// const INIT_NUMBER: number = 0;
+const INIT_NUMBER: number = 0;
 // const INIT_BOOLEAN: boolean = false;
 const SERVER_STATUS_ERROR: number = 400;
 const INQUIRE_FLG: boolean = false;
@@ -29,6 +32,17 @@ const urlBack: string = RoutePathConstants.DOMAIN + RoutePathConstants.BASE_PATH
 
 // ユーザ呼び出し
 const userDto: Ref<LeastUserDtoInterface> = ref(getLoginUser());
+
+const route = useRoute();
+onBeforeMount(() => {
+    // 直リンク(パスチェックあり)を許容ロジック
+    if (INIT_NUMBER === userDto.value.userPersonId) {
+        const passStore = nextTransferPassStore()
+        passStore.fullPath = route.fullPath;
+        router.push(RoutePathConstants.PAGE_LOGIN);
+        return;
+    }
+});
 
 function onCancel() {
     history.back();

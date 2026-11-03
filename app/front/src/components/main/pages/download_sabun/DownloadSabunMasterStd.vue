@@ -1,5 +1,5 @@
 ﻿<script setup lang="ts">
-import { onMounted, ref, type Ref } from 'vue';
+import { onBeforeMount, onMounted, ref, type Ref } from 'vue';
 import { AccessTokenNotFoundError, convertDateText, convertDatetimeText, getErrorMessage, getErrorUniqueIdMessage, getLoginUser, MessageConstants, MessageView, TokenRefreshError, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import ManagerInfo from '../../common/user_info/ManagerInfo.vue';
 import { DumpRecordEntity, type DumpRecordEntityInterface } from '../../entity/dumpRecordEntity.ts';
@@ -7,10 +7,13 @@ import RoutePathConstants from '../../../../routePathConstants.ts';
 import { GetDumpRecordCapsuleDto, type GetDumpRecordCapsuleDtoInterrface } from '../../dto/z_force_dump/getDumpRecordCapsuleDto.ts';
 import getAuthorizedPromiseArea from '../../dto/login/getAuthorizedPromiseArea.ts';
 import type { GetDumpRecordResultDtoInterface } from '../../dto/z_force_dump/getDumpRecordResultDto.ts';
+import { useRoute } from 'vue-router';
+import { nextTransferPassStore } from '../../stores/nextTransferPass.ts';
+import router from '../../../../router.ts';
 
 // ユーザ呼び出し
 const BLANK: string = "";
-// const INIT_NUMBER: number = 0;
+const INIT_NUMBER: number = 0;
 // const INIT_BOOLEAN: boolean = false;
 const SERVER_STATUS_ERROR: number = 400;
 const INQUIRE_FLG: boolean = false;
@@ -37,6 +40,17 @@ const taskKigyouCode: number = 322;
 const dumpKigyouEntity: Ref<DumpRecordEntityInterface> = ref(new DumpRecordEntity());
 const taskSeijidantaiCode: number = 323;
 const dumpSeijidantaiEntity: Ref<DumpRecordEntityInterface> = ref(new DumpRecordEntity());
+
+const route = useRoute();
+onBeforeMount(() => {
+    // 直リンク(パスチェックあり)を許容ロジック
+    if (INIT_NUMBER === userDto.value.userPersonId) {
+        const passStore = nextTransferPassStore()
+        passStore.fullPath = route.fullPath;
+        router.push(RoutePathConstants.PAGE_LOGIN);
+        return;
+    }
+});
 
 function onCancel() {
     history.back();
@@ -153,14 +167,20 @@ function recieveSubmit() {
             ダウンロード
         </div>
         <div class="right-area">
-
             <a href="/dump/sabun_master_std_all.zip" class="left-space">一括ダウンロード(sabun_master_std_all.zip)</a><br>
         </div>
     </div>
 
     <h3>関連者個人</h3>
     <div class="one-line">
-        <a href="/dump/dump_master_sabun/sabun_master_person_std.csv">関連者個人マスタ標準(sabun_master_person_std.csv)</a><br>
+
+        <div class="left-area">
+            ダウンロード
+        </div>
+        <div class="right-area">
+            <a
+                href="/dump/dump_master_sabun/sabun_master_person_std.csv">関連者個人マスタ標準(sabun_master_person_std.csv)</a><br>
+        </div>
     </div>
     <div class="one-line ">
         <div class="left-area">
@@ -179,9 +199,7 @@ function recieveSubmit() {
             ダウンロード
         </div>
         <div class="right-area">
-
-            <a
-                href="/dump/dump_master_sabun/sabun_master_person_std.csv">関連者企業／団体標準(sabun_master_person_std.csv)</a><br>
+            <a href="/dump/dump_master_sabun/sabun_master_kigyou_dt_std">関連者企業／団体標準(sabun_master_kigyou_dt_std)</a><br>
         </div>
     </div>
     <div class="one-line ">
@@ -201,8 +219,7 @@ function recieveSubmit() {
             ダウンロード
         </div>
         <div class="right-area">
-
-            <a href="/dump/dump_master_sabun/sabun_master_person_std.csv">関連者政治団体標準(sabun_master_person_std.csv)</a><br>
+            <a href="/dump/dump_master_sabun/master_seijidantai_std.csv">関連者政治団体標準(master_seijidantai_std.csv)</a><br>
         </div>
     </div>
     <div class="one-line ">

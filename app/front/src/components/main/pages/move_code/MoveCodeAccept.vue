@@ -356,7 +356,7 @@ function getStatus(status: number): string {
     <!-- 管理者メニュー兼チェック -->
     <ManagerInfo :user-dto="userDto"></ManagerInfo>
 
-    <h1>コード変更承認</h1><br>
+    <h1>関連者コード変更承認</h1><br>
 
     <h3 class="accent-h3">検索条件</h3>
 
@@ -478,6 +478,14 @@ function getStatus(status: number): string {
         </div>
         <div class="right-area">
             <button @click="onDownloadFile">書証ダウンロード</button>
+        </div>
+    </div>
+    <div class="one-line">
+        <div class="left-area">
+            承認理由
+        </div>
+        <div class="right-area">
+            <textarea class="max-input" v-model="editEntity.moveReason"></textarea>
         </div>
     </div>
 

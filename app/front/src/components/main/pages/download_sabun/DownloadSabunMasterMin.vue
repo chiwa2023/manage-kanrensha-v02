@@ -1,14 +1,17 @@
 ﻿<script setup lang="ts">
-import { onMounted, ref, type Ref } from 'vue';
+import { onBeforeMount, onMounted, ref, type Ref } from 'vue';
 import { DumpRecordEntity, type DumpRecordEntityInterface } from '../../entity/dumpRecordEntity';
 import { convertDateText, convertDatetimeText, getErrorUniqueIdMessage, getLoginUser, MessageConstants, MessageView, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import RoutePathConstants from '../../../../routePathConstants';
 import { GetDumpRecordCapsuleDto, type GetDumpRecordCapsuleDtoInterrface } from '../../dto/z_force_dump/getDumpRecordCapsuleDto';
 import type { GetDumpRecordResultDtoInterface } from '../../dto/z_force_dump/getDumpRecordResultDto';
 import ManagerInfo from '../../common/user_info/ManagerInfo.vue';
+import { useRoute } from 'vue-router';
+import { nextTransferPassStore } from '../../stores/nextTransferPass.ts';
+import router from '../../../../router.ts';
 
 const BLANK: string = "";
-// const INIT_NUMBER: number = 0;
+const INIT_NUMBER: number = 0;
 // const INIT_BOOLEAN: boolean = false;
 const SERVER_STATUS_OK: number = 200;
 // const INQUIRE_FLG: boolean = false;
@@ -34,6 +37,17 @@ const taskKigyouCode: number = 325;
 const dumpKigyouEntity: Ref<DumpRecordEntityInterface> = ref(new DumpRecordEntity());
 const taskSeijidantaiCode: number = 326;
 const dumpSeijidantaiEntity: Ref<DumpRecordEntityInterface> = ref(new DumpRecordEntity());
+
+const route = useRoute();
+onBeforeMount(() => {
+    // 直リンク(パスチェックあり)を許容ロジック
+    if (INIT_NUMBER === userDto.value.userPersonId) {
+        const passStore = nextTransferPassStore()
+        passStore.fullPath = route.fullPath;
+        router.push(RoutePathConstants.PAGE_LOGIN);
+        return;
+    }
+});
 
 function onCancel() {
     history.back();
@@ -132,7 +146,6 @@ function recieveSubmit() {
             ダウンロード
         </div>
         <div class="right-area">
-
             <a
                 href="/dump/dump_master_sabun/sabun_master_person_min.csv">関連者個人マスタ最小(sabun_master_person_min.csv)</a><br>
         </div>
@@ -154,9 +167,8 @@ function recieveSubmit() {
             ダウンロード
         </div>
         <div class="right-area">
-
             <a
-                href="/dump/dump_master_sabun/sabun_master_person_min.csv">関連者企業／団体最小(sabun_master_person_min.csv)</a><br>
+                href="/dump/dump_master_sabun/sabun_master_kigyou_dt_min.csv">関連者企業／団体最小(sabun_master_kigyou_dt_min.csv)</a><br>
         </div>
     </div>
     <div class="one-line ">
@@ -176,8 +188,8 @@ function recieveSubmit() {
             ダウンロード
         </div>
         <div class="right-area">
-
-            <a href="/dump/dump_master_sabun/sabun_master_person_min.csv">関連者政治団体最小(sabun_master_person_min.csv)</a><br>
+            <a
+                href="/dump/dump_master_sabun/sabun_master_seijidantai_min.csv">関連者政治団体最小(sabun_master_seijidantai_min.csv)</a><br>
         </div>
     </div>
     <div class="one-line ">

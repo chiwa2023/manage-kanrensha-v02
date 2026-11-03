@@ -1,5 +1,5 @@
 ﻿<script setup lang="ts">
-import { onMounted, ref, type Ref } from 'vue';
+import { onBeforeMount, onMounted, ref, type Ref } from 'vue';
 import ManagerInfo from '../../common/user_info/ManagerInfo.vue';
 import { AccessTokenNotFoundError, FrameworkCapsuleDto, getErrorMessage, getLoginUser, MessageConstants, MessageView, PagingControl, TokenRefreshError, type FrameworkCapsuleDtoInterface, type FrameworkMessageAndResultDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import type { WkTblAddressRsdtChangeEntityInterface } from '../../entity/wkTblAddressRsdtChangeEntity.ts';
@@ -11,6 +11,9 @@ import { SearchWkTblRsdtChangeResultDto, type SearchWkTblRsdtChangeResultDtoInte
 import { SearchWkTblRsdtDeleteResultDto, type SearchWkTblRsdtDeleteResultDtoInterface } from '../../dto/address_registory/searchWkTblRsdtDeleteResultDto.ts';
 import SearchDeleteWkTblAddress from '../../common/address_registory/SearchDeleteWkTblAddress.vue';
 import SearchChangeWkTblAddress from '../../common/address_registory/SearchChangeWkTblAddress.vue';
+import { useRoute } from 'vue-router';
+import { nextTransferPassStore } from '../../stores/nextTransferPass.ts';
+import router from '../../../../router.ts';
 
 // よく使う定数
 const BLANK: string = "";
@@ -62,6 +65,17 @@ capsuleDtoDelete.value.userDto = userDto.value;
 
 const resultDtoChange: Ref<SearchWkTblRsdtChangeResultDtoInterface> = ref(new SearchWkTblRsdtChangeResultDto());
 const resultDtoDelete: Ref<SearchWkTblRsdtDeleteResultDtoInterface> = ref(new SearchWkTblRsdtDeleteResultDto());
+
+const route = useRoute();
+onBeforeMount(() => {
+    // 直リンク(パスチェックあり)を許容ロジック
+    if (INIT_NUMBER === userDto.value.userPersonId) {
+        const passStore = nextTransferPassStore()
+        passStore.fullPath = route.fullPath;
+        router.push(RoutePathConstants.PAGE_LOGIN);
+        return;
+    }
+});
 
 onMounted(async () => {
     // 削除リストと編集リスト(自動処理決定)のみを表示

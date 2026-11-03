@@ -143,7 +143,7 @@ function recieveSubmit() {
             アップロードファイルの指定<br>
         </div>
         <div class="right-area">
-            <input ref="selectFileInput" type="file" accept=".csv" @change="readTextFile" style="display:none;">
+            <input ref="selectFileInput" type="file" @change="readTextFile" style="display:none;">
             <button @click="onReadButton">アップロード</button>
             ファイル名{{ fileName }}
         </div>

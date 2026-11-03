@@ -1,11 +1,15 @@
 ﻿<script setup lang="ts">
 import { AccessTokenNotFoundError, convertDateText, getErrorMessage, getLoginUser, InputPref, MessageConstants, MessageView, PagingControl, TokenRefreshError, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
-import { ref, type Ref } from 'vue';
+import { onBeforeMount, ref, type Ref } from 'vue';
 import { SearchLgCodeCapsuleDto, type SearchLgCodeCapsuleDtoInterface } from '../../dto/address_registory/searchLgCodeCapsuleDto';
 import { SearchLgCodeResultDto, type SearchLgCodeResultDtoInterface } from '../../dto/address_registory/searchLgCodeResultDto';
 import getAuthorizedPromiseArea from '../../dto/login/getAuthorizedPromiseArea';
 import RoutePathConstants from '../../../../routePathConstants';
 import type { SelectOptionStringDtoInterface } from '../../dto/select_options/selectOptionStringDto';
+import ManagerInfo from '../../common/user_info/ManagerInfo.vue';
+import { useRoute } from 'vue-router';
+import { nextTransferPassStore } from '../../stores/nextTransferPass.ts';
+import router from '../../../../router.ts';
 
 
 // よく使う定数
@@ -39,6 +43,17 @@ const userDto: Ref<LeastUserDtoInterface> = ref(getLoginUser());
 // 編集Dto    
 const capsuleDto: Ref<SearchLgCodeCapsuleDtoInterface> = ref(new SearchLgCodeCapsuleDto());
 const resultDto: Ref<SearchLgCodeResultDtoInterface> = ref(new SearchLgCodeResultDto());
+
+const route = useRoute();
+onBeforeMount(() => {
+    // 直リンク(パスチェックあり)を許容ロジック
+    if (INIT_NUMBER === userDto.value.userPersonId) {
+        const passStore = nextTransferPassStore()
+        passStore.fullPath = route.fullPath;
+        router.push(RoutePathConstants.PAGE_LOGIN);
+        return;
+    }
+});
 
 function onSearch() {
 

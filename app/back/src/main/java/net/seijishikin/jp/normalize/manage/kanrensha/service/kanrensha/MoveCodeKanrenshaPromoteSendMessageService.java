@@ -27,6 +27,10 @@ public class MoveCodeKanrenshaPromoteSendMessageService {
     @Value("${app.send.mail.address:test@example.com}")
     private String sendEmail;
 
+    /** ベースURL */
+    @Value("${app.cors.allowed-origins:http://localhost:5173}")
+    private String baseUrl;
+
     /** ユーザ権限Repository */
     @Autowired
     private UserRoleRepository userRoleRepository;
@@ -102,7 +106,7 @@ public class MoveCodeKanrenshaPromoteSendMessageService {
         // ここでは結果を待つだけなので遷移ページは設けない
         // 異議があった場合は→運営者に連絡をして作業を止めてもらう
         String body = planResultDto.getMessageTemplate();
-        mailMessage.setText(body);
+        mailMessage.setText(body.replaceAll("【transferPass】", baseUrl + planResultDto.getTransferPass()));
 
         MailDataDto mailDataDto = new MailDataDto();
         mailDataDto.setSimpleMailMessage(mailMessage);

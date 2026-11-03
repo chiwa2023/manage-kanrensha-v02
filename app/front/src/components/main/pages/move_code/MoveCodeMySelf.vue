@@ -1,5 +1,5 @@
 ﻿<script setup lang="ts">
-import { onMounted, ref, type Ref } from 'vue';
+import { onBeforeMount, onMounted, ref, type Ref } from 'vue';
 import { MoveKanrenshaCodeSearchResultDto, type MoveKanrenshaCodeSearchResultDtoInterface } from '../../dto/kanrensha/moveKanrenshaCodeSearchResultDto';
 import KanrenshaKbnConstants from '../../dto/kanrensha/kanrenshaKbnConstants';
 import { MoveKanrenshaCodeHistoryCapsuleDto, type MoveKanrenshaCodeHistoryCapsuleDtoInterface } from '../../dto/kanrensha/moveKanrenshaCodeHistoryCapsuleDto';
@@ -10,6 +10,9 @@ import KanrenshaInfo from '../../common/user_info/KanrenshaInfo.vue';
 import { useTaskPlan } from '../../stores/storeTaskPlan';
 import { UpdateTaskPlanSimpleCapsuleDto, type UpdateTaskPlanSimpleCapsuleDtoInterface } from '../../dto/task_plan/updateTaskPlanSimpleCapsuleDto.ts';
 import { notCompletedTaskStore } from '../../stores/notCompletedTask.ts';
+import { useRoute } from 'vue-router';
+import { nextTransferPassStore } from '../../stores/nextTransferPass.ts';
+import router from '../../../../router.ts';
 
 
 // よく使う定数
@@ -34,7 +37,6 @@ const urlBack: string = RoutePathConstants.DOMAIN + RoutePathConstants.BASE_PATH
 // ユーザ呼び出し
 const userDto: Ref<LeastUserDtoInterface> = ref(getLoginUser());
 
-
 // 検索Dto
 const capsuleDtoSearch: Ref<MoveKanrenshaCodeHistoryCapsuleDtoInterface> = ref(new MoveKanrenshaCodeHistoryCapsuleDto());
 const resultDtoSearch: Ref<MoveKanrenshaCodeSearchResultDtoInterface> = ref(new MoveKanrenshaCodeSearchResultDto());
@@ -44,7 +46,16 @@ const isTaskTransfer: Ref<boolean> = ref(false);
 // タスク終了Dto
 const capsuleDto: Ref<UpdateTaskPlanSimpleCapsuleDtoInterface> = ref(new UpdateTaskPlanSimpleCapsuleDto());
 
-
+const route = useRoute();
+onBeforeMount(() => {
+    // 直リンク(パスチェックあり)を許容ロジック
+    if (INIT_NUMBER === userDto.value.userPersonId) {
+        const passStore = nextTransferPassStore()
+        passStore.fullPath = route.fullPath;
+        router.push(RoutePathConstants.PAGE_LOGIN);
+        return;
+    }
+});
 
 onMounted(() => {
 

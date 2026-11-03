@@ -1,5 +1,5 @@
 ﻿<script setup lang="ts">
-import { onMounted, ref, type Ref } from 'vue';
+import { onBeforeMount, onMounted, ref, type Ref } from 'vue';
 import { AccessTokenNotFoundError, convertDateText, convertDatetimeText, getErrorMessage, getErrorUniqueIdMessage, getLoginUser, MessageConstants, MessageView, TokenRefreshError, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import ManagerInfo from '../../common/user_info/ManagerInfo.vue';
 import { DumpRecordEntity, type DumpRecordEntityInterface } from '../../entity/dumpRecordEntity.ts';
@@ -7,9 +7,12 @@ import RoutePathConstants from '../../../../routePathConstants.ts';
 import { GetDumpRecordCapsuleDto, type GetDumpRecordCapsuleDtoInterrface } from '../../dto/z_force_dump/getDumpRecordCapsuleDto.ts';
 import getAuthorizedPromiseArea from '../../dto/login/getAuthorizedPromiseArea.ts';
 import type { GetDumpRecordResultDtoInterface } from '../../dto/z_force_dump/getDumpRecordResultDto.ts';
+import { useRoute } from 'vue-router';
+import { nextTransferPassStore } from '../../stores/nextTransferPass.ts';
+import router from '../../../../router.ts';
 
 const BLANK: string = "";
-// const INIT_NUMBER: number = 0;
+const INIT_NUMBER: number = 0;
 // const INIT_BOOLEAN: boolean = false;
 const SERVER_STATUS_ERROR: number = 400;
 const INQUIRE_FLG: boolean = false;
@@ -36,6 +39,17 @@ const taskKigyouCode: number = 312;
 const dumpKigyouEntity: Ref<DumpRecordEntityInterface> = ref(new DumpRecordEntity());
 const taskSeijidantaiCode: number = 313;
 const dumpSeijidantaiEntity: Ref<DumpRecordEntityInterface> = ref(new DumpRecordEntity());
+
+const route = useRoute();
+onBeforeMount(() => {
+    // 直リンク(パスチェックあり)を許容ロジック
+    if (INIT_NUMBER === userDto.value.userPersonId) {
+        const passStore = nextTransferPassStore()
+        passStore.fullPath = route.fullPath;
+        router.push(RoutePathConstants.PAGE_LOGIN);
+        return;
+    }
+});
 
 function onCancel() {
     history.back();
@@ -178,7 +192,7 @@ function recieveSubmit() {
             ダウンロード
         </div>
         <div class="right-area">
-            <a href="/dump/dump_master/master_kigyou_dt_std.csv">関連者企業／団体標準(master_person_std.csv)</a><br>
+            <a href="/dump/dump_master/master_kigyou_dt_std.csv">関連者企業／団体標準(master_kigyou_dt_std.csv)</a><br>
         </div>
     </div>
     <div class="one-line ">
@@ -199,28 +213,26 @@ function recieveSubmit() {
             ダウンロード
         </div>
         <div class="right-area">
-            <a href="/dump/dump_master/master_poli_org_std.csv">関連者政治団体標準(master_person_std.csv)</a><br>
+            <a href="/dump/dump_master/master_poli_org_std.csv">関連者政治団体標準(master_poli_org_std.csv)</a><br>
         </div>
-
-        <div class="one-line ">
-            <div class="left-area">
-                収録期間
-            </div>
-            <div class="right-area">
-                {{ convertDateText(dumpSeijidantaiEntity.endDatetime) }}まで <span class="left-space">({{
-                    convertDatetimeText(dumpSeijidantaiEntity.insertTimestamp) }} 実施)</span>
-            </div>
-        </div>
-
-        <!-- メッセージ表示 -->
-        <div class="overMessage" v-if="messageType !== MessageConstants.VIEW_NONE">
-            <MessageView :info-level="infoLevel" :message-type="messageType" :title="MESS_PAGE_NAME" :message="message"
-                :caller="caller" @send-submit="recieveSubmit">
-            </MessageView>
-        </div>
-
-
     </div>
+
+    <div class="one-line ">
+        <div class="left-area">
+            収録期間
+        </div>
+        <div class="right-area">
+            {{ convertDateText(dumpSeijidantaiEntity.endDatetime) }}まで <span class="left-space">({{
+                convertDatetimeText(dumpSeijidantaiEntity.insertTimestamp) }} 実施)</span>
+        </div>
+    </div>
+    <!-- メッセージ表示 -->
+    <div class="overMessage" v-if="messageType !== MessageConstants.VIEW_NONE">
+        <MessageView :info-level="infoLevel" :message-type="messageType" :title="MESS_PAGE_NAME" :message="message"
+            :caller="caller" @send-submit="recieveSubmit">
+        </MessageView>
+    </div>
+
     <div class="footer">
         <button @click="onCancel" class="footer-button">キャンセル</button>
     </div>

@@ -5,13 +5,13 @@ import { getActivePinia } from 'pinia';
 import { AccessTokenNotFoundError, getErrorMessage, getLoginUser, KanrenshaKigyouDtEdit, KanrenshaKigyouDtMasterEntity, KanrenshaPersonEdit, KanrenshaPersonMasterEntity, KanrenshaSeijidanatiEdit, KanrenshaSeijidantaiMasterEntity, MessageConstants, MessageView, SaveKanrenshaKigyouDtCapsuleDto, SaveKanrenshaPersonCapsuleDto, SaveKanrenshaSeijidantaiCapsuleDto, TokenRefreshError, UserRoleConstants, useUserInfoStoreCommon, type FrameworkMessageAndResultDtoInterface, type KanrenshaKigyouDtDtoInterface, type KanrenshaKigyouDtMasterEntityInterface, type KanrenshaPersonDtoInterface, type KanrenshaPersonMasterEntityInterface, type KanrenshaSeijidantaiDtoInterface, type KanrenshaSeijidantaiMasterEntityInterface, type LeastUserDtoInterface, type SaveKanrenshaKigyouDtCapsuleDtoInterface, type SaveKanrenshaPersonCapsuleDtoInterface, type SaveKanrenshaSeijidantaiCapsuleDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import getAuthorizedPromiseArea from '../../dto/login/getAuthorizedPromiseArea';
 import RoutePathConstants from '../../../../routePathConstants';
-import KanrenshaInfo from '../../common/user_info/KanrenshaInfo.vue';
 import router from '../../../../router';
+import NewComerInfo from '../../common/user_info/NewComerInfo.vue';
 
 // よく使う定数
 const BLANK: string = "";
 // const INIT_NUMBER: number = 0;
-const INIT_BOOLEAN: boolean = false;
+// const INIT_BOOLEAN: boolean = false;
 // const SERVER_STATUS_OK: number = 200;
 const SERVER_STATUS_ERROR: number = 400;
 const INQUIRE_FLG: boolean = false;
@@ -42,6 +42,8 @@ onMounted(() => {
     const userInfoCommon = useUserInfoStoreCommon(getActivePinia());
     userInfoCommon.jwtDto = userInfo.jwtDto;
     userInfoCommon.userDto = userInfo.userDto;
+
+    userDto.value = userInfo.userDto;
 });
 
 // 編集Dto
@@ -63,8 +65,6 @@ const isEditSeijidantai: ComputedRef<boolean> = computed(() => {
 function recieveCancelKigyouDtEdit() {
     history.back();
 }
-
-let isSuccessUpdate: boolean = INIT_BOOLEAN;
 
 function recieveKigyouDtInterfaceEdit(editDto: KanrenshaKigyouDtDtoInterface) {
 
@@ -103,7 +103,7 @@ function recieveKigyouDtInterfaceEdit(editDto: KanrenshaKigyouDtDtoInterface) {
                 } else {
                     infoLevel.value = MessageConstants.LEVEL_INFO;
                     messageType.value = MessageConstants.VIEW_TOAST;
-                    isSuccessUpdate = true;
+                    caller.value = "add record";
                 }
             })
             .catch((error) => {
@@ -167,7 +167,7 @@ function recievePersonInterfaceEdit(editDto: KanrenshaPersonDtoInterface) {
                 } else {
                     infoLevel.value = MessageConstants.LEVEL_INFO;
                     messageType.value = MessageConstants.VIEW_TOAST;
-                    isSuccessUpdate = true;
+                    caller.value = "add record";
                 }
             })
             .catch((error) => {
@@ -223,9 +223,7 @@ function recieveSeijidantaiInterfaceEdit(editDto: KanrenshaSeijidantaiDtoInterfa
                     return;
                 }
 
-
                 message.value = resultDto.message;
-                // 処理が成功したら再登録できないようにアップロードファイル情報を初期化
                 if (resultDto.isFailure) {
                     infoLevel.value = MessageConstants.LEVEL_WARNING;
                     messageType.value = MessageConstants.VIEW_OK;
@@ -233,7 +231,7 @@ function recieveSeijidantaiInterfaceEdit(editDto: KanrenshaSeijidantaiDtoInterfa
                 } else {
                     infoLevel.value = MessageConstants.LEVEL_INFO;
                     messageType.value = MessageConstants.VIEW_TOAST;
-                    isSuccessUpdate = true;
+                    caller.value = "add record";
                 }
             })
             .catch((error) => {
@@ -258,18 +256,19 @@ function recieveSeijidantaiInterfaceEdit(editDto: KanrenshaSeijidantaiDtoInterfa
 
 }
 
-function recieveSubmit() {
+function recieveSubmit(title: string, callerMess: string) {
     infoLevel.value = 0;
     messageType.value = 0;
-    if (isSuccessUpdate) {
+    alert(title + "==" + callerMess);
+    if (title === MESS_PAGE_NAME && callerMess === "add record" ) {
         router.push(RoutePathConstants.PAGE_LOGOUT);
     }
 }
 </script>
 <template>
 
-    <!-- 関連者メニュー  -->
-    <KanrenshaInfo :user-dto="userDto"></KanrenshaInfo>
+    <!-- 新規登録コードチェック -->
+    <NewComerInfo :current-step="4" regist-code="1"></NewComerInfo>
 
     <h1>関連者新規追加</h1>
 
