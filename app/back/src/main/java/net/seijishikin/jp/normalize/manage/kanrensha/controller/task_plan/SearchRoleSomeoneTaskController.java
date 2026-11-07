@@ -1,0 +1,70 @@
+package net.seijishikin.jp.normalize.manage.kanrensha.controller.task_plan;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import net.seijishikin.jp.normalize.manage.kanrensha.controller.PathRouteConstants;
+import net.seijishikin.jp.normalize.manage.kanrensha.dto.task.SearchTaskPlanCapsuleDto;
+import net.seijishikin.jp.normalize.manage.kanrensha.dto.task.SearchTaskPlanResultDto;
+import net.seijishikin.jp.normalize.manage.kanrensha.logic.user.ValidateAuthoraizeUserDetailLogic;
+import net.seijishikin.jp.normalize.manage.kanrensha.service.util.SaveStackTraceService;
+import net.seijishikin.jp.normalize.manage.kanrensha.service.year.SwitchYearSearchRoleSomeoneTaskService;
+
+/**
+ * タスク計画検索Controller
+ */
+@RestController
+@RequestMapping(PathRouteConstants.ROOT + "/task-plan")
+public class SearchRoleSomeoneTaskController {
+
+    /** 年切替タスク計画検索Service */
+    @Autowired
+    private SwitchYearSearchRoleSomeoneTaskService switchYearSearchRoleSomeoneTaskService;
+
+    /** StackTrace保存Service */
+    @Autowired
+    private SaveStackTraceService saveStackTraceService;
+
+    /** ユーザ妥当性検証Logic */
+    @Autowired
+    private ValidateAuthoraizeUserDetailLogic validateAuthoraizeUserDetailLogic;
+
+    /**
+     * 処理を行う
+     *
+     * @param capsuleDto 検索条件Dto
+     * @return 検索結果レスポンス
+     */
+    @PostMapping("/search-role")
+    public ResponseEntity<SearchTaskPlanResultDto> practice(final @RequestBody SearchTaskPlanCapsuleDto capsuleDto) {
+
+        try {
+            // ユーザチェック
+            validateAuthoraizeUserDetailLogic.practice(capsuleDto.getUserDto());
+
+            SearchTaskPlanResultDto resultDto = switchYearSearchRoleSomeoneTaskService.practice(capsuleDto);
+
+            final Integer zero = 0;
+            if (zero.equals(resultDto.getAllCount())) {
+                return ResponseEntity.status(HttpStatus.ACCEPTED).body(resultDto);
+            } else {
+                return ResponseEntity.status(HttpStatus.OK).body(resultDto);
+            }
+
+        } catch (UsernameNotFoundException exception) {
+            // resultDto.setIsFailure(true);
+            // resultDto.setMessage("tokenとユーザ(userDto)が不整合です");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        } catch (Exception exception) { // NOPMD すべての例外をCatchが目的
+            saveStackTraceService.practice(exception, null, null);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new SearchTaskPlanResultDto());
+        }
+    }
+
+}

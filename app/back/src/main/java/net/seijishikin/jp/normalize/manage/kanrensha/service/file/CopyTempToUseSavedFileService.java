@@ -17,7 +17,7 @@ import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.storage_file.StorageFileDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.task.InsertTaskPlanResultDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.task.TaskPlanWithUseFileDto;
-import net.seijishikin.jp.normalize.manage.kanrensha.logic.file.GetStoragePathLogic;
+import net.seijishikin.jp.normalize.manage.kanrensha.logic.file.GetStoragePathByUserLogic;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.task_plan.InsertTaskPlanService;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.year.SwitchYearInsertSaveStorageService;
 
@@ -38,7 +38,7 @@ public class CopyTempToUseSavedFileService {
 
     /** 保存フォルダ作成Logic */
     @Autowired
-    private GetStoragePathLogic getStoragePathLogic;
+    private GetStoragePathByUserLogic getStoragePathByUserLogic;
 
     /** propertiesからインジェクションされた最上位保存フォルダ絶対パス */
     private String storageFolder;
@@ -79,7 +79,7 @@ public class CopyTempToUseSavedFileService {
 
         // 仮ファイルから本ファイルに複写
         Path pathTempFull = Paths.get(storageFolder, fileDto.getSavedDir(), fileDto.getFileName());
-        Path pathSavedFull = Paths.get(storageFolder, getStoragePathLogic.practice(userDto).toString(),
+        Path pathSavedFull = Paths.get(storageFolder, getStoragePathByUserLogic.practice(userDto).toString(),
                 fileDto.getFileName());
         final Path path = Files.copy(pathTempFull, pathSavedFull);
 

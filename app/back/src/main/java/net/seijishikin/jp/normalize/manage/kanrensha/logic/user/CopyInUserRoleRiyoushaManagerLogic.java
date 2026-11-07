@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Component;
@@ -12,8 +13,9 @@ import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
 import net.seijishikin.jp.normalize.common_tool.dto.input.InputAccessDto;
 import net.seijishikin.jp.normalize.common_tool.dto.input.InputAddressDto;
 import net.seijishikin.jp.normalize.common_tool.dto.input.InputPersonNameDto;
+import net.seijishikin.jp.normalize.common_tool.dto.kanrensha.KanrenshaPersonDto;
+import net.seijishikin.jp.normalize.common_tool.dto.kanrensha.KanrenshaPersonMasterDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.constants.UserRoleConstants;
-import net.seijishikin.jp.normalize.manage.kanrensha.dto.kanrensha.KanrenshaPersonDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.riyousha.RiyoushaManagerDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.riyousha.RiyoushaPartnerApiDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.riyousha.SaveRiyoushaManagerCapsuleDto;
@@ -138,7 +140,9 @@ public class CopyInUserRoleRiyoushaManagerLogic {
             throw new EmptyResultDataAccessException("複写元の権限に紐づくデータが存在しません", 1);
         }
 
-        return getKanrenshaPersonDtoService.practice(optional.get());
+        KanrenshaPersonMasterDto masterDto = new KanrenshaPersonMasterDto();
+        BeanUtils.copyProperties(optional.get(), masterDto);
+        return getKanrenshaPersonDtoService.practice(masterDto);
     }
 
 }

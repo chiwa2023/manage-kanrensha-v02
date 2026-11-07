@@ -35,18 +35,23 @@ public class ValidateAuthoraizeUserDetailLogic {
      */
     public String practice(final LeastUserDto userDto) {
 
-        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext() // NOPMD LawDemeter
+        Object userDetails = SecurityContextHolder.getContext() // NOPMD LawDemeter
                 .getAuthentication().getPrincipal();
 
-        // テストで@withMockUserを使用し、仮ログイン状態でなければ有効
+        // テストで@withMockUserを使用し、仮ログイン状態でなければ全チェックする
         if (userDetails instanceof CustomUserDetails) {
-
             CustomUserDetails customUserDetails = (CustomUserDetails) userDetails;
-
             this.checkUserInfo(customUserDetails, userDto);
+            UserDetails usCast = (UserDetails)userDetails;
+            return usCast.getUsername();
         }
 
-        return userDetails.getUsername();
+        // テストで@withMockUserを使用している場合はユーザ名だけが返ってくる
+        if (userDetails instanceof String) {
+            return (String) userDetails;
+        }
+
+        return null;
     }
 
     /**
@@ -80,6 +85,7 @@ public class ValidateAuthoraizeUserDetailLogic {
                     return true;
                 }
             }
+
             return false;
         }
 
@@ -160,7 +166,7 @@ public class ValidateAuthoraizeUserDetailLogic {
     private List<String> convertRoleList(final Collection<? extends GrantedAuthority> collections) {
         List<String> list = new ArrayList<>();
         for (GrantedAuthority authority : collections) {
-            // TODO 両方チェック対象にするのは不細工なので修正を考慮する
+            // TODO (1)両方チェック対象にするのは不細工なので修正を考慮する
             // list.add("ROLE_" + authority.getAuthority());
             list.add(authority.getAuthority());
         }

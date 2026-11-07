@@ -1,20 +1,22 @@
 ﻿<script setup lang="ts">
-import { convertDateText, getErrorMessage, InputPref, MessageConstants, MessageView, PagingControl, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
-import { ref, type Ref } from 'vue';
-import { getLoginUser } from '../../utils/getLoginUser';
+import { AccessTokenNotFoundError, convertDateText, getErrorMessage, getLoginUser, InputPref, MessageConstants, MessageView, PagingControl, TokenRefreshError, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
+import { onBeforeMount, ref, type Ref } from 'vue';
 import { SearchLgCodeCapsuleDto, type SearchLgCodeCapsuleDtoInterface } from '../../dto/address_registory/searchLgCodeCapsuleDto';
 import { SearchLgCodeResultDto, type SearchLgCodeResultDtoInterface } from '../../dto/address_registory/searchLgCodeResultDto';
 import getAuthorizedPromiseArea from '../../dto/login/getAuthorizedPromiseArea';
 import RoutePathConstants from '../../../../routePathConstants';
-import { AccessTokenNotFoundError, TokenRefreshError } from '../../dto/login/errors';
 import type { SelectOptionStringDtoInterface } from '../../dto/select_options/selectOptionStringDto';
+import ManagerInfo from '../../common/user_info/ManagerInfo.vue';
+import { useRoute } from 'vue-router';
+import { nextTransferPassStore } from '../../stores/nextTransferPass.ts';
+import router from '../../../../router.ts';
 
 
 // よく使う定数
 const BLANK: string = "";
 const INIT_NUMBER: number = 0;
 // const SERVER_STATUS_OK: number = 200;
-// const SERVER_STATUS_ERROR: number = 400;
+const SERVER_STATUS_ERROR: number = 400;
 const SEARCH_LIMIT: number = 20;
 const INQUIRE_FLG: boolean = false;
 const ERR_MESS_ONLY: boolean = true;
@@ -42,6 +44,17 @@ const userDto: Ref<LeastUserDtoInterface> = ref(getLoginUser());
 const capsuleDto: Ref<SearchLgCodeCapsuleDtoInterface> = ref(new SearchLgCodeCapsuleDto());
 const resultDto: Ref<SearchLgCodeResultDtoInterface> = ref(new SearchLgCodeResultDto());
 
+const route = useRoute();
+onBeforeMount(() => {
+    // 直リンク(パスチェックあり)を許容ロジック
+    if (INIT_NUMBER === userDto.value.userPersonId) {
+        const passStore = nextTransferPassStore()
+        passStore.fullPath = route.fullPath;
+        router.push(RoutePathConstants.PAGE_LOGIN);
+        return;
+    }
+});
+
 function onSearch() {
 
     capsuleDto.value.allCount = allCount.value;
@@ -60,6 +73,15 @@ function onSearch() {
         fetch(url, { method, headers, body })
             .then(async (response) => {
                 resultDto.value = await response.json();
+
+                if (response.status > SERVER_STATUS_ERROR) {
+                    message.value = getErrorMessage(BLANK, INQUIRE_FLG);
+                    infoLevel.value = MessageConstants.LEVEL_ERROR;
+                    messageType.value = MessageConstants.VIEW_OK;
+                    return;
+                }
+
+
                 allCount.value = resultDto.value.allCount;
                 limit.value = resultDto.value.limit;
                 pageNumber.value = resultDto.value.pageNumber;

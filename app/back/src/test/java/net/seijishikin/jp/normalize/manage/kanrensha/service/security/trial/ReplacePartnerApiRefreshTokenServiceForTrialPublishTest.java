@@ -14,6 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
+import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
@@ -36,6 +37,7 @@ import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateLeastUserForTes
 @SpringBootTest
 @DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
 // 発行処理のため、SQLとトランザクションはない
+@Sql("ReplacePartnerApiRefreshTokenServiceForTrialPublishTest.sql")
 class ReplacePartnerApiRefreshTokenServiceForTrialPublishTest {
 
     /** テスト対象 */

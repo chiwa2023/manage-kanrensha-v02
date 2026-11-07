@@ -17,8 +17,8 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import org.springframework.transaction.annotation.Transactional;
 
+import net.seijishikin.jp.normalize.common_tool.dto.postal.PostalCodeBuildingResultDto;
 import net.seijishikin.jp.normalize.common_tool.dto.select_options.SelectOptionIntegerDto;
-import net.seijishikin.jp.normalize.manage.kanrensha.dto.postal.PostalCodeBuildingResultDto;
 
 /**
  * SearchAddressBuildingService単体テスト

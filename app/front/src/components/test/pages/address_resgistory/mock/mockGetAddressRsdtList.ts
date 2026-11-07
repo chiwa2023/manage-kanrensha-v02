@@ -1,5 +1,5 @@
+import { AddressRsdtTemplateEntity, type AddressRsdtTemplateEntityInterface } from "seijishikin-jp-normalize_common-tool";
 import { SearchAddressRegistoryResultDto, type SearchAddressRegistoryResultDtoInterface } from "../../../../main/dto/address_registory/searchAddressRegistoryResultDto";
-import { AddressRsdtTemplateEntity, type AddressRsdtTemplateEntityInterface } from "../../../../main/entity/addressRsdtTemplateEntity";
 
 export default function mockGetAddressRsdtList(llgCode: string): SearchAddressRegistoryResultDtoInterface {
 

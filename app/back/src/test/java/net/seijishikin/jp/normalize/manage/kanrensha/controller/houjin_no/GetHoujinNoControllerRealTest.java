@@ -23,9 +23,9 @@ import org.springframework.web.context.WebApplicationContext;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import net.seijishikin.jp.normalize.common_tool.dto.houjin_no.SearchHoujinNoCapsuleDto;
 import net.seijishikin.jp.normalize.common_tool.utils.GetObjectMapperWithTimeModuleUtil;
 import net.seijishikin.jp.normalize.manage.kanrensha.controller.PathRouteConstants;
-import net.seijishikin.jp.normalize.manage.kanrensha.dto.houjin_no.SearchHoujinNoCapsuleDto;
 
 /**
  * 法人番号取得API実接続用テスト
@@ -59,7 +59,7 @@ class GetHoujinNoControllerRealTest {
 
         // csv形式のボディを解析
         final SearchHoujinNoCapsuleDto capsuleDto = new SearchHoujinNoCapsuleDto();
-        capsuleDto.setAppId("houjin-no-api-key"); // TODO 自身のAPIキーを設定してからテスト、テストが終わったらキーを消す
+        capsuleDto.setAppId("houjin-no-api-key"); // MEMO 自身の配布されたAPIキーを設定してからテスト、テストが終わったら本番キーを消す
         capsuleDto.setName("工業");
         capsuleDto.setType("02");
         capsuleDto.setDivide(1);

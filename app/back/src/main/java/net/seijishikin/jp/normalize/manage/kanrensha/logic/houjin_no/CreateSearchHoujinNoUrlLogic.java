@@ -9,7 +9,7 @@ import java.util.Objects;
 import org.springframework.stereotype.Component;
 
 import net.seijishikin.jp.normalize.common_tool.dto.DtoEntityInitialValueInterface;
-import net.seijishikin.jp.normalize.manage.kanrensha.dto.houjin_no.SearchHoujinNoCapsuleDto;
+import net.seijishikin.jp.normalize.common_tool.dto.houjin_no.SearchHoujinNoCapsuleDto;
 
 /**
  * 法人番号検索Url作成Logic

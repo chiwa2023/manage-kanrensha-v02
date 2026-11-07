@@ -71,4 +71,12 @@ public class MasterCsvFileNameConstants {
         public static final String SABUN_STD_SEIJIDANTAI = "sabun_master_seijidantai_std.csv";
     }
 
+    /**
+     * コード移動ファイル名定数
+     */
+    public class CodeMove { // NOPMD DataCalss
+        /** コード移動承認 */
+        public static final String ACCEPTED = "code_move.csv";
+    }
+
 }

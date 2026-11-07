@@ -1,24 +1,25 @@
 ﻿<script setup lang="ts">
-import { onMounted, ref, type Ref } from 'vue';
+import { onBeforeMount, onMounted, ref, type Ref } from 'vue';
 import { MoveKanrenshaCodeSearchResultDto, type MoveKanrenshaCodeSearchResultDtoInterface } from '../../dto/kanrensha/moveKanrenshaCodeSearchResultDto';
 import KanrenshaKbnConstants from '../../dto/kanrensha/kanrenshaKbnConstants';
 import { MoveKanrenshaCodeHistoryCapsuleDto, type MoveKanrenshaCodeHistoryCapsuleDtoInterface } from '../../dto/kanrensha/moveKanrenshaCodeHistoryCapsuleDto';
 import getAuthorizedPromiseArea from '../../dto/login/getAuthorizedPromiseArea';
 import RoutePathConstants from '../../../../routePathConstants';
-import { getErrorMessage, MessageConstants, MessageView, type FrameworkMessageAndResultDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
-import { getLoginUser } from '../../utils/getLoginUser';
-import { AccessTokenNotFoundError, TokenRefreshError } from '../../dto/login/errors';
+import { AccessTokenNotFoundError, getErrorMessage, getLoginUser, MessageConstants, MessageView, TokenRefreshError, type FrameworkMessageAndResultDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import KanrenshaInfo from '../../common/user_info/KanrenshaInfo.vue';
 import { useTaskPlan } from '../../stores/storeTaskPlan';
 import { UpdateTaskPlanSimpleCapsuleDto, type UpdateTaskPlanSimpleCapsuleDtoInterface } from '../../dto/task_plan/updateTaskPlanSimpleCapsuleDto.ts';
 import { notCompletedTaskStore } from '../../stores/notCompletedTask.ts';
+import { useRoute } from 'vue-router';
+import { nextTransferPassStore } from '../../stores/nextTransferPass.ts';
+import router from '../../../../router.ts';
 
 
 // よく使う定数
 const BLANK: string = "";
 const INIT_NUMBER: number = 0;
 // const SERVER_STATUS_OK: number = 200;
-// const SERVER_STATUS_ERROR: number = 400;
+const SERVER_STATUS_ERROR: number = 400;
 // const SEARCH_LIMIT: number = 20;
 // メッセージボックス表示定数
 const INQUIRE_FLG: boolean = false;
@@ -36,7 +37,6 @@ const urlBack: string = RoutePathConstants.DOMAIN + RoutePathConstants.BASE_PATH
 // ユーザ呼び出し
 const userDto: Ref<LeastUserDtoInterface> = ref(getLoginUser());
 
-
 // 検索Dto
 const capsuleDtoSearch: Ref<MoveKanrenshaCodeHistoryCapsuleDtoInterface> = ref(new MoveKanrenshaCodeHistoryCapsuleDto());
 const resultDtoSearch: Ref<MoveKanrenshaCodeSearchResultDtoInterface> = ref(new MoveKanrenshaCodeSearchResultDto());
@@ -46,7 +46,16 @@ const isTaskTransfer: Ref<boolean> = ref(false);
 // タスク終了Dto
 const capsuleDto: Ref<UpdateTaskPlanSimpleCapsuleDtoInterface> = ref(new UpdateTaskPlanSimpleCapsuleDto());
 
-
+const route = useRoute();
+onBeforeMount(() => {
+    // 直リンク(パスチェックあり)を許容ロジック
+    if (INIT_NUMBER === userDto.value.userPersonId) {
+        const passStore = nextTransferPassStore()
+        passStore.fullPath = route.fullPath;
+        router.push(RoutePathConstants.PAGE_LOGIN);
+        return;
+    }
+});
 
 onMounted(() => {
 
@@ -73,6 +82,13 @@ onMounted(() => {
         fetch(url, { method, headers, body })
             .then(async (response) => {
                 resultDtoSearch.value = await response.json();
+
+                if (response.status > SERVER_STATUS_ERROR) {
+                    message.value = getErrorMessage(BLANK, INQUIRE_FLG);
+                    infoLevel.value = MessageConstants.LEVEL_ERROR;
+                    messageType.value = MessageConstants.VIEW_OK;
+                    return;
+                }
 
                 if (resultDtoSearch.value.listEntity.length == 0) {
                     infoLevel.value = MessageConstants.LEVEL_WARNING;
@@ -163,6 +179,13 @@ function onSave() {
         fetch(url, { method, headers, body })
             .then(async (response) => {
                 const resultDto: FrameworkMessageAndResultDtoInterface = await response.json();
+
+                if (response.status > SERVER_STATUS_ERROR) {
+                    message.value = getErrorMessage(resultDto.message, ERR_MESS_ONLY);
+                    infoLevel.value = MessageConstants.LEVEL_ERROR;
+                    messageType.value = MessageConstants.VIEW_OK;
+                    return;
+                }
 
                 if (resultDto.isFailure) {
                     infoLevel.value = MessageConstants.LEVEL_WARNING;

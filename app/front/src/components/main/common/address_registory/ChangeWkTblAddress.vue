@@ -3,10 +3,9 @@ import { ref, toRaw, type Ref } from 'vue';
 import SearchChangeWkTblAddress from './SearchChangeWkTblAddress.vue';
 import { WkTblAddressRsdtChangeEntity, type WkTblAddressRsdtChangeEntityInterface } from '../../entity/wkTblAddressRsdtChangeEntity.ts';
 import { SearchWkTblAddressRsdtCapsuleDto, type SearchWkTblAddressRsdtCapsuleDtoInterface } from '../../dto/address_registory/searchWkTblAddressRsdtCapsuleDto.ts';
-import { getErrorMessage, MessageConstants, MessageView, PagingControl, type FrameworkMessageAndResultDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
+import { AccessTokenNotFoundError, getErrorMessage, MessageConstants, MessageView, PagingControl, TokenRefreshError, type FrameworkMessageAndResultDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import getAuthorizedPromiseArea from '../../dto/login/getAuthorizedPromiseArea.ts';
 import RoutePathConstants from '../../../../routePathConstants.ts';
-import { AccessTokenNotFoundError, TokenRefreshError } from '../../dto/login/errors.ts';
 import { SearchWkTblRsdtChangeResultDto, type SearchWkTblRsdtChangeResultDtoInterface } from '../../dto/address_registory/searchWkTblRsdtChangeResultDto.ts';
 import { EditWktblRsdtChangeCapsuleDto, type EditWktblRsdtChangeCapsuleDtoInterface } from '../../dto/address_registory/editWktblRsdtChangeCapsuleDto.ts';
 
@@ -17,6 +16,7 @@ const props = defineProps<{ userDto: LeastUserDtoInterface }>();
 const BLANK: string = "";
 const INIT_NUMBER: number = 0;
 // const INIT_BOOLEAN: boolean = false;
+const SERVER_STATUS_ERROR: number = 400;
 const SEARCH_LIMIT: number = 20;
 const INQUIRE_FLG: boolean = false;
 const ERR_MESS_ONLY: boolean = true;
@@ -63,6 +63,16 @@ function onSearch() {
         fetch(url, { method, headers, body })
             .then(async (response) => {
                 resultDto.value = await response.json();
+
+                if (response.status > SERVER_STATUS_ERROR) {
+                    message.value = getErrorMessage(BLANK, INQUIRE_FLG);
+                    infoLevel.value = MessageConstants.LEVEL_ERROR;
+                    messageType.value = MessageConstants.VIEW_OK;
+                    return;
+                }
+
+
+
                 allCount.value = resultDto.value.allCount;
                 limit.value = resultDto.value.limit;
                 pageNumber.value = resultDto.value.pageNumber;
@@ -113,6 +123,14 @@ function onDelete() {
         fetch(url, { method, headers, body })
             .then(async (response) => {
                 const resultDto: FrameworkMessageAndResultDtoInterface = await response.json();
+
+                if (response.status > SERVER_STATUS_ERROR) {
+                    message.value = getErrorMessage(resultDto.message, ERR_MESS_ONLY);
+                    infoLevel.value = MessageConstants.LEVEL_ERROR;
+                    messageType.value = MessageConstants.VIEW_OK;
+                    return;
+                }
+
                 message.value = resultDto.message;
                 if (resultDto.isFailure) {
                     infoLevel.value = MessageConstants.LEVEL_WARNING;
@@ -201,6 +219,15 @@ function onSave() {
         fetch(url, { method, headers, body })
             .then(async (response) => {
                 const resultDto: FrameworkMessageAndResultDtoInterface = await response.json();
+
+                if (response.status > SERVER_STATUS_ERROR) {
+                    message.value = getErrorMessage(resultDto.message, ERR_MESS_ONLY);
+                    infoLevel.value = MessageConstants.LEVEL_ERROR;
+                    messageType.value = MessageConstants.VIEW_OK;
+                    return;
+                }
+
+
                 message.value = resultDto.message;
                 if (resultDto.isFailure) {
                     infoLevel.value = MessageConstants.LEVEL_WARNING;

@@ -14,8 +14,8 @@ import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import net.seijishikin.jp.normalize.common_tool.dto.input.InputAccessDto;
 import net.seijishikin.jp.normalize.common_tool.dto.input.InputAddressDto;
 import net.seijishikin.jp.normalize.common_tool.dto.input.InputOrgNameDto;
-import net.seijishikin.jp.normalize.manage.kanrensha.dto.kanrensha.InputKanrenshaPersonLeastDto;
-import net.seijishikin.jp.normalize.manage.kanrensha.dto.kanrensha.KanrenshaSeijidantaiDto;
+import net.seijishikin.jp.normalize.common_tool.dto.kanrensha.InputKanrenshaPersonLeastDto;
+import net.seijishikin.jp.normalize.common_tool.dto.kanrensha.KanrenshaSeijidantaiDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.KanrenshaSeijidantaiMasterEntity;
 
 /**

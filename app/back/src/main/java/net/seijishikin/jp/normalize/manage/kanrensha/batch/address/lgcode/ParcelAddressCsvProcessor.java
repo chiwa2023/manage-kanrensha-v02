@@ -46,7 +46,7 @@ public class ParcelAddressCsvProcessor implements ItemProcessor<ParcelAddressCsv
         builder.append(item.getCity()).append(item.getWard()).append(item.getOazaCho()).append(item.getChome())
                 .append(item.getKoaza());
 
-        // TODO 規約で全角文字であることを要求される場合は変換する
+        // MEMO 規約で全角文字であることを要求される場合は変換する
         if (!BLANK.equals(item.getPrcNum1())) {
             builder.append(item.getPrcNum1()).append("番地");
         }

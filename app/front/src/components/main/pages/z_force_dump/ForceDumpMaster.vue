@@ -1,11 +1,9 @@
 ﻿<script setup lang="ts">
 import { ref, watch, type Ref } from 'vue';
-import { getLoginUser } from '../../utils/getLoginUser';
 import { ForceDumpCapsuleDto, type ForceDumpCapsuleDtoInterface } from '../../dto/z_force_dump/forceDumpCapsuleDto';
-import { DtoEntityConstants, getErrorMessage, InputDate, MessageConstants, MessageView, type FrameworkMessageAndResultDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
+import { AccessTokenNotFoundError, DtoEntityConstants, getErrorMessage, getLoginUser, InputDate, MessageConstants, MessageView, TokenRefreshError, type FrameworkMessageAndResultDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import AdminInfo from '../../common/user_info/AdminInfo.vue';
 import RoutePathConstants from '../../../../routePathConstants';
-import { AccessTokenNotFoundError, TokenRefreshError } from '../../dto/login/errors';
 import getAuthorizedPromiseArea from '../../dto/login/getAuthorizedPromiseArea';
 
 
@@ -13,7 +11,7 @@ import getAuthorizedPromiseArea from '../../dto/login/getAuthorizedPromiseArea';
 const BLANK: string = "";
 //const INIT_NUMBER: number = 0;
 // const SERVER_STATUS_OK: number = 200;
-// const SERVER_STATUS_ERROR: number = 400;
+const SERVER_STATUS_ERROR: number = 400;
 //const SEARCH_LIMIT: number = 20;
 const INQUIRE_FLG: boolean = false;
 const ERR_MESS_ONLY: boolean = true;
@@ -43,7 +41,8 @@ const isDisabledKigyouDt: Ref<boolean> = ref(true);
 const isDisabledPerson: Ref<boolean> = ref(true);
 const isDisabledSeijidantai: Ref<boolean> = ref(true);
 const now: Date = new Date();
-capsuleDto.value.dateEnd = new Date(now.getFullYear(), 0, 1);
+const INPUT_LIMIT: Date = new Date(now.getFullYear(), 0, 1, 12, 0, 0);
+capsuleDto.value.dateEnd = INPUT_LIMIT;
 
 // 関連者選択制御
 watch(isExecuteAll, () => {
@@ -74,6 +73,14 @@ function onSave() {
         return;
     }
 
+    // 未提出データダンプ禁止
+    if (capsuleDto.value.dateEnd > INPUT_LIMIT) {
+        infoLevel.value = MessageConstants.LEVEL_WARNING;
+        messageType.value = MessageConstants.VIEW_OK;
+        message.value = "選管・総務省に提出前の本年データは強制ダンプできません。";
+        return;
+    }
+
     capsuleDto.value.userDto = userDto.value;
 
     getAuthorizedPromiseArea().then(token => {
@@ -88,6 +95,14 @@ function onSave() {
         fetch(url, { method, headers, body })
             .then(async (response) => {
                 const resultDto: FrameworkMessageAndResultDtoInterface = await response.json();
+
+                if (response.status > SERVER_STATUS_ERROR) {
+                    message.value = getErrorMessage(resultDto.message, ERR_MESS_ONLY);
+                    infoLevel.value = MessageConstants.LEVEL_ERROR;
+                    messageType.value = MessageConstants.VIEW_OK;
+                    return;
+                }
+
                 message.value = resultDto.message;
                 if (resultDto.isFailure) {
                     infoLevel.value = MessageConstants.LEVEL_WARNING;

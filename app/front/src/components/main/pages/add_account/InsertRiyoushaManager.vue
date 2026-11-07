@@ -3,16 +3,14 @@ import { onMounted, ref, type Ref } from 'vue';
 import RiyoushaManagerEdit from '../../common/riyousha_edit/RiyoushaManagerEdit.vue';
 import { useUserInfoStore } from '../../stores/storeUserInfo';
 import { getActivePinia } from 'pinia';
-import { getErrorMessage, MessageConstants, MessageView, useUserInfoStoreCommon, type FrameworkMessageAndResultDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
+import { AccessTokenNotFoundError, getErrorMessage, getLoginUser, MessageConstants, MessageView, TokenRefreshError, useUserInfoStoreCommon, type FrameworkMessageAndResultDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import router from '../../../../router';
 import RoutePathConstants from '../../../../routePathConstants';
 import { RiyoushaManagerMasterEntity, type RiyoushaManagerMasterEntityInterface } from '../../entity/riyoushaManagerMasterEntity';
 import getAuthorizedPromiseArea from '../../dto/login/getAuthorizedPromiseArea';
 import type { RiyoushaManagerDtoInterface } from '../../dto/riyousha/riyoushaManagerDto';
 import { SaveRiyoushaManagerCapsuleDto, type SaveRiyoushaManagerCapsuleDtoInterface } from '../../dto/riyousha/saveRiyoushaManagerCapsuleDto';
-import { getLoginUser } from '../../utils/getLoginUser';
-import { AccessTokenNotFoundError, TokenRefreshError } from '../../dto/login/errors';
-import ManagerInfo from '../../common/user_info/ManagerInfo.vue';
+import NewComerInfo from '../../common/user_info/NewComerInfo.vue';
 
 // props,emit
 const emits = defineEmits(["sendCancelManager", "sendManagerInterface"]);
@@ -20,9 +18,9 @@ const emits = defineEmits(["sendCancelManager", "sendManagerInterface"]);
 // よく使う定数
 const BLANK: string = "";
 // const INIT_NUMBER: number = 0;
-const INIT_BOOLEAN: boolean = false;
+// const INIT_BOOLEAN: boolean = false;
 // const SERVER_STATUS_OK: number = 200;
-// const SERVER_STATUS_ERROR: number = 400;
+const SERVER_STATUS_ERROR: number = 400;
 const INQUIRE_FLG: boolean = false;
 const ERR_MESS_ONLY: boolean = true;
 const MESS_PAGE_NAME: string = "利用者運営者追加";
@@ -48,6 +46,8 @@ onMounted(() => {
     const userInfoCommon = useUserInfoStoreCommon(getActivePinia());
     userInfoCommon.jwtDto = userInfo.jwtDto;
     userInfoCommon.userDto = userInfo.userDto;
+
+    userDto.value = userInfo.userDto;
 });
 
 
@@ -58,7 +58,6 @@ function recieveCancelManager() {
 
 const editEntity: Ref<RiyoushaManagerMasterEntityInterface> = ref(new RiyoushaManagerMasterEntity());
 
-let isSaveSuccess: boolean = INIT_BOOLEAN;
 function recieveManagerInterface(editDto: RiyoushaManagerDtoInterface) {
 
     editDto.isCombineUser = true; // 初期登録時は紐づけ処理する
@@ -79,6 +78,14 @@ function recieveManagerInterface(editDto: RiyoushaManagerDtoInterface) {
         fetch(url, { method, headers, body })
             .then(async (response) => {
                 const resultDto: FrameworkMessageAndResultDtoInterface = await response.json();
+
+                if (response.status > SERVER_STATUS_ERROR) {
+                    message.value = getErrorMessage(resultDto.message, ERR_MESS_ONLY);
+                    infoLevel.value = MessageConstants.LEVEL_ERROR;
+                    messageType.value = MessageConstants.VIEW_OK;
+                    return;
+                }
+
                 message.value = resultDto.message;
                 // 処理が成功したら再登録できないようにアップロードファイル情報を初期化
                 if (resultDto.isFailure) {
@@ -89,7 +96,7 @@ function recieveManagerInterface(editDto: RiyoushaManagerDtoInterface) {
                     infoLevel.value = MessageConstants.LEVEL_INFO;
                     messageType.value = MessageConstants.VIEW_TOAST;
                     // 更新成功時
-                    isSaveSuccess = true;
+                    caller.value = "add record";
                 }
             })
             .catch((error) => {
@@ -113,20 +120,20 @@ function recieveManagerInterface(editDto: RiyoushaManagerDtoInterface) {
     });
 }
 
-function recieveSubmit() {
+function recieveSubmit(title: string, callerMess: string) {
     infoLevel.value = 0;
     messageType.value = 0;
 
-    // 登録成功時のみ運営者メニューに遷移
-    if (isSaveSuccess) {
+    // 登録成功時のみ運営者メニューに遷移                  
+    if (title === MESS_PAGE_NAME && callerMess === "add record") {
         router.push(RoutePathConstants.PAGE_LOGOUT);
     }
 }
 </script>
 <template>
 
-    <!-- 運営者 -->
-    <ManagerInfo :user-dto="userDto"></ManagerInfo>
+    <!-- 新規登録コードチェック -->
+    <NewComerInfo :current-step="4" regist-code="1"></NewComerInfo>
 
     <h1>運営者追加</h1><br>
 

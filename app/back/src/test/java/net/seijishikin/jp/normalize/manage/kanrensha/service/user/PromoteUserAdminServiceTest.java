@@ -85,7 +85,7 @@ class PromoteUserAdminServiceTest {
         assertEquals(createDatetime, planEntity.getStartDatetime());
         assertEquals(AllTabeDataHistoryInterface.INIT_TIMESTAMP, planEntity.getEndDateimte());
         assertEquals(false, planEntity.getIsFinished());
-        assertEquals(false, planEntity.getIsStart());
+        assertEquals(true, planEntity.getIsStart());
         assertEquals(false, planEntity.getIsSuspended());
         assertEquals("admin,manager", planEntity.getRoleList());
         assertEquals("pageUrl", planEntity.getTransferPass());

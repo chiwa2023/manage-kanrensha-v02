@@ -1,10 +1,9 @@
 ﻿<script setup lang="ts">
 import { onMounted, ref, watch, type Ref } from 'vue';
-import { getErrorMessage, MessageConstants, MessageView, ViewInputAccess, ViewInputAddress, ViewInputPersonName, type LeastUserDtoInterface, } from 'seijishikin-jp-normalize_common-tool';
+import { AccessTokenNotFoundError, getErrorMessage, MessageConstants, MessageView, TokenRefreshError, ViewInputAccess, ViewInputAddress, ViewInputPersonName, type LeastUserDtoInterface, } from 'seijishikin-jp-normalize_common-tool';
 import { RiyoushaPartnerApiDto, type RiyoushaPartnerApiDtoInterface } from '../../dto/riyousha/riyoushaPartnerApiDto';
 import getAuthorizedPromiseArea from '../../dto/login/getAuthorizedPromiseArea';
 import RoutePathConstants from '../../../../routePathConstants';
-import { AccessTokenNotFoundError, TokenRefreshError } from '../../dto/login/errors';
 import type { RiyoushaPartnerApiMasterEntityInterface } from '../../entity/riyoushaPartnerApiMasterEntity';
 import { GetRiyoushaPartnerApiByEntityCapsuleDto, type GetRiyoushaPartnerApiByEntityCapsuleDtoInterface } from '../../dto/riyousha/getRiyoushaPartnerApiByEntityCapsuleDto';
 
@@ -15,7 +14,7 @@ const emits = defineEmits(["sendCancelPartnerApi", "sendPartnerApiInterface"]);
 // よく使う定数
 const BLANK: string = "";
 // const SERVER_STATUS_OK: number = 200;
-// const SERVER_STATUS_ERROR: number = 400;
+const SERVER_STATUS_ERROR: number = 400;
 const INQUIRE_FLG: boolean = false;
 const ERR_MESS_ONLY: boolean = true;
 const MESS_PAGE_NAME: string = "APIパートナー編集";
@@ -64,6 +63,15 @@ function onChangeEntity() {
             fetch(url, { method, headers, body })
                 .then(async (response) => {
                     inputpartnerApiDto.value = await response.json();
+
+                    if (response.status > SERVER_STATUS_ERROR) {
+                        message.value = getErrorMessage(inputpartnerApiDto.value.message, ERR_MESS_ONLY);
+                        infoLevel.value = MessageConstants.LEVEL_ERROR;
+                        messageType.value = MessageConstants.VIEW_OK;
+                        return;
+                    }
+
+
                     message.value = inputpartnerApiDto.value.message;
                     if (inputpartnerApiDto.value.isFailure) {
                         infoLevel.value = MessageConstants.LEVEL_WARNING;
@@ -122,7 +130,7 @@ function recieveSubmit() {
 
     <div class="one-line">
         <div class="left-area">
-            関連者コード
+            利用者コード
         </div>
         <div class="right-area">
             <input type="text" disabled="true" v-model="inputpartnerApiDto.riyoushaPartnerApiMasterCode"

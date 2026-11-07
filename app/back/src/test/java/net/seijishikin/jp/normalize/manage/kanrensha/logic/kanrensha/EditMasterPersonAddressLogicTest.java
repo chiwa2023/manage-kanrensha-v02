@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -15,8 +16,9 @@ import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import org.springframework.transaction.annotation.Transactional;
 
 import net.seijishikin.jp.normalize.common_tool.dto.input.InputAddressDto;
-import net.seijishikin.jp.normalize.manage.kanrensha.dto.kanrensha.KanrenshaPersonDto;
-import net.seijishikin.jp.normalize.manage.kanrensha.dto.kanrensha.SaveKanrenshaPersonCapsuleDto;
+import net.seijishikin.jp.normalize.common_tool.dto.kanrensha.KanrenshaPersonDto;
+import net.seijishikin.jp.normalize.common_tool.dto.kanrensha.KanrenshaPersonMasterDto;
+import net.seijishikin.jp.normalize.common_tool.dto.kanrensha.SaveKanrenshaPersonCapsuleDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.KanrenshaPersonAddressEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.KanrenshaPersonMasterEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.repository.KanrenshaPersonAddressRepository;
@@ -116,7 +118,9 @@ class EditMasterPersonAddressLogicTest {
 
     private KanrenshaPersonDto getDto() {
         KanrenshaPersonMasterEntity masterEntity = kanrenshaPersonMasterRepository.findById(391).get();
-        return getKanrenshaPersonDtoService.practice(masterEntity);
+        KanrenshaPersonMasterDto masterDto = new KanrenshaPersonMasterDto();
+        BeanUtils.copyProperties(masterEntity, masterDto);
+        return getKanrenshaPersonDtoService.practice(masterDto);
     }
 
 }

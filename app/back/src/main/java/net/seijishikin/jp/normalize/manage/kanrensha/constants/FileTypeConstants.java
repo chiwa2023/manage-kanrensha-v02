@@ -12,7 +12,7 @@ public final class FileTypeConstants {
 
     }
 
-    // TODO ファイルの種類は再検討する
+    // TODO (1)ファイルの種類は再検討する
 
     /** 未定 */
     public static final short FILE_TYPE = 0;

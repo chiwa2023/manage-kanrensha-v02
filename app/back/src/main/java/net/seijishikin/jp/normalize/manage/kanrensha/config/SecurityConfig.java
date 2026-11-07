@@ -4,9 +4,12 @@ import java.util.List; // NOPMD ExcessiveImports
 
 import org.springframework.beans.factory.annotation.Autowired; // NOPMD
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationEventPublisher;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.DefaultAuthenticationEventPublisher;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -38,6 +41,8 @@ import com.nimbusds.jose.proc.SecurityContext;
 import net.seijishikin.jp.normalize.manage.kanrensha.controller.PathRouteConstants;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.security.AuthorizeFilter;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.security.CustomUserDetailsManager;
+import net.seijishikin.jp.normalize.manage.kanrensha.service.security.RateLimitFilter;
+import net.seijishikin.jp.normalize.manage.kanrensha.service.security.RateLimitService;
 
 /**
  * セキュリティ設定
@@ -45,7 +50,7 @@ import net.seijishikin.jp.normalize.manage.kanrensha.service.security.CustomUser
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
-public class SecurityConfig {
+public class SecurityConfig { // NOPMD TooManyMethods
 
     /** ログインユーザ詳細取得Manager */
     @Autowired
@@ -55,9 +60,24 @@ public class SecurityConfig {
     @Autowired
     private JwtKeyProperties jwtKeyProperties;
 
+    /** レートリミットService */
+    @Autowired
+    private RateLimitService rateLimitService;
+
+    /** レートリミット設定 */
+    @Autowired
+    private RateLimitConfig rateLimitConfig;
+    
+    /** 許可時間 */
+    public static final long MAX_AGE = 3600L;
+
     /** ドメイン(frontend)URL */
     @Value("${app.cors.allowed-origins:http://localhost:5173}")
     private List<String> allowedOrigins;
+
+    /** 許可オリジンパターン (ワイルドカード対応) */
+    @Value("${app.cors.allowed-origin-patterns:}")
+    private List<String> allowedOriginPatterns;
 
     /**
      * AuthenticationManagerをBeanとする
@@ -91,7 +111,9 @@ public class SecurityConfig {
                             PathRouteConstants.ROOT + "/refresh-token", PathRouteConstants.ROOT + "/replace-token",
                             PathRouteConstants.ROOT + "/add-user/**", PathRouteConstants.ROOT + "/trial-access",
                             PathRouteConstants.ROOT + "/reset-password/**",
-                            PathRouteConstants.ROOT + "/api-for-partner/**")//
+                            PathRouteConstants.ROOT + "/api-for-partner/**",
+                            PathRouteConstants.ROOT + "/passkey/authenticate/**",
+                            PathRouteConstants.ROOT + "/dump-record/get")//
                             .permitAll() //
                             /* 以下はコンパイル時(front接続時)にのみ有効 */
 
@@ -168,6 +190,7 @@ public class SecurityConfig {
                 .oauth2ResourceServer(
                         oauth2 -> oauth2.jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter())))
                 .addFilterBefore(new AuthorizeFilter(jwtDecoder()), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new RateLimitFilter(rateLimitService, rateLimitConfig), AuthorizeFilter.class)
                 .logout(logout -> logout.logoutSuccessUrl("/"))
                 .cors(cors -> cors.configurationSource(this.corsConfigurationSource())).build();
     }
@@ -234,17 +257,40 @@ public class SecurityConfig {
     }
 
     /**
+     * AuthenticationEventPublisherを設定する
+     * 
+     * @param applicationEventPublisher アプリケーションイベント発行
+     * @return AuthenticationEventPublisher
+     */
+    @Bean
+    protected AuthenticationEventPublisher authenticationEventPublisher(
+            final ApplicationEventPublisher applicationEventPublisher) {
+        return new DefaultAuthenticationEventPublisher(applicationEventPublisher);
+    }
+
+    /**
      * Cors設定を取得する
      *
      * @return CorsConfiguration
      */
-    private CorsConfigurationSource corsConfigurationSource() {
+    protected CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
         corsConfiguration.addAllowedMethod(CorsConfiguration.ALL);
         corsConfiguration.addAllowedHeader(CorsConfiguration.ALL);
         corsConfiguration.addExposedHeader("X-AUTH-TOKEN");
-        corsConfiguration.setAllowedOrigins(allowedOrigins);
+        corsConfiguration.addExposedHeader("Authorization");
+        corsConfiguration.setMaxAge(MAX_AGE);
         corsConfiguration.setAllowCredentials(true);
+
+        if (allowedOriginPatterns != null && !allowedOriginPatterns.isEmpty()
+                && allowedOriginPatterns.stream().anyMatch(p -> p != null && !p.isBlank())) {
+            corsConfiguration.setAllowedOriginPatterns(
+                    allowedOriginPatterns.stream().filter(p -> p != null && !p.isBlank()).toList());
+        }
+        if (allowedOrigins != null && !allowedOrigins.isEmpty()) {
+            corsConfiguration.setAllowedOrigins(allowedOrigins);
+        }
+
         UrlBasedCorsConfigurationSource corsSource = new UrlBasedCorsConfigurationSource();
         corsSource.registerCorsConfiguration("/**", corsConfiguration);
         return corsSource;

@@ -40,9 +40,10 @@ public class SendMailUserLogic {
      * メール送信を行います。
      *
      * @param listMailData メール送信格納Dto
+     * @param taskPlanCode タスク計画コード
      * @return メール送信結果Dto
      */
-    public SendMaileResultDto practice(final List<MailDataDto> listMailData) {
+    public SendMaileResultDto practice(final List<MailDataDto> listMailData, final Integer taskPlanCode) {
 
         // 複数人送信できるようを配列で一発で渡すこともできるが、○○さんには送れたが
         // ××さんに送れなかったという制御ができないのであえてループで回す
@@ -69,7 +70,7 @@ public class SendMailUserLogic {
                     }
 
                     // CCのサニタイズ
-                    String[] cc = mailMessage.getCc(); //NOPMD
+                    String[] cc = mailMessage.getCc(); // NOPMD
                     if (cc != null) {
                         mailMessage.setCc(this.cleanCc(cc));
                     }
@@ -81,15 +82,13 @@ public class SendMailUserLogic {
                     }
                 }
 
-                // TODO 環境が替わるたびに動作テストする。現在smtp4devをテストして動作
                 mailSender.send(mailMessage);
                 resultDto.getListSuccess().add(dataDto);
 
             } catch (MailAuthenticationException mailAuthenticationException) {
                 // MailAuthenticationException - 認証に失敗した場合
 
-                // TODO タスク計画コードを設定する
-                saveStackTraceService.practice(mailAuthenticationException, now.getYear(), 0);
+                saveStackTraceService.practice(mailAuthenticationException, now.getYear(), taskPlanCode);
                 writeLogService.practiceError("mail送信時に認証できませんでした", mailAuthenticationException);
 
                 // あるユーザまで処理してきて、突然認証できなくなった・・・ということはほぼないと思われるので
@@ -156,7 +155,7 @@ public class SendMailUserLogic {
         return cleanTo;
     }
 
-    private String[] cleanCc(final String[] cc) { //NOPMD
+    private String[] cleanCc(final String[] cc) { // NOPMD
         String[] cleanCc = new String[cc.length];
         for (int i = 0; i < cc.length; i++) {
             if (cc[i] != null) {

@@ -56,9 +56,9 @@ class GetUserLeastByIdServiceTest {
         List<String> listRole = userDto.getListRoles();
         assertEquals(3, listRole.size());
 
-        assertEquals("manager", listRole.get(0));
-        assertEquals("partner_api", listRole.get(1));
-        assertEquals("kanrensha_kigyou_dt", listRole.get(2));
+        assertEquals("ROLE_manager", listRole.get(0));
+        assertEquals("ROLE_partner_api", listRole.get(1));
+        assertEquals("ROLE_kanrensha_kigyou_dt", listRole.get(2));
 
         assertEquals(913, userDto.getRiyoushaCode());
         assertEquals("partner_api", userDto.getRiyoushaRole());

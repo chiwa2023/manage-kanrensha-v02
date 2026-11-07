@@ -1,5 +1,5 @@
+import { UserRoleConstants } from "seijishikin-jp-normalize_common-tool";
 import { SelectOptionStringDto, type SelectOptionStringDtoInterface } from "../../dto/select_options/selectOptionStringDto";
-import UserRoleConstants from "../../dto/user/userRoleConstants";
 
 function createListRoleOptions(listUserRole: string[]): SelectOptionStringDtoInterface[] {
 

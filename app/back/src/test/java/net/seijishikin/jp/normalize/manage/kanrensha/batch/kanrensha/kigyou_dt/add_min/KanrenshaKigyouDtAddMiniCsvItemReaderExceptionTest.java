@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.batch.core.job.parameters.JobParameters;
@@ -34,7 +35,10 @@ import net.seijishikin.jp.normalize.manage.kanrensha.constants.GetCurrentResourc
 @DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
 class KanrenshaKigyouDtAddMiniCsvItemReaderExceptionTest {
 
-    // TODO 文字コードの検証と改行文字の不整合を確認する
+    @AfterEach
+    void tearDown() {
+        kanrenshaKigyouDtAddMiniCsvItemReader.close();
+    }
 
     /** テスト対象 */
     @Autowired
@@ -48,8 +52,8 @@ class KanrenshaKigyouDtAddMiniCsvItemReaderExceptionTest {
         kanrenshaKigyouDtAddMiniCsvItemReader.beforeStep(stepExecution);
         kanrenshaKigyouDtAddMiniCsvItemReader.open(stepExecution.getExecutionContext());
 
-        // nullが返るのでセットのprocessorとwriterからなる一連のステップは起動しない、と思われる
-        assertNull(kanrenshaKigyouDtAddMiniCsvItemReader.read());
+        // 例外発生
+        assertThrows(FlatFileParseException.class, () -> kanrenshaKigyouDtAddMiniCsvItemReader.read());
     }
 
     @Test
@@ -72,9 +76,8 @@ class KanrenshaKigyouDtAddMiniCsvItemReaderExceptionTest {
         StepExecution stepExecution = this.getStepExecutionFormat("引用符が不適切.csv");
         kanrenshaKigyouDtAddMiniCsvItemReader.beforeStep(stepExecution);
 
-        // readの前段階で、Streamに関するエラーがそのまま出てくる
-        assertThrows(ItemStreamException.class,
-                () -> kanrenshaKigyouDtAddMiniCsvItemReader.open(stepExecution.getExecutionContext()));
+        kanrenshaKigyouDtAddMiniCsvItemReader.open(stepExecution.getExecutionContext());
+        assertThrows(FlatFileParseException.class, () -> kanrenshaKigyouDtAddMiniCsvItemReader.read());
     }
 
     @Test
@@ -85,11 +88,44 @@ class KanrenshaKigyouDtAddMiniCsvItemReaderExceptionTest {
         kanrenshaKigyouDtAddMiniCsvItemReader.beforeStep(stepExecution);
         kanrenshaKigyouDtAddMiniCsvItemReader.open(stepExecution.getExecutionContext());
 
-        // 問題のあるデータまでは処理対象
+        // 特に問題なく処理される
+        assertNotNull(kanrenshaKigyouDtAddMiniCsvItemReader.read());
+        assertNotNull(kanrenshaKigyouDtAddMiniCsvItemReader.read());
         assertNotNull(kanrenshaKigyouDtAddMiniCsvItemReader.read());
         assertNull(kanrenshaKigyouDtAddMiniCsvItemReader.read());
     }
 
+    @Test
+    @Tag("TableTruncate")
+    void testCarriageReturn() throws Exception {
+
+        StepExecution stepExecution = this.getStepExecutionFormat("データに改行が存在.csv");
+        kanrenshaKigyouDtAddMiniCsvItemReader.beforeStep(stepExecution);
+        kanrenshaKigyouDtAddMiniCsvItemReader.open(stepExecution.getExecutionContext());
+
+        // 特に問題なく処理される
+        assertNotNull(kanrenshaKigyouDtAddMiniCsvItemReader.read());
+        assertNotNull(kanrenshaKigyouDtAddMiniCsvItemReader.read());
+        assertNotNull(kanrenshaKigyouDtAddMiniCsvItemReader.read());
+        assertNull(kanrenshaKigyouDtAddMiniCsvItemReader.read());
+    }
+
+    @Test
+    @Tag("TableTruncate")
+    void testCharCode() throws Exception {
+
+        StepExecution stepExecution = this.getStepExecutionFormat("文字コード違い.csv");
+        kanrenshaKigyouDtAddMiniCsvItemReader.beforeStep(stepExecution);
+        kanrenshaKigyouDtAddMiniCsvItemReader.open(stepExecution.getExecutionContext());
+
+        // 落ちはしないが文字化けしている
+        assertNotNull(kanrenshaKigyouDtAddMiniCsvItemReader.read());
+        assertNotNull(kanrenshaKigyouDtAddMiniCsvItemReader.read());
+        assertNotNull(kanrenshaKigyouDtAddMiniCsvItemReader.read());
+        assertNull(kanrenshaKigyouDtAddMiniCsvItemReader.read());
+    }
+    
+    
     @Test
     @Tag("TableTruncate")
     void testNotHaveFile() throws Exception {

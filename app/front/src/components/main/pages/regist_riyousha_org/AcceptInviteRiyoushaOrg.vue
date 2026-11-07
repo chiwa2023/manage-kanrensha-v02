@@ -1,16 +1,18 @@
 ﻿<script setup lang="ts">
 import {
+    AccessTokenNotFoundError,
     getErrorMessage,
+    getLoginUser,
     MessageConstants, MessageView,
+    TokenRefreshError,
+    UserRoleConstants,
     type FrameworkMessageAndResultDtoInterface, type LeastUserDtoInterface
 } from 'seijishikin-jp-normalize_common-tool';
 import { onMounted, ref, type Ref } from 'vue';
 import RoutePathConstants from '../../../../routePathConstants';
-import { getLoginUser } from '../../utils/getLoginUser';
 import router from '../../../../router';
 import { useRoute } from 'vue-router';
 import getAuthorizedPromiseArea from '../../dto/login/getAuthorizedPromiseArea';
-import { AccessTokenNotFoundError, TokenRefreshError } from '../../dto/login/errors';
 import { GetTempRiyoushaOrgCombineCapsuleDto, type GetTempRiyoushaOrgCombineCapsuleDtoInterface } from '../../dto/riyousha/getTempRiyoushaOrgCombineCapsuleDto';
 import type { GetTempRiyoushaOrgCombineResultDtoInterface } from '../../dto/riyousha/getTempRiyoushaOrgCombineResultDto';
 import { AcceptRiyoushaCombineCapsuleDto, type AcceptRiyoushaCombineCapsuleDtoInterface } from '../../dto/riyousha/acceptRiyoushaCombineCapsuleDto';
@@ -18,16 +20,14 @@ import { RiyoushaCombineOrgTempEntity, type RiyoushaCombineOrgTempEntityInterfac
 import { useTaskPlan } from '../../stores/storeTaskPlan';
 import ManagerInfo from '../../common/user_info/ManagerInfo.vue';
 import { nextTransferPassStore } from '../../stores/nextTransferPass';
-import UserRoleConstants from '../../dto/user/userRoleConstants';
 import PartnerApiInfo from '../../common/user_info/PartnerApiInfo.vue';
-
 
 // よく使う定数
 const BLANK: string = "";
 const INIT_NUMBER: number = 0;
 // const INIT_BOOLEAN: boolean = false;
 // const SERVER_STATUS_OK: number = 200;
-// const SERVER_STATUS_ERROR: number = 400;
+const SERVER_STATUS_ERROR: number = 400;
 // const SEARCH_LIMIT: number = 20;
 const INQUIRE_FLG: boolean = false;
 const ERR_MESS_ONLY: boolean = true;
@@ -96,6 +96,14 @@ onMounted(() => {
         fetch(url, { method, headers, body })
             .then(async (response) => {
                 const resultDto: GetTempRiyoushaOrgCombineResultDtoInterface = await response.json();
+
+                if (response.status > SERVER_STATUS_ERROR) {
+                    message.value = getErrorMessage(resultDto.message, ERR_MESS_ONLY);
+                    infoLevel.value = MessageConstants.LEVEL_ERROR;
+                    messageType.value = MessageConstants.VIEW_OK;
+                    return;
+                }
+
                 message.value = resultDto.message;
                 if (resultDto.isFailure) {
                     infoLevel.value = MessageConstants.LEVEL_WARNING;
@@ -157,6 +165,14 @@ function onSave() {
         fetch(url, { method, headers, body })
             .then(async (response) => {
                 const resultDto: FrameworkMessageAndResultDtoInterface = await response.json();
+
+                if (response.status > SERVER_STATUS_ERROR) {
+                    message.value = getErrorMessage(resultDto.message, ERR_MESS_ONLY);
+                    infoLevel.value = MessageConstants.LEVEL_ERROR;
+                    messageType.value = MessageConstants.VIEW_OK;
+                    return;
+                }
+
                 if (resultDto.isFailure) {
                     infoLevel.value = MessageConstants.LEVEL_WARNING;
                     messageType.value = MessageConstants.VIEW_OK;

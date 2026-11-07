@@ -15,9 +15,9 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import org.springframework.transaction.annotation.Transactional;
 
-import net.seijishikin.jp.normalize.manage.kanrensha.dto.kanrensha.SearchKanrenshaKigyouDtCapsuleDto;
-import net.seijishikin.jp.normalize.manage.kanrensha.dto.kanrensha.SearchKanrenshaKigyouDtResultDto;
-import net.seijishikin.jp.normalize.manage.kanrensha.entity.KanrenshaKigyouDtMasterEntity;
+import net.seijishikin.jp.normalize.common_tool.dto.kanrensha.KanrenshaKigyouDtMasterDto;
+import net.seijishikin.jp.normalize.common_tool.dto.kanrensha.SearchKanrenshaKigyouDtCapsuleDto;
+import net.seijishikin.jp.normalize.common_tool.dto.kanrensha.SearchKanrenshaKigyouDtResultDto;
 
 /**
  * SearchKanrenshaKigyouDtListService単体テスト
@@ -53,10 +53,10 @@ class SearchKanrenshaKigyouDtListServiceTest {
         assertEquals(capsuleDto.getLimit(), resultDto.getLimit());
         assertEquals(0, resultDto.getPageNumber());
 
-        List<KanrenshaKigyouDtMasterEntity> list = resultDto.getListMasterKigyouDt();
+        List<KanrenshaKigyouDtMasterDto> list = resultDto.getListMasterKigyouDt();
         assertEquals(1, list.size());
 
-        KanrenshaKigyouDtMasterEntity entity = list.get(0);
+        KanrenshaKigyouDtMasterDto entity = list.get(0);
         assertEquals(140, entity.getKanrenshaKigyouDtMasterId());
     }
 
@@ -80,23 +80,24 @@ class SearchKanrenshaKigyouDtListServiceTest {
         assertEquals(capsuleDto.getLimit(), resultDto.getLimit());
         assertEquals(0, resultDto.getPageNumber());
 
-        List<KanrenshaKigyouDtMasterEntity> list = resultDto.getListMasterKigyouDt();
+        List<KanrenshaKigyouDtMasterDto> list = resultDto.getListMasterKigyouDt();
         assertEquals(5, list.size());
 
-        KanrenshaKigyouDtMasterEntity entity0 = list.get(0);
+        KanrenshaKigyouDtMasterDto entity0 = list.get(0);
         assertEquals(140, entity0.getKanrenshaKigyouDtMasterId());
 
-        KanrenshaKigyouDtMasterEntity entity1 = list.get(1);
+        KanrenshaKigyouDtMasterDto entity1 = list.get(1);
         assertEquals(142, entity1.getKanrenshaKigyouDtMasterId());
 
-        KanrenshaKigyouDtMasterEntity entity2 = list.get(2);
+        KanrenshaKigyouDtMasterDto entity2 = list.get(2);
         assertEquals(143, entity2.getKanrenshaKigyouDtMasterId());
 
-        KanrenshaKigyouDtMasterEntity entity3 = list.get(3);
+        KanrenshaKigyouDtMasterDto entity3 = list.get(3);
         assertEquals(144, entity3.getKanrenshaKigyouDtMasterId());
 
-        KanrenshaKigyouDtMasterEntity entity4 = list.get(4);
+        KanrenshaKigyouDtMasterDto entity4 = list.get(4);
         assertEquals(145, entity4.getKanrenshaKigyouDtMasterId());
+        
     }
 
 }

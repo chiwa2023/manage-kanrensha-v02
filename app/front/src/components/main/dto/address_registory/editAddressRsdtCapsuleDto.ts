@@ -1,5 +1,4 @@
-import { FrameworkCapsuleDto, type FrameworkCapsuleDtoInterface } from "seijishikin-jp-normalize_common-tool";
-import { AddressRsdtTemplateEntity, type AddressRsdtTemplateEntityInterface } from "../../entity/addressRsdtTemplateEntity";
+import { AddressRsdtTemplateEntity, FrameworkCapsuleDto, type AddressRsdtTemplateEntityInterface, type FrameworkCapsuleDtoInterface } from "seijishikin-jp-normalize_common-tool";
 
 interface EditAddressRsdtCapsuleDtoInterface extends FrameworkCapsuleDtoInterface {
 

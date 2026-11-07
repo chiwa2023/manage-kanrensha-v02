@@ -6,12 +6,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
+import net.seijishikin.jp.normalize.common_tool.dto.kanrensha.InputKanrenshaPersonLeastDto;
+import net.seijishikin.jp.normalize.common_tool.dto.kanrensha.KanrenshaSeijidantaiDto;
+import net.seijishikin.jp.normalize.common_tool.dto.kanrensha.SaveKanrenshaSeijidantaiCapsuleDto;
 import net.seijishikin.jp.normalize.common_tool.utils.FormatNaturalSearchTextUtil;
 import net.seijishikin.jp.normalize.common_tool.utils.SetTableDataHistoryUtil;
 import net.seijishikin.jp.normalize.manage.kanrensha.constants.UserRoleConstants;
-import net.seijishikin.jp.normalize.manage.kanrensha.dto.kanrensha.InputKanrenshaPersonLeastDto;
-import net.seijishikin.jp.normalize.manage.kanrensha.dto.kanrensha.KanrenshaSeijidantaiDto;
-import net.seijishikin.jp.normalize.manage.kanrensha.dto.kanrensha.SaveKanrenshaSeijidantaiCapsuleDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.KanrenshaSeijidantaiAccessEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.KanrenshaSeijidantaiAddressEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.KanrenshaSeijidantaiHistoryBaseEntity;

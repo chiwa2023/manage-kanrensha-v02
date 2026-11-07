@@ -90,7 +90,6 @@ public class InsertTaskPlanService {
             return resultDto;
         }
 
-        
         // 送信先メールアドレス取得
         Optional<UserPersonEntity> optionalPerson = userPersonRepository.findById(userDto.getUserPersonId());
         if (optionalPerson.isEmpty()) {
@@ -99,10 +98,10 @@ public class InsertTaskPlanService {
             return resultDto;
         }
         UserPersonEntity userPersonEntity = optionalPerson.get();
-        
+
         // 作業者にタスクを通知
         if (userPersonEntity.getIsAlertTaskStart()) {
-            
+
             SendMaileResultDto mailResultDto = this.sendAlert(resultDto, userPersonEntity.getEmail(), savedId);
 
             if (Objects.isNull(mailResultDto)) {
@@ -147,7 +146,7 @@ public class InsertTaskPlanService {
             List<MailDataDto> listMail = new ArrayList<>();
             listMail.add(mailDataDto);
 
-            return sendMailUserLogic.practice(listMail);
+            return sendMailUserLogic.practice(listMail, resultDto.getTaskPlanCode());
 
         } catch (Exception exception) { // NOPMD 業務上の理由で積極的許容
             // タスク挿入中のメール送信過程でのStackTraceを保存

@@ -1,15 +1,12 @@
 <script setup lang="ts">
 import { ref, type Ref } from 'vue';
 import router from '../../../../router';
-import { getErrorMessage, getErrorUniqueIdMessage, MessageConstants, MessageView, type FrameworkMessageAndResultDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
-import { getLoginUser } from '../../utils/getLoginUser';
-import UserRoleConstants from '../../dto/user/userRoleConstants';
+import { AccessTokenNotFoundError, getErrorMessage, getErrorUniqueIdMessage, getLoginUser, MessageConstants, MessageView, TokenRefreshError, UserRoleConstants, type FrameworkMessageAndResultDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import { SearchUserCapsuleDto, type SearchUserCapsuleDtoInterface } from '../../dto/user/searchUserCapsuleDto';
 import type { UserPersonEntityInterface } from '../../entity/userPersonEntity';
 import { PromoteUserAdminCapsuleDto, type PromoteUserAdminCapsuleDtoInterface } from '../../dto/user/PromoteUserAdminCapsuleDto';
 import getAuthorizedPromiseArea from '../../dto/login/getAuthorizedPromiseArea';
 import RoutePathConstants from '../../../../routePathConstants';
-import { AccessTokenNotFoundError, TokenRefreshError } from '../../dto/login/errors';
 import { SearchUserEntityResultDto, type SearchUserEntityResultDtoInterface } from '../../dto/user/searchUserEntityResultDto';
 import AdminInfo from '../../common/user_info/AdminInfo.vue';
 
@@ -20,8 +17,9 @@ const urlBack: string = RoutePathConstants.DOMAIN + RoutePathConstants.BASE_PATH
 const BLANK: string = "";
 // const INIT_NUMBER: number = 0;
 // const SERVER_STATUS_OK: number = 200;
-// const SERVER_STATUS_ERROR: number = 400;
+const SERVER_STATUS_ERROR: number = 400;
 const INQUIRE_FLG: boolean = false;
+const ERR_MESS_ONLY: boolean = true;
 const MESS_PAGE_NAME: string = "SE権限追加推薦処理";
 const INIT_CALLER: string = "no branch";
 
@@ -56,6 +54,14 @@ function onSearch() {
         fetch(url, { method, headers, body })
             .then(async (response) => {
                 resultDto.value = await response.json();
+
+                if (response.status > SERVER_STATUS_ERROR) {
+                    message.value = getErrorMessage(BLANK, INQUIRE_FLG);
+                    infoLevel.value = MessageConstants.LEVEL_ERROR;
+                    messageType.value = MessageConstants.VIEW_OK;
+                    return;
+                }
+
             })
             .catch((e) => {
                 infoLevel.value = MessageConstants.LEVEL_ERROR;
@@ -101,6 +107,14 @@ async function onAdminPromote(userId: number) {
             fetch(url, { method, headers, body })
                 .then(async (response) => {
                     const resultDto: FrameworkMessageAndResultDtoInterface = await response.json();
+
+                    if (response.status > SERVER_STATUS_ERROR) {
+                        message.value = getErrorMessage(resultDto.message, ERR_MESS_ONLY);
+                        infoLevel.value = MessageConstants.LEVEL_ERROR;
+                        messageType.value = MessageConstants.VIEW_OK;
+                        return;
+                    }
+
                     infoLevel.value = MessageConstants.LEVEL_INFO;
                     // トークン保持ができていない場合
                     messageType.value = MessageConstants.VIEW_TOAST;

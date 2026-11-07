@@ -1,12 +1,10 @@
 <script setup lang="ts">
 import { onBeforeMount, ref, type Ref } from 'vue';
-import UserRoleConstants from '../../dto/user/userRoleConstants';
-import { getErrorMessage, MessageConstants, MessageView, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
+import { AccessTokenNotFoundError, getErrorMessage, MessageConstants, MessageView, TokenRefreshError, UserRoleConstants, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import getAuthorizedPromiseArea from '../../dto/login/getAuthorizedPromiseArea';
 import RoutePathConstants from '../../../../routePathConstants';
 import { GetUserDtoCapsuleDto, type GetUserDtoCapsuleDtoInterface } from '../../dto/user/getUserDtoCapsuleDto';
 import type { GetUserDtoResultDtoInterface } from '../../dto/user/getUserDtoResultDto';
-import { AccessTokenNotFoundError, TokenRefreshError } from '../../dto/login/errors';
 import { EditUserPersonCapsuleDto, type EditUserPersonCapsuleDtoInterface } from '../../dto/user/editUserPersonCapsuleDto';
 
 // props,emits
@@ -17,7 +15,7 @@ const emits = defineEmits(["sendCancelEditUser", "sendEditUserInterface"]);
 const BLANK: string = "";
 const INIT_NUMBER: number = 0;
 const SERVER_STATUS_OK: number = 200;
-// const SERVER_STATUS_ERROR: number = 400;
+const SERVER_STATUS_ERROR: number = 400;
 const INQUIRE_FLG: boolean = false;
 const ERR_MESS_ONLY: boolean = true;
 const MESS_PAGE_NAME: string = "ユーザ詳細編集";
@@ -45,7 +43,7 @@ onBeforeMount(() => {
 
     const capsuleDto: GetUserDtoCapsuleDtoInterface = new GetUserDtoCapsuleDto();
     capsuleDto.editUserid = props.editUserId;
-    
+
     // 取得実行
     getAuthorizedPromiseArea().then(token => {
         const url = urlBack + "/edit-user/get";
@@ -59,6 +57,15 @@ onBeforeMount(() => {
         fetch(url, { method, headers, body })
             .then(async (response) => {
                 const resultDto: GetUserDtoResultDtoInterface = await response.json();
+
+                if (response.status > SERVER_STATUS_ERROR) {
+                    message.value = getErrorMessage(resultDto.message, ERR_MESS_ONLY);
+                    infoLevel.value = MessageConstants.LEVEL_ERROR;
+                    messageType.value = MessageConstants.VIEW_OK;
+                    return;
+                }
+
+
                 if (resultDto.isFailure) {
                     infoLevel.value = MessageConstants.LEVEL_ERROR;
                     messageType.value = MessageConstants.VIEW_OK;
@@ -136,6 +143,15 @@ function onSave() {
         fetch(url, { method, headers, body })
             .then(async (response) => {
                 const resultDto: GetUserDtoResultDtoInterface = await response.json();
+
+                if (response.status > SERVER_STATUS_ERROR) {
+                    message.value = getErrorMessage(resultDto.message, ERR_MESS_ONLY);
+                    infoLevel.value = MessageConstants.LEVEL_ERROR;
+                    messageType.value = MessageConstants.VIEW_OK;
+                    return;
+                }
+
+
                 if (resultDto.isFailure) {
                     infoLevel.value = MessageConstants.LEVEL_ERROR;
                     messageType.value = MessageConstants.VIEW_OK;

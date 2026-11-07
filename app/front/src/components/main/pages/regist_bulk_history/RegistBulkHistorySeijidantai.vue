@@ -1,15 +1,13 @@
 ﻿<script setup lang="ts">
 import { computed, onMounted, ref, type ComputedRef, type Ref } from 'vue';
-import { getLoginUser } from '../../utils/getLoginUser';
 import { RegistDataByCsvFileCapsuleDto, type RegistDataByCsvFileCapsuleDtoInterface } from '../../dto/storage_file/registDataByCsvFileCapsuleDto';
-import { FrameworkCapsuleDto, getErrorMessage, MessageConstants, MessageView, type FrameworkCapsuleDtoInterface, type FrameworkMessageAndResultDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
+import { AccessTokenNotFoundError, FrameworkCapsuleDto, getErrorMessage, getLoginUser, MessageConstants, MessageView, TokenRefreshError, type FrameworkCapsuleDtoInterface, type FrameworkMessageAndResultDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import { StorageFileDto, type StorageFileDtoInterface } from '../../dto/storage_file/storageFileDto';
 import EditWkTblHistorySeijidantai from '../../common/wktbl_edit_history/EditWkTblHistorySeijidantai.vue';
 import ManagerInfo from '../../common/user_info/ManagerInfo.vue';
 import ReadCsv from '../../common/read_csv/ReadCsv.vue';
 import RoutePathConstants from '../../../../routePathConstants';
 import getAuthorizedPromiseArea from '../../dto/login/getAuthorizedPromiseArea';
-import { AccessTokenNotFoundError, TokenRefreshError } from '../../dto/login/errors';
 import { useRoute } from 'vue-router';
 import { nextTransferPassStore } from '../../stores/nextTransferPass';
 import router from '../../../../router';
@@ -20,7 +18,7 @@ const INIT_NUMBER: number = 0;
 const INIT_BOOLEAN: boolean = false;
 //const SEARCH_LIMIT: number = 20;
 // const SERVER_STATUS_OK: number = 200;
-// const SERVER_STATUS_ERROR: number = 400;
+const SERVER_STATUS_ERROR: number = 400;
 const INQUIRE_FLG: boolean = false;
 const ERR_MESS_ONLY: boolean = true;
 const MESS_PAGE_NAME: string = "関連者政治団体履歴一括処理再処理";
@@ -88,6 +86,14 @@ function onSave() {
         fetch(url, { method, headers, body })
             .then(async (response) => {
                 const resultDto: FrameworkMessageAndResultDtoInterface = await response.json();
+
+                if (response.status > SERVER_STATUS_ERROR) {
+                    message.value = getErrorMessage(resultDto.message, ERR_MESS_ONLY);
+                    infoLevel.value = MessageConstants.LEVEL_ERROR;
+                    messageType.value = MessageConstants.VIEW_OK;
+                    return;
+                }
+
                 if (resultDto.isFailure) {
                     infoLevel.value = MessageConstants.LEVEL_ERROR;
                     messageType.value = MessageConstants.VIEW_OK;
@@ -122,6 +128,15 @@ function onSave() {
 }
 
 function onBatchByFile() {
+
+    // ファイル未指定時は中断
+    if (capsuleDto.value.storageFileDto.fileName === "") {
+        message.value = "CSVファイルを指定してください";
+        infoLevel.value = MessageConstants.LEVEL_WARNING;
+        messageType.value = MessageConstants.VIEW_OK;
+        return;
+    }
+
     getAuthorizedPromiseArea().then(token => {
         const url = urlBack + "/regist-bulk-history/execute-seijidantai";
         const method = "POST";
@@ -134,6 +149,14 @@ function onBatchByFile() {
         fetch(url, { method, headers, body })
             .then(async (response) => {
                 const resultDto: FrameworkMessageAndResultDtoInterface = await response.json();
+
+                if (response.status > SERVER_STATUS_ERROR) {
+                    message.value = getErrorMessage(resultDto.message, ERR_MESS_ONLY);
+                    infoLevel.value = MessageConstants.LEVEL_ERROR;
+                    messageType.value = MessageConstants.VIEW_OK;
+                    return;
+                }
+
                 message.value = resultDto.message;
                 // 処理が成功したら再登録できないようにアップロードファイル情報を初期化
                 if (resultDto.isFailure) {

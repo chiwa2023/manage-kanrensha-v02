@@ -17,7 +17,6 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
-import org.springframework.transaction.annotation.Transactional;
 
 import net.seijishikin.jp.normalize.manage.kanrensha.constants.UserRoleConstants;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.task.AcceptUserAdminCapsuleDto;
@@ -36,7 +35,6 @@ import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateLeastUserForTes
 @AutoConfigureMockMvc
 @SpringBootTest
 @DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
-@Transactional
 @Sql("AcceptUserAdminServiceTest.sql")
 class AcceptUserAdminServiceTest {
     // CHECKSTYLE:OFF MagicNUmber
@@ -68,7 +66,9 @@ class AcceptUserAdminServiceTest {
         capsuleDto.setPromoteAdminEntity(promoteAdminEntity);
 
         LocalDateTime endTime = LocalDateTime.of(2028, 3, 21, 12, 34, 56); // あえて終了年を登録テーブルと異なる値にしている
-        
+
+        LocalDateTime startRecordTime = LocalDateTime.of(2022, 12, 5, 12, 34, 56);
+
         Integer count = acceptUserAdminService.practice(capsuleDto, endTime);
         assertEquals(6, count);
 
@@ -105,21 +105,21 @@ class AcceptUserAdminServiceTest {
         assertTrue(entityTask3.getIsLatest());
         assertEquals(true, entityTask3.getIsStart());
         assertEquals(true, entityTask3.getIsFinished());
-        assertEquals(endTime, entityTask3.getStartDatetime());
+        assertEquals(startRecordTime, entityTask3.getStartDatetime());
         assertEquals(endTime, entityTask3.getEndDateimte());
 
         TaskPlan2026Entity entityTask4 = listTask.get(4);
         assertTrue(entityTask4.getIsLatest());
         assertEquals(true, entityTask4.getIsStart());
         assertEquals(true, entityTask4.getIsFinished());
-        assertEquals(endTime, entityTask4.getStartDatetime());
+        assertEquals(startRecordTime, entityTask4.getStartDatetime());
         assertEquals(endTime, entityTask4.getEndDateimte());
 
         TaskPlan2026Entity entityTask5 = listTask.get(5);
         assertTrue(entityTask5.getIsLatest());
         assertEquals(true, entityTask5.getIsStart());
         assertEquals(true, entityTask5.getIsFinished());
-        assertEquals(endTime, entityTask5.getStartDatetime());
+        assertEquals(startRecordTime, entityTask5.getStartDatetime());
         assertEquals(endTime, entityTask5.getEndDateimte());
 
         // admin権限が追加されたことを確認

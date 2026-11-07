@@ -21,7 +21,7 @@ public class SaveLoginStatusHistoryY2023Logic {
     /**
      * 処理を行う
      *
-     * @param baseEntity ログイン履歴Entity
+     * @param baseEntity ログイン状態Entity
      */
     public Integer practice(final LoginHistoryBaseEntity baseEntity) {
 

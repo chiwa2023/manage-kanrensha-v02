@@ -5,19 +5,16 @@ import {
     MessageView,
     type FrameworkMessageAndResultDtoInterface,
     getErrorMessage,
-    getErrorUniqueIdMessage
+    getErrorUniqueIdMessage,
+    UserRoleConstants,
+    AccessTokenNotFoundError,
+    TokenRefreshError
 } from 'seijishikin-jp-normalize_common-tool';
 import { onBeforeMount, ref, type Ref, watch } from 'vue';
-// import mockGetOrgName from '../../../test/pages/regist_riyousha_org/mockGetOrgName';
-// import mockGetAddress from '../../../test/pages/regist_riyousha_org/mockGetAddress';
-// import mockGetAccess from '../../../test/pages/regist_riyousha_org/mockGetAccess';
-//import mockGetRiyoushaCOmbinePersonList from '../../../test/common/riyousha/mockGetRiyoushaCombinePersonList';
 import RoutePathConstants from '../../../../routePathConstants';
 import { RiyoushaOrgDto, type RiyoushaOrgDtoInterface } from '../../dto/riyousha/riyoushaOrgDto';
 import getAuthorizedPromiseArea from '../../dto/login/getAuthorizedPromiseArea';
-import { AccessTokenNotFoundError, TokenRefreshError } from '../../dto/login/errors';
 import { GetRiyoushaOrgByCodeCapsuleDto, type GetRiyoushaOrgByCodeCapsuleDtoInterface } from '../../dto/riyousha/getRiyoushaOrgByCodeCapsuleDto';
-import UserRoleConstants from '../../dto/user/userRoleConstants';
 import type { RiyoushaCombineOrgEntityInterface } from '../../entity/riyoushaCombineOrgEntity';
 import { RiyoushaCombinePersonCapsuleDto, type RiyoushaCombinePersonCapsuleDtoInterface } from '../../dto/riyousha/riyoushaCombinePersonCapsuleDto';
 
@@ -29,7 +26,7 @@ const emits = defineEmits(["sendCancelRiyoushaOrg", "sendRiyoushaOrgInterface"])
 const BLANK: string = "";
 const INIT_NUMBER: number = 0;
 // const SERVER_STATUS_OK: number = 200;
-// const SERVER_STATUS_ERROR: number = 400;
+const SERVER_STATUS_ERROR: number = 400;
 // const SEARCH_LIMIT: number = 20;
 const INQUIRE_FLG: boolean = false;
 const ERR_MESS_ONLY: boolean = true;
@@ -74,6 +71,15 @@ function callData(selectedId: number) {
             fetch(url, { method, headers, body })
                 .then(async (response) => {
                     editDto.value = await response.json();
+
+                    if (response.status > SERVER_STATUS_ERROR) {
+                        message.value = getErrorMessage(editDto.value.message, ERR_MESS_ONLY);
+                        infoLevel.value = MessageConstants.LEVEL_ERROR;
+                        messageType.value = MessageConstants.VIEW_OK;
+                        return;
+                    }
+
+
                     message.value = editDto.value.message;
                     if (editDto.value.isFailure) {
                         infoLevel.value = MessageConstants.LEVEL_WARNING;
@@ -143,6 +149,15 @@ function doDelete() {
             fetch(url, { method, headers, body })
                 .then(async (response) => {
                     const resultDto: FrameworkMessageAndResultDtoInterface = await response.json();
+
+                    if (response.status > SERVER_STATUS_ERROR) {
+                        message.value = getErrorMessage(resultDto.message, ERR_MESS_ONLY);
+                        infoLevel.value = MessageConstants.LEVEL_ERROR;
+                        messageType.value = MessageConstants.VIEW_OK;
+                        return;
+                    }
+
+
                     message.value = editDto.value.message;
                     if (resultDto.isFailure) {
                         infoLevel.value = MessageConstants.LEVEL_WARNING;

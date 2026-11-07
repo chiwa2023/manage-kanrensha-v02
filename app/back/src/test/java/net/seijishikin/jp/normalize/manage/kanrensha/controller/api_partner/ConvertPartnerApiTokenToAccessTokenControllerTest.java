@@ -40,8 +40,8 @@ class ConvertPartnerApiTokenToAccessTokenControllerTest {
     @Tag("TableTruncate")
     void test() throws Exception {
 
-        // ログイン成功token
-        String token = "eyJhbGciOiJSUzI1NiJ9.eyJzdWIiOiIxMjM0NSIsInJvbGUiOiJwYXJ0bmVyX2FwaSIsImV4cCI6MTc4MDYxNzYwMCwiaWF0IjoxNzY0ODkyODAwfQ.VoFSuPF27ajroEvLahAVJtKJ6HOpfHMoQBQaoOwD-B9dLvq6UVyLStUTnwq3n1CQ4aYv0QoQvoyCFb0UBBTjmxVV_auahofrUjkQ8KM-N1MCKQBuhCNO4EZ0CrFDjoHZR5znWP7A03rLshjTim-4xsySPK7B62epbPm1bi9yQw69IlQQUD5FiOeWyDo_AtBtUI00tD7LPZE1c2hTmimge0bpCbTZf4KAw6E6PeBQHIk9N_jX7oKctMyyogWXvysK7d2rpbrwyA4YIPMZIi3jxcqqa19FEdv39-SI_RxBnVMQ2E2JoqOPw8aVp__tF037r_JnuTv-afgJONf53AkxFA";
+        // ログイン成功token(実施前に有効期間はチェック)
+        String token = "eyJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJwcHBwIiwicm9sZSI6InBhcnRuZXJfYXBpIiwiZXhwIjoxODA4MDUyNjIxLCJpYXQiOjE3OTIzMjc4MjF9.iRm7ZKAe9EzZZDLquQqwugZ1i5M_cjPS7zW_AXpUlkjE1S7XlQNgAIDd1YcnVANLfPJeouWpHh3M7CP8cdLr7zL8reyIeWNUsMje4WcQpxZHpyqWjlZ8tXW--K6KnvF5Pci5ZPGtYVQdMStVYdfCSvLAj-I9HWkCR_CMfWZQxq3wmxcxPpi5GqxhjvTkyve6BanttPzFeZzEyBb5qfonlxVM6FdqJGjVeFp_IWMf43D9ioMvPiliSipLMKt5-ojSK0BadC-slst4ooxgG7y5Sz1XV-yDPSlAqsvEuyYGA9zWL3jLe5wepbrkh4Vt17L3QusdmV1rSQZCYANKDFA6uw";
 
         HttpHeaders httpHeaders = new HttpHeaders(); // NOPMD
         httpHeaders.add("X-AUTH-TOKEN", "Bearer " + token);

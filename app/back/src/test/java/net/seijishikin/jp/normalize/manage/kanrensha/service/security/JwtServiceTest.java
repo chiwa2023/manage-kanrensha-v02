@@ -20,7 +20,8 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
-import net.seijishikin.jp.normalize.manage.kanrensha.dto.sequrity.JwtTokenDto;
+import net.seijishikin.jp.normalize.common_tool.dto.sequrity.JwtTokenDto;
+
 
 /**
  * JwtService単体テスト

@@ -1,20 +1,18 @@
 ﻿<script setup lang="ts">
-import { getErrorMessage, MessageConstants, MessageView, type FrameworkMessageAndResultDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
+import { AccessTokenNotFoundError, getErrorMessage, getLoginUser, MessageConstants, MessageView, TokenRefreshError, type FrameworkMessageAndResultDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import { ref, type Ref } from 'vue';
-import { getLoginUser } from '../../utils/getLoginUser';
 import type { StorageFileDtoInterface } from '../../dto/storage_file/storageFileDto';
 import ManagerInfo from '../../common/user_info/ManagerInfo.vue';
 import ReadCsv from '../../common/read_csv/ReadCsv.vue';
 import { PrepareSabunWktblPostalCodeCapsuleDto, type PrepareSabunWktblPostalCodeCapsuleDtoInterface } from '../../dto/address_postal/prepareSabunWktblPostalCodeCapsuleDto.ts';
 import getAuthorizedPromiseArea from '../../dto/login/getAuthorizedPromiseArea.ts';
 import RoutePathConstants from '../../../../routePathConstants.ts';
-import { AccessTokenNotFoundError, TokenRefreshError } from '../../dto/login/errors.ts';
 // import ManagerInfo from '../../common/user_info/ManagerInfo.vue';
 
 // よく使う定数
 const BLANK: string = "";
 // const SERVER_STATUS_OK: number = 200;
-// const SERVER_STATUS_ERROR: number = 400;
+const SERVER_STATUS_ERROR: number = 400;
 const INQUIRE_FLG: boolean = false;
 const ERR_MESS_ONLY: boolean = true;
 const MESS_PAGE_NAME: string = "郵便番号差分処理";
@@ -52,6 +50,20 @@ function onSave() {
 
     capsuleDto.value.userDto = userDto.value;
 
+    // 差分ファイルは両方保持
+    if (capsuleDto.value.addFileDto.fileName === "") {
+        message.value = "郵便番号追加差分ファイルを指定してください";
+        infoLevel.value = MessageConstants.LEVEL_WARNING;
+        messageType.value = MessageConstants.VIEW_OK;
+        return;
+    }
+    if (capsuleDto.value.deleteFileDto.fileName === "") {
+        message.value = "郵便番号差分削除ファイルを指定してください";
+        infoLevel.value = MessageConstants.LEVEL_WARNING;
+        messageType.value = MessageConstants.VIEW_OK;
+        return;
+    }
+
     getAuthorizedPromiseArea().then(token => {
         const url = urlBack + "/postal-wktbl/prepare";
         const method = "POST";
@@ -64,6 +76,14 @@ function onSave() {
         fetch(url, { method, headers, body })
             .then(async (response) => {
                 const resultDto: FrameworkMessageAndResultDtoInterface = await response.json();
+
+                if (response.status > SERVER_STATUS_ERROR) {
+                    message.value = getErrorMessage(resultDto.message, ERR_MESS_ONLY);
+                    infoLevel.value = MessageConstants.LEVEL_ERROR;
+                    messageType.value = MessageConstants.VIEW_OK;
+                    return;
+                }
+
                 message.value = resultDto.message;
                 if (resultDto.isFailure) {
                     infoLevel.value = MessageConstants.LEVEL_WARNING;

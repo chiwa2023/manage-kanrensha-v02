@@ -1,7 +1,6 @@
 ﻿<script setup lang="ts">
 import { ref, type Ref } from 'vue';
-import { getLoginUser } from '../../utils/getLoginUser';
-import { type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
+import { getLoginUser, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import ApprovalPersonAddress from '../../common/works_approval/ApprovalPersonAddress.vue';
 import ApprovalPersonShokugyou from '../../common/works_approval/ApprovalPersonShokugyou.vue';
 import ApprovalSeijidantaiAddress from '../../common/works_approval/ApprovalSeijidantaiAddress.vue';

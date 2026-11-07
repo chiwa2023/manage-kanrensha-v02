@@ -8,9 +8,9 @@ import org.junit.jupiter.api.Test;
 import net.seijishikin.jp.normalize.common_tool.dto.input.InputAccessDto;
 import net.seijishikin.jp.normalize.common_tool.dto.input.InputAddressDto;
 import net.seijishikin.jp.normalize.common_tool.dto.input.InputOrgNameDto;
+import net.seijishikin.jp.normalize.common_tool.dto.kanrensha.InputKanrenshaPersonLeastDto;
+import net.seijishikin.jp.normalize.common_tool.dto.kanrensha.KanrenshaKigyouDtDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.constants.HoujinShubetsuConstants;
-import net.seijishikin.jp.normalize.manage.kanrensha.dto.kanrensha.InputKanrenshaPersonLeastDto;
-import net.seijishikin.jp.normalize.manage.kanrensha.dto.kanrensha.KanrenshaKigyouDtDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.KanrenshaKigyouDtPropertyEntity;
 
 /**
@@ -39,7 +39,7 @@ class ConvertKanrenshaKigyouDtDtoToPropertyEntityLogicTest {
                 propertyEntity.getOrgDelegateCode());
         assertEquals(kanrenshaKigyouDtDto.getInputOrgNameDto().getOrgNameKana(), propertyEntity.getOrgNameKana());
         assertEquals(kanrenshaKigyouDtDto.getHoujinSbts(), propertyEntity.getHoujinSbts());
-        assertEquals(true, propertyEntity.getIsForeign());
+        assertEquals(false, propertyEntity.getIsForeign());
     }
 
     private KanrenshaKigyouDtDto createKigyouDtDto() {
@@ -89,6 +89,7 @@ class ConvertKanrenshaKigyouDtDtoToPropertyEntityLogicTest {
         kanrenshaKigyouDtDto.setOrgDelegateLeastDto(orgDelegateLeastDto);
 
         kanrenshaKigyouDtDto.setHoujinSbts(HoujinShubetsuConstants.GAIKOKU_KAISHA); // 外国籍
+        kanrenshaKigyouDtDto.setIsForeign(false); // 5年以上にわたって上場しているので条件を外す
         kanrenshaKigyouDtDto.setIsShiten(true);
 
         // 共通Id類

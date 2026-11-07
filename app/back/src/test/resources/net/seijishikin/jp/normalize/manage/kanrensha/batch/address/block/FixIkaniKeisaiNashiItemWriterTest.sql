@@ -1,3 +1,6 @@
+DELETE FROM `wk_tbl_postal_common`;
+ALTER TABLE `wk_tbl_postal_common` auto_increment = 0;
+
 DELETE FROM `wk_tbl_address_city`;
 ALTER TABLE `wk_tbl_address_city` auto_increment = 0;
 

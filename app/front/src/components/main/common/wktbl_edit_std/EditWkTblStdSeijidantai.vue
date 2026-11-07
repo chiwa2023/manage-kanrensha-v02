@@ -1,14 +1,12 @@
 ﻿<script setup lang="ts">
 import { computed, ref, toRaw, type ComputedRef, type Ref } from 'vue';
-import { getErrorMessage, MessageConstants, MessageView, PagingControl, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
-import SeijidantaiDantaiKbnConstants from '../../dto/kanrensha/seijidantaiDantaiKbnConstants';
+import { AccessTokenNotFoundError, getErrorMessage, MessageConstants, MessageView, PagingControl, SeijidantaiDantaiKbnConstants, TokenRefreshError, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import { SearchWkTblPagingCapsuleDto, type SearchWkTblPagingCapsuleDtoInterface } from '../../dto/add_xml/searchWkTbPagingCapsuleDto';
 import { SearchWkTblStdSeijidantaiPagingResultDto, type SearchWkTblStdSeijidantaiPagingResultDtoInterface } from '../../dto/wktbl_std/searchWkTblStdSeijidantaiPagingResultDto';
 import { WkTblKanrenshaSeijidantaiMasterEntity, type WkTblKanrenshaSeijidantaiMasterEntityInterface } from '../../entity/wkTblKanrenshaSeijidantaiMasterEntity';
 import { UpdateWkTblStdSeijidantaiCapsuleDto, type UpdateWkTblStdSeijidantaiCapsuleDtoInterface } from '../../dto/wktbl_std/updateWkTblStdSeijidantaiCapsuleDto';
 import RoutePathConstants from '../../../../routePathConstants';
 import getAuthorizedPromiseArea from '../../dto/login/getAuthorizedPromiseArea';
-import { AccessTokenNotFoundError, TokenRefreshError } from '../../dto/login/errors';
 import type { UpdateWkTblStdSeijidantaiResultDtoInterface } from '../../dto/wktbl_std/updateWkTblStdSeijidantaiResultDto';
 
 //props,emit
@@ -19,7 +17,7 @@ const BLANK: string = "";
 const INIT_NUMBER: number = 0;
 const INIT_BOOLEAN: boolean = false;
 // const SERVER_STATUS_OK: number = 200;
-// const SERVER_STATUS_ERROR: number = 400;
+const SERVER_STATUS_ERROR: number = 400;
 const SEARCH_LIMIT: number = 20;
 const INQUIRE_FLG: boolean = false;
 const ERR_MESS_ONLY: boolean = true;
@@ -77,6 +75,14 @@ function onSearchSeijidantai() {
         fetch(url, { method, headers, body })
             .then(async (response) => {
                 seijidantaiResultDto.value = await response.json();
+
+                if (response.status > SERVER_STATUS_ERROR) {
+                    message.value = getErrorMessage(BLANK, INQUIRE_FLG);
+                    infoLevel.value = MessageConstants.LEVEL_ERROR;
+                    messageType.value = MessageConstants.VIEW_OK;
+                    return;
+                }
+
                 if (0 == seijidantaiResultDto.value.listWktblSeijidantai.length) {
                     infoLevel.value = MessageConstants.LEVEL_INFO;
                     messageType.value = MessageConstants.VIEW_TOAST;
@@ -142,6 +148,14 @@ function onEditUpdate() {
         fetch(url, { method, headers, body })
             .then(async (response) => {
                 const resultDto: UpdateWkTblStdSeijidantaiResultDtoInterface = await response.json();
+
+                if (response.status > SERVER_STATUS_ERROR) {
+                    message.value = getErrorMessage(resultDto.message, ERR_MESS_ONLY);
+                    infoLevel.value = MessageConstants.LEVEL_ERROR;
+                    messageType.value = MessageConstants.VIEW_OK;
+                    return;
+                }
+
                 message.value = resultDto.message;
                 if (resultDto.isFailure) {
                     infoLevel.value = MessageConstants.LEVEL_WARNING;
@@ -375,7 +389,7 @@ function recieveSubmit() {
                         <option :value=seijidantaiKbnNoSelect> </option>
                         <option :value=seijidantaiKbnSeitou>{{
                             SeijidantaiDantaiKbnConstants.getLabel(seijidantaiKbnSeitou)
-                            }}</option>
+                        }}</option>
                         <option :value=seijidantaiKbnSeitouShibu>{{
                             SeijidantaiDantaiKbnConstants.getLabel(seijidantaiKbnSeitouShibu) }}</option>
                         <option :value=seijidantaiKbnSeijishikin>{{
@@ -384,7 +398,7 @@ function recieveSubmit() {
                             SeijidantaiDantaiKbnConstants.getLabel(seijidantaiKbn18Jou2KouDantai) }}</option>
                         <option :value=seijidantaiKbnSonota>{{
                             SeijidantaiDantaiKbnConstants.getLabel(seijidantaiKbnSonota)
-                            }}</option>
+                        }}</option>
                         <option :value=seijidantaiKbnSonotaShibu>{{
                             SeijidantaiDantaiKbnConstants.getLabel(seijidantaiKbnSonotaShibu) }}</option>
                     </select>

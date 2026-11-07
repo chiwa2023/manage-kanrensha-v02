@@ -51,7 +51,7 @@ public class TimerYoteiExecuteService {
     @Scheduled(cron = "0 0 * * * *")
     public Integer practice() {
 
-        // 基本的には1時間1件しか動かさない想定。TODO 起動メモリ的に十分に動作することが確認出来てからリスト化する
+        // 基本的には1時間1件しか動かさない想定。TODO (1)起動メモリ的に十分に動作することが確認出来てからリスト化する
         LocalDateTime now = LocalDateTime.now();
         Optional<TimerYoteiEntity> optional = timerYoteiRepository
                 .findFirstByNextTimestampLessThanEqualAndIsLatestTrueOrderByNextTimestampAscInsertTimestampAsc(now);

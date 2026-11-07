@@ -55,8 +55,11 @@ public class DownloadStackTraceByTaskCodeController {
             resultDto = pickupStackTraceService.practiceByTaskCode(capsuleDto.getTaskYear(),
                     capsuleDto.getTaskPlanCode());
 
-            return ResponseEntity.status(HttpStatus.OK).body(resultDto);
-
+            if (resultDto.getIsFailure()) {
+                return ResponseEntity.status(HttpStatus.ACCEPTED).body(resultDto);
+            } else {
+                return ResponseEntity.status(HttpStatus.OK).body(resultDto);
+            }
         } catch (UsernameNotFoundException exception) {
             resultDto.setIsFailure(true);
             resultDto.setMessage("tokenとユーザ(userDto)が不整合です");

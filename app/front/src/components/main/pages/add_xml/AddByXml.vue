@@ -1,8 +1,6 @@
 ﻿<script setup lang="ts">
 import { onMounted, ref, useTemplateRef, type Ref } from 'vue';
-import { getLoginUser } from '../../utils/getLoginUser';
 import KanrenshaKbnConstants from '../../dto/kanrensha/kanrenshaKbnConstants';
-import SeijidantaiDantaiKbnConstants from '../../dto/kanrensha/seijidantaiDantaiKbnConstants';
 import { SearchWkTblPagingCapsuleDto, type SearchWkTblPagingCapsuleDtoInterface } from '../../dto/add_xml/searchWkTbPagingCapsuleDto';
 import { SearchWkTblAddByXmlPagingResultDto, type SearchWkTblAddByXmlPagingResultDtoInterface } from '../../dto/add_xml/searchWkTblAddByXmlPagingResultDto';
 import { RegistDataByXmlCapsuleDto, type RegistDataByXmlCapsuleDtoInterface } from '../../dto/add_xml/registDataByXmlCapsuleDto';
@@ -10,14 +8,13 @@ import type { StorageFileDtoInterface } from '../../dto/storage_file/storageFile
 import EditWkTblMinPerson from '../../common/wktbl_edit_min/EditWkTblMinPerson.vue';
 import EditWkTblMinKigyouDt from '../../common/wktbl_edit_min/EditWkTblMinKigyouDt.vue';
 import EditWkTblMinSeijidantai from '../../common/wktbl_edit_min/EditWkTblMinSeijidantai.vue';
-import { FrameworkCapsuleDto, getErrorMessage, MessageConstants, MessageView, PagingControl, type FrameworkCapsuleDtoInterface, type FrameworkMessageAndResultDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
+import { AccessTokenNotFoundError, FrameworkCapsuleDto, getErrorMessage, getLoginUser, MessageConstants, MessageView, PagingControl, SeijidantaiDantaiKbnConstants, TokenRefreshError, type FrameworkCapsuleDtoInterface, type FrameworkMessageAndResultDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import { UpdateWkTblAddByXmlTableListCapsuleDto, type UpdateWkTblAddByXmlTableListCapsuleDtoInterface } from '../../dto/add_xml/updateWkTblAddByXmlTableListCapsuleDto';
 import { UpdateWkTblAddByXmlCapsuleDto, type UpdateWkTblAddByXmlCapsuleDtoInterface } from '../../dto/add_xml/updateWkTblAddByXmlCapsuleDto';
 import ManagerInfo from '../../common/user_info/ManagerInfo.vue';
 import ReadPublishXml from '../../common/read_publish_xml/ReadPublishXml.vue';
 import RoutePathConstants from '../../../../routePathConstants';
 import getAuthorizedPromiseArea from '../../dto/login/getAuthorizedPromiseArea';
-import { AccessTokenNotFoundError, TokenRefreshError } from '../../dto/login/errors';
 import type { UpdateWkTblAddByXmlResultDtoInterface } from '../../dto/add_xml/updateWkTblAddByXmlResultDto';
 import { useRoute } from 'vue-router';
 import { nextTransferPassStore } from '../../stores/nextTransferPass';
@@ -30,7 +27,7 @@ const userDto: Ref<LeastUserDtoInterface> = ref(getLoginUser());
 const BLANK: string = "";
 const INIT_NUMBER: number = 0;
 // const SERVER_STATUS_OK: number = 200;
-// const SERVER_STATUS_ERROR: number = 400;
+const SERVER_STATUS_ERROR: number = 400;
 const SEARCH_LIMIT: number = 20;
 const INQUIRE_FLG: boolean = false;
 const ERR_MESS_ONLY: boolean = true;
@@ -105,6 +102,14 @@ function recieveStorageFileInterface(storageFileDto: StorageFileDtoInterface) {
 // XMLファイルを解析しその結果をワークテーブルに保存
 function onSaveWkTbl() {
 
+    // ファイル未指定時は中断
+    if (capsuleDto.value.storageFileDto.fileName === "") {
+        message.value = "CSVファイルを指定してください";
+        infoLevel.value = MessageConstants.LEVEL_WARNING;
+        messageType.value = MessageConstants.VIEW_OK;
+        return;
+    }
+
     getAuthorizedPromiseArea().then(token => {
         const url = urlBack + "/analysis-xml/execute";
         const method = "POST";
@@ -117,6 +122,14 @@ function onSaveWkTbl() {
         fetch(url, { method, headers, body })
             .then(async (response) => {
                 const resultDto: FrameworkMessageAndResultDtoInterface = await response.json();
+
+                if (response.status > SERVER_STATUS_ERROR) {
+                    message.value = getErrorMessage(resultDto.message, ERR_MESS_ONLY);
+                    infoLevel.value = MessageConstants.LEVEL_ERROR;
+                    messageType.value = MessageConstants.VIEW_OK;
+                    return;
+                }
+
                 if (resultDto.isFailure) {
                     infoLevel.value = MessageConstants.LEVEL_ERROR;
                     messageType.value = MessageConstants.VIEW_OK;
@@ -170,6 +183,14 @@ function onSearchAll() {
         fetch(url, { method, headers, body })
             .then(async (response) => {
                 byXmlResultDto.value = await response.json();
+
+                 if (response.status > SERVER_STATUS_ERROR) {
+                    message.value = getErrorMessage(BLANK, INQUIRE_FLG);
+                    infoLevel.value = MessageConstants.LEVEL_ERROR;
+                    messageType.value = MessageConstants.VIEW_OK;
+                    return;
+                }
+               
                 allCount.value = byXmlResultDto.value.allCount;
                 limit.value = byXmlResultDto.value.limit;
                 pageNumber.value = byXmlResultDto.value.pageNumber;
@@ -246,6 +267,15 @@ function onSaveBunrui(editId: number) {
         fetch(url, { method, headers, body })
             .then(async (response) => {
                 const resultDto: UpdateWkTblAddByXmlResultDtoInterface = await response.json();
+
+                if (response.status > SERVER_STATUS_ERROR) {
+                    message.value = getErrorMessage(resultDto.message, ERR_MESS_ONLY);
+                    infoLevel.value = MessageConstants.LEVEL_ERROR;
+                    messageType.value = MessageConstants.VIEW_OK;
+                    return;
+                }
+
+
                 // 正常に更新できた時だけ既存のリストと入れ替え
                 byXmlResultDto.value.listXmlEntity.splice(findIndex, 1, resultDto.wkTblMasterAllByXmlEntity);
                 // 再表示
@@ -302,6 +332,13 @@ function onSaveTableList() {
             .then(async (response) => {
                 const resultDto: FrameworkMessageAndResultDtoInterface = await response.json();
 
+                if (response.status > SERVER_STATUS_ERROR) {
+                    message.value = getErrorMessage(resultDto.message, ERR_MESS_ONLY);
+                    infoLevel.value = MessageConstants.LEVEL_ERROR;
+                    messageType.value = MessageConstants.VIEW_OK;
+                    return;
+                }
+
                 infoLevel.value = MessageConstants.LEVEL_INFO;
                 messageType.value = MessageConstants.VIEW_TOAST;
                 message.value = resultDto.message;
@@ -355,6 +392,13 @@ function onSave() {
         fetch(url, { method, headers, body })
             .then(async (response) => {
                 const resultDto: FrameworkMessageAndResultDtoInterface = await response.json();
+
+                if (response.status > SERVER_STATUS_ERROR) {
+                    message.value = getErrorMessage(resultDto.message, ERR_MESS_ONLY);
+                    infoLevel.value = MessageConstants.LEVEL_ERROR;
+                    messageType.value = MessageConstants.VIEW_OK;
+                    return;
+                }
 
                 infoLevel.value = MessageConstants.LEVEL_INFO;
                 messageType.value = MessageConstants.VIEW_TOAST;

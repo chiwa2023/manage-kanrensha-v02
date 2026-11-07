@@ -21,7 +21,7 @@ public class DumpKanrenshaKigyouDtMasterDto // NOPMD DataClass
     /**
      * コンストラクタ
      */
-    public DumpKanrenshaKigyouDtMasterDto() { // NOPMD TODO 安定した段階でフィールドを引数とするコンストラクタを作成
+    public DumpKanrenshaKigyouDtMasterDto() { // NOPMD
 
     }
 

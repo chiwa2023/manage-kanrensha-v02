@@ -10,7 +10,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 import jakarta.persistence.LockModeType;
-import net.seijishikin.jp.normalize.manage.kanrensha.dto.sns.SnsServiceOptionDto;
+import net.seijishikin.jp.normalize.common_tool.dto.sns.SnsServiceOptionDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.SnsServiceEntity;
 
 /**

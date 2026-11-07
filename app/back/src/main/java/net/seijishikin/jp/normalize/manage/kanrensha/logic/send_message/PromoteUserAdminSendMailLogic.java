@@ -65,7 +65,7 @@ public class PromoteUserAdminSendMailLogic {
         try {
             List<MailDataDto> list = new ArrayList<>();
             list.add(this.createMailData(userPersonEntity.getEmail()));
-            return sendMailUserLogic.practice(list);
+            return sendMailUserLogic.practice(list, 0);
         } catch (IOException iOException) {
             SendMaileResultDto resultDto = new SendMaileResultDto();
             resultDto.setIsFailure(true);

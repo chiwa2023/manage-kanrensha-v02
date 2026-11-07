@@ -1,17 +1,17 @@
 ﻿<script setup lang="ts">
-import { computed, onBeforeMount, ref, type ComputedRef, type Ref } from 'vue';
+import { computed, onMounted, ref, type ComputedRef, type Ref } from 'vue';
 import { SearchTaskPlanCapsuleDto, type SearchTaskPlanCapsuleDtoInterface } from '../../dto/task_plan/searchTaskPlanCapsuleDto';
-import { convertDatetimeText, DtoEntityConstants, getErrorMessage, InputDatetime, MessageConstants, MessageView, PagingControl, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
-import UserRoleConstants from '../../dto/user/userRoleConstants';
+import { AccessTokenNotFoundError, convertDatetimeText, DtoEntityConstants, FrameworkCapsuleDto, getErrorMessage, InputDatetime, MessageConstants, MessageView, PagingControl, TokenRefreshError, UserRoleConstants, type FrameworkCapsuleDtoInterface, type FrameworkMessageAndResultDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import { SearchTaskPlanResultDto, type SearchTaskPlanResultDtoInterface } from '../../dto/task_plan/searchTaskPlanResultDto';
 import { SearchTaskHistoryResultDto, type SearchTaskHistoryResultDtoInterface } from '../../dto/task_plan/searchTaskHistoryResultDto';
 import getAuthorizedPromiseArea from '../../dto/login/getAuthorizedPromiseArea';
 import RoutePathConstants from '../../../../routePathConstants';
-import { AccessTokenNotFoundError, TokenRefreshError } from '../../dto/login/errors';
 import { SearchTaskHistoryCapsuleDto, type SearchTaskHistoryCapsuleDtoInterface } from '../../dto/task_plan/searchTaskHistoryCapsuleDto';
 import DownloadStackTrace from './DownloadStackTrace.vue';
 import type { TaskInfoCodeCheckOptionDtoInterface } from '../../dto/task_plan/taskInfoCodeCheckOptionDto';
-import { getTaskCheckboxListCategory0, getTaskCheckboxListCategory3, getTaskCheckboxListCategory9 } from '../../dto/task_plan/getTaskCheckboxList';
+import type { GetTaskInfoOptionsResultDtoInterface } from '../../dto/task_info/getTaskInfoOptionsResultDto';
+import { UpdateTaskPlanSimpleCapsuleDto, type UpdateTaskPlanSimpleCapsuleDtoInterface } from '../../dto/task_plan/updateTaskPlanSimpleCapsuleDto';
+import { type TaskPlanBaseEntityInterface } from '../../entity/taskPlanBaseEntity';
 import router from '../../../../router';
 
 // props,emmits
@@ -26,7 +26,7 @@ const BLANK: string = "";
 const INIT_NUMBER: number = 0;
 const SEARCH_LIMIT: number = 20;
 // const SERVER_STATUS_OK: number = 200;
-// const SERVER_STATUS_ERROR: number = 400;
+const SERVER_STATUS_ERROR: number = 400;
 const INQUIRE_FLG: boolean = false;
 const ERR_MESS_ONLY: boolean = true;
 const MESS_PAGE_NAME: string = "タスク計画表示";
@@ -42,7 +42,6 @@ const message: Ref<string> = ref(BLANK);
 const pageNumber: Ref<number> = ref(INIT_NUMBER);
 const allCount: Ref<number> = ref(INIT_NUMBER);
 const limit: Ref<number> = ref(SEARCH_LIMIT);
-
 
 // タスク検索条件
 const capsuleDto: Ref<SearchTaskPlanCapsuleDtoInterface> = ref(new SearchTaskPlanCapsuleDto());
@@ -60,6 +59,94 @@ const LIMIT_DATE = DtoEntityConstants.INIT_DATETIME_LIMIT;
 const resultDto: Ref<SearchTaskPlanResultDtoInterface> = ref(new SearchTaskPlanResultDto());
 // 履歴用リスト
 const resultHistoryDto: Ref<SearchTaskHistoryResultDtoInterface> = ref(new SearchTaskHistoryResultDto());
+
+onMounted(() => {
+
+    const getCapsuleDto: FrameworkCapsuleDtoInterface = new FrameworkCapsuleDto();
+    getCapsuleDto.userDto = props.userDto;
+
+    // 検索実行
+    getAuthorizedPromiseArea().then(token => {
+        const url = urlBack + "/task-info/get";
+        const method = "POST";
+        const body = JSON.stringify(getCapsuleDto);
+        const headers = {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'X-AUTH-TOKEN': 'Bearer ' + token
+        };
+        fetch(url, { method, headers, body })
+            .then(async (response) => {
+
+                const resultOptionsDto: GetTaskInfoOptionsResultDtoInterface = await response.json();
+
+                if (response.status > SERVER_STATUS_ERROR) {
+                    message.value = getErrorMessage(resultOptionsDto.message, ERR_MESS_ONLY);
+                    infoLevel.value = MessageConstants.LEVEL_ERROR;
+                    messageType.value = MessageConstants.VIEW_OK;
+                    return;
+                }
+
+                if (resultOptionsDto.isFailure) {
+                    message.value = resultOptionsDto.message;
+                    infoLevel.value = MessageConstants.LEVEL_ERROR;
+                    messageType.value = MessageConstants.VIEW_TOAST;
+                } else {
+                    listCategory0.value = resultOptionsDto.listDto.filter((e) => e.codeValue > 0 && e.codeValue < 100);
+                    listCategory1.value = resultOptionsDto.listDto.filter((e) => e.codeValue >= 100 && e.codeValue < 200);
+                    listCategory2.value = resultOptionsDto.listDto.filter((e) => e.codeValue >= 200 && e.codeValue < 300);
+                    listCategory3.value = resultOptionsDto.listDto.filter((e) => e.codeValue >= 300 && e.codeValue < 400);
+                    listCategory4.value = resultOptionsDto.listDto.filter((e) => e.codeValue >= 400 && e.codeValue < 500);
+                    listCategory5.value = resultOptionsDto.listDto.filter((e) => e.codeValue >= 500 && e.codeValue < 600);
+                    listCategory6.value = resultOptionsDto.listDto.filter((e) => e.codeValue >= 600 && e.codeValue < 700);
+                    listCategory7.value = resultOptionsDto.listDto.filter((e) => e.codeValue >= 700 && e.codeValue < 800);
+                    listCategory8.value = resultOptionsDto.listDto.filter((e) => e.codeValue >= 800 && e.codeValue < 900);
+                    listCategory9.value = resultOptionsDto.listDto.filter((e) => e.codeValue >= 900 && e.codeValue < 1000);
+
+                    // 検索条件を作成しないときは指定条件で検索
+                    if (!props.isSearchCondition) {
+
+                        // 検索期間は前年初頭から今年末
+                        const year: number = new Date().getFullYear();
+                        capsuleDto.value.startDate = new Date((year - 1) + "-01-01");
+                        capsuleDto.value.startDate.setHours(0);
+                        capsuleDto.value.startDate.setMinutes(0);
+                        capsuleDto.value.startDate.setSeconds(0);
+                        capsuleDto.value.startDate.setHours(9, 0, 0, 0);
+
+                        capsuleDto.value.endDate = new Date((year) + "-12-31");
+                        capsuleDto.value.endDate.setHours(23, 59, 59, 0);
+                        capsuleDto.value.flgFinished = 0;
+                        capsuleDto.value.flgSuspended = 0;
+                        capsuleDto.value.flgStart = 2;
+
+                        onSearch();
+                    }
+                }
+            })
+            .catch((error) => {
+                message.value = getErrorMessage(error, ERR_MESS_ONLY);
+                infoLevel.value = MessageConstants.LEVEL_ERROR;
+                messageType.value = MessageConstants.VIEW_OK;
+                return;
+            });
+    }).catch((e) => {
+        infoLevel.value = MessageConstants.LEVEL_ERROR;
+        messageType.value = MessageConstants.VIEW_OK;
+
+        // トークン保持または取得に失敗している場合
+        if (e instanceof AccessTokenNotFoundError || e instanceof TokenRefreshError) {
+            message.value = e.message;
+            return;
+        }
+
+        message.value = getErrorMessage(e, INQUIRE_FLG);
+        return;
+    });
+
+
+});
+
 
 function onSearch() {
 
@@ -94,6 +181,15 @@ function onSearch() {
         fetch(url, { method, headers, body })
             .then(async (response) => {
                 resultDto.value = await response.json();
+
+                if (response.status > SERVER_STATUS_ERROR) {
+                    message.value = getErrorMessage(BLANK, INQUIRE_FLG);
+                    infoLevel.value = MessageConstants.LEVEL_ERROR;
+                    messageType.value = MessageConstants.VIEW_OK;
+                    return;
+                }
+
+                // isFasilureなし
                 if (resultDto.value.allCount > 0) {
                     allCount.value = resultDto.value.allCount;
                     pageNumber.value = resultDto.value.pageNumber;
@@ -124,6 +220,7 @@ function onSearch() {
     });
 }
 
+
 function onShowHistory(selectedCode: number, taskYear: number) {
 
     const capsuleDtoHistory: SearchTaskHistoryCapsuleDtoInterface = new SearchTaskHistoryCapsuleDto();
@@ -142,7 +239,16 @@ function onShowHistory(selectedCode: number, taskYear: number) {
         };
         fetch(url, { method, headers, body })
             .then(async (response) => {
+                // isFailureなし
                 resultHistoryDto.value = await response.json();
+
+                if (response.status > SERVER_STATUS_ERROR) {
+                    message.value = getErrorMessage(BLANK, INQUIRE_FLG);
+                    infoLevel.value = MessageConstants.LEVEL_ERROR;
+                    messageType.value = MessageConstants.VIEW_OK;
+                    return;
+                }
+
             })
             .catch((e) => {
                 infoLevel.value = MessageConstants.LEVEL_ERROR;
@@ -164,34 +270,17 @@ function getStateText(isState: boolean, column: string): string {
     return column + (isState ? "しています" : "していません");
 }
 
-const listCategory0: Ref<TaskInfoCodeCheckOptionDtoInterface[]> = ref(getTaskCheckboxListCategory0());
-const listCategory3: Ref<TaskInfoCodeCheckOptionDtoInterface[]> = ref(getTaskCheckboxListCategory3());
-const listCategory9: Ref<TaskInfoCodeCheckOptionDtoInterface[]> = ref(getTaskCheckboxListCategory9());
+const listCategory0: Ref<TaskInfoCodeCheckOptionDtoInterface[]> = ref([]);
+const listCategory1: Ref<TaskInfoCodeCheckOptionDtoInterface[]> = ref([]);
+const listCategory2: Ref<TaskInfoCodeCheckOptionDtoInterface[]> = ref([]);
+const listCategory3: Ref<TaskInfoCodeCheckOptionDtoInterface[]> = ref([]);
+const listCategory4: Ref<TaskInfoCodeCheckOptionDtoInterface[]> = ref([]);
+const listCategory5: Ref<TaskInfoCodeCheckOptionDtoInterface[]> = ref([]);
+const listCategory6: Ref<TaskInfoCodeCheckOptionDtoInterface[]> = ref([]);
+const listCategory7: Ref<TaskInfoCodeCheckOptionDtoInterface[]> = ref([]);
+const listCategory8: Ref<TaskInfoCodeCheckOptionDtoInterface[]> = ref([]);
+const listCategory9: Ref<TaskInfoCodeCheckOptionDtoInterface[]> = ref([]);
 
-// 検索条件を入力しないときは2年間の未処理タスク
-onBeforeMount(() => {
-    // タスクコードリストを設定
-    capsuleDto.value.infoCodeList.splice(0);
-    capsuleDto.value.infoCodeList = createCodeList();
-
-    if (!props.isSearchCondition) {
-
-        // 検索期間は前年初頭から今年末
-        const year: number = new Date().getFullYear();
-        capsuleDto.value.startDate = new Date((year - 1) + "-01-01");
-        capsuleDto.value.startDate.setHours(0);
-        capsuleDto.value.startDate.setMinutes(0);
-        capsuleDto.value.startDate.setSeconds(0);
-        capsuleDto.value.startDate.setHours(9, 0, 0, 0);
-
-        capsuleDto.value.endDate = new Date((year) + "-12-31");
-        capsuleDto.value.endDate.setHours(23, 59, 59, 0);
-        capsuleDto.value.flgFinished = 0;
-
-        onSearch();
-    }
-
-});
 
 function onCancel() {
     emits("sendCanceelShowTask");
@@ -215,7 +304,42 @@ function createCodeList(): number[] {
             list.push(dto.codeValue);
         }
     }
+    for (const dto of listCategory1.value) {
+        if (dto.isChecked) {
+            list.push(dto.codeValue);
+        }
+    }
+    for (const dto of listCategory2.value) {
+        if (dto.isChecked) {
+            list.push(dto.codeValue);
+        }
+    }
     for (const dto of listCategory3.value) {
+        if (dto.isChecked) {
+            list.push(dto.codeValue);
+        }
+    }
+    for (const dto of listCategory4.value) {
+        if (dto.isChecked) {
+            list.push(dto.codeValue);
+        }
+    }
+    for (const dto of listCategory5.value) {
+        if (dto.isChecked) {
+            list.push(dto.codeValue);
+        }
+    }
+    for (const dto of listCategory6.value) {
+        if (dto.isChecked) {
+            list.push(dto.codeValue);
+        }
+    }
+    for (const dto of listCategory7.value) {
+        if (dto.isChecked) {
+            list.push(dto.codeValue);
+        }
+    }
+    for (const dto of listCategory8.value) {
         if (dto.isChecked) {
             list.push(dto.codeValue);
         }
@@ -234,14 +358,27 @@ function onInfoCodeCheck() {
     isTaskCodeCheck.value = !isTaskCodeCheck.value;
 }
 
-const flgAllCheck1: Ref<boolean> = ref(true);
+const flgAllCheck0: Ref<boolean> = ref(true);
 function onAllCheck0() {
-    const ans = flgAllCheck1.value;
+    const ans = flgAllCheck0.value;
     for (const dto of listCategory0.value) {
         dto.isChecked = ans
     }
 }
-
+const flgAllCheck1: Ref<boolean> = ref(true);
+function onAllCheck1() {
+    const ans = flgAllCheck1.value;
+    for (const dto of listCategory1.value) {
+        dto.isChecked = ans
+    }
+}
+const flgAllCheck2: Ref<boolean> = ref(true);
+function onAllCheck2() {
+    const ans = flgAllCheck2.value;
+    for (const dto of listCategory2.value) {
+        dto.isChecked = ans
+    }
+}
 const flgAllCheck3: Ref<boolean> = ref(true);
 function onAllCheck3() {
     const ans = flgAllCheck3.value;
@@ -249,7 +386,41 @@ function onAllCheck3() {
         dto.isChecked = ans
     }
 }
-
+const flgAllCheck4: Ref<boolean> = ref(true);
+function onAllCheck4() {
+    const ans = flgAllCheck4.value;
+    for (const dto of listCategory4.value) {
+        dto.isChecked = ans
+    }
+}
+const flgAllCheck5: Ref<boolean> = ref(true);
+function onAllCheck5() {
+    const ans = flgAllCheck5.value;
+    for (const dto of listCategory5.value) {
+        dto.isChecked = ans
+    }
+}
+const flgAllCheck6: Ref<boolean> = ref(true);
+function onAllCheck6() {
+    const ans = flgAllCheck6.value;
+    for (const dto of listCategory6.value) {
+        dto.isChecked = ans
+    }
+}
+const flgAllCheck7: Ref<boolean> = ref(true);
+function onAllCheck7() {
+    const ans = flgAllCheck7.value;
+    for (const dto of listCategory7.value) {
+        dto.isChecked = ans
+    }
+}
+const flgAllCheck8: Ref<boolean> = ref(true);
+function onAllCheck8() {
+    const ans = flgAllCheck8.value;
+    for (const dto of listCategory8.value) {
+        dto.isChecked = ans
+    }
+}
 const flgAllCheck9: Ref<boolean> = ref(true);
 function onAllCheck9() {
     const ans = flgAllCheck9.value;
@@ -271,6 +442,92 @@ function recieveDatetime(date: Date, index: number) {
 function onTransfer(path: string) {
     router.push(RoutePathConstants.BASE_PATH + path);
 }
+
+
+
+function onUpdateSuccess() {
+    // 最終履歴を更新
+    const updateCapuleDto: Ref<UpdateTaskPlanSimpleCapsuleDtoInterface> = ref(new UpdateTaskPlanSimpleCapsuleDto());
+    const dto: TaskPlanBaseEntityInterface | undefined = resultHistoryDto.value.listTaskHistory[resultHistoryDto.value.listTaskHistory.length - 1];
+    if (undefined !== dto) {
+        updateCapuleDto.value.taskYear = dto.tableYear;
+        updateCapuleDto.value.taskPlanId = dto.taskPlanId;
+        updateCapuleDto.value.userDto = props.userDto;
+        if (dto.isFinished || dto.isSuspended) {
+            message.value = "このタスクは終了または中断しています";
+            infoLevel.value = MessageConstants.LEVEL_WARNING;
+            messageType.value = MessageConstants.VIEW_OK;
+            return;
+        }
+        if (!dto.isLatest) {
+            message.value = "タスク計画データに整合性がありません。";
+            infoLevel.value = MessageConstants.LEVEL_WARNING;
+            messageType.value = MessageConstants.VIEW_OK;
+            return;
+        }
+
+        // 正常終了で更新
+        getAuthorizedPromiseArea().then(token => {
+            const url = urlBack + "/task-plan/update-success";
+            const method = "POST";
+            const body = JSON.stringify(updateCapuleDto.value);
+            const headers = {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'X-AUTH-TOKEN': 'Bearer ' + token
+            };
+            fetch(url, { method, headers, body })
+                .then(async (response) => {
+                    const resultDto: FrameworkMessageAndResultDtoInterface = await response.json();
+
+                    if (response.status > SERVER_STATUS_ERROR) {
+                        message.value = getErrorMessage(resultDto.message, ERR_MESS_ONLY);
+                        infoLevel.value = MessageConstants.LEVEL_ERROR;
+                        messageType.value = MessageConstants.VIEW_OK;
+                        return;
+                    }
+
+                    message.value = resultDto.message;
+
+                    if (response.status > SERVER_STATUS_ERROR) {
+                        message.value = getErrorMessage(resultDto.message, ERR_MESS_ONLY);
+                        infoLevel.value = MessageConstants.LEVEL_ERROR;
+                        messageType.value = MessageConstants.VIEW_OK;
+                        return;
+                    }
+
+                    if (resultDto.isFailure) {
+                        infoLevel.value = MessageConstants.LEVEL_WARNING;
+                        messageType.value = MessageConstants.VIEW_OK;
+                        return;
+                    } else {
+                        infoLevel.value = MessageConstants.LEVEL_INFO;
+                        messageType.value = MessageConstants.VIEW_TOAST;
+                    }
+                })
+                .catch((error) => {
+                    message.value = getErrorMessage(error, ERR_MESS_ONLY);
+                    infoLevel.value = MessageConstants.LEVEL_ERROR;
+                    messageType.value = MessageConstants.VIEW_OK;
+                    return;
+                });
+        }).catch((e) => {
+            infoLevel.value = MessageConstants.LEVEL_ERROR;
+            messageType.value = MessageConstants.VIEW_OK;
+
+            // トークン保持または取得に失敗している場合
+            if (e instanceof AccessTokenNotFoundError || e instanceof TokenRefreshError) {
+                message.value = e.message;
+                return;
+            }
+
+            message.value = getErrorMessage(e, INQUIRE_FLG);
+            return;
+        });
+    }
+}
+
+
 </script>
 <template>
     <div v-if="!isSearchCondition">
@@ -334,7 +591,6 @@ function onTransfer(path: string) {
             </div>
         </div>
 
-        <!-- TODO タスクの種類はさらに種類が確定するまで調整 -->
         <div class="one-line">
             <div class="left-area">
                 タスクの種類
@@ -343,26 +599,100 @@ function onTransfer(path: string) {
                 <div class="form-group-vertical">
                     <div> <button @click="onInfoCodeCheck">指定するので展開</button></div>
                     <div v-if="isTaskCodeCheck">
-                        <div>
-                            <input type="checkbox" v-model="flgAllCheck1" @change="onAllCheck0()">グループ1すべて
+                        <div v-if="listCategory0.length > 0">
+                            <input type="checkbox" v-model="flgAllCheck0" @change="onAllCheck0()">グループ0すべて
                             <div>
-                                <span v-for="dto in listCategory0" class="left-space">
+                                <span v-for="dto, index in listCategory0" class="left-space">
                                     <input type="checkbox" v-model="dto.isChecked">{{ dto.codeName }}
+                                    <span v-if="index % 5 == 0"><br></span>
                                 </span>
                             </div>
                         </div>
-                        <div> <input type="checkbox" v-model="flgAllCheck3" @change="onAllCheck3()">グループ3すべて
+                        <div v-if="listCategory1.length > 0">
+                            <input type="checkbox" v-model="flgAllCheck1" @change="onAllCheck1()">グループ1すべて
                             <div>
-                                <span v-for="dto in listCategory3" class="left-space">
+                                <span v-for="dto, index in listCategory1" class="left-space">
                                     <input type="checkbox" v-model="dto.isChecked">{{ dto.codeName }}
+                                    <span v-if="index % 5 == 0"><br></span>
                                 </span>
                             </div>
                         </div>
-                        <div> <input type="checkbox" v-model="flgAllCheck9" @change="onAllCheck9()">グループ9すべて
+                        <div v-if="listCategory2.length > 0">
+                            <input type="checkbox" v-model="flgAllCheck2" @change="onAllCheck2()">グループ2すべて
+                            <div>
+                                <span v-for="dto, index in listCategory2" class="left-space">
+                                    <input type="checkbox" v-model="dto.isChecked">{{ dto.codeName }}
+                                    <span v-if="index % 5 == 0"><br></span>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div v-if="listCategory3.length > 0">
+                            <input type="checkbox" v-model="flgAllCheck3" @change="onAllCheck3()">グループ3すべて
+                            <div>
+                                <span v-for="dto, index in listCategory3" class="left-space">
+                                    <input type="checkbox" v-model="dto.isChecked">{{ dto.codeName }}
+                                    <span v-if="index % 5 == 0"><br></span>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div v-if="listCategory4.length > 0">
+                            <input type="checkbox" v-model="flgAllCheck4" @change="onAllCheck4()">グループ4すべて
+                            <div>
+                                <span v-for="dto, index in listCategory4" class="left-space">
+                                    <input type="checkbox" v-model="dto.isChecked">{{ dto.codeName }}
+                                    <span v-if="index % 5 == 0"><br></span>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div v-if="listCategory5.length > 0">
+                            <input type="checkbox" v-model="flgAllCheck5" @change="onAllCheck5()">グループ5すべて
+                            <div>
+                                <span v-for="dto, index in listCategory5" class="left-space">
+                                    <input type="checkbox" v-model="dto.isChecked">{{ dto.codeName }}
+                                    <span v-if="index % 5 == 0"><br></span>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div v-if="listCategory6.length > 0">
+                            <input type="checkbox" v-model="flgAllCheck6" @change="onAllCheck6()">グループ1すべて
+                            <div>
+                                <span v-for="dto, index in listCategory6" class="left-space">
+                                    <input type="checkbox" v-model="dto.isChecked">{{ dto.codeName }}
+                                    <span v-if="index % 5 == 0"><br></span>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div v-if="listCategory7.length > 0">
+                            <input type="checkbox" v-model="flgAllCheck7" @change="onAllCheck7()">グループ7すべて
+                            <div>
+                                <span v-for="dto, index in listCategory7" class="left-space">
+                                    <input type="checkbox" v-model="dto.isChecked">{{ dto.codeName }}
+                                    <span v-if="index % 5 == 0"><br></span>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div v-if="listCategory8.length > 0">
+                            <input type="checkbox" v-model="flgAllCheck8" @change="onAllCheck8()">グループ8すべて
+                            <div>
+                                <span v-for="dto, index in listCategory8" class="left-space">
+                                    <input type="checkbox" v-model="dto.isChecked">{{ dto.codeName }}
+                                    <span v-if="index % 5 == 0"><br></span>
+                                </span>
+                            </div>
+                        </div>
+                        <div v-if="listCategory9.length > 0">
+                            <input type="checkbox" v-model="flgAllCheck9" @change="onAllCheck9()">グループ9すべて
                         </div>
                         <div>
-                            <span v-for="dto in listCategory9" class="left-space">
+                            <span v-for="dto, index in listCategory9" class="left-space">
                                 <input type="checkbox" v-model="dto.isChecked">{{ dto.codeName }}
+                                <span v-if="index % 5 == 0"><br></span>
                             </span>
                         </div>
                     </div>
@@ -457,6 +787,15 @@ function onTransfer(path: string) {
                 </tr>
             </tbody>
         </table>
+    </div>
+
+    <div class="one-line" v-if="resultHistoryDto.listTaskHistory.length > 0">
+        <div class="left-area">
+            このタスクを正常終了
+        </div>
+        <div class="right-area">
+            <button @click="onUpdateSuccess">終了更新</button>
+        </div>
     </div>
 
     <div class="footer">

@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -16,7 +17,8 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import org.springframework.transaction.annotation.Transactional;
 
-import net.seijishikin.jp.normalize.manage.kanrensha.dto.kanrensha.KanrenshaPersonDto;
+import net.seijishikin.jp.normalize.common_tool.dto.kanrensha.KanrenshaPersonDto;
+import net.seijishikin.jp.normalize.common_tool.dto.kanrensha.KanrenshaPersonMasterDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.KanrenshaPersonMasterEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.repository.KanrenshaPersonMasterRepository;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.kanrensha.GetKanrenshaPersonDtoService;
@@ -98,7 +100,9 @@ class CallForEditPersonAccessEntityLogicTest {
 
     private KanrenshaPersonDto getDto() {
         KanrenshaPersonMasterEntity masterEntity = kanrenshaPersonMasterRepository.findById(391).get();
-        return getKanrenshaPersonDtoService.practice(masterEntity);
+        KanrenshaPersonMasterDto masterDto = new KanrenshaPersonMasterDto();
+        BeanUtils.copyProperties(masterEntity, masterDto);
+        return getKanrenshaPersonDtoService.practice(masterDto);
     }
 
 }

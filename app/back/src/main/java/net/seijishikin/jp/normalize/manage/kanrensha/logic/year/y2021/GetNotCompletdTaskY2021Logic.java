@@ -35,7 +35,7 @@ public class GetNotCompletdTaskY2021Logic {
         // 最初から指定件数の未取得
         Pageable pageable = Pageable.ofSize(limit).withPage(0);
         List<TaskPlan2021Entity> listYear = taskPlan2021Repository
-                .findByTaskUserCodeAndIsLatestTrueAndIsFinishedFalseOrderByInsertTimestampDesc(
+                .findByTaskUserCodeAndIsLatestTrueAndIsFinishedFalseAndIsSuspendedFalseOrderByInsertTimestampDesc(
                         userDto.getUserPersonCode(), pageable);
 
         return this.convertList(listYear);

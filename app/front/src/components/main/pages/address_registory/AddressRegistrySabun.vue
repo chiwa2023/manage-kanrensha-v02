@@ -1,20 +1,18 @@
 ﻿<script setup lang="ts">
-import { getErrorMessage, InputLgcode, MessageConstants, MessageView, type FrameworkMessageAndResultDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
+import { AccessTokenNotFoundError, getErrorMessage, getLoginUser, InputLgcode, MessageConstants, MessageView, TokenRefreshError, type FrameworkMessageAndResultDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import { ref, type Ref } from 'vue';
-import { getLoginUser } from '../../utils/getLoginUser';
 import type { StorageFileDtoInterface } from '../../dto/storage_file/storageFileDto';
 import ManagerInfo from '../../common/user_info/ManagerInfo.vue';
 import ReadCsv from '../../common/read_csv/ReadCsv.vue';
 import { SabunPreparAddressRsdtCapsuleDto, type SabunPreparAddressRsdtCapsuleDtoInterface } from '../../dto/address_registory/sabunPreparAddressRsdtCapsuleDto.ts';
 import RoutePathConstants from '../../../../routePathConstants.ts';
 import getAuthorizedPromiseArea from '../../dto/login/getAuthorizedPromiseArea.ts';
-import { AccessTokenNotFoundError, TokenRefreshError } from '../../dto/login/errors.ts';
 import type { SelectOptionStringDtoInterface } from '../../dto/select_options/selectOptionStringDto.ts';
 
 // よく使う定数
 const BLANK: string = "";
 // const SERVER_STATUS_OK: number = 200;
-// const SERVER_STATUS_ERROR: number = 400;
+const SERVER_STATUS_ERROR: number = 400;
 const INQUIRE_FLG: boolean = false;
 const ERR_MESS_ONLY: boolean = true;
 const MESS_PAGE_NAME: string = "アドレス・ベース・レジストリ差分ファイル書き出し";
@@ -50,6 +48,20 @@ function onCancel() {
 function onSave() {
     capsuleDto.value.userDto = userDto.value;
 
+    // 差分ファイルは両方保持
+    if (capsuleDto.value.parcelFileDto.fileName === "") {
+        message.value = "アドレス・ベース・レジストリ地番ファイルを指定してください";
+        infoLevel.value = MessageConstants.LEVEL_WARNING;
+        messageType.value = MessageConstants.VIEW_OK;
+        return;
+    }
+    if (capsuleDto.value.rsdtFileDto.fileName === "") {
+        message.value = "アドレス・ベース・レジストリ住居ファイルを指定してください";
+        infoLevel.value = MessageConstants.LEVEL_WARNING;
+        messageType.value = MessageConstants.VIEW_OK;
+        return;
+    }
+
     getAuthorizedPromiseArea().then(token => {
         const url = urlBack + "/wktbl-address-rsdt/prepare";
         const method = "POST";
@@ -62,6 +74,14 @@ function onSave() {
         fetch(url, { method, headers, body })
             .then(async (response) => {
                 const resultDto: FrameworkMessageAndResultDtoInterface = await response.json();
+
+                if (response.status > SERVER_STATUS_ERROR) {
+                    message.value = getErrorMessage(resultDto.message, ERR_MESS_ONLY);
+                    infoLevel.value = MessageConstants.LEVEL_ERROR;
+                    messageType.value = MessageConstants.VIEW_OK;
+                    return;
+                }
+
                 message.value = resultDto.message;
                 if (resultDto.isFailure) {
                     infoLevel.value = MessageConstants.LEVEL_WARNING;

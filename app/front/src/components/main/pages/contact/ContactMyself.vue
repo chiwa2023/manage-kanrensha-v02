@@ -1,21 +1,22 @@
 ﻿<script setup lang="ts">
 import { computed, onMounted, ref, type Ref } from 'vue';
 import AllUserInfo from '../../common/user_info/AllUserInfo.vue';
-import { getErrorMessage, getErrorUniqueIdMessage, MessageConstants, MessageView, PagingControl, type FrameworkMessageAndResultDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
-import { getLoginUser } from '../../utils/getLoginUser.ts';
+import { AccessTokenNotFoundError, getErrorMessage, getErrorUniqueIdMessage, getLoginUser, MessageConstants, MessageView, PagingControl, TokenRefreshError, type FrameworkMessageAndResultDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import RoutePathConstants from '../../../../routePathConstants.ts';
 import { AddContactMessageCapsuleDto, type AddContactMessageCapsuleDtoInterface } from '../../dto/contact/addContactMessageCapsuleDto.ts';
 import getAuthorizedPromiseArea from '../../dto/login/getAuthorizedPromiseArea.ts';
-import { AccessTokenNotFoundError, TokenRefreshError } from '../../dto/login/errors.ts';
 import { SearchContactManagerCapsuleDto, type SearchContactManagerCapsuleDtoInterface } from '../../dto/contact/searchContactManagerCapsuleDto.ts';
 import { SearchContactManagerResultDto, type SearchContactManagerResultDtoInterface } from '../../dto/contact/searchContactManagerResultDto.ts';
 import { ContactManagerEntity, type ContactManagerEntityInterface } from '../../entity/contactManagerEntity.ts';
+import { useRoute } from 'vue-router';
+import { nextTransferPassStore } from '../../stores/nextTransferPass.ts';
+import router from '../../../../router.ts';
 
 // よく使う定数
 const BLANK: string = "";
 const INIT_NUMBER: number = 0;
 // const SERVER_STATUS_OK: number = 200;
-// const SERVER_STATUS_ERROR: number = 400;
+const SERVER_STATUS_ERROR: number = 400;
 const SEARCH_LIMIT: number = 20;
 // メッセージボックス表示定数
 const INQUIRE_FLG: boolean = false;
@@ -41,9 +42,19 @@ const viewStatus: Ref<number> = ref(1);
 
 const capsuleDto: Ref<AddContactMessageCapsuleDtoInterface> = ref(new AddContactMessageCapsuleDto());
 
+const route = useRoute();
+
 onMounted(() => {
-    // 過去履歴がある場合は履歴を表示(すべてクローズであっても)
-    onSearch();
+    // 直リンク(パスチェックあり)を許容ロジック
+    if (INIT_NUMBER === userDto.value.userPersonId) {
+        const passStore = nextTransferPassStore()
+        passStore.fullPath = route.fullPath;
+        router.push(RoutePathConstants.PAGE_LOGIN);
+        return;
+    } else {
+        // 過去履歴がある場合は履歴を表示(すべてクローズであっても)
+        onSearch();
+    }
 });
 
 const resultDto: Ref<SearchContactManagerResultDtoInterface> = ref(new SearchContactManagerResultDto());
@@ -68,6 +79,14 @@ function onSearch() {
         fetch(url, { method, headers, body })
             .then(async (response) => {
                 resultDto.value = await response.json();
+
+                if (response.status > SERVER_STATUS_ERROR) {
+                    message.value = getErrorMessage(resultDto.value.message, ERR_MESS_ONLY);
+                    infoLevel.value = MessageConstants.LEVEL_ERROR;
+                    messageType.value = MessageConstants.VIEW_OK;
+                    return;
+                }
+
                 allCount.value = resultDto.value.allCount;
                 limit.value = resultDto.value.limit;
                 pageNumber.value = resultDto.value.pageNumber;
@@ -147,6 +166,14 @@ function onSave() {
             fetch(url, { method, headers, body })
                 .then(async (response) => {
                     const resultDto: FrameworkMessageAndResultDtoInterface = await response.json();
+
+                    if (response.status > SERVER_STATUS_ERROR) {
+                        message.value = getErrorMessage(resultDto.message, ERR_MESS_ONLY);
+                        infoLevel.value = MessageConstants.LEVEL_ERROR;
+                        messageType.value = MessageConstants.VIEW_OK;
+                        return;
+                    }
+
                     message.value = resultDto.message;
                     if (resultDto.isFailure) {
                         infoLevel.value = MessageConstants.LEVEL_WARNING;
@@ -193,6 +220,14 @@ function onSave() {
             fetch(url, { method, headers, body })
                 .then(async (response) => {
                     const resultDto: FrameworkMessageAndResultDtoInterface = await response.json();
+
+                    if (response.status > SERVER_STATUS_ERROR) {
+                        message.value = getErrorMessage(resultDto.message, ERR_MESS_ONLY);
+                        infoLevel.value = MessageConstants.LEVEL_ERROR;
+                        messageType.value = MessageConstants.VIEW_OK;
+                        return;
+                    }
+
                     message.value = resultDto.message;
                     if (resultDto.isFailure) {
                         infoLevel.value = MessageConstants.LEVEL_WARNING;
@@ -270,6 +305,13 @@ function showHistory(selectedId: number) {
 
                 // 必ず1件は取れる。とれなかったら大事件
                 resultDtoHistoy.value = await response.json();
+
+                if (response.status > SERVER_STATUS_ERROR) {
+                    message.value = getErrorMessage(resultDtoHistoy.value.message, ERR_MESS_ONLY);
+                    infoLevel.value = MessageConstants.LEVEL_ERROR;
+                    messageType.value = MessageConstants.VIEW_OK;
+                    return;
+                }
 
                 if (resultDtoHistoy.value.isFailure) {
                     infoLevel.value = MessageConstants.LEVEL_ERROR;

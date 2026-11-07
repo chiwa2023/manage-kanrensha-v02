@@ -1,4 +1,4 @@
-import { AddressRsdtTemplateEntity, type AddressRsdtTemplateEntityInterface } from "./addressRsdtTemplateEntity"
+import { AddressRsdtTemplateEntity, type AddressRsdtTemplateEntityInterface } from "seijishikin-jp-normalize_common-tool";
 
 interface WkTblAddressRsdtChangeEntityInterface extends AddressRsdtTemplateEntityInterface {
     /** テーブルId */

@@ -11,7 +11,7 @@ import net.seijishikin.jp.normalize.manage.kanrensha.dto.storage_file.UploadFile
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.storage_file.UploadFileResultDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.logic.file.GetAbsolutePathLogic;
 import net.seijishikin.jp.normalize.manage.kanrensha.logic.file.GetTempFilePathLogic;
-import net.seijishikin.jp.normalize.manage.kanrensha.logic.file.SaveFileLogic;
+import net.seijishikin.jp.normalize.manage.kanrensha.logic.file.SaveFileBase64Logic;
 
 /**
  * 汎用ファイル保存Service
@@ -29,7 +29,7 @@ public class SaveFileTempFolderService {
 
     /** ファイル保存Logic */
     @Autowired
-    private SaveFileLogic saveFileLogic;
+    private SaveFileBase64Logic saveFileBase64Logic;
 
     /**
      * 処理を行う
@@ -48,7 +48,7 @@ public class SaveFileTempFolderService {
 
         Path path = getAbsolutePathLogic.practice(storageFileDto.getSavedDir(), storageFileDto.getFileName());
 
-        if (saveFileLogic.practice(path, uploadFileDto.getFileContent())) {
+        if (saveFileBase64Logic.practice(path, uploadFileDto.getFileContent())) {
             return resultDto;
 
         } else {

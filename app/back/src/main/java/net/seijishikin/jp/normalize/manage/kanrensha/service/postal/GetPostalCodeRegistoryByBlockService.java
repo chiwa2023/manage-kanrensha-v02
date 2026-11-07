@@ -27,7 +27,7 @@ public class GetPostalCodeRegistoryByBlockService {
     public AddressRsdtTemplateEntity practice(final String lgCode, final String block) {
 
         // 選択した建物まで住所に紐づく住所詳細を取得する
-        // TODO 基本的には1番地まで住所+建物なしは一意になるようにする予定だが仮でorder by で一意にしておく
+        // 基本的には一つの番地まで住所+建物なしは一意になるようにする予定だが、仮でorder by で一意にしておく
         try {
             String sql = "SELECT * FROM address_rsdt_" + lgCode + "  WHERE address_block = '" + block
                     + "' AND address_building = '' AND is_latest = 1 ORDER BY address_rsdt_id DESC";

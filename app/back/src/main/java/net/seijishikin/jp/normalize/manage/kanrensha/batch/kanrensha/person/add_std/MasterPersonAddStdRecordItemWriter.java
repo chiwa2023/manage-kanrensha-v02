@@ -146,7 +146,7 @@ public class MasterPersonAddStdRecordItemWriter extends JpaItemWriter<WkTblKanre
         addressEntity.setKanrenshaPersonId(masterId);
         BeanUtils.copyProperties(entityWkTbl, addressEntity);
 
-        // TODO 住所編集フラグはサイト独自形式になっていることが周知されたらcsvにフラグで出す
+        // TODO (1)住所編集フラグはサイト独自形式になっていることが周知されたらcsvにフラグで出す
         // 承諾は住所整形済、、整形済でないにかかわらず承諾なし
         boolean isEdit = !entityWkTbl.getIsJushoFormat();
         addressEntity.setIsPostalEdit(isEdit);

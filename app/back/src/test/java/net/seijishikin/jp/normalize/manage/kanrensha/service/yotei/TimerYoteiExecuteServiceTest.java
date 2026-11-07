@@ -3,6 +3,7 @@ package net.seijishikin.jp.normalize.manage.kanrensha.service.yotei;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+import java.lang.reflect.Method;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
@@ -13,7 +14,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.batch.test.context.SpringBatchTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.scheduling.config.CronTask;
 import org.springframework.scheduling.config.ScheduledTask;
 import org.springframework.scheduling.config.ScheduledTaskHolder;
@@ -63,8 +64,14 @@ class TimerYoteiExecuteServiceTest {
             Instant instantRegist = cronTask.getTrigger() // NOPMD
                     .nextExecution(new SimpleTriggerContext(instant, instant, instant));
             
-            // アノテーションが取得できなくなっているので設定値をコピペしてくる TODO 取得できるようになったら修正する
-            String expression = "0 0 * * * *";
+            String expression = "0 * * * * *"; // アノテーションが取得できないと落ちるわざとの不正値
+            // アノテーションを取得する(Service設定が1時間ごとであることを確認する)
+            Method method = TimerYoteiExecuteService.class.getMethod("practice");            
+            if (method.isAnnotationPresent(Scheduled.class)) {
+                Scheduled annotation = method.getAnnotation(Scheduled.class);
+                expression = annotation.cron();
+            }
+            
             Instant instantExpect = CronExpression.parse(expression).next(dateTime).toInstant(ZoneOffset.UTC);
 
             // 記載したコードの通りbatch側スケジュールに登録されている

@@ -7,6 +7,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -28,11 +29,12 @@ import org.springframework.web.context.WebApplicationContext;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import net.seijishikin.jp.normalize.common_tool.dto.kanrensha.KanrenshaKigyouDtDto;
+import net.seijishikin.jp.normalize.common_tool.dto.kanrensha.KanrenshaKigyouDtMasterDto;
+import net.seijishikin.jp.normalize.common_tool.dto.kanrensha.SaveKanrenshaKigyouDtCapsuleDto;
 import net.seijishikin.jp.normalize.common_tool.utils.GetObjectMapperWithTimeModuleUtil;
 import net.seijishikin.jp.normalize.manage.kanrensha.constants.UserRoleConstants;
 import net.seijishikin.jp.normalize.manage.kanrensha.controller.PathRouteConstants;
-import net.seijishikin.jp.normalize.manage.kanrensha.dto.kanrensha.KanrenshaKigyouDtDto;
-import net.seijishikin.jp.normalize.manage.kanrensha.dto.kanrensha.SaveKanrenshaKigyouDtCapsuleDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.KanrenshaKigyouDtMasterEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.repository.KanrenshaKigyouDtMasterRepository;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.kanrensha.GetKanrenshaKigyouDtDtoService;
@@ -89,7 +91,9 @@ class EditUserKanrenshaKigyouDtControllerTest {
 
         final Integer editId = 144;
         KanrenshaKigyouDtMasterEntity masterEntity = kanrenshaKigyouDtMasterRepository.findById(editId).get();
-        KanrenshaKigyouDtDto dto = getKanrenshaKigyouDtDtoService.practice(masterEntity);
+        KanrenshaKigyouDtMasterDto masterDto = new KanrenshaKigyouDtMasterDto();
+        BeanUtils.copyProperties(masterEntity, masterDto);
+        KanrenshaKigyouDtDto dto = getKanrenshaKigyouDtDtoService.practice(masterDto);
         SaveKanrenshaKigyouDtCapsuleDto capsuleDto = new SaveKanrenshaKigyouDtCapsuleDto();
         dto.getInputOrgNameDto().setOrgName("kjhgf");
         capsuleDto.getUserDto().setUserPersonId(81);

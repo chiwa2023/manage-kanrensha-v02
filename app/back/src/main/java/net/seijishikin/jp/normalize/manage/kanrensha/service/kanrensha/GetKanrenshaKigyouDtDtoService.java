@@ -6,10 +6,10 @@ import org.springframework.stereotype.Service;
 
 import net.seijishikin.jp.normalize.common_tool.dto.input.InputAccessDto;
 import net.seijishikin.jp.normalize.common_tool.dto.input.InputAddressDto;
-import net.seijishikin.jp.normalize.manage.kanrensha.dto.kanrensha.KanrenshaKigyouDtDto;
+import net.seijishikin.jp.normalize.common_tool.dto.kanrensha.KanrenshaKigyouDtDto;
+import net.seijishikin.jp.normalize.common_tool.dto.kanrensha.KanrenshaKigyouDtMasterDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.KanrenshaKigyouDtAccessEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.KanrenshaKigyouDtAddressEntity;
-import net.seijishikin.jp.normalize.manage.kanrensha.entity.KanrenshaKigyouDtMasterEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.KanrenshaKigyouDtPropertyEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.logic.kanrensha.CallKigyouDtAccessEntityLogic;
 import net.seijishikin.jp.normalize.manage.kanrensha.logic.kanrensha.CallKigyouDtAddressEntityLogic;
@@ -39,12 +39,12 @@ public class GetKanrenshaKigyouDtDtoService {
     /**
      * 処理を行う
      *
-     * @param masterKigyouDtEntity 関連者企業団体マスタ
+     * @param masterKigyouDtDto 関連者企業団体マスタ
      * @return 関連者個人DTO
      */
-    public KanrenshaKigyouDtDto practice(final KanrenshaKigyouDtMasterEntity masterKigyouDtEntity) {
+    public KanrenshaKigyouDtDto practice(final KanrenshaKigyouDtMasterDto masterKigyouDtDto) {
         KanrenshaKigyouDtDto dto = new KanrenshaKigyouDtDto();
-        String kanrenshaCode = masterKigyouDtEntity.getKigyouDtKanrenshaCode();
+        String kanrenshaCode = masterKigyouDtDto.getKigyouDtKanrenshaCode();
 
         // 各マスタからエンティティを取得
         // Entity -> DTOへの値複写
@@ -63,13 +63,13 @@ public class GetKanrenshaKigyouDtDtoService {
         dto.setPropertyId(propertyEntity.getKanrenshaKigyouDtPropertyId());
         
         // 最後にMasterEntityを設定する
-        dto.setMasterId(masterKigyouDtEntity.getKanrenshaKigyouDtMasterId());
-        dto.getInputOrgNameDto().setOrgName(masterKigyouDtEntity.getKanrenshaName());
+        dto.setMasterId(masterKigyouDtDto.getKanrenshaKigyouDtMasterId());
+        dto.getInputOrgNameDto().setOrgName(masterKigyouDtDto.getKanrenshaName());
         dto.getInputOrgNameDto().setOrgNameKana(propertyEntity.getOrgNameKana());
-        dto.getInputAddressDto().setAddressAll(masterKigyouDtEntity.getAllAddress());
-        dto.getOrgDelegateLeastDto().setPersonName(masterKigyouDtEntity.getKigyouDtDelegate());
+        dto.getInputAddressDto().setAddressAll(masterKigyouDtDto.getAllAddress());
+        dto.getOrgDelegateLeastDto().setPersonName(masterKigyouDtDto.getKigyouDtDelegate());
         dto.getOrgDelegateLeastDto().setPersonKanrenshaCode(propertyEntity.getOrgDelegateCode());
-        dto.setHoujinNo(masterKigyouDtEntity.getHoujinNo());
+        dto.setHoujinNo(masterKigyouDtDto.getHoujinNo());
 
         return dto;
     }

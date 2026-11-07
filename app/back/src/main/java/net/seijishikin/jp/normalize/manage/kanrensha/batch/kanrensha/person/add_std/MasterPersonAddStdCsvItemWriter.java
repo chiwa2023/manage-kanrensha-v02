@@ -70,7 +70,7 @@ public class MasterPersonAddStdCsvItemWriter extends JpaItemWriter<WkTblKanrensh
         Optional<WkTblKanrenshaPersonMasterEntity> optional = wkTblKanrenshaPersonMasterRepository
                 .findFirstByOrderByWkTblKanrenshaPersonMasterCodeDesc();
         if (!optional.isEmpty()) {
-            code = optional.get().getWkTblKanrenshaPersonMasterCode();
+            code += optional.get().getWkTblKanrenshaPersonMasterCode();
         }
 
         for (WkTblKanrenshaPersonMasterEntity entity : items) {

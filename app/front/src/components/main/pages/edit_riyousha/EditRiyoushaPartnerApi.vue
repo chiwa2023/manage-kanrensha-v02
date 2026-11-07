@@ -2,11 +2,9 @@
 import { onMounted, ref, type Ref } from 'vue';
 import RiyoushaPartnerApiEdit from '../../common/riyousha_edit/RiyoushaPartnerApiEdit.vue';
 import PartnerApiInfo from '../../common/user_info/PartnerApiInfo.vue';
-import { getErrorMessage, MessageConstants, MessageView, type FrameworkMessageAndResultDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
-import { getLoginUser } from '../../utils/getLoginUser';
+import { AccessTokenNotFoundError, getErrorMessage, getLoginUser, MessageConstants, MessageView, TokenRefreshError, type FrameworkMessageAndResultDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import { RiyoushaPartnerApiMasterEntity, type RiyoushaPartnerApiMasterEntityInterface } from '../../entity/riyoushaPartnerApiMasterEntity';
 import getAuthorizedPromiseArea from '../../dto/login/getAuthorizedPromiseArea';
-import { AccessTokenNotFoundError, TokenRefreshError } from '../../dto/login/errors';
 import RoutePathConstants from '../../../../routePathConstants';
 import { GetRiyoushaMasterCapsuleDto, type GetRiyoushaMasterCapsuleDtoInterface } from '../../dto/riyousha/getRiyoushaMasterCapsuleDto';
 import type { GetRiyoushaMasterResultDtoInterface } from '../../dto/riyousha/getRiyoushaMasterResultDto';
@@ -17,7 +15,7 @@ import type { RiyoushaPartnerApiDtoInterface } from '../../dto/riyousha/riyousha
 const BLANK: string = "";
 // const INIT_NUMBER: number = 0;
 // const SERVER_STATUS_OK: number = 200;
-// const SERVER_STATUS_ERROR: number = 400;
+const SERVER_STATUS_ERROR: number = 400;
 const INQUIRE_FLG: boolean = false;
 const ERR_MESS_ONLY: boolean = true;
 const MESS_PAGE_NAME: string = "APIパートナー編集";
@@ -42,6 +40,7 @@ onMounted(() => {
         const capsuleDto: GetRiyoushaMasterCapsuleDtoInterface = new GetRiyoushaMasterCapsuleDto();
         capsuleDto.riyoushaRole = userDto.value.riyoushaRole;
         capsuleDto.riyoushaCode = userDto.value.riyoushaCode;
+        capsuleDto.userDto = userDto.value;
 
         getAuthorizedPromiseArea().then(token => {
             const url = urlBack + "/riyousha/get-myself";
@@ -55,6 +54,14 @@ onMounted(() => {
             fetch(url, { method, headers, body })
                 .then(async (response) => {
                     const resultDto: GetRiyoushaMasterResultDtoInterface = await response.json();
+
+                    if (response.status > SERVER_STATUS_ERROR) {
+                        message.value = getErrorMessage(resultDto.message, ERR_MESS_ONLY);
+                        infoLevel.value = MessageConstants.LEVEL_ERROR;
+                        messageType.value = MessageConstants.VIEW_OK;
+                        return;
+                    }
+
                     message.value = resultDto.message;
                     // 処理が成功したら再登録できないようにアップロードファイル情報を初期化
                     if (resultDto.isFailure) {
@@ -116,6 +123,14 @@ function recievePartnerApiInterface(editDto: RiyoushaPartnerApiDtoInterface) {
         fetch(url, { method, headers, body })
             .then(async (response) => {
                 const resultDto: FrameworkMessageAndResultDtoInterface = await response.json();
+
+                if (response.status > SERVER_STATUS_ERROR) {
+                    message.value = getErrorMessage(resultDto.message, ERR_MESS_ONLY);
+                    infoLevel.value = MessageConstants.LEVEL_ERROR;
+                    messageType.value = MessageConstants.VIEW_OK;
+                    return;
+                }
+
                 message.value = resultDto.message;
                 if (resultDto.isFailure) {
                     infoLevel.value = MessageConstants.LEVEL_WARNING;

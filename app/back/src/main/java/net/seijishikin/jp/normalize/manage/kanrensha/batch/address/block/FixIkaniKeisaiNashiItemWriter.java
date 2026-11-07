@@ -13,9 +13,9 @@ import org.springframework.stereotype.Component;
 
 import jakarta.persistence.EntityManagerFactory;
 import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
+import net.seijishikin.jp.normalize.common_tool.dto.postal.PostalCodeBlockResultDto;
 import net.seijishikin.jp.normalize.common_tool.utils.CreateUserLeastDtoByBatchParamUtil;
 import net.seijishikin.jp.normalize.common_tool.utils.SetTableDataHistoryUtil;
-import net.seijishikin.jp.normalize.manage.kanrensha.dto.postal.PostalCodeBlockResultDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.AddressPostalEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.WkTblPostalCommonEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.repository.WkTblPostalCommonRepository;

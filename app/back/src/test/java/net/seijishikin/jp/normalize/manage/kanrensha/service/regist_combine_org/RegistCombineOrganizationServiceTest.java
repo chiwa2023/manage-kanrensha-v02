@@ -14,7 +14,6 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
-import org.springframework.transaction.annotation.Transactional;
 
 import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
 import net.seijishikin.jp.normalize.common_tool.utils.SetTableDataHistoryUtil;
@@ -30,7 +29,6 @@ import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateLeastUserForTes
 @AutoConfigureMockMvc
 @SpringBootTest
 @DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
-@Transactional
 @Sql("RegistCombineOrganizationServiceTest.sql")
 class RegistCombineOrganizationServiceTest {
     // CHECKSTYLE:OFF
@@ -65,9 +63,9 @@ class RegistCombineOrganizationServiceTest {
         WkTblKanrenshaCombineOrgEntity entityBase = new WkTblKanrenshaCombineOrgEntity();
         BeanUtils.copyProperties(entityInput01, entityBase);
         entityBase.setOrgName("超元素製造組合");
-        entityBase.setYearArrayText("2024");
-        entityBase.setStartYear(Short.valueOf("2024"));
-        entityBase.setEndYear(Short.valueOf("2023"));
+        // entityBase.setYearArrayText("2024");
+        entityBase.setStartYear(Short.valueOf("2025"));
+        entityBase.setEndYear(Short.valueOf("2024"));
         capsuleDto01.setWkTblKanrenshaCombineOrgEntity(entityBase);
 
         Integer newId = registCombineOrganizationService.practice(capsuleDto01).getWkTblKanrenshaCombineOrgId();
@@ -79,7 +77,6 @@ class RegistCombineOrganizationServiceTest {
         assertEquals(entityBase.getOrgName(), entityCopy.getOrgName());
         assertEquals(entityBase.getYearArrayText(), entityCopy.getYearArrayText());
         assertEquals(SetTableDataHistoryUtil.INSERT_STATE, entityCopy.getIsLatest());
-        // TODO 画面からの挙動を確認後確定
         assertEquals("終了年より開始年が大きい値です;", entityCopy.getJudgeReason()); // 編集内容に対してチェックが効いています
     }
 

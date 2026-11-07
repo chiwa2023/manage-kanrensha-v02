@@ -6,10 +6,10 @@ import org.springframework.stereotype.Service;
 
 import net.seijishikin.jp.normalize.common_tool.dto.input.InputAccessDto;
 import net.seijishikin.jp.normalize.common_tool.dto.input.InputAddressDto;
-import net.seijishikin.jp.normalize.manage.kanrensha.dto.kanrensha.KanrenshaSeijidantaiDto;
+import net.seijishikin.jp.normalize.common_tool.dto.kanrensha.KanrenshaSeijidantaiDto;
+import net.seijishikin.jp.normalize.common_tool.dto.kanrensha.KanrenshaSeijidantaiMasterDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.KanrenshaSeijidantaiAccessEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.KanrenshaSeijidantaiAddressEntity;
-import net.seijishikin.jp.normalize.manage.kanrensha.entity.KanrenshaSeijidantaiMasterEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.KanrenshaSeijidantaiPropertyEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.logic.kanrensha.CallSeijidantaiAccessEntityLogic;
 import net.seijishikin.jp.normalize.manage.kanrensha.logic.kanrensha.CallSeijidantaiAddressEntityLogic;
@@ -39,12 +39,12 @@ public class GetKanrenshaSeijidantaiDtoService {
     /**
      * 処理を行う
      *
-     * @param masterSeijidantaiEntity 関連者個人マスタ
+     * @param masterSeijidantaiDto 関連者個人マスタ
      * @return 関連者個人DTO
      */
-    public KanrenshaSeijidantaiDto practice(final KanrenshaSeijidantaiMasterEntity masterSeijidantaiEntity) {
+    public KanrenshaSeijidantaiDto practice(final KanrenshaSeijidantaiMasterDto masterSeijidantaiDto) {
         KanrenshaSeijidantaiDto dto = new KanrenshaSeijidantaiDto();
-        String kanrenshaCode = masterSeijidantaiEntity.getSeijidantaiKanrenshaCode();
+        String kanrenshaCode = masterSeijidantaiDto.getSeijidantaiKanrenshaCode();
 
         // 各マスタからエンティティを取得
         // Entity -> DTOへの値複写
@@ -66,13 +66,13 @@ public class GetKanrenshaSeijidantaiDtoService {
         dto.getAccounrMgrLeastDto().setPersonName(propertyEntity.getAccountMgrName());
 
         // 最後にMasterSeijidantaiEntityの値を複写して上書き
-        dto.setMasterId(masterSeijidantaiEntity.getKanrenshaSeijidantaiMasterId());
-        dto.setSeijidantaiKanrenshaCode(masterSeijidantaiEntity.getSeijidantaiKanrenshaCode());
-        dto.getInputOrgNameDto().setOrgName(masterSeijidantaiEntity.getKanrenshaName());
-        dto.getInputAddressDto().setAddressAll(masterSeijidantaiEntity.getAllAddress());
-        dto.getOrgDelegateLeastDto().setPersonName(masterSeijidantaiEntity.getSeijidantaiDelegate());
-        dto.setDantaiKbn(masterSeijidantaiEntity.getDantaiKbn());
-        dto.setPoliOrgNo(masterSeijidantaiEntity.getPoliOrgNo());
+        dto.setMasterId(masterSeijidantaiDto.getKanrenshaSeijidantaiMasterId());
+        dto.setSeijidantaiKanrenshaCode(masterSeijidantaiDto.getSeijidantaiKanrenshaCode());
+        dto.getInputOrgNameDto().setOrgName(masterSeijidantaiDto.getKanrenshaName());
+        dto.getInputAddressDto().setAddressAll(masterSeijidantaiDto.getAllAddress());
+        dto.getOrgDelegateLeastDto().setPersonName(masterSeijidantaiDto.getSeijidantaiDelegate());
+        dto.setDantaiKbn(masterSeijidantaiDto.getDantaiKbn());
+        dto.setPoliOrgNo(masterSeijidantaiDto.getPoliOrgNo());
 
         return dto;
     }

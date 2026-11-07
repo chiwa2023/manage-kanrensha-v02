@@ -70,7 +70,7 @@ public class MasterKigyouDtAddStdCsvItemWriter extends JpaItemWriter<WkTblKanren
         Optional<WkTblKanrenshaKigyouDtMasterEntity> optional = wkTblKanrenshaKigyouDtMasterRepository
                 .findFirstByOrderByWkTblKanrenshaKigyouDtMasterCodeDesc();
         if (!optional.isEmpty()) {
-            code = optional.get().getWkTblKanrenshaKigyouDtMasterCode();
+            code += optional.get().getWkTblKanrenshaKigyouDtMasterCode();
         }
 
         for (WkTblKanrenshaKigyouDtMasterEntity entity : items) {

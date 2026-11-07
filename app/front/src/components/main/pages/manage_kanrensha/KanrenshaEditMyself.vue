@@ -2,33 +2,29 @@
 import { computed, onMounted, ref, type ComputedRef, type Ref } from 'vue';
 import RoutePathConstants from '../../../../routePathConstants';
 import {
+    AccessTokenNotFoundError,
     getErrorMessage,
-    KanrenshaKigyouDtMasterEntity, KanrenshaPersonMasterEntity, KanrenshaSeijidantaiMasterEntity,
-    MessageConstants, MessageView, type FrameworkMessageAndResultDtoInterface,
-    type KanrenshaKigyouDtMasterEntityInterface, type KanrenshaPersonMasterEntityInterface,
-    type KanrenshaSeijidantaiMasterEntityInterface, type LeastUserDtoInterface
+    getLoginUser,
+    KanrenshaKigyouDtEdit,
+    KanrenshaKigyouDtMasterEntity, KanrenshaPersonEdit, KanrenshaPersonMasterEntity, KanrenshaSeijidanatiEdit, KanrenshaSeijidantaiMasterEntity,
+    MessageConstants, MessageView, SaveKanrenshaKigyouDtCapsuleDto, SaveKanrenshaPersonCapsuleDto, SaveKanrenshaSeijidantaiCapsuleDto, TokenRefreshError, UserRoleConstants, type FrameworkMessageAndResultDtoInterface,
+    type KanrenshaKigyouDtDtoInterface,
+    type KanrenshaKigyouDtMasterEntityInterface, type KanrenshaPersonDtoInterface, type KanrenshaPersonMasterEntityInterface,
+    type KanrenshaSeijidantaiDtoInterface,
+    type KanrenshaSeijidantaiMasterEntityInterface, type LeastUserDtoInterface,
+    type SaveKanrenshaKigyouDtCapsuleDtoInterface,
+    type SaveKanrenshaPersonCapsuleDtoInterface,
+    type SaveKanrenshaSeijidantaiCapsuleDtoInterface
 } from 'seijishikin-jp-normalize_common-tool';
-import { getLoginUser } from '../../utils/getLoginUser';
-import KanrenshaKigyouDtEdit from '../../common/kanrensha_edit/KanrenshaKigyouDtEdit.vue';
-import KanrenshaPersonEdit from '../../common/kanrensha_edit/KanrenshaPersonEdit.vue';
-import KanrenshaSeijidanatiEdit from '../../common/kanrensha_edit/KanrenshaSeijidanatiEdit.vue';
 import getAuthorizedPromiseArea from '../../dto/login/getAuthorizedPromiseArea';
-import { AccessTokenNotFoundError, TokenRefreshError } from '../../dto/login/errors';
-import { SaveKanrenshaPersonCapsuleDto, type SaveKanrenshaPersonCapsuleDtoInterface } from '../../dto/kanrensha/saveKanrenshaPersonCapsuleDto';
-import { type KanrenshaKigyouDtDtoInterface } from '../../dto/kanrensha/kanrenshaKigyouDtDto';
-import { SaveKanrenshaKigyouDtCapsuleDto, type SaveKanrenshaKigyouDtCapsuleDtoInterface } from '../../dto/kanrensha/saveKanrenshaKigyouDtCapsuleDto';
-import type { KanrenshaPersonDtoInterface } from '../../dto/kanrensha/kanrenshaPersonDto';
-import type { KanrenshaSeijidantaiDtoInterface } from '../../dto/kanrensha/kanrenshaSeijidantaiDto';
-import { SaveKanrenshaSeijidantaiCapsuleDto, type SaveKanrenshaSeijidantaiCapsuleDtoInterface } from '../../dto/kanrensha/saveKanrenshaSeijidantaiCapsuleDto';
 import KanrenshaInfo from '../../common/user_info/KanrenshaInfo.vue';
-import UserRoleConstants from '../../dto/user/userRoleConstants';
 import { GetKanrenshaMasterCapsuleDto, type GetKanrenshaMasterCapsuleDtoInterface } from '../../dto/kanrensha/getKanrenshaMasterCapsuleDto';
 import type { GetKanrenshaMasterResultDtoInterface } from '../../dto/kanrensha/getKanrenshaMasterResultDto';
 
 // よく使う定数
 const BLANK: string = "";
 // const SERVER_STATUS_OK: number = 200;
-// const SERVER_STATUS_ERROR: number = 400;
+const SERVER_STATUS_ERROR: number = 400;
 const INQUIRE_FLG: boolean = false;
 const ERR_MESS_ONLY: boolean = true;
 const MESS_PAGE_NAME: string = "関連者更新";
@@ -46,6 +42,8 @@ const urlBack: string = RoutePathConstants.DOMAIN + RoutePathConstants.BASE_PATH
 // ユーザ呼び出し
 const userDto: Ref<LeastUserDtoInterface> = ref(getLoginUser());
 
+// 法人番号APIキー
+const houjinAppId: string = import.meta.env.VITE_HOUJIN_NO_API;
 
 const nowRoleStatus: Ref<string> = ref(BLANK);
 onMounted(() => {
@@ -80,6 +78,14 @@ onMounted(() => {
             fetch(url, { method, headers, body })
                 .then(async (response) => {
                     const resultDto: GetKanrenshaMasterResultDtoInterface = await response.json();
+
+                    if (response.status > SERVER_STATUS_ERROR) {
+                        message.value = getErrorMessage(resultDto.message, ERR_MESS_ONLY);
+                        infoLevel.value = MessageConstants.LEVEL_ERROR;
+                        messageType.value = MessageConstants.VIEW_OK;
+                        return;
+                    }
+
                     if (resultDto.isFailure) {
                         infoLevel.value = MessageConstants.LEVEL_WARNING;
                         messageType.value = MessageConstants.VIEW_OK;
@@ -142,20 +148,6 @@ function recieveCancelKigyouDtEdit() {
     history.back();
 }
 
-const isNewData: ComputedRef<boolean> = computed(() => {
-    if (UserRoleConstants.KANRENSHA_PERSON == userDto.value.kanrenshaRole) {
-        return 0 == editEntityPerson.value.kanrenshaPersonMasterId;
-    }
-    if (UserRoleConstants.KANRENSHA_KIGYOU_DT == userDto.value.kanrenshaRole) {
-        return 0 == editEntityKigyouDt.value.kanrenshaKigyouDtMasterId;
-    }
-    if (UserRoleConstants.KANRENSHA_SEIJIDANTAI == userDto.value.kanrenshaRole) {
-        return 0 == editEntitySeijidantai.value.kanrenshaSeijidantaiMasterId;
-    }
-    return false;
-});
-
-
 function recieveKigyouDtInterfaceEdit(editDto: KanrenshaKigyouDtDtoInterface) {
 
     const capsuleDto: SaveKanrenshaKigyouDtCapsuleDtoInterface = new SaveKanrenshaKigyouDtCapsuleDto();
@@ -164,7 +156,7 @@ function recieveKigyouDtInterfaceEdit(editDto: KanrenshaKigyouDtDtoInterface) {
 
     // 新規と編集で渡す先だけ変える(渡すものは同じ)
     let url = BLANK;
-    if (isNewData.value) {
+    if (0 == editEntityKigyouDt.value.kanrenshaKigyouDtMasterId) {
         url = urlBack + "/user-kanrensha/add-kigyou-dt";
         editDto.isCombineUser = true; // 紐づけ処理あり
     } else {
@@ -182,6 +174,14 @@ function recieveKigyouDtInterfaceEdit(editDto: KanrenshaKigyouDtDtoInterface) {
         fetch(url, { method, headers, body })
             .then(async (response) => {
                 const resultDto: FrameworkMessageAndResultDtoInterface = await response.json();
+
+                if (response.status > SERVER_STATUS_ERROR) {
+                    message.value = getErrorMessage(resultDto.message, ERR_MESS_ONLY);
+                    infoLevel.value = MessageConstants.LEVEL_ERROR;
+                    messageType.value = MessageConstants.VIEW_OK;
+                    return;
+                }
+
                 message.value = resultDto.message;
                 if (resultDto.isFailure) {
                     infoLevel.value = MessageConstants.LEVEL_WARNING;
@@ -228,11 +228,11 @@ function recievePersonInterfaceEdit(editDto: KanrenshaPersonDtoInterface) {
 
     // 新規と編集で渡す先だけ変える(渡すものは同じ)
     let url = BLANK;
-    if (isNewData.value) {
+    if (0 == editEntityPerson.value.kanrenshaPersonMasterId) {
         url = urlBack + "/user-kanrensha/add-person";
         editDto.isCombineUser = true; // 紐づけ処理あり
     } else {
-        url = urlBack + "/user-kanrensha/add-person";
+        url = urlBack + "/user-kanrensha/edit-person";
     }
 
     getAuthorizedPromiseArea().then(token => {
@@ -246,6 +246,14 @@ function recievePersonInterfaceEdit(editDto: KanrenshaPersonDtoInterface) {
         fetch(url, { method, headers, body })
             .then(async (response) => {
                 const resultDto: FrameworkMessageAndResultDtoInterface = await response.json();
+
+                if (response.status > SERVER_STATUS_ERROR) {
+                    message.value = getErrorMessage(resultDto.message, ERR_MESS_ONLY);
+                    infoLevel.value = MessageConstants.LEVEL_ERROR;
+                    messageType.value = MessageConstants.VIEW_OK;
+                    return;
+                }
+
                 message.value = resultDto.message;
                 // 処理が成功したら再登録できないようにアップロードファイル情報を初期化
                 if (resultDto.isFailure) {
@@ -291,7 +299,7 @@ function recieveSeijidantaiInterfaceEdit(editDto: KanrenshaSeijidantaiDtoInterfa
 
     // 新規と編集で渡す先だけ変える(渡すものは同じ)
     let url = BLANK;
-    if (isNewData.value) {
+    if (0 == editEntitySeijidantai.value.kanrenshaSeijidantaiMasterId) {
         url = urlBack + "/user-kanrensha/add-seijidantai";
         editDto.isCombineUser = true; // 紐づけ処理あり
     } else {
@@ -309,6 +317,14 @@ function recieveSeijidantaiInterfaceEdit(editDto: KanrenshaSeijidantaiDtoInterfa
         fetch(url, { method, headers, body })
             .then(async (response) => {
                 const resultDto: FrameworkMessageAndResultDtoInterface = await response.json();
+
+                if (response.status > SERVER_STATUS_ERROR) {
+                    message.value = getErrorMessage(resultDto.message, ERR_MESS_ONLY);
+                    infoLevel.value = MessageConstants.LEVEL_ERROR;
+                    messageType.value = MessageConstants.VIEW_OK;
+                    return;
+                }
+
                 message.value = resultDto.message;
                 // 処理が成功したら再登録できないようにアップロードファイル情報を初期化
                 if (resultDto.isFailure) {
@@ -369,14 +385,14 @@ function recieveSubmit() {
 
     <!-- 企業・団体編集 -->
     <div v-if="isEditKigyouDt">
-        <KanrenshaKigyouDtEdit :user-dto="userDto" :edit-entity="editEntityKigyouDt"
+        <KanrenshaKigyouDtEdit :user-dto="userDto" :edit-entity="editEntityKigyouDt" :houjin-api-key="houjinAppId"
             @send-kigyou-dt-interface="recieveKigyouDtInterfaceEdit" @send-cancel-kigyou-dt="recieveCancelKigyouDtEdit">
         </KanrenshaKigyouDtEdit>
     </div>
 
     <!-- 個人編集 -->
     <div v-if="isEditPerson">
-        <KanrenshaPersonEdit :user-dto="userDto" :edit-entity="editEntityPerson"
+        <KanrenshaPersonEdit :user-dto="userDto" :edit-entity="editEntityPerson" :houjin-api-key="houjinAppId"
             @send-person-interface="recievePersonInterfaceEdit" @send-cancel-person="recieveCancelPersonEdit">
         </KanrenshaPersonEdit>
     </div>

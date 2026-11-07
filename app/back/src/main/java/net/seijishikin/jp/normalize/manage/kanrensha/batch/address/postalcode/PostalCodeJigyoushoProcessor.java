@@ -50,7 +50,7 @@ public class PostalCodeJigyoushoProcessor
 
         entity.setLgCode(PlusCheckDigitUtil.plusForLgCode(item.getLgCode()));
         entity.setAddressOrg(item.getAddressOrg());
-        entity.setAddressName(item.getAddressBlock());
+        entity.setAddressName(addressBlock);
         entity.setAddressPostal(item.getPref() + item.getCity() + item.getAddressOrg());
         entity.setAddressBlock(addressBlock);
         entity.setIsAddPostal(true); // 仮

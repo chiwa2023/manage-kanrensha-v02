@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { ref, watch, type Ref } from 'vue';
-import UserRoleConstants from '../../dto/user/userRoleConstants';
 import MenuRiyoushaAdminContent from './MenuRiyoushaAdminContent.vue';
 import MenuRiyoushaManagerContent from './MenuRiyoushaManagerContent.vue';
 import MenuKanrenshaContent from './MenuKanrenshaContent.vue';
 import MenuRiyoushaPartnerApiContent from './MenuRiyoushaPartnerApiContent.vue';
+import { UserRoleConstants } from 'seijishikin-jp-normalize_common-tool';
 
 // props,emmits
 const props = defineProps<{ viewRole: string }>();

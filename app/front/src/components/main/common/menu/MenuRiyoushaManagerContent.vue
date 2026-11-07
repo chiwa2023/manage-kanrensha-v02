@@ -54,8 +54,19 @@ import RoutePathConstants from '../../../../routePathConstants';
         </div>
 
         <div class="menu-section">
+            <h4 class="menu-title">権限タスクリスト</h4>
+            <RouterLink :to="RoutePathConstants.PAGE_SEARCH_TASK_PLAN_ROLE" class="menu-item">権限タスクリスト検索</RouterLink>
+        </div>
+
+        <div class="menu-section">
             <h4 class="menu-title">関連者管理(新規・編集・削除)</h4>
             <RouterLink :to="RoutePathConstants.PAGE_KANRENSHA_MANAGE" class="menu-item">関連者管理</RouterLink>
+
+            <RouterLink :to="RoutePathConstants.PAGE_KANRENSHA_COMBINE" class="menu-item">関連者紐づけ管理</RouterLink>
+            <!-- 
+            <RouterLink :to="RoutePathConstants.PAGE_KANRENSHA_COMBINE_ORG" class="menu-item">関連者紐づけ管理(団体基準)</RouterLink>
+            -->
+
             <RouterLink :to="RoutePathConstants.PAGE_MOVE_CODE_ACCEPT" class="menu-item">関連者コード移行承認</RouterLink>
             <RouterLink :to="RoutePathConstants.PAGE_MOVE_CODE_MANAGER" class="menu-item">関連者コード移行申請</RouterLink>
         </div>
@@ -64,8 +75,12 @@ import RoutePathConstants from '../../../../routePathConstants';
             <h4 class="menu-title">関連者マスタ標準データダウンロード</h4>
             <RouterLink :to="RoutePathConstants.PAGE_DOWNLOAD_MASTER_STD" class="menu-item">関連者マスタ標準データダウンロード
             </RouterLink>
+            <RouterLink :to="RoutePathConstants.PAGE_DOWNLOAD_CODE_MOVE" class="menu-item">関連者コード移動データダウンロード
+            </RouterLink>
             <RouterLink :to="RoutePathConstants.PAGE_DOWNLOAD_SABUN_MASTER_STD" class="menu-item">差分関連者マスタ標準データダウンロード
             </RouterLink>
+            <RouterLink :to="RoutePathConstants.PAGE_DOWNLOAD_SABUN_MASTER_MIN" class="menu-item">差分関連者最小登録マスタ</RouterLink>
+            <RouterLink :to="RoutePathConstants.PAGE_DOWNLOAD_SABUN_HISTORY" class="menu-item">差分関連者履歴マスタ</RouterLink>
         </div>
     </div>
 

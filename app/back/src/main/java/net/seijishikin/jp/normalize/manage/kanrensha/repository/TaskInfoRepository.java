@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
+import net.seijishikin.jp.normalize.manage.kanrensha.dto.task_info.TaskInfoCodeCheckOptionDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.TaskInfoEntity;
 
 /**
@@ -22,7 +23,7 @@ public interface TaskInfoRepository
      * @return 検索結果
      */
     @Query(value = "SELECT * FROM task_info WHERE task_info_code LIKE ?2 "
-            + " AND task_info_name LIKE ?1 And is_latest = 1", nativeQuery = true)
+            + " AND task_info_name LIKE ?1 And is_latest = 1 ORDER BY task_info_code", nativeQuery = true)
     List<TaskInfoEntity> findFullTextAndType(String searchWords, String infoType, Pageable pageable);
 
     /**
@@ -42,4 +43,20 @@ public interface TaskInfoRepository
      * @return 検索結果
      */
     List<TaskInfoEntity> findByTaskInfoCodeAndIsLatestTrue(Integer taskCode);
+
+    /**
+     * 最新のタスク件数を取得する
+     * 
+     * @return 件数
+     */
+    Integer countByIsLatestTrue();
+
+    /**
+     * 最新タスクをすべて取得する
+     * 
+     * @return 検索結果
+     */
+    @Query(value = "SELECT 1 AS is_checked ,task_info_code  AS code_value , task_info_name AS code_name"
+            + "  FROM task_info WHERE is_latest = 1", nativeQuery = true)
+    List<TaskInfoCodeCheckOptionDto> findAllAlive();
 }

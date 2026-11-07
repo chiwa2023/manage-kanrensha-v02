@@ -13,11 +13,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import net.seijishikin.jp.normalize.common_tool.dto.FrameworkMessageAndResultDto;
+import net.seijishikin.jp.normalize.common_tool.dto.kanrensha.GetKanrenshaSeijidantaiCapsuleDto;
+import net.seijishikin.jp.normalize.common_tool.dto.kanrensha.GetKanrenshaSeijidantaiResultDto;
+import net.seijishikin.jp.normalize.common_tool.dto.kanrensha.KanrenshaSeijidantaiDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.constants.UserRoleConstants;
 import net.seijishikin.jp.normalize.manage.kanrensha.controller.PathRouteConstants;
-import net.seijishikin.jp.normalize.manage.kanrensha.dto.kanrensha.GetKanrenshaSeijidantaiCapsuleDto;
-import net.seijishikin.jp.normalize.manage.kanrensha.dto.kanrensha.GetKanrenshaSeijidantaiResultDto;
-import net.seijishikin.jp.normalize.manage.kanrensha.dto.kanrensha.KanrenshaSeijidantaiDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.logic.user.ValidateAuthoraizeUserDetailLogic;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.kanrensha.GetKanrenshaSeijidantaiDtoService;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.util.SaveStackTraceService;

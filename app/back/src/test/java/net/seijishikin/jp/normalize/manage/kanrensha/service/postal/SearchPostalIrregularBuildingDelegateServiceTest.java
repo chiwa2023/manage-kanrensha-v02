@@ -41,19 +41,22 @@ class SearchPostalIrregularBuildingDelegateServiceTest {
     void test() throws Exception {
 
         SearchPostalIllegularCapsuleDto capsuleDto = new SearchPostalIllegularCapsuleDto();
+        capsuleDto.setAllCount(104);
+        capsuleDto.setLimit(20);
+        capsuleDto.setPageNumber(11);
 
         SearchPostalIllegularResultDto resultDto = searchPostalIrregularBuildingDelegateService.practice(capsuleDto);
 
         List<AddressPostalIrregularEntity> list = resultDto.getListItem();
         assertEquals(3, list.size());
-        
+
         AddressPostalIrregularEntity entity0 = list.get(0);
         assertEquals("中央アエル（地階・階層不明）", entity0.getAddressOrg());
         AddressPostalIrregularEntity entity1 = list.get(1);
         assertEquals("中央ＳＳ３０住友生命仙台中央ビル（地階・階層不明）", entity1.getAddressOrg());
         AddressPostalIrregularEntity entity2 = list.get(2);
         assertEquals("中瀬ワールドビジネスガーデン（地階・階層不明）", entity2.getAddressOrg());
-               
+
     }
 
 }

@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import net.seijishikin.jp.normalize.common_tool.dto.kanrensha.SearchKanrenshaKigyouDtCapsuleDto;
+import net.seijishikin.jp.normalize.common_tool.dto.kanrensha.SearchKanrenshaKigyouDtResultDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.controller.PathRouteConstants;
-import net.seijishikin.jp.normalize.manage.kanrensha.dto.kanrensha.SearchKanrenshaKigyouDtCapsuleDto;
-import net.seijishikin.jp.normalize.manage.kanrensha.dto.kanrensha.SearchKanrenshaKigyouDtResultDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.kanrensha.SearchKanrenshaKigyouDtListService;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.util.SaveStackTraceService;
 

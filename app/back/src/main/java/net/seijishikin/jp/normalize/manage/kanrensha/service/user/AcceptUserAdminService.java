@@ -95,7 +95,7 @@ public class AcceptUserAdminService {
 
         // 紐づくタスク計画を登録を行った作業者に完了報告を行う(最後の最後、transactionの対象にならないことを確認してから)
         for (PromoteAdminEntity entitySrc : listPromote) {
-            acceptUserAdminSendMailLogic.pracitce(entitySrc.getInsertUserId());
+            acceptUserAdminSendMailLogic.pracitce(entitySrc.getInsertUserId(), 0);
         }
 
         return savedCount;

@@ -1,10 +1,7 @@
 ﻿<script setup lang="ts">
-import { DtoEntityConstants, getErrorMessage, getErrorUniqueIdMessage, InputDate, InputDateAndNull, InputLgcode, MessageConstants, MessageView, PagingControl, type FrameworkMessageAndResultDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
+import { AccessTokenNotFoundError, AddressRsdtTemplateEntity, DtoEntityConstants, getErrorMessage, getErrorUniqueIdMessage, getLoginUser, InputDate, InputDateAndNull, InputLgcode, MessageConstants, MessageView, PagingControl, TokenRefreshError, type AddressRsdtTemplateEntityInterface, type FrameworkMessageAndResultDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import { ref, type Ref } from 'vue';
-import { getLoginUser } from '../../utils/getLoginUser';
-import { AddressRsdtTemplateEntity, type AddressRsdtTemplateEntityInterface } from '../../entity/addressRsdtTemplateEntity';
 import ManagerInfo from '../../common/user_info/ManagerInfo.vue';
-import { AccessTokenNotFoundError, TokenRefreshError } from '../../dto/login/errors.ts';
 import getAuthorizedPromiseArea from '../../dto/login/getAuthorizedPromiseArea.ts';
 import RoutePathConstants from '../../../../routePathConstants.ts';
 import { SearchAddressRsdtCapsuleDto, type SearchAddressRsdtCapsuleDtoInterface } from '../../dto/address_registory/searchAddressRsdtCapsuleDto.ts';
@@ -17,7 +14,7 @@ const BLANK: string = "";
 const INIT_NUMBER: number = 0;
 const INIT_BOOLEAN: boolean = false;
 // const SERVER_STATUS_OK: number = 200;
-// const SERVER_STATUS_ERROR: number = 400;
+const SERVER_STATUS_ERROR: number = 400;
 const SEARCH_LIMIT: number = 20;
 const INQUIRE_FLG: boolean = false;
 const ERR_MESS_ONLY: boolean = true;
@@ -78,6 +75,12 @@ function onSearchLocalGov() {
         fetch(url, { method, headers, body })
             .then(async (response) => {
                 resultDto.value = await response.json();
+                if (response.status > SERVER_STATUS_ERROR) {
+                    message.value = getErrorMessage(BLANK, INQUIRE_FLG);
+                    infoLevel.value = MessageConstants.LEVEL_ERROR;
+                    messageType.value = MessageConstants.VIEW_OK;
+                    return;
+                }
 
                 allCount.value = resultDto.value.allCount;
                 limit.value = resultDto.value.limit;
@@ -150,6 +153,14 @@ function onSave() {
         fetch(url, { method, headers, body })
             .then(async (response) => {
                 const resultDto: FrameworkMessageAndResultDtoInterface = await response.json();
+
+                if (response.status > SERVER_STATUS_ERROR) {
+                    message.value = getErrorMessage(resultDto.message, ERR_MESS_ONLY);
+                    infoLevel.value = MessageConstants.LEVEL_ERROR;
+                    messageType.value = MessageConstants.VIEW_OK;
+                    return;
+                }
+
                 message.value = resultDto.message;
                 if (resultDto.isFailure) {
                     infoLevel.value = MessageConstants.LEVEL_WARNING;
@@ -272,6 +283,14 @@ function onDelete(selectedId: number) {
         fetch(url, { method, headers, body })
             .then(async (response) => {
                 const resultDto: FrameworkMessageAndResultDtoInterface = await response.json();
+
+                if (response.status > SERVER_STATUS_ERROR) {
+                    message.value = getErrorMessage(resultDto.message, ERR_MESS_ONLY);
+                    infoLevel.value = MessageConstants.LEVEL_ERROR;
+                    messageType.value = MessageConstants.VIEW_OK;
+                    return;
+                }
+
                 message.value = resultDto.message;
                 if (resultDto.isFailure) {
                     infoLevel.value = MessageConstants.LEVEL_WARNING;

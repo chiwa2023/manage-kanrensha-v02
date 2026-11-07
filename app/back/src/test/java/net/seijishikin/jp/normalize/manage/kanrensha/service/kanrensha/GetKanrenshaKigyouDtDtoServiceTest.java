@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -16,8 +17,9 @@ import org.springframework.transaction.annotation.Transactional;
 import net.seijishikin.jp.normalize.common_tool.dto.input.InputAccessDto;
 import net.seijishikin.jp.normalize.common_tool.dto.input.InputAddressDto;
 import net.seijishikin.jp.normalize.common_tool.dto.input.InputOrgNameDto;
-import net.seijishikin.jp.normalize.manage.kanrensha.dto.kanrensha.InputKanrenshaPersonLeastDto;
-import net.seijishikin.jp.normalize.manage.kanrensha.dto.kanrensha.KanrenshaKigyouDtDto;
+import net.seijishikin.jp.normalize.common_tool.dto.kanrensha.InputKanrenshaPersonLeastDto;
+import net.seijishikin.jp.normalize.common_tool.dto.kanrensha.KanrenshaKigyouDtDto;
+import net.seijishikin.jp.normalize.common_tool.dto.kanrensha.KanrenshaKigyouDtMasterDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.KanrenshaKigyouDtAccessEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.KanrenshaKigyouDtAddressEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.KanrenshaKigyouDtMasterEntity;
@@ -63,8 +65,9 @@ class GetKanrenshaKigyouDtDtoServiceTest {
     void test() throws Exception {
 
         KanrenshaKigyouDtMasterEntity masterEntity = kanrenshaKigyouDtMasterRepository.findById(145).get();
-
-        KanrenshaKigyouDtDto dto = getKanrenshaKigyouDtDtoService.practice(masterEntity);
+        KanrenshaKigyouDtMasterDto masterDto = new KanrenshaKigyouDtMasterDto();
+        BeanUtils.copyProperties(masterEntity, masterDto);
+        KanrenshaKigyouDtDto dto = getKanrenshaKigyouDtDtoService.practice(masterDto);
 
         assertEquals(masterEntity.getKanrenshaKigyouDtMasterId(), dto.getMasterId());
         assertEquals(masterEntity.getKigyouDtKanrenshaCode(), dto.getKigyouDtKanrenshaCode());
@@ -116,7 +119,7 @@ class GetKanrenshaKigyouDtDtoServiceTest {
         assertEquals(masterEntity.getKigyouDtDelegate(), delegeateDto.getPersonName());
         assertEquals(propertyEntity.getOrgDelegateCode(), delegeateDto.getPersonKanrenshaCode());
 
-        // TODO dto.getIsCombineUser();
+        // front側で取得時に紐づけを表示していないので紐づけ動作の検証不要
     }
 
 }

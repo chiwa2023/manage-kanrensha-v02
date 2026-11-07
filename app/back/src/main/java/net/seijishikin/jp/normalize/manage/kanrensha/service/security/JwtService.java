@@ -15,9 +15,9 @@ import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
 import org.springframework.stereotype.Service;
 
+import net.seijishikin.jp.normalize.common_tool.dto.sequrity.JwtTokenDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.config.JwtConfig;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.sequrity.CustomUserDetails;
-import net.seijishikin.jp.normalize.manage.kanrensha.dto.sequrity.JwtTokenDto;
 
 /**
  * JWTサービス

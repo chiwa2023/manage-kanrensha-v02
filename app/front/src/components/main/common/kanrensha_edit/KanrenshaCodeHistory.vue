@@ -1,12 +1,10 @@
 ﻿<script setup lang="ts">
 import { onMounted, ref, type Ref } from 'vue';
 import { MoveKanrenshaCodeHistoryResultDto, type MoveKanrenshaCodeHistoryResultDtoInterface } from '../../dto/kanrensha/moveKanrenshaCodeHistoryResultDto';
-import { getErrorMessage, MessageConstants, MessageView, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
-import UserRoleConstants from '../../dto/user/userRoleConstants';
+import { AccessTokenNotFoundError, getErrorMessage, MessageConstants, MessageView, TokenRefreshError, UserRoleConstants, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import RoutePathConstants from '../../../../routePathConstants';
 import { MoveKanrenshaCodeHistoryCapsuleDto, type MoveKanrenshaCodeHistoryCapsuleDtoInterface } from '../../dto/kanrensha/moveKanrenshaCodeHistoryCapsuleDto';
 import getAuthorizedPromiseArea from '../../dto/login/getAuthorizedPromiseArea';
-import { AccessTokenNotFoundError, TokenRefreshError } from '../../dto/login/errors';
 
 // props,emits
 const props = defineProps<{ userDto: LeastUserDtoInterface, kanrenshaKbn: number, codeOrgin: string, codeAbolish: string }>();
@@ -16,7 +14,7 @@ const emits = defineEmits(["sendCancelKanrenshaCodeHistory"]);
 const BLANK: string = "";
 // const INIT_NUMBER: number = 0;
 // const SERVER_STATUS_OK: number = 200;
-// const SERVER_STATUS_ERROR: number = 400;
+const SERVER_STATUS_ERROR: number = 400;
 // const SEARCH_LIMIT: number = 20;
 // メッセージボックス表示定数
 const INQUIRE_FLG: boolean = false;
@@ -55,6 +53,14 @@ onMounted(() => {
         fetch(url, { method, headers, body })
             .then(async (response) => {
                 resultDto.value = await response.json();
+
+                if (response.status > SERVER_STATUS_ERROR) {
+                    message.value = getErrorMessage(resultDto.value.message, ERR_MESS_ONLY);
+                    infoLevel.value = MessageConstants.LEVEL_ERROR;
+                    messageType.value = MessageConstants.VIEW_OK;
+                    return;
+                }
+
                 if (resultDto.value.isFailure) {
                     message.value = resultDto.value.message;
                     infoLevel.value = MessageConstants.LEVEL_WARNING;

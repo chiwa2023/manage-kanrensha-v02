@@ -20,7 +20,6 @@ import RoutePathConstants from '../../../../routePathConstants';
             <h4 class="menu-title">利用者管理</h4>
             <RouterLink class="menu-item" :to=RoutePathConstants.PAGE_RIYOUSHA_SEARCH>利用者検索／編集</RouterLink>
             <RouterLink class="menu-item" :to=RoutePathConstants.PAGE_SEARCH_RIYOUSHA_ORG>利用者組織検索／編集</RouterLink>
-            <RouterLink :to="RoutePathConstants.PAGE_NOTIFY_LIMIT" class="menu-item">APIパートナー長期トークン期限切れ通知</RouterLink>
         </div>
     </div>
 
@@ -30,6 +29,8 @@ import RoutePathConstants from '../../../../routePathConstants';
             <RouterLink :to="RoutePathConstants.PAGE_DUMP_MASTER" class="menu-item">関連者マスタ最小csvダンプ(指定期間まで)</RouterLink>
             <RouterLink :to="RoutePathConstants.PAGE_DUMP_HISTORY" class="menu-item">関連者履歴csvダンプ(指定期間まで)</RouterLink>
             <RouterLink :to="RoutePathConstants.PAGE_DUMP_MASTER_STD" class="menu-item">関連者マスタ標準csvダンプ(指定期間まで)
+            </RouterLink>
+            <RouterLink :to="RoutePathConstants.PAGE_DUMP_CODE_MOVE" class="menu-item">関連者コード移動csvダンプ(指定期間まで)
             </RouterLink>
             <RouterLink :to="RoutePathConstants.PAGE_DUMP_SABUN_MASTER" class="menu-item">関連者マスタ最小csv差分ダンプ</RouterLink>
             <RouterLink :to="RoutePathConstants.PAGE_DUMP_SABUN_HISTORY" class="menu-item">関連者履歴csv差分ダンプ</RouterLink>
@@ -43,6 +44,15 @@ import RoutePathConstants from '../../../../routePathConstants';
             <h4 class="menu-title">タスク設定</h4>
             <RouterLink :to="RoutePathConstants.PAGE_SEARCH_TASK_INFO" class="menu-item">タスク情報一覧・編集 </RouterLink>
             <RouterLink :to="RoutePathConstants.PAGE_TIMER_YOTEI" class="menu-item">予定実行一覧・編集 </RouterLink>
+        </div>
+    </div>
+
+    <div class="menu-container">
+        <div class="menu-section">
+            <h4 class="menu-title">予定実行強制</h4>
+            <RouterLink :to="RoutePathConstants.PAGE_DELETE_TEMP_STORAGE" class="menu-item">アップロード一時ファイル削除 </RouterLink>
+            <RouterLink :to="RoutePathConstants.PAGE_DELETE_TOKEN" class="menu-item">不要アクセストークン削除</RouterLink>
+            <RouterLink :to="RoutePathConstants.PAGE_NOTIFY_LIMIT" class="menu-item">APIパートナー長期トークン期限切れ通知</RouterLink>
         </div>
     </div>
 

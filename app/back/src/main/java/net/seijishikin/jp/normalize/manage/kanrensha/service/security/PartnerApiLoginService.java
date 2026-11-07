@@ -1,19 +1,23 @@
 package net.seijishikin.jp.normalize.manage.kanrensha.service.security;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.LockedException;
+import org.springframework.security.oauth2.jwt.Jwt;
+import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.server.resource.InvalidBearerTokenException;
 import org.springframework.stereotype.Service;
 
 import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
+import net.seijishikin.jp.normalize.manage.kanrensha.dto.sequrity.CustomUserDetails;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.PartnerAccessHistoryBaseEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.PartnerAccessTokenEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.repository.PartnerAccessTokenRepository;
+import net.seijishikin.jp.normalize.manage.kanrensha.repository.UserRoleRepository;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.util.SaveStackTraceService;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.year.SwitchYearSavePartnerApiLoginHistoryService;
 
@@ -21,7 +25,7 @@ import net.seijishikin.jp.normalize.manage.kanrensha.service.year.SwitchYearSave
  * API接続ログインService
  * 
  * <p>
- * トークン確認と路銀履歴記録を行う
+ * トークン確認とログイン履歴記録を行う
  * </p>
  */
 @Service
@@ -31,10 +35,6 @@ public class PartnerApiLoginService {
     @Autowired
     private PartnerAccessTokenRepository partnerAccessTokenRepository;
 
-    /** APIパートナー長期トークンEncoder */
-    @Autowired
-    private PartnerTokenEncoder partnerTokenEncoder;
-
     /** APIパートナーログイン履歴 */
     @Autowired
     private SwitchYearSavePartnerApiLoginHistoryService switchYearSavePartnerApiLoginHistoryService;
@@ -42,6 +42,22 @@ public class PartnerApiLoginService {
     /** APIパートナー長期トークンEncoder */
     @Autowired
     private SaveStackTraceService saveStackTraceService;
+
+    /** IPアドレス検証ユーティリティ */
+    @Autowired
+    private IpAddressMatcherUtil ipAddressMatcherUtil;
+
+    /** ユーザ権限Repository */
+    @Autowired
+    private UserRoleRepository userRoleRepository;
+
+    /** JwtDecoder */
+    @Autowired
+    private JwtDecoder jwtDecoder;
+
+    /** CustomUserDetailsManager */
+    @Autowired
+    private CustomUserDetailsManager customUserDetailsManager;
 
     /**
      * 処理を行う
@@ -62,13 +78,20 @@ public class PartnerApiLoginService {
         baseEntity.setIpAddress(ipAddress);
         baseEntity.setUserAgent(userAgent);
 
-        String tokenEncoded = partnerTokenEncoder.encode(partnerToken);
+        Jwt jwt = jwtDecoder.decode(partnerToken);
+
+        // サブジェクトからユーザー名を取得
+        String username = jwt.getSubject();
+
+        // ユーザー情報の取得
+        CustomUserDetails userDetails = (CustomUserDetails) customUserDetailsManager.loadUserByUsername(username);
 
         // Uniqueトークンをキーにして管理状態を取得
-        Optional<PartnerAccessTokenEntity> optional = partnerAccessTokenRepository.findByAccessTokenHash(tokenEncoded);
+        List<PartnerAccessTokenEntity> list = partnerAccessTokenRepository
+                .findByUserCodeAndRevokedAtNull(userDetails.getUserPersonCode());
 
         // 取得できない場合はログインさせない
-        if (optional.isEmpty()) {
+        if (list.isEmpty()) {
             // ユーザ情報が取得できない
             baseEntity.setUserCode(0);
             baseEntity.setUserName("");
@@ -79,7 +102,7 @@ public class PartnerApiLoginService {
         }
 
         // 管理状態が取得できた
-        PartnerAccessTokenEntity tokenEntity = optional.get();
+        PartnerAccessTokenEntity tokenEntity = list.get(0);
         baseEntity.setUserCode(tokenEntity.getUserCode());
         baseEntity.setUserName(tokenEntity.getUserName());
 
@@ -91,8 +114,8 @@ public class PartnerApiLoginService {
             throw new LockedException("このTokenは有効期間経過などの理由で失効しています");
         }
 
-        // IPアドレスが登録されており、一致しない場合はエラー
-        if (!ipAddress.equals(tokenEntity.getIpAddress())) {
+        // IPアドレスが登録されており、一致（またはCIDR範囲内）しない場合はエラー
+        if (!ipAddressMatcherUtil.matches(tokenEntity.getIpAddress(), ipAddress)) {
             baseEntity.setIsSuccess(false);
             // 履歴をアクセス失敗で記録
             this.saveHitory(baseEntity);
@@ -108,8 +131,13 @@ public class PartnerApiLoginService {
         this.saveHitory(baseEntity);
 
         LeastUserDto userDto = new LeastUserDto();
-        userDto.setUserPersonCode(tokenEntity.getUserCode());
-        userDto.setUserPersonName(tokenEntity.getUserName());
+        userDto.setUserPersonId(userDetails.getUserPersonId());
+        userDto.setUserPersonCode(userDetails.getUserPersonCode());
+        userDto.setUserPersonName(userDetails.getUserPersonName());
+        for (String role : userRoleRepository.findLatestRoleByMail(username)) {
+            userDto.getListRoles().add("ROLE_" + role);
+        }
+
         return userDto;
     }
 
@@ -121,7 +149,6 @@ public class PartnerApiLoginService {
 
         } catch (Exception exception) { // NOPMD
             saveStackTraceService.practice(exception, baseEntity.getAttemptTime().getYear(), 0);
-            // TODO 資格に問題がないが履歴が登録できない場合の処理は決定後実装する
         }
     }
 

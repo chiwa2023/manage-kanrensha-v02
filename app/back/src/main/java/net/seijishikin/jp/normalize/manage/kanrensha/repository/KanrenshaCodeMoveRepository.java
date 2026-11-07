@@ -4,10 +4,12 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
 import jakarta.persistence.LockModeType;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.KanrenshaCodeMoveEntity;
@@ -15,7 +17,8 @@ import net.seijishikin.jp.normalize.manage.kanrensha.entity.KanrenshaCodeMoveEnt
 /**
  * kanrensha_code_move接続用Repository
  */
-public interface KanrenshaCodeMoveRepository extends JpaRepository<KanrenshaCodeMoveEntity, Integer> {
+public interface KanrenshaCodeMoveRepository extends JpaRepository<KanrenshaCodeMoveEntity, Integer>,
+        PagingAndSortingRepository<KanrenshaCodeMoveEntity, Integer> {
 
     /**
      * 最大コードを取得する
@@ -57,4 +60,14 @@ public interface KanrenshaCodeMoveRepository extends JpaRepository<KanrenshaCode
             + "  and ( origin_kanrensha_code = ?1 or abolish_kanrensha_code = ?1)", nativeQuery = true)
     List<KanrenshaCodeMoveEntity> findMyselfData(String kanrenshaCode);
 
+    /**
+     * 最新かつ更新時間が指定時間前かつ申請済を取得する
+     * 
+     * @param moveStatus  申請状態
+     * @param endDatetime 指定期間
+     * @param pageable    ページング
+     * @return 検索結果
+     */
+    Page<KanrenshaCodeMoveEntity> findByIsLatestTrueAndMoveStatusAndInsertTimestampLessThan(Integer moveStatus,
+            LocalDateTime endDatetime, Pageable pageable);
 }

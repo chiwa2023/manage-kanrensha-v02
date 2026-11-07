@@ -18,7 +18,7 @@ import net.seijishikin.jp.normalize.manage.kanrensha.dto.storage_file.StorageFil
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.storage_file.UploadFileDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.logic.file.GetAbsolutePathLogic;
 import net.seijishikin.jp.normalize.manage.kanrensha.logic.file.GetTempFilePathLogic;
-import net.seijishikin.jp.normalize.manage.kanrensha.logic.file.SaveFileLogic;
+import net.seijishikin.jp.normalize.manage.kanrensha.logic.file.SaveFileBase64Logic;
 
 /**
  * アップロードされたCSVファイルを10行先読みService
@@ -36,7 +36,7 @@ public class LookAheadCsvFileService {
 
     /** ファイル保存Logic */
     @Autowired
-    private SaveFileLogic saveFileLogic;
+    private SaveFileBase64Logic saveFileBase64Logic;
 
     /** 読み出し行ヘッダプラス10行 */
     private static final int READ_LINE = 11;
@@ -59,7 +59,7 @@ public class LookAheadCsvFileService {
 
         Path path = getAbsolutePathLogic.practice(storageFileDto.getSavedDir(), storageFileDto.getFileName());
 
-        if (saveFileLogic.practice(path, uploadFileDto.getFileContent())) {
+        if (saveFileBase64Logic.practice(path, uploadFileDto.getFileContent())) {
 
             List<List<String>> listCsv = new ArrayList<>();
 

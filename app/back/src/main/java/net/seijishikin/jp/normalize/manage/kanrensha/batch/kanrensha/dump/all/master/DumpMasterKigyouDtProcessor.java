@@ -12,7 +12,7 @@ import net.seijishikin.jp.normalize.manage.kanrensha.logic.kanrensha.CallKigyouD
 import net.seijishikin.jp.normalize.manage.kanrensha.logic.kanrensha.CallKigyouDtPropertyEntityLogic;
 
 /**
- * 関連者企業・団体CsvDto変換Processor TODO 管理テーブルが増えたら、ここで必要な値を補う
+ * 関連者企業・団体CsvDto変換Processor 
  * 現時点ではentityをそのままDtoに変換しているだけなので無駄に見えるが、拡張性を考慮した措置
  */
 @Component

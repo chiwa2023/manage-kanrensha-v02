@@ -52,4 +52,5 @@ class SwitchYearGetRoleSomeoneTaskY2019ServiceTest {
         assertEquals(464, entity1.getTaskPlanId());
         assertEquals(2019, entity1.getTableYear());
     }
+
 }

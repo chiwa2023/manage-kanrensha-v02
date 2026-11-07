@@ -18,7 +18,7 @@ import net.seijishikin.jp.normalize.manage.kanrensha.entity.year.y2024.TaskPlan2
 /**
  * task_plan_2024接続用Repository
  */
-public interface TaskPlan2024Repository
+public interface TaskPlan2024Repository // NOPMD TooManyMethods
         extends JpaRepository<TaskPlan2024Entity, Integer>, PagingAndSortingRepository<TaskPlan2024Entity, Integer> {
 
     /**
@@ -27,7 +27,7 @@ public interface TaskPlan2024Repository
      * @param searchWords 検索語
      * @return 検索結果
      */
-    @Query(value = "SELECT * FROM task_plan_2024 WHERE saishin_kbn= 1 " // TODO NATCH AGAINST
+    @Query(value = "SELECT * FROM task_plan_2024 WHERE saishin_kbn= 1 " // TODO MATCH AGAINST
             + "AND task_plan_2024_name LIKE ?1", nativeQuery = true)
     List<TaskPlan2024Entity> findFullText(String searchWords);
 
@@ -38,14 +38,6 @@ public interface TaskPlan2024Repository
      */
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     Optional<TaskPlan2024Entity> findFirstByOrderByTaskPlanCodeDesc();
-
-    /**
-     * 更新日時降順で同一コードを取得する(履歴)
-     *
-     * @param taskPlanCode タスク計画コード
-     * @return タスク計画リスト
-     */
-    List<TaskPlan2024Entity> findByTaskPlanCodeOrderByInsertTimestampAsc(Integer taskPlanCode);
 
     /**
      * 同一コードで最新を取得する
@@ -74,15 +66,20 @@ public interface TaskPlan2024Repository
      * @return 検索結果
      */
     @Query(value = "SELECT * FROM task_plan_2024" //
-            + "   WHERE insert_timestamp BETWEEN ?1 AND ?2" //
+            + "   WHERE insert_timestamp BETWEEN ?2 AND ?3" //
             + "       AND is_latest = 1" //
-            + "       AND CASE" //
-            // + " WHEN ?3 <> '' THEN MATCH(task_plan_name) AGAINST (?3 IN BOOLEAN MODE)" //
-            + "              WHEN ?3 <> '' THEN task_plan_name LIKE ?3" //
-            + "              ELSE 1=1"//
-            + "           END", nativeQuery = true)
-    List<TaskPlanBaseEntity> findTaskPlan(LocalDateTime startDateTime, LocalDateTime endDateTime, String searchWord,
-            Pageable pageable);
+            + "       AND (task_user_code = ?1 OR (task_user_code = 0 AND insert_user_code = ?1) )" //
+            // + "AND CASE WHEN ?3 <> '' THEN MATCH(task_plan_name) AGAINST (?3 IN BOOLEAN
+            // MODE)" //
+            + "       AND CASE WHEN ?4 <> '' THEN task_plan_name LIKE ?4 ELSE 1=1 END " //
+            + "       AND CASE  WHEN ?5<2 THEN is_finished = ?5 ELSE 1=1 END "//
+            + "       AND CASE  WHEN ?6<2 THEN is_start = ?6 ELSE 1=1 END "//
+            + "       AND CASE  WHEN ?7<2 THEN is_suspended = ?7 ELSE 1=1 END "//
+            + "       AND CASE  WHEN ?9= true THEN task_info_code IN ?8 ELSE 1=1 END "//
+            , nativeQuery = true)
+    List<TaskPlanBaseEntity> findTaskPlan(Integer userCode, LocalDateTime startDateTime, LocalDateTime endDateTime,
+            String searchWord, Integer flgFinished, Integer flgStart, Integer flgSuspended, List<Integer> infoCodeList,
+            boolean hasCodeList, Pageable pageable);
 
     /**
      * 検索条件該当件数を取得する
@@ -93,14 +90,28 @@ public interface TaskPlan2024Repository
      * @return 該当件数
      */
     @Query(value = "SELECT count(*) FROM task_plan_2024" //
-            + "   WHERE insert_timestamp BETWEEN ?1 AND ?2" //
+            + "   WHERE insert_timestamp BETWEEN ?2 AND ?3" //
             + "       AND is_latest = 1" //
-            + "       AND CASE" //
-            // + " WHEN ?3 <> '' THEN MATCH(task_plan_name) AGAINST (?3 IN BOOLEAN MODE)" //
-            + "              WHEN ?3 <> '' THEN task_plan_name LIKE ?3" //
-            + "              ELSE 1=1"//
-            + "           END", nativeQuery = true)
-    Integer countTaskPlan(LocalDateTime startDateTime, LocalDateTime endDateTime, String searchWord);
+            + "       AND (task_user_code = ?1 OR (task_user_code = 0 AND insert_user_code = ?1) )" //
+            // + "AND CASE WHEN ?3 <> '' THEN MATCH(task_plan_name) AGAINST (?3 IN BOOLEAN
+            // MODE)" //
+            + "       AND CASE WHEN ?4 <> '' THEN task_plan_name LIKE ?4 ELSE 1=1 END " //
+            + "       AND CASE  WHEN ?5<2 THEN is_finished = ?5 ELSE 1=1 END "//
+            + "       AND CASE  WHEN ?6<2 THEN is_start = ?6 ELSE 1=1 END "//
+            + "       AND CASE  WHEN ?7<2 THEN is_suspended = ?7 ELSE 1=1 END "//
+            + "       AND CASE  WHEN ?9= true THEN task_info_code IN ?8 ELSE 1=1 END "//
+            , nativeQuery = true)
+    Integer countTaskPlan(Integer userCode, LocalDateTime startDateTime, LocalDateTime endDateTime, String searchWord,
+            Integer flgFinished, Integer flgStart, Integer flgSuspended, List<Integer> infoCodeList,
+            boolean hasCodeList);
+
+    /**
+     * 更新日時降順で同一コードを取得する(履歴)
+     *
+     * @param taskPlanCode タスク計画コード
+     * @return タスク計画リスト
+     */
+    List<TaskPlan2024Entity> findByTaskPlanCodeOrderByInsertTimestampAsc(Integer taskPlanCode);
 
     /**
      * 未処理タスクを抽出する
@@ -109,17 +120,71 @@ public interface TaskPlan2024Repository
      * @param pageable ページング
      * @return 検索結果
      */
-    List<TaskPlan2024Entity> findByTaskUserCodeAndIsLatestTrueAndIsFinishedFalseOrderByInsertTimestampDesc(
+    @Query(value = "SELECT * FROM task_plan_2024" //
+            + "   WHERE  is_latest = 1" //
+            + "       AND (task_user_code = ?1 OR (task_user_code = 0 AND insert_user_code = ?1) )" //
+            + "       AND is_finished = 0 "//
+            + "       AND is_suspended = 0"//
+            + "       ORDER BY insert_timestamp DESC"//
+            , nativeQuery = true)
+    List<TaskPlan2024Entity> findByTaskUserCodeAndIsLatestTrueAndIsFinishedFalseAndIsSuspendedFalseOrderByInsertTimestampDesc(
             Integer userCode, Pageable pageable);
 
     /**
-     * 未終了のタスク計画を権限で検索する
+     * 未終了のタスク計画を権限で取得する
      * 
      * @param listRole 権限リスト
      * @param pageable ページング
      * @return 検索結果
      */
-    @Query(value = "SELECT * FROM task_plan_2024 WHERE is_latest= 1 AND is_finished = 0 AND task_user_code = 0 "
+    @Query(value = "SELECT * FROM task_plan_2024 WHERE is_latest= 1 "
+            + "AND is_finished = 0 AND is_suspended = 0 AND task_user_code = 0 "
             + "AND role_list IN ?1", nativeQuery = true)
     List<TaskPlanBaseEntity> findRoleSomeoneTask(List<String> listRole, Pageable pageable);
+
+    /**
+     * 権限タスクリストを取得する
+     * 
+     * @param listRole      権限リスト
+     * @param startDateTime 検索条件開始
+     * @param endDateTime   検索上演終了
+     * @param flgFinished   検索条件終了フラグ
+     * @param flgStart      検索条件開始フラグ
+     * @param flgSuspended  検索条件中断フラグ
+     * @param pageable      ページング
+     * @return 検索結果
+     */
+    @Query(value = "SELECT * FROM task_plan_2024 WHERE is_latest= 1 " //
+            + "       AND insert_timestamp BETWEEN ?2 AND ?3" //
+            + "       AND task_user_code = 0 " //
+            + "       AND CASE  WHEN ?4<2 THEN is_finished = ?4 ELSE 1=1 END "//
+            + "       AND CASE  WHEN ?5<2 THEN is_start = ?5 ELSE 1=1 END "//
+            + "       AND CASE  WHEN ?6<2 THEN is_suspended = ?6 ELSE 1=1 END "//
+            + "       AND role_list IN ?1" //
+            , nativeQuery = true)
+    List<TaskPlanBaseEntity> findRoleSomeoneTaskCondition(List<String> listRole, LocalDateTime startDateTime,
+            LocalDateTime endDateTime, Integer flgFinished, Integer flgStart, Integer flgSuspended, Pageable pageable);
+
+    /**
+     * 権限タスクリスト件数を取得する
+     * 
+     * @param listRole      権限リスト
+     * @param startDateTime 検索条件開始
+     * @param endDateTime   検索上演終了
+     * @param flgFinished   検索条件終了フラグ
+     * @param flgStart      検索条件開始フラグ
+     * @param flgSuspended  検索条件中断フラグ
+     * @return 取得件数
+     */
+    @Query(value = "SELECT count(*) FROM task_plan_2024 WHERE is_latest= 1 " //
+            + "       AND insert_timestamp BETWEEN ?2 AND ?3" //
+            + "       AND task_user_code = 0 " //
+            + "       AND CASE  WHEN ?4<2 THEN is_finished = ?4 ELSE 1=1 END "//
+            + "       AND CASE  WHEN ?5<2 THEN is_start = ?5 ELSE 1=1 END "//
+            + "       AND CASE  WHEN ?6<2 THEN is_suspended = ?6 ELSE 1=1 END "//
+            + "       AND role_list IN ?1" //
+            , nativeQuery = true)
+    Integer countRoleSomeoneTaskCondition(List<String> listRole, LocalDateTime startDateTime, LocalDateTime endDateTime,
+            Integer flgFinished, Integer flgStart, Integer flgSuspended);
+
 }

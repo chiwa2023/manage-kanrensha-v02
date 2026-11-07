@@ -26,7 +26,6 @@ public class SearchUserServcie {
      */
     public SearchUserEntityResultDto practice(final SearchUserCapsuleDto capsuleDto) {
 
-        // TODO 現状では全文検索用にフォーマット化したカラムを持たないので全文検索しない
         String nameCondition = "";
         if (!"".equals(capsuleDto.getName())) {
             nameCondition = "%" + capsuleDto.getName() + "%";

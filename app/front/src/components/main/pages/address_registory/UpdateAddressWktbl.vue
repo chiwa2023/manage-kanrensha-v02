@@ -1,11 +1,9 @@
 ﻿<script setup lang="ts">
-import { onMounted, ref, type Ref } from 'vue';
+import { onBeforeMount, onMounted, ref, type Ref } from 'vue';
 import ManagerInfo from '../../common/user_info/ManagerInfo.vue';
-import { FrameworkCapsuleDto, getErrorMessage, MessageConstants, MessageView, PagingControl, type FrameworkCapsuleDtoInterface, type FrameworkMessageAndResultDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
-import { getLoginUser } from '../../utils/getLoginUser.ts';
+import { AccessTokenNotFoundError, FrameworkCapsuleDto, getErrorMessage, getLoginUser, MessageConstants, MessageView, PagingControl, TokenRefreshError, type FrameworkCapsuleDtoInterface, type FrameworkMessageAndResultDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import type { WkTblAddressRsdtChangeEntityInterface } from '../../entity/wkTblAddressRsdtChangeEntity.ts';
 import type { WkTblAddressRsdtDeleteEntityInterface } from '../../entity/wkTblAddressRsdtDeleteEntity.ts';
-import { AccessTokenNotFoundError, TokenRefreshError } from '../../dto/login/errors.ts';
 import getAuthorizedPromiseArea from '../../dto/login/getAuthorizedPromiseArea.ts';
 import RoutePathConstants from '../../../../routePathConstants.ts';
 import { SearchWkTblAddressRsdtCapsuleDto, type SearchWkTblAddressRsdtCapsuleDtoInterface } from '../../dto/address_registory/searchWkTblAddressRsdtCapsuleDto.ts';
@@ -13,12 +11,15 @@ import { SearchWkTblRsdtChangeResultDto, type SearchWkTblRsdtChangeResultDtoInte
 import { SearchWkTblRsdtDeleteResultDto, type SearchWkTblRsdtDeleteResultDtoInterface } from '../../dto/address_registory/searchWkTblRsdtDeleteResultDto.ts';
 import SearchDeleteWkTblAddress from '../../common/address_registory/SearchDeleteWkTblAddress.vue';
 import SearchChangeWkTblAddress from '../../common/address_registory/SearchChangeWkTblAddress.vue';
+import { useRoute } from 'vue-router';
+import { nextTransferPassStore } from '../../stores/nextTransferPass.ts';
+import router from '../../../../router.ts';
 
 // よく使う定数
 const BLANK: string = "";
 const INIT_NUMBER: number = 0;
 // const SERVER_STATUS_OK: number = 200;
-// const SERVER_STATUS_ERROR: number = 400;
+const SERVER_STATUS_ERROR: number = 400;
 const SEARCH_LIMIT: number = 20;
 const INQUIRE_FLG: boolean = false;
 const ERR_MESS_ONLY: boolean = true;
@@ -65,6 +66,17 @@ capsuleDtoDelete.value.userDto = userDto.value;
 const resultDtoChange: Ref<SearchWkTblRsdtChangeResultDtoInterface> = ref(new SearchWkTblRsdtChangeResultDto());
 const resultDtoDelete: Ref<SearchWkTblRsdtDeleteResultDtoInterface> = ref(new SearchWkTblRsdtDeleteResultDto());
 
+const route = useRoute();
+onBeforeMount(() => {
+    // 直リンク(パスチェックあり)を許容ロジック
+    if (INIT_NUMBER === userDto.value.userPersonId) {
+        const passStore = nextTransferPassStore()
+        passStore.fullPath = route.fullPath;
+        router.push(RoutePathConstants.PAGE_LOGIN);
+        return;
+    }
+});
+
 onMounted(async () => {
     // 削除リストと編集リスト(自動処理決定)のみを表示
     const isChange: boolean = await recievePagingNumberChange(0);
@@ -98,6 +110,14 @@ function onSave() {
         fetch(url, { method, headers, body })
             .then(async (response) => {
                 const resultDto: FrameworkMessageAndResultDtoInterface = await response.json();
+
+                if (response.status > SERVER_STATUS_ERROR) {
+                    message.value = getErrorMessage(resultDto.message, ERR_MESS_ONLY);
+                    infoLevel.value = MessageConstants.LEVEL_ERROR;
+                    messageType.value = MessageConstants.VIEW_OK;
+                    return;
+                }
+
                 message.value = resultDto.message;
                 if (resultDto.isFailure) {
                     infoLevel.value = MessageConstants.LEVEL_WARNING;
@@ -152,6 +172,14 @@ async function recievePagingNumberChange(selecteddNumber: number): Promise<boole
         fetch(url, { method, headers, body })
             .then(async (response) => {
                 resultDtoChange.value = await response.json();
+
+                if (response.status > SERVER_STATUS_ERROR) {
+                    message.value = getErrorMessage(BLANK, INQUIRE_FLG);
+                    infoLevel.value = MessageConstants.LEVEL_ERROR;
+                    messageType.value = MessageConstants.VIEW_OK;
+                    return;
+                }
+
                 listChange.value = resultDtoChange.value.listEntity;
                 allCountChange.value = resultDtoChange.value.allCount;
                 limitChange.value = resultDtoChange.value.limit;
@@ -196,6 +224,14 @@ async function recievePagingNumberDelete(selecteddNumber: number): Promise<boole
         fetch(url, { method, headers, body })
             .then(async (response) => {
                 resultDtoDelete.value = await response.json();
+
+                if (response.status > SERVER_STATUS_ERROR) {
+                    message.value = getErrorMessage(BLANK, INQUIRE_FLG);
+                    infoLevel.value = MessageConstants.LEVEL_ERROR;
+                    messageType.value = MessageConstants.VIEW_OK;
+                    return;
+                }
+
                 listDelete.value = resultDtoDelete.value.listEntity;
                 allCountDelete.value = resultDtoDelete.value.allCount;
                 limitDelete.value = resultDtoDelete.value.limit;

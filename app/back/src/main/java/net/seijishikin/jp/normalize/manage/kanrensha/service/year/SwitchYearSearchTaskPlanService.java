@@ -19,6 +19,7 @@ import net.seijishikin.jp.normalize.manage.kanrensha.logic.year.y2024.SearchTask
 import net.seijishikin.jp.normalize.manage.kanrensha.logic.year.y2025.SearchTaskPlanY2025Logic;
 import net.seijishikin.jp.normalize.manage.kanrensha.logic.year.y2026.SearchTaskPlanY2026Logic;
 import net.seijishikin.jp.normalize.manage.kanrensha.logic.year.y2027.SearchTaskPlanY2027Logic;
+import net.seijishikin.jp.normalize.manage.kanrensha.repository.TaskInfoRepository;
 
 /**
  * 年切替タスク計画検索Service
@@ -29,6 +30,10 @@ public class SwitchYearSearchTaskPlanService {
     /** 検索条件年展開Logic */
     @Autowired
     private CreateSearchConditionMapByYearLogic createSearchConditionMapByYearLogic;
+
+    /** タスク情報Repository */
+    @Autowired
+    private TaskInfoRepository taskInfoRepository;
 
     /** 実施年(2019) */
     private static final int YEAR_2019 = 2019;
@@ -102,13 +107,15 @@ public class SwitchYearSearchTaskPlanService {
         Map<Integer, SwitchYearPagingIntegerDatetimeDtoInterface> map = createSearchConditionMapByYearLogic
                 .practice(capsuleDto);
 
+        final Integer taskInfoCount = taskInfoRepository.countByIsLatestTrue();
+
         SearchTaskPlanResultDto resultDto = new SearchTaskPlanResultDto();
         for (Integer year : map.keySet()) {
             switch (year) {
 
                 // 2019年
                 case YEAR_2019:
-                    SearchTaskPlanResultDto resultDto2019 = searchTaskPlanY2019Logic.practice(capsuleDto);
+                    SearchTaskPlanResultDto resultDto2019 = searchTaskPlanY2019Logic.practice(taskInfoCount,capsuleDto);
                     resultDto.getListTaskPlan().addAll(resultDto2019.getListTaskPlan());
                     resultDto.setLimit(resultDto2019.getLimit());
                     resultDto.setAllCount(resultDto.getAllCount() + resultDto2019.getAllCount());
@@ -117,7 +124,7 @@ public class SwitchYearSearchTaskPlanService {
 
                 // 2020年
                 case YEAR_2020:
-                    SearchTaskPlanResultDto resultDto2020 = searchTaskPlanY2020Logic.practice(capsuleDto);
+                    SearchTaskPlanResultDto resultDto2020 = searchTaskPlanY2020Logic.practice(taskInfoCount,capsuleDto);
                     resultDto.getListTaskPlan().addAll(resultDto2020.getListTaskPlan());
                     resultDto.setLimit(resultDto2020.getLimit());
                     resultDto.setAllCount(resultDto.getAllCount() + resultDto2020.getAllCount());
@@ -126,7 +133,7 @@ public class SwitchYearSearchTaskPlanService {
 
                 // 2021年
                 case YEAR_2021:
-                    SearchTaskPlanResultDto resultDto2021 = searchTaskPlanY2021Logic.practice(capsuleDto);
+                    SearchTaskPlanResultDto resultDto2021 = searchTaskPlanY2021Logic.practice(taskInfoCount,capsuleDto);
                     resultDto.getListTaskPlan().addAll(resultDto2021.getListTaskPlan());
                     resultDto.setLimit(resultDto2021.getLimit());
                     resultDto.setAllCount(resultDto.getAllCount() + resultDto2021.getAllCount());
@@ -135,7 +142,7 @@ public class SwitchYearSearchTaskPlanService {
 
                 // 2022年
                 case YEAR_2022:
-                    SearchTaskPlanResultDto resultDto2022 = searchTaskPlanY2022Logic.practice(capsuleDto);
+                    SearchTaskPlanResultDto resultDto2022 = searchTaskPlanY2022Logic.practice(taskInfoCount,capsuleDto);
                     resultDto.getListTaskPlan().addAll(resultDto2022.getListTaskPlan());
                     resultDto.setLimit(resultDto2022.getLimit());
                     resultDto.setAllCount(resultDto.getAllCount() + resultDto2022.getAllCount());
@@ -144,7 +151,7 @@ public class SwitchYearSearchTaskPlanService {
 
                 // 2023年
                 case YEAR_2023:
-                    SearchTaskPlanResultDto resultDto2023 = searchTaskPlanY2023Logic.practice(capsuleDto);
+                    SearchTaskPlanResultDto resultDto2023 = searchTaskPlanY2023Logic.practice(taskInfoCount,capsuleDto);
                     resultDto.getListTaskPlan().addAll(resultDto2023.getListTaskPlan());
                     resultDto.setLimit(resultDto2023.getLimit());
                     resultDto.setAllCount(resultDto.getAllCount() + resultDto2023.getAllCount());
@@ -153,7 +160,7 @@ public class SwitchYearSearchTaskPlanService {
 
                 // 2024年
                 case YEAR_2024:
-                    SearchTaskPlanResultDto resultDto2024 = searchTaskPlanY2024Logic.practice(capsuleDto);
+                    SearchTaskPlanResultDto resultDto2024 = searchTaskPlanY2024Logic.practice(taskInfoCount,capsuleDto);
                     resultDto.getListTaskPlan().addAll(resultDto2024.getListTaskPlan());
                     resultDto.setLimit(resultDto2024.getLimit());
                     resultDto.setAllCount(resultDto.getAllCount() + resultDto2024.getAllCount());
@@ -162,7 +169,7 @@ public class SwitchYearSearchTaskPlanService {
 
                 // 2025年
                 case YEAR_2025:
-                    SearchTaskPlanResultDto resultDto2025 = searchTaskPlanY2025Logic.practice(capsuleDto);
+                    SearchTaskPlanResultDto resultDto2025 = searchTaskPlanY2025Logic.practice(taskInfoCount,capsuleDto);
                     resultDto.getListTaskPlan().addAll(resultDto2025.getListTaskPlan());
                     resultDto.setLimit(resultDto2025.getLimit());
                     resultDto.setAllCount(resultDto.getAllCount() + resultDto2025.getAllCount());
@@ -171,7 +178,8 @@ public class SwitchYearSearchTaskPlanService {
 
                 // 2026年
                 case YEAR_2026:
-                    SearchTaskPlanResultDto resultDto2026 = searchTaskPlanY2026Logic.practice(capsuleDto);
+                    SearchTaskPlanResultDto resultDto2026 = searchTaskPlanY2026Logic.practice(taskInfoCount,
+                            capsuleDto);
                     resultDto.getListTaskPlan().addAll(resultDto2026.getListTaskPlan());
                     resultDto.setLimit(resultDto2026.getLimit());
                     resultDto.setAllCount(resultDto.getAllCount() + resultDto2026.getAllCount());
@@ -180,7 +188,7 @@ public class SwitchYearSearchTaskPlanService {
 
                 // 2027年
                 case YEAR_2027:
-                    SearchTaskPlanResultDto resultDto2027 = searchTaskPlanY2027Logic.practice(capsuleDto);
+                    SearchTaskPlanResultDto resultDto2027 = searchTaskPlanY2027Logic.practice(taskInfoCount,capsuleDto);
                     resultDto.getListTaskPlan().addAll(resultDto2027.getListTaskPlan());
                     resultDto.setLimit(resultDto2027.getLimit());
                     resultDto.setAllCount(resultDto.getAllCount() + resultDto2027.getAllCount());

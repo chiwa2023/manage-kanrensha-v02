@@ -78,15 +78,24 @@ public class ForceDumpHistorySabunController {
             // TODO Queryはfront連結後決定
             Map<String, String> mapParam = new TreeMap<>();
 
-            InsertTaskPlanResultDto planDto1 = switchYearInsertTaskPlanService.practice(null, userDto, dateTimeStart,
-                    TaskInfoConstants.DUMP_HISTORY_SABUN_PERSON, mapParam);
-            taskPlanCode = planDto1.getTaskPlanCode();
-
-            InsertTaskPlanResultDto planDto2 = switchYearInsertTaskPlanService.practice(null, userDto, dateTimeStart,
-                    TaskInfoConstants.DUMP_HISTORY_SABUN_KIGYOU, mapParam);
-
-            InsertTaskPlanResultDto planDto3 = switchYearInsertTaskPlanService.practice(null, userDto, dateTimeStart,
-                    TaskInfoConstants.DUMP_HISTORY_SABUN_SEIJIDANTAI, mapParam);
+            InsertTaskPlanResultDto planDto1 = new InsertTaskPlanResultDto();
+            InsertTaskPlanResultDto planDto2 = new InsertTaskPlanResultDto();
+            InsertTaskPlanResultDto planDto3 = new InsertTaskPlanResultDto();
+            if (capsuleDto.getIsExecutePerson()) {
+                planDto1 = switchYearInsertTaskPlanService.practice(null, userDto, dateTimeStart,
+                        TaskInfoConstants.DUMP_HISTORY_SABUN_PERSON, mapParam);
+                taskPlanCode = planDto1.getTaskPlanCode();
+            }
+            if (capsuleDto.getIsExecuteKigyouDt()) {
+                planDto2 = switchYearInsertTaskPlanService.practice(null, userDto, dateTimeStart,
+                        TaskInfoConstants.DUMP_HISTORY_SABUN_KIGYOU, mapParam);
+                taskPlanCode = planDto2.getTaskPlanCode();
+            }
+            if (capsuleDto.getIsExecuteSeijidantai()) {
+                planDto3 = switchYearInsertTaskPlanService.practice(null, userDto, dateTimeStart,
+                        TaskInfoConstants.DUMP_HISTORY_SABUN_SEIJIDANTAI, mapParam);
+                taskPlanCode = planDto3.getTaskPlanCode();
+            }
 
             asyncForceDumpHistorySabunService.practice(year, planDto1, planDto2, planDto3, capsuleDto);
 

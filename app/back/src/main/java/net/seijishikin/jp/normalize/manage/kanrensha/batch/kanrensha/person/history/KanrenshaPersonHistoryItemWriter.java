@@ -70,7 +70,7 @@ public class KanrenshaPersonHistoryItemWriter extends JpaItemWriter<WkTblKanrens
         Optional<WkTblKanrenshaPersonHistoryEntity> optional = wkTbKanrenshaPersonHistoryRepository
                 .findFirstByOrderByWkKanrenshaPersonHistoryCodeDesc();
         if (!optional.isEmpty()) {
-            code = optional.get().getWkKanrenshaPersonHistoryCode();
+            code += optional.get().getWkKanrenshaPersonHistoryCode();
         }
 
         for (WkTblKanrenshaPersonHistoryEntity entity : items) {

@@ -20,11 +20,11 @@ import org.springframework.transaction.annotation.Transactional;
 import net.seijishikin.jp.normalize.common_tool.dto.input.InputAccessDto;
 import net.seijishikin.jp.normalize.common_tool.dto.input.InputAddressDto;
 import net.seijishikin.jp.normalize.common_tool.dto.input.InputOrgNameDto;
+import net.seijishikin.jp.normalize.common_tool.dto.kanrensha.InputKanrenshaPersonLeastDto;
+import net.seijishikin.jp.normalize.common_tool.dto.kanrensha.KanrenshaKigyouDtDto;
+import net.seijishikin.jp.normalize.common_tool.dto.kanrensha.SaveKanrenshaKigyouDtCapsuleDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.constants.HoujinShubetsuConstants;
 import net.seijishikin.jp.normalize.manage.kanrensha.constants.UserRoleConstants;
-import net.seijishikin.jp.normalize.manage.kanrensha.dto.kanrensha.InputKanrenshaPersonLeastDto;
-import net.seijishikin.jp.normalize.manage.kanrensha.dto.kanrensha.KanrenshaKigyouDtDto;
-import net.seijishikin.jp.normalize.manage.kanrensha.dto.kanrensha.SaveKanrenshaKigyouDtCapsuleDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.KanrenshaKigyouDtAccessEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.KanrenshaKigyouDtAddressEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.KanrenshaKigyouDtMasterEntity;
@@ -338,7 +338,7 @@ class InsertKanrenshaKigyouDtServiceTest { // NOPMD CouplingObjects
         
         // 自身データで新規追加の場合roleを紐づけのために更新
         List<UserRoleEntity> listRole = userRoleRepository.findByEmailAndRoleAndIsLatestTrue(
-                "ccc@politician.balanse.report.net", UserRoleConstants.KANRENSHA_KIGYOU_DT);
+                "llll@politician.balanse.report.net", UserRoleConstants.KANRENSHA_KIGYOU_DT);
         assertEquals(1, listRole.size());
 
         UserRoleEntity roleEntity = listRole.get(0);

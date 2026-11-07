@@ -1,10 +1,9 @@
 ﻿<script setup lang="ts">
-import { InputDatetime, type LeastUserDtoInterface, InputDatetimeAndNull, MessageConstants, MessageView, type FrameworkMessageAndResultDtoInterface, DtoEntityConstants, getErrorMessage } from 'seijishikin-jp-normalize_common-tool';
+import { InputDatetime, type LeastUserDtoInterface, InputDatetimeAndNull, MessageConstants, MessageView, type FrameworkMessageAndResultDtoInterface, DtoEntityConstants, getErrorMessage, AccessTokenNotFoundError, TokenRefreshError } from 'seijishikin-jp-normalize_common-tool';
 import { TimerYoteiEntity, type TimerYoteiEntityInterface } from '../../entity/timerYoteiEntity';
 import { onMounted, ref, toRaw, watch, type Ref } from 'vue';
 import { EditTimerYoteiCapsuleDto, type EditTimerYoteiCapsuleDtoInterface } from '../../dto/yoyaku_timer/editTimerYoteiCapsuleDto';
 import getAuthorizedPromiseArea from '../../dto/login/getAuthorizedPromiseArea';
-import { AccessTokenNotFoundError, TokenRefreshError } from '../../dto/login/errors';
 import RoutePathConstants from '../../../../routePathConstants';
 
 //props,emit
@@ -15,7 +14,7 @@ const emits = defineEmits(["sendTimerYoyakuInterface", "sendCancelTimerYoyaku"])
 const BLANK: string = "";
 const INIT_NUMBER: number = 0;
 const SERVER_STATUS_OK: number = 200;
-// const SERVER_STATUS_ERROR: number = 400;
+const SERVER_STATUS_ERROR: number = 400;
 // const SEARCH_LIMIT: number = 20;
 const INQUIRE_FLG: boolean = false;
 const ERR_MESS_ONLY: boolean = true;
@@ -91,6 +90,15 @@ function onSave() {
         fetch(url, { method, headers, body })
             .then(async (response) => {
                 const resultDtoSave: FrameworkMessageAndResultDtoInterface = await response.json();
+
+                if (response.status > SERVER_STATUS_ERROR) {
+                    message.value = getErrorMessage(resultDtoSave.message, ERR_MESS_ONLY);
+                    infoLevel.value = MessageConstants.LEVEL_ERROR;
+                    messageType.value = MessageConstants.VIEW_OK;
+                    return;
+                }
+
+
                 message.value = resultDtoSave.message;
                 if (resultDtoSave.isFailure) {
                     infoLevel.value = MessageConstants.LEVEL_WARNING;

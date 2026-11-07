@@ -7,6 +7,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -28,10 +29,11 @@ import org.springframework.web.context.WebApplicationContext;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import net.seijishikin.jp.normalize.common_tool.dto.kanrensha.GetKanrenshaPersonCapsuleDto;
+import net.seijishikin.jp.normalize.common_tool.dto.kanrensha.KanrenshaPersonMasterDto;
 import net.seijishikin.jp.normalize.common_tool.utils.GetObjectMapperWithTimeModuleUtil;
 import net.seijishikin.jp.normalize.manage.kanrensha.constants.UserRoleConstants;
 import net.seijishikin.jp.normalize.manage.kanrensha.controller.PathRouteConstants;
-import net.seijishikin.jp.normalize.manage.kanrensha.dto.kanrensha.GetKanrenshaPersonCapsuleDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.KanrenshaPersonMasterEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.repository.KanrenshaPersonMasterRepository;
 
@@ -83,7 +85,9 @@ class GetUserKanrenshaPersonControllerTest {
 
         KanrenshaPersonMasterEntity masterEntity = kanrenshaPersonMasterRepository.findById(391).get();
         GetKanrenshaPersonCapsuleDto capsuleDto = new GetKanrenshaPersonCapsuleDto();
-        capsuleDto.setMasterPersonEntity(masterEntity);
+        KanrenshaPersonMasterDto masterDto = new KanrenshaPersonMasterDto();
+        BeanUtils.copyProperties(masterEntity, masterDto);
+        capsuleDto.setMasterPersonEntity(masterDto);
         capsuleDto.getUserDto().setUserPersonId(81);
         capsuleDto.getUserDto().setUserPersonCode(80);
         capsuleDto.getUserDto().setUserPersonName("aaa");

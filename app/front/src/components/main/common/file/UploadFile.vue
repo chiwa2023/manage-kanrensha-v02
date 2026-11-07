@@ -1,10 +1,9 @@
 ﻿<script setup lang="ts">
 import { ref, type Ref } from 'vue';
 import { UploadContentCapsuleDto, type UploadContentCapsuleDtoInterface } from '../../dto/storage_file/uploadContentCapsuleDto';
-import { getErrorMessage, MessageConstants, MessageView, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
+import { AccessTokenNotFoundError, getErrorMessage, MessageConstants, MessageView, TokenRefreshError, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import getAuthorizedPromiseArea from '../../dto/login/getAuthorizedPromiseArea';
 import RoutePathConstants from '../../../../routePathConstants';
-import { AccessTokenNotFoundError, TokenRefreshError } from '../../dto/login/errors';
 import type { UploadFileResultDtoInterface } from '../../dto/storage_file/uploadFileResultDto';
 
 //props,emit
@@ -19,7 +18,7 @@ const BLANK: string = "";
 // const INIT_NUMBER: number = 0;
 //const SEARCH_LIMIT: number = 20;
 // const SERVER_STATUS_OK: number = 200;
-// const SERVER_STATUS_ERROR: number = 400;
+const SERVER_STATUS_ERROR: number = 400;
 const INQUIRE_FLG: boolean = false;
 const ERR_MESS_ONLY: boolean = true;
 const MESS_PAGE_NAME: string = "CSVファイル読み取り";
@@ -78,6 +77,14 @@ async function readTextFile() {
                                 fetch(url, { method, headers, body })
                                     .then(async (response) => {
                                         const resultDto: UploadFileResultDtoInterface = await response.json();
+
+                                        if (response.status > SERVER_STATUS_ERROR) {
+                                            message.value = getErrorMessage(resultDto.message, ERR_MESS_ONLY);
+                                            infoLevel.value = MessageConstants.LEVEL_ERROR;
+                                            messageType.value = MessageConstants.VIEW_OK;
+                                            return;
+                                        }
+
                                         if (resultDto.isFailure) {
                                             infoLevel.value = MessageConstants.LEVEL_WARNING;
                                             messageType.value = MessageConstants.VIEW_OK;
@@ -136,7 +143,7 @@ function recieveSubmit() {
             アップロードファイルの指定<br>
         </div>
         <div class="right-area">
-            <input ref="selectFileInput" type="file" accept=".csv" @change="readTextFile" style="display:none;">
+            <input ref="selectFileInput" type="file" @change="readTextFile" style="display:none;">
             <button @click="onReadButton">アップロード</button>
             ファイル名{{ fileName }}
         </div>

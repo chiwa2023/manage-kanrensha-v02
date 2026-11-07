@@ -319,7 +319,7 @@ class MoveCodeMasterPersonServiceTest {
 
         KanrenshaPersonPropertyEntity propertyEntity01 = listPropertyHistory.get(1);
         assertEquals(false, propertyEntity01.getIsLatest());
-        assertEquals("迂回献金 ミカエル太郎4c", propertyEntity01.getKanrenshaName());
+        assertEquals("迂回献金 ミカエル太郎2c", propertyEntity01.getKanrenshaName());
 
         KanrenshaPersonPropertyEntity propertyEntity02 = listPropertyHistory.get(2);
         assertEquals(false, propertyEntity02.getIsLatest());

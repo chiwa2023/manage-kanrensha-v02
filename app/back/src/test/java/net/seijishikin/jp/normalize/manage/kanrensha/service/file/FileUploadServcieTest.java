@@ -59,7 +59,7 @@ class FileUploadServcieTest {
     @Tag("TableTruncate")
     void test() throws Exception {
 
-        // TODO 書証区分、タスク情報区分の処理は確定後テスト構築する
+        // TODO (1)書証区分、タスク情報区分の処理は確定後テスト構築する
 
         String fileName = "mt_city_all.csv";
 

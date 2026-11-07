@@ -1,7 +1,6 @@
 package net.seijishikin.jp.normalize.manage.kanrensha.batch.reflesh.schema_table;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.fail;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,15 +23,19 @@ class CreateTableOnlyNothingTaskletTest {
     /** テスト対象 */
     @Autowired
     private CreateTableOnlyNothingTasklet createTableOnlyNothingTasklet;
-    
+
     @Test
-    void test()throws Exception {
+    void test() throws Exception {
 
         // とりあえず問題なく起動
-        // TODO 必要に応じてTest
         assertDoesNotThrow(() -> createTableOnlyNothingTasklet.execute(null, null));
-        
-        fail("Not yet implemented");
+
+        /*
+         * MEMO : 
+         * DBから任意のテーブルを削除→このテストを起動→削除されたテーブルが復活
+         * DDLを一部修正→このテストを起動→DDLの修正内容が反映されない(CREATE TABLE IF NOT EXISTS)
+         * をコードで書けば内容テストとなるが、本番環境にDDLを持ち込んでいないので今後未使用の可能性大
+         */
     }
 
 }

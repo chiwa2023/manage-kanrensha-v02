@@ -65,8 +65,7 @@ public class AuthorizeFilter extends OncePerRequestFilter {
             // headersのkeyを指定してトークンを取得します
             String xAuthToken = request.getHeader(HEADER_NAME);
 
-            // ヘッダがない時、トークンが埋め込まれていないときは次のフィルタに委譲しているが
-            // TODO 挙動確認後委譲処理を削除する(パスを正確に指定することで実現すればよい)
+            // ヘッダがない時、トークンが埋め込まれていないときは次のフィルタに委譲
             if (xAuthToken == null || !xAuthToken.startsWith(BEARER)) {
                 // throw new BadCredentialsException("X-AUTH-TOKENが取得できないか、Bearerで設定されていません");
                 filterChain.doFilter(request, response);
@@ -126,8 +125,10 @@ public class AuthorizeFilter extends OncePerRequestFilter {
 
         // 最初の1回だけリスト生成
         if (Objects.isNull(list)) {
-            String[] publicUrls = { PathRouteConstants.ROOT + "/login", PathRouteConstants.ROOT + "/refresh-token",
-                    PathRouteConstants.ROOT + "/add-user/**" };
+            String[] publicUrls = { //
+                    PathRouteConstants.ROOT + "/login", PathRouteConstants.ROOT + "/refresh-token",
+                    PathRouteConstants.ROOT + "/add-user/**",
+                    PathRouteConstants.ROOT + "/passkey/authenticate/**" };
             list = new ArrayList<>();
             for (String path : publicUrls) {
                 list.add(PathPatternRequestMatcher.withDefaults().matcher(path));

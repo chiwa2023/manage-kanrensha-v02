@@ -1,9 +1,11 @@
 package net.seijishikin.jp.normalize.manage.kanrensha.config;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,10 +17,13 @@ import org.springframework.http.MediaType;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -36,9 +41,19 @@ import net.seijishikin.jp.normalize.manage.kanrensha.dto.user.SearchUserCapsuleD
 class SecurityConfigPathTest {
     // CHECKSTYLE:OFF MagicNumber
 
-    /** MockMvc */
+    /** WebApplicationContext */
     @Autowired
+    private WebApplicationContext context;
+
+    /** MockMvc */
     private MockMvc mockMvc;
+
+    /** setup */
+    @BeforeEach
+    public void setup() {
+        this.mockMvc = MockMvcBuilders.webAppContextSetup(context) //
+                .apply(SecurityMockMvcConfigurers.springSecurity()).build();
+    }
 
     @Test
     @Tag("TableTruncate") // NOPMD
@@ -64,8 +79,8 @@ class SecurityConfigPathTest {
 
         SearchUserCapsuleDto capsuleDto = new SearchUserCapsuleDto();
         capsuleDto.setLimit(5);
-        capsuleDto.getListRole().add("manager");
-        capsuleDto.getListRole().add("kanrensha_person");
+        capsuleDto.getListRole().add("ROLE_manager");
+        capsuleDto.getListRole().add("ROLE_kanrensha_person");
 
         ObjectMapper objectMapper = GetObjectMapperWithTimeModuleUtil.practice();
 
@@ -104,6 +119,6 @@ class SecurityConfigPathTest {
                 mockMvc.perform(post(path)).andExpect(status().isFound()).andReturn().getResponse().getStatus()); // NOPMD
 
         // ログアウト後はログイン情報を取得しようとしても存在しない
-        assertEquals(null, SecurityContextHolder.getContext().getAuthentication());
+        assertNull(SecurityContextHolder.getContext().getAuthentication());
     }
 }

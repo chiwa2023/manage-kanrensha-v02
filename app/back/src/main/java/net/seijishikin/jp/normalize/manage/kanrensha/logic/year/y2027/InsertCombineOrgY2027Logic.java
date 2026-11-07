@@ -35,10 +35,10 @@ public class InsertCombineOrgY2027Logic {
     public Integer practice(final WkTblKanrenshaCombineOrgEntity entityWkTbl, final LeastUserDto userDto) {
 
         Optional<KanrenshaCombineOrg2027Entity> optional = kanrenshaCombineOrg2027Repository
-                .findFirstByOrderByKanrenshaCombineOrgCode();
+                .findFirstByOrderByKanrenshaCombineOrgCodeDesc();
         Integer code = 1;
         if (!optional.isEmpty()) {
-            code = optional.get().getKanrenshaCombineOrgCode();
+            code += optional.get().getKanrenshaCombineOrgCode();
         }
 
         KanrenshaCombineOrg2027Entity entity = new KanrenshaCombineOrg2027Entity();

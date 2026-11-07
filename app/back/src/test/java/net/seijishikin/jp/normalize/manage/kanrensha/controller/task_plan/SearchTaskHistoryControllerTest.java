@@ -38,7 +38,7 @@ import net.seijishikin.jp.normalize.manage.kanrensha.dto.task.SearchTaskHistoryC
 @SpringBootTest
 @DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
 @Transactional
-@Sql("../../service/year/SwitchYearSearchTaskHistoryServiceTest.sql")
+@Sql("../../service/year/y2025/SwitchYearSearchTaskHistoryY2025ServiceTest.sql")
 class SearchTaskHistoryControllerTest {
     // CHECKSTYLE:OFF MagicNumber
 

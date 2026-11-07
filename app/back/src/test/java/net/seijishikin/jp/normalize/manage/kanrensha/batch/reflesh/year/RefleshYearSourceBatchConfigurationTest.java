@@ -58,8 +58,8 @@ class RefleshYearSourceBatchConfigurationTest {
         JobParameters jobParameters = new JobParametersBuilder(refleshYearSourceBatchConfiguration // NOPMD
                 .getJobParametersIncrementer().getNext(new JobParameters()))
                 .addLocalDateTime("exe_datetitme", LocalDateTime.now()) //
-                .addLong(AddSwithYearCaseTasklet.KEY_SRC_YEAR, 2025L) //
-                .addLong(AddSwithYearCaseTasklet.KEY_COPY_YEAR, 2019L)
+                .addLong(AddSwithYearCaseTasklet.KEY_SRC_YEAR, 2026L) //
+                .addLong(AddSwithYearCaseTasklet.KEY_COPY_YEAR, 2027L)
                 .addString(AddSwithYearCaseTasklet.KEY_BACKUP, "c:/temp/service").toJobParameters();
 
         @SuppressWarnings("removal")

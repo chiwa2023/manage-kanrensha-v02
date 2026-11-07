@@ -1,7 +1,7 @@
 package net.seijishikin.jp.normalize.manage.kanrensha.batch.address.postalcode;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -48,11 +48,9 @@ class PostalCodeJigyoushoProcessorTest {
         assertEquals("青森県青森市長島", postalEntity.getAddressPostal());
         assertEquals("二丁目25番地3ニッセイ青森センタービル6階", postalEntity.getAddressBlock());
         assertEquals("長島", postalEntity.getAddressOrg());
-        // assertEquals("二丁目25番地3ニッセイ青森センタービル6階", postalEntity.getAddressName());
-        // assertTrue(postalEntity.getIsAddPostal());
-        // assertTrue(postalEntity.getIsRepairRsdt());
-
-        fail("Not yet implemented");
+        assertEquals("二丁目25番地3ニッセイ青森センタービル6階", postalEntity.getAddressName());
+        assertTrue(postalEntity.getIsAddPostal());
+        assertTrue(postalEntity.getIsRepairRsdt());
     }
 
 }

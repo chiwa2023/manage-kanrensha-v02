@@ -43,6 +43,9 @@ public class TaskInfoConstants { // NOPMD DataClass
     /** 関連者履歴ダンプ政治団体 */
     public static final int DUMP_HISTORY_SEIJIDANTAI = 319;
 
+    /** 関連者コード移動 */
+    public static final int DUMP_CODE_MOVE = 320;
+
     /** 関連者標準ダンプ差分個人 */
     public static final int DUMP_STD_SABUN_PERSON = 321;
     /** 関連者標準ダンプ差分企業 */

@@ -5,8 +5,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import net.seijishikin.jp.normalize.manage.kanrensha.dto.kanrensha.SearchKanrenshaPersonCapsuleDto;
-import net.seijishikin.jp.normalize.manage.kanrensha.dto.kanrensha.SearchKanrenshaPersonResultDto;
+import net.seijishikin.jp.normalize.common_tool.dto.kanrensha.SearchKanrenshaPersonCapsuleDto;
+import net.seijishikin.jp.normalize.common_tool.dto.kanrensha.SearchKanrenshaPersonResultDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.repository.KanrenshaPersonMasterRepository;
 
 /**

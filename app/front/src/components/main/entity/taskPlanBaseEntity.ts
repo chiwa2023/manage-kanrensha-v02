@@ -9,6 +9,9 @@ interface TaskPlanBaseEntityInterface {
     /** タスク計画名称 */
     taskPlanName: string;
 
+    /** 最新該否 */
+    isLatest :boolean;
+
     /** 発生年 */
     tableYear: number;
 
@@ -43,6 +46,9 @@ class TaskPlanBaseEntity implements TaskPlanBaseEntityInterface {
 
     /** タスク計画名称 */
     taskPlanName: string;
+
+    /** 最新該否 */
+    isLatest :boolean;
 
     /** 発生年 */
     tableYear: number;
@@ -79,6 +85,7 @@ class TaskPlanBaseEntity implements TaskPlanBaseEntityInterface {
         this.taskPlanId = INIT_NUMBER;
         this.taskPlanCode = INIT_NUMBER;
         this.tableYear = INIT_NUMBER;
+        this.isLatest = INIT_BOOLEAN;
         this.isStart = INIT_BOOLEAN;
         this.isFinished = INIT_BOOLEAN;
         this.isSuspended = INIT_BOOLEAN;

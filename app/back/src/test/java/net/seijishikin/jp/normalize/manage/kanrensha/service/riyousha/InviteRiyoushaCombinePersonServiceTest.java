@@ -15,7 +15,6 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
-import org.springframework.transaction.annotation.Transactional;
 
 import net.seijishikin.jp.normalize.common_tool.dto.FrameworkMessageAndResultDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.riyousha.RiyoushaCombinePersonCapsuleDto;
@@ -30,7 +29,6 @@ import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateLeastUserForTes
 @SpringJUnitConfig
 @SpringBootTest
 @DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
-@Transactional
 @Sql("InviteRiyoushaCombinePersonServiceTest.sql")
 class InviteRiyoushaCombinePersonServiceTest {
     // CHECKSTYLE:OFF MagicNumber
@@ -68,10 +66,10 @@ class InviteRiyoushaCombinePersonServiceTest {
 
         // 正常に仮テーブルに登録(かつタスク登録もメールも送信できている)
         RiyoushaCombinePersonCapsuleDto capsuleDto2 = new RiyoushaCombinePersonCapsuleDto();
-        capsuleDto2.setEmail("bbb@politician.balanse.report.net");
+        capsuleDto2.setEmail("ccc@politician.balanse.report.net");
         capsuleDto2.setUserDto(CreateLeastUserForTestUtil.practice());
         // 個人コードと権限はfrontから設定できないのでbackで補充
-        //  このテストでは979,parter_api
+        // このテストでは979,parter_api
         RiyoushaCombineOrgEntity combineEntity2 = new RiyoushaCombineOrgEntity();
         combineEntity2.setOrgRiyoushaCode(245);
         combineEntity2.setOrgName("イケてる風システム会社");
@@ -81,7 +79,7 @@ class InviteRiyoushaCombinePersonServiceTest {
         FrameworkMessageAndResultDto resultDto2 = inviteRiyoushaCombinePersonService.practice(capsuleDto2,
                 createDatetime);
         assertFalse(resultDto2.getIsFailure()); // 成功
-        
+
         // MEMO メール発信機能を切っていた場合
         // assertTrue(resultDto2.getIsFailure());
         // assertEquals("メールが送信できませんでした" , resultDto2.getMessage());
@@ -89,7 +87,7 @@ class InviteRiyoushaCombinePersonServiceTest {
         // 登録したデータを取得
         RiyoushaCombineOrgTempEntity tempEntity = riyoushaCombineOrgTempRepository.findAll().getLast();
 
-        assertEquals(311, tempEntity.getPersonCode());
+        assertEquals(979, tempEntity.getPersonCode());
         assertEquals("partner_api", tempEntity.getRiyoushaRole());
         assertEquals(combineEntity2.getOrgName(), tempEntity.getOrgName());
         assertEquals(combineEntity2.getOrgRiyoushaCode(), tempEntity.getOrgRiyoushaCode());

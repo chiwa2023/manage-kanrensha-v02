@@ -5,8 +5,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import net.seijishikin.jp.normalize.manage.kanrensha.dto.kanrensha.SearchKanrenshaKigyouDtCapsuleDto;
-import net.seijishikin.jp.normalize.manage.kanrensha.dto.kanrensha.SearchKanrenshaKigyouDtResultDto;
+import net.seijishikin.jp.normalize.common_tool.dto.kanrensha.SearchKanrenshaKigyouDtCapsuleDto;
+import net.seijishikin.jp.normalize.common_tool.dto.kanrensha.SearchKanrenshaKigyouDtResultDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.repository.KanrenshaKigyouDtMasterRepository;
 
 /**

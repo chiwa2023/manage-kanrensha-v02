@@ -57,7 +57,7 @@ public class DeleteUserService {
         if (optionalLogin.isPresent()) {
             LoginStatusEntity statusEntity = optionalLogin.get();
 
-            // ばかばかしいとは思ううが、退会理由と退会処理は@Overrideの都合上、分離しているため分離して処理
+            // ばかばかしいとは思うが、退会理由と退会処理は@Overrideの都合上、分離しているため分離して処理
             statusEntity.setDisabledReason(capsuleDto.getWithdrawReason());
             loginStatusRepository.save(statusEntity);
         }

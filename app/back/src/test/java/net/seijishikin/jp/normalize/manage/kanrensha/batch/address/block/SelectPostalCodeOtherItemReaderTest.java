@@ -1,6 +1,7 @@
 package net.seijishikin.jp.normalize.manage.kanrensha.batch.address.block;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -61,7 +62,7 @@ class SelectPostalCodeOtherItemReaderTest {
 
         // 5-6件目はなし
         AddressPostalIrregularEntity entity4 = selectPostalCodeOtherItemReader.read();
-        assertEquals(null, entity4);
+        assertNull(entity4);
     }
 
     private StepExecution getStepExecution() {

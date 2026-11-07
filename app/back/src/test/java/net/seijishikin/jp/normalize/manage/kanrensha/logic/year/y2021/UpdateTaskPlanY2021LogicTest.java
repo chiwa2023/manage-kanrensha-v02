@@ -65,7 +65,7 @@ class UpdateTaskPlanY2021LogicTest {
                 CreateQueryParamDummyUtil.practice());
         Integer newId = dto.getTaskPlanId();
 
-        LocalDateTime datetime = LocalDateTime.of(2026, 12, 5, 12, 34, 56);
+        LocalDateTime datetime = LocalDateTime.of(2021, 12, 5, 12, 34, 56);
         Boolean isFinished = true;
         Integer updateId = updateTaskPlanY2021Logic.practice(userDto, newId, datetime, isFinished);
 

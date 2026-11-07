@@ -52,16 +52,16 @@ class MasterSeijidantaiAddStdCsvItemReaderTest {
         assertEquals("名称", dto.getKanrenshaName());
         assertEquals("全住所", dto.getAllAddress());
         assertEquals("政治団体代表者", dto.getSeijidantaiDelegate());
-        assertEquals("政治団体区分", dto.getDantaiKbn());
+        assertEquals("02", dto.getDantaiKbn());
         assertEquals("政治団体番号", dto.getPoliOrgNo());
         assertEquals("住所郵便番号まで", dto.getAddressPostal());
         assertEquals("住所番地まで", dto.getAddressBlock());
         assertEquals("住所建物まで", dto.getAddressBuilding());
-        assertEquals("郵便番号1", dto.getPostalcode1());
-        assertEquals("郵便番号2", dto.getPostalcode2());
-        assertEquals("電話番号市外局番", dto.getPhon1());
-        assertEquals("電話番号局番", dto.getPhon2());
-        assertEquals("電話番号番号", dto.getPhon3());
+        assertEquals("234", dto.getPostalcode1());
+        assertEquals("5678", dto.getPostalcode2());
+        assertEquals("023", dto.getPhon1());
+        assertEquals("4567", dto.getPhon2());
+        assertEquals("8901", dto.getPhon3());
         assertEquals("メールアドレス", dto.getEmail());
         assertEquals("自分の公式サイト", dto.getMyPortalUrl());
         assertEquals("SNS名称", dto.getSnsServiceName());
@@ -70,12 +70,12 @@ class MasterSeijidantaiAddStdCsvItemReaderTest {
         assertEquals("団体代表者関連者コード", dto.getOrgDelegateCode());
         assertEquals("会計責任者関連者個人コード", dto.getAccountMgrCode());
         assertEquals("会計責任者関連者個人氏名", dto.getAccountMgrName());
-        assertEquals("地方公共団体コード", dto.getLgCode());
-        assertEquals("町字Id", dto.getMachiazaId());
-        assertEquals("街区Id", dto.getBlkId());
-        assertEquals("地番Id", dto.getPrcId());
-        assertEquals("住居Id", dto.getRsdtId());
-        assertEquals("住居2Id", dto.getRsdt2Id());
+        assertEquals("123456", dto.getLgCode());
+        assertEquals("345", dto.getMachiazaId());
+        assertEquals("456", dto.getBlkId());
+        assertEquals("567", dto.getPrcId());
+        assertEquals("678", dto.getRsdtId());
+        assertEquals("789", dto.getRsdt2Id());
 
         assertNull(masterSeijidantaiAddStdCsvItemReader.read());
     }

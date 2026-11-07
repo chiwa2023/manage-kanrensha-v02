@@ -28,18 +28,6 @@ public class LoginHistory2025Entity // NOPMD DataClass
     @Column(name = "login_history_id")
     private Integer loginHistoryId = INIT_INTEGER;
 
-    /** ログイン成否 */
-    @Column(name = "is_success")
-    private Boolean isSuccess = INIT_BOOLEAN;
-
-    /** メールアドレス */
-    @Column(name = "email")
-    private String email = INIT_STRING;
-
-    /** IPアドレス */
-    @Column(name = "ip_address")
-    private String ipAddress = INIT_STRING;
-
     /**
      * テーブルidを取得する
      *
@@ -58,6 +46,10 @@ public class LoginHistory2025Entity // NOPMD DataClass
         this.loginHistoryId = loginHistoryId;
     }
 
+    /** メールアドレス */
+    @Column(name = "email")
+    private String email = INIT_STRING;
+
     /**
      * メールアドレスを取得する
      *
@@ -75,6 +67,10 @@ public class LoginHistory2025Entity // NOPMD DataClass
     public void setEmail(final String email) {
         this.email = email;
     }
+
+    /** IPアドレス */
+    @Column(name = "ip_address")
+    private String ipAddress = INIT_STRING;
 
     /**
      * IPアドレスを取得する
@@ -137,6 +133,10 @@ public class LoginHistory2025Entity // NOPMD DataClass
     public void setAttemptTime(final LocalDateTime attemptTime) {
         this.attemptTime = attemptTime;
     }
+
+    /** ログイン成否 */
+    @Column(name = "is_success")
+    private Boolean isSuccess = INIT_BOOLEAN;
 
     /**
      * ログイン成否を取得する

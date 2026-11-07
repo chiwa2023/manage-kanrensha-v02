@@ -7,6 +7,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -28,11 +29,12 @@ import org.springframework.web.context.WebApplicationContext;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import net.seijishikin.jp.normalize.common_tool.dto.kanrensha.KanrenshaPersonDto;
+import net.seijishikin.jp.normalize.common_tool.dto.kanrensha.KanrenshaPersonMasterDto;
+import net.seijishikin.jp.normalize.common_tool.dto.kanrensha.SaveKanrenshaPersonCapsuleDto;
 import net.seijishikin.jp.normalize.common_tool.utils.GetObjectMapperWithTimeModuleUtil;
 import net.seijishikin.jp.normalize.manage.kanrensha.constants.UserRoleConstants;
 import net.seijishikin.jp.normalize.manage.kanrensha.controller.PathRouteConstants;
-import net.seijishikin.jp.normalize.manage.kanrensha.dto.kanrensha.KanrenshaPersonDto;
-import net.seijishikin.jp.normalize.manage.kanrensha.dto.kanrensha.SaveKanrenshaPersonCapsuleDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.KanrenshaPersonMasterEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.repository.KanrenshaPersonMasterRepository;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.kanrensha.GetKanrenshaPersonDtoService;
@@ -89,7 +91,9 @@ class EditUserKanrenshaPersonControllerTest {
 
         final Integer editId = 391;
         KanrenshaPersonMasterEntity masterEntity = kanrenshaPersonMasterRepository.findById(editId).get();
-        KanrenshaPersonDto dto = getKanrenshaPersonDtoService.practice(masterEntity);
+        KanrenshaPersonMasterDto masterDto = new KanrenshaPersonMasterDto();
+        BeanUtils.copyProperties(masterEntity, masterDto);
+        KanrenshaPersonDto dto = getKanrenshaPersonDtoService.practice(masterDto);
         dto.getInputPersonNameDto().setAllName("sdlfkz"); // NOPMD
         SaveKanrenshaPersonCapsuleDto capsuleDto = new SaveKanrenshaPersonCapsuleDto();
         capsuleDto.setKanrenshaPersonDto(dto);
@@ -125,7 +129,9 @@ class EditUserKanrenshaPersonControllerTest {
 
         final Integer editId = 390;
         KanrenshaPersonMasterEntity masterEntity = kanrenshaPersonMasterRepository.findById(editId).get();
-        KanrenshaPersonDto dto = getKanrenshaPersonDtoService.practice(masterEntity);
+        KanrenshaPersonMasterDto masterDto = new KanrenshaPersonMasterDto();
+        BeanUtils.copyProperties(masterEntity, masterDto);
+        KanrenshaPersonDto dto = getKanrenshaPersonDtoService.practice(masterDto);
         dto.getInputPersonNameDto().setAllName("sdlfkz");
         SaveKanrenshaPersonCapsuleDto capsuleDto = new SaveKanrenshaPersonCapsuleDto();
         capsuleDto.setKanrenshaPersonDto(dto);
@@ -162,7 +168,9 @@ class EditUserKanrenshaPersonControllerTest {
 
         final Integer editId = 391; // コードが異なる
         KanrenshaPersonMasterEntity masterEntity = kanrenshaPersonMasterRepository.findById(editId).get();
-        KanrenshaPersonDto dto = getKanrenshaPersonDtoService.practice(masterEntity);
+        KanrenshaPersonMasterDto masterDto = new KanrenshaPersonMasterDto();
+        BeanUtils.copyProperties(masterEntity, masterDto);
+        KanrenshaPersonDto dto = getKanrenshaPersonDtoService.practice(masterDto);
         dto.getInputPersonNameDto().setAllName("sdlfkz");
         SaveKanrenshaPersonCapsuleDto capsuleDto = new SaveKanrenshaPersonCapsuleDto();
         capsuleDto.setKanrenshaPersonDto(dto);
@@ -199,7 +207,9 @@ class EditUserKanrenshaPersonControllerTest {
 
         final Integer editId = 390;
         KanrenshaPersonMasterEntity masterEntity = kanrenshaPersonMasterRepository.findById(editId).get();
-        KanrenshaPersonDto dto = getKanrenshaPersonDtoService.practice(masterEntity);
+        KanrenshaPersonMasterDto masterDto = new KanrenshaPersonMasterDto();
+        BeanUtils.copyProperties(masterEntity, masterDto);
+        KanrenshaPersonDto dto = getKanrenshaPersonDtoService.practice(masterDto);
         dto.getInputPersonNameDto().setAllName("sdlfkz");
         SaveKanrenshaPersonCapsuleDto capsuleDto = new SaveKanrenshaPersonCapsuleDto();
         capsuleDto.setKanrenshaPersonDto(dto);

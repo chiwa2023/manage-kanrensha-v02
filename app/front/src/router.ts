@@ -72,6 +72,7 @@ const routes = [
     { path: RoutePathConstants.PAGE_DUMP_MASTER, name: "ForceDumpMaster", component: () => import("./components/main/pages/z_force_dump/ForceDumpMaster.vue") },
     { path: RoutePathConstants.PAGE_DUMP_HISTORY, name: "ForceDumpHistory", component: () => import("./components/main/pages/z_force_dump/ForceDumpHistory.vue") },
     { path: RoutePathConstants.PAGE_DUMP_MASTER_STD, name: "ForceDumpMasterStd", component: () => import("./components/main/pages/z_force_dump/ForceDumpMasterStd.vue") },
+    { path: RoutePathConstants.PAGE_DUMP_CODE_MOVE, name: "ForceDumpCodeMove", component: () => import("./components/main/pages/z_force_dump/ForceDumpCodeMove.vue") },
 
     // 強制処理差分CSVダンプ(差分)
     { path: RoutePathConstants.PAGE_DUMP_SABUN_MASTER, name: "ForceSabunDumpMaster", component: () => import("./components/main/pages/z_force_dump_sabun/ForceSabunDumpMaster.vue") },
@@ -86,15 +87,19 @@ const routes = [
     { path: RoutePathConstants.PAGE_DOWNLOAD_MASTER_MIN, name: "DownloadMasterMin", component: () => import("./components/main/pages/download_data/DownloadMasterMin.vue") },
     { path: RoutePathConstants.PAGE_DOWNLOAD_HISTORY, name: "DownloadHistory", component: () => import("./components/main/pages/download_data/DownloadHistory.vue") },
 
+    { path: RoutePathConstants.PAGE_DOWNLOAD_CODE_MOVE, name: "DownloadKanrenshaCodeMove", component: () => import("./components/main/pages/download_data/DownloadKanrenshaCodeMove.vue") },
+
     { path: RoutePathConstants.PAGE_DOWNLOAD_SABUN_MASTER_STD, name: "DownloadSabunMasterStd", component: () => import("./components/main/pages/download_sabun/DownloadSabunMasterStd.vue") },
     { path: RoutePathConstants.PAGE_DOWNLOAD_SABUN_MASTER_MIN, name: "DownloadSabunMasterMin", component: () => import("./components/main/pages/download_sabun/DownloadSabunMasterMin.vue") },
     { path: RoutePathConstants.PAGE_DOWNLOAD_SABUN_HISTORY, name: "DownloadSabunHistory", component: () => import("./components/main/pages/download_sabun/DownloadSabunHistory.vue") },
 
     // 関連者管理
     { path: RoutePathConstants.PAGE_KANRENSHA_MANAGE, name: "KanrenshaManage", component: () => import("./components/main/pages/manage_kanrensha/KanrenshaManage.vue") },
+    { path: RoutePathConstants.PAGE_KANRENSHA_COMBINE, name: "KanrenshaCombine", component: () => import("./components/main/pages/manage_kanrensha/KanrenshaCombine.vue") },
 
     // 関連者本人編集
     { path: RoutePathConstants.PAGE_KANRENSHA_MYSELF, name: "KanrenshaEditMyself", component: () => import("./components/main/pages/manage_kanrensha/KanrenshaEditMyself.vue") },
+    { path: RoutePathConstants.PAGE_KANRENSHA_COMBINE_MYSELF, name: "KanrenshaCombineMyself", component: () => import("./components/main/pages/manage_kanrensha/KanrenshaCombineMyself.vue") },
 
     // 郵便番号編集
     { path: RoutePathConstants.PAGE_POSTAL_BUILDING, name: "PostalCodeBuilding", component: () => import("./components/main/pages/address_postal/PostalCodeBuilding.vue") },
@@ -124,6 +129,7 @@ const routes = [
 
     // ユーザ編集
     { path: RoutePathConstants.PAGE_REFRESH_PASSWORD, name: "RefreshPassword", component: () => import("./components/main/pages/user_edit/RefreshPassword.vue") },
+    { path: RoutePathConstants.PAGE_PASSKEY_MANAGE, name: "PasskeyManage", component: () => import("./components/main/pages/user_edit/PasskeyManage.vue") },
     { path: RoutePathConstants.PAGE_RESET_PASSWORD, name: "ResetPassword", component: () => import("./components/main/pages/user_edit/ResetPassword.vue") },
     { path: RoutePathConstants.PAGE_USER_EDIT, name: "EditUser", component: () => import("./components/main/pages/user_edit/EditUser.vue") },
     { path: RoutePathConstants.PAGE_USER_WITHDRAW, name: "WithdrawUser", component: () => import("./components/main/pages/user_edit/WithdrawUser.vue") },
@@ -134,8 +140,13 @@ const routes = [
 
     // トークン置き換え
     { path: RoutePathConstants.PAGE_PARTNER_TOKEN_REPLACE, name: "ReplacePartnerApiToken", component: () => import("./components/main/pages/user_edit/ReplacePartnerApiToken.vue") },
+
     // トークン期限通知(強制)
     { path: RoutePathConstants.PAGE_NOTIFY_LIMIT, name: "NotifyPartnerApiLimit", component: () => import("./components/main/pages/user_edit/NotifyPartnerApiLimit.vue") },
+    // 期限切れトークン削除(強制)
+    { path: RoutePathConstants.PAGE_DELETE_TEMP_STORAGE, name: "DeleteLimitOverToken", component: () => import("./components/main/pages/z_force_yotei/DelteStorageTempFile.vue") },
+    // 一時ファイル削除(強制)
+    { path: RoutePathConstants.PAGE_DELETE_TOKEN, name: "DelteStorageTempFile", component: () => import("./components/main/pages/z_force_yotei/DeleteLimitOverToken.vue") },
 
     // 運営者と連絡
     { path: RoutePathConstants.PAGE_CONTACT_MANAGER_MYSELF, name: "ContactMyself", component: () => import("./components/main/pages/contact/ContactMyself.vue") },
@@ -143,6 +154,7 @@ const routes = [
 
     // タスク計画
     { path: RoutePathConstants.PAGE_SEARCH_TASK_PLAN, name: "SearchTaskPlan", component: () => import("./components/main/pages/search_task_plan/SearchTaskPlan.vue") },
+    { path: RoutePathConstants.PAGE_SEARCH_TASK_PLAN_ROLE, name: "SearchTaskPlan", component: () => import("./components/main/pages/search_task_plan/SearchTaskPlanRole.vue") },
 
     // タスク情報
     { path: RoutePathConstants.PAGE_SEARCH_TASK_INFO, name: "SearchTaskInfo", component: () => import("./components/main/pages/task_info/SearchTaskInfo.vue") },

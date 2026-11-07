@@ -47,6 +47,7 @@ class SwitchYearLoginHistoryY2021ServiceTest {
         final String ipAddress = "127.0.0.1"; // NOPMD テストデータにつき
         final String userAgent = "Netscape";
         final boolean isSuccess = false;
+
         LocalDateTime createDateTime = LocalDateTime.of(2021, 11, 13, 11, 32, 10);
 
         Integer newId = switchYearLoginHistoryService.practice(email, ipAddress, userAgent, isSuccess, createDateTime);

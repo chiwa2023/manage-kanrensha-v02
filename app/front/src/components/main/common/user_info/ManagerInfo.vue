@@ -1,18 +1,17 @@
 ﻿<script setup lang="ts">
 import { computed, onBeforeMount, ref, type ComputedRef, type Ref } from 'vue';
-import { FrameworkCapsuleDto, getErrorMessage, getErrorUniqueIdMessage, type FrameworkCapsuleDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
+import { AccessTokenNotFoundError, FrameworkCapsuleDto, getErrorMessage, getErrorUniqueIdMessage, TokenRefreshError, UserRoleConstants, type FrameworkCapsuleDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import { MessageConstants, MessageView } from 'seijishikin-jp-normalize_common-tool';
 import router from '../../../../router';
 import RoutePathConstants from '../../../../routePathConstants';
-import UserRoleConstants from '../../../main/dto/user/userRoleConstants';
 import AllMenu from '../../../main/common/menu/AllMenu.vue';
 import type { SelectOptionStringDtoInterface } from '../../../main/dto/select_options/selectOptionStringDto';
 import { createListRoleOptions } from '../../../main/common/menu/createListRoleOptions';
 import PersonMenu from '../../../main/common/menu/PersonMenu.vue';
 import ShowTask from '../../../main/common/show_task/ShowTask.vue';
+import ShowTaskRole from '../../../main/common/show_task/ShowTaskRole.vue';
 import { notCompletedTaskStore } from '../../../main/stores/notCompletedTask';
 import getAuthorizedPromiseArea from '../../../main/dto/login/getAuthorizedPromiseArea';
-import { AccessTokenNotFoundError, TokenRefreshError } from '../../../main/dto/login/errors';
 import { TaskListForUserInfoResultDto, type TaskListForUserInfoResultDtoInterface } from '../../../main/dto/task_plan/taskListForUserInfoResultDto';
 import convertTaskToOption from '../../../main/dto/task_plan/convertTaskToOptions';
 import { useTaskPlan } from '../../stores/storeTaskPlan';
@@ -29,7 +28,7 @@ const urlBack: string = RoutePathConstants.DOMAIN + RoutePathConstants.BASE_PATH
 const BLANK: string = "";
 const INIT_NUMBER: number = 0;
 const SERVER_STATUS_OK: number = 200;
-// const SERVER_STATUS_ERROR: number = 400;
+const SERVER_STATUS_ERROR: number = 400;
 const INQUIRE_FLG: boolean = false;
 const ERR_MESS_ONLY: boolean = true;
 const MESS_PAGE_NAME: string = "運営者ヘッダ";
@@ -111,6 +110,14 @@ onBeforeMount(async () => {
                 fetch(url, { method, headers, body })
                     .then(async (response) => {
                         resultDtoTaskPerson.value = await response.json();
+
+                        if (response.status > SERVER_STATUS_ERROR) {
+                            message.value = getErrorMessage(BLANK, INQUIRE_FLG);
+                            infoLevel.value = MessageConstants.LEVEL_ERROR;
+                            messageType.value = MessageConstants.VIEW_OK;
+                            return;
+                        }
+
                         if (resultDtoTaskPerson.value.listThisYear.length === 0 && resultDtoTaskPerson.value.listLastYear.length === 0) {
                             infoLevel.value = MessageConstants.LEVEL_INFO;
                             messageType.value = MessageConstants.VIEW_TOAST;
@@ -167,6 +174,15 @@ onBeforeMount(async () => {
                 fetch(url, { method, headers, body })
                     .then(async (response) => {
                         resultDtoTaskRole.value = await response.json();
+
+                        if (response.status > SERVER_STATUS_ERROR) {
+                            message.value = getErrorMessage(BLANK, INQUIRE_FLG);
+                            infoLevel.value = MessageConstants.LEVEL_ERROR;
+                            messageType.value = MessageConstants.VIEW_OK;
+                            return;
+                        }
+
+
                         if (resultDtoTaskRole.value.listThisYear.length === 0 && resultDtoTaskRole.value.listLastYear.length === 0) {
                             infoLevel.value = MessageConstants.LEVEL_INFO;
                             messageType.value = MessageConstants.VIEW_TOAST;
@@ -259,12 +275,16 @@ const isShowTask: Ref<Boolean> = ref(false);
 function onTaskViewPerson() {
     isShowTask.value = true;
 }
-// function onTaskViewRole() {
-//     isShowTask.value = true;
-// }
+const isShowTaskRole: Ref<Boolean> = ref(false);
+function onTaskViewRole() {
+    isShowTaskRole.value = true;
+}
 
 function recieveCancelShowTask() {
     isShowTask.value = false;
+}
+function recieveCancelShowTaskRole() {
+    isShowTaskRole.value = false;
 }
 
 function onTransferPerson() {
@@ -323,7 +343,7 @@ const notHasDetailInfo: ComputedRef<boolean> = computed(
                 }}件
                 <input type="radio" v-model="switchYearPerson" value="2" id="test">前年{{ optionsLastYearPerson.length - 1
                 }}件
-                <select v-model="selectedTaskPerson" class="left-space">
+                <select v-model="selectedTaskPerson" class="left-space transfer-select">
                     <option v-for="option in optionsViewPerson" :value="option.taskPlanId">{{ option.text }}</option>
                 </select>
                 <button @click="onTransferPerson" :disabled="tansferDisabledPerson"
@@ -334,16 +354,14 @@ const notHasDetailInfo: ComputedRef<boolean> = computed(
             <div class="user-role-task left-space">
                 <input type="radio" v-model="switchYearRole" value="1" id="test">本年{{ optionsThisYearRole.length - 1 }}件
                 <input type="radio" v-model="switchYearRole" value="2" id="test">前年{{ optionsLastYearRole.length - 1 }}件
-                <select v-model="selectedTaskRole" class="left-space">
+                <select v-model="selectedTaskRole" class="left-space transfer-select">
                     <option v-for="option in optionsViewRole" :value="option.taskPlanId">{{ option.text }}</option>
                 </select>
                 <button @click="onTransferRole" :disabled="tansferDisabledRole"
                     class="left-space-narrow user-role-transfer-button">遷移</button>
-                <!--
                 <br>
                 <button @click="onTaskViewRole"
                     class="user-role-transfer-button user-role-transfer-button-margin-top">権限タスクをもっと見る</button>
-                -->
             </div>
             <!-- 遷移メニュー -->
             <div class="user-role-menu-wrapper">
@@ -386,5 +404,16 @@ const notHasDetailInfo: ComputedRef<boolean> = computed(
         </ShowTask>
     </div>
 
+    <!-- タスク表示(権限) -->
+    <div v-if="isShowTaskRole" class="overComponent">
+        <ShowTaskRole :is-search-condition="false" :user-dto="userDto"
+            @send-canceel-show-task="recieveCancelShowTaskRole">
+        </ShowTaskRole>
+    </div>
+
 </template>
-<style scoped></style>
+<style scoped>
+select.transfer-select {
+    width: 80%;
+}
+</style>

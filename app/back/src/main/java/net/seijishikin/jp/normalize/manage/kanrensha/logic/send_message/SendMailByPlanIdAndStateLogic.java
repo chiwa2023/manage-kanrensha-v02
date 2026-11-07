@@ -29,6 +29,10 @@ public class SendMailByPlanIdAndStateLogic {
     @Value("${app.send.mail.address:test@example.com}")
     private String sendEmail;
 
+    /** ベースURL */
+    @Value("${app.cors.allowed-origins:http://localhost:5173}")
+    private String baseUrl;
+
     /** 送信状態開始 */
     public static final int STATE_START = 1;
     /** 送信状態終了 */
@@ -99,7 +103,7 @@ public class SendMailByPlanIdAndStateLogic {
 
         String body = this.getBody(infoEntity, state);
         body = body.replaceAll("【paramQuery】", infoEntity.getParamQuery());
-        body = body.replaceAll("【transferPass】", infoEntity.getTransferPass());
+        body = body.replaceAll("【transferPass】", baseUrl + infoEntity.getTransferPass());
         mailMessage.setText(body);
 
         MailDataDto mailDataDto = new MailDataDto();
@@ -109,7 +113,7 @@ public class SendMailByPlanIdAndStateLogic {
         List<MailDataDto> listMail = new ArrayList<>();
         listMail.add(mailDataDto);
 
-        return sendMailUserLogic.practice(listMail);
+        return sendMailUserLogic.practice(listMail, 0);
     }
 
     private String getBody(final TaskInfoEntity infoEntity, final Integer state) {

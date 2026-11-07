@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
+import net.seijishikin.jp.normalize.common_tool.dto.kanrensha.KanrenshaSeijidantaiMasterDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.KanrenshaSeijidantaiMasterEntity;
 
 /**
@@ -44,7 +45,7 @@ public interface KanrenshaSeijidantaiMasterRepository extends JpaRepository<Kanr
      * @param kanrenshaCode 関連者コード
      * @return 関連者コード同一Entity
      */
-    Optional<KanrenshaSeijidantaiMasterEntity> findFirstBySeijidantaiKanrenshaCodeAndIsLatestTrueOrderByKanrenshaSeijidantaiMasterId(
+    Optional<KanrenshaSeijidantaiMasterEntity> findFirstBySeijidantaiKanrenshaCodeAndIsLatestTrueOrderByKanrenshaSeijidantaiMasterIdDesc(
             String kanrenshaCode);
 
     /**
@@ -94,7 +95,7 @@ public interface KanrenshaSeijidantaiMasterRepository extends JpaRepository<Kanr
             + "     AND all_address LIKE ?3 AND seijidantai_delegate LIKE ?4 "
             + "     AND  dantai_kbn IN ?5 AND is_latest=1" //
             , nativeQuery = true)
-    List<KanrenshaSeijidantaiMasterEntity> findSearchCondition(String poliOrgNo, String name // NOPMD CleanerAPI
+    List<KanrenshaSeijidantaiMasterDto> findSearchCondition(String poliOrgNo, String name // NOPMD CleanerAPI
             , String address, String delegate, List<String> listDantaiKbn, Pageable pageable);
 
     /**

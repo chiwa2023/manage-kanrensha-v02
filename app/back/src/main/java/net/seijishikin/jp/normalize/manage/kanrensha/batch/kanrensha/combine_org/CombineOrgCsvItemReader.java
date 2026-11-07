@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
  * 関連者企業・団体最小登録Csv読み取りItemReader
  */
 @Component
-public class CombineOrgCsvItemReader extends FlatFileItemReader<KanrenshaCombineOrgDto> {
+public class CombineOrgCsvItemReader extends FlatFileItemReader<KanrenshaCombineCsvOrgDto> {
 
     /**
      * コンストラクタ

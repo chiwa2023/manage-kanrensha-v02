@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -14,8 +15,9 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import org.springframework.transaction.annotation.Transactional;
 
-import net.seijishikin.jp.normalize.manage.kanrensha.dto.kanrensha.KanrenshaKigyouDtDto;
-import net.seijishikin.jp.normalize.manage.kanrensha.dto.kanrensha.SaveKanrenshaKigyouDtCapsuleDto;
+import net.seijishikin.jp.normalize.common_tool.dto.kanrensha.KanrenshaKigyouDtDto;
+import net.seijishikin.jp.normalize.common_tool.dto.kanrensha.KanrenshaKigyouDtMasterDto;
+import net.seijishikin.jp.normalize.common_tool.dto.kanrensha.SaveKanrenshaKigyouDtCapsuleDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.KanrenshaKigyouDtAccessEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.KanrenshaKigyouDtAddressEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.KanrenshaKigyouDtMasterEntity;
@@ -66,7 +68,9 @@ class EditKanrenshaKigyouDtServiceTest {
 
         final Integer editId = 144;
         KanrenshaKigyouDtMasterEntity masterEntity = kanrenshaKigyouDtMasterRepository.findById(editId).get();
-        KanrenshaKigyouDtDto dto = getKanrenshaKigyouDtDtoService.practice(masterEntity);
+        KanrenshaKigyouDtMasterDto masterDto = new KanrenshaKigyouDtMasterDto();
+        BeanUtils.copyProperties(masterEntity, masterDto);
+        KanrenshaKigyouDtDto dto = getKanrenshaKigyouDtDtoService.practice(masterDto);
         SaveKanrenshaKigyouDtCapsuleDto capsuleDto = new SaveKanrenshaKigyouDtCapsuleDto();
         capsuleDto.setUserDto(CreateLeastUserForTestUtil.practice());
         capsuleDto.setKanrenshaKigyouDtDto(dto);
@@ -80,7 +84,9 @@ class EditKanrenshaKigyouDtServiceTest {
     void testAll() throws Exception {
         final Integer editId = 145;
         KanrenshaKigyouDtMasterEntity masterEntity = kanrenshaKigyouDtMasterRepository.findById(editId).get();
-        KanrenshaKigyouDtDto dto = getKanrenshaKigyouDtDtoService.practice(masterEntity);
+        KanrenshaKigyouDtMasterDto masterDto = new KanrenshaKigyouDtMasterDto();
+        BeanUtils.copyProperties(masterEntity, masterDto);
+        KanrenshaKigyouDtDto dto = getKanrenshaKigyouDtDtoService.practice(masterDto);
         dto.setHoujinNo("mnbvc"); // マスタを変更するとIdを変更するために全テーブルに波及
         SaveKanrenshaKigyouDtCapsuleDto capsuleDto = new SaveKanrenshaKigyouDtCapsuleDto();
         capsuleDto.setUserDto(CreateLeastUserForTestUtil.practice());
@@ -110,7 +116,9 @@ class EditKanrenshaKigyouDtServiceTest {
 
         final Integer editId = 146;
         KanrenshaKigyouDtMasterEntity masterEntity = kanrenshaKigyouDtMasterRepository.findById(editId).get();
-        KanrenshaKigyouDtDto dto = getKanrenshaKigyouDtDtoService.practice(masterEntity);
+        KanrenshaKigyouDtMasterDto masterDto = new KanrenshaKigyouDtMasterDto();
+        BeanUtils.copyProperties(masterEntity, masterDto);
+        KanrenshaKigyouDtDto dto = getKanrenshaKigyouDtDtoService.practice(masterDto);
         dto.getInputAccessDto().setEmail("wefzdzg"); // メアドを変更しても全テーブルに影響が波及しない
         SaveKanrenshaKigyouDtCapsuleDto capsuleDto = new SaveKanrenshaKigyouDtCapsuleDto();
         capsuleDto.setUserDto(CreateLeastUserForTestUtil.practice());

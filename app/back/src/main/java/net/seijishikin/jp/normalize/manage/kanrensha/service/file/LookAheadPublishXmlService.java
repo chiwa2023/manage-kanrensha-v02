@@ -18,7 +18,7 @@ import net.seijishikin.jp.normalize.manage.kanrensha.dto.storage_file.StorageFil
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.storage_file.UploadFileDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.logic.file.GetAbsolutePathLogic;
 import net.seijishikin.jp.normalize.manage.kanrensha.logic.file.GetTempFilePathLogic;
-import net.seijishikin.jp.normalize.manage.kanrensha.logic.file.SaveFileLogic;
+import net.seijishikin.jp.normalize.manage.kanrensha.logic.file.SaveFileBase64Logic;
 import net.seijishikin.jp.normalize.shuushi_doc.v05.dto.AllBookHeaderDto;
 import net.seijishikin.jp.normalize.shuushi_doc.v05.dto.AllBookShushiV05Dto;
 import net.seijishikin.jp.normalize.shuushi_doc.v05.dto.Sheet070100CoverOrganizationDto;
@@ -39,7 +39,7 @@ public class LookAheadPublishXmlService {
 
     /** ファイル保存Logic */
     @Autowired
-    private SaveFileLogic saveFileLogic;
+    private SaveFileBase64Logic saveFileBase64Logic;
 
     /**
      * 処理を行う
@@ -59,7 +59,7 @@ public class LookAheadPublishXmlService {
 
         Path path = getAbsolutePathLogic.practice(storageFileDto.getSavedDir(), storageFileDto.getFileName());
 
-        if (saveFileLogic.practice(path, uploadFileDto.getFileContent())) {
+        if (saveFileBase64Logic.practice(path, uploadFileDto.getFileContent())) {
 
             // 公式XML読み取り
             XmlMapper xmlMapper = new XmlMapper();

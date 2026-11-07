@@ -1,5 +1,5 @@
 ﻿<script setup lang="ts">
-import { getErrorMessage, MessageConstants, MessageView, PagingControl, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
+import { AccessTokenNotFoundError, getErrorMessage, MessageConstants, MessageView, PagingControl, TokenRefreshError, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import { computed, ref, toRaw, type ComputedRef, type Ref } from 'vue';
 import { WkTblKanrenshaKigyouDtHistoryEntity, type WkTblKanrenshaKigyouDtHistoryEntityInterface } from '../../entity/wkTblKanrenshaKigyouDtHistoryEntity';
 import { SearchWkTblHistoryKigyouDtPagingResultDto, type SearchWkTblHistoryKigyouDtPagingResultDtoInterface } from '../../dto/wktbl_history/searchWkTblHistoryKigyouDtPagingResultDto';
@@ -7,7 +7,6 @@ import { SearchWkTblPagingCapsuleDto, type SearchWkTblPagingCapsuleDtoInterface 
 import { UpdateWkTblHistoryKigyouDtCapsuleDto, type UpdateWkTblHistoryKigyouDtCapsuleDtoInterface } from '../../dto/wktbl_history/updateWkTblHistoryKigyouDtCapsuleDto';
 import getAuthorizedPromiseArea from '../../dto/login/getAuthorizedPromiseArea';
 import RoutePathConstants from '../../../../routePathConstants';
-import { AccessTokenNotFoundError, TokenRefreshError } from '../../dto/login/errors';
 import type { UpdateWkTblHistoryKigyouDtResultDtoInterface } from '../../dto/wktbl_history/updateWkTblHistoryKigyouDtResultDto';
 
 
@@ -19,7 +18,7 @@ const BLANK: string = "";
 const INIT_NUMBER: number = 0;
 const INIT_BOOLEAN: boolean = false;
 // const SERVER_STATUS_OK: number = 200;
-// const SERVER_STATUS_ERROR: number = 400;
+const SERVER_STATUS_ERROR: number = 400;
 const SEARCH_LIMIT: number = 20;
 const INQUIRE_FLG: boolean = false;
 const ERR_MESS_ONLY: boolean = true;
@@ -64,6 +63,15 @@ function onSearchKigyouDt() {
         fetch(url, { method, headers, body })
             .then(async (response) => {
                 kigyouDtResultDto.value = await response.json();
+
+                if (response.status > SERVER_STATUS_ERROR) {
+                    message.value = getErrorMessage(BLANK, INQUIRE_FLG);
+                    infoLevel.value = MessageConstants.LEVEL_ERROR;
+                    messageType.value = MessageConstants.VIEW_OK;
+                    return;
+                }
+
+
                 if (0 == kigyouDtResultDto.value.listWktblKigyouDt.length) {
                     infoLevel.value = MessageConstants.LEVEL_INFO;
                     messageType.value = MessageConstants.VIEW_TOAST;
@@ -130,6 +138,14 @@ function onEditUpdate() {
         fetch(url, { method, headers, body })
             .then(async (response) => {
                 const resultDto: UpdateWkTblHistoryKigyouDtResultDtoInterface = await response.json();
+
+                if (response.status > SERVER_STATUS_ERROR) {
+                    message.value = getErrorMessage(resultDto.message, ERR_MESS_ONLY);
+                    infoLevel.value = MessageConstants.LEVEL_ERROR;
+                    messageType.value = MessageConstants.VIEW_OK;
+                    return;
+                }
+
                 message.value = resultDto.message;
                 if (resultDto.isFailure) {
                     infoLevel.value = MessageConstants.LEVEL_WARNING;

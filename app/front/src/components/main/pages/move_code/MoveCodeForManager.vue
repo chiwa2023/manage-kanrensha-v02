@@ -1,14 +1,12 @@
 ﻿<script setup lang="ts">
 import { computed, ref, watch, type ComputedRef, type Ref } from 'vue';
 import UploadFile from '../../common/file/UploadFile.vue';
-import { getErrorMessage, MessageConstants, MessageView, SearchKanrenshaKigyouDt, SearchKanrenshaPerson, SearchKanrenshaSeijidantai, type FrameworkMessageAndResultDtoInterface, type KanrenshaKigyouDtMasterEntityInterface, type KanrenshaPersonMasterEntityInterface, type KanrenshaSeijidantaiMasterEntityInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
-import { getLoginUser } from '../../utils/getLoginUser.ts';
+import { AccessTokenNotFoundError, getErrorMessage, getLoginUser, MessageConstants, MessageView, SearchKanrenshaKigyouDt, SearchKanrenshaPerson, SearchKanrenshaSeijidantai, TokenRefreshError, type FrameworkMessageAndResultDtoInterface, type KanrenshaKigyouDtMasterEntityInterface, type KanrenshaPersonMasterEntityInterface, type KanrenshaSeijidantaiMasterEntityInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import ManagerInfo from '../../common/user_info/ManagerInfo.vue';
 import type { StorageFileDtoInterface } from '../../dto/storage_file/storageFileDto.ts';
 import { MoveKanrenshaCodePromoteCapsuleDto, type MoveKanrenshaCodePromoteCapsuleDtoInterface } from '../../dto/kanrensha/moveKanrenshaCodePromoteCapsuleDto.ts';
 import getAuthorizedPromiseArea from '../../dto/login/getAuthorizedPromiseArea.ts';
 import RoutePathConstants from '../../../../routePathConstants.ts';
-import { AccessTokenNotFoundError, TokenRefreshError } from '../../dto/login/errors.ts';
 
 
 // よく使う定数
@@ -16,7 +14,7 @@ const BLANK: string = "";
 // const INIT_NUMBER: number = 0;
 const INIT_BOOLEAN: boolean = false;
 // const SERVER_STATUS_OK: number = 200;
-// const SERVER_STATUS_ERROR: number = 400;
+const SERVER_STATUS_ERROR: number = 400;
 // const SEARCH_LIMIT: number = 20;
 // メッセージボックス表示定数
 const INQUIRE_FLG: boolean = false;
@@ -72,8 +70,6 @@ function onCancel() {
 
 function onSave() {
 
-    alert(JSON.stringify(capsuleDto.value));
-
     capsuleDto.value.userDto = userDto.value;
     capsuleDto.value.kanrenshaKbn = viewStatus.value;
 
@@ -96,6 +92,14 @@ function onSave() {
         fetch(url, { method, headers, body })
             .then(async (response) => {
                 const resultDto: FrameworkMessageAndResultDtoInterface = await response.json();
+
+                if (response.status > SERVER_STATUS_ERROR) {
+                    message.value = getErrorMessage(resultDto.message, ERR_MESS_ONLY);
+                    infoLevel.value = MessageConstants.LEVEL_ERROR;
+                    messageType.value = MessageConstants.VIEW_OK;
+                    return;
+                }
+
                 if (resultDto.isFailure) {
                     infoLevel.value = MessageConstants.LEVEL_ERROR;
                     messageType.value = MessageConstants.VIEW_OK;

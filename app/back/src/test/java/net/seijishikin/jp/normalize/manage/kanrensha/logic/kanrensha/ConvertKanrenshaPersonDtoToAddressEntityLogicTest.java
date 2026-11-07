@@ -9,7 +9,7 @@ import net.seijishikin.jp.normalize.common_tool.dto.input.InputAccessDto;
 import net.seijishikin.jp.normalize.common_tool.dto.input.InputAddressDto;
 import net.seijishikin.jp.normalize.common_tool.dto.input.InputPersonNameDto;
 import net.seijishikin.jp.normalize.common_tool.dto.input.InputShokugyouDto;
-import net.seijishikin.jp.normalize.manage.kanrensha.dto.kanrensha.KanrenshaPersonDto;
+import net.seijishikin.jp.normalize.common_tool.dto.kanrensha.KanrenshaPersonDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.KanrenshaPersonAddressEntity;
 
 /**

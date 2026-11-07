@@ -28,16 +28,13 @@ public class SearchTaskPlanY2026Logic {
     /** 空文字 */
     private static final String BLANK = "";
 
-    /** タスクの種類数 */
-    private static final Integer TASK_AMOUNT = 3;
-
     /**
      * 処理を行う
      *
      * @param capsuleDto 検索条件Dto
      * @return 検索結果Dto
      */
-    public SearchTaskPlanResultDto practice(final SearchTaskPlanCapsuleDto capsuleDto) {
+    public SearchTaskPlanResultDto practice(final Integer taskInfoCount, final SearchTaskPlanCapsuleDto capsuleDto) {
 
         Integer userCode = capsuleDto.getUserDto().getUserPersonCode();
 
@@ -60,17 +57,30 @@ public class SearchTaskPlanY2026Logic {
 
         // チェック
         List<Integer> infoCodeList = capsuleDto.getInfoCodeList();
-        Boolean hasTaskCode = TASK_AMOUNT != infoCodeList.size(); // 全件と同一の場合は検索条件に含めない
+
+        Boolean hasTaskCode = taskInfoCount != infoCodeList.size(); // 全件と同一の場合は検索条件に含めない
 
         int count = taskPlan2026Repository.countTaskPlan(userCode, start, end, searchWord, flgFinished, flgStart,
                 flgSuspended, infoCodeList, hasTaskCode);
 
+        
         SearchTaskPlanResultDto resultDto = new SearchTaskPlanResultDto();
         resultDto.setAllCount(count);
         resultDto.setLimit(capsuleDto.getLimit());
-        resultDto.setPageNumber(capsuleDto.getPageNumber());
 
-        Pageable pageable = Pageable.ofSize(capsuleDto.getLimit()).withPage(capsuleDto.getPageNumber());
+        // 全件数が0の場合は結果を返却
+        final Integer zero = 0;
+        if (zero.equals(resultDto.getAllCount())) {
+            resultDto.setPageNumber(0);
+            return resultDto;
+        }
+
+        // 検索条件変更等でページ番号が合わないときはページ番号をリセット
+        if (resultDto.getAllCount() < resultDto.getLimit() * resultDto.getPageNumber()) {
+            resultDto.setPageNumber(0);
+        }
+
+        Pageable pageable = Pageable.ofSize(capsuleDto.getLimit()).withPage(resultDto.getPageNumber());
         resultDto.setListTaskPlan(taskPlan2026Repository.findTaskPlan(userCode, start, end, searchWord, flgFinished,
                 flgStart, flgSuspended, infoCodeList, hasTaskCode, pageable));
 

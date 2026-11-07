@@ -1,19 +1,18 @@
 ﻿<script setup lang="ts">
-import { getErrorMessage, InputDate, MessageConstants, MessageView, type FrameworkMessageAndResultDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
+import { AccessTokenNotFoundError, getErrorMessage, getLoginUser, InputDate, MessageConstants, MessageView, TokenRefreshError, type FrameworkMessageAndResultDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import router from '../../../../router';
 import { ref, type Ref } from 'vue';
 import { NotifyPartnerApiLimitCapsuleDto, type NotifyPartnerApiLimitCapsuleDtoInterface } from '../../dto/user/notifyPartnerApiLimitCapsuleDto';
 import RoutePathConstants from '../../../../routePathConstants';
-import { getLoginUser } from '../../utils/getLoginUser';
 import getAuthorizedPromiseArea from '../../dto/login/getAuthorizedPromiseArea';
-import { AccessTokenNotFoundError, TokenRefreshError } from '../../dto/login/errors';
+import AdminInfo from '../../common/user_info/AdminInfo.vue';
 
 
 // よく使う定数
 const BLANK: string = "";
 // const INIT_NUMBER: number = 0;
 // const SERVER_STATUS_OK: number = 200;
-// const SERVER_STATUS_ERROR: number = 400;
+const SERVER_STATUS_ERROR: number = 400;
 // const SEARCH_LIMIT: number = 20;
 // メッセージボックス表示定数
 const INQUIRE_FLG: boolean = false;
@@ -57,6 +56,14 @@ function onSave() {
             .then(async (response) => {
 
                 const resultDtoSave: FrameworkMessageAndResultDtoInterface = await response.json();
+
+                if (response.status > SERVER_STATUS_ERROR) {
+                    message.value = getErrorMessage(resultDtoSave.message, ERR_MESS_ONLY);
+                    infoLevel.value = MessageConstants.LEVEL_ERROR;
+                    messageType.value = MessageConstants.VIEW_OK;
+                    return;
+                }
+
                 message.value = resultDtoSave.message;
                 if (resultDtoSave.isFailure) {
                     infoLevel.value = MessageConstants.LEVEL_ERROR;
@@ -103,7 +110,7 @@ function recieveDate(date: Date) {
 
 </script>
 <template>
-    
+
     <!-- SE権限 -->
     <AdminInfo :user-dto="userDto"></AdminInfo>
 

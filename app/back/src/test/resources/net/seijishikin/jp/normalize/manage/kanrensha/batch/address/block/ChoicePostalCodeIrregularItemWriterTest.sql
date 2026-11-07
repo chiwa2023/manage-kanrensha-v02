@@ -39,12 +39,17 @@ CREATE TABLE IF NOT EXISTS `address_rsdt_012289` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 DELETE FROM `address_rsdt_012289`;
-
+  
 INSERT INTO `address_rsdt_012289` (`address_rsdt_id`,`lg_code`,`postalcode1`,`postalcode2`,`is_latest`,`address_block`,`address_building`,`machiaza_id`,`blk_id`,`prc_id`,`rsdt_id`,`rsdt2_id`,`effect_date`,`abolish_date`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`) 
   VALUES 
-     (891,'011061','005','0861',1,'門静','','1','2','3','4','5','1948-07-29',NULL,0,0,'a',NULL,0,0,'a',NULL)
-   , (892,'011061','005','0861',1,'深川市広里町','','1','2','3','4','5','1948-07-29',NULL,0,0,'a',NULL,0,0,'a',NULL)
+    (898,'011061','005','0861',1,'深川市門静','','1','2','3','4','5','1948-07-29',NULL,0,0,'a',NULL,0,0,'a',NULL)
+  , (891,'011061','005','0861',1,'深川市広里町一丁目2番地','','1','2','3','4','5','1948-07-29',NULL,0,0,'a',NULL,0,0,'a',NULL)
+  , (892,'011061','005','0861',1,'深川市広里町一丁目4番地','','1','2','3','4','5','1948-07-29',NULL,0,0,'a',NULL,0,0,'a',NULL)
+  , (893,'011061','005','0861',1,'深川市広里町二丁目6番地','','1','2','3','4','5','1948-07-29',NULL,0,0,'a',NULL,0,0,'a',NULL)
+  , (894,'011061','005','0861',1,'深川市広里町二丁目8番地','','1','2','3','4','5','1948-07-29',NULL,0,0,'a',NULL,0,0,'a',NULL)
+  , (895,'011061','005','0861',1,'深川市広里町三丁目10番地','','1','2','3','4','5','1948-07-29',NULL,0,0,'a',NULL,0,0,'a',NULL)
+  , (896,'011061','005','0861',1,'深川市広里町三丁目12番地','','1','2','3','4','5','1948-07-29',NULL,0,0,'a',NULL,0,0,'a',NULL)
+  , (897,'011061','005','0861',1,'深川市広里町四丁目14番地','','1','2','3','4','5','1948-07-29',NULL,0,0,'a',NULL,0,0,'a',NULL)
   ;
-  
   
   

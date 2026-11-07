@@ -6,10 +6,10 @@ import org.springframework.stereotype.Service;
 
 import net.seijishikin.jp.normalize.common_tool.dto.input.InputAccessDto;
 import net.seijishikin.jp.normalize.common_tool.dto.input.InputAddressDto;
-import net.seijishikin.jp.normalize.manage.kanrensha.dto.kanrensha.KanrenshaPersonDto;
+import net.seijishikin.jp.normalize.common_tool.dto.kanrensha.KanrenshaPersonDto;
+import net.seijishikin.jp.normalize.common_tool.dto.kanrensha.KanrenshaPersonMasterDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.KanrenshaPersonAccessEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.KanrenshaPersonAddressEntity;
-import net.seijishikin.jp.normalize.manage.kanrensha.entity.KanrenshaPersonMasterEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.KanrenshaPersonPropertyEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.logic.kanrensha.CallPersonAccessEntityLogic;
 import net.seijishikin.jp.normalize.manage.kanrensha.logic.kanrensha.CallPersonAddressEntityLogic;
@@ -39,12 +39,12 @@ public class GetKanrenshaPersonDtoService {
     /**
      * 処理を行う
      *
-     * @param masterPersonEntity 関連者個人マスタ
+     * @param masterPersonDto 関連者個人マスタ
      * @return 関連者個人DTO
      */
-    public KanrenshaPersonDto practice(final KanrenshaPersonMasterEntity masterPersonEntity) {
+    public KanrenshaPersonDto practice(final KanrenshaPersonMasterDto masterPersonDto) {
         KanrenshaPersonDto dto = new KanrenshaPersonDto();
-        String kanrenshaCode = masterPersonEntity.getPersonKanrenshaCode();
+        String kanrenshaCode = masterPersonDto.getPersonKanrenshaCode();
 
         // 各マスタからエンティティを取得
         // Entity -> DTOへの値複写
@@ -68,11 +68,11 @@ public class GetKanrenshaPersonDtoService {
         dto.setIsForeign(propertyEntity.getIsForeign());
 
         // 最後にMasterPersonEntityの値を複写して上書き
-        dto.setMasterId(masterPersonEntity.getKanrenshaPersonMasterId());
-        dto.setPersonKanrenshaCode(masterPersonEntity.getPersonKanrenshaCode());
-        dto.getInputPersonNameDto().setAllName(masterPersonEntity.getKanrenshaName());
-        dto.getInputAddressDto().setAddressAll(masterPersonEntity.getAllAddress());
-        dto.getInputShokugyouDto().setAllShokugyou(masterPersonEntity.getPersonShokugyou());
+        dto.setMasterId(masterPersonDto.getKanrenshaPersonMasterId());
+        dto.setPersonKanrenshaCode(masterPersonDto.getPersonKanrenshaCode());
+        dto.getInputPersonNameDto().setAllName(masterPersonDto.getKanrenshaName());
+        dto.getInputAddressDto().setAddressAll(masterPersonDto.getAllAddress());
+        dto.getInputShokugyouDto().setAllShokugyou(masterPersonDto.getPersonShokugyou());
 
         return dto;
     }

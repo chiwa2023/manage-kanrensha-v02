@@ -1,7 +1,6 @@
 ﻿<script setup lang="ts">
 import { ref, type Ref } from 'vue';
-import { type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
-import { getLoginUser } from '../../utils/getLoginUser';
+import { getLoginUser, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import UserDetailEdit from '../../common/user/UserDetailEdit.vue';
 import AllUserInfo from '../../common/user_info/AllUserInfo.vue';
 import router from '../../../../router';

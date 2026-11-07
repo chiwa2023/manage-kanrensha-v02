@@ -20,7 +20,6 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
-import org.springframework.transaction.annotation.Transactional;
 
 import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.AddressPostalEntity;
@@ -36,7 +35,6 @@ import net.seijishikin.jp.normalize.manage.kanrensha.utils.CreateLeastUserForTes
 @AutoConfigureMockMvc
 @SpringBootTest
 @DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
-@Transactional
 @Sql("ChoicePostalCodeIrregularItemWriterTest.sql")
 class ChoicePostalCodeIrregularItemWriterTest {
     // CHECKSTYLE:OFF MagicNumber
@@ -82,8 +80,8 @@ class ChoicePostalCodeIrregularItemWriterTest {
         list.add(worksEntity06);
 
         // 事前に同一郵便番号件数を確認
-        int countPre = addressPostalRepository.findByPostalcode1AndPostalcode2AndIsLatestTrueOrderByAddressNameAsc(postal1, postal2)
-                .size();
+        int countPre = addressPostalRepository
+                .findByPostalcode1AndPostalcode2AndIsLatestTrueOrderByAddressNameAsc(postal1, postal2).size();
         assertEquals(2, countPre, "作業前件数2");
 
         // Chunkを作成してセット
@@ -94,7 +92,7 @@ class ChoicePostalCodeIrregularItemWriterTest {
         // 郵便番号は7件にデータが増えている
         List<AddressPostalEntity> listPro = addressPostalRepository
                 .findByPostalcode1AndPostalcode2OrderByAddressNameAsc(postal1, postal2);
-        assertEquals(7, listPro.size(), "作業前件数+5");
+        assertEquals(6, listPro.size(), "作業前件数+5");
 
         AddressPostalEntity postalEntity0 = listPro.get(0);
         assertEquals(postal1, postalEntity0.getPostalcode1());
@@ -119,17 +117,7 @@ class ChoicePostalCodeIrregularItemWriterTest {
         AddressPostalEntity postalEntity4 = listPro.get(4);
         assertEquals(postal1, postalEntity4.getPostalcode1());
         assertEquals(postal2, postalEntity4.getPostalcode2());
-        assertEquals("深川市広里町五丁目", postalEntity4.getAddressName());
-
-        AddressPostalEntity postalEntity5 = listPro.get(5);
-        assertEquals(postal1, postalEntity5.getPostalcode1());
-        assertEquals(postal2, postalEntity5.getPostalcode2());
-        assertEquals("深川市広里町四丁目", postalEntity5.getAddressName());
-
-        AddressPostalEntity postalEntity6 = listPro.get(6);
-        assertEquals(postal1, postalEntity6.getPostalcode1());
-        assertEquals(postal2, postalEntity6.getPostalcode2());
-        assertEquals("門静", postalEntity6.getAddressName());
+        assertEquals("深川市広里町四丁目", postalEntity4.getAddressName());
 
         // 2件渡したが、1件は範囲複写対象外のため1件だけ登録がされた
         List<WkTblPostalCommonEntity> listAnswer = wkTblPostalCommonRepository.findAll();

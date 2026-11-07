@@ -1,13 +1,12 @@
 ﻿<script setup lang="ts">
 import { computed, ref, toRaw, type ComputedRef, type Ref } from 'vue';
-import { getErrorMessage, MessageConstants, MessageView, PagingControl, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
+import { AccessTokenNotFoundError, getErrorMessage, MessageConstants, MessageView, PagingControl, TokenRefreshError, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import { SearchWkTblPagingCapsuleDto, type SearchWkTblPagingCapsuleDtoInterface } from '../../dto/add_xml/searchWkTbPagingCapsuleDto';
 import { SearchWkTblMinPersonPagingResultDto, type SearchWkTblMinPersonPagingResultDtoInterface } from '../../dto/wktbl_min/searchWkTblMinPersonPagingResultDto';
 import { UpdateWkTblMinPersonCapsuleDto, type UpdateWkTblMinPersonCapsuleDtoInterface } from '../../dto/wktbl_min/updateWkTblMinPersonCapsuleDto';
 import { WkTblKanrenshaPersonAddMinEntity, type WkTblKanrenshaPersonAddMinEntityInterface } from '../../entity/wkTblKanrenshaPersonAddMinEntity';
 import RoutePathConstants from '../../../../routePathConstants';
 import getAuthorizedPromiseArea from '../../dto/login/getAuthorizedPromiseArea';
-import { AccessTokenNotFoundError, TokenRefreshError } from '../../dto/login/errors';
 import type { UpdateWkTblMinPersonResultDtoInterface } from '../../dto/wktbl_min/updateWkTblMinPersonResultDto';
 
 //props,emit
@@ -18,7 +17,7 @@ const BLANK: string = "";
 const INIT_NUMBER: number = 0;
 const INIT_BOOLEAN: boolean = false;
 // const SERVER_STATUS_OK: number = 200;
-// const SERVER_STATUS_ERROR: number = 400;
+const SERVER_STATUS_ERROR: number = 400;
 const SEARCH_LIMIT: number = 20;
 const INQUIRE_FLG: boolean = false;
 const ERR_MESS_ONLY: boolean = true;
@@ -70,6 +69,14 @@ function onSearchPerson() {
         fetch(url, { method, headers, body })
             .then(async (response) => {
                 personResultDto.value = await response.json();
+
+                if (response.status > SERVER_STATUS_ERROR) {
+                    message.value = getErrorMessage(BLANK, INQUIRE_FLG);
+                    infoLevel.value = MessageConstants.LEVEL_ERROR;
+                    messageType.value = MessageConstants.VIEW_OK;
+                    return;
+                }
+
                 if (0 == personResultDto.value.listWktblPerson.length) {
                     infoLevel.value = MessageConstants.LEVEL_INFO;
                     messageType.value = MessageConstants.VIEW_TOAST;
@@ -137,6 +144,14 @@ function onEditUpdate() {
         fetch(url, { method, headers, body })
             .then(async (response) => {
                 const resultDto: UpdateWkTblMinPersonResultDtoInterface = await response.json();
+
+                if (response.status > SERVER_STATUS_ERROR) {
+                    message.value = getErrorMessage(resultDto.message, ERR_MESS_ONLY);
+                    infoLevel.value = MessageConstants.LEVEL_ERROR;
+                    messageType.value = MessageConstants.VIEW_OK;
+                    return;
+                }
+
                 message.value = resultDto.message;
                 if (resultDto.isFailure) {
                     infoLevel.value = MessageConstants.LEVEL_WARNING;

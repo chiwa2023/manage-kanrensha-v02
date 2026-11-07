@@ -2,24 +2,22 @@
 import { onMounted, ref, type Ref } from 'vue';
 import RiyoushaPartnerApiEdit from '../../common/riyousha_edit/RiyoushaPartnerApiEdit.vue';
 import { useUserInfoStore } from '../../stores/storeUserInfo';
-import { getErrorMessage, MessageConstants, MessageView, useUserInfoStoreCommon, type FrameworkMessageAndResultDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
+import { AccessTokenNotFoundError, getErrorMessage, getLoginUser, MessageConstants, MessageView, TokenRefreshError, useUserInfoStoreCommon, type FrameworkMessageAndResultDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import { getActivePinia } from 'pinia';
 import router from '../../../../router';
 import RoutePathConstants from '../../../../routePathConstants';
-import { getLoginUser } from '../../utils/getLoginUser';
 import type { RiyoushaPartnerApiDtoInterface } from '../../dto/riyousha/riyoushaPartnerApiDto';
 import { SaveRiyoushaPartnerApiCapsuleDto, type SaveRiyoushaPartnerApiCapsuleDtoInterface } from '../../dto/riyousha/saveRiyoushaPartnerApiCapsuleDto';
 import getAuthorizedPromiseArea from '../../dto/login/getAuthorizedPromiseArea';
-import { AccessTokenNotFoundError, TokenRefreshError } from '../../dto/login/errors';
 import { RiyoushaPartnerApiMasterEntity, type RiyoushaPartnerApiMasterEntityInterface } from '../../entity/riyoushaPartnerApiMasterEntity';
-import PartnerApiInfo from '../../common/user_info/PartnerApiInfo.vue';
+import NewComerInfo from '../../common/user_info/NewComerInfo.vue';
 
 // よく使う定数
 const BLANK: string = "";
 // const INIT_NUMBER: number = 0;
-const INIT_BOOLEAN: boolean = false;
+// const INIT_BOOLEAN: boolean = false;
 // const SERVER_STATUS_OK: number = 200;
-// const SERVER_STATUS_ERROR: number = 400;
+const SERVER_STATUS_ERROR: number = 400;
 const INQUIRE_FLG: boolean = false;
 const ERR_MESS_ONLY: boolean = true;
 const MESS_PAGE_NAME: string = "利用者APIパートナー追加";
@@ -47,6 +45,8 @@ onMounted(() => {
     const userInfoCommon = useUserInfoStoreCommon(getActivePinia());
     userInfoCommon.jwtDto = userInfo.jwtDto;
     userInfoCommon.userDto = userInfo.userDto;
+
+    userDto.value = userInfo.userDto;
 });
 
 function recieveCancelPartnerApi() {
@@ -54,7 +54,6 @@ function recieveCancelPartnerApi() {
     router.push(RoutePathConstants.PAGE_MENU_PARTNER_API);
 }
 
-let isSaveSuccess: boolean = INIT_BOOLEAN;
 function recievePartnerApiInterface(editDto: RiyoushaPartnerApiDtoInterface) {
 
     editDto.isCombineUser = true; // 初期登録時は紐づけ処理する
@@ -75,8 +74,15 @@ function recievePartnerApiInterface(editDto: RiyoushaPartnerApiDtoInterface) {
         fetch(url, { method, headers, body })
             .then(async (response) => {
                 const resultDto: FrameworkMessageAndResultDtoInterface = await response.json();
+
+                if (response.status > SERVER_STATUS_ERROR) {
+                    message.value = getErrorMessage(resultDto.message, ERR_MESS_ONLY);
+                    infoLevel.value = MessageConstants.LEVEL_ERROR;
+                    messageType.value = MessageConstants.VIEW_OK;
+                    return;
+                }
+
                 message.value = resultDto.message;
-                // 処理が成功したら再登録できないようにアップロードファイル情報を初期化
                 if (resultDto.isFailure) {
                     infoLevel.value = MessageConstants.LEVEL_WARNING;
                     messageType.value = MessageConstants.VIEW_OK;
@@ -85,7 +91,7 @@ function recievePartnerApiInterface(editDto: RiyoushaPartnerApiDtoInterface) {
                     infoLevel.value = MessageConstants.LEVEL_INFO;
                     messageType.value = MessageConstants.VIEW_TOAST;
                     // 更新成功時
-                    isSaveSuccess = true;
+                    caller.value = "add record";
                 }
             })
             .catch((error) => {
@@ -109,21 +115,20 @@ function recievePartnerApiInterface(editDto: RiyoushaPartnerApiDtoInterface) {
     });
 }
 
-function recieveSubmit() {
+function recieveSubmit(title: string, callerMess: string) {
     infoLevel.value = 0;
     messageType.value = 0;
 
     // 登録成功時のみ運営者メニューに遷移
-    if (isSaveSuccess) {
+    if (title === MESS_PAGE_NAME && callerMess === "add record" ) {
         router.push(RoutePathConstants.PAGE_LOGOUT);
     }
 }
-
 </script>
 <template>
 
-    <!-- APIパートナーメニュー兼チェック -->
-    <PartnerApiInfo :user-dto="userDto"></PartnerApiInfo>
+    <!-- 新規登録コードチェック -->
+    <NewComerInfo :current-step="4" regist-code="1"></NewComerInfo>
 
     <h1>APIパートナー追加</h1><br>
 
@@ -138,6 +143,5 @@ function recieveSubmit() {
             :caller="caller" @send-submit="recieveSubmit">
         </MessageView>
     </div>
-
 </template>
 <style scoped></style>

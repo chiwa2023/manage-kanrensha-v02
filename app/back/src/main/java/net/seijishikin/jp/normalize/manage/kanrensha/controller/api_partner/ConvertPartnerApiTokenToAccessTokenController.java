@@ -16,9 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.servlet.http.HttpServletRequest;
 import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
+import net.seijishikin.jp.normalize.common_tool.dto.sequrity.JwtTokenDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.constants.UserRoleConstants;
 import net.seijishikin.jp.normalize.manage.kanrensha.controller.PathRouteConstants;
-import net.seijishikin.jp.normalize.manage.kanrensha.dto.sequrity.JwtTokenDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.sequrity.JwtTokenResultDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.security.JwtService;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.security.PartnerApiLoginService;

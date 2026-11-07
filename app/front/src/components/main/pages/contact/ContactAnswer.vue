@@ -1,11 +1,9 @@
 <script setup lang="ts">
 import { ref, computed, type Ref, onMounted } from 'vue';
 import ManagerInfo from '../../common/user_info/ManagerInfo.vue';
-import { getErrorMessage, getErrorUniqueIdMessage, InputDate, MessageConstants, MessageView, PagingControl, type FrameworkMessageAndResultDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
-import { getLoginUser } from '../../utils/getLoginUser.ts';
+import { AccessTokenNotFoundError, getErrorMessage, getErrorUniqueIdMessage, getLoginUser, InputDate, MessageConstants, MessageView, PagingControl, TokenRefreshError, type FrameworkMessageAndResultDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import RoutePathConstants from '../../../../routePathConstants.ts';
 import getAuthorizedPromiseArea from '../../dto/login/getAuthorizedPromiseArea.ts';
-import { AccessTokenNotFoundError, TokenRefreshError } from '../../dto/login/errors.ts';
 import { SearchContactManagerResultDto, type SearchContactManagerResultDtoInterface } from '../../dto/contact/searchContactManagerResultDto.ts';
 import { SearchContactManagerCapsuleDto, type SearchContactManagerCapsuleDtoInterface } from '../../dto/contact/searchContactManagerCapsuleDto.ts';
 import { ContactManagerEntity, type ContactManagerEntityInterface } from '../../entity/contactManagerEntity.ts';
@@ -15,6 +13,7 @@ import { AddContactMessageCapsuleDto, type AddContactMessageCapsuleDtoInterface 
 const BLANK: string = "";
 const INIT_NUMBER: number = 0;
 const SEARCH_LIMIT: number = 20;
+const SERVER_STATUS_ERROR: number = 400;
 
 // メッセージボックス表示定数
 const INQUIRE_FLG: boolean = false;
@@ -72,6 +71,14 @@ function onSearch() {
         fetch(url, { method, headers, body })
             .then(async (response) => {
                 searchResultDto.value = await response.json();
+
+                if (response.status > SERVER_STATUS_ERROR) {
+                    message.value = getErrorMessage(searchResultDto.value.message, ERR_MESS_ONLY);
+                    infoLevel.value = MessageConstants.LEVEL_ERROR;
+                    messageType.value = MessageConstants.VIEW_OK;
+                    return;
+                }
+
                 allCount.value = searchResultDto.value.allCount;
                 limit.value = searchResultDto.value.limit;
                 pageNumber.value = searchResultDto.value.pageNumber;
@@ -132,50 +139,11 @@ function onCancel() {
 
 function onSave() {
     if (!selectedInquiry.value) {
-        alert("履歴を表示する問い合わせを選択してください。");
+        message.value = "履歴を表示する問い合わせを選択してください。";
+        infoLevel.value = MessageConstants.LEVEL_ERROR;
+        messageType.value = MessageConstants.VIEW_OK;
         return;
     }
-    // if (!newCommentText.value.trim()) {
-    //     alert("コメント内容を入力してください。");
-    //     return;
-    // }
-
-
-    // const now = new Date();
-    // const formattedDate = now.getFullYear() + '-' + 
-    //     String(now.getMonth() + 1).padStart(2, '0') + '-' + 
-    //     String(now.getDate()).padStart(2, '0');
-    // const formattedTime = String(now.getHours()).padStart(2, '0') + ':' + 
-    //     String(now.getMinutes()).padStart(2, '0') + ':' + 
-    //     String(now.getSeconds()).padStart(2, '0');
-    // const fullDateTime = `${formattedDate} ${formattedTime}`;
-
-    // // 履歴に追加
-    // selectedInquiry.value.history.push({
-    //     date: fullDateTime,
-    //     senderName: userDto.value?.allName || '運営者(自分)',
-    //     isSelf: true,
-    //     comment: newCommentText.value
-    // });
-
-    // // 最新状態の更新
-    // selectedInquiry.value.latestDate = formattedDate;
-    // const rawComment = newCommentText.value;
-    // selectedInquiry.value.latestCommentExcerpt = rawComment.slice(0, 20) + (rawComment.length > 20 ? '...' : '');
-
-    // // クローズ処理
-    // if (closeOnSave.value) {
-    //     selectedInquiry.value.status = 'closed';
-    // }
-
-    // // 入力リセット
-    // newCommentText.value = '';
-    // closeOnSave.value = false;
-
-    // // 検索状態を再反映
-    // onSearch();
-
-    // alert("コメントを送信しました。");
 
     capsuleDto.value.userDto = userDto.value;
     capsuleDto.value.contactManagerCode = saishinEntity.value.contactManagerCode;
@@ -192,6 +160,14 @@ function onSave() {
         fetch(url, { method, headers, body })
             .then(async (response) => {
                 const resultDto: FrameworkMessageAndResultDtoInterface = await response.json();
+
+                if (response.status > SERVER_STATUS_ERROR) {
+                    message.value = getErrorMessage(resultDto.message, ERR_MESS_ONLY);
+                    infoLevel.value = MessageConstants.LEVEL_ERROR;
+                    messageType.value = MessageConstants.VIEW_OK;
+                    return;
+                }
+
                 message.value = resultDto.message;
                 if (resultDto.isFailure) {
                     infoLevel.value = MessageConstants.LEVEL_ERROR;
@@ -274,6 +250,15 @@ function showHistory(selectedId: number) {
 
                 // 必ず1件は取れる。とれなかったら大事件
                 resultDtoHistoy.value = await response.json();
+
+                if (response.status > SERVER_STATUS_ERROR) {
+                    message.value = getErrorMessage(resultDtoHistoy.value.message, ERR_MESS_ONLY);
+                    infoLevel.value = MessageConstants.LEVEL_ERROR;
+                    messageType.value = MessageConstants.VIEW_OK;
+                    return;
+                }
+
+
                 if (resultDtoHistoy.value.isFailure) {
                     infoLevel.value = MessageConstants.LEVEL_ERROR;
                     messageType.value = MessageConstants.VIEW_OK;
@@ -389,11 +374,11 @@ function getStatus(isColsed: boolean): string {
                     :class="{ 'selected-row': selectedInquiryId === entity.contactManagerId }">
                     <td>{{ entity.firstTimestamp }}</td>
                     <td>{{ entity.contactManagerCode }}</td>
-                        <td>
-                            <span :class="entity.isClosed ? 'status-closed' : 'status-open'">
-                                {{ getStatus(entity.isClosed) }}
-                            </span>
-                        </td>
+                    <td>
+                        <span :class="entity.isClosed ? 'status-closed' : 'status-open'">
+                            {{ getStatus(entity.isClosed) }}
+                        </span>
+                    </td>
                     <td>{{ entity.inquireUserName }}</td>
                     <td>{{ entity.inquireTitle }}</td>
                     <td>{{ entity.insertTimestamp }}</td>

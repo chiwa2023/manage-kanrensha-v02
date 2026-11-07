@@ -1,14 +1,12 @@
 ﻿<script setup lang="ts">
-import { getErrorMessage, getErrorUniqueIdMessage, InputLgcode, MessageConstants, MessageView, PagingControl, type FrameworkMessageAndResultDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
+import { AccessTokenNotFoundError, getErrorMessage, getErrorUniqueIdMessage, getLoginUser, InputLgcode, MessageConstants, MessageView, PagingControl, TokenRefreshError, type FrameworkMessageAndResultDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import { ref, toRaw, type Ref } from 'vue';
-import { getLoginUser } from '../../utils/getLoginUser';
 import { SearchPostalCodeCapsuleDto, type SearchPostalCodeCapsuleDtoInterface } from '../../dto/address_postal/searchPostalCodeCapsuleDto';
 import { SearchPostalCodeResultDto, type SearchPostalCodeResultDtoInterface } from '../../dto/address_postal/searchPostalCodeResultDto';
 import { AddressPostalEntity, type AddressPostalEntityInterface } from '../../entity/addressPostalEntity';
 import ManagerInfo from '../../common/user_info/ManagerInfo.vue';
 import getAuthorizedPromiseArea from '../../dto/login/getAuthorizedPromiseArea.ts';
 import RoutePathConstants from '../../../../routePathConstants.ts';
-import { AccessTokenNotFoundError, TokenRefreshError } from '../../dto/login/errors.ts';
 import { SavePostalCapsuleDto, type SavePostalCapsuleDtoInterface } from '../../dto/address_postal/savePostalCapsuleDto.ts';
 import type { SelectOptionStringDtoInterface } from '../../dto/select_options/selectOptionStringDto.ts';
 
@@ -17,7 +15,7 @@ const BLANK: string = "";
 const INIT_NUMBER: number = 0;
 // const INIT_BOOLEAN: boolean = false;
 // const SERVER_STATUS_OK: number = 200;
-// const SERVER_STATUS_ERROR: number = 400;
+const SERVER_STATUS_ERROR: number = 400;
 const SEARCH_LIMIT: number = 20;
 const INQUIRE_FLG: boolean = false;
 const ERR_MESS_ONLY: boolean = true;
@@ -68,6 +66,14 @@ function onSearch() {
         fetch(url, { method, headers, body })
             .then(async (response) => {
                 resultDto.value = await response.json();
+
+                if (response.status > SERVER_STATUS_ERROR) {
+                    message.value = getErrorMessage(BLANK, INQUIRE_FLG);
+                    infoLevel.value = MessageConstants.LEVEL_ERROR;
+                    messageType.value = MessageConstants.VIEW_OK;
+                    return;
+                }
+
                 if (resultDto.value.allCount === 0) {
                     infoLevel.value = MessageConstants.LEVEL_WARNING;
                     messageType.value = MessageConstants.VIEW_OK;
@@ -97,7 +103,7 @@ function onSearch() {
 
 const updateText: string = "update";
 function onAddEntity() {
-    // TODO 編集があれば保存を促す
+    // 編集があれば保存を促す
     if (isDifferEntity()) {
         selectedId.value = INIT_NUMBER;
         infoLevel.value = MessageConstants.LEVEL_WARNING;
@@ -174,6 +180,15 @@ function onDelete(id: number) {
         fetch(url, { method, headers, body })
             .then(async (response) => {
                 const resultDto: FrameworkMessageAndResultDtoInterface = await response.json();
+
+                if (response.status > SERVER_STATUS_ERROR) {
+                    message.value = getErrorMessage(resultDto.message, ERR_MESS_ONLY);
+                    infoLevel.value = MessageConstants.LEVEL_ERROR;
+                    messageType.value = MessageConstants.VIEW_OK;
+                    return;
+                }
+
+
                 message.value = resultDto.message;
                 if (resultDto.isFailure) {
                     infoLevel.value = MessageConstants.LEVEL_WARNING;
@@ -230,6 +245,14 @@ function onSave() {
         fetch(url, { method, headers, body })
             .then(async (response) => {
                 const resultDto: FrameworkMessageAndResultDtoInterface = await response.json();
+
+                if (response.status > SERVER_STATUS_ERROR) {
+                    message.value = getErrorMessage(resultDto.message, ERR_MESS_ONLY);
+                    infoLevel.value = MessageConstants.LEVEL_ERROR;
+                    messageType.value = MessageConstants.VIEW_OK;
+                    return;
+                }
+
                 message.value = resultDto.message;
                 if (resultDto.isFailure) {
                     infoLevel.value = MessageConstants.LEVEL_WARNING;

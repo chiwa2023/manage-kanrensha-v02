@@ -21,8 +21,7 @@ import net.seijishikin.jp.normalize.manage.kanrensha.dto.send_message.MailDataDt
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.send_message.SendMaileResultDto;
 
 /**
- * SendMailUserLogic単体テスト
- * TODO 認証等例外テストができるようになったら追加する
+ * SendMailUserLogic単体テスト TODO (1)認証等の例外テストの方法が思いつかない
  */
 @SpringJUnitConfig
 @AutoConfigureMockMvc
@@ -43,27 +42,28 @@ class SendMailUserLogicTest {
         List<MailDataDto> list = new ArrayList<>();
         list.add(this.createData(0));
 
-        SendMaileResultDto resultDto01 = sendMailUserLogic.practice(list);
+        SendMaileResultDto resultDto01 = sendMailUserLogic.practice(list, 0);
         assertFalse(resultDto01.getIsFailure(), "正常終了");
     }
-    
+
     @Test
     @Tag("ExternalService")
     void testAuthentication() throws Exception {
-        
-        //assertThrows(MailAuthenticationException.class, ()-> sendMailUserLogic.practice(list));
+
+        // assertThrows(MailAuthenticationException.class, ()->
+        // sendMailUserLogic.practice(list));
         fail("Not yet implemented");
     }
 
     @Test
     @Tag("ExternalService")
     void testMailParseException() throws Exception {
-        
-        //assertThrows(MailAuthenticationException.class, ()-> sendMailUserLogic.practice(list));
+
+        // assertThrows(MailAuthenticationException.class, ()->
+        // sendMailUserLogic.practice(list));
         fail("Not yet implemented");
     }
 
-    
     private MailDataDto createData(final int index) {
 
         // メールメッセージ

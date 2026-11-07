@@ -12,6 +12,9 @@ interface KanrenshaCodeMoveEntityInterface {
     /** 承認フラグ */
     moveStatus: number;
 
+    /** 申請理由 */
+    moveReason: string;
+
     /** 関連者区分 */
     kanrenshaKbn: number;
 
@@ -52,6 +55,9 @@ class KanrenshaCodeMoveEntity implements KanrenshaCodeMoveEntityInterface {
     /** 承認フラグ */
     moveStatus: number;
 
+    /** 申請理由 */
+    moveReason: string;
+
     /** 関連者区分 */
     kanrenshaKbn: number;
 
@@ -87,6 +93,7 @@ class KanrenshaCodeMoveEntity implements KanrenshaCodeMoveEntityInterface {
         this.kanrenshaCodeMoveCode = INIT_INTEGER;
         this.isLatest = INIT_BOOLEAN;
         this.moveStatus = INIT_INTEGER;
+        this.moveReason = INIT_STRING;
         this.kanrenshaKbn = INIT_INTEGER;
         this.originKanrenshaCode = INIT_STRING;
         this.originName = INIT_STRING;

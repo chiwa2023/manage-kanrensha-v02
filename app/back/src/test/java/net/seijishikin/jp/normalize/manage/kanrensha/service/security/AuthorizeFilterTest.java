@@ -2,6 +2,7 @@ package net.seijishikin.jp.normalize.manage.kanrensha.service.security;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,9 +31,9 @@ import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.MappingMatch;
+import net.seijishikin.jp.normalize.common_tool.dto.sequrity.JwtTokenDto;
 import net.seijishikin.jp.normalize.common_tool.utils.GetObjectMapperWithTimeModuleUtil;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.sequrity.CustomUserDetails;
-import net.seijishikin.jp.normalize.manage.kanrensha.dto.sequrity.JwtTokenDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.sequrity.RefreshPasswordCapsuleDto;
 
 /**
@@ -78,7 +79,6 @@ class AuthorizeFilterTest {
 
         final String path = "/edit-user/refresh-password";
 
-        // TODO 仮でパスワード更新にしているが、他によいAPIがあれば入れ替える
         MockHttpServletRequest request = new MockHttpServletRequest();
         request.addHeader("X-AUTH-TOKEN", "Bearer " + jwtTokenDto.getAccessToken());
         MockHttpServletMapping mapping = new MockHttpServletMapping(path, path, userName, MappingMatch.PATH);
@@ -101,9 +101,9 @@ class AuthorizeFilterTest {
             CustomUserDetails customUserDetails = (CustomUserDetails) SecurityContextHolder.getContext() // NOPMD
                     .getAuthentication().getPrincipal();
 
-            assertEquals(null, customUserDetails.getUserPersonId());
-            assertEquals(null, customUserDetails.getUserPersonCode());
-            assertEquals(null, customUserDetails.getUserPersonName());
+            assertNull(customUserDetails.getUserPersonId());
+            assertNull(customUserDetails.getUserPersonCode());
+            assertNull(customUserDetails.getUserPersonName());
         }
     }
 }

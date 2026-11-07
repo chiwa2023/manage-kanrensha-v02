@@ -61,6 +61,8 @@ export default class RoutePathConstants {
 
     /** ユーザパスワード更新 */
     static readonly PAGE_REFRESH_PASSWORD: string = this.BASE_PATH + "/user/refresh-password";
+    /** パスキー管理 */
+    static readonly PAGE_PASSKEY_MANAGE: string = this.BASE_PATH + "/user/passkey-manage";
     /** ユーザパスワードリセット */
     static readonly PAGE_RESET_PASSWORD: string = this.BASE_PATH + "/user/reset-password";
     /** ユーザ自身を編集 */
@@ -79,7 +81,9 @@ export default class RoutePathConstants {
     static readonly PAGE_PARTNER_TOKEN_REPLACE: string = this.BASE_PATH + "/partner-api/token-replace";
 
     /** APIパートナー期限切れ強制通知 */
-    static readonly PAGE_NOTIFY_LIMIT: string = this.BASE_PATH + "/partner-api/notify-limit";
+    static readonly PAGE_NOTIFY_LIMIT: string = this.BASE_PATH + "/z-force-yotei/notify-limit";
+    static readonly PAGE_DELETE_TEMP_STORAGE: string = this.BASE_PATH + "/z-force-yotei/delete-temp-storage";
+    static readonly PAGE_DELETE_TOKEN: string = this.BASE_PATH + "/z-force-yotei/delete-token";
 
     /** 利用者検索 */
     static readonly PAGE_RIYOUSHA_SEARCH: string = this.BASE_PATH + "/riyousha-search";
@@ -138,6 +142,9 @@ export default class RoutePathConstants {
     /** 関連者マスタ一標準ダンプ(指定期間まで) */
     static readonly PAGE_DUMP_MASTER_STD: string = this.BASE_PATH + "/dump-master-std";
 
+    /** 関連者マスタ一標準ダンプ(指定期間まで) */
+    static readonly PAGE_DUMP_CODE_MOVE: string = this.BASE_PATH + "/dump-code-move";
+
     /** 関連者マスタ一差分ダンプ */
     static readonly PAGE_DUMP_SABUN_MASTER: string = this.BASE_PATH + "/dump-sabun-master";
     /** 関連者履歴一差分ダンプ */
@@ -162,6 +169,9 @@ export default class RoutePathConstants {
     /** 関連者履歴データ差分ダウンロード */
     static readonly PAGE_DOWNLOAD_SABUN_HISTORY: string = this.BASE_PATH + "/download-sabun-history";
 
+    /** 関連者コード移動ダウンロード */
+    static readonly PAGE_DOWNLOAD_CODE_MOVE: string = this.BASE_PATH + "/download-code-move";
+
     /** 作業内容承認 */
     static readonly PAGE_WORKS_APPROVAL: string = this.BASE_PATH + "/works-approval";
 
@@ -184,8 +194,14 @@ export default class RoutePathConstants {
     /** 運営者による関連者管理 */
     static readonly PAGE_KANRENSHA_MANAGE: string = this.BASE_PATH + "/kanrensha-manage";
 
+    /** 運営者による関連者紐づけ追加 */
+    static readonly PAGE_KANRENSHA_COMBINE: string = this.BASE_PATH + "/kanrensha-combine";
+
     /** 本人による関連者編集 */
     static readonly PAGE_KANRENSHA_MYSELF: string = this.BASE_PATH + "/kanrensha-myself";
+
+        /** 本人による関連者編集 */
+    static readonly PAGE_KANRENSHA_COMBINE_MYSELF: string = this.BASE_PATH + "/kanrensha-combine-myself";
 
     /** 利用者組織に個人を招待 */
     static readonly PAGE_INSERT_COMBINE_ORG: string = this.BASE_PATH + "/insert-combine-org";
@@ -224,6 +240,7 @@ export default class RoutePathConstants {
 
     /** タスク計画検索 */
     static readonly PAGE_SEARCH_TASK_PLAN: string = this.BASE_PATH + "/search-task-plan";
+    static readonly PAGE_SEARCH_TASK_PLAN_ROLE: string = this.BASE_PATH + "/search-task-plan-role";
 
     /** タスク情報検索 */
     static readonly PAGE_SEARCH_TASK_INFO: string = this.BASE_PATH + "/search-task-info";

@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import net.seijishikin.jp.normalize.common_tool.dto.address_rsdt.SearchAllCityLgcodeCapsuleDto;
 import net.seijishikin.jp.normalize.common_tool.dto.select_options.SelectOptionStringDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.controller.PathRouteConstants;
-import net.seijishikin.jp.normalize.manage.kanrensha.dto.address_rsdt.SearchAllCityLgcodeCapsuleDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.postal.SearchPostalCodeResultDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.lgcode.SearchLgcodeCityService;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.util.SaveStackTraceService;

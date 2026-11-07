@@ -1,8 +1,7 @@
 ﻿<script setup lang="ts">
 import { onMounted, ref, type Ref } from 'vue';
 import ManagerInfo from '../../common/user_info/ManagerInfo.vue';
-import { getErrorMessage, getErrorUniqueIdMessage, InputDate, MessageConstants, MessageView, PagingControl, type FrameworkMessageAndResultDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
-import { getLoginUser } from '../../utils/getLoginUser.ts';
+import { AccessTokenNotFoundError, getErrorMessage, getErrorUniqueIdMessage, getLoginUser, InputDate, MessageConstants, MessageView, PagingControl, TokenRefreshError, type FrameworkMessageAndResultDtoInterface, type LeastUserDtoInterface } from 'seijishikin-jp-normalize_common-tool';
 import { MoveKanrenshaCodeAcceptCapsuleDto, type MoveKanrenshaCodeAcceptCapsuleDtoInterface } from '../../dto/kanrensha/moveKanrenshaCodeAcceptCapsuleDto.ts';
 import { MoveKanrenshaCodeSearchCapsuleDto, type MoveKanrenshaCodeSearchCapsuleDtoInterface } from '../../dto/kanrensha/moveKanrenshaCodeSearchCapsuleDto.ts';
 import { MoveKanrenshaCodeSearchResultDto, type MoveKanrenshaCodeSearchResultDtoInterface } from '../../dto/kanrensha/moveKanrenshaCodeSearchResultDto.ts';
@@ -10,7 +9,6 @@ import KanrenshaKbnConstants from '../../dto/kanrensha/kanrenshaKbnConstants.ts'
 import { KanrenshaCodeMoveEntity, type KanrenshaCodeMoveEntityInterface } from '../../entity/kanrenshaCodeMoveEntity.ts';
 import getAuthorizedPromiseArea from '../../dto/login/getAuthorizedPromiseArea.ts';
 import RoutePathConstants from '../../../../routePathConstants.ts';
-import { AccessTokenNotFoundError, TokenRefreshError } from '../../dto/login/errors.ts';
 import { useTaskPlan } from '../../stores/storeTaskPlan.ts';
 import type { OneFileBlobResultDtoInterface } from '../../dto/storage_file/oneFileBlobResultDto.ts';
 import { DownloadFileCapsuleDto, type DownloadFileCapsuleDtoInterface } from '../../dto/file/downloadFileCapsuleDto.ts';
@@ -22,7 +20,7 @@ const BLANK: string = "";
 const INIT_NUMBER: number = 0;
 const INIT_BOOLEAN: boolean = false;
 // const SERVER_STATUS_OK: number = 200;
-// const SERVER_STATUS_ERROR: number = 400;
+const SERVER_STATUS_ERROR: number = 400;
 const SEARCH_LIMIT: number = 20;
 // メッセージボックス表示定数
 const INQUIRE_FLG: boolean = false;
@@ -89,6 +87,13 @@ function onSearch() {
             .then(async (response) => {
                 resultDtoSearch.value = await response.json();
 
+                if (response.status > SERVER_STATUS_ERROR) {
+                    message.value = getErrorMessage(BLANK, INQUIRE_FLG);
+                    infoLevel.value = MessageConstants.LEVEL_ERROR;
+                    messageType.value = MessageConstants.VIEW_OK;
+                    return;
+                }
+
                 allCount.value = resultDtoSearch.value.allCount;
                 limit.value = resultDtoSearch.value.limit;
                 pageNumber.value = resultDtoSearch.value.pageNumber;
@@ -144,6 +149,13 @@ function onSave() {
         fetch(url, { method, headers, body })
             .then(async (response) => {
                 const resultDto: FrameworkMessageAndResultDtoInterface = await response.json();
+
+                if (response.status > SERVER_STATUS_ERROR) {
+                    message.value = getErrorMessage(resultDto.message, ERR_MESS_ONLY);
+                    infoLevel.value = MessageConstants.LEVEL_ERROR;
+                    messageType.value = MessageConstants.VIEW_OK;
+                    return;
+                }
 
                 if (resultDto.isFailure) {
                     infoLevel.value = MessageConstants.LEVEL_WARNING;
@@ -232,6 +244,13 @@ function onDownloadFile() {
             .then(async (response) => {
 
                 const resultDto: OneFileBlobResultDtoInterface = await response.json();
+
+                if (response.status > SERVER_STATUS_ERROR) {
+                    message.value = getErrorMessage(resultDto.message, ERR_MESS_ONLY);
+                    infoLevel.value = MessageConstants.LEVEL_ERROR;
+                    messageType.value = MessageConstants.VIEW_OK;
+                    return;
+                }
 
                 if (resultDto.isFailure) {
                     // メッセージ
@@ -337,7 +356,7 @@ function getStatus(status: number): string {
     <!-- 管理者メニュー兼チェック -->
     <ManagerInfo :user-dto="userDto"></ManagerInfo>
 
-    <h1>コード変更承認</h1><br>
+    <h1>関連者コード変更承認</h1><br>
 
     <h3 class="accent-h3">検索条件</h3>
 
@@ -459,6 +478,14 @@ function getStatus(status: number): string {
         </div>
         <div class="right-area">
             <button @click="onDownloadFile">書証ダウンロード</button>
+        </div>
+    </div>
+    <div class="one-line">
+        <div class="left-area">
+            承認理由
+        </div>
+        <div class="right-area">
+            <textarea class="max-input" v-model="editEntity.moveReason"></textarea>
         </div>
     </div>
 

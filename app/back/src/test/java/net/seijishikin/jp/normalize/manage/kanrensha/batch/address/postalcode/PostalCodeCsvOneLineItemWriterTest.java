@@ -123,7 +123,9 @@ class PostalCodeCsvOneLineItemWriterTest {
         JobParameters jobParameters = new JobParametersBuilder() // NOPMD
                 .addLong("userId", (long) userDto.getUserPersonId())
                 .addLong("userCode", (long) userDto.getUserPersonCode())
-                .addString("userName", userDto.getUserPersonName()).toJobParameters();
+                .addString("userName", userDto.getUserPersonName())
+                .addString("lgCode", "965314")
+                .toJobParameters();
 
         // 起動引数付きのStepExecutionを作成
         return MetaDataInstanceFactory.createStepExecution(jobParameters);

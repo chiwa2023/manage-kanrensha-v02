@@ -49,7 +49,7 @@ public class AcceptUserAdminSendMailLogic {
      * @param userId SE権限推薦業者ユーザId
      * @return メール送信結果
      */
-    public SendMaileResultDto pracitce(final Integer userId) {
+    public SendMaileResultDto pracitce(final Integer userId, final Integer taskPlanCode) {
 
         // 送信先メールアドレス取得
         Optional<UserPersonEntity> optionalPerson = userPersonRepository.findById(userId);
@@ -64,7 +64,7 @@ public class AcceptUserAdminSendMailLogic {
         try {
             List<MailDataDto> list = new ArrayList<>();
             list.add(this.createMailData(userPersonEntity.getEmail()));
-            return sendMailUserLogic.practice(list);
+            return sendMailUserLogic.practice(list, taskPlanCode);
         } catch (IOException iOException) {
             SendMaileResultDto resultDto = new SendMaileResultDto();
             resultDto.setIsFailure(true);

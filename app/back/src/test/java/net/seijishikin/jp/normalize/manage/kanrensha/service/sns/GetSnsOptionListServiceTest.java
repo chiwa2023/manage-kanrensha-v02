@@ -16,7 +16,8 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import org.springframework.transaction.annotation.Transactional;
 
-import net.seijishikin.jp.normalize.manage.kanrensha.dto.sns.SnsServiceOptionDto;
+import net.seijishikin.jp.normalize.common_tool.dto.sns.SnsServiceOptionDto;
+
 
 /**
  * GetSnsOptionListService単体テスト
