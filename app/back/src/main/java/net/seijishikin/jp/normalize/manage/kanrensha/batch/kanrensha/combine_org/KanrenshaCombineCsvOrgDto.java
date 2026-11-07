@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * 個人団体紐づけCsvDto
  */
-public class KanrenshaCombineOrgDto implements Serializable { // NOPMD DataClass
+public class KanrenshaCombineCsvOrgDto implements Serializable { // NOPMD DataClass
 
     /** serialId */
     private static final long serialVersionUID = 1L;

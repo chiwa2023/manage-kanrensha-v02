@@ -11,6 +11,8 @@ import { UpdateWkTblCombineOrgCapsuleDto, type UpdateWkTblCombineOrgCapsuleDtoIn
 import type { UpdateWkTblHistoryKigyouDtResultDtoInterface } from '../../dto/wktbl_history/updateWkTblHistoryKigyouDtResultDto';
 import type { YearOptionResultDtoInterface } from '../../dto/year_option/yearOptionResultDto';
 import type { YearOptionEntityInterface } from '../../entity/yearOptionEntity';
+import SetYearPeriod from '../kanrensha_edit/SetYearPeriod.vue';
+import createYearArrayText from '../kanrensha_edit/createYearArrayText.ts';
 
 //props,emit
 const props = defineProps<{ orgType: string, userDto: LeastUserDtoInterface }>();
@@ -162,12 +164,6 @@ function onSearch() {
 
 }
 
-
-// 初期表示データフォーマットは最小
-const period: string = "period";
-const point: string = "point";
-const isSetPeriod: Ref<string> = ref(period);
-
 // 編集用
 const isEditData: Ref<boolean> = ref(false);
 const entityEdit: Ref<WkTblKanrenshaCombineOrgEntityInterface> = ref(new WkTblKanrenshaCombineOrgEntity());
@@ -198,26 +194,7 @@ function onEditData(editId: number) {
 
 function onEditUpdate() {
 
-    // 編集中のEntityを編集のためにBack側に受け渡し
-    let text = "";
-    if (isSetPeriod.value === period) {
-        // 範囲による指定
-        for (let index = entityEdit.value.startYear; index <= entityEdit.value.endYear; index++) {
-            text = text + index + ":";
-        }
-    }
-    else {
-        // チェックボックスによる指定
-        for (const dto of listYearCheck.value) {
-            if (dto.isSelected) {
-                text = text + dto.selectedYear + ":";
-            }
-        }
-        entityEdit.value.startYear = 0;
-        entityEdit.value.endYear = 0;
-    }
-    const data = text === "" ? "" : text.substring(0, text.length - 1);
-    entityEdit.value.yearArrayText = data;
+    entityEdit.value.yearArrayText = createYearArrayText(entityEdit.value, listYearCheck.value, isPeriod);
     editCapsuleDto.value.wkTblKanrenshaCombineOrgEntity = entityEdit.value;
 
     getAuthorizedPromiseArea().then(token => {
@@ -347,6 +324,21 @@ function onSearchDantai() {
     }
 }
 
+// 年指定設定受け取り
+let isPeriod: boolean = true;
+function recieveStartYear(year: number) {
+    entityEdit.value.startYear = year;
+    isPeriod = true;
+}
+function recieveEndYear(year: number) {
+    entityEdit.value.endYear = year;
+    isPeriod = true;
+}
+function recieveCheckList(listCheck: YearOptionEntityInterface[]) {
+    listYearCheck.value = listCheck;
+    isPeriod = false;
+}
+
 </script>
 <template>
     <h3>関連者企業／団体検索条件</h3>
@@ -416,7 +408,6 @@ function onSearchDantai() {
         @send-paging-number="recievePagingNumber"></PagingControl>
 
     <!-- 編集処理 -->
-    <!-- TODO 個人検索画面と企業または政治団体検索コンポーネントを追加 -->
     <div v-if="isEditData" class="overBackground"></div>
     <div class="overComponent" v-if="isEditData">
 
@@ -488,52 +479,10 @@ function onSearchDantai() {
             </div>
         </div>
 
-
-        <div class="one-line">
-            <div class="left-area">
-                年度登録方法
-            </div>
-            <div class="right-area">
-                <span><input type="radio" v-model="isSetPeriod" :value="period" id="dataFormat">期間で指定</span>
-                <span class="left-space"><input type="radio" v-model="isSetPeriod" :value="point"
-                        id="dataFormat">具体的に指定</span>
-            </div>
-        </div>
-
-        <!-- 登録年を期間で指定  -->
-        <div v-if="isSetPeriod === period">
-            <div class="one-line">
-                <div class="left-area">
-                    開始年
-                </div>
-                <div class="right-area">
-                    <input type="number" v-model="entityEdit.startYear" />
-                </div>
-            </div>
-
-            <div class="one-line">
-                <div class="left-area">
-                    終了年
-                </div>
-                <div class="right-area">
-                    <input type="number" v-model="entityEdit.endYear" />
-                </div>
-            </div>
-
-        </div>
-        <!-- 登録年を期間で指定 -->
-        <div v-if="isSetPeriod === point">
-            <div class="one-line">
-                <div class="left-area">
-                    登録年
-                </div>
-                <div class="right-area">
-                    <span v-for="dto in listYearCheck" :key="dto.selectedYear">
-                        <input type="checkbox" v-model="dto.isSelected" />{{ dto.selectedYear }} 年
-                    </span>
-                </div>
-            </div>
-        </div>
+        <!-- 紐づけ年指定 -->
+        <SetYearPeriod :list-year="listYearCheck" @send-end-year="recieveEndYear" @send-start-year="recieveStartYear"
+            @send-check-list="recieveCheckList">
+        </SetYearPeriod>
 
         <div class="footer">
             <button @click="onEditClose" class="footer-button">キャンセル</button>

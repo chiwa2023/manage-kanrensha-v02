@@ -25,7 +25,7 @@ class KanrenshaCombineOrgLineMapperTest {
 
         KanrenshaCombineOrgLineMapper lineMapper = new KanrenshaCombineOrgLineMapper();
 
-        KanrenshaCombineOrgDto dto = lineMapper.mapLine(
+        KanrenshaCombineCsvOrgDto dto = lineMapper.mapLine(
                 "\"12-34567-8901-2345-67890\",\"迂回献金　太郎\",\"1-2345-67-890123-4567890\",\"ふんだくり企業\",\"2021\",\"abcd\"",
                 0);
 

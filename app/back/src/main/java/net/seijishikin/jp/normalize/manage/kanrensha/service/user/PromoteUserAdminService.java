@@ -74,7 +74,7 @@ public class PromoteUserAdminService {
         Integer code = 1;
         Optional<PromoteAdminEntity> optional = promoteAdminRepository.findFirstByOrderByPromoteAdminCodeDesc();
         if (!optional.isEmpty()) {
-            code = optional.get().getPromoteAdminCode();
+            code += optional.get().getPromoteAdminCode();
         }
 
         LeastUserDto userDtoWorker = capsuleDto.getUserDto();

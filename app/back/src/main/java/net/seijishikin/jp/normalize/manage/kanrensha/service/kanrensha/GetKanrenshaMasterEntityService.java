@@ -81,7 +81,7 @@ public class GetKanrenshaMasterEntityService {
 
             case UserRoleConstants.KANRENSHA_SEIJIDANTAI:
                 Optional<KanrenshaSeijidantaiMasterEntity> optionalSeijidantai = kanrenshaSeijidantaiMasterRepository
-                        .findFirstBySeijidantaiKanrenshaCodeAndIsLatestTrueOrderByKanrenshaSeijidantaiMasterId(
+                        .findFirstBySeijidantaiKanrenshaCodeAndIsLatestTrueOrderByKanrenshaSeijidantaiMasterIdDesc(
                                 code);
                 if (optionalSeijidantai.isEmpty()) {
                     resultDto.setIsFailure(true);

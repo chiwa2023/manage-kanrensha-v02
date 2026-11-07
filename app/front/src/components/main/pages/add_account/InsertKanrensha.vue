@@ -259,7 +259,6 @@ function recieveSeijidantaiInterfaceEdit(editDto: KanrenshaSeijidantaiDtoInterfa
 function recieveSubmit(title: string, callerMess: string) {
     infoLevel.value = 0;
     messageType.value = 0;
-    alert(title + "==" + callerMess);
     if (title === MESS_PAGE_NAME && callerMess === "add record" ) {
         router.push(RoutePathConstants.PAGE_LOGOUT);
     }

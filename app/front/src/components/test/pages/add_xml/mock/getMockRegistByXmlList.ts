@@ -1,4 +1,4 @@
-import { WkTblMasterAllByXmlEntity, type WkTblMasterAllByXmlEntityInterface } from "../../../entity/wkTblMasterAllByXmlEntity";
+import { WkTblMasterAllByXmlEntity, type WkTblMasterAllByXmlEntityInterface } from "../../../../main/entity/wkTblMasterAllByXmlEntity";
 
 export default function getMockRegistByXmlList(): WkTblMasterAllByXmlEntityInterface[] {
     const list: WkTblMasterAllByXmlEntityInterface[] = [];

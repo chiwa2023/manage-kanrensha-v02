@@ -46,7 +46,7 @@ class CombineOrgCsvItemReaderTest {
         combineOrgCsvItemReader.beforeStep(stepExecution);
         combineOrgCsvItemReader.open(stepExecution.getExecutionContext());
 
-        KanrenshaCombineOrgDto dto01 = combineOrgCsvItemReader.read();
+        KanrenshaCombineCsvOrgDto dto01 = combineOrgCsvItemReader.read();
         // "12-34567-8901-2345-67890","迂回献金
         // 太郎","1-ABCD-67-890123-4567890","ふんだくり企業","2021","abcde"
         assertEquals("12-34567-8901-2345-67890", dto01.getPersonKanrenshaCode());
@@ -56,7 +56,7 @@ class CombineOrgCsvItemReaderTest {
         assertEquals(Short.valueOf("2021"), dto01.getStartYear());
         assertEquals(Short.valueOf("-1"), dto01.getEndYear()); // 数字変換できないときは-1
 
-        KanrenshaCombineOrgDto dto02 = combineOrgCsvItemReader.read();
+        KanrenshaCombineCsvOrgDto dto02 = combineOrgCsvItemReader.read();
         // "12-34567-8901-2345-67891","迂回献金
         // 花子","1-ABCD-67-890123-4567890","ふんだくり企業","999999999","2024"
         assertEquals("12-34567-8901-2345-67891", dto02.getPersonKanrenshaCode());

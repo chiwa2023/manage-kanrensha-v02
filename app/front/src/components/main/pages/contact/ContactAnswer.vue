@@ -139,50 +139,11 @@ function onCancel() {
 
 function onSave() {
     if (!selectedInquiry.value) {
-        alert("履歴を表示する問い合わせを選択してください。");
+        message.value = "履歴を表示する問い合わせを選択してください。";
+        infoLevel.value = MessageConstants.LEVEL_ERROR;
+        messageType.value = MessageConstants.VIEW_OK;
         return;
     }
-    // if (!newCommentText.value.trim()) {
-    //     alert("コメント内容を入力してください。");
-    //     return;
-    // }
-
-
-    // const now = new Date();
-    // const formattedDate = now.getFullYear() + '-' + 
-    //     String(now.getMonth() + 1).padStart(2, '0') + '-' + 
-    //     String(now.getDate()).padStart(2, '0');
-    // const formattedTime = String(now.getHours()).padStart(2, '0') + ':' + 
-    //     String(now.getMinutes()).padStart(2, '0') + ':' + 
-    //     String(now.getSeconds()).padStart(2, '0');
-    // const fullDateTime = `${formattedDate} ${formattedTime}`;
-
-    // // 履歴に追加
-    // selectedInquiry.value.history.push({
-    //     date: fullDateTime,
-    //     senderName: userDto.value?.allName || '運営者(自分)',
-    //     isSelf: true,
-    //     comment: newCommentText.value
-    // });
-
-    // // 最新状態の更新
-    // selectedInquiry.value.latestDate = formattedDate;
-    // const rawComment = newCommentText.value;
-    // selectedInquiry.value.latestCommentExcerpt = rawComment.slice(0, 20) + (rawComment.length > 20 ? '...' : '');
-
-    // // クローズ処理
-    // if (closeOnSave.value) {
-    //     selectedInquiry.value.status = 'closed';
-    // }
-
-    // // 入力リセット
-    // newCommentText.value = '';
-    // closeOnSave.value = false;
-
-    // // 検索状態を再反映
-    // onSearch();
-
-    // alert("コメントを送信しました。");
 
     capsuleDto.value.userDto = userDto.value;
     capsuleDto.value.contactManagerCode = saishinEntity.value.contactManagerCode;
@@ -445,7 +406,7 @@ function getStatus(isColsed: boolean): string {
             :class="['chat-message', isMyself(entity.insertUserCode) ? 'self' : 'other']">
             <div class="chat-meta">
                 <span class="chat-sender" v-if="!isMyself(entity.insertUserCode)">{{ entity.insertUserName
-                }}</span>
+                    }}</span>
                 <span class="chat-time">{{ entity.insertTimestamp }}</span>
             </div>
             <div class="chat-bubble">

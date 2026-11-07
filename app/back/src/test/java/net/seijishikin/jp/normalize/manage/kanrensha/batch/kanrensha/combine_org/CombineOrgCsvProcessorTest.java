@@ -52,7 +52,7 @@ class CombineOrgCsvProcessorTest {
         final String BLANK = "";
 
         // 未入力カラムがあると追加作業をしません
-        WkTblKanrenshaCombineOrgEntity minEntity00 = combineOrgCsvProcessor.process(new KanrenshaCombineOrgDto());
+        WkTblKanrenshaCombineOrgEntity minEntity00 = combineOrgCsvProcessor.process(new KanrenshaCombineCsvOrgDto());
         assertEquals(false, minEntity00.getIsAffected());
         assertEquals(
                 "個人関連者コードが入力されていません;個人姓名が入力されていません;団体関連者コードが入力されていません;団体名称が入力されていません;登録開始年がシステム登録可能年の範囲でありません;登録終了年がシステム登録可能年の範囲でありません;指定された個人関連者コードが存在しません;指定された企業／団体関連者コードが存在しません;",
@@ -60,7 +60,7 @@ class CombineOrgCsvProcessorTest {
         assertEquals(BLANK, minEntity00.getYearArrayText());
 
         // 正常に読みとれます
-        KanrenshaCombineOrgDto dto01 = new KanrenshaCombineOrgDto();
+        KanrenshaCombineCsvOrgDto dto01 = new KanrenshaCombineCsvOrgDto();
         dto01.setPersonKanrenshaCode("P-CODE-001"); // NOPMD
         dto01.setPersonName("迂回献金　太郎"); // NOPMD
         dto01.setOrgKanrenshaCode("K-CODE-001");
@@ -74,7 +74,7 @@ class CombineOrgCsvProcessorTest {
         assertEquals("2023:2024", entity01.getYearArrayText());
 
         // 登録年に数字以外が設定されました
-        KanrenshaCombineOrgDto dto02 = new KanrenshaCombineOrgDto();
+        KanrenshaCombineCsvOrgDto dto02 = new KanrenshaCombineCsvOrgDto();
         BeanUtils.copyProperties(dto01, dto02);
         dto02.setStartYear(Short.valueOf("-1"));
         dto02.setEndYear(Short.valueOf("-1"));
@@ -85,7 +85,7 @@ class CombineOrgCsvProcessorTest {
         assertEquals(BLANK, entity02.getYearArrayText());
 
         // 登録年がシステム可能年度に収まっていません
-        KanrenshaCombineOrgDto dto03 = new KanrenshaCombineOrgDto();
+        KanrenshaCombineCsvOrgDto dto03 = new KanrenshaCombineCsvOrgDto();
         BeanUtils.copyProperties(dto01, dto03);
         dto03.setStartYear(Short.valueOf("1"));
         dto03.setEndYear(Short.valueOf("9999"));
@@ -96,7 +96,7 @@ class CombineOrgCsvProcessorTest {
         assertEquals(BLANK, entity03.getYearArrayText());
 
         // 登録開始年と終了年の大小が逆です。
-        KanrenshaCombineOrgDto dto04 = new KanrenshaCombineOrgDto();
+        KanrenshaCombineCsvOrgDto dto04 = new KanrenshaCombineCsvOrgDto();
         BeanUtils.copyProperties(dto01, dto04);
         dto04.setEndYear(Short.valueOf("2023"));
         dto04.setStartYear(Short.valueOf("2024"));
@@ -116,7 +116,7 @@ class CombineOrgCsvProcessorTest {
         combineOrgCsvProcessor.beforeStep(getStepExecution(KanrenshaKbnConstants.SEIJIDANTAI));
 
         // 正常に読みとれます
-        KanrenshaCombineOrgDto dto01 = new KanrenshaCombineOrgDto();
+        KanrenshaCombineCsvOrgDto dto01 = new KanrenshaCombineCsvOrgDto();
         dto01.setPersonKanrenshaCode("P-CODE-001");
         dto01.setPersonName("迂回献金　太郎");
         dto01.setOrgKanrenshaCode("S-CODE-001");
@@ -130,7 +130,7 @@ class CombineOrgCsvProcessorTest {
         assertEquals("2023:2024", entity01.getYearArrayText());
 
         // 2022年にすでに登録があります
-        KanrenshaCombineOrgDto dto02 = new KanrenshaCombineOrgDto();
+        KanrenshaCombineCsvOrgDto dto02 = new KanrenshaCombineCsvOrgDto();
         dto02.setPersonKanrenshaCode("P-CODE-001");
         dto02.setPersonName("迂回献金　太郎");
         dto02.setOrgKanrenshaCode("S-CODE-001");
@@ -156,7 +156,7 @@ class CombineOrgCsvProcessorTest {
         // 処理実施直前に別実装で2020-2025年のテーブルが存在する、と確認したにもかかわらず
         // バッチ処理段階でテーブル不備が発生した(テストを複数回実施する以外では超々々レアケース)・・・処理中断
         // MEMO さすがにテーブル名変更はトランザクションで戻してくれないので手作業で2099→2023と戻すこと
-        KanrenshaCombineOrgDto dto01 = new KanrenshaCombineOrgDto();
+        KanrenshaCombineCsvOrgDto dto01 = new KanrenshaCombineCsvOrgDto();
         dto01.setPersonKanrenshaCode("P-CODE-001");
         dto01.setPersonName("迂回献金　太郎");
         dto01.setOrgKanrenshaCode("S-CODE-001");

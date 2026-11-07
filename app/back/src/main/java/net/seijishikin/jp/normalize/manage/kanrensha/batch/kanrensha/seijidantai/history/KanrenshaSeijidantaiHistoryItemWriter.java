@@ -70,7 +70,7 @@ public class KanrenshaSeijidantaiHistoryItemWriter extends JpaItemWriter<WkTblKa
         Optional<WkTblKanrenshaSeijidantaiHistoryEntity> optional = wkTbKanrenshaSeijidantaiHistoryRepository
                 .findFirstByOrderByWkKanrenshaSeijidantaiHistoryCodeDesc();
         if (!optional.isEmpty()) {
-            code = optional.get().getWkKanrenshaSeijidantaiHistoryCode();
+            code += optional.get().getWkKanrenshaSeijidantaiHistoryCode();
         }
 
         for (WkTblKanrenshaSeijidantaiHistoryEntity entity : items) {

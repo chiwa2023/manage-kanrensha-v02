@@ -70,7 +70,7 @@ public class KanrenshaKigyouDtAddMiniCsvItemWriter extends JpaItemWriter<WkTblKa
         Optional<WkTblKanrenshaKigyouDtAddMinEntity> optional = wkTblKanrenshaKigyouDtAddMinRepository
                 .findFirstByOrderByWkTblKanrenshaKigyouDtAddMinCodeDesc();
         if (!optional.isEmpty()) {
-            code = optional.get().getWkTblKanrenshaKigyouDtAddMinCode();
+            code += optional.get().getWkTblKanrenshaKigyouDtAddMinCode();
         }
 
         for (WkTblKanrenshaKigyouDtAddMinEntity entity : items) {

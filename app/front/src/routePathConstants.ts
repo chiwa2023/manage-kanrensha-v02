@@ -194,8 +194,14 @@ export default class RoutePathConstants {
     /** 運営者による関連者管理 */
     static readonly PAGE_KANRENSHA_MANAGE: string = this.BASE_PATH + "/kanrensha-manage";
 
+    /** 運営者による関連者紐づけ追加 */
+    static readonly PAGE_KANRENSHA_COMBINE: string = this.BASE_PATH + "/kanrensha-combine";
+
     /** 本人による関連者編集 */
     static readonly PAGE_KANRENSHA_MYSELF: string = this.BASE_PATH + "/kanrensha-myself";
+
+        /** 本人による関連者編集 */
+    static readonly PAGE_KANRENSHA_COMBINE_MYSELF: string = this.BASE_PATH + "/kanrensha-combine-myself";
 
     /** 利用者組織に個人を招待 */
     static readonly PAGE_INSERT_COMBINE_ORG: string = this.BASE_PATH + "/insert-combine-org";

@@ -124,9 +124,6 @@ function recieveSubmit(title: string, callerMess: string) {
         router.push(RoutePathConstants.PAGE_LOGOUT);
     }
 }
-function onShowUer(){
-    alert(JSON.stringify(  userDto.value));
-}
 </script>
 <template>
 
@@ -145,10 +142,6 @@ function onShowUer(){
         <MessageView :info-level="infoLevel" :message-type="messageType" :title="MESS_PAGE_NAME" :message="message"
             :caller="caller" @send-submit="recieveSubmit">
         </MessageView>
-    </div>
-
-    <div class="one-line">
-        <button @click="onShowUer">押す</button>
     </div>
 </template>
 <style scoped></style>

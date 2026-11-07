@@ -70,7 +70,7 @@ public class MasterSeijidantaiAddStdCsvItemWriter extends JpaItemWriter<WkTblKan
         Optional<WkTblKanrenshaSeijidantaiMasterEntity> optional = wkTblKanrenshaSeijidantaiMasterRepository
                 .findFirstByOrderByWkTblKanrenshaSeijidantaiMasterCodeDesc();
         if (!optional.isEmpty()) {
-            code = optional.get().getWkTblKanrenshaSeijidantaiMasterCode();
+            code += optional.get().getWkTblKanrenshaSeijidantaiMasterCode();
         }
 
         for (WkTblKanrenshaSeijidantaiMasterEntity entity : items) {

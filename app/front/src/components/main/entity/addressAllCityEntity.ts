@@ -64,8 +64,6 @@ class AddressAllCityEntity implements AddressAllCityEntityInterface {
     /** 廃止日 */
     abolishDate: Date;
 
-
-
     constructor() {
 
         const INIT_NUMBER: number = 0;

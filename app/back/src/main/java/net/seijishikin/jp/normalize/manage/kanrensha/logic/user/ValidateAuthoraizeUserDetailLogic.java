@@ -42,8 +42,8 @@ public class ValidateAuthoraizeUserDetailLogic {
         if (userDetails instanceof CustomUserDetails) {
             CustomUserDetails customUserDetails = (CustomUserDetails) userDetails;
             this.checkUserInfo(customUserDetails, userDto);
-            UserDetails us = (UserDetails)userDetails;
-            return us.getUsername();
+            UserDetails usCast = (UserDetails)userDetails;
+            return usCast.getUsername();
         }
 
         // テストで@withMockUserを使用している場合はユーザ名だけが返ってくる

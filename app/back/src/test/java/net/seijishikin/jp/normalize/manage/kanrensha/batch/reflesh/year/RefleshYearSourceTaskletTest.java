@@ -58,8 +58,8 @@ class RefleshYearSourceTaskletTest {
     @Test
     void test() throws Exception {
 
-        final Long srcYear = 2025L;
-        final Long copyYear = 2024L;
+        final Long srcYear = 2026L;
+        final Long copyYear = 2027L;
 
         refleshYearSourceTasklet.beforeStep(this.getStepExecution(srcYear, copyYear));
         refleshYearSourceTasklet.execute(null, null);

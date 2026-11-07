@@ -69,8 +69,9 @@ public class CombineOrgCsvItemWriter extends JpaItemWriter<WkTblKanrenshaCombine
 
         Optional<WkTblKanrenshaCombineOrgEntity> optional = wkTblKanrenshaCombineOrgRepository
                 .findFirstByOrderByWkTblKanrenshaCombineOrgCodeDesc();
+        
         if (!optional.isEmpty()) {
-            code = optional.get().getWkTblKanrenshaCombineOrgCode();
+            code += optional.get().getWkTblKanrenshaCombineOrgCode();
         }
 
         for (WkTblKanrenshaCombineOrgEntity entity : items) {

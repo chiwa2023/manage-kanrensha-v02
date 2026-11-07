@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
  * 個人団体紐づけLineMapper
  */
 @Component
-public class KanrenshaCombineOrgLineMapper implements LineMapper<KanrenshaCombineOrgDto> {
+public class KanrenshaCombineOrgLineMapper implements LineMapper<KanrenshaCombineCsvOrgDto> {
 
     /** 個人関連者コードカラム位置 */
     private static final int POS_PERSON_CODE = 0;
@@ -35,8 +35,8 @@ public class KanrenshaCombineOrgLineMapper implements LineMapper<KanrenshaCombin
      * 処理を行う
      */
     @Override
-    public KanrenshaCombineOrgDto mapLine(final String line, final int lineNumber) throws Exception {
-        KanrenshaCombineOrgDto dto = new KanrenshaCombineOrgDto();
+    public KanrenshaCombineCsvOrgDto mapLine(final String line, final int lineNumber) throws Exception {
+        KanrenshaCombineCsvOrgDto dto = new KanrenshaCombineCsvOrgDto();
         String[] cell = line.split(",");
 
         dto.setPersonKanrenshaCode(this.removeQuote(cell[POS_PERSON_CODE]));

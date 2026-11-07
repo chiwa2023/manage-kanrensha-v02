@@ -1,0 +1,106 @@
+package net.seijishikin.jp.normalize.manage.kanrensha.controller.kanrensha.combine;
+
+import static org.junit.jupiter.api.Assertions.assertEquals; // NOPMD HighImports
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
+import org.springframework.test.context.jdbc.Sql;
+import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import net.seijishikin.jp.normalize.common_tool.utils.GetObjectMapperWithTimeModuleUtil;
+import net.seijishikin.jp.normalize.manage.kanrensha.constants.KanrenshaKbnConstants;
+import net.seijishikin.jp.normalize.manage.kanrensha.constants.UserRoleConstants;
+import net.seijishikin.jp.normalize.manage.kanrensha.controller.PathRouteConstants;
+import net.seijishikin.jp.normalize.manage.kanrensha.dto.kanrensha.combine.UpdateKanrenshaCombineCapsuleDto;
+import net.seijishikin.jp.normalize.manage.kanrensha.entity.WkTblKanrenshaCombineOrgEntity;
+
+/**
+ * UpdateKanrenshaCombineOrgController単体テスト
+ */
+@SpringJUnitConfig
+@AutoConfigureMockMvc
+@SpringBootTest
+@DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
+@Sql("UpdateKanrenshaCombineOrgControllerTest.sql")
+class UpdateKanrenshaCombineOrgControllerTest {
+    // CHECKSTYLE:OFF MagicNumber
+
+    /** WebApplicationContext */
+    @Autowired
+    private WebApplicationContext context;
+
+    /** MockMvc */
+    private MockMvc mockMvc;
+
+    /** setup */
+    @BeforeEach
+    public void setup() {
+        this.mockMvc = MockMvcBuilders.webAppContextSetup(context) //
+                .apply(SecurityMockMvcConfigurers.springSecurity()).build();
+    }
+
+    /** 認証プロバイダ */
+    @Autowired
+    private AuthenticationManager authenticationManager;
+
+    @Test
+    @Tag("TableTruncate")
+    @WithMockUser
+    void test() throws Exception {
+
+        /* 運営者でログインするときはどの関連者であっても編集可能 */
+        String mail = "aaa@politician.balanse.report.net";
+        String password = "qwerty1234";
+
+        // ログイン処理(運営者)
+        Authentication authentication = authenticationManager
+                .authenticate(new UsernamePasswordAuthenticationToken(mail, password));
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        WkTblKanrenshaCombineOrgEntity entity = new WkTblKanrenshaCombineOrgEntity();
+        entity.setYearArrayText("2026"); // 2026年のみ
+        entity.setPersonKanrenshaCode("111-2222");
+        entity.setPersonName("迂回献金　太郎");
+        entity.setOrgKanrenshaCode("3333-4");
+        entity.setOrgName("超元素製造組合");
+        entity.setKanrenshaKbn(KanrenshaKbnConstants.KIGYOU_DT);
+
+        UpdateKanrenshaCombineCapsuleDto capsuleDto = new UpdateKanrenshaCombineCapsuleDto();
+        capsuleDto.getUserDto().setUserPersonId(81);
+        capsuleDto.getUserDto().setUserPersonCode(80);
+        capsuleDto.getUserDto().setUserPersonName("aaa");
+        capsuleDto.getUserDto().getListRoles().add("ROLE_" + UserRoleConstants.MANAGER);
+        capsuleDto.setCombineOrgEntity(entity);
+
+        String path = PathRouteConstants.ROOT + "/kanrensha-combine/update";
+
+        ObjectMapper objectMapper = GetObjectMapperWithTimeModuleUtil.practice();
+
+        assertEquals(HttpStatus.OK.value(), mockMvc // NOPMD LawOfDemeter
+                .perform(post(path).content(objectMapper.writeValueAsString(capsuleDto)) //
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)) //
+                .andExpect(status().isOk()).andReturn().getResponse().getStatus());
+    }
+
+}

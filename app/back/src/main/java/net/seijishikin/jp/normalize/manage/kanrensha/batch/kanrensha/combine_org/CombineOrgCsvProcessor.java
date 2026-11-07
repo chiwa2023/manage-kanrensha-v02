@@ -26,7 +26,7 @@ import net.seijishikin.jp.normalize.manage.kanrensha.repository.KanrenshaSeijida
  */
 @Component
 public class CombineOrgCsvProcessor
-        implements ItemProcessor<KanrenshaCombineOrgDto, WkTblKanrenshaCombineOrgEntity>, StepExecutionListener {
+        implements ItemProcessor<KanrenshaCombineCsvOrgDto, WkTblKanrenshaCombineOrgEntity>, StepExecutionListener {
 
     /** 関連者個人マスタRepository */
     @Autowired
@@ -75,7 +75,7 @@ public class CombineOrgCsvProcessor
      * 変換処理を実行する
      */
     @Override
-    public WkTblKanrenshaCombineOrgEntity process(final KanrenshaCombineOrgDto item) throws Exception {
+    public WkTblKanrenshaCombineOrgEntity process(final KanrenshaCombineCsvOrgDto item) throws Exception {
 
         WkTblKanrenshaCombineOrgEntity entity = new WkTblKanrenshaCombineOrgEntity();
         BeanUtils.copyProperties(item, entity);
@@ -218,7 +218,7 @@ public class CombineOrgCsvProcessor
         // 紐づけ団体が政治団体の場合
         if (KanrenshaKbnConstants.SEIJIDANTAI == entity.getKanrenshaKbn()) {
             Optional<KanrenshaSeijidantaiMasterEntity> optionalSeijidantai = kanrenshaSeijidantaiMasterRepository
-                    .findFirstBySeijidantaiKanrenshaCodeAndIsLatestTrueOrderByKanrenshaSeijidantaiMasterId(
+                    .findFirstBySeijidantaiKanrenshaCodeAndIsLatestTrueOrderByKanrenshaSeijidantaiMasterIdDesc(
                             entity.getOrgKanrenshaCode());
             if (optionalSeijidantai.isEmpty()) {
                 stringBuilder.append("指定された政治団体団体関連者コードが存在しません;");

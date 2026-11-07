@@ -139,7 +139,7 @@ public class AddCombineOrgBatchConfiguration {
     protected Step getStepCsv(final JobRepository jobRepository, final PlatformTransactionManager transactionManager) {
 
         return new StepBuilder(STEP_CSV, jobRepository)
-                .<KanrenshaCombineOrgDto, WkTblKanrenshaCombineOrgEntity>chunk(CHUNK_SIZE)
+                .<KanrenshaCombineCsvOrgDto, WkTblKanrenshaCombineOrgEntity>chunk(CHUNK_SIZE)
                 .reader(combineOrgCsvItemReader).processor(combineOrgCsvProcessor).writer(combineOrgCsvItemWriter)
                 .build();
     }

@@ -45,7 +45,7 @@ public interface KanrenshaSeijidantaiMasterRepository extends JpaRepository<Kanr
      * @param kanrenshaCode 関連者コード
      * @return 関連者コード同一Entity
      */
-    Optional<KanrenshaSeijidantaiMasterEntity> findFirstBySeijidantaiKanrenshaCodeAndIsLatestTrueOrderByKanrenshaSeijidantaiMasterId(
+    Optional<KanrenshaSeijidantaiMasterEntity> findFirstBySeijidantaiKanrenshaCodeAndIsLatestTrueOrderByKanrenshaSeijidantaiMasterIdDesc(
             String kanrenshaCode);
 
     /**

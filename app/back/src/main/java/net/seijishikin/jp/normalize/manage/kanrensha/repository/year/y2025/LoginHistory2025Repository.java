@@ -21,5 +21,4 @@ public interface LoginHistory2025Repository extends JpaRepository<LoginHistory20
      */
     Integer countByEmailAndAttemptTimeBetweenAndIsSuccessFalse(String email, LocalDateTime startDatetime,
             LocalDateTime endDatetime);
-
 }
