@@ -1922,6 +1922,9 @@ address_rsdt_473626
 address_rsdt_473758
 address_rsdt_473812
 address_rsdt_473821
+address_rsdt_695123
+address_rsdt_827637
+address_rsdt_965314
 address_rsdt_template
 batch_job_execution
 batch_job_execution_context
@@ -1933,6 +1936,7 @@ batch_step_execution
 batch_step_execution_context
 batch_step_execution_seq
 contact_manager
+dump_record
 kanrensha_code_move
 kanrensha_code_used
 kanrensha_combine_org_2019
@@ -1944,6 +1948,7 @@ kanrensha_combine_org_2024
 kanrensha_combine_org_2025
 kanrensha_combine_org_2026
 kanrensha_combine_org_2027
+kanrensha_combine_org_2099
 kanrensha_kigyou_dt_access
 kanrensha_kigyou_dt_address
 kanrensha_kigyou_dt_history_01
@@ -2153,6 +2158,7 @@ task_plan_2026
 task_plan_2027
 timer_yotei
 user_new
+user_passkey_credential
 user_password_reset
 user_person
 user_role

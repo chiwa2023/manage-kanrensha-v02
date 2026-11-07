@@ -6,4 +6,4 @@ CREATE TABLE `login_history_2019` (
   `attempt_time` datetime DEFAULT NULL COMMENT '試行日時',
   `is_success` tinyint DEFAULT NULL COMMENT 'ログイン成否',
   PRIMARY KEY (`login_history_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;

@@ -13,7 +13,7 @@ CREATE TABLE `task_plan_2027` (
   `role_list` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin COMMENT '対象ユーザリスト',
   `transfer_pass` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin COMMENT '遷移パス',
   `task_user_code` int DEFAULT NULL,
-  `task_user_name` varchar(200) COLLATE utf8mb4_bin DEFAULT NULL,
+  `task_user_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
   `insert_user_id` int DEFAULT NULL COMMENT '挿入ユーザId',
   `insert_user_code` int DEFAULT NULL COMMENT '挿入ユーザコード',
   `insert_user_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '挿入ユーザ名称',
@@ -23,6 +23,6 @@ CREATE TABLE `task_plan_2027` (
   `delete_user_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '無効ユーザ名称',
   `delete_timestamp` datetime DEFAULT NULL COMMENT '無効日時',
   PRIMARY KEY (`task_plan_id`),
-  KEY `code_index` (`task_plan_code`),
+  KEY `code` (`task_plan_code`),
   FULLTEXT KEY `name_index` (`task_plan_name`) /*!50100 WITH PARSER `ngram` */ 
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;

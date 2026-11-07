@@ -5,9 +5,9 @@ CREATE TABLE `promote_admin` (
   `promote_user_id` int DEFAULT NULL COMMENT '推薦者Id',
   `promote_user_code` int DEFAULT NULL COMMENT '推薦者コード',
   `promote_user_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '推薦者氏名',
-  `is_accept` tinyint DEFAULT NULL,
-  `task_plan_id` int DEFAULT NULL,
-  `task_year` int DEFAULT NULL,
+  `is_accept` tinyint DEFAULT NULL COMMENT '承諾フラグ',
+  `task_plan_id` int DEFAULT NULL COMMENT 'タスク計画Id',
+  `task_year` int DEFAULT NULL COMMENT 'タスク発生年',
   `insert_user_id` int DEFAULT NULL COMMENT '挿入ユーザId',
   `insert_user_code` int DEFAULT NULL COMMENT '挿入ユーザコード',
   `insert_user_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '挿入ユーザ名称',
@@ -16,5 +16,6 @@ CREATE TABLE `promote_admin` (
   `delete_user_code` int DEFAULT NULL COMMENT '無効ユーザコード',
   `delete_user_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '無効ユーザ名称',
   `delete_timestamp` datetime DEFAULT NULL COMMENT '無効日時',
-  PRIMARY KEY (`promote_admin_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+  PRIMARY KEY (`promote_admin_id`),
+  KEY `code` (`promote_admin_code`)
+) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;

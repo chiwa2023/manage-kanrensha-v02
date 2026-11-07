@@ -22,4 +22,4 @@ CREATE TABLE `wk_tbl_address_rsdt_file` (
   `delete_user_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '無効ユーザ名称',
   `delete_timestamp` datetime DEFAULT NULL COMMENT '無効日時',
   PRIMARY KEY (`wk_tbl_address_rsdt_file_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=315 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;

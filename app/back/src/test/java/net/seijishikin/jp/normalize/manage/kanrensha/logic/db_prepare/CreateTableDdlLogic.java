@@ -45,7 +45,7 @@ public class CreateTableDdlLogic {
                     Query query = entityManager.createNativeQuery("SHOW CREATE TABLE " + tableName);
 
                     Object[] result = (Object[]) query.getSingleResult(); // NOPMD LawDemeter
-                    Files.writeString(pathSql, result[1].toString());
+                    Files.writeString(pathSql, result[1].toString() + ";" + "\n");
                 }
             }
         }
