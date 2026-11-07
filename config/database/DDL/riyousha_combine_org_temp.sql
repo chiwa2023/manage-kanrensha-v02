@@ -4,6 +4,7 @@ CREATE TABLE `riyousha_combine_org_temp` (
   `is_latest` tinyint DEFAULT NULL COMMENT '最新該否',
   `riyousha_role` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '利用者権限',
   `person_code` int DEFAULT NULL COMMENT '個人コード',
+  `person_riyousha_code` int DEFAULT NULL COMMENT '利用者個人コード',
   `person_riyousha_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '利用者氏名',
   `org_riyousha_code` int DEFAULT NULL COMMENT '利用者組織コード',
   `org_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '利用者組織名称',
@@ -15,5 +16,6 @@ CREATE TABLE `riyousha_combine_org_temp` (
   `delete_user_code` int DEFAULT NULL COMMENT '無効ユーザコード',
   `delete_user_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '無効ユーザ名称',
   `delete_timestamp` datetime DEFAULT NULL COMMENT '無効日時',
-  PRIMARY KEY (`riyousha_combine_org_temp_id`)
+  PRIMARY KEY (`riyousha_combine_org_temp_id`),
+  KEY `code` (`riyousha_combine_org_temp_code`)
 ) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;

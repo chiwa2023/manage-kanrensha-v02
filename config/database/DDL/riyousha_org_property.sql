@@ -33,5 +33,6 @@ CREATE TABLE `riyousha_org_property` (
   `delete_user_code` int DEFAULT NULL COMMENT '無効ユーザコード',
   `delete_user_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '無効ユーザ名称',
   `delete_timestamp` datetime DEFAULT NULL COMMENT '無効日時',
-  PRIMARY KEY (`riyousha_org_property_id`)
+  PRIMARY KEY (`riyousha_org_property_id`),
+  KEY `code` (`riyousha_org_property_code`)
 ) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;

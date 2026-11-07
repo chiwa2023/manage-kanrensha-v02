@@ -17,5 +17,6 @@ CREATE TABLE `riyousha_manager_master` (
   `delete_user_name` varchar(100) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '無効ユーザ名称',
   `delete_timestamp` datetime DEFAULT NULL COMMENT '無効日時',
   PRIMARY KEY (`riyousha_manager_master_id`),
+  KEY `code` (`riyousha_manager_master_code`) /*!80000 INVISIBLE */,
   FULLTEXT KEY `search_text_index` (`search_text`) /*!50100 WITH PARSER `ngram` */ 
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;

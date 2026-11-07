@@ -8,4 +8,4 @@ CREATE TABLE `partner_access_history_2019` (
   `attempt_time` datetime DEFAULT NULL COMMENT '接続日時',
   `is_success` tinyint DEFAULT NULL COMMENT '接続成功フラグ',
   PRIMARY KEY (`partner_access_history_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;

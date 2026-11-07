@@ -28,5 +28,6 @@ CREATE TABLE `kanrensha_person_property` (
   `delete_user_code` int DEFAULT NULL COMMENT '無効ユーザコード',
   `delete_user_name` varchar(200) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '無効ユーザ名称',
   `delete_timestamp` datetime DEFAULT NULL COMMENT '無効日時',
-  PRIMARY KEY (`kanrensha_person_property_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=827 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+  PRIMARY KEY (`kanrensha_person_property_id`),
+  KEY `code` (`kanrensha_person_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
