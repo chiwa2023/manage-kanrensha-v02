@@ -14,7 +14,6 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
-import org.springframework.transaction.annotation.Transactional;
 
 import net.seijishikin.jp.normalize.common_tool.dto.NaturalTextSearchPagingCapsuleDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.sns.SearchSnsServiceResultDto;
@@ -28,7 +27,6 @@ import net.seijishikin.jp.normalize.manage.kanrensha.entity.SnsServiceEntity;
 @SpringBootTest
 @DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
 @Sql("SearchSnsDataServiceTest.sql")
-@Transactional
 class SearchSnsDataServiceTest {
     // CHECKSTYLE:OFF MagicNumber
 

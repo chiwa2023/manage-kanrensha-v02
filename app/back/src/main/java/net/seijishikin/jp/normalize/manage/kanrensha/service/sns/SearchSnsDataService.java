@@ -5,6 +5,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import net.seijishikin.jp.normalize.common_tool.dto.NaturalTextSearchPagingCapsuleDto;
+import net.seijishikin.jp.normalize.common_tool.utils.CreateSerachWordsBooleanModeUtil;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.sns.SearchSnsServiceResultDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.repository.SnsServiceRepository;
 
@@ -18,6 +19,10 @@ public class SearchSnsDataService {
     @Autowired
     private SnsServiceRepository snsServiceRepository;
 
+    /** 検索語全文検索用Util */
+    @Autowired
+    private CreateSerachWordsBooleanModeUtil createSerachWordsBooleanModeUtil;
+
     /**
      * 処理を行う
      * 
@@ -30,9 +35,7 @@ public class SearchSnsDataService {
         resultDto.setLimit(capsuleDto.getLimit());
         resultDto.setPageNumber(capsuleDto.getPageNumber());
 
-        String words = "%" + capsuleDto.getSearchNaturalWords() + "%"; // TODO Match Against
-        // String words =
-        // createSerachWordsBooleanModeUtil.practice(capsuleDto.getSearchNaturalWords());
+        String words = createSerachWordsBooleanModeUtil.practice(capsuleDto.getSearchNaturalWords());
 
         resultDto.setAllCount(snsServiceRepository.countFullText(words));
 

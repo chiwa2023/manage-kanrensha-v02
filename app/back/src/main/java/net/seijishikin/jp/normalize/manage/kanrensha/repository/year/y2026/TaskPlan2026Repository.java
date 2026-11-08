@@ -22,16 +22,6 @@ public interface TaskPlan2026Repository // NOPMD TooManyMethods
         extends JpaRepository<TaskPlan2026Entity, Integer>, PagingAndSortingRepository<TaskPlan2026Entity, Integer> {
 
     /**
-     * 名称を検索対象として全文検索をする
-     *
-     * @param searchWords 検索語
-     * @return 検索結果
-     */
-    @Query(value = "SELECT * FROM task_plan_2026 WHERE saishin_kbn= 1 " // TODO MATCH AGAINST
-            + "AND task_plan_2026_name LIKE ?1", nativeQuery = true)
-    List<TaskPlan2026Entity> findFullText(String searchWords);
-
-    /**
      * 最大コードを取得する
      *
      * @return 最大コードをもつEntity

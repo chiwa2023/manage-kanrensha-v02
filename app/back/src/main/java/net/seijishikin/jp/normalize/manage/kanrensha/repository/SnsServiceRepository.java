@@ -25,8 +25,8 @@ public interface SnsServiceRepository
      * @param searchWords 検索語
      * @return 検索結果
      */
-    @Query(value = "SELECT * FROM sns_service" // TODO MATCH AGAINST
-            + " WHERE is_latest = 1 AND search_text LIKE ?1", nativeQuery = true)
+    @Query(value = "SELECT * FROM sns_service" //
+            + " WHERE is_latest = 1 AND MATCH(search_text) AGAINST(?1 IN BOOLEAN MODE)", nativeQuery = true)
     List<SnsServiceEntity> findFullText(String searchWords, Pageable pageable);
 
     /**
@@ -35,8 +35,8 @@ public interface SnsServiceRepository
      * @param searchWords 検索語
      * @return 検索結果
      */
-    @Query(value = "SELECT count(*) FROM sns_service" // TODO MATCH AGAINST
-            + " WHERE is_latest = 1 AND search_text LIKE ?1", nativeQuery = true)
+    @Query(value = "SELECT count(*) FROM sns_service" //
+            + " WHERE is_latest = 1 AND MATCH(search_text) AGAINST(?1 IN BOOLEAN MODE)", nativeQuery = true)
     Integer countFullText(String searchWords);
 
     /**

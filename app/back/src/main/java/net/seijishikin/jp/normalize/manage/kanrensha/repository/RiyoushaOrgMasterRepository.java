@@ -24,8 +24,8 @@ public interface RiyoushaOrgMasterRepository extends JpaRepository<RiyoushaOrgMa
      * @param searchWords 検索語
      * @return 検索結果
      */
-    @Query(value = "SELECT * FROM riyousha_org_master" // TODO MATCH AGAINST
-            + " WHERE is_latest = 1 AND search_text LIKE ?1", nativeQuery = true)
+    @Query(value = "SELECT * FROM riyousha_org_master"
+            + " WHERE is_latest = 1 AND MATCH(search_text) AGAINST(?1 IN BOOLEAN MODE)", nativeQuery = true)
     List<RiyoushaOrgMasterEntity> findFullText(String searchWords, Pageable pageable);
 
     /**
@@ -34,8 +34,8 @@ public interface RiyoushaOrgMasterRepository extends JpaRepository<RiyoushaOrgMa
      * @param searchWords 検索語
      * @return 検索結果
      */
-    @Query(value = "SELECT count(*) FROM riyousha_org_master" // TODO MATCH AGAINST
-            + " WHERE is_latest = 1 AND search_text LIKE ?1", nativeQuery = true)
+    @Query(value = "SELECT count(*) FROM riyousha_org_master"
+            + " WHERE is_latest = 1 AND MATCH(search_text) AGAINST(?1 IN BOOLEAN MODE)", nativeQuery = true)
     Integer countFullText(String searchWords);
 
     /**

@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import net.seijishikin.jp.normalize.common_tool.utils.CreateSerachWordsBooleanModeUtil;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.riyousha.SearchRiyoushaPartnerApiCapsuleDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.dto.riyousha.SearchRiyoushaPartnerApiResultDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.repository.RiyoushaPartnerApiMasterRepository;
@@ -18,6 +19,10 @@ public class SearchRiyoushaPartnerAppiService {
     @Autowired
     private RiyoushaPartnerApiMasterRepository riyoushaPartnerApiMasterRepository;
 
+    /** 検索語全文検索用Util */
+    @Autowired
+    private CreateSerachWordsBooleanModeUtil createSerachWordsBooleanModeUtil;
+
     /**
      * 処理を行う
      *
@@ -30,8 +35,7 @@ public class SearchRiyoushaPartnerAppiService {
         resultDto.setLimit(capsuleDto.getLimit());
         resultDto.setPageNumber(capsuleDto.getPageNumber());
 
-        String words = "%" + capsuleDto.getSearchNaturalWords() + "%"; // TODO Match Against
-        // String words = createSerachWordsBooleanModeUtil.practice(capsuleDto.getSearchNaturalWords());
+        String words = createSerachWordsBooleanModeUtil.practice(capsuleDto.getSearchNaturalWords());
 
         resultDto.setAllCount(riyoushaPartnerApiMasterRepository.countFullText(words));
 
