@@ -68,7 +68,7 @@ class SearchContactManagerControllerTest {
         capsuleDto.setEndDate(LocalDate.of(2026, 1, 4));
         capsuleDto.setIsSearchClose(true);
 
-        String path = PathRouteConstants.ROOT + "/contact-manager/search";
+        String path = PathRouteConstants.ROOT + "/contact-manager-search/search";
 
         ObjectMapper objectMapper = GetObjectMapperWithTimeModuleUtil.practice();
 

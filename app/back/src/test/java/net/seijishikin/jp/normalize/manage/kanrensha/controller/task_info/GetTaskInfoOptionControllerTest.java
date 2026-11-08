@@ -61,7 +61,7 @@ class GetTaskInfoOptionControllerTest {
         FrameworkCapsuleDto capsuleDto = new FrameworkCapsuleDto();
         capsuleDto.setUserDto(CreateLeastUserForTestUtil.practice());
 
-        String path = PathRouteConstants.ROOT + "/task-info/get";
+        String path = PathRouteConstants.ROOT + "/task-info-option/get";
 
         ObjectMapper objectMapper = GetObjectMapperWithTimeModuleUtil.practice();
 

@@ -24,7 +24,7 @@ import net.seijishikin.jp.normalize.manage.kanrensha.utils.ConvertDatetimeToLoca
  * APIパートナー長期トークン期限切れ通知Controller
  */
 @RestController
-@RequestMapping(PathRouteConstants.ROOT + "/partner-api")
+@RequestMapping(PathRouteConstants.ROOT + "/partner-api-notify")
 public class NotificationPartnerApiTokenLimitController {
 
     /** APIパートナー長期トークン期限切通知非同期Service */
@@ -45,7 +45,7 @@ public class NotificationPartnerApiTokenLimitController {
      * @param capsuleDto ユーザログインDto
      * @return トークン
      */
-    @PostMapping("/notify-limit")
+    @PostMapping("/limit")
     public ResponseEntity<FrameworkMessageAndResultDto> practice(
             final @RequestBody NotifyPartnerApiLimitCapsuleDto capsuleDto) {
 

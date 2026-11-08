@@ -106,7 +106,7 @@ function onSearch() {
 
     // 検索実行
     getAuthorizedPromiseArea().then(token => {
-        const url = urlBack + "/task-plan/search-role";
+        const url = urlBack + "/task-plan-role/search-role";
         const method = "POST";
         const body = JSON.stringify(capsuleDto.value);
         const headers = {

@@ -199,7 +199,7 @@ onBeforeMount(async () => {
         capsuleDto.userDto = props.userDto;
         // 検索実行
         getAuthorizedPromiseArea().then(token => {
-            const url = urlBack + "/task-plan/get-someone";
+            const url = urlBack + "/task-plan-role/get-someone";
             const method = "POST";
             const body = JSON.stringify(capsuleDto);
             const headers = {

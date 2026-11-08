@@ -22,7 +22,7 @@ import net.seijishikin.jp.normalize.manage.kanrensha.service.util.SaveStackTrace
  * タスク情報選択選択肢取得Controller
  */
 @RestController
-@RequestMapping(PathRouteConstants.ROOT + "/task-info")
+@RequestMapping(PathRouteConstants.ROOT + "/task-info-option")
 public class GetTaskInfoOptionController {
 
 

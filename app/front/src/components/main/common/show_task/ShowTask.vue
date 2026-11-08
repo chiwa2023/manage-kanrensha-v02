@@ -67,7 +67,7 @@ onMounted(() => {
 
     // 検索実行
     getAuthorizedPromiseArea().then(token => {
-        const url = urlBack + "/task-info/get";
+        const url = urlBack + "/task-info-option/get";
         const method = "POST";
         const body = JSON.stringify(getCapsuleDto);
         const headers = {

@@ -24,7 +24,7 @@ import net.seijishikin.jp.normalize.manage.kanrensha.utils.ConvertDatetimeToLoca
  * 運営者問い合わせ検索Controller
  */
 @RestController
-@RequestMapping(PathRouteConstants.ROOT + "/contact-manager")
+@RequestMapping(PathRouteConstants.ROOT + "/contact-manager-search")
 public class SearchContactManagerController {
 
     /** 運営者問い合わせ検索Service */

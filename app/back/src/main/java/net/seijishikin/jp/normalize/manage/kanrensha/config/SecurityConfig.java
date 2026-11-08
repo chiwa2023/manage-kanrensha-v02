@@ -38,6 +38,7 @@ import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
 
+import net.seijishikin.jp.normalize.manage.kanrensha.constants.UserRoleConstants;
 import net.seijishikin.jp.normalize.manage.kanrensha.controller.PathRouteConstants;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.security.AuthorizeFilter;
 import net.seijishikin.jp.normalize.manage.kanrensha.service.security.CustomUserDetailsManager;
@@ -67,7 +68,7 @@ public class SecurityConfig { // NOPMD TooManyMethods
     /** レートリミット設定 */
     @Autowired
     private RateLimitConfig rateLimitConfig;
-    
+
     /** 許可時間 */
     public static final long MAX_AGE = 3600L;
 
@@ -113,75 +114,98 @@ public class SecurityConfig { // NOPMD TooManyMethods
                             PathRouteConstants.ROOT + "/reset-password/**",
                             PathRouteConstants.ROOT + "/api-for-partner/**",
                             PathRouteConstants.ROOT + "/passkey/authenticate/**",
-                            PathRouteConstants.ROOT + "/dump-record/get")//
+                            PathRouteConstants.ROOT + "/dump-record/get") // ログイン不要ページで使用
                             .permitAll() //
-                            /* 以下はコンパイル時(front接続時)にのみ有効 */
+                            /* 以下は本番時にのみ有効(テスト@WithMockUserでステータス403になる) */
 
-                            // .requestMatchers( // 運営者(とSE権限)
-                            // PathRouteConstants.ROOT + "/address-rsdt/**", //
-                            // PathRouteConstants.ROOT + "/analysis-xml/execute", //
-                            // PathRouteConstants.ROOT + "/city-lgcode-all/reflesh", //
-                            // PathRouteConstants.ROOT + "/lgcode/search", //
-                            // PathRouteConstants.ROOT + "/lgcode-delete/**", //
-                            // PathRouteConstants.ROOT + "/postal-code/**", //
-                            // PathRouteConstants.ROOT + "/postal-irregular/**", //
-                            // PathRouteConstants.ROOT + "/postal-wktbl/**", //
-                            // PathRouteConstants.ROOT + "/regist-bulk-history/**", //
-                            // PathRouteConstants.ROOT + "/regist-bulk-master-min/**", //
-                            // PathRouteConstants.ROOT + "/regist-bulk-master-std/**", //
-                            // PathRouteConstants.ROOT + "/regist-by-xml/**", //
-                            // PathRouteConstants.ROOT + "/regist-combine/**", //
-                            // PathRouteConstants.ROOT + "/riyousha/save-manage",
-                            // PathRouteConstants.ROOT + "/riyousha-org/accept-combine",
-                            // PathRouteConstants.ROOT + "/riyousha-org/delete-person",
-                            // PathRouteConstants.ROOT + "/riyousha-org/get**",
-                            // PathRouteConstants.ROOT + "/riyousha-org/insert-combine",
-                            // PathRouteConstants.ROOT + "/riyousha-org/invite-person",
-                            // PathRouteConstants.ROOT + "/user-role/**", // admin推薦：本当に運営者限定
-                            // PathRouteConstants.ROOT + "/wktbl-address-rsdt/**", //
-                            // PathRouteConstants.ROOT + "/works-approval/**", //
-                            // PathRouteConstants.ROOT + "/xml/look-ahead")
-                            // .hasAnyRole(UserRoleConstants.ADMIN, UserRoleConstants.MANAGER) //
-                            // .requestMatchers( // APIパートナーだけ
-                            // PathRouteConstants.ROOT + "/partner-api/**")
-                            // .hasRole(UserRoleConstants.PARTNER_API) //
-                            // .requestMatchers( // SE権限のみ
-                            // PathRouteConstants.ROOT + "/dump-history/**", //
-                            // PathRouteConstants.ROOT + "/dump-master-min/**", //
-                            // PathRouteConstants.ROOT + "/dump-master-std/**", //
-                            // PathRouteConstants.ROOT + "/edit-user/search", //
-                            // PathRouteConstants.ROOT + "/stack-trace/get-by-code", //
-                            // PathRouteConstants.ROOT + "/task-info/**", //
-                            // PathRouteConstants.ROOT + "/timer-yotei/**",
-                            // PathRouteConstants.ROOT + "/riyousha/delete",
-                            // PathRouteConstants.ROOT + "/riyousha/search-all",
-                            // PathRouteConstants.ROOT + "/riyousha-org/delete",
-                            // PathRouteConstants.ROOT + "/riyousha-org/search**",
-                            // PathRouteConstants.ROOT + "/user-role/promote")
-                            // .hasRole(UserRoleConstants.ADMIN) //
-                            //
-                            // .requestMatchers( // 関連者を除く利用者限定
-                            // PathRouteConstants.ROOT + "/riyousha/get**",
-                            // PathRouteConstants.ROOT + "/riyousha/save**",
-                            // PathRouteConstants.ROOT + "/user-kanrensha/search**")
-                            // .hasAnyRole(UserRoleConstants.ADMIN, UserRoleConstants.MANAGER,
-                            // UserRoleConstants.PARTNER_API) //
-                            //
-                            // .requestMatchers( // 関連者と利用者
-                            // PathRouteConstants.ROOT + "/edit-user/delete",
-                            // PathRouteConstants.ROOT + "/edit-user/get",
-                            // PathRouteConstants.ROOT + "/edit-user/refresh-password",
-                            // PathRouteConstants.ROOT + "/user-kanrensha/add**", //
-                            // PathRouteConstants.ROOT + "/user-kanrensha/edit**", //
-                            // PathRouteConstants.ROOT + "/user-kanrensha/get**", //
-                            // PathRouteConstants.ROOT + "/postal-search/**",
-                            // PathRouteConstants.ROOT + "/lgcode-city/search",
-                            // PathRouteConstants.ROOT + "/lgcode-pref/search", //
-                            // PathRouteConstants.ROOT + "/task-plan/**") //
-                            // .hasAnyRole(UserRoleConstants.ADMIN, UserRoleConstants.MANAGER,
-                            // UserRoleConstants.PARTNER_API, UserRoleConstants.KANRENSHA_PERSON,
-                            // UserRoleConstants.KANRENSHA_KIGYOU_DT,
-                            // UserRoleConstants.KANRENSHA_SEIJIDANTAI) //
+                            .requestMatchers( // 運営者(とSE権限)
+                                    PathRouteConstants.ROOT + "/address-rsdt/**", //
+                                    PathRouteConstants.ROOT + "/analysis-xml/execute", //
+                                    PathRouteConstants.ROOT + "/city-lgcode-all/reflesh", //
+                                    PathRouteConstants.ROOT + "/contact-manager-search/search", //
+                                    PathRouteConstants.ROOT + "/kanrensha-code-move/accept", //
+                                    PathRouteConstants.ROOT + "/kanrensha-code-move/history", //
+                                    PathRouteConstants.ROOT + "/kanrensha-code-move/search", //
+                                    PathRouteConstants.ROOT + "/lgcode/search", //
+                                    PathRouteConstants.ROOT + "/lgcode-delete/**", //
+                                    PathRouteConstants.ROOT + "/postal-code/**", //
+                                    PathRouteConstants.ROOT + "/postal-irregular/**", //
+                                    PathRouteConstants.ROOT + "/postal-wktbl/**", //
+                                    PathRouteConstants.ROOT + "/regist-bulk-history/**", //
+                                    PathRouteConstants.ROOT + "/regist-bulk-master-min/**", //
+                                    PathRouteConstants.ROOT + "/regist-bulk-master-std/**", //
+                                    PathRouteConstants.ROOT + "/regist-by-xml/**", //
+                                    PathRouteConstants.ROOT + "/regist-combine/**", //
+                                    PathRouteConstants.ROOT + "/riyousha/save-manage",
+                                    PathRouteConstants.ROOT + "/riyousha-org/accept-combine",
+                                    PathRouteConstants.ROOT + "/riyousha-org/delete-person",
+                                    PathRouteConstants.ROOT + "/riyousha-org/get**",
+                                    PathRouteConstants.ROOT + "/riyousha-org/insert-combine",
+                                    PathRouteConstants.ROOT + "/riyousha-org/invite-person",
+                                    PathRouteConstants.ROOT + "/task-plan-role/**", //
+                                    PathRouteConstants.ROOT + "/user-role/**", // admin推薦：本当に運営者限定
+                                    PathRouteConstants.ROOT + "/wktbl-address-rsdt/**", //
+                                    PathRouteConstants.ROOT + "/works-approval/**", //
+                                    PathRouteConstants.ROOT + "/xml/look-ahead")
+                            .hasAnyRole(UserRoleConstants.ADMIN, UserRoleConstants.MANAGER) //
+
+                            .requestMatchers( // APIパートナーだけ
+                                    PathRouteConstants.ROOT + "/partner-api/**")
+                            .hasRole(UserRoleConstants.PARTNER_API) //
+
+                            .requestMatchers( // SE権限のみ
+                                    PathRouteConstants.ROOT + "/dump-history/**", //
+                                    PathRouteConstants.ROOT + "/dump-master-min/**", //
+                                    PathRouteConstants.ROOT + "/dump-master-std/**", //
+                                    PathRouteConstants.ROOT + "/dump-code-move/execute", //
+                                    PathRouteConstants.ROOT + "/edit-user/search", //
+                                    PathRouteConstants.ROOT + "/file/delete-temp-file", //
+                                    PathRouteConstants.ROOT + "/file/download", //
+                                    PathRouteConstants.ROOT + "/stack-trace/get-by-code", //
+                                    PathRouteConstants.ROOT + "/partner-api-notify/limit", //
+                                    PathRouteConstants.ROOT + "/task-info/**", //
+                                    PathRouteConstants.ROOT + "/timer-yotei/**",
+                                    PathRouteConstants.ROOT + "/riyousha/delete",
+                                    PathRouteConstants.ROOT + "/riyousha/search-all",
+                                    PathRouteConstants.ROOT + "/riyousha-org/delete",
+                                    PathRouteConstants.ROOT + "/riyousha-org/search**",
+                                    PathRouteConstants.ROOT + "/user/delete-limit-token",
+                                    PathRouteConstants.ROOT + "/user-role/promote")
+                            .hasRole(UserRoleConstants.ADMIN) //
+
+                            .requestMatchers( // 関連者を除く利用者限定
+                                    PathRouteConstants.ROOT + "/riyousha/get**",
+                                    PathRouteConstants.ROOT + "/riyousha/save**",
+                                    PathRouteConstants.ROOT + "/user-kanrensha/search**")
+                            .hasAnyRole(UserRoleConstants.ADMIN, UserRoleConstants.MANAGER,
+                                    UserRoleConstants.PARTNER_API) //
+
+                            .requestMatchers( // 関連者と利用者
+                                    PathRouteConstants.ROOT + "/contact-manager/**",
+                                    PathRouteConstants.ROOT + "/edit-user/delete",
+                                    PathRouteConstants.ROOT + "/edit-user/get",
+                                    PathRouteConstants.ROOT + "/edit-user/change",
+                                    PathRouteConstants.ROOT + "/edit-user/refresh-password",
+                                    PathRouteConstants.ROOT + "/file/upload",
+                                    PathRouteConstants.ROOT + "/kanrensha-combine/**",
+                                    PathRouteConstants.ROOT + "/user-kanrensha/add**", //
+                                    PathRouteConstants.ROOT + "/user-kanrensha/edit**", //
+                                    PathRouteConstants.ROOT + "/user-kanrensha/get**", //
+                                    PathRouteConstants.ROOT + "/kanrensha-code-move/promote", //
+                                    PathRouteConstants.ROOT + "/postal-search/**",
+                                    PathRouteConstants.ROOT + "/lgcode-city/search",
+                                    PathRouteConstants.ROOT + "/lgcode-pref/search", //
+                                    PathRouteConstants.ROOT + "/task-plan/**", //
+                                    PathRouteConstants.ROOT + "/task-info-option/get", //
+                                    PathRouteConstants.ROOT + "/year-option/get") //
+                            .hasAnyRole(UserRoleConstants.ADMIN, UserRoleConstants.MANAGER,
+                                    UserRoleConstants.PARTNER_API, UserRoleConstants.KANRENSHA_PERSON,
+                                    UserRoleConstants.KANRENSHA_KIGYOU_DT, UserRoleConstants.KANRENSHA_SEIJIDANTAI) //
+
+                            .requestMatchers( // 関連者限定
+                                    PathRouteConstants.ROOT + "/kanrensha-code-move/search-myself") //
+                            .hasAnyRole(UserRoleConstants.KANRENSHA_PERSON, UserRoleConstants.KANRENSHA_KIGYOU_DT,
+                                    UserRoleConstants.KANRENSHA_SEIJIDANTAI) //
 
                             /* ここまで */
                             .anyRequest().authenticated();

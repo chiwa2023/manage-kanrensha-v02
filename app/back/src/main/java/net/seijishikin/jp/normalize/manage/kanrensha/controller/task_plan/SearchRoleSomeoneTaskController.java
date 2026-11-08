@@ -20,7 +20,7 @@ import net.seijishikin.jp.normalize.manage.kanrensha.service.year.SwitchYearSear
  * タスク計画検索Controller
  */
 @RestController
-@RequestMapping(PathRouteConstants.ROOT + "/task-plan")
+@RequestMapping(PathRouteConstants.ROOT + "/task-plan-role")
 public class SearchRoleSomeoneTaskController {
 
     /** 年切替タスク計画検索Service */

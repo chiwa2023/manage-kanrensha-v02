@@ -44,7 +44,7 @@ function onSave() {
     capsuleDto.value.userDto = userDto.value;
 
     getAuthorizedPromiseArea().then(token => {
-        const url = urlBack + "/partner-api/notify-limit";
+        const url = urlBack + "/partner-api-notify/limit";
         const method = "POST";
         const body = JSON.stringify(capsuleDto.value);
         const headers = {

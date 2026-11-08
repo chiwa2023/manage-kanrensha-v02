@@ -22,7 +22,7 @@ import net.seijishikin.jp.normalize.manage.kanrensha.service.util.SaveStackTrace
  * 権限別タスク計画取得Controller
  */
 @RestController
-@RequestMapping(PathRouteConstants.ROOT + "/task-plan")
+@RequestMapping(PathRouteConstants.ROOT + "/task-plan-role")
 public class GetRoleSomeoneTaskController {
 
     /** 権限別タスク計画取得Service */

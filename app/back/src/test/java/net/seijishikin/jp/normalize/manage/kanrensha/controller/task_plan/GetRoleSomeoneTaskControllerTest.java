@@ -71,7 +71,7 @@ class GetRoleSomeoneTaskControllerTest {
 
         ObjectMapper objectMapper = GetObjectMapperWithTimeModuleUtil.practice();
 
-        String path = PathRouteConstants.ROOT + "/task-plan/get-not-finished";
+        String path = PathRouteConstants.ROOT + "/task-plan-role/get-someone";
 
         // サーバステータスがOK(200)
         assertEquals(HttpStatus.OK.value(), mockMvc // NOPMD LawOfDemeter

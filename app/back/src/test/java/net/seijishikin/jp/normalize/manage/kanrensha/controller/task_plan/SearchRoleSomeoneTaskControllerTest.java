@@ -79,7 +79,7 @@ class SearchRoleSomeoneTaskControllerTest {
 
         ObjectMapper objectMapper = GetObjectMapperWithTimeModuleUtil.practice();
 
-        String path = PathRouteConstants.ROOT + "/task-plan/search-role";
+        String path = PathRouteConstants.ROOT + "/task-plan-role/search-role";
 
         // サーバステータスがOK(200)
         assertEquals(HttpStatus.OK.value(), mockMvc // NOPMD LawOfDemeter

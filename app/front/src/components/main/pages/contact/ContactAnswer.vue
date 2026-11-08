@@ -60,7 +60,7 @@ function onSearch() {
     searchCapsuleDto.value.pageNumber = pageNumber.value;
 
     getAuthorizedPromiseArea().then(token => {
-        const url = urlBack + "/contact-manager/search";
+        const url = urlBack + "/contact-manager-search/search";
         const method = "POST";
         const body = JSON.stringify(searchCapsuleDto.value);
         const headers = {

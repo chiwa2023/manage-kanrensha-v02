@@ -70,7 +70,7 @@ class NotificationPartnerApiTokenLimitControllerTest {
 
         ObjectMapper objectMapper = GetObjectMapperWithTimeModuleUtil.practice();
 
-        String path = PathRouteConstants.ROOT + "/partner-api/notify-limit";
+        String path = PathRouteConstants.ROOT + "/partner-api-notify/limit";
 
         // サーバステータスがOK(200)
         assertEquals(HttpStatus.OK.value(), mockMvc // NOPMD LawOfDemeter
