@@ -100,6 +100,7 @@ const routes = [
     // 関連者本人編集
     { path: RoutePathConstants.PAGE_KANRENSHA_MYSELF, name: "KanrenshaEditMyself", component: () => import("./components/main/pages/manage_kanrensha/KanrenshaEditMyself.vue") },
     { path: RoutePathConstants.PAGE_KANRENSHA_COMBINE_MYSELF, name: "KanrenshaCombineMyself", component: () => import("./components/main/pages/manage_kanrensha/KanrenshaCombineMyself.vue") },
+    { path: RoutePathConstants.PAGE_KANRENSHA_HISTORY_ADD, name: "KanrenshaHistory", component: () => import("./components/main/pages/manage_kanrensha/KanrenshaHistory.vue") },
 
     // 郵便番号編集
     { path: RoutePathConstants.PAGE_POSTAL_BUILDING, name: "PostalCodeBuilding", component: () => import("./components/main/pages/address_postal/PostalCodeBuilding.vue") },

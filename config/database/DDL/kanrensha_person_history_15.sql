@@ -16,5 +16,6 @@ CREATE TABLE `kanrensha_person_history_15` (
   `delete_timestamp` datetime DEFAULT NULL COMMENT '削除日時',
   PRIMARY KEY (`kanrensha_person_history_id`),
   KEY `code` (`person_kanrensha_code`),
-  FULLTEXT KEY `search_text_index` (`search_text`) /*!50100 WITH PARSER `ngram` */ 
+  FULLTEXT KEY `search_text_index` (`search_text`) /*!50100 WITH PARSER `ngram` */,
+  UNIQUE KEY `uk_person_history_code_latest_text` (`person_kanrensha_code`, `is_latest`, `search_text`(500))
 ) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;

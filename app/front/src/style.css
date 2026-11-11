@@ -324,8 +324,8 @@ button.footer-button:hover {
   left: 50%;
   transform: translate(-50%, -50%);
   width: 85%;
-  height: 80%;
-  max-width: 1024px;
+  height: 85%;
+  max-width: 1296px;
   padding: 2rem;
   background-color: white;
   border-radius: 12px;

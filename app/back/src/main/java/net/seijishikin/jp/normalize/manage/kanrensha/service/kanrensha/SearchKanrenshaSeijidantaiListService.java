@@ -3,7 +3,6 @@ package net.seijishikin.jp.normalize.manage.kanrensha.service.kanrensha;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import net.seijishikin.jp.normalize.common_tool.dto.kanrensha.SearchKanrenshaSeijidantaiCapsuleDto;
 import net.seijishikin.jp.normalize.common_tool.dto.kanrensha.SearchKanrenshaSeijidantaiResultDto;
@@ -25,8 +24,7 @@ public class SearchKanrenshaSeijidantaiListService {
      * @param capsuleDto 検索条件(ページング含む)格納Dto
      * @return 検索結果
      */
-    public SearchKanrenshaSeijidantaiResultDto practice(
-            final @RequestBody SearchKanrenshaSeijidantaiCapsuleDto capsuleDto) {
+    public SearchKanrenshaSeijidantaiResultDto practice(final SearchKanrenshaSeijidantaiCapsuleDto capsuleDto) {
 
         SearchKanrenshaSeijidantaiResultDto resultDto = new SearchKanrenshaSeijidantaiResultDto();
         resultDto.setLimit(capsuleDto.getLimit());

@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
+import net.seijishikin.jp.normalize.common_tool.dto.kanrensha.KanrenshaTableHistoryKigyouDtDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.KanrenshaKigyouDtHistoryBaseEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.lgcode.KanrenshaKigyouDtHistory41Entity;
 
@@ -19,14 +20,27 @@ public interface KanrenshaKigyouDtHistory41Repository extends JpaRepository<Kanr
         PagingAndSortingRepository<KanrenshaKigyouDtHistory41Entity, Integer> {
 
     /**
+     * 検索カラムを検索対象として全文検索検索件数を取得する
+     *
+     * @param searchWords 検索語
+     * @return 検索件数
+     */
+    @Query(value = "SELECT count(*) FROM kanrensha_kigyou_dt_history_41"
+            // + " WHERE MATCH(search_text) AGAINST (?1 IN BOOLEAN MODE) AND is_latest=1", nativeQuery = true)
+            + " WHERE search_text LIKE ?1 AND is_latest=1", nativeQuery = true)// TODO MATCH AGAINST
+    Integer countFullText(String searchWords);
+
+    /**
      * 名称を検索対象として全文検索をする
      *
      * @param searchWords 検索語
      * @return 検索結果
      */
-    @Query(value = "SELECT * FROM kanrensha_kigyou_dt_history_41"
-            + " WHERE search_text like ?1 AND is_latest=1", nativeQuery = true) // TODO MATCH AGAINST
-    List<KanrenshaKigyouDtHistory41Entity> findFullText(String searchWords);
+    @Query(value = "SELECT kanrensha_kigyou_dt_history_id,kigyou_dt_kanrensha_code,all_name,all_address,"
+            + "org_delegate_name,org_delegate_code FROM kanrensha_kigyou_dt_history_41"
+            // + " WHERE MATCH(search_text) AGAINST (?1 IN BOOLEAN MODE) AND is_latest=1", nativeQuery = true)
+            + " WHERE search_text LIKE ?1 AND is_latest=1", nativeQuery = true)// TODO MATCH AGAINST
+    List<KanrenshaTableHistoryKigyouDtDto> findFullText(String searchWords, Pageable pageable);
 
     /**
      * 企業・団体の属性でリスト取得する

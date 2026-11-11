@@ -1,0 +1,1 @@
+TRUNCATE TABLE kanrensha_person_history_01;

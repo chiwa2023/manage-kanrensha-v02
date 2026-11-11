@@ -200,8 +200,11 @@ export default class RoutePathConstants {
     /** 本人による関連者編集 */
     static readonly PAGE_KANRENSHA_MYSELF: string = this.BASE_PATH + "/kanrensha-myself";
 
-        /** 本人による関連者編集 */
+    /** 本人による関連者紐づけ */
     static readonly PAGE_KANRENSHA_COMBINE_MYSELF: string = this.BASE_PATH + "/kanrensha-combine-myself";
+
+    /** 関連者履歴追加 */
+    static readonly PAGE_KANRENSHA_HISTORY_ADD: string = this.BASE_PATH + "/kanrensha-history-add";
 
     /** 利用者組織に個人を招待 */
     static readonly PAGE_INSERT_COMBINE_ORG: string = this.BASE_PATH + "/insert-combine-org";
