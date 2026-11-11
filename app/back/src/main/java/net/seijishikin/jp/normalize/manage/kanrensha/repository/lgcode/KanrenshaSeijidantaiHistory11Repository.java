@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
+import net.seijishikin.jp.normalize.common_tool.dto.kanrensha.KanrenshaTableHistorySeijidantaiDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.KanrenshaSeijidantaiHistoryBaseEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.lgcode.KanrenshaSeijidantaiHistory11Entity;
 
@@ -20,14 +21,29 @@ public interface KanrenshaSeijidantaiHistory11Repository
         PagingAndSortingRepository<KanrenshaSeijidantaiHistory11Entity, Integer> {
 
     /**
-     * 名称を検索対象として全文検索をする
+     * 検索用カラムを検索対象とした場合の検索件数を取得する
+     *
+     * @param searchWords 検索語
+     * @return 検索件数
+     */
+    @Query(value = "SELECT count(*) FROM kanrensha_seijidantai_history_11"
+            + " WHERE search_text LIKE ?1 AND is_latest=1", nativeQuery = true) // TODO MATCH AGAINST
+    // + " WHERE MATCH(search_text) AGAINST (?1 IN BOOLEAN MODE) AND is_latest=1",
+    // nativeQuery = true)
+    Integer countFullText(String searchWords);
+
+    /**
+     * 検索用カラムを検索対象として全文検索をする
      *
      * @param searchWords 検索語
      * @return 検索結果
      */
-    @Query(value = "SELECT * FROM kanrensha_seijidantai_history_11"
+    @Query(value = "SELECT kanrensha_seijidantai_history_id ,seijidantai_kanrensha_code ,all_name "
+            + " ,all_address ,org_delegate_name ,org_delegate_code FROM kanrensha_seijidantai_history_11"
             + " WHERE search_text LIKE ?1 AND is_latest=1", nativeQuery = true) // TODO MATCH AGAINST
-    List<KanrenshaSeijidantaiHistory11Entity> findFullText(String searchWords);
+    // + " WHERE MATCH(search_text) AGAINST (?1 IN BOOLEAN MODE) AND is_latest=1",
+    // nativeQuery = true)
+    List<KanrenshaTableHistorySeijidantaiDto> findFullText(String searchWords, Pageable pageable);
 
     /**
      * 政治団体の属性でリスト取得する

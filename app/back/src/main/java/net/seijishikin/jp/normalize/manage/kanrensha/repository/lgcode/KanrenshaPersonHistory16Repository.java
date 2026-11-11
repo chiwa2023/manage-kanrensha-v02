@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
+import net.seijishikin.jp.normalize.common_tool.dto.kanrensha.KanrenshaTableHistoryPersonDto;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.KanrenshaPersonHistoryBaseEntity;
 import net.seijishikin.jp.normalize.manage.kanrensha.entity.lgcode.KanrenshaPersonHistory16Entity;
 
@@ -19,14 +20,29 @@ public interface KanrenshaPersonHistory16Repository extends JpaRepository<Kanren
         PagingAndSortingRepository<KanrenshaPersonHistory16Entity, Integer> {
 
     /**
-     * 名称を検索対象として全文検索をする
+     * 検索カラムを検索対象として検索件数を取得する
      *
      * @param searchWords 検索語
      * @return 検索結果
      */
-    @Query(value = "SELECT * FROM kanrensha_person_history_16"
+    @Query(value = "SELECT count(*) FROM kanrensha_person_history_16"
+            // + " WHERE MATCH(search_text) AGAINST (?1 IN BOOLEAN MODE) AND is_latest=1",
+            // nativeQuery = true)
             + " WHERE search_text LIKE ?1 AND is_latest=1", nativeQuery = true) // TODO MATCH AGAINST
-    List<KanrenshaPersonHistory16Entity> findFullText(String searchWords);
+    Integer countFullText(String searchWords);
+
+    /**
+     * 検索カラムを検索対象として全文検索をする
+     *
+     * @param searchWords 検索語
+     * @return 検索結果
+     */
+    @Query(value = "SELECT kanrensha_person_history_id ,person_kanrensha_code ,all_name "
+            + ",all_address,person_shokugyou FROM kanrensha_person_history_16"
+            // + " WHERE MATCH(search_text) AGAINST (?1 IN BOOLEAN MODE) AND is_latest=1",
+            // nativeQuery = true)
+            + " WHERE search_text LIKE ?1 AND is_latest=1", nativeQuery = true) // TODO MATCH AGAINST
+    List<KanrenshaTableHistoryPersonDto> findFullText(String searchWords, Pageable pageable);
 
     /**
      * 企業・団体の属性でリスト取得する

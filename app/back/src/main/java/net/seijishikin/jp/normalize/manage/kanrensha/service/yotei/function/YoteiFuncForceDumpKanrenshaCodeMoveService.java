@@ -6,7 +6,6 @@ import java.util.TreeMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import net.seijishikin.jp.normalize.common_tool.dto.FrameworkMessageAndResultDto;
 import net.seijishikin.jp.normalize.common_tool.dto.LeastUserDto;
@@ -40,7 +39,7 @@ public class YoteiFuncForceDumpKanrenshaCodeMoveService {
      *
      * @param capsuleDto ダンプ実行条件
      */
-    public boolean practice(final @RequestBody ForceDumpCapsuleDto capsuleDto) {
+    public boolean practice(final ForceDumpCapsuleDto capsuleDto) {
 
         LocalDateTime dateTimeStart = LocalDateTime.now();
         Integer year = dateTimeStart.getYear();
