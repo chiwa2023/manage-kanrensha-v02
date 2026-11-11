@@ -1,0 +1,1 @@
+TRUNCATE TABLE kanrensha_seijidantai_history_01;

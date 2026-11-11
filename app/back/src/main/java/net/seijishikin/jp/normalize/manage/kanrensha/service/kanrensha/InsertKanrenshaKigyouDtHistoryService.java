@@ -277,7 +277,7 @@ public class InsertKanrenshaKigyouDtHistoryService { // NOPMD
      * @param userDto    ユーザ最低限Dto
      * @param baseEntity 関連者企業・団体BaseEntity
      */
-    public int practice( // NOPMD SUPPRESS CHECKSTYLE ReturbCount
+    public int practice( // NOPMD SUPPRESS CHECKSTYLE ReturnCount
             final LeastUserDto userDto, final KanrenshaKigyouDtHistoryBaseEntity baseEntity) {
 
         baseEntity.setSearchText(formatNaturalSearchTextUtil

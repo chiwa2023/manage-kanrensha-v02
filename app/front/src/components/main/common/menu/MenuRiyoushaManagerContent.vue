@@ -63,9 +63,7 @@ import RoutePathConstants from '../../../../routePathConstants';
             <RouterLink :to="RoutePathConstants.PAGE_KANRENSHA_MANAGE" class="menu-item">関連者管理</RouterLink>
 
             <RouterLink :to="RoutePathConstants.PAGE_KANRENSHA_COMBINE" class="menu-item">関連者紐づけ管理</RouterLink>
-            <!-- 
-            <RouterLink :to="RoutePathConstants.PAGE_KANRENSHA_COMBINE_ORG" class="menu-item">関連者紐づけ管理(団体基準)</RouterLink>
-            -->
+            <RouterLink :to="RoutePathConstants.PAGE_KANRENSHA_HISTORY_ADD" class="menu-item">関連者履歴追加</RouterLink>
 
             <RouterLink :to="RoutePathConstants.PAGE_MOVE_CODE_ACCEPT" class="menu-item">関連者コード移行承認</RouterLink>
             <RouterLink :to="RoutePathConstants.PAGE_MOVE_CODE_MANAGER" class="menu-item">関連者コード移行申請</RouterLink>

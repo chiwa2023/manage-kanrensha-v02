@@ -17,5 +17,6 @@ CREATE TABLE `kanrensha_kigyou_dt_history_25` (
   `delete_timestamp` datetime DEFAULT NULL COMMENT '削除日時',
   PRIMARY KEY (`kanrensha_kigyou_dt_history_id`),
   KEY `code` (`kigyou_dt_kanrensha_code`),
-  FULLTEXT KEY `search_text_index` (`search_text`) /*!50100 WITH PARSER `ngram` */ 
+  FULLTEXT KEY `search_text_index` (`search_text`) /*!50100 WITH PARSER `ngram` */,
+  UNIQUE KEY `uk_kigyou_history_code_latest_text` (`kigyou_dt_kanrensha_code`, `is_latest`, `search_text`(500))
 ) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
