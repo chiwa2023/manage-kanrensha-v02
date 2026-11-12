@@ -26,8 +26,7 @@ public interface KanrenshaKigyouDtHistory05Repository extends JpaRepository<Kanr
      * @return 検索件数
      */
     @Query(value = "SELECT count(*) FROM kanrensha_kigyou_dt_history_05"
-            // + " WHERE MATCH(search_text) AGAINST (?1 IN BOOLEAN MODE) AND is_latest=1", nativeQuery = true)
-            + " WHERE search_text LIKE ?1 AND is_latest=1", nativeQuery = true)// TODO MATCH AGAINST
+            + " WHERE MATCH(search_text) AGAINST (?1 IN BOOLEAN MODE) AND is_latest=1", nativeQuery = true)
     Integer countFullText(String searchWords);
 
     /**
@@ -38,8 +37,7 @@ public interface KanrenshaKigyouDtHistory05Repository extends JpaRepository<Kanr
      */
     @Query(value = "SELECT kanrensha_kigyou_dt_history_id,kigyou_dt_kanrensha_code,all_name,all_address,"
             + "org_delegate_name,org_delegate_code FROM kanrensha_kigyou_dt_history_05"
-            // + " WHERE MATCH(search_text) AGAINST (?1 IN BOOLEAN MODE) AND is_latest=1", nativeQuery = true)
-            + " WHERE search_text LIKE ?1 AND is_latest=1", nativeQuery = true)// TODO MATCH AGAINST
+            + " WHERE MATCH(search_text) AGAINST (?1 IN BOOLEAN MODE) AND is_latest=1", nativeQuery = true)
     List<KanrenshaTableHistoryKigyouDtDto> findFullText(String searchWords, Pageable pageable);
 
     /**

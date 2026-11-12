@@ -26,9 +26,7 @@ public interface KanrenshaPersonHistory20Repository extends JpaRepository<Kanren
      * @return 検索結果
      */
     @Query(value = "SELECT count(*) FROM kanrensha_person_history_20"
-            // + " WHERE MATCH(search_text) AGAINST (?1 IN BOOLEAN MODE) AND is_latest=1",
-            // nativeQuery = true)
-            + " WHERE search_text LIKE ?1 AND is_latest=1", nativeQuery = true) // TODO MATCH AGAINST
+            + " WHERE MATCH(search_text) AGAINST (?1 IN BOOLEAN MODE) AND is_latest=1", nativeQuery = true)
     Integer countFullText(String searchWords);
 
     /**
@@ -39,9 +37,7 @@ public interface KanrenshaPersonHistory20Repository extends JpaRepository<Kanren
      */
     @Query(value = "SELECT kanrensha_person_history_id ,person_kanrensha_code ,all_name "
             + ",all_address,person_shokugyou FROM kanrensha_person_history_20"
-            // + " WHERE MATCH(search_text) AGAINST (?1 IN BOOLEAN MODE) AND is_latest=1",
-            // nativeQuery = true)
-            + " WHERE search_text LIKE ?1 AND is_latest=1", nativeQuery = true) // TODO MATCH AGAINST
+            + " WHERE MATCH(search_text) AGAINST (?1 IN BOOLEAN MODE) AND is_latest=1", nativeQuery = true)
     List<KanrenshaTableHistoryPersonDto> findFullText(String searchWords, Pageable pageable);
 
     /**

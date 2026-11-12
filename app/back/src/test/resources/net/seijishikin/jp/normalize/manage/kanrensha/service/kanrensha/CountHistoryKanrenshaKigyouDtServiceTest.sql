@@ -1,5 +1,4 @@
-DELETE FROM `kanrensha_kigyou_dt_history_01`;
-ALTER TABLE `kanrensha_kigyou_dt_history_01` auto_increment = 0;
+TRUNCATE TABLE `kanrensha_kigyou_dt_history_01`;
 INSERT INTO `kanrensha_kigyou_dt_history_01` (`kanrensha_kigyou_dt_history_id`,`kigyou_dt_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`)
    VALUES
    -- 最新でない
@@ -10,8 +9,7 @@ INSERT INTO `kanrensha_kigyou_dt_history_01` (`kanrensha_kigyou_dt_history_id`,`
        , (417,'1-2345-67-890123-4567897',1,'超元素製造組合','北海道架空市山麓町','代表者　太郎','1-2345-67-890123-0101019','超元素製造組合和歌山県架空市山麓町代表者　太郎',200,190,'ユーザ','2022-12-05 12:34:56',1,1,'1','1948-07-28 00:00:00')
        ;
 
-DELETE FROM `kanrensha_kigyou_dt_history_02`;
-ALTER TABLE `kanrensha_kigyou_dt_history_02` auto_increment = 0;
+TRUNCATE TABLE `kanrensha_kigyou_dt_history_02`;
 
 -- 2022
 INSERT INTO `kanrensha_kigyou_dt_history_02` (`kanrensha_kigyou_dt_history_id`,`kigyou_dt_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`)
@@ -24,8 +22,7 @@ INSERT INTO `kanrensha_kigyou_dt_history_02` (`kanrensha_kigyou_dt_history_id`,`
        , (417,'1-2345-67-890223-4567897',1,'超元素製造組合','青森県架空市山麓町','代表者　太郎','1-2345-67-890223-0202029','超元素製造組合和歌山県架空市山麓町代表者　太郎',200,190,'ユーザ','2022-12-05 12:34:56',1,1,'1','1948-07-28 00:00:00')
        ;
        
-DELETE FROM `kanrensha_kigyou_dt_history_03`;
-ALTER TABLE `kanrensha_kigyou_dt_history_03` auto_increment = 0;
+TRUNCATE TABLE `kanrensha_kigyou_dt_history_03`;
 
 -- 2022
 INSERT INTO `kanrensha_kigyou_dt_history_03` (`kanrensha_kigyou_dt_history_id`,`kigyou_dt_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`)
@@ -37,8 +34,8 @@ INSERT INTO `kanrensha_kigyou_dt_history_03` (`kanrensha_kigyou_dt_history_id`,`
    -- 検索語が一致でない
        , (417,'1-2345-67-890323-4567897',1,'超元素製造組合','岩手県架空市山麓町','代表者　太郎','1-2345-67-890323-0303039','超元素製造組合和歌山県架空市山麓町代表者　太郎',200,190,'ユーザ','2022-12-05 12:34:56',1,1,'1','1948-07-28 00:00:00')
        ;
-DELETE FROM `kanrensha_kigyou_dt_history_04`;
-ALTER TABLE `kanrensha_kigyou_dt_history_04` auto_increment = 0;
+       
+TRUNCATE TABLE `kanrensha_kigyou_dt_history_04`;
 
 -- 2022
 INSERT INTO `kanrensha_kigyou_dt_history_04` (`kanrensha_kigyou_dt_history_id`,`kigyou_dt_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`)
@@ -50,8 +47,8 @@ INSERT INTO `kanrensha_kigyou_dt_history_04` (`kanrensha_kigyou_dt_history_id`,`
    -- 検索語が一致でない
        , (417,'1-2345-67-890423-4567897',1,'超元素製造組合','宮城県架空市山麓町','代表者　太郎','1-2345-67-890423-0404049','超元素製造組合和歌山県架空市山麓町代表者　太郎',200,190,'ユーザ','2022-12-05 12:34:56',1,1,'1','1948-07-28 00:00:00')
        ;
-DELETE FROM `kanrensha_kigyou_dt_history_05`;
-ALTER TABLE `kanrensha_kigyou_dt_history_05` auto_increment = 0;
+       
+TRUNCATE TABLE `kanrensha_kigyou_dt_history_05`;
 
 -- 2022
 INSERT INTO `kanrensha_kigyou_dt_history_05` (`kanrensha_kigyou_dt_history_id`,`kigyou_dt_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`)
@@ -63,8 +60,8 @@ INSERT INTO `kanrensha_kigyou_dt_history_05` (`kanrensha_kigyou_dt_history_id`,`
    -- 検索語が一致でない
        , (417,'1-2345-67-890523-4567897',1,'超元素製造組合','秋田県架空市山麓町','代表者　太郎','1-2345-67-890523-0505059','超元素製造組合和歌山県架空市山麓町代表者　太郎',200,190,'ユーザ','2022-12-05 12:34:56',1,1,'1','1948-07-28 00:00:00')
        ;
-DELETE FROM `kanrensha_kigyou_dt_history_06`;
-ALTER TABLE `kanrensha_kigyou_dt_history_06` auto_increment = 0;
+       
+TRUNCATE TABLE `kanrensha_kigyou_dt_history_06`;
 
 -- 2022
 INSERT INTO `kanrensha_kigyou_dt_history_06` (`kanrensha_kigyou_dt_history_id`,`kigyou_dt_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`)
@@ -77,8 +74,7 @@ INSERT INTO `kanrensha_kigyou_dt_history_06` (`kanrensha_kigyou_dt_history_id`,`
        , (417,'1-2345-67-890623-4567897',1,'超元素製造組合','山形県架空市山麓町','代表者　太郎','1-2345-67-890623-0606069','超元素製造組合和歌山県架空市山麓町代表者　太郎',200,190,'ユーザ','2022-12-05 12:34:56',1,1,'1','1948-07-28 00:00:00')
        ;
 
-DELETE FROM `kanrensha_kigyou_dt_history_07`;
-ALTER TABLE `kanrensha_kigyou_dt_history_07` auto_increment = 0;
+TRUNCATE TABLE `kanrensha_kigyou_dt_history_07`;
 
 -- 2022
 INSERT INTO `kanrensha_kigyou_dt_history_07` (`kanrensha_kigyou_dt_history_id`,`kigyou_dt_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`)
@@ -91,8 +87,7 @@ INSERT INTO `kanrensha_kigyou_dt_history_07` (`kanrensha_kigyou_dt_history_id`,`
        , (417,'1-2345-67-890723-4567897',1,'超元素製造組合','福島県架空市山麓町','代表者　太郎','1-2345-67-890723-0707079','超元素製造組合和歌山県架空市山麓町代表者　太郎',200,190,'ユーザ','2022-12-05 12:34:56',1,1,'1','1948-07-28 00:00:00')
        ;
 
-DELETE FROM `kanrensha_kigyou_dt_history_08`;
-ALTER TABLE `kanrensha_kigyou_dt_history_08` auto_increment = 0;
+TRUNCATE TABLE `kanrensha_kigyou_dt_history_08`;
 
 -- 2022
 INSERT INTO `kanrensha_kigyou_dt_history_08` (`kanrensha_kigyou_dt_history_id`,`kigyou_dt_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`)
@@ -105,8 +100,7 @@ INSERT INTO `kanrensha_kigyou_dt_history_08` (`kanrensha_kigyou_dt_history_id`,`
        , (417,'1-2345-67-890823-4567897',1,'超元素製造組合','茨城県架空市山麓町','代表者　太郎','1-2345-67-890823-0808089','超元素製造組合和歌山県架空市山麓町代表者　太郎',200,190,'ユーザ','2022-12-05 12:34:56',1,1,'1','1948-07-28 00:00:00')
        ;
 
-DELETE FROM `kanrensha_kigyou_dt_history_09`;
-ALTER TABLE `kanrensha_kigyou_dt_history_09` auto_increment = 0;
+TRUNCATE TABLE `kanrensha_kigyou_dt_history_09`;
 
 -- 2022
 INSERT INTO `kanrensha_kigyou_dt_history_09` (`kanrensha_kigyou_dt_history_id`,`kigyou_dt_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`)
@@ -119,8 +113,7 @@ INSERT INTO `kanrensha_kigyou_dt_history_09` (`kanrensha_kigyou_dt_history_id`,`
        , (417,'1-2345-67-890923-4567897',1,'超元素製造組合','栃木県架空市山麓町','代表者　太郎','1-2345-67-890923-0909099','超元素製造組合和歌山県架空市山麓町代表者　太郎',200,190,'ユーザ','2022-12-05 12:34:56',1,1,'1','1948-07-28 00:00:00')
        ;
 
-DELETE FROM `kanrensha_kigyou_dt_history_10`;
-ALTER TABLE `kanrensha_kigyou_dt_history_10` auto_increment = 0;
+TRUNCATE TABLE `kanrensha_kigyou_dt_history_10`;
 
 -- 2022
 INSERT INTO `kanrensha_kigyou_dt_history_10` (`kanrensha_kigyou_dt_history_id`,`kigyou_dt_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`)
@@ -133,8 +126,7 @@ INSERT INTO `kanrensha_kigyou_dt_history_10` (`kanrensha_kigyou_dt_history_id`,`
        , (417,'1-2345-67-891023-4567897',1,'超元素製造組合','群馬県架空市山麓町','代表者　太郎','1-2345-67-891023-1010109','超元素製造組合和歌山県架空市山麓町代表者　太郎',200,190,'ユーザ','2022-12-05 12:34:56',1,1,'1','1948-07-28 00:00:00')
        ;
 
-DELETE FROM `kanrensha_kigyou_dt_history_11`;
-ALTER TABLE `kanrensha_kigyou_dt_history_11` auto_increment = 0;
+TRUNCATE TABLE `kanrensha_kigyou_dt_history_11`;
 
 -- 2022
 INSERT INTO `kanrensha_kigyou_dt_history_11` (`kanrensha_kigyou_dt_history_id`,`kigyou_dt_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`)
@@ -146,8 +138,8 @@ INSERT INTO `kanrensha_kigyou_dt_history_11` (`kanrensha_kigyou_dt_history_id`,`
    -- 検索語が一致でない
        , (417,'1-2345-67-891123-4567897',1,'超元素製造組合','埼玉県架空市山麓町','代表者　太郎','1-2345-67-891123-1111119','超元素製造組合和歌山県架空市山麓町代表者　太郎',200,190,'ユーザ','2022-12-05 12:34:56',1,1,'1','1948-07-28 00:00:00')
        ;
-DELETE FROM `kanrensha_kigyou_dt_history_12`;
-ALTER TABLE `kanrensha_kigyou_dt_history_12` auto_increment = 0;
+       
+TRUNCATE TABLE `kanrensha_kigyou_dt_history_12`;
 
 -- 2022
 INSERT INTO `kanrensha_kigyou_dt_history_12` (`kanrensha_kigyou_dt_history_id`,`kigyou_dt_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`)
@@ -160,8 +152,7 @@ INSERT INTO `kanrensha_kigyou_dt_history_12` (`kanrensha_kigyou_dt_history_id`,`
        , (417,'1-2345-67-891223-4567897',1,'超元素製造組合','千葉県架空市山麓町','代表者　太郎','1-2345-67-891223-1212129','超元素製造組合和歌山県架空市山麓町代表者　太郎',200,190,'ユーザ','2022-12-05 12:34:56',1,1,'1','1948-07-28 00:00:00')
        ;
 
-DELETE FROM `kanrensha_kigyou_dt_history_13`;
-ALTER TABLE `kanrensha_kigyou_dt_history_13` auto_increment = 0;
+TRUNCATE TABLE `kanrensha_kigyou_dt_history_13`;
 
 -- 2022
 INSERT INTO `kanrensha_kigyou_dt_history_13` (`kanrensha_kigyou_dt_history_id`,`kigyou_dt_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`)
@@ -174,8 +165,7 @@ INSERT INTO `kanrensha_kigyou_dt_history_13` (`kanrensha_kigyou_dt_history_id`,`
        , (417,'1-2345-67-891323-4567897',1,'超元素製造組合','東京都架空市山麓町','代表者　太郎','1-2345-67-891323-1313139','超元素製造組合和歌山県架空市山麓町代表者　太郎',200,190,'ユーザ','2022-12-05 12:34:56',1,1,'1','1948-07-28 00:00:00')
        ;
 
-DELETE FROM `kanrensha_kigyou_dt_history_14`;
-ALTER TABLE `kanrensha_kigyou_dt_history_14` auto_increment = 0;
+TRUNCATE TABLE `kanrensha_kigyou_dt_history_14`;
 
 -- 2022
 INSERT INTO `kanrensha_kigyou_dt_history_14` (`kanrensha_kigyou_dt_history_id`,`kigyou_dt_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`)
@@ -187,8 +177,8 @@ INSERT INTO `kanrensha_kigyou_dt_history_14` (`kanrensha_kigyou_dt_history_id`,`
    -- 検索語が一致でない
        , (417,'1-2345-67-891423-4567897',1,'超元素製造組合','神奈川県架空市山麓町','代表者　太郎','1-2345-67-891423-1414149','超元素製造組合和歌山県架空市山麓町代表者　太郎',200,190,'ユーザ','2022-12-05 12:34:56',1,1,'1','1948-07-28 00:00:00')
        ;
-DELETE FROM `kanrensha_kigyou_dt_history_15`;
-ALTER TABLE `kanrensha_kigyou_dt_history_15` auto_increment = 0;
+       
+TRUNCATE TABLE `kanrensha_kigyou_dt_history_15`;
 
 -- 2022
 INSERT INTO `kanrensha_kigyou_dt_history_15` (`kanrensha_kigyou_dt_history_id`,`kigyou_dt_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`)
@@ -201,8 +191,7 @@ INSERT INTO `kanrensha_kigyou_dt_history_15` (`kanrensha_kigyou_dt_history_id`,`
        , (417,'1-2345-67-891523-4567897',1,'超元素製造組合','新潟県架空市山麓町','代表者　太郎','1-2345-67-891523-1515159','超元素製造組合和歌山県架空市山麓町代表者　太郎',200,190,'ユーザ','2022-12-05 12:34:56',1,1,'1','1948-07-28 00:00:00')
        ;
 
-DELETE FROM `kanrensha_kigyou_dt_history_16`;
-ALTER TABLE `kanrensha_kigyou_dt_history_16` auto_increment = 0;
+TRUNCATE TABLE `kanrensha_kigyou_dt_history_16`;
 
 -- 2022
 INSERT INTO `kanrensha_kigyou_dt_history_16` (`kanrensha_kigyou_dt_history_id`,`kigyou_dt_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`)
@@ -214,8 +203,8 @@ INSERT INTO `kanrensha_kigyou_dt_history_16` (`kanrensha_kigyou_dt_history_id`,`
    -- 検索語が一致でない
        , (417,'1-2345-67-891623-4567897',1,'超元素製造組合','富山県架空市山麓町','代表者　太郎','1-2345-67-891623-1616169','超元素製造組合和歌山県架空市山麓町代表者　太郎',200,190,'ユーザ','2022-12-05 12:34:56',1,1,'1','1948-07-28 00:00:00')
        ;
-DELETE FROM `kanrensha_kigyou_dt_history_17`;
-ALTER TABLE `kanrensha_kigyou_dt_history_17` auto_increment = 0;
+       
+TRUNCATE TABLE `kanrensha_kigyou_dt_history_17`;
 
 -- 2022
 INSERT INTO `kanrensha_kigyou_dt_history_17` (`kanrensha_kigyou_dt_history_id`,`kigyou_dt_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`)
@@ -228,8 +217,7 @@ INSERT INTO `kanrensha_kigyou_dt_history_17` (`kanrensha_kigyou_dt_history_id`,`
        , (417,'1-2345-67-891723-4567897',1,'超元素製造組合','石川県架空市山麓町','代表者　太郎','1-2345-67-891723-1717179','超元素製造組合和歌山県架空市山麓町代表者　太郎',200,190,'ユーザ','2022-12-05 12:34:56',1,1,'1','1948-07-28 00:00:00')
        ;
 
-DELETE FROM `kanrensha_kigyou_dt_history_18`;
-ALTER TABLE `kanrensha_kigyou_dt_history_18` auto_increment = 0;
+TRUNCATE TABLE `kanrensha_kigyou_dt_history_18`;
 
 -- 2022
 INSERT INTO `kanrensha_kigyou_dt_history_18` (`kanrensha_kigyou_dt_history_id`,`kigyou_dt_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`)
@@ -242,8 +230,7 @@ INSERT INTO `kanrensha_kigyou_dt_history_18` (`kanrensha_kigyou_dt_history_id`,`
        , (417,'1-2345-67-891823-4567897',1,'超元素製造組合','福井県架空市山麓町','代表者　太郎','1-2345-67-891823-1818189','超元素製造組合和歌山県架空市山麓町代表者　太郎',200,190,'ユーザ','2022-12-05 12:34:56',1,1,'1','1948-07-28 00:00:00')
        ;
 
-DELETE FROM `kanrensha_kigyou_dt_history_19`;
-ALTER TABLE `kanrensha_kigyou_dt_history_19` auto_increment = 0;
+TRUNCATE TABLE `kanrensha_kigyou_dt_history_19`;
 
 -- 2022
 INSERT INTO `kanrensha_kigyou_dt_history_19` (`kanrensha_kigyou_dt_history_id`,`kigyou_dt_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`)
@@ -256,8 +243,7 @@ INSERT INTO `kanrensha_kigyou_dt_history_19` (`kanrensha_kigyou_dt_history_id`,`
        , (417,'1-2345-67-891923-4567897',1,'超元素製造組合','山梨県架空市山麓町','代表者　太郎','1-2345-67-891923-1919199','超元素製造組合和歌山県架空市山麓町代表者　太郎',200,190,'ユーザ','2022-12-05 12:34:56',1,1,'1','1948-07-28 00:00:00')
        ;
 
-DELETE FROM `kanrensha_kigyou_dt_history_20`;
-ALTER TABLE `kanrensha_kigyou_dt_history_20` auto_increment = 0;
+TRUNCATE TABLE `kanrensha_kigyou_dt_history_20`;
 
 -- 2022
 INSERT INTO `kanrensha_kigyou_dt_history_20` (`kanrensha_kigyou_dt_history_id`,`kigyou_dt_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`)
@@ -270,8 +256,7 @@ INSERT INTO `kanrensha_kigyou_dt_history_20` (`kanrensha_kigyou_dt_history_id`,`
        , (417,'1-2345-67-892023-4567897',1,'超元素製造組合','長野県架空市山麓町','代表者　太郎','1-2345-67-892023-2020209','超元素製造組合和歌山県架空市山麓町代表者　太郎',200,190,'ユーザ','2022-12-05 12:34:56',1,1,'1','1948-07-28 00:00:00')
        ;
 
-DELETE FROM `kanrensha_kigyou_dt_history_21`;
-ALTER TABLE `kanrensha_kigyou_dt_history_21` auto_increment = 0;
+TRUNCATE TABLE `kanrensha_kigyou_dt_history_21`;
 
 -- 2022
 INSERT INTO `kanrensha_kigyou_dt_history_21` (`kanrensha_kigyou_dt_history_id`,`kigyou_dt_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`)
@@ -284,8 +269,7 @@ INSERT INTO `kanrensha_kigyou_dt_history_21` (`kanrensha_kigyou_dt_history_id`,`
        , (417,'1-2345-67-892123-4567897',1,'超元素製造組合','岐阜県架空市山麓町','代表者　太郎','1-2345-67-892123-2121219','超元素製造組合和歌山県架空市山麓町代表者　太郎',200,190,'ユーザ','2022-12-05 12:34:56',1,1,'1','1948-07-28 00:00:00')
        ;
 
-DELETE FROM `kanrensha_kigyou_dt_history_22`;
-ALTER TABLE `kanrensha_kigyou_dt_history_22` auto_increment = 0;
+TRUNCATE TABLE `kanrensha_kigyou_dt_history_22`;
 
 -- 2022
 INSERT INTO `kanrensha_kigyou_dt_history_22` (`kanrensha_kigyou_dt_history_id`,`kigyou_dt_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`)
@@ -298,8 +282,7 @@ INSERT INTO `kanrensha_kigyou_dt_history_22` (`kanrensha_kigyou_dt_history_id`,`
        , (417,'1-2345-67-892223-4567897',1,'超元素製造組合','静岡県架空市山麓町','代表者　太郎','1-2345-67-892223-2222229','超元素製造組合和歌山県架空市山麓町代表者　太郎',200,190,'ユーザ','2022-12-05 12:34:56',1,1,'1','1948-07-28 00:00:00')
        ;
 
-DELETE FROM `kanrensha_kigyou_dt_history_23`;
-ALTER TABLE `kanrensha_kigyou_dt_history_23` auto_increment = 0;
+TRUNCATE TABLE `kanrensha_kigyou_dt_history_23`;
 
 -- 2022
 INSERT INTO `kanrensha_kigyou_dt_history_23` (`kanrensha_kigyou_dt_history_id`,`kigyou_dt_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`)
@@ -312,8 +295,7 @@ INSERT INTO `kanrensha_kigyou_dt_history_23` (`kanrensha_kigyou_dt_history_id`,`
        , (417,'1-2345-67-892323-4567897',1,'超元素製造組合','愛知県架空市山麓町','代表者　太郎','1-2345-67-892323-2323239','超元素製造組合和歌山県架空市山麓町代表者　太郎',200,190,'ユーザ','2022-12-05 12:34:56',1,1,'1','1948-07-28 00:00:00')
        ;
        
-DELETE FROM `kanrensha_kigyou_dt_history_24`;
-ALTER TABLE `kanrensha_kigyou_dt_history_24` auto_increment = 0;
+TRUNCATE TABLE `kanrensha_kigyou_dt_history_24`;
 
 -- 2022
 INSERT INTO `kanrensha_kigyou_dt_history_24` (`kanrensha_kigyou_dt_history_id`,`kigyou_dt_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`)
@@ -326,8 +308,7 @@ INSERT INTO `kanrensha_kigyou_dt_history_24` (`kanrensha_kigyou_dt_history_id`,`
        , (417,'1-2345-67-892423-4567897',1,'超元素製造組合','三重県架空市山麓町','代表者　太郎','1-2345-67-892423-2424249','超元素製造組合和歌山県架空市山麓町代表者　太郎',200,190,'ユーザ','2022-12-05 12:34:56',1,1,'1','1948-07-28 00:00:00')
        ;
 
-DELETE FROM `kanrensha_kigyou_dt_history_25`;
-ALTER TABLE `kanrensha_kigyou_dt_history_25` auto_increment = 0;
+TRUNCATE TABLE `kanrensha_kigyou_dt_history_25`;
 
 -- 2022
 INSERT INTO `kanrensha_kigyou_dt_history_25` (`kanrensha_kigyou_dt_history_id`,`kigyou_dt_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`)
@@ -340,8 +321,7 @@ INSERT INTO `kanrensha_kigyou_dt_history_25` (`kanrensha_kigyou_dt_history_id`,`
        , (417,'1-2345-67-892523-4567897',1,'超元素製造組合','滋賀県架空市山麓町','代表者　太郎','1-2345-67-892523-2525259','超元素製造組合和歌山県架空市山麓町代表者　太郎',200,190,'ユーザ','2022-12-05 12:34:56',1,1,'1','1948-07-28 00:00:00')
        ;
 
-DELETE FROM `kanrensha_kigyou_dt_history_26`;
-ALTER TABLE `kanrensha_kigyou_dt_history_26` auto_increment = 0;
+TRUNCATE TABLE `kanrensha_kigyou_dt_history_26`;
 
 -- 2022
 INSERT INTO `kanrensha_kigyou_dt_history_26` (`kanrensha_kigyou_dt_history_id`,`kigyou_dt_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`)
@@ -354,8 +334,7 @@ INSERT INTO `kanrensha_kigyou_dt_history_26` (`kanrensha_kigyou_dt_history_id`,`
        , (417,'1-2345-67-892623-4567897',1,'超元素製造組合','京都府架空市山麓町','代表者　太郎','1-2345-67-892623-2626269','超元素製造組合和歌山県架空市山麓町代表者　太郎',200,190,'ユーザ','2022-12-05 12:34:56',1,1,'1','1948-07-28 00:00:00')
        ;
 
-DELETE FROM `kanrensha_kigyou_dt_history_27`;
-ALTER TABLE `kanrensha_kigyou_dt_history_27` auto_increment = 0;
+TRUNCATE TABLE `kanrensha_kigyou_dt_history_27`;
 
 -- 2022
 INSERT INTO `kanrensha_kigyou_dt_history_27` (`kanrensha_kigyou_dt_history_id`,`kigyou_dt_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`)
@@ -369,8 +348,7 @@ INSERT INTO `kanrensha_kigyou_dt_history_27` (`kanrensha_kigyou_dt_history_id`,`
        ;
 
 
-DELETE FROM `kanrensha_kigyou_dt_history_28`;
-ALTER TABLE `kanrensha_kigyou_dt_history_28` auto_increment = 0;
+TRUNCATE TABLE `kanrensha_kigyou_dt_history_28`;
 
 -- 2022
 INSERT INTO `kanrensha_kigyou_dt_history_28` (`kanrensha_kigyou_dt_history_id`,`kigyou_dt_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`)
@@ -383,8 +361,7 @@ INSERT INTO `kanrensha_kigyou_dt_history_28` (`kanrensha_kigyou_dt_history_id`,`
        , (417,'1-2345-67-892823-4567897',1,'超元素製造組合','兵庫県架空市山麓町','代表者　太郎','1-2345-67-892823-2828289','超元素製造組合和歌山県架空市山麓町代表者　太郎',200,190,'ユーザ','2022-12-05 12:34:56',1,1,'1','1948-07-28 00:00:00')
        ;
 
-DELETE FROM `kanrensha_kigyou_dt_history_29`;
-ALTER TABLE `kanrensha_kigyou_dt_history_29` auto_increment = 0;
+TRUNCATE TABLE `kanrensha_kigyou_dt_history_29`;
 
 -- 2022
 INSERT INTO `kanrensha_kigyou_dt_history_29` (`kanrensha_kigyou_dt_history_id`,`kigyou_dt_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`)
@@ -397,8 +374,7 @@ INSERT INTO `kanrensha_kigyou_dt_history_29` (`kanrensha_kigyou_dt_history_id`,`
        , (417,'1-2345-67-892923-4567897',1,'超元素製造組合','奈良県架空市山麓町','代表者　太郎','1-2345-67-892923-2929299','超元素製造組合和歌山県架空市山麓町代表者　太郎',200,190,'ユーザ','2022-12-05 12:34:56',1,1,'1','1948-07-28 00:00:00')
        ;
 
-DELETE FROM `kanrensha_kigyou_dt_history_30`;
-ALTER TABLE `kanrensha_kigyou_dt_history_30` auto_increment = 0;
+TRUNCATE TABLE `kanrensha_kigyou_dt_history_30`;
 
 -- 2022
 INSERT INTO `kanrensha_kigyou_dt_history_30` (`kanrensha_kigyou_dt_history_id`,`kigyou_dt_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`)
@@ -410,8 +386,8 @@ INSERT INTO `kanrensha_kigyou_dt_history_30` (`kanrensha_kigyou_dt_history_id`,`
    -- 検索語が一致でない
        , (417,'1-2345-67-893023-4567897',1,'超元素製造組合','和歌山県架空市山麓町','代表者　太郎','1-2345-67-893023-3030309','超元素製造組合和歌山県架空市山麓町代表者　太郎',200,190,'ユーザ','2022-12-05 12:34:56',1,1,'1','1948-07-28 00:00:00')
        ;
-DELETE FROM `kanrensha_kigyou_dt_history_31`;
-ALTER TABLE `kanrensha_kigyou_dt_history_31` auto_increment = 0;
+       
+TRUNCATE TABLE `kanrensha_kigyou_dt_history_31`;
 
 -- 2022
 INSERT INTO `kanrensha_kigyou_dt_history_31` (`kanrensha_kigyou_dt_history_id`,`kigyou_dt_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`)
@@ -424,8 +400,7 @@ INSERT INTO `kanrensha_kigyou_dt_history_31` (`kanrensha_kigyou_dt_history_id`,`
        , (417,'1-2345-67-893123-4567897',1,'超元素製造組合','鳥取県架空市山麓町','代表者　太郎','1-2345-67-893123-3131319','超元素製造組合和歌山県架空市山麓町代表者　太郎',200,190,'ユーザ','2022-12-05 12:34:56',1,1,'1','1948-07-28 00:00:00')
        ;
 
-DELETE FROM `kanrensha_kigyou_dt_history_32`;
-ALTER TABLE `kanrensha_kigyou_dt_history_32` auto_increment = 0;
+TRUNCATE TABLE `kanrensha_kigyou_dt_history_32`;
 
 -- 2022
 INSERT INTO `kanrensha_kigyou_dt_history_32` (`kanrensha_kigyou_dt_history_id`,`kigyou_dt_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`)
@@ -438,8 +413,7 @@ INSERT INTO `kanrensha_kigyou_dt_history_32` (`kanrensha_kigyou_dt_history_id`,`
        , (417,'1-2345-67-893223-4567897',1,'超元素製造組合','島根県架空市山麓町','代表者　太郎','1-2345-67-893223-3232329','超元素製造組合和歌山県架空市山麓町代表者　太郎',200,190,'ユーザ','2022-12-05 12:34:56',1,1,'1','1948-07-28 00:00:00')
        ;
 
-DELETE FROM `kanrensha_kigyou_dt_history_33`;
-ALTER TABLE `kanrensha_kigyou_dt_history_33` auto_increment = 0;
+TRUNCATE TABLE `kanrensha_kigyou_dt_history_33`;
 
 -- 2022
 INSERT INTO `kanrensha_kigyou_dt_history_33` (`kanrensha_kigyou_dt_history_id`,`kigyou_dt_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`)
@@ -452,8 +426,7 @@ INSERT INTO `kanrensha_kigyou_dt_history_33` (`kanrensha_kigyou_dt_history_id`,`
        , (417,'1-2345-67-893323-4567897',1,'超元素製造組合','岡山県架空市山麓町','代表者　太郎','1-2345-67-893323-3333339','超元素製造組合和歌山県架空市山麓町代表者　太郎',200,190,'ユーザ','2022-12-05 12:34:56',1,1,'1','1948-07-28 00:00:00')
        ;
 
-DELETE FROM `kanrensha_kigyou_dt_history_34`;
-ALTER TABLE `kanrensha_kigyou_dt_history_34` auto_increment = 0;
+TRUNCATE TABLE `kanrensha_kigyou_dt_history_34`;
 
 -- 2022
 INSERT INTO `kanrensha_kigyou_dt_history_34` (`kanrensha_kigyou_dt_history_id`,`kigyou_dt_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`)
@@ -466,8 +439,7 @@ INSERT INTO `kanrensha_kigyou_dt_history_34` (`kanrensha_kigyou_dt_history_id`,`
        , (417,'1-2345-67-893423-4567897',1,'超元素製造組合','広島県架空市山麓町','代表者　太郎','1-2345-67-893423-3434349','超元素製造組合和歌山県架空市山麓町代表者　太郎',200,190,'ユーザ','2022-12-05 12:34:56',1,1,'1','1948-07-28 00:00:00')
        ;
 
-DELETE FROM `kanrensha_kigyou_dt_history_35`;
-ALTER TABLE `kanrensha_kigyou_dt_history_35` auto_increment = 0;
+TRUNCATE TABLE `kanrensha_kigyou_dt_history_35`;
 
 -- 2022
 INSERT INTO `kanrensha_kigyou_dt_history_35` (`kanrensha_kigyou_dt_history_id`,`kigyou_dt_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`)
@@ -480,8 +452,7 @@ INSERT INTO `kanrensha_kigyou_dt_history_35` (`kanrensha_kigyou_dt_history_id`,`
        , (417,'1-2345-67-893523-4567897',1,'超元素製造組合','山口県架空市山麓町','代表者　太郎','1-2345-67-893523-3535359','超元素製造組合和歌山県架空市山麓町代表者　太郎',200,190,'ユーザ','2022-12-05 12:34:56',1,1,'1','1948-07-28 00:00:00')
        ;
 
-DELETE FROM `kanrensha_kigyou_dt_history_36`;
-ALTER TABLE `kanrensha_kigyou_dt_history_36` auto_increment = 0;
+TRUNCATE TABLE `kanrensha_kigyou_dt_history_36`;
 
 -- 2022
 INSERT INTO `kanrensha_kigyou_dt_history_36` (`kanrensha_kigyou_dt_history_id`,`kigyou_dt_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`)
@@ -494,8 +465,7 @@ INSERT INTO `kanrensha_kigyou_dt_history_36` (`kanrensha_kigyou_dt_history_id`,`
        , (417,'1-2345-67-893623-4567897',1,'超元素製造組合','徳島県架空市山麓町','代表者　太郎','1-2345-67-893623-3636369','超元素製造組合和歌山県架空市山麓町代表者　太郎',200,190,'ユーザ','2022-12-05 12:34:56',1,1,'1','1948-07-28 00:00:00')
        ;
 
-DELETE FROM `kanrensha_kigyou_dt_history_37`;
-ALTER TABLE `kanrensha_kigyou_dt_history_37` auto_increment = 0;
+TRUNCATE TABLE `kanrensha_kigyou_dt_history_37`;
 
 -- 2022
 INSERT INTO `kanrensha_kigyou_dt_history_37` (`kanrensha_kigyou_dt_history_id`,`kigyou_dt_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`)
@@ -508,8 +478,7 @@ INSERT INTO `kanrensha_kigyou_dt_history_37` (`kanrensha_kigyou_dt_history_id`,`
        , (417,'1-2345-67-893723-4567897',1,'超元素製造組合','香川県架空市山麓町','代表者　太郎','1-2345-67-893723-3737379','超元素製造組合和歌山県架空市山麓町代表者　太郎',200,190,'ユーザ','2022-12-05 12:34:56',1,1,'1','1948-07-28 00:00:00')
        ;
 
-DELETE FROM `kanrensha_kigyou_dt_history_38`;
-ALTER TABLE `kanrensha_kigyou_dt_history_38` auto_increment = 0;
+TRUNCATE TABLE `kanrensha_kigyou_dt_history_38`;
 
 -- 2022
 INSERT INTO `kanrensha_kigyou_dt_history_38` (`kanrensha_kigyou_dt_history_id`,`kigyou_dt_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`)
@@ -522,8 +491,7 @@ INSERT INTO `kanrensha_kigyou_dt_history_38` (`kanrensha_kigyou_dt_history_id`,`
        , (417,'1-2345-67-893823-4567897',1,'超元素製造組合','愛媛県架空市山麓町','代表者　太郎','1-2345-67-893823-3838389','超元素製造組合和歌山県架空市山麓町代表者　太郎',200,190,'ユーザ','2022-12-05 12:34:56',1,1,'1','1948-07-28 00:00:00')
        ;
 
-DELETE FROM `kanrensha_kigyou_dt_history_39`;
-ALTER TABLE `kanrensha_kigyou_dt_history_39` auto_increment = 0;
+TRUNCATE TABLE `kanrensha_kigyou_dt_history_39`;
 
 -- 2022
 INSERT INTO `kanrensha_kigyou_dt_history_39` (`kanrensha_kigyou_dt_history_id`,`kigyou_dt_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`)
@@ -536,8 +504,7 @@ INSERT INTO `kanrensha_kigyou_dt_history_39` (`kanrensha_kigyou_dt_history_id`,`
        , (417,'1-2345-67-893923-4567897',1,'超元素製造組合','高知県架空市山麓町','代表者　太郎','1-2345-67-893923-3939399','超元素製造組合和歌山県架空市山麓町代表者　太郎',200,190,'ユーザ','2022-12-05 12:34:56',1,1,'1','1948-07-28 00:00:00')
        ;
 
-DELETE FROM `kanrensha_kigyou_dt_history_40`;
-ALTER TABLE `kanrensha_kigyou_dt_history_40` auto_increment = 0;
+TRUNCATE TABLE `kanrensha_kigyou_dt_history_40`;
 
 -- 2022
 INSERT INTO `kanrensha_kigyou_dt_history_40` (`kanrensha_kigyou_dt_history_id`,`kigyou_dt_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`)
@@ -550,8 +517,7 @@ INSERT INTO `kanrensha_kigyou_dt_history_40` (`kanrensha_kigyou_dt_history_id`,`
        , (417,'1-2345-67-894023-4567897',1,'超元素製造組合','福岡県架空市山麓町','代表者　太郎','1-2345-67-894023-4040409','超元素製造組合和歌山県架空市山麓町代表者　太郎',200,190,'ユーザ','2022-12-05 12:34:56',1,1,'1','1948-07-28 00:00:00')
        ;
 
-DELETE FROM `kanrensha_kigyou_dt_history_41`;
-ALTER TABLE `kanrensha_kigyou_dt_history_41` auto_increment = 0;
+TRUNCATE TABLE `kanrensha_kigyou_dt_history_41`;
 
 -- 2022
 INSERT INTO `kanrensha_kigyou_dt_history_41` (`kanrensha_kigyou_dt_history_id`,`kigyou_dt_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`)
@@ -564,8 +530,7 @@ INSERT INTO `kanrensha_kigyou_dt_history_41` (`kanrensha_kigyou_dt_history_id`,`
        , (417,'1-2345-67-894123-4567897',1,'超元素製造組合','佐賀県架空市山麓町','代表者　太郎','1-2345-67-894123-4141419','超元素製造組合和歌山県架空市山麓町代表者　太郎',200,190,'ユーザ','2022-12-05 12:34:56',1,1,'1','1948-07-28 00:00:00')
        ;
 
-DELETE FROM `kanrensha_kigyou_dt_history_42`;
-ALTER TABLE `kanrensha_kigyou_dt_history_42` auto_increment = 0;
+TRUNCATE TABLE `kanrensha_kigyou_dt_history_42`;
 
 -- 2022
 INSERT INTO `kanrensha_kigyou_dt_history_42` (`kanrensha_kigyou_dt_history_id`,`kigyou_dt_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`)
@@ -578,8 +543,7 @@ INSERT INTO `kanrensha_kigyou_dt_history_42` (`kanrensha_kigyou_dt_history_id`,`
        , (417,'1-2345-67-894223-4567897',1,'超元素製造組合','長崎県架空市山麓町','代表者　太郎','1-2345-67-894223-4242429','超元素製造組合和歌山県架空市山麓町代表者　太郎',200,190,'ユーザ','2022-12-05 12:34:56',1,1,'1','1948-07-28 00:00:00')
        ;
 
-DELETE FROM `kanrensha_kigyou_dt_history_43`;
-ALTER TABLE `kanrensha_kigyou_dt_history_43` auto_increment = 0;
+TRUNCATE TABLE `kanrensha_kigyou_dt_history_43`;
 
 -- 2022
 INSERT INTO `kanrensha_kigyou_dt_history_43` (`kanrensha_kigyou_dt_history_id`,`kigyou_dt_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`)
@@ -592,8 +556,7 @@ INSERT INTO `kanrensha_kigyou_dt_history_43` (`kanrensha_kigyou_dt_history_id`,`
        , (417,'1-2345-67-894323-4567897',1,'超元素製造組合','熊本県架空市山麓町','代表者　太郎','1-2345-67-894323-4343439','超元素製造組合和歌山県架空市山麓町代表者　太郎',200,190,'ユーザ','2022-12-05 12:34:56',1,1,'1','1948-07-28 00:00:00')
        ;
 
-DELETE FROM `kanrensha_kigyou_dt_history_44`;
-ALTER TABLE `kanrensha_kigyou_dt_history_44` auto_increment = 0;
+TRUNCATE TABLE `kanrensha_kigyou_dt_history_44`;
 
 -- 2022
 INSERT INTO `kanrensha_kigyou_dt_history_44` (`kanrensha_kigyou_dt_history_id`,`kigyou_dt_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`)
@@ -606,8 +569,7 @@ INSERT INTO `kanrensha_kigyou_dt_history_44` (`kanrensha_kigyou_dt_history_id`,`
        , (417,'1-2345-67-894423-4567897',1,'超元素製造組合','大分県架空市山麓町','代表者　太郎','1-2345-67-894423-4444449','超元素製造組合和歌山県架空市山麓町代表者　太郎',200,190,'ユーザ','2022-12-05 12:34:56',1,1,'1','1948-07-28 00:00:00')
        ;
 
-DELETE FROM `kanrensha_kigyou_dt_history_45`;
-ALTER TABLE `kanrensha_kigyou_dt_history_45` auto_increment = 0;
+TRUNCATE TABLE `kanrensha_kigyou_dt_history_45`;
 
 -- 2022
 INSERT INTO `kanrensha_kigyou_dt_history_45` (`kanrensha_kigyou_dt_history_id`,`kigyou_dt_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`)
@@ -620,8 +582,7 @@ INSERT INTO `kanrensha_kigyou_dt_history_45` (`kanrensha_kigyou_dt_history_id`,`
        , (417,'1-2345-67-894523-4567897',1,'超元素製造組合','宮崎県架空市山麓町','代表者　太郎','1-2345-67-894523-4545459','超元素製造組合和歌山県架空市山麓町代表者　太郎',200,190,'ユーザ','2022-12-05 12:34:56',1,1,'1','1948-07-28 00:00:00')
        ;
 
-DELETE FROM `kanrensha_kigyou_dt_history_46`;
-ALTER TABLE `kanrensha_kigyou_dt_history_46` auto_increment = 0;
+TRUNCATE TABLE `kanrensha_kigyou_dt_history_46`;
 
 -- 2022
 INSERT INTO `kanrensha_kigyou_dt_history_46` (`kanrensha_kigyou_dt_history_id`,`kigyou_dt_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`)
@@ -634,8 +595,7 @@ INSERT INTO `kanrensha_kigyou_dt_history_46` (`kanrensha_kigyou_dt_history_id`,`
        , (417,'1-2345-67-894623-4567897',1,'超元素製造組合','鹿児島県架空市山麓町','代表者　太郎','1-2345-67-894623-4646469','超元素製造組合和歌山県架空市山麓町代表者　太郎',200,190,'ユーザ','2022-12-05 12:34:56',1,1,'1','1948-07-28 00:00:00')
        ;
 
-DELETE FROM `kanrensha_kigyou_dt_history_47`;
-ALTER TABLE `kanrensha_kigyou_dt_history_47` auto_increment = 0;
+TRUNCATE TABLE `kanrensha_kigyou_dt_history_47`;
 
 -- 2022
 INSERT INTO `kanrensha_kigyou_dt_history_47` (`kanrensha_kigyou_dt_history_id`,`kigyou_dt_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`)
@@ -648,8 +608,7 @@ INSERT INTO `kanrensha_kigyou_dt_history_47` (`kanrensha_kigyou_dt_history_id`,`
        , (417,'1-2345-67-894723-4567897',1,'超元素製造組合','沖縄県架空市山麓町','代表者　太郎','1-2345-67-894723-4747479','超元素製造組合和歌山県架空市山麓町代表者　太郎',200,190,'ユーザ','2022-12-05 12:34:56',1,1,'1','1948-07-28 00:00:00')
        ;
 
-DELETE FROM `kanrensha_kigyou_dt_history_99`;
-ALTER TABLE `kanrensha_kigyou_dt_history_99` auto_increment = 0;
+TRUNCATE TABLE `kanrensha_kigyou_dt_history_99`;
 
 -- 2022
 INSERT INTO `kanrensha_kigyou_dt_history_99` (`kanrensha_kigyou_dt_history_id`,`kigyou_dt_kanrensha_code`,`is_latest`,`all_name`,`all_address`,`org_delegate_name`,`org_delegate_code`,`search_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`)
@@ -661,10 +620,3 @@ INSERT INTO `kanrensha_kigyou_dt_history_99` (`kanrensha_kigyou_dt_history_id`,`
    -- 検索語が一致でない
        , (417,'1-2345-67-899923-4567897',1,'超元素製造組合','その他架空市山麓町','代表者　太郎','1-2345-67-899923-9999999','超元素製造組合和歌山県架空市山麓町代表者　太郎',200,190,'ユーザ','2022-12-05 12:34:56',1,1,'1','1948-07-28 00:00:00')
        ;
-
-
-
-
-
-
-

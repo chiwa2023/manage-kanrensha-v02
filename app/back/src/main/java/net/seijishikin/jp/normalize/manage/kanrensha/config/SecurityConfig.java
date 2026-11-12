@@ -174,6 +174,7 @@ public class SecurityConfig { // NOPMD TooManyMethods
                             .hasRole(UserRoleConstants.ADMIN) //
 
                             .requestMatchers( // 関連者を除く利用者限定
+                                    PathRouteConstants.ROOT + "/kanrensha-history/**",
                                     PathRouteConstants.ROOT + "/riyousha/get**",
                                     PathRouteConstants.ROOT + "/riyousha/save**",
                                     PathRouteConstants.ROOT + "/user-kanrensha/search**")

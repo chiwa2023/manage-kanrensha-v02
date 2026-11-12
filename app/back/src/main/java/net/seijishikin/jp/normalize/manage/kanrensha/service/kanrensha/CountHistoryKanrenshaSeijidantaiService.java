@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired; // NOPMD HightImp
 import org.springframework.stereotype.Service;
 
 import net.seijishikin.jp.normalize.common_tool.dto.kanrensha.SearchHistoryKanrenshaCapsuleDto;
+import net.seijishikin.jp.normalize.common_tool.utils.CreateSerachWordsBooleanModeUtil;
 import net.seijishikin.jp.normalize.manage.kanrensha.repository.lgcode.KanrenshaSeijidantaiHistory02Repository;
 import net.seijishikin.jp.normalize.manage.kanrensha.repository.lgcode.KanrenshaSeijidantaiHistory03Repository;
 import net.seijishikin.jp.normalize.manage.kanrensha.repository.lgcode.KanrenshaSeijidantaiHistory04Repository;
@@ -255,6 +256,10 @@ public class CountHistoryKanrenshaSeijidantaiService { // NOPMD CouplingObjects
     /** 空白文字 */
     private static final String BLANK = "";
 
+    /** 全文検索フォーマットUtil */
+    @Autowired
+    private CreateSerachWordsBooleanModeUtil createSerachWordsBooleanModeUtil;
+
     /**
      * 処理を行う
      * 
@@ -263,10 +268,7 @@ public class CountHistoryKanrenshaSeijidantaiService { // NOPMD CouplingObjects
      */
     public String practice(final SearchHistoryKanrenshaCapsuleDto capsuleDto) {
 
-        // String searchWords =
-        // createSerachWordsBooleanModeUtil.practice(capsuleDto.getSearchNaturalWords());
-        // TODO MATCH AGAINST
-        String searchWords = "%" + capsuleDto.getSearchNaturalWords() + "%";
+        String searchWords = createSerachWordsBooleanModeUtil.practice(capsuleDto.getSearchNaturalWords());
 
         StringBuilder builder = new StringBuilder();
 

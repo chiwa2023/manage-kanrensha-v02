@@ -27,9 +27,7 @@ public interface KanrenshaSeijidantaiHistory31Repository
      * @return 検索件数
      */
     @Query(value = "SELECT count(*) FROM kanrensha_seijidantai_history_31"
-            + " WHERE search_text LIKE ?1 AND is_latest=1", nativeQuery = true) // TODO MATCH AGAINST
-    // + " WHERE MATCH(search_text) AGAINST (?1 IN BOOLEAN MODE) AND is_latest=1",
-    // nativeQuery = true)
+            + " WHERE MATCH(search_text) AGAINST (?1 IN BOOLEAN MODE) AND is_latest=1", nativeQuery = true)
     Integer countFullText(String searchWords);
 
     /**
@@ -40,9 +38,7 @@ public interface KanrenshaSeijidantaiHistory31Repository
      */
     @Query(value = "SELECT kanrensha_seijidantai_history_id ,seijidantai_kanrensha_code ,all_name "
             + " ,all_address ,org_delegate_name ,org_delegate_code FROM kanrensha_seijidantai_history_31"
-            + " WHERE search_text LIKE ?1 AND is_latest=1", nativeQuery = true) // TODO MATCH AGAINST
-    // + " WHERE MATCH(search_text) AGAINST (?1 IN BOOLEAN MODE) AND is_latest=1",
-    // nativeQuery = true)
+            + " WHERE MATCH(search_text) AGAINST (?1 IN BOOLEAN MODE) AND is_latest=1", nativeQuery = true)
     List<KanrenshaTableHistorySeijidantaiDto> findFullText(String searchWords, Pageable pageable);
 
     /**

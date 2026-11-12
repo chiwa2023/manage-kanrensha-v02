@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 
 import net.seijishikin.jp.normalize.common_tool.dto.kanrensha.SearchHistoryKanrenshaCapsuleDto;
 import net.seijishikin.jp.normalize.common_tool.dto.kanrensha.SearchHistoryKanrenshaSeijidantaiResultDto;
+import net.seijishikin.jp.normalize.common_tool.utils.CreateSerachWordsBooleanModeUtil;
 import net.seijishikin.jp.normalize.manage.kanrensha.repository.lgcode.KanrenshaSeijidantaiHistory01Repository;
 
 /**
@@ -18,9 +19,9 @@ public class SearchKanrenshaSeijidantaiHistory01Logic {
     @Autowired
     private KanrenshaSeijidantaiHistory01Repository kanrenshaSeijidantaiHistory01Repository;
 
-    //    /** 検索語全文検索用Util */
-    //    @Autowired
-    //    private CreateSerachWordsBooleanModeUtil createSerachWordsBooleanModeUtil;
+    /** 検索語全文検索用Util */
+    @Autowired
+    private CreateSerachWordsBooleanModeUtil createSerachWordsBooleanModeUtil;
 
     /**
      * 処理を行う
@@ -34,8 +35,7 @@ public class SearchKanrenshaSeijidantaiHistory01Logic {
         resultDto.setLimit(capsuleDto.getLimit());
         resultDto.setPageNumber(capsuleDto.getPageNumber());
 
-        // String searchWords = createSerachWordsBooleanModeUtil.practice(capsuleDto.getSearchNaturalWords());
-        String searchWords = "%" + capsuleDto.getSearchNaturalWords() + "%";
+        String searchWords = createSerachWordsBooleanModeUtil.practice(capsuleDto.getSearchNaturalWords());
 
         resultDto.setAllCount(kanrenshaSeijidantaiHistory01Repository.countFullText(searchWords));
 
