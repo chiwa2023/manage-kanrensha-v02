@@ -111,7 +111,7 @@ public class SecurityConfig { // NOPMD TooManyMethods
                     requests.requestMatchers(PathRouteConstants.ROOT + "/", PathRouteConstants.ROOT + "/login",
                             PathRouteConstants.ROOT + "/refresh-token", PathRouteConstants.ROOT + "/replace-token",
                             PathRouteConstants.ROOT + "/add-user/**", PathRouteConstants.ROOT + "/trial-access",
-                            PathRouteConstants.ROOT + "/reset-password/**",
+                            PathRouteConstants.ROOT + "/reset-password/**", PathRouteConstants.ROOT + "/sns-service/get-options",
                             PathRouteConstants.ROOT + "/api-for-partner/**",
                             PathRouteConstants.ROOT + "/passkey/authenticate/**",
                             PathRouteConstants.ROOT + "/dump-record/get") // ログイン不要ページで使用
@@ -144,6 +144,9 @@ public class SecurityConfig { // NOPMD TooManyMethods
                                     PathRouteConstants.ROOT + "/riyousha-org/invite-person",
                                     PathRouteConstants.ROOT + "/task-plan-role/**", //
                                     PathRouteConstants.ROOT + "/user-role/**", // admin推薦：本当に運営者限定
+                                    PathRouteConstants.ROOT + "/sns-service/delete",
+                                    PathRouteConstants.ROOT + "/sns-service/save",
+                                    PathRouteConstants.ROOT + "/sns-service/search",
                                     PathRouteConstants.ROOT + "/wktbl-address-rsdt/**", //
                                     PathRouteConstants.ROOT + "/works-approval/**", //
                                     PathRouteConstants.ROOT + "/xml/look-ahead")
