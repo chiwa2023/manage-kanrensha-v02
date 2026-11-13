@@ -68,7 +68,7 @@ public class SabunPreparAddressRsdtController {
             LocalDateTime dateTimeStart = LocalDateTime.now();
 
             // タスクを登録してバッチ実行
-            // TODO Queryはfront連結後決定
+            // MEMO Queryはログインユーザから必要データを呼んでいるので、基本的には使用しない
             Map<String, String> mapParam = new TreeMap<>();
 
             LeastUserDto userDto = capsuleDto.getUserDto();

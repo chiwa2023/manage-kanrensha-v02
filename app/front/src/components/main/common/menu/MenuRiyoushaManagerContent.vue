@@ -77,7 +77,8 @@ import RoutePathConstants from '../../../../routePathConstants';
             </RouterLink>
             <RouterLink :to="RoutePathConstants.PAGE_DOWNLOAD_SABUN_MASTER_STD" class="menu-item">差分関連者マスタ標準データダウンロード
             </RouterLink>
-            <RouterLink :to="RoutePathConstants.PAGE_DOWNLOAD_SABUN_MASTER_MIN" class="menu-item">差分関連者最小登録マスタ</RouterLink>
+            <RouterLink :to="RoutePathConstants.PAGE_DOWNLOAD_SABUN_MASTER_MIN" class="menu-item">差分関連者最小登録マスタ
+            </RouterLink>
             <RouterLink :to="RoutePathConstants.PAGE_DOWNLOAD_SABUN_HISTORY" class="menu-item">差分関連者履歴マスタ</RouterLink>
         </div>
     </div>
@@ -117,6 +118,13 @@ import RoutePathConstants from '../../../../routePathConstants';
             <RouterLink class="menu-item"
                 :to="{ path: RoutePathConstants.PAGE_ACCEPT_ORG_PERSON, query: { userRole: 'manager' } }">利用者組織招待承諾
             </RouterLink>
+        </div>
+    </div>
+
+    <div class="menu-container">
+        <div class="menu-section">
+            <h4 class="menu-title">SNSサービス</h4>
+            <RouterLink :to="RoutePathConstants.PAGE_SNS_EDIT" class="menu-item">SNSサービス一覧・編集 </RouterLink>
         </div>
     </div>
 

@@ -55,9 +55,12 @@ public class DeleteSnsDataController {
             Integer deleteId = deleteSnsDataService.practice(capsuleDto);
 
             if (0 == deleteId) {
+                resultDto.setIsFailure(true);
+                resultDto.setMessage(FrameworkMessageAndResultDto.MESSAGE_NO_RECORD);
                 return ResponseEntity.status(HttpStatus.ACCEPTED).body(resultDto);
 
             } else {
+                resultDto.setMessage(FrameworkMessageAndResultDto.MESSAGE_EXPECTED);
                 return ResponseEntity.status(HttpStatus.OK).body(resultDto);
             }
 
