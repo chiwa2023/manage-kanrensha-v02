@@ -239,7 +239,8 @@ export default class RoutePathConstants {
     // /** APIパートナー組織に招待を個人が承認 */
     // static readonly PAGE_ACCEPT_COMRADE_PERSON: string = this.BASE_PATH + "/accept-comrade";
 
-
+    /** SNSサービス編集 */
+    static readonly PAGE_SNS_EDIT: string = this.BASE_PATH + "/sns-service-edit";
 
     /** タスク計画検索 */
     static readonly PAGE_SEARCH_TASK_PLAN: string = this.BASE_PATH + "/search-task-plan";

@@ -69,7 +69,7 @@ public class RetryBatchHistoryKigyouDtController {
             // ユーザチェック
             validateAuthoraizeUserDetailLogic.practice(capsuleDto.getUserDto());
 
-            // TODO Queryはfront連結後決定
+            // MEMO Queryはログインユーザから必要データを呼んでいるので、基本的には使用しない
             Map<String, String> mapParam = new TreeMap<>();
 
             InsertTaskPlanResultDto planDto = switchYearInsertTaskPlanService.practice(null, userDto, dateTimeStart,

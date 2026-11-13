@@ -60,7 +60,7 @@ public class YoteiFuncForceDumpStdMasterService {
             }
 
             // 非同期処理はタスク登録をする
-            // TODO Queryはfront連結後決定
+            // MEMO Queryはログインユーザから必要データを呼んでいるので、基本的には使用しない
             Map<String, String> mapParam = new TreeMap<>();
 
             InsertTaskPlanResultDto planDto1 = switchYearInsertTaskPlanService.practice(null, userDto, dateTimeStart,

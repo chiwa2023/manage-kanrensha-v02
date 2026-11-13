@@ -70,7 +70,7 @@ public class RefreshLgCodeController {
             resultDto.setMessage("処理を開始しました。完了までしばらくお待ちください。");
 
             // 一時ファイルを本ファイルとして登録、タスクを登録
-            // TODO Queryはfront連結後決定
+            // MEMO Queryはログインユーザから必要データを呼んでいるので、基本的には使用しない
             Map<String, String> mapParam = new TreeMap<>();
 
             TaskPlanWithUseFileDto planFileDto = copyTempToUseSavedFileService.practice(dateTimeStart,

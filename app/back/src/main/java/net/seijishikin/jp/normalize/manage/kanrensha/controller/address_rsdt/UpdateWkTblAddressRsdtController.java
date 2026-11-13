@@ -66,7 +66,7 @@ public class UpdateWkTblAddressRsdtController {
             LocalDateTime dateTimeStart = LocalDateTime.now();
 
             // タスクを登録してバッチ実行
-            // TODO Queryはfront連結後決定
+            // MEMO Queryはログインユーザから必要データを呼んでいるので、基本的には使用しない
             Map<String, String> mapParam = new TreeMap<>();
 
             InsertTaskPlanResultDto planDto = switchYearInsertTaskPlanService.practice(null, capsuleDto.getUserDto(),
@@ -75,7 +75,7 @@ public class UpdateWkTblAddressRsdtController {
             updateWkTblAddressRsdtService.practice(capsuleDto.getUserDto(), planDto);
 
             return ResponseEntity.status(HttpStatus.OK).body(resultDto);
-            
+
         } catch (UsernameNotFoundException exception) {
             resultDto.setIsFailure(true);
             resultDto.setMessage("tokenとユーザ(userDto)が不整合です");

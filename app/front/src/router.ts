@@ -142,6 +142,9 @@ const routes = [
     // トークン置き換え
     { path: RoutePathConstants.PAGE_PARTNER_TOKEN_REPLACE, name: "ReplacePartnerApiToken", component: () => import("./components/main/pages/user_edit/ReplacePartnerApiToken.vue") },
 
+    // SNS編集
+    { path: RoutePathConstants.PAGE_SNS_EDIT, name: "EditSnsService", component: () => import("./components/main/pages/sns/EditSnsService.vue") },
+
     // トークン期限通知(強制)
     { path: RoutePathConstants.PAGE_NOTIFY_LIMIT, name: "NotifyPartnerApiLimit", component: () => import("./components/main/pages/user_edit/NotifyPartnerApiLimit.vue") },
     // 期限切れトークン削除(強制)

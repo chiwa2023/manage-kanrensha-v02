@@ -74,7 +74,7 @@ public class ForceDumpHistoryController {
                 return ResponseEntity.status(HttpStatus.ACCEPTED).body(resultDto);
             }
 
-            // TODO Queryはfront連結後決定
+            // MEMO Queryはログインユーザから必要データを呼んでいるので、基本的には使用しない
             Map<String, String> mapParam = new TreeMap<>();
 
             // 非同期処理はタスク登録をする
